@@ -10,6 +10,9 @@ package net.boyblack.robotlegs.mvcs
 
 	public class Command implements ICommand
 	{
+		[Inject( name='mvcsContextView' )]
+		public var contextView:DisplayObjectContainer;
+
 		[Inject( name='mvcsCommandFactory' )]
 		public var commandFactory:ICommandFactory;
 
@@ -21,9 +24,6 @@ package net.boyblack.robotlegs.mvcs
 
 		[Inject( name='mvcsMediatorFactory' )]
 		public var mediatorFactory:IMediatorFactory;
-
-		[Inject( name='mvcsRootView' )]
-		public var rootView:DisplayObjectContainer;
 
 		public function Command()
 		{

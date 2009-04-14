@@ -3,12 +3,14 @@ package net.boyblack.robotlegs.mvcs
 	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.utils.Dictionary;
+	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
 
 	import net.boyblack.robotlegs.core.IMediator;
 	import net.boyblack.robotlegs.core.IMediatorFactory;
 	import net.boyblack.robotlegs.utils.DelayedFunctionQueue;
 	import net.expantra.smartypants.Injector;
+	import net.expantra.smartypants.SmartyPants;
 	import net.expantra.smartypants.utils.Reflection;
 
 	public class MediatorFactory implements IMediatorFactory
@@ -18,19 +20,21 @@ package net.boyblack.robotlegs.mvcs
 
 		// Protected Properties ///////////////////////////////////////////////
 		protected var injector:Injector;
+		protected var localInjector:Injector;
 		protected var mediatorByView:Dictionary;
 		protected var mediatorClassByViewClassName:Dictionary;
-		protected var rootView:DisplayObject;
+		protected var contextView:DisplayObject;
 		protected var useCapture:Boolean;
 
 		// API ////////////////////////////////////////////////////////////////
-		public function MediatorFactory( injector:Injector, rootView:DisplayObject, useCapture:Boolean = true )
+		public function MediatorFactory( injector:Injector, contextView:DisplayObject, useCapture:Boolean = true )
 		{
 			this.injector = injector;
-			this.rootView = rootView;
+			this.contextView = contextView;
 			this.mediatorByView = new Dictionary( true );
 			this.mediatorClassByViewClassName = new Dictionary( false );
 			this.useCapture = useCapture;
+			this.localInjector = SmartyPants.getOrCreateInjectorFor( this );
 			initializeListeners();
 		}
 
@@ -40,10 +44,8 @@ package net.boyblack.robotlegs.mvcs
 			{
 				throw new Error( E_CONF_MED_IMPL + ' - ' + mediatorClass );
 			}
-
 			var viewClassName:String = getQualifiedClassName( viewClass );
 			mediatorClassByViewClassName[ viewClassName ] = mediatorClass;
-			trace( '[ROBOTLEGS] Mediator Class (' + mediatorClass + ') mapped to View Class (' + viewClass + ')' );
 		}
 
 		public function createMediator( viewComponent:Object ):IMediator
@@ -52,15 +54,18 @@ package net.boyblack.robotlegs.mvcs
 			if ( mediator == null )
 			{
 				var viewClassName:String = getQualifiedClassName( viewComponent );
+				var viewClass:Class = getDefinitionByName( viewClassName ) as Class;
 				var mediatorClass:Class = mediatorClassByViewClassName[ viewClassName ];
 				if ( mediatorClass )
 				{
 					mediator = new mediatorClass();
 					trace( '[ROBOTLEGS] Mediator (' + mediator + ') constructed for View Component (' + viewComponent + ')' );
 					injector.injectInto( mediator );
-					registerMediator( mediator, viewComponent );
-					// Check that this is a good idea
 					injector.newRule().whenAskedFor( mediatorClass ).useValue( mediator );
+					localInjector.newRule().whenAskedFor( viewClass ).useValue( viewComponent );
+					localInjector.injectInto( mediator );
+					localInjector.newRule().whenAskedFor( viewClass ).defaultBehaviour();
+					registerMediator( mediator, viewComponent );
 				}
 			}
 			return mediator;
@@ -109,23 +114,20 @@ package net.boyblack.robotlegs.mvcs
 			injector = null;
 			mediatorByView = null;
 			mediatorClassByViewClassName = null;
-			rootView = null;
-			trace( '[ROBOTLEGS] MediatorFactory (' + this + ') says "Goodbye World"' );
+			contextView = null;
 		}
 
 		// Protected Methods //////////////////////////////////////////////////
 		protected function initializeListeners():void
 		{
-			rootView.addEventListener( Event.ADDED_TO_STAGE, onAdded, useCapture, 0, true );
-			rootView.addEventListener( Event.REMOVED_FROM_STAGE, onRemoved, useCapture, 0, true );
-			trace( '[ROBOTLEGS] MediatorFactory (' + this + ') is now listening to (' + rootView + ')' );
+			contextView.addEventListener( Event.ADDED_TO_STAGE, onAdded, useCapture, 0, true );
+			contextView.addEventListener( Event.REMOVED_FROM_STAGE, onRemoved, useCapture, 0, true );
 		}
 
 		protected function removeListeners():void
 		{
-			rootView.removeEventListener( Event.ADDED_TO_STAGE, onAdded, useCapture );
-			rootView.removeEventListener( Event.REMOVED_FROM_STAGE, onRemoved, useCapture );
-			trace( '[ROBOTLEGS] MediatorFactory (' + this + ') is no longer listening to (' + rootView + ')' );
+			contextView.removeEventListener( Event.ADDED_TO_STAGE, onAdded, useCapture );
+			contextView.removeEventListener( Event.REMOVED_FROM_STAGE, onRemoved, useCapture );
 		}
 
 		protected function onAdded( e:Event ):void

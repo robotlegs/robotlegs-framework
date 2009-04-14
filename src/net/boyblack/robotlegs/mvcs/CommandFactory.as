@@ -11,6 +11,7 @@ package net.boyblack.robotlegs.mvcs
 	import net.boyblack.robotlegs.core.IEventBroadcaster;
 	import net.boyblack.robotlegs.utils.createDelegate;
 	import net.expantra.smartypants.Injector;
+	import net.expantra.smartypants.SmartyPants;
 	import net.expantra.smartypants.utils.Reflection;
 
 	public class CommandFactory implements ICommandFactory
@@ -23,6 +24,7 @@ package net.boyblack.robotlegs.mvcs
 		protected var eventDispatcher:IEventDispatcher;
 		protected var eventBroadcaster:IEventBroadcaster;
 		protected var injector:Injector;
+		protected var localInjector:Injector;
 		protected var typeToCallbackMap:Dictionary;
 
 		// API ////////////////////////////////////////////////////////////////
@@ -32,7 +34,7 @@ package net.boyblack.robotlegs.mvcs
 			this.eventDispatcher = eventDispatcher;
 			this.eventBroadcaster = new EventBroadcaster( eventDispatcher );
 			this.typeToCallbackMap = new Dictionary( false );
-			trace( '[ROBOTLEGS] CommandFactory (' + this + ') created for Event Dispatcher (' + eventDispatcher + ')' );
+			this.localInjector = SmartyPants.getOrCreateInjectorFor( this );
 		}
 
 		public function mapCommand( type:String, commandClass:Class, oneshot:Boolean = false ):void
@@ -54,7 +56,6 @@ package net.boyblack.robotlegs.mvcs
 			var callback:Function = createDelegate( handleEvent, commandClass, oneshot );
 			eventDispatcher.addEventListener( type, callback, false, 0, true );
 			callbackMap[ commandClass ] = callback;
-			trace( '[ROBOTLEGS] Command Class (' + commandClass + ') mapped to event type (' + type + ') on (' + eventDispatcher + ')' );
 		}
 
 		public function unmapCommand( type:String, commandClass:Class ):void
@@ -88,10 +89,10 @@ package net.boyblack.robotlegs.mvcs
 			var command:Object = new commandClass();
 			trace( '[ROBOTLEGS] Command (' + command + ') constructed in response to event (' + event + ') on (' + eventDispatcher + ')' );
 			var eventClass:Class = Class( getDefinitionByName( getQualifiedClassName( event ) ) );
-			injector.newRule().whenAskedFor( eventClass ).useValue( event );
 			injector.injectInto( command );
-			injector.newRule().whenAskedFor( eventClass ).useValue( null );
-			trace( '[ROBOTLEGS] About to execute Command (' + command + ')' );
+			localInjector.newRule().whenAskedFor( eventClass ).useValue( event );
+			localInjector.injectInto( command );
+			localInjector.newRule().whenAskedFor( eventClass ).defaultBehaviour();
 			command.execute();
 			if ( oneshot )
 			{
