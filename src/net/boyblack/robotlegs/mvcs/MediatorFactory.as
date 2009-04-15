@@ -10,7 +10,6 @@ package net.boyblack.robotlegs.mvcs
 	import net.boyblack.robotlegs.core.IMediatorFactory;
 	import net.boyblack.robotlegs.utils.DelayedFunctionQueue;
 	import net.expantra.smartypants.Injector;
-	import net.expantra.smartypants.SmartyPants;
 	import net.expantra.smartypants.utils.Reflection;
 
 	public class MediatorFactory implements IMediatorFactory
@@ -20,7 +19,6 @@ package net.boyblack.robotlegs.mvcs
 
 		// Protected Properties ///////////////////////////////////////////////
 		protected var injector:Injector;
-		protected var localInjector:Injector;
 		protected var mediatorByView:Dictionary;
 		protected var mediatorClassByViewClassName:Dictionary;
 		protected var contextView:DisplayObject;
@@ -34,7 +32,6 @@ package net.boyblack.robotlegs.mvcs
 			this.mediatorByView = new Dictionary( true );
 			this.mediatorClassByViewClassName = new Dictionary( false );
 			this.useCapture = useCapture;
-			this.localInjector = SmartyPants.getOrCreateInjectorFor( this );
 			initializeListeners();
 		}
 
@@ -60,11 +57,10 @@ package net.boyblack.robotlegs.mvcs
 				{
 					mediator = new mediatorClass();
 					trace( '[ROBOTLEGS] Mediator (' + mediator + ') constructed for View Component (' + viewComponent + ')' );
+					injector.newRule().whenAskedFor( viewClass ).useValue( viewComponent );
 					injector.injectInto( mediator );
+					injector.newRule().whenAskedFor( viewClass ).defaultBehaviour();
 					injector.newRule().whenAskedFor( mediatorClass ).useValue( mediator );
-					localInjector.newRule().whenAskedFor( viewClass ).useValue( viewComponent );
-					localInjector.injectInto( mediator );
-					localInjector.newRule().whenAskedFor( viewClass ).defaultBehaviour();
 					registerMediator( mediator, viewComponent );
 				}
 			}
