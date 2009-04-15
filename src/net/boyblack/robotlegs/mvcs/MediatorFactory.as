@@ -69,7 +69,6 @@ package net.boyblack.robotlegs.mvcs
 
 		public function registerMediator( mediator:IMediator, viewComponent:Object ):void
 		{
-			trace( '[ROBOTLEGS] About to Register Mediator (' + mediator + ') for View Component (' + viewComponent + ')' );
 			mediatorByView[ viewComponent ] = mediator;
 			mediator.setViewComponent( viewComponent );
 			mediator.onRegister();
@@ -80,7 +79,6 @@ package net.boyblack.robotlegs.mvcs
 		{
 			if ( mediator )
 			{
-				trace( '[ROBOTLEGS] About to Remove Mediator (' + mediator + ') for View Component (' + mediator.getViewComponent() + ')' );
 				mediatorByView[ mediator.getViewComponent() ] = null;
 				mediator.onRemove();
 				mediator.setViewComponent( null );

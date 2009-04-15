@@ -1,5 +1,7 @@
 package net.boyblack.robotlegs.mvcs
 {
+	import flash.events.Event;
+
 	import net.boyblack.robotlegs.core.IEventBroadcaster;
 	import net.boyblack.robotlegs.core.IProxy;
 
@@ -10,6 +12,11 @@ package net.boyblack.robotlegs.mvcs
 
 		public function Proxy()
 		{
+		}
+
+		protected function dispatchEvent( event:Event ):void
+		{
+			eventBroadcaster.dispatchEvent( event );
 		}
 
 	}

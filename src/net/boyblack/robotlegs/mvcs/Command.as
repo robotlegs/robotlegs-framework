@@ -1,6 +1,7 @@
 package net.boyblack.robotlegs.mvcs
 {
 	import flash.display.DisplayObjectContainer;
+	import flash.events.Event;
 
 	import net.boyblack.robotlegs.core.ICommand;
 	import net.boyblack.robotlegs.core.ICommandFactory;
@@ -31,6 +32,11 @@ package net.boyblack.robotlegs.mvcs
 
 		public function execute():void
 		{
+		}
+
+		protected function dispatchEvent( event:Event ):void
+		{
+			eventBroadcaster.dispatchEvent( event );
 		}
 
 	}

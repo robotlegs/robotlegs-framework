@@ -2,6 +2,7 @@ package net.boyblack.robotlegs.mvcs
 {
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
+	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	import flash.utils.getTimer;
 
@@ -35,7 +36,7 @@ package net.boyblack.robotlegs.mvcs
 		public function onRegisterComplete():void
 		{
 		}
-		
+
 		public function onRemove():void
 		{
 			removeListeners();
@@ -45,7 +46,7 @@ package net.boyblack.robotlegs.mvcs
 		public function onRemoveComplete():void
 		{
 		}
-		
+
 		public function getViewComponent():Object
 		{
 			return viewComponent;
@@ -90,6 +91,11 @@ package net.boyblack.robotlegs.mvcs
 			var params:Object = { dispatcher: dispatcher, type: type, listener: listener, useCapture: useCapture };
 			listeners.push( params );
 			dispatcher.addEventListener( type, listener, useCapture, priority, useWeakReference );
+		}
+
+		protected function dispatchEvent( event:Event ):void
+		{
+			eventDispatcher.dispatchEvent( event );
 		}
 
 		protected function removeListeners():void
