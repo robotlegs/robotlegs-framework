@@ -93,7 +93,7 @@ package net.boyblack.robotlegs.mvcs
 			dispatcher.addEventListener( type, listener, useCapture, priority, useWeakReference );
 		}
 
-		protected function dispatchEvent( event:Event ):void
+		protected function dispatch( event:Event ):void
 		{
 			eventDispatcher.dispatchEvent( event );
 		}

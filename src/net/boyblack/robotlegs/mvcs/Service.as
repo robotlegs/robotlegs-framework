@@ -14,7 +14,7 @@ package net.boyblack.robotlegs.mvcs
 		{
 		}
 
-		protected function dispatchEvent( event:Event ):void
+		protected function dispatch( event:Event ):void
 		{
 			eventBroadcaster.dispatchEvent( event );
 		}
