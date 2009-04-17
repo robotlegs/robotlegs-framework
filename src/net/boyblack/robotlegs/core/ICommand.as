@@ -1,9 +1,14 @@
 package net.boyblack.robotlegs.core
 {
-	import flash.events.Event;
 
+	/**
+	 * The interface definition for a RobotLegs Command
+	 */
 	public interface ICommand
 	{
+		/**
+		 * Execute the <code>ICommand</code>'s logic
+		 */
 		function execute():void;
 	}
 
