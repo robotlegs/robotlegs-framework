@@ -79,9 +79,14 @@ package net.boyblack.robotlegs.mvcs
 		{
 			if ( mediator )
 			{
-				mediatorByView[ mediator.getViewComponent() ] = null;
+				var viewComponent:Object = mediator.getViewComponent();
+				var viewClassName:String = getQualifiedClassName( viewComponent );
+				var viewClass:Class = getDefinitionByName( viewClassName ) as Class;
+				mediatorByView[ viewComponent ] = null;
 				mediator.onRemove();
 				mediator.setViewComponent( null );
+				injector.newRule().whenAskedFor( viewClass ).defaultBehaviour();
+				injector.injectInto( mediator );
 				trace( '[ROBOTLEGS] Mediator (' + mediator + ') Removed' );
 			}
 			return mediator;
