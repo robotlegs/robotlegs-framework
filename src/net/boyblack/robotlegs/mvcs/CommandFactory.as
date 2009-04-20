@@ -64,8 +64,8 @@ package net.boyblack.robotlegs.mvcs
 				if ( callback != null )
 				{
 					eventDispatcher.removeEventListener( type, callback, false );
-					callbackMap[ commandClass ] = null;
-					trace( '[ROBOTLEGS] Command Class (' + commandClass + ') no longer mapped to event type (' + type + ') on (' + eventDispatcher + ')' );
+					delete callbackMap[ commandClass ];
+					trace( '[ROBOTLEGS] Command Class Unmapped: (' + commandClass + ') from event type (' + type + ') on (' + eventDispatcher + ')' );
 				}
 			}
 		}
@@ -84,7 +84,7 @@ package net.boyblack.robotlegs.mvcs
 		protected function handleEvent( event:Event, commandClass:Class, oneshot:Boolean ):void
 		{
 			var command:Object = new commandClass();
-			trace( '[ROBOTLEGS] Command (' + command + ') constructed in response to event (' + event + ') on (' + eventDispatcher + ')' );
+			trace( '[ROBOTLEGS] Command Constructed: (' + command + ') in response to (' + event + ') on (' + eventDispatcher + ')' );
 			var eventClass:Class = Class( getDefinitionByName( getQualifiedClassName( event ) ) );
 			injector.newRule().whenAskedFor( eventClass ).useValue( event );
 			injector.injectInto( command );

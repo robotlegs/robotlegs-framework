@@ -20,7 +20,7 @@ package net.boyblack.robotlegs.mvcs
 		// Protected Properties ///////////////////////////////////////////////
 		protected var injector:Injector;
 		protected var mediatorByView:Dictionary;
-		protected var mediatorClassByViewClassName:Dictionary;
+		protected var mediatorClassByViewClass:Dictionary;
 		protected var contextView:DisplayObject;
 		protected var useCapture:Boolean;
 
@@ -30,7 +30,7 @@ package net.boyblack.robotlegs.mvcs
 			this.injector = injector;
 			this.contextView = contextView;
 			this.mediatorByView = new Dictionary( true );
-			this.mediatorClassByViewClassName = new Dictionary( false );
+			this.mediatorClassByViewClass = new Dictionary( false );
 			this.useCapture = useCapture;
 			initializeListeners();
 		}
@@ -41,8 +41,7 @@ package net.boyblack.robotlegs.mvcs
 			{
 				throw new Error( E_CONF_MED_IMPL + ' - ' + mediatorClass );
 			}
-			var viewClassName:String = getQualifiedClassName( viewClass );
-			mediatorClassByViewClassName[ viewClassName ] = mediatorClass;
+			mediatorClassByViewClass[ viewClass ] = mediatorClass;
 		}
 
 		public function createMediator( viewComponent:Object ):IMediator
@@ -50,17 +49,15 @@ package net.boyblack.robotlegs.mvcs
 			var mediator:IMediator = mediatorByView[ viewComponent ];
 			if ( mediator == null )
 			{
-				var viewClassName:String = getQualifiedClassName( viewComponent );
-				var viewClass:Class = getDefinitionByName( viewClassName ) as Class;
-				var mediatorClass:Class = mediatorClassByViewClassName[ viewClassName ];
+				var viewClass:Class = getClass( viewComponent );
+				var mediatorClass:Class = mediatorClassByViewClass[ viewClass ];
 				if ( mediatorClass )
 				{
 					mediator = new mediatorClass();
-					trace( '[ROBOTLEGS] Mediator (' + mediator + ') constructed for View Component (' + viewComponent + ')' );
+					trace( '[ROBOTLEGS] Mediator Constructed: (' + mediator + ') with View Component (' + viewComponent + ')' );
 					injector.newRule().whenAskedFor( viewClass ).useValue( viewComponent );
 					injector.injectInto( mediator );
 					injector.newRule().whenAskedFor( viewClass ).defaultBehaviour();
-					injector.newRule().whenAskedFor( mediatorClass ).useValue( mediator );
 					registerMediator( mediator, viewComponent );
 				}
 			}
@@ -69,10 +66,11 @@ package net.boyblack.robotlegs.mvcs
 
 		public function registerMediator( mediator:IMediator, viewComponent:Object ):void
 		{
+			injector.newRule().whenAskedFor( getClass( mediator ) ).useValue( mediator );
 			mediatorByView[ viewComponent ] = mediator;
 			mediator.setViewComponent( viewComponent );
 			mediator.onRegister();
-			trace( '[ROBOTLEGS] Mediator (' + mediator + ') Registered' );
+			trace( '[ROBOTLEGS] Mediator Registered: (' + mediator + ') with View Component (' + viewComponent + ')' );
 		}
 
 		public function removeMediator( mediator:IMediator ):IMediator
@@ -80,14 +78,13 @@ package net.boyblack.robotlegs.mvcs
 			if ( mediator )
 			{
 				var viewComponent:Object = mediator.getViewComponent();
-				var viewClassName:String = getQualifiedClassName( viewComponent );
-				var viewClass:Class = getDefinitionByName( viewClassName ) as Class;
-				mediatorByView[ viewComponent ] = null;
+				delete mediatorByView[ viewComponent ];
 				mediator.onRemove();
 				mediator.setViewComponent( null );
-				injector.newRule().whenAskedFor( viewClass ).defaultBehaviour();
+				injector.newRule().whenAskedFor( getClass( viewComponent ) ).defaultBehaviour();
+				injector.newRule().whenAskedFor( getClass( mediator ) ).defaultBehaviour();
 				injector.injectInto( mediator );
-				trace( '[ROBOTLEGS] Mediator (' + mediator + ') Removed' );
+				trace( '[ROBOTLEGS] Mediator Removed: (' + mediator + ') with View Component (' + viewComponent + ')' );
 			}
 			return mediator;
 		}
@@ -112,7 +109,7 @@ package net.boyblack.robotlegs.mvcs
 			removeListeners();
 			injector = null;
 			mediatorByView = null;
-			mediatorClassByViewClassName = null;
+			mediatorClassByViewClass = null;
 			contextView = null;
 		}
 
@@ -157,6 +154,12 @@ package net.boyblack.robotlegs.mvcs
 			{
 				trace( '[ROBOTLEGS] False alarm for ' + viewComponent );
 			}
+		}
+
+		private function getClass( obj:Object ):Class
+		{
+			// TODO: Move.. into Reflection Util
+			return Class( getDefinitionByName( getQualifiedClassName( obj ) ) );
 		}
 
 	}
