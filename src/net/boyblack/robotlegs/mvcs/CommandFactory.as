@@ -3,15 +3,13 @@ package net.boyblack.robotlegs.mvcs
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	import flash.utils.Dictionary;
-	import flash.utils.getDefinitionByName;
-	import flash.utils.getQualifiedClassName;
 
 	import net.boyblack.robotlegs.core.ICommand;
 	import net.boyblack.robotlegs.core.ICommandFactory;
 	import net.boyblack.robotlegs.core.IEventBroadcaster;
+	import net.boyblack.robotlegs.core.IInjector;
+	import net.boyblack.robotlegs.core.IReflector;
 	import net.boyblack.robotlegs.utils.createDelegate;
-	import net.expantra.smartypants.Injector;
-	import net.expantra.smartypants.utils.Reflection;
 
 	public class CommandFactory implements ICommandFactory
 	{
@@ -22,21 +20,23 @@ package net.boyblack.robotlegs.mvcs
 		// Protected Properties ///////////////////////////////////////////////
 		protected var eventDispatcher:IEventDispatcher;
 		protected var eventBroadcaster:IEventBroadcaster;
-		protected var injector:Injector;
+		protected var injector:IInjector;
+		protected var reflector:IReflector;
 		protected var typeToCallbackMap:Dictionary;
 
 		// API ////////////////////////////////////////////////////////////////
-		public function CommandFactory( injector:Injector, eventDispatcher:IEventDispatcher )
+		public function CommandFactory( eventDispatcher:IEventDispatcher, injector:IInjector, reflector:IReflector )
 		{
-			this.injector = injector;
 			this.eventDispatcher = eventDispatcher;
+			this.injector = injector;
+			this.reflector = reflector;
 			this.eventBroadcaster = new EventBroadcaster( eventDispatcher );
 			this.typeToCallbackMap = new Dictionary( false );
 		}
 
 		public function mapCommand( type:String, commandClass:Class, oneshot:Boolean = false ):void
 		{
-			if ( Reflection.classExtendsOrImplements( commandClass, ICommand ) == false )
+			if ( reflector.classExtendsOrImplements( commandClass, ICommand ) == false )
 			{
 				throw new Error( E_MAP_COM_IMPL + ' - ' + commandClass );
 			}
@@ -85,10 +85,10 @@ package net.boyblack.robotlegs.mvcs
 		{
 			var command:Object = new commandClass();
 			trace( '[ROBOTLEGS] Command Constructed: (' + command + ') in response to (' + event + ') on (' + eventDispatcher + ')' );
-			var eventClass:Class = Class( getDefinitionByName( getQualifiedClassName( event ) ) );
-			injector.newRule().whenAskedFor( eventClass ).useValue( event );
+			var eventClass:Class = reflector.getClass( event );
+			injector.bindValue( eventClass, event );
 			injector.injectInto( command );
-			injector.newRule().whenAskedFor( eventClass ).defaultBehaviour();
+			injector.unbind( eventClass );
 			command.execute();
 			if ( oneshot )
 			{

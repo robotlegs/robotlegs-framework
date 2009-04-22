@@ -9,6 +9,9 @@ package net.boyblack.robotlegs.mvcs
 	import net.boyblack.robotlegs.core.IMediatorFactory;
 	import net.expantra.smartypants.Injector;
 
+	/**
+	 * An <code>ICommand</code> implementation
+	 */
 	public class Command implements ICommand
 	{
 		[Inject( name='mvcsContextView' )]
@@ -30,10 +33,18 @@ package net.boyblack.robotlegs.mvcs
 		{
 		}
 
+		/**
+		 * A default execute method
+		 * Override this method in your <code>Command</code>
+		 */
 		public function execute():void
 		{
 		}
 
+		/**
+		 * A helper method to dispatch Events on the default Event Broadcaster
+		 * @param event The Event to dispatch
+		 */
 		protected function dispatch( event:Event ):void
 		{
 			eventBroadcaster.dispatchEvent( event );

@@ -9,12 +9,20 @@ package net.boyblack.robotlegs.utils
 		protected var queue:Array;
 		protected var dispatcher:Sprite;
 
+		/**
+		 * A utility to call functions on the next Flash Player frame
+		 */
 		public function DelayedFunctionQueue()
 		{
 			queue = new Array();
 			dispatcher = new Sprite();
 		}
 
+		/**
+		 * Add a function, with optional arguments, to be called on the next Flash Player frame
+		 * @param func The function to execute
+		 * @param args Optional function arguments
+		 */
 		public function add( func:Function, ... args ):void
 		{
 			var delegateFn:Function = function():void
@@ -28,12 +36,21 @@ package net.boyblack.robotlegs.utils
 			}
 		}
 
+		/**
+		 * Add a function, with optional arguments, to be called on the next Flash Player frame
+		 * @param func The function to execute
+		 * @param args Optional function arguments
+		 */
 		public static function add( func:Function, ... args ):void
 		{
 			instance = instance ? instance : new DelayedFunctionQueue();
 			instance.add.apply( null, [ func ].concat( args ) );
 		}
 
+		/**
+		 * The Enter Frame Event Handler
+		 * @param event The Event
+		 */
 		protected function onEF( event:Event ):void
 		{
 			dispatcher.removeEventListener( Event.ENTER_FRAME, onEF, false );
