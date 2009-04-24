@@ -6,8 +6,8 @@ package net.boyblack.robotlegs.mvcs
 	import net.boyblack.robotlegs.core.ICommand;
 	import net.boyblack.robotlegs.core.ICommandFactory;
 	import net.boyblack.robotlegs.core.IEventBroadcaster;
+	import net.boyblack.robotlegs.core.IInjector;
 	import net.boyblack.robotlegs.core.IMediatorFactory;
-	import net.expantra.smartypants.Injector;
 
 	/**
 	 * An <code>ICommand</code> implementation
@@ -24,7 +24,7 @@ package net.boyblack.robotlegs.mvcs
 		public var eventBroadcaster:IEventBroadcaster;
 
 		[Inject( name='mvcsInjector' )]
-		public var injector:Injector;
+		public var injector:IInjector;
 
 		[Inject( name='mvcsMediatorFactory' )]
 		public var mediatorFactory:IMediatorFactory;
