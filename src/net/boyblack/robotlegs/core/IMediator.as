@@ -40,7 +40,5 @@ package net.boyblack.robotlegs.core
 		 */
 		function setViewComponent( viewComponent:Object ):void;
 
-		function findProperty( name:String, type:* ):*;
-		function provideProperty( name:String, type:* ):*;
 	}
 }

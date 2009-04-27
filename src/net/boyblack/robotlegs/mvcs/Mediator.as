@@ -5,11 +5,12 @@ package net.boyblack.robotlegs.mvcs
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	import flash.utils.getTimer;
-
+	
 	import net.boyblack.robotlegs.core.IMediator;
 	import net.boyblack.robotlegs.core.IMediatorFactory;
+	import net.boyblack.robotlegs.core.IPropertyProvider;
 
-	public class Mediator implements IMediator
+	public class Mediator implements IMediator, IPropertyProvider
 	{
 		// Injection Points ///////////////////////////////////////////////////
 		[Inject( name='mvcsMediatorFactory' )]
@@ -64,11 +65,12 @@ package net.boyblack.robotlegs.mvcs
 			var viewDo:DisplayObject = getViewComponent() as DisplayObject;
 			var parent:DisplayObjectContainer;
 			var parentMediator:IMediator;
+			var parentProvider:IPropertyProvider;
 			while ( ( parent = viewDo.parent as DisplayObjectContainer ) )
 			{
 				if ( ( parentMediator = mediatorFactory.retrieveMediator( parent ) ) )
 				{
-					if ( ( val = parentMediator.provideProperty( name, type ) ) )
+					if ( ( parentProvider = parentMediator as IPropertyProvider ) && ( val = parentProvider.provideProperty( name, type ) ) )
 					{
 						trace( '[ROBOTLEGS] Found Mediator property (' + name + ') of type (' + type + ') on Mediator (' + parentMediator + ') in ' + ( getTimer() - start ) + 'ms' );
 						return val;
