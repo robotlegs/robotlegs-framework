@@ -5,7 +5,7 @@ package net.boyblack.robotlegs.mvcs
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	import flash.utils.getTimer;
-	
+
 	import net.boyblack.robotlegs.core.IMediator;
 	import net.boyblack.robotlegs.core.IMediatorFactory;
 	import net.boyblack.robotlegs.core.IPropertyProvider;
@@ -93,6 +93,22 @@ package net.boyblack.robotlegs.mvcs
 			var params:Object = { dispatcher: dispatcher, type: type, listener: listener, useCapture: useCapture };
 			listeners.push( params );
 			dispatcher.addEventListener( type, listener, useCapture, priority, useWeakReference );
+		}
+
+		protected function removeEventListenerFrom( dispatcher:IEventDispatcher, type:String, listener:Function, useCapture:Boolean = false ):void
+		{
+			var params:Object;
+			var i:int = listeners.length;
+			while ( i-- )
+			{
+				params = listeners[ i ];
+				if ( params.dispatcher == dispatcher && params.type == type && params.listener == listener && params.useCapture == useCapture )
+				{
+					dispatcher.removeEventListener( type, listener, useCapture );
+					listeners.splice( i, 1 );
+					return;
+				}
+			}
 		}
 
 		protected function dispatch( event:Event ):void

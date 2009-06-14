@@ -1,29 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <flexLibProperties version="1">
 <includeClasses>
-<classEntry path="net.boyblack.robotlegs.mvcs.Context"/>
-<classEntry path="net.boyblack.robotlegs.adapters.SmartyPantsReflector"/>
-<classEntry path="net.boyblack.robotlegs.mvcs.MediatorFactory"/>
-<classEntry path="net.boyblack.robotlegs.core.ICommandFactory"/>
 <classEntry path="net.boyblack.robotlegs.adapters.SmartyPantsInjector"/>
-<classEntry path="net.boyblack.robotlegs.utils.DelayedFunctionQueue"/>
-<classEntry path="net.boyblack.robotlegs.core.IProxy"/>
-<classEntry path="net.boyblack.robotlegs.mvcs.Mediator"/>
+<classEntry path="net.boyblack.robotlegs.adapters.SmartyPantsReflector"/>
+<classEntry path="net.boyblack.robotlegs.core.ICommand"/>
+<classEntry path="net.boyblack.robotlegs.core.ICommandFactory"/>
+<classEntry path="net.boyblack.robotlegs.core.IContext"/>
+<classEntry path="net.boyblack.robotlegs.core.IEventBroadcaster"/>
+<classEntry path="net.boyblack.robotlegs.core.IInjector"/>
 <classEntry path="net.boyblack.robotlegs.core.IMediator"/>
 <classEntry path="net.boyblack.robotlegs.core.IMediatorFactory"/>
-<classEntry path="net.boyblack.robotlegs.mvcs.Command"/>
-<classEntry path="net.boyblack.robotlegs.utils.createDelegate"/>
-<classEntry path="net.boyblack.robotlegs.mvcs.Proxy"/>
-<classEntry path="net.boyblack.robotlegs.core.IContext"/>
-<classEntry path="net.boyblack.robotlegs.mvcs.CommandFactory"/>
-<classEntry path="net.boyblack.robotlegs.mvcs.ContextEvent"/>
-<classEntry path="net.boyblack.robotlegs.core.IEventBroadcaster"/>
-<classEntry path="net.boyblack.robotlegs.mvcs.FlexMediator"/>
-<classEntry path="net.boyblack.robotlegs.mvcs.Service"/>
-<classEntry path="net.boyblack.robotlegs.mvcs.EventBroadcaster"/>
-<classEntry path="net.boyblack.robotlegs.core.ICommand"/>
+<classEntry path="net.boyblack.robotlegs.core.IPropertyProvider"/>
+<classEntry path="net.boyblack.robotlegs.core.IProxy"/>
+<classEntry path="net.boyblack.robotlegs.core.IReflector"/>
 <classEntry path="net.boyblack.robotlegs.core.IService"/>
+<classEntry path="net.boyblack.robotlegs.mvcs.Command"/>
+<classEntry path="net.boyblack.robotlegs.mvcs.CommandFactory"/>
+<classEntry path="net.boyblack.robotlegs.mvcs.Context"/>
+<classEntry path="net.boyblack.robotlegs.mvcs.ContextEvent"/>
+<classEntry path="net.boyblack.robotlegs.mvcs.EventBroadcaster"/>
+<classEntry path="net.boyblack.robotlegs.mvcs.FlexMediator"/>
+<classEntry path="net.boyblack.robotlegs.mvcs.Mediator"/>
+<classEntry path="net.boyblack.robotlegs.mvcs.MediatorFactory"/>
+<classEntry path="net.boyblack.robotlegs.mvcs.Proxy"/>
+<classEntry path="net.boyblack.robotlegs.mvcs.Service"/>
+<classEntry path="net.boyblack.robotlegs.utils.DelayedFunctionQueue"/>
+<classEntry path="net.boyblack.robotlegs.utils.createDelegate"/>
+<classEntry path="net.expantra.smartypants.extra.NoSmartyPantsLogging"/>
 </includeClasses>
 <includeResources/>
-<namespaceManifests/>
+<namespaceManifests>
+<namespaceManifestEntry manifest="manifest.xml" namespace="http://boyblack.net/2009"/>
+</namespaceManifests>
 </flexLibProperties>

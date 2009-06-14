@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<componentpackage>
+	<component id="RobotLegsContext" class="net.boyblack.robotlegs.mvcs.Context" />
+</componentpackage>
