@@ -5,14 +5,12 @@ RobotLegs AS3 is an event driven MVCS micro-architecture for Flash and Flex appl
 
 Currently, RobotLegs makes use of SmartyPantsIOC - an AS3 Dependency Injection framework for Flash and Flex.
 
-No casting! No fetching! No Singletons!
-
-You can read more about it on my [blog](http://shaun.boyblack.co.za/blog/robotlegs-as3/)
+No casting! No fetching! No Singletons! You can read more about it on my [blog](http://shaun.boyblack.co.za/blog/robotlegs-as3/).
 
 Installation
 ------------
 
-Flex/FlashBuilder:
+**Flex/FlashBuilder:**
 
 Drop RobotLegsLib.swc and SmartyPantsIOC.swc into your "libs" folder.
 
@@ -21,20 +19,20 @@ If you are building a plain ActionScript project you might need to create the "l
 Right click the project, and create a New Folder called "libs".
 Right click the project, open "properties", "Flex Build Path", "Library path", and add the folder "libs".
 
-Other IDEs or Editors:
+**Other IDEs or Editors:**
 
 Include RobotLegsLib.swc and SmartyPantsIOC.swc in your build path.
 
 Links
 -----
-[Wiki](http://wiki.github.com/darscan/robotlegs)
-[Library Source](http://github.com/darscan/robotlegs/tree/master)
-[Demo Source](http://github.com/darscan/robotlegsdemos/tree/master)
-[Demo Flex App](http://shaun.boyblack.co.za/flash/robotlegsdemo/HelloFlex.html)
-[Issue Tracking](http://github.com/darscan/robotlegs/issues)
-[Discussion Group](http://groups.google.com/group/robotlegs)
-[Announcement](http://shaun.boyblack.co.za/blog/2009/04/16/robotlegs-an-as3-mvcs-framework-for-flash-and-flex-applications-inspired-by-puremvc/)
-[SmartyPants IOC](http://code.google.com/p/smartypants-ioc/)
+- [Wiki](http://wiki.github.com/darscan/robotlegs)
+- [Library Source](http://github.com/darscan/robotlegs/tree/master)
+- [Demo Source](http://github.com/darscan/robotlegsdemos/tree/master)
+- [Demo Flex App](http://shaun.boyblack.co.za/flash/robotlegsdemo/HelloFlex.html)
+- [Issue Tracking](http://github.com/darscan/robotlegs/issues)
+- [Discussion Group](http://groups.google.com/group/robotlegs)
+- [Announcement](http://shaun.boyblack.co.za/blog/2009/04/16/robotlegs-an-as3-mvcs-framework-for-flash-and-flex-applications-inspired-by-puremvc/)
+- [SmartyPants IOC](http://code.google.com/p/smartypants-ioc/)
 
 License
 -------
