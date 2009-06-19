@@ -23,6 +23,60 @@ Right click the project, open "properties", "Flex Build Path", "Library path", a
 
 Include RobotLegsLib.swc and SmartyPantsIOC.swc in your build path.
 
+Usage
+-----
+
+**Facade/Context**
+
+RobotLegs does not make use of the Facade design pattern - instead there is something known as a Context. It's not really the same thing, and is only used to bootstrap your application.
+
+Typically, when starting a new project, you extend the default Context, provide Dependency Injection and Reflection adapters, and override the startup() method.
+
+Inside the startup() method you bind a couple of Commands to a startup event and then dispatch that event.
+
+By default, a Context will auto-Start when it's View Compontent is added to the Stage.
+
+  [actionscript]
+	public class HelloFlexContext extends Context
+	{
+    
+		public function HelloFlexContext( contextView:DisplayObjectContainer )
+		{
+			super( contextView, new SmartyPantsInjector(), new SmartyPantsReflector() );
+		}
+    
+		override public function startup():void
+		{
+			commandFactory.mapCommand( SystemEvent.STARTUP, PrepModelCommand, true );
+			commandFactory.mapCommand( SystemEvent.STARTUP, PrepControllerCommand, true );
+			commandFactory.mapCommand( SystemEvent.STARTUP, PrepServicesCommand, true );
+			commandFactory.mapCommand( SystemEvent.STARTUP, PrepViewCommand, true );
+			commandFactory.mapCommand( SystemEvent.STARTUP, StartupCommand, true );
+			eventBroadcaster.dispatchEvent( new SystemEvent( SystemEvent.STARTUP ) );
+		}
+	}
+
+**Commands**
+
+RobotLegs make use of native Flash Player events for framework communication. Much like PureMVC, Commands can be bound to events.
+
+No parameters are passed to a Command's execute method however. Instead, you define the concrete event that will be passed to the Command as a dependency. This relieves you from having to cast the event.
+
+Multiple Commands can be bound to an event type. They will be executed in the order that they were mapped. This is very handy for mapping your startup commands.
+
+**Mediators**
+
+RobotLegs makes it easy to work with deeply-nested, lazily-instantiated View Components.
+
+You map Mediator classes to View Component classes during startup, or at runtime, and RobotLegs creates and registers Mediator instances automatically as View Components arrive on the stage.
+
+A Mediator is only ready to be interacted with when it's onRegisterComplete method gets called. This is where you should register your listeners.
+
+The default Mediator implementation provides a handy utility method called addEventListenerTo(). You should use this method to register listeners in your Mediator. Doing so allows RobotLegs to automatically remove any listeners when a Mediator gets removed.
+
+
+NOTE: Flex Mediators should extend the FlexMediator Class.
+
 Links
 -----
 - [Wiki](http://wiki.github.com/darscan/robotlegs)
