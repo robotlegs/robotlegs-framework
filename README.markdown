@@ -53,6 +53,7 @@ Inside the startup() method you bind a couple of Commands to a startup event and
   	}
   }
 
+
 By default, a Context will auto-Start when it's View Compontent is added to the Stage.
 
 
