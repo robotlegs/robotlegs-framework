@@ -34,6 +34,7 @@ Typically, when starting a new project, you extend the default Context, provide 
 
 Inside the startup() method you bind a couple of Commands to a startup event and then dispatch that event.
 
+  [actionscript]
   public class HelloFlexContext extends Context
   {
     
