@@ -7,6 +7,9 @@ package net.boyblack.robotlegs.mvcs
 		public static const STARTUP:String = 'startup';
 		public static const STARTUP_COMPLETE:String = 'startupComplete';
 
+		public static const SHUTDOWN:String = 'shutdown';
+		public static const SHUTDOWN_COMPLETE:String = 'shutdownComplete';
+
 		protected var _body:*;
 
 		public function ContextEvent( type:String, body:* = null )
