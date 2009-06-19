@@ -7,7 +7,7 @@ Currently, RobotLegs makes use of SmartyPantsIOC - an AS3 Dependency Injection f
 
 No casting! No fetching! No Singletons!
 
-You can read more about it on my [blog]http://shaun.boyblack.co.za/blog/robotlegs-as3/
+You can read more about it on my [blog](http://shaun.boyblack.co.za/blog/robotlegs-as3/)
 
 Installation
 ------------
@@ -27,14 +27,14 @@ Include RobotLegsLib.swc and SmartyPantsIOC.swc in your build path.
 
 Links
 -----
-[Wiki]http://wiki.github.com/darscan/robotlegs
-[Library Source]http://github.com/darscan/robotlegs/tree/master
-[Demo Source]http://github.com/darscan/robotlegsdemos/tree/master
-[Demo Flex App]http://shaun.boyblack.co.za/flash/robotlegsdemo/HelloFlex.html
-[Issue Tracking]http://github.com/darscan/robotlegs/issues
-[Discussion Group]http://groups.google.com/group/robotlegs
-[Announcement]http://shaun.boyblack.co.za/blog/2009/04/16/robotlegs-an-as3-mvcs-framework-for-flash-and-flex-applications-inspired-by-puremvc/
-[SmartyPants IOC]http://code.google.com/p/smartypants-ioc/
+[Wiki](http://wiki.github.com/darscan/robotlegs)
+[Library Source](http://github.com/darscan/robotlegs/tree/master)
+[Demo Source](http://github.com/darscan/robotlegsdemos/tree/master)
+[Demo Flex App](http://shaun.boyblack.co.za/flash/robotlegsdemo/HelloFlex.html)
+[Issue Tracking](http://github.com/darscan/robotlegs/issues)
+[Discussion Group](http://groups.google.com/group/robotlegs)
+[Announcement](http://shaun.boyblack.co.za/blog/2009/04/16/robotlegs-an-as3-mvcs-framework-for-flash-and-flex-applications-inspired-by-puremvc/)
+[SmartyPants IOC](http://code.google.com/p/smartypants-ioc/)
 
 License
 -------
