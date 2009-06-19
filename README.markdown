@@ -34,25 +34,24 @@ Typically, when starting a new project, you extend the default Context, provide 
 
 Inside the startup() method you bind a couple of Commands to a startup event and then dispatch that event.
 
-  [actionscript]
-  public class HelloFlexContext extends Context
-  {
-    
-  	public function HelloFlexContext( contextView:DisplayObjectContainer )
-  	{
-  		super( contextView, new SmartyPantsInjector(), new SmartyPantsReflector() );
-  	}
-    
-  	override public function startup():void
-  	{
-  		commandFactory.mapCommand( ContextEvent.STARTUP, PrepModelCommand, true );
-  		commandFactory.mapCommand( ContextEvent.STARTUP, PrepControllerCommand, true );
-  		commandFactory.mapCommand( ContextEvent.STARTUP, PrepServicesCommand, true );
-  		commandFactory.mapCommand( ContextEvent.STARTUP, PrepViewCommand, true );
-  		commandFactory.mapCommand( ContextEvent.STARTUP, StartupCommand, true );
-  		eventBroadcaster.dispatchEvent( new ContextEvent( ContextEvent.STARTUP ) );
-  	}
-  }
+    [actionscript]
+    public class HelloFlexContext extends Context
+    {
+      public function HelloFlexContext( contextView:DisplayObjectContainer )
+      {
+        super( contextView, new SmartyPantsInjector(), new SmartyPantsReflector() );
+      }
+
+      override public function startup():void
+      {
+        commandFactory.mapCommand( ContextEvent.STARTUP, PrepModelCommand, true );
+        commandFactory.mapCommand( ContextEvent.STARTUP, PrepControllerCommand, true );
+        commandFactory.mapCommand( ContextEvent.STARTUP, PrepServicesCommand, true );
+        commandFactory.mapCommand( ContextEvent.STARTUP, PrepViewCommand, true );
+        commandFactory.mapCommand( ContextEvent.STARTUP, StartupCommand, true );
+        eventBroadcaster.dispatchEvent( new ContextEvent( ContextEvent.STARTUP ) );
+      }
+    }
 
 
 By default, a Context will auto-Start when it's View Compontent is added to the Stage.
