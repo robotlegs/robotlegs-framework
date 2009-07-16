@@ -1,7 +1,7 @@
 package net.boyblack.robotlegs.adapters
 {
     import net.boyblack.robotlegs.core.IInjector;
-
+    
     import org.as3commons.lang.ClassUtils;
     import org.as3commons.lang.ObjectUtils;
     import org.as3commons.reflect.Field;
@@ -34,27 +34,24 @@ package net.boyblack.robotlegs.adapters
         {
             var whenAskedForClassName:String = ClassUtils.getFullyQualifiedName(whenAskedFor);
             var useClassName:String = ClassUtils.getFullyQualifiedName(instantiateClass);
-            var dependencies:Array = findDependencies(instantiateClass);
             var properties:Object = findProperties(instantiateClass);
-            registerObjectDefinition(whenAskedForClassName, useClassName, named, ObjectDefinitionScope.PROTOTYPE, dependencies, properties);
+            registerObjectDefinition(whenAskedForClassName, useClassName, named, ObjectDefinitionScope.PROTOTYPE, properties);
         }
 
         public function bindSingleton(whenAskedFor:Class, named:String = null):void
         {
             var whenAskedForClassName:String = ClassUtils.getFullyQualifiedName(whenAskedFor);
             var useClassName:String = whenAskedForClassName;
-            var dependencies:Array = findDependencies(whenAskedFor);
             var properties:Object = findProperties(whenAskedFor);
-            registerObjectDefinition(whenAskedForClassName, useClassName, named, ObjectDefinitionScope.SINGLETON, dependencies, properties);
+            registerObjectDefinition(whenAskedForClassName, useClassName, named, ObjectDefinitionScope.SINGLETON, properties);
         }
 
         public function bindSingletonOf(whenAskedFor:Class, useSingletonOf:Class, named:String = null):void
         {
             var whenAskedForClassName:String = ClassUtils.getFullyQualifiedName(whenAskedFor);
             var useClassName:String = ClassUtils.getFullyQualifiedName(useSingletonOf);
-            var dependencies:Array = findDependencies(useSingletonOf);
             var properties:Object = findProperties(useSingletonOf);
-            registerObjectDefinition(whenAskedForClassName, useClassName, named, ObjectDefinitionScope.SINGLETON, dependencies, properties);
+            registerObjectDefinition(whenAskedForClassName, useClassName, named, ObjectDefinitionScope.SINGLETON, properties);
         }
 
         public function injectInto(target:Object):void
@@ -92,45 +89,13 @@ package net.boyblack.robotlegs.adapters
             factory.removeObjectDefinition(named);
         }
 
-        protected function registerObjectDefinition(whenAskedForClassName:String, useClassName:String, named:String, scope:ObjectDefinitionScope, dependencies:Array = null, properties:Object = null):void
+        protected function registerObjectDefinition(whenAskedForClassName:String, useClassName:String, named:String, scope:ObjectDefinitionScope, properties:Object = null):void
         {
             var objdef:ObjectDefinition = new ObjectDefinition(useClassName);
             var key:String = named ? named : whenAskedForClassName;
-            objdef.dependsOn = dependencies ? dependencies : objdef.dependsOn;
             objdef.properties = properties ? properties : objdef.properties;
             objdef.scope = scope;
             factory.registerObjectDefinition(key, objdef);
-        }
-
-        protected function findDependencies(clazz:Class):Array
-        {
-            var type:Type = Type.forClass(clazz);
-            var fields:Array = type.fields;
-            var dependencies:Array = new Array();
-            for each (var field:Field in fields)
-            {
-                if (field.hasMetaData('Inject'))
-                {
-                    var named:String = null;
-                    var mds:Array = field.getMetaData('Inject');
-                    for each (var md:MetaData in mds)
-                    {
-                        if (md.hasArgumentWithKey('name'))
-                        {
-                            named = md.getArgument('name').value;
-                            break;
-                        }
-                        else if (md.hasArgumentWithKey('id'))
-                        {
-                            named = md.getArgument('id').value;
-                            break;
-                        }
-                    }
-                    named = named ? named : field.type.fullName;
-                    dependencies.push(named);
-                }
-            }
-            return dependencies;
         }
 
         protected function findProperties(clazz:Class):Object
