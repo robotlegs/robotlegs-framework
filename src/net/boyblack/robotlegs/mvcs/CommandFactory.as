@@ -38,7 +38,7 @@ package net.boyblack.robotlegs.mvcs
 		{
 			if ( reflector.classExtendsOrImplements( commandClass, ICommand ) == false )
 			{
-				throw new Error( E_MAP_COM_IMPL + ' - ' + commandClass );
+				throw new ContextError( E_MAP_COM_IMPL + ' - ' + commandClass );
 			}
 			var callbackMap:Dictionary = typeToCallbackMap[ type ];
 			if ( callbackMap == null )
@@ -48,7 +48,7 @@ package net.boyblack.robotlegs.mvcs
 			}
 			if ( callbackMap[ commandClass ] != null )
 			{
-				throw new Error( E_MAP_COM_OVR + ' - type (' + type + ') and Command (' + commandClass + ')' );
+				throw new ContextError( E_MAP_COM_OVR + ' - type (' + type + ') and Command (' + commandClass + ')' );
 			}
 			var callback:Function = createDelegate( handleEvent, commandClass, oneshot );
 			eventDispatcher.addEventListener( type, callback, false, 0, true );

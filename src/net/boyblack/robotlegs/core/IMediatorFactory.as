@@ -10,8 +10,10 @@ package net.boyblack.robotlegs.core
 		 * Map an <code>IMediator</code> to a view Class
 		 * @param viewClass The view Class
 		 * @param mediatorClass The <code>IMediator</code> Class
+		 * @param autoRegister Automatically construct and register an instance of Class <code>mediatorClass</code> when an instance of Class <code>viewClass</code> is detected
+		 * @param autoRemove Automatically remove an instance of Class <code>mediatorClass</code> when it's <code>viewClass</code> leaves the ancestory of the context view
 		 */
-		function mapMediator( viewClass:Class, mediatorClass:Class ):void;
+		function mapMediator( viewClass:Class, mediatorClass:Class, autoRegister:Boolean = true, autoRemove:Boolean = true ):void;
 
 		/**
 		 * Create an instance of a mapped <code>IMediator</code>

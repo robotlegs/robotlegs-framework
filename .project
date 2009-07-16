@@ -15,4 +15,26 @@
 		<nature>com.adobe.flexbuilder.project.flexlibnature</nature>
 		<nature>com.adobe.flexbuilder.project.actionscriptnature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>[source path] as3-commons-lang-src-main-actionscript</name>
+			<type>2</type>
+			<locationURI>DOCUMENTS/AS%2533Commons/as%2533-commons-lang/src/main/actionscript</locationURI>
+		</link>
+		<link>
+			<name>[source path] as3-commons-logging-src-main-actionscript</name>
+			<type>2</type>
+			<locationURI>DOCUMENTS/AS%2533Commons/as%2533-commons-logging/src/main/actionscript</locationURI>
+		</link>
+		<link>
+			<name>[source path] as3-commons-reflect-src-main-actionscript</name>
+			<type>2</type>
+			<locationURI>DOCUMENTS/AS%2533Commons/as%2533-commons-reflect/src/main/actionscript</locationURI>
+		</link>
+		<link>
+			<name>[source path] spring-actionscript-core-src-main-actionscript</name>
+			<type>2</type>
+			<locationURI>DOCUMENTS/spring-actionscript/spring-actionscript-core/src/main/actionscript</locationURI>
+		</link>
+	</linkedResources>
 </projectDescription>

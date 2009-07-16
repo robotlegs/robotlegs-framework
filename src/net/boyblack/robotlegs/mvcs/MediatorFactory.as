@@ -13,15 +13,18 @@ package net.boyblack.robotlegs.mvcs
 	public class MediatorFactory implements IMediatorFactory
 	{
 		// Error Constants ////////////////////////////////////////////////////
-		private static const E_CONF_MED_IMPL:String = 'RobotLegs MediatorFactory Config Error: Mediator Class does not implement IMediator';
+		private static const E_MAP_NOIMPL:String = 'RobotLegs Error: Mediator Class does not implement IMediator';
+		private static const E_MAP_EXISTS:String = 'RobotLegs Error: Mediator Class has already been mapped to a View Class';
 
 		// Protected Properties ///////////////////////////////////////////////
+		protected var contextView:DisplayObject;
 		protected var injector:IInjector;
 		protected var reflectionUtil:IReflector;
-		protected var mediatorByView:Dictionary;
-		protected var mediatorClassByViewClass:Dictionary;
-		protected var contextView:DisplayObject;
 		protected var useCapture:Boolean;
+
+		protected var mediatorByView:Dictionary;
+		protected var mappingConfigByView:Dictionary;
+		protected var mappingConfigByViewClass:Dictionary;
 
 		// API ////////////////////////////////////////////////////////////////
 		public function MediatorFactory( contextView:DisplayObject, injector:IInjector, reflectionUtil:IReflector, useCapture:Boolean = true )
@@ -30,18 +33,29 @@ package net.boyblack.robotlegs.mvcs
 			this.injector = injector;
 			this.reflectionUtil = reflectionUtil;
 			this.useCapture = useCapture;
+
 			this.mediatorByView = new Dictionary( true );
-			this.mediatorClassByViewClass = new Dictionary( false );
+			this.mappingConfigByView = new Dictionary( true );
+			this.mappingConfigByViewClass = new Dictionary( false );
+
 			initializeListeners();
 		}
 
-		public function mapMediator( viewClass:Class, mediatorClass:Class ):void
+		public function mapMediator( viewClass:Class, mediatorClass:Class, autoRegister:Boolean = true, autoRemove:Boolean = true ):void
 		{
+			if ( mappingConfigByViewClass[ viewClass ] != null )
+			{
+				throw new ContextError( E_MAP_EXISTS + ' - ' + mediatorClass );
+			}
 			if ( reflectionUtil.classExtendsOrImplements( mediatorClass, IMediator ) == false )
 			{
-				throw new Error( E_CONF_MED_IMPL + ' - ' + mediatorClass );
+				throw new ContextError( E_MAP_NOIMPL + ' - ' + mediatorClass );
 			}
-			mediatorClassByViewClass[ viewClass ] = mediatorClass;
+			var config:MapppingConfig = new MapppingConfig();
+			config.mediatorClass = mediatorClass;
+			config.autoRegister = autoRegister;
+			config.autoRemove = autoRemove;
+			mappingConfigByViewClass[ viewClass ] = config;
 		}
 
 		public function createMediator( viewComponent:Object ):IMediator
@@ -50,9 +64,10 @@ package net.boyblack.robotlegs.mvcs
 			if ( mediator == null )
 			{
 				var viewClass:Class = reflectionUtil.getClass( viewComponent );
-				var mediatorClass:Class = mediatorClassByViewClass[ viewClass ];
-				if ( mediatorClass )
+				var mappingConfig:MapppingConfig = mappingConfigByViewClass[ viewClass ];
+				if ( mappingConfig )
 				{
+					var mediatorClass:Class = mappingConfig.mediatorClass;
 					mediator = new mediatorClass();
 					trace( '[ROBOTLEGS] Mediator Constructed: (' + mediator + ') with View Component (' + viewComponent + ')' );
 					injector.bindValue( viewClass, viewComponent );
@@ -68,6 +83,7 @@ package net.boyblack.robotlegs.mvcs
 		{
 			injector.bindValue( reflectionUtil.getClass( mediator ), mediator );
 			mediatorByView[ viewComponent ] = mediator;
+			mappingConfigByView[ viewComponent ] = mappingConfigByViewClass[ reflectionUtil.getClass( viewComponent ) ];
 			mediator.setViewComponent( viewComponent );
 			mediator.onRegister();
 			trace( '[ROBOTLEGS] Mediator Registered: (' + mediator + ') with View Component (' + viewComponent + ')' );
@@ -79,11 +95,12 @@ package net.boyblack.robotlegs.mvcs
 			{
 				var viewComponent:Object = mediator.getViewComponent();
 				delete mediatorByView[ viewComponent ];
+				delete mappingConfigByView[ viewComponent ];
 				mediator.onRemove();
 				mediator.setViewComponent( null );
-				injector.unbind( reflectionUtil.getClass( viewComponent ) );
+				// injector.unbind( reflectionUtil.getClass( viewComponent ) );
 				injector.unbind( reflectionUtil.getClass( mediator ) );
-				injector.injectInto( mediator );
+				// injector.injectInto( mediator );
 				trace( '[ROBOTLEGS] Mediator Removed: (' + mediator + ') with View Component (' + viewComponent + ')' );
 			}
 			return mediator;
@@ -109,34 +126,37 @@ package net.boyblack.robotlegs.mvcs
 			removeListeners();
 			injector = null;
 			mediatorByView = null;
-			mediatorClassByViewClass = null;
+			mappingConfigByView = null;
+			mappingConfigByViewClass = null;
 			contextView = null;
 		}
 
 		// Protected Methods //////////////////////////////////////////////////
 		protected function initializeListeners():void
 		{
-			contextView.addEventListener( Event.ADDED_TO_STAGE, onAdded, useCapture, 0, true );
-			contextView.addEventListener( Event.REMOVED_FROM_STAGE, onRemoved, useCapture, 0, true );
+			contextView.addEventListener( Event.ADDED_TO_STAGE, onViewAdded, useCapture, 0, true );
+			contextView.addEventListener( Event.REMOVED_FROM_STAGE, onViewRemoved, useCapture, 0, true );
 		}
 
 		protected function removeListeners():void
 		{
-			contextView.removeEventListener( Event.ADDED_TO_STAGE, onAdded, useCapture );
-			contextView.removeEventListener( Event.REMOVED_FROM_STAGE, onRemoved, useCapture );
+			contextView.removeEventListener( Event.ADDED_TO_STAGE, onViewAdded, useCapture );
+			contextView.removeEventListener( Event.REMOVED_FROM_STAGE, onViewRemoved, useCapture );
 		}
 
-		protected function onAdded( e:Event ):void
+		protected function onViewAdded( e:Event ):void
 		{
-			if ( mediatorByView[ e.target ] == null )
+			var config:MapppingConfig = mappingConfigByViewClass[ reflectionUtil.getClass( e.target ) ];
+			if ( config && config.autoRegister )
 			{
 				createMediator( e.target );
 			}
 		}
 
-		protected function onRemoved( e:Event ):void
+		protected function onViewRemoved( e:Event ):void
 		{
-			if ( mediatorByView[ e.target ] != null )
+			var config:MapppingConfig = mappingConfigByView[ e.target ];
+			if ( config && config.autoRemove )
 			{
 				trace( '[ROBOTLEGS] MediatorFactory might have mistakenly lost an ' + e.target + ', double checking...' );
 				DelayedFunctionQueue.add( possiblyRemoveMediator, e.target );
@@ -157,4 +177,12 @@ package net.boyblack.robotlegs.mvcs
 		}
 
 	}
+
+}
+
+class MapppingConfig
+{
+	public var mediatorClass:Class;
+	public var autoRegister:Boolean;
+	public var autoRemove:Boolean;
 }

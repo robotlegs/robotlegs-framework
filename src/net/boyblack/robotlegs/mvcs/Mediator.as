@@ -13,6 +13,9 @@ package net.boyblack.robotlegs.mvcs
 	public class Mediator implements IMediator, IPropertyProvider
 	{
 		// Injection Points ///////////////////////////////////////////////////
+		[Inject( name='mvcsContextView' )]
+		public var contextView:DisplayObjectContainer;
+		
 		[Inject( name='mvcsMediatorFactory' )]
 		public var mediatorFactory:IMediatorFactory;
 

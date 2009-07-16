@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actionScriptProperties mainApplicationPath="RobotLegsLib.as" version="3">
 <compiler additionalCompilerArguments="" copyDependentFiles="false" enableModuleDebug="true" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersion="9.0.124" htmlPlayerVersionCheck="true" outputFolderPath="bin" sourceFolderPath="src" strict="true" useApolloConfig="false" verifyDigests="true" warn="true">
-<compilerSourcePath/>
+<compilerSourcePath>
+<compilerSourcePathEntry kind="1" linkType="1" path="${DOCUMENTS}/spring-actionscript/spring-actionscript-core/src/main/actionscript"/>
+<compilerSourcePathEntry kind="1" linkType="1" path="${DOCUMENTS}/AS3Commons/as3-commons-lang/src/main/actionscript"/>
+<compilerSourcePathEntry kind="1" linkType="1" path="${DOCUMENTS}/AS3Commons/as3-commons-logging/src/main/actionscript"/>
+<compilerSourcePathEntry kind="1" linkType="1" path="${DOCUMENTS}/AS3Commons/as3-commons-reflect/src/main/actionscript"/>
+</compilerSourcePath>
 <libraryPath defaultLinkType="1">
 <libraryPathEntry kind="4" path=""/>
 <libraryPathEntry kind="1" linkType="2" path="libs"/>
