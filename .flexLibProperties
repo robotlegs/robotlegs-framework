@@ -3,6 +3,8 @@
 <includeClasses>
 <classEntry path="net.boyblack.robotlegs.adapters.SmartyPantsInjector"/>
 <classEntry path="net.boyblack.robotlegs.adapters.SmartyPantsReflector"/>
+<classEntry path="net.boyblack.robotlegs.adapters.SpringInjector"/>
+<classEntry path="net.boyblack.robotlegs.adapters.SpringReflector"/>
 <classEntry path="net.boyblack.robotlegs.core.ICommand"/>
 <classEntry path="net.boyblack.robotlegs.core.ICommandFactory"/>
 <classEntry path="net.boyblack.robotlegs.core.IContext"/>
@@ -28,6 +30,7 @@
 <classEntry path="net.boyblack.robotlegs.utils.DelayedFunctionQueue"/>
 <classEntry path="net.boyblack.robotlegs.utils.createDelegate"/>
 <classEntry path="net.expantra.smartypants.extra.NoSmartyPantsLogging"/>
+<classEntry path="org.springextensions.actionscript.ioc.factory.support.RobotLegsObjectFactory"/>
 </includeClasses>
 <includeResources/>
 <namespaceManifests>
