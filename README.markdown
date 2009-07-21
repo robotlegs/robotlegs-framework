@@ -141,7 +141,7 @@ RobotLegs makes it easy to work with deeply-nested, lazily-instantiated View Com
 
 You map Mediator classes to View Component classes during startup, or later during runtime, and RobotLegs creates and registers Mediator instances automatically as View Components arrive on the stage (as children of the Context View).
 
-A Mediator is only ready to be interacted with when it's onRegisterComplete method gets called. This is where you should register your listeners.
+A Mediator is only ready to be interacted with when it's onRegister method gets called. This is where you should register your listeners.
 
 The default Mediator implementation provides a handy utility method called addEventListenerTo(). You should use this method to register listeners in your Mediator. Doing so allows RobotLegs to automatically remove any listeners when a Mediator gets removed.
 
@@ -155,7 +155,7 @@ A Mediator might look something like this:
     	[Inject]
     	public var messageProxy:MessageProxy;
       
-    	override public function onRegisterComplete():void
+    	override public function onRegister():void
     	{
     		// View Listeners
     		addEventListenerTo( helloForm, HelloFormEvent.FORM_SUBMITTED, onFormSubmitted );
