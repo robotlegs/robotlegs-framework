@@ -12,12 +12,12 @@ package org.robotlegs.mvcs
 			super();
 		}
 
-		override public function onRegister():void
+		override public function preRegister():void
 		{
 			uiComponent = viewComponent as UIComponent;
 			if ( uiComponent.initialized )
 			{
-				onRegisterComplete();
+				onRegister();
 			}
 			else
 			{
@@ -28,7 +28,7 @@ package org.robotlegs.mvcs
 		private function onCC( e:FlexEvent ):void
 		{
 			uiComponent.removeEventListener( FlexEvent.CREATION_COMPLETE, onCC );
-			onRegisterComplete();
+			onRegister();
 		}
 
 	}

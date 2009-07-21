@@ -69,6 +69,7 @@ package org.robotlegs.mvcs
 				{
 					var mediatorClass:Class = mappingConfig.mediatorClass;
 					mediator = new mediatorClass();
+					// Use a logging interface
 					trace( '[ROBOTLEGS] Mediator Constructed: (' + mediator + ') with View Component (' + viewComponent + ')' );
 					injector.bindValue( viewClass, viewComponent );
 					injector.injectInto( mediator );
@@ -85,7 +86,8 @@ package org.robotlegs.mvcs
 			mediatorByView[ viewComponent ] = mediator;
 			mappingConfigByView[ viewComponent ] = mappingConfigByViewClass[ reflectionUtil.getClass( viewComponent ) ];
 			mediator.setViewComponent( viewComponent );
-			mediator.onRegister();
+			mediator.preRegister();
+			// Use a logging interface
 			trace( '[ROBOTLEGS] Mediator Registered: (' + mediator + ') with View Component (' + viewComponent + ')' );
 		}
 
@@ -96,11 +98,12 @@ package org.robotlegs.mvcs
 				var viewComponent:Object = mediator.getViewComponent();
 				delete mediatorByView[ viewComponent ];
 				delete mappingConfigByView[ viewComponent ];
-				mediator.onRemove();
+				mediator.preRemove();
 				mediator.setViewComponent( null );
 				// injector.unbind( reflectionUtil.getClass( viewComponent ) );
 				injector.unbind( reflectionUtil.getClass( mediator ) );
 				// injector.injectInto( mediator );
+				// Use a logging interface
 				trace( '[ROBOTLEGS] Mediator Removed: (' + mediator + ') with View Component (' + viewComponent + ')' );
 			}
 			return mediator;
@@ -158,7 +161,9 @@ package org.robotlegs.mvcs
 			var config:MapppingConfig = mappingConfigByView[ e.target ];
 			if ( config && config.autoRemove )
 			{
+				// Use a logging interface
 				trace( '[ROBOTLEGS] MediatorFactory might have mistakenly lost an ' + e.target + ', double checking...' );
+				// Flex work-around...
 				DelayedFunctionQueue.add( possiblyRemoveMediator, e.target );
 			}
 		}
@@ -172,6 +177,7 @@ package org.robotlegs.mvcs
 			}
 			else
 			{
+				// Use a logging interface
 				trace( '[ROBOTLEGS] False alarm for ' + viewComponent );
 			}
 		}

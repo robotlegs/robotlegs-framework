@@ -9,24 +9,24 @@ package org.robotlegs.core
 		/**
 		 * Should be invoked by the <code>IMediatorFactory</code> when the <code>IMediator</code> has been registered
 		 */
-		function onRegister():void;
+		function preRegister():void;
 
 		/**
 		 * Should be invoked by the <code>IMediator</code> itself when it is ready to be interacted with
 		 * Override and place your initialization code here
 		 */
-		function onRegisterComplete():void;
+		function onRegister():void;
 
 		/**
 		 * Invoked when the <code>IMediator</code> has been removed by the <code>IMediatorFactory</code>
 		 */
-		function onRemove():void;
+		function preRemove():void;
 
 		/**
 		 * Should be invoked by the <code>IMediator</code> itself when it is ready to for cleanup
 		 * Override and place your cleanup code here
 		 */
-		function onRemoveComplete():void;
+		function onRemove():void;
 
 		/**
 		 * Get the <code>IMediator</code>'s view component

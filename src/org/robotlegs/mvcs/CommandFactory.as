@@ -65,6 +65,7 @@ package org.robotlegs.mvcs
 				{
 					eventDispatcher.removeEventListener( type, callback, false );
 					delete callbackMap[ commandClass ];
+					// Use a logging interface
 					trace( '[ROBOTLEGS] Command Class Unmapped: (' + commandClass + ') from event type (' + type + ') on (' + eventDispatcher + ')' );
 				}
 			}
@@ -84,6 +85,7 @@ package org.robotlegs.mvcs
 		protected function handleEvent( event:Event, commandClass:Class, oneshot:Boolean ):void
 		{
 			var command:Object = new commandClass();
+			// Use a logging interface
 			trace( '[ROBOTLEGS] Command Constructed: (' + command + ') in response to (' + event + ') on (' + eventDispatcher + ')' );
 			var eventClass:Class = reflector.getClass( event );
 			injector.bindValue( eventClass, event );

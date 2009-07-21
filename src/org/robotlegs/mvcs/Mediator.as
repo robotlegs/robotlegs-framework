@@ -32,22 +32,22 @@ package org.robotlegs.mvcs
 			listeners = new Array();
 		}
 
-		public function onRegister():void
+		public function preRegister():void
 		{
-			onRegisterComplete();
+			onRegister();
 		}
 
-		public function onRegisterComplete():void
+		public function onRegister():void
 		{
+		}
+
+		public function preRemove():void
+		{
+			removeListeners();
+			onRemove();
 		}
 
 		public function onRemove():void
-		{
-			removeListeners();
-			onRemoveComplete();
-		}
-
-		public function onRemoveComplete():void
 		{
 		}
 
