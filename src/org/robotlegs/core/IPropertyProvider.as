@@ -1,6 +1,6 @@
 package org.robotlegs.core
 {
-
+	
 	public interface IPropertyProvider
 	{
 		/**
@@ -9,8 +9,8 @@ package org.robotlegs.core
 		 * @param type The type of the property
 		 * @return The returned property or null if not found
 		 */
-		function findProperty( name:String, type:* ):*;
-
+		function findProperty(name:String, type:*):*;
+		
 		/**
 		 * Provide a property when asked for one
 		 * You should override this method and return any properties you wish to provide
@@ -18,7 +18,7 @@ package org.robotlegs.core
 		 * @param type The type of the property that is being asked for
 		 * @return The property that you want to return or null
 		 */
-		function provideProperty( name:String, type:* ):*;
-
+		function provideProperty(name:String, type:*):*;
+	
 	}
 }

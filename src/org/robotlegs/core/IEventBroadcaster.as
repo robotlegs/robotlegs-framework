@@ -1,7 +1,7 @@
 package org.robotlegs.core
 {
 	import flash.events.Event;
-
+	
 	/**
 	 * The interface definition for a RobotLegs EventBroadcaster
 	 */
@@ -12,6 +12,6 @@ package org.robotlegs.core
 		 * @param event The <code>Event</code>
 		 * @return Whether the <code>Event</code> was dispatched
 		 */
-		function dispatchEvent( event:Event ):Boolean;
+		function dispatchEvent(event:Event):Boolean;
 	}
 }
