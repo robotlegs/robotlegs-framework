@@ -3,28 +3,28 @@ package org.robotlegs.mvcs
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	import flash.utils.Dictionary;
-
+	
 	import org.robotlegs.core.ICommand;
 	import org.robotlegs.core.ICommandFactory;
 	import org.robotlegs.core.IEventBroadcaster;
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IReflector;
 	import org.robotlegs.utils.createDelegate;
-
+	
 	public class CommandFactory implements ICommandFactory
 	{
-		// Error Constants ////////////////////////////////////////////////////
-		private static const E_MAP_COM_IMPL:String = 'RobotLegs CommandFactory registerCommand Error: Command Class does not implement ICommand';
-		private static const E_MAP_COM_OVR:String = 'RobotLegs CommandFactory registerCommand Error: Cannot overwrite map';
-
-		// Protected Properties ///////////////////////////////////////////////
 		protected var eventDispatcher:IEventDispatcher;
 		protected var eventBroadcaster:IEventBroadcaster;
 		protected var injector:IInjector;
 		protected var reflector:IReflector;
 		protected var typeToCallbackMap:Dictionary;
-
-		// API ////////////////////////////////////////////////////////////////
+		
+		/**
+		 * Default MVCS <code>ICommandFactory</code> implementation
+		 * @param eventDispatcher The <code>IEventDispatcher</code> to listen to
+		 * @param injector An <code>IInjector</code> to use for this context
+		 * @param reflector An <code>IReflector</code> to use for this context
+		 */
 		public function CommandFactory(eventDispatcher:IEventDispatcher, injector:IInjector, reflector:IReflector)
 		{
 			this.eventDispatcher = eventDispatcher;
@@ -33,12 +33,12 @@ package org.robotlegs.mvcs
 			this.eventBroadcaster = new EventBroadcaster(eventDispatcher);
 			this.typeToCallbackMap = new Dictionary(false);
 		}
-
+		
 		public function mapCommand(type:String, commandClass:Class, oneshot:Boolean = false):void
 		{
 			if (reflector.classExtendsOrImplements(commandClass, ICommand) == false)
 			{
-				throw new ContextError(E_MAP_COM_IMPL + ' - ' + commandClass);
+				throw new ContextError(ContextError.E_MAP_COM_IMPL + ' - ' + commandClass);
 			}
 			var callbackMap:Dictionary = typeToCallbackMap[type];
 			if (callbackMap == null)
@@ -48,13 +48,13 @@ package org.robotlegs.mvcs
 			}
 			if (callbackMap[commandClass] != null)
 			{
-				throw new ContextError(E_MAP_COM_OVR + ' - type (' + type + ') and Command (' + commandClass + ')');
+				throw new ContextError(ContextError.E_MAP_COM_OVR + ' - type (' + type + ') and Command (' + commandClass + ')');
 			}
 			var callback:Function = createDelegate(handleEvent, commandClass, oneshot);
 			eventDispatcher.addEventListener(type, callback, false, 0, true);
 			callbackMap[commandClass] = callback;
 		}
-
+		
 		public function unmapCommand(type:String, commandClass:Class):void
 		{
 			var callbackMap:Dictionary = typeToCallbackMap[type];
@@ -70,7 +70,7 @@ package org.robotlegs.mvcs
 				}
 			}
 		}
-
+		
 		public function hasCommand(type:String, commandClass:Class):Boolean
 		{
 			var callbackMap:Dictionary = typeToCallbackMap[type];
@@ -80,8 +80,13 @@ package org.robotlegs.mvcs
 			}
 			return callbackMap[commandClass] != null;
 		}
-
-		// Protected Methods //////////////////////////////////////////////////
+		
+		/**
+		 * Event Handler
+		 * @param event The <code>Event</code>
+		 * @param commandClass The <code>ICommand<code> Class to construct and execute
+		 * @param oneshot Should this command mapping be removed after execution?
+		 */
 		protected function handleEvent(event:Event, commandClass:Class, oneshot:Boolean):void
 		{
 			var command:Object = new commandClass();
@@ -97,6 +102,6 @@ package org.robotlegs.mvcs
 				unmapCommand(event.type, commandClass);
 			}
 		}
-
+	
 	}
 }
