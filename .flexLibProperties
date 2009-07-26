@@ -31,6 +31,7 @@
     <classEntry path="org.robotlegs.utils.DelayedFunctionQueue"/>
     <classEntry path="org.robotlegs.utils.createDelegate"/>
     <classEntry path="org.springextensions.actionscript.ioc.factory.support.RobotLegsObjectFactory"/>
+    <classEntry path="org.robotlegs.core.IContextProvider"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests>

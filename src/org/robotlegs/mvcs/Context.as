@@ -47,6 +47,15 @@ package org.robotlegs.mvcs
 		}
 		
 		/**
+		 * Return the <code>Context</code>'s IEventDispatcher
+		 * @return The <code>Context</code>'s IEventDispatcher
+		 */
+		public function getEventDispatcher():IEventDispatcher
+		{
+			return eventDispatcher;
+		}
+		
+		/**
 		 * Initialize this context
 		 * @param autoStartup Should this context automatically invoke it's <code>startup</code> method when it's <code>contextView</code> arrives on Stage?
 		 */

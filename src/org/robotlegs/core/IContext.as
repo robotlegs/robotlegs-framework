@@ -1,5 +1,6 @@
 package org.robotlegs.core
 {
+	import flash.events.IEventDispatcher;
 	
 	/**
 	 * The interface definition for a RobotLegs Context
@@ -10,5 +11,11 @@ package org.robotlegs.core
 		 * Execute the <code>IContext</code>'s startup method
 		 */
 		function startup():void;
+		
+		/**
+		 * Return the <code>IContext</code>'s IEventDispatcher
+		 * @return The <code>IContext</code>'s IEventDispatcher
+		 */
+		function getEventDispatcher():IEventDispatcher;
 	}
 }
