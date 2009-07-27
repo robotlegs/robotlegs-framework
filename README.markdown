@@ -49,33 +49,35 @@ Inside the startup() method you bind a couple of Commands to a startup event and
 
     public class HelloFlexContext extends Context
     {
-      public function HelloFlexContext( contextView:DisplayObjectContainer )
-      {
-        super( contextView, new SmartyPantsInjector(), new SmartyPantsReflector() );
-      }
-      
-      override public function startup():void
-      {
-        commandFactory.mapCommand( ContextEvent.STARTUP, PrepModelCommand, true );
-        commandFactory.mapCommand( ContextEvent.STARTUP, PrepControllerCommand, true );
-        commandFactory.mapCommand( ContextEvent.STARTUP, PrepServicesCommand, true );
-        commandFactory.mapCommand( ContextEvent.STARTUP, PrepViewCommand, true );
-        commandFactory.mapCommand( ContextEvent.STARTUP, StartupCommand, true );
-        eventBroadcaster.dispatchEvent( new ContextEvent( ContextEvent.STARTUP ) );
-      }
+    	public function HelloFlexContext( contextView:DisplayObjectContainer )
+    	{
+    		super( contextView, new SpringInjector(), new SpringReflector() );
+    	}
+    	
+    	override public function startup():void
+    	{
+    		commandFactory.mapCommand( ContextEvent.STARTUP, PrepModelCommand, true );
+    		commandFactory.mapCommand( ContextEvent.STARTUP, PrepControllerCommand, true );
+    		commandFactory.mapCommand( ContextEvent.STARTUP, PrepServicesCommand, true );
+    		commandFactory.mapCommand( ContextEvent.STARTUP, PrepViewCommand, true );
+    		commandFactory.mapCommand( ContextEvent.STARTUP, StartupCommand, true );
+    		eventBroadcaster.dispatchEvent( new ContextEvent( ContextEvent.STARTUP ) );
+    	}
     }
+	
 
 Instantiate the Context and pass it a reference to your view. For a Flex application it might look like this:
 
-    <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="onCC()">
+    <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" preinitialize="onPreInitialize()">
     	<mx:Script>
     		<![CDATA[
     			import net.boyblack.robotlegs.demos.helloflex.HelloFlexContext;
-    			private var helloContext:HelloFlexContext;
-          
-    			private function onCC():void
+    			
+    			private var context:HelloFlexContext;
+    			
+    			private function onPreInitialize():void
     			{
-    				helloContext = new HelloFlexContext( this );
+    				context = new HelloFlexContext( this );
     			}
     		]]>
     	</mx:Script>
@@ -87,11 +89,11 @@ If you are building a plain ActionScript application, your root Sprite (entry po
     {
     	import flash.display.Sprite;
     	import net.boyblack.robotlegs.demos.hello.HelloContext;
-      
+    	
     	public class HelloActionScript extends Sprite
     	{
     		private var context:HelloContext;
-		    
+			
     		public function HelloActionScript()
     		{
     			context = new HelloContext( this );
