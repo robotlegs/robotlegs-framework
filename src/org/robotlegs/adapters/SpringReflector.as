@@ -1,8 +1,10 @@
 package org.robotlegs.adapters
 {
-	import org.robotlegs.core.IReflector;
+	import flash.system.ApplicationDomain;
 	
 	import org.as3commons.lang.ClassUtils;
+	import org.as3commons.lang.ObjectUtils;
+	import org.robotlegs.core.IReflector;
 	
 	public class SpringReflector implements IReflector
 	{
@@ -10,15 +12,28 @@ package org.robotlegs.adapters
 		{
 		}
 		
-		public function classExtendsOrImplements(classOrClassName:Object, superclass:Class):Boolean
+		public function classExtendsOrImplements(classOrClassName:Object, superclass:Class, applicationDomain:ApplicationDomain = null):Boolean
 		{
-			var clazz:Class = (classOrClassName is Class) ? classOrClassName as Class : ClassUtils.forInstance(classOrClassName);
+			var clazz:Class = (classOrClassName is Class) ? classOrClassName as Class : ClassUtils.forInstance(classOrClassName, applicationDomain);
 			return ClassUtils.isAssignableFrom(superclass, clazz);
 		}
 		
-		public function getClass(object:Object):Class
+		public function getClass(value:*, applicationDomain:ApplicationDomain = null):Class
 		{
-			return ClassUtils.forInstance(object);
+			return ClassUtils.forInstance(value, applicationDomain);
+		}
+		
+		public function getFQCN(value:*, replaceColons:Boolean = false):String
+		{
+			if (value is Class)
+			{
+				return ClassUtils.getFullyQualifiedName(value, replaceColons);
+			}
+			else if (value is String)
+			{
+				return value;
+			}
+			return ObjectUtils.getFullyQualifiedClassName(value, replaceColons);
 		}
 	
 	}

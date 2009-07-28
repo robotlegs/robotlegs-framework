@@ -19,7 +19,8 @@ package org.robotlegs.mvcs
 		
 		protected var mediatorByView:Dictionary;
 		protected var mappingConfigByView:Dictionary;
-		protected var mappingConfigByViewClass:Dictionary;
+		protected var mappingConfigByViewClassName:Dictionary;
+		protected var localViewClassByViewClassName:Dictionary;
 		
 		/**
 		 * Default MVCS <code>IMediatorFactory</code> implementation
@@ -37,14 +38,15 @@ package org.robotlegs.mvcs
 			
 			this.mediatorByView = new Dictionary(true);
 			this.mappingConfigByView = new Dictionary(true);
-			this.mappingConfigByViewClass = new Dictionary(false);
+			this.mappingConfigByViewClassName = new Dictionary(false);
 			
 			initializeListeners();
 		}
 		
-		public function mapMediator(viewClass:Class, mediatorClass:Class, autoRegister:Boolean = true, autoRemove:Boolean = true):void
+		public function mapMediator(viewClassOrName:Object, mediatorClass:Class, autoRegister:Boolean = true, autoRemove:Boolean = true):void
 		{
-			if (mappingConfigByViewClass[viewClass] != null)
+			var viewClassName:String = reflector.getFQCN(viewClassOrName);
+			if (mappingConfigByViewClassName[viewClassName] != null)
 			{
 				throw new ContextError(ContextError.E_MAP_EXISTS + ' - ' + mediatorClass);
 			}
@@ -56,7 +58,15 @@ package org.robotlegs.mvcs
 			config.mediatorClass = mediatorClass;
 			config.autoRegister = autoRegister;
 			config.autoRemove = autoRemove;
-			mappingConfigByViewClass[viewClass] = config;
+			config.typedViewClass = null;
+			mappingConfigByViewClassName[viewClassName] = config;
+		}
+		
+		public function mapModuleMediator(moduleClassName:String, localModuleClass:Class, mediatorClass:Class, autoRegister:Boolean = true, autoRemove:Boolean = true):void
+		{
+			mapMediator(moduleClassName, mediatorClass, autoRegister, autoRemove);
+			var config:MapppingConfig = mappingConfigByViewClassName[moduleClassName];
+			config.typedViewClass = localModuleClass;
 		}
 		
 		public function createMediator(viewComponent:Object):IMediator
@@ -65,16 +75,18 @@ package org.robotlegs.mvcs
 			if (mediator == null)
 			{
 				var viewClass:Class = reflector.getClass(viewComponent);
-				var mappingConfig:MapppingConfig = mappingConfigByViewClass[viewClass];
-				if (mappingConfig)
+				var viewClassName:String = reflector.getFQCN(viewComponent);
+				var config:MapppingConfig = mappingConfigByViewClassName[viewClassName];
+				if (config)
 				{
-					var mediatorClass:Class = mappingConfig.mediatorClass;
+					var typedViewClass:Class = (config.typedViewClass) ? config.typedViewClass : viewClass;
+					var mediatorClass:Class = config.mediatorClass;
 					mediator = new mediatorClass();
 					// Use a logging interface
 					trace('[ROBOTLEGS] Mediator Constructed: (' + mediator + ') with View Component (' + viewComponent + ')');
-					injector.bindValue(viewClass, viewComponent);
+					injector.bindValue(typedViewClass, viewComponent);
 					injector.injectInto(mediator);
-					injector.unbind(viewClass);
+					injector.unbind(typedViewClass);
 					registerMediator(mediator, viewComponent);
 				}
 			}
@@ -85,7 +97,7 @@ package org.robotlegs.mvcs
 		{
 			injector.bindValue(reflector.getClass(mediator), mediator);
 			mediatorByView[viewComponent] = mediator;
-			mappingConfigByView[viewComponent] = mappingConfigByViewClass[reflector.getClass(viewComponent)];
+			mappingConfigByView[viewComponent] = mappingConfigByViewClassName[reflector.getFQCN(viewComponent)];
 			mediator.setViewComponent(viewComponent);
 			mediator.preRegister();
 			// Use a logging interface
@@ -131,7 +143,7 @@ package org.robotlegs.mvcs
 			injector = null;
 			mediatorByView = null;
 			mappingConfigByView = null;
-			mappingConfigByViewClass = null;
+			mappingConfigByViewClassName = null;
 			contextView = null;
 		}
 		
@@ -150,7 +162,7 @@ package org.robotlegs.mvcs
 		
 		protected function onViewAdded(e:Event):void
 		{
-			var config:MapppingConfig = mappingConfigByViewClass[reflector.getClass(e.target)];
+			var config:MapppingConfig = mappingConfigByViewClassName[reflector.getFQCN(e.target)];
 			if (config && config.autoRegister)
 			{
 				createMediator(e.target);
@@ -190,6 +202,7 @@ package org.robotlegs.mvcs
 class MapppingConfig
 {
 	public var mediatorClass:Class;
+	public var typedViewClass:Class;
 	public var autoRegister:Boolean;
 	public var autoRemove:Boolean;
 }

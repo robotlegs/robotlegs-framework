@@ -8,12 +8,22 @@ package org.robotlegs.core
 	{
 		/**
 		 * Map an <code>IMediator</code> to a view Class
-		 * @param viewClass The view Class
+		 * @param viewClass The concrete view Class or Fully Qualified Class Name (<code>flash.utils.getQualifiedClassName</code>::style)
 		 * @param mediatorClass The <code>IMediator</code> Class
 		 * @param autoRegister Automatically construct and register an instance of Class <code>mediatorClass</code> when an instance of Class <code>viewClass</code> is detected
 		 * @param autoRemove Automatically remove an instance of Class <code>mediatorClass</code> when it's <code>viewClass</code> leaves the ancestory of the context view
 		 */
-		function mapMediator(viewClass:Class, mediatorClass:Class, autoRegister:Boolean = true, autoRemove:Boolean = true):void;
+		function mapMediator(viewClassOrName:Object, mediatorClass:Class, autoRegister:Boolean = true, autoRemove:Boolean = true):void
+		
+		/**
+		 * Map an <code>IMediator</code> to a flex module
+		 * @param moduleClassName Fully Qualified Class Name of the Module (<code>flash.utils.getQualifiedClassName</code>::style)
+		 * @param localModuleClass The local Class (Interface) to be inject
+		 * @param mediatorClass The <code>IMediator</code> Class
+		 * @param autoRegister Automatically construct and register an instance of Class <code>mediatorClass</code> when an instance of Class <code>moduleClassName</code> is detected
+		 * @param autoRemove Automatically remove an instance of Class <code>mediatorClass</code> when it's <code>viewClass</code> leaves the ancestory of the context view
+		 */		
+		function mapModuleMediator(moduleClassName:String, localModuleClass:Class, mediatorClass:Class, autoRegister:Boolean = true, autoRemove:Boolean = true):void
 		
 		/**
 		 * Create an instance of a mapped <code>IMediator</code>
