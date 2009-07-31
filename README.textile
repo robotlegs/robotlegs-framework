@@ -16,6 +16,7 @@ To run RobotLegs with Spring drop the following SWC files into your "libs" folde
 * spring-actionscript-core-0.8.swc
 
 To run RobotLegs with SmartyPants-IOC drop the following SWC files into your "libs" folder:
+* as3commons-logging-1.0.0.swc
 * RobotLegsLib.swc
 * SmartyPantsIOC.swc
 

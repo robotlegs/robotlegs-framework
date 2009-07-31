@@ -14,7 +14,7 @@ package org.robotlegs.test.mvcs
 	import org.robotlegs.core.IReflector;
 	import org.robotlegs.mvcs.CommandFactory;
 	import org.robotlegs.test.mvcs.support.TestCommand;
-	
+
 	public class CommandFactoryTests
 	{
 		public static const nologger:* = new NoSmartyPantsLogging(null);

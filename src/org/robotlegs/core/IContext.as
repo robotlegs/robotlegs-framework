@@ -13,7 +13,7 @@ package org.robotlegs.core
 		function startup():void;
 		
 		/**
-		 * Return the <code>IContext</code>'s IEventDispatcher
+		 * Return this <code>IContext</code>'s IEventDispatcher
 		 * @return The <code>IContext</code>'s IEventDispatcher
 		 */
 		function getEventDispatcher():IEventDispatcher;

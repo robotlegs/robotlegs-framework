@@ -35,6 +35,6 @@
   </includeClasses>
   <includeResources/>
   <namespaceManifests>
-    <namespaceManifestEntry manifest="manifest.xml" namespace="http://boyblack.org/2009"/>
+    <namespaceManifestEntry manifest="manifest.xml" namespace="http://robotlegs.org/2009"/>
   </namespaceManifests>
 </flexLibProperties>
