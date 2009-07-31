@@ -148,6 +148,7 @@ package org.robotlegs.mvcs
 		protected function initializeInjections():void
 		{
 			injector.bindValue(DisplayObjectContainer, contextView, 'mvcsContextView');
+			injector.bindValue(ILogger, logger, 'mvcsLogger');
 			injector.bindValue(IInjector, injector, 'mvcsInjector');
 			injector.bindValue(IEventDispatcher, eventDispatcher, 'mvcsEventDispatcher');
 			injector.bindValue(IEventBroadcaster, eventBroadcaster, 'mvcsEventBroadcaster');

@@ -24,6 +24,7 @@ package org.robotlegs.mvcs
 {
 	import flash.events.Event;
 	
+	import org.as3commons.logging.ILogger;
 	import org.robotlegs.core.IEventBroadcaster;
 	import org.robotlegs.core.IProxy;
 	
@@ -31,6 +32,9 @@ package org.robotlegs.mvcs
 	{
 		[Inject(name='mvcsEventBroadcaster')]
 		public var eventBroadcaster:IEventBroadcaster;
+		
+		[Inject(name='mvcsLogger')]
+		public var logger:ILogger;
 		
 		/**
 		 * Abstract MVCS <code>IProxy</code> implementation

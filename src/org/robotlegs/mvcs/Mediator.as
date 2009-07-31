@@ -28,6 +28,7 @@ package org.robotlegs.mvcs
 	import flash.events.IEventDispatcher;
 	import flash.utils.getTimer;
 	
+	import org.as3commons.logging.ILogger;
 	import org.robotlegs.core.IMediator;
 	import org.robotlegs.core.IMediatorFactory;
 	import org.robotlegs.core.IPropertyProvider;
@@ -45,6 +46,9 @@ package org.robotlegs.mvcs
 		
 		[Inject(name='mvcsEventDispatcher')]
 		public var eventDispatcher:IEventDispatcher;
+		
+		[Inject(name='mvcsLogger')]
+		public var logger:ILogger;
 		
 		/**
 		 * Internal
@@ -137,7 +141,7 @@ package org.robotlegs.mvcs
 				{
 					if ((parentProvider = parentMediator as IPropertyProvider) && (val = parentProvider.provideProperty(name, type)))
 					{
-						trace('[ROBOTLEGS] Found Mediator property (' + name + ') of type (' + type + ') on Mediator (' + parentMediator + ') in ' + (getTimer() - start) + 'ms');
+						logger.info('Mediator found property (' + name + ') of type (' + type + ') with value (' + val + ') on Mediator (' + parentMediator + ')');
 						return val;
 					}
 				}
