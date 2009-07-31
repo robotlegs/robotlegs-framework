@@ -1,26 +1,63 @@
+/*
+ * Copyright (c) 2009 the original author or authors
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
 package org.robotlegs.adapters
 {
-	import org.robotlegs.core.IInjector;
-	
 	import org.as3commons.lang.ClassUtils;
 	import org.as3commons.lang.ObjectUtils;
 	import org.as3commons.reflect.Field;
 	import org.as3commons.reflect.MetaData;
 	import org.as3commons.reflect.Type;
+	import org.robotlegs.core.IInjector;
 	import org.springextensions.actionscript.ioc.ObjectDefinition;
 	import org.springextensions.actionscript.ioc.ObjectDefinitionScope;
 	import org.springextensions.actionscript.ioc.factory.config.RuntimeObjectReference;
 	import org.springextensions.actionscript.ioc.factory.support.RobotLegsObjectFactory;
 	
+	/**
+	 * An adapter for Spring ActionScript
+	 * Uses as3commons-lang and as3commons-reflect
+	 * See: http://www.springactionscript.org/
+	 * See: http://www.as3commons.org/
+	 */
 	public class SpringInjector implements IInjector
 	{
+		/**
+		 * Internal
+		 */
 		protected var factory:RobotLegsObjectFactory;
 		
-		public function SpringInjector()
+		/**
+		 * Creates a new <code>SpringInjector</code> object
+		 * @param objectFactory
+		 */
+		public function SpringInjector(objectFactory:RobotLegsObjectFactory = null)
 		{
-			factory = new RobotLegsObjectFactory();
+			factory = objectFactory ? objectFactory : new RobotLegsObjectFactory();
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function bindValue(whenAskedFor:Class, useValue:Object, named:String = null):void
 		{
 			var whenAskedForClassName:String = ClassUtils.getFullyQualifiedName(whenAskedFor);
@@ -30,6 +67,9 @@ package org.robotlegs.adapters
 			factory.cacheSingletonValue(key, useValue);
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function bindClass(whenAskedFor:Class, instantiateClass:Class, named:String = null):void
 		{
 			var whenAskedForClassName:String = ClassUtils.getFullyQualifiedName(whenAskedFor);
@@ -38,6 +78,9 @@ package org.robotlegs.adapters
 			registerObjectDefinition(whenAskedForClassName, useClassName, named, ObjectDefinitionScope.PROTOTYPE, properties);
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function bindSingleton(whenAskedFor:Class, named:String = null):void
 		{
 			var whenAskedForClassName:String = ClassUtils.getFullyQualifiedName(whenAskedFor);
@@ -46,6 +89,9 @@ package org.robotlegs.adapters
 			registerObjectDefinition(whenAskedForClassName, useClassName, named, ObjectDefinitionScope.SINGLETON, properties);
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function bindSingletonOf(whenAskedFor:Class, useSingletonOf:Class, named:String = null):void
 		{
 			var whenAskedForClassName:String = ClassUtils.getFullyQualifiedName(whenAskedFor);
@@ -54,6 +100,9 @@ package org.robotlegs.adapters
 			registerObjectDefinition(whenAskedForClassName, useClassName, named, ObjectDefinitionScope.SINGLETON, properties);
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function injectInto(target:Object):void
 		{
 			var type:Type = Type.forInstance(target);
@@ -83,12 +132,23 @@ package org.robotlegs.adapters
 			}
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function unbind(clazz:Class, named:String = null):void
 		{
 			named = named ? named : ClassUtils.getFullyQualifiedName(clazz);
 			factory.removeObjectDefinition(named);
 		}
 		
+		/**
+		 * Internal
+		 * @param whenAskedForClassName
+		 * @param useClassName
+		 * @param named
+		 * @param scope
+		 * @param properties
+		 */
 		protected function registerObjectDefinition(whenAskedForClassName:String, useClassName:String, named:String, scope:ObjectDefinitionScope, properties:Object = null):void
 		{
 			var objdef:ObjectDefinition = new ObjectDefinition(useClassName);
@@ -98,6 +158,11 @@ package org.robotlegs.adapters
 			factory.registerObjectDefinition(key, objdef);
 		}
 		
+		/**
+		 * Find annotated dependencies
+		 * @param clazz The class to inspect
+		 * @return A hash-map of named <code>RuntimeObjectReference</code>s
+		 */
 		protected function findProperties(clazz:Class):Object
 		{
 			var type:Type = Type.forClass(clazz);

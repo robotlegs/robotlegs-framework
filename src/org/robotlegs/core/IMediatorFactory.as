@@ -1,3 +1,25 @@
+/*
+ * Copyright (c) 2009 the original author or authors
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
 package org.robotlegs.core
 {
 	
@@ -6,6 +28,7 @@ package org.robotlegs.core
 	 */
 	public interface IMediatorFactory
 	{
+		
 		/**
 		 * Map an <code>IMediator</code> to a view Class
 		 * @param viewClass The concrete view Class or Fully Qualified Class Name (<code>flash.utils.getQualifiedClassName</code>::style)
@@ -22,7 +45,7 @@ package org.robotlegs.core
 		 * @param mediatorClass The <code>IMediator</code> Class
 		 * @param autoRegister Automatically construct and register an instance of Class <code>mediatorClass</code> when an instance of Class <code>moduleClassName</code> is detected
 		 * @param autoRemove Automatically remove an instance of Class <code>mediatorClass</code> when it's <code>viewClass</code> leaves the ancestory of the context view
-		 */		
+		 */
 		function mapModuleMediator(moduleClassName:String, localModuleClass:Class, mediatorClass:Class, autoRegister:Boolean = true, autoRemove:Boolean = true):void
 		
 		/**
@@ -66,5 +89,6 @@ package org.robotlegs.core
 		 * @return Whether an <code>IMediator</code> has been registered for this view instance
 		 */
 		function hasMediator(viewComponent:Object):Boolean;
+	
 	}
 }

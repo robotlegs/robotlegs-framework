@@ -1,3 +1,25 @@
+/*
+ * Copyright (c) 2009 the original author or authors
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
 package org.robotlegs.mvcs
 {
 	import flash.events.Event;
@@ -12,18 +34,45 @@ package org.robotlegs.mvcs
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IReflector;
 	import org.robotlegs.utils.createDelegate;
-
+	
+	/**
+	 * Default MVCS <code>ICommandFactory</code> implementation
+	 */
 	public class CommandFactory implements ICommandFactory
 	{
+		/**
+		 * The <code>IEventDispatcher</code> to listen to
+		 */
 		protected var eventDispatcher:IEventDispatcher;
+		
+		/**
+		 * The <code>IEventBroadcaster</code> to dispatch Events with
+		 */
 		protected var eventBroadcaster:IEventBroadcaster;
+		
+		/**
+		 * The <code>IInjector</code> to inject with
+		 */
 		protected var injector:IInjector;
+		
+		/**
+		 * The <code>ILogger</code> to log with
+		 */
 		protected var logger:ILogger;
+		
+		/**
+		 * The <code>IReflector</code> to reflect with
+		 */
 		protected var reflector:IReflector;
+		
+		/**
+		 * Internal
+		 */
 		protected var typeToCallbackMap:Dictionary;
 		
 		/**
-		 * Default MVCS <code>ICommandFactory</code> implementation
+		 * Creates a new <code>CommandFactory</code> object
+		 *
 		 * @param eventDispatcher The <code>IEventDispatcher</code> to listen to
 		 * @param injector An <code>IInjector</code> to use for this context
 		 * @param reflector An <code>IReflector</code> to use for this context
@@ -31,10 +80,10 @@ package org.robotlegs.mvcs
 		public function CommandFactory(eventDispatcher:IEventDispatcher, injector:IInjector, reflector:IReflector, logger:ILogger = null)
 		{
 			this.eventDispatcher = eventDispatcher;
-			this.injector = injector;
-			this.logger = logger ? logger : new NullLogger();
-			this.reflector = reflector;
 			this.eventBroadcaster = new EventBroadcaster(eventDispatcher);
+			this.injector = injector;
+			this.reflector = reflector;
+			this.logger = logger ? logger : new NullLogger();
 			this.typeToCallbackMap = new Dictionary(false);
 		}
 		
@@ -86,7 +135,7 @@ package org.robotlegs.mvcs
 			}
 			eventDispatcher.removeEventListener(type, callback, false);
 			delete callbackMap[commandClass];
-			logger.info('Command Class Unmapped: (' + commandClass + ') from event type (' + type + ') on (' + eventDispatcher + ')');
+			logger.info('Command Class Unmapped: (' + commandClass + ') from event type (' + type + ')');
 		}
 		
 		/**
@@ -111,7 +160,7 @@ package org.robotlegs.mvcs
 		protected function handleEvent(event:Event, commandClass:Class, oneshot:Boolean):void
 		{
 			var command:Object = new commandClass();
-			logger.info('Command Constructed: (' + command + ') in response to (' + event + ') on (' + eventDispatcher + ')');
+			logger.info('Command Constructed: (' + commandClass + ') in response to (' + event + ')');
 			var eventClass:Class = reflector.getClass(event);
 			injector.bindValue(eventClass, event);
 			injector.injectInto(command);
