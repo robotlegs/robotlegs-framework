@@ -23,11 +23,11 @@
 package org.robotlegs.adapters
 {
 	import flash.system.ApplicationDomain;
+	import flash.utils.getQualifiedClassName;
 	
 	import org.as3commons.lang.ClassUtils;
-	import org.as3commons.lang.ObjectUtils;
 	import org.robotlegs.core.IReflector;
-	
+
 	/**
 	 * An adapter for Spring ActionScript
 	 * Uses as3commons-lang
@@ -65,15 +65,20 @@ package org.robotlegs.adapters
 		 */
 		public function getFQCN(value:*, replaceColons:Boolean = false):String
 		{
-			if (value is Class)
+			var fqcn:String;
+			if (value is String)
 			{
-				return ClassUtils.getFullyQualifiedName(value, replaceColons);
+				fqcn = value;
 			}
-			else if (value is String)
+			else
 			{
-				return value;
+				fqcn = getQualifiedClassName(value);
 			}
-			return ObjectUtils.getFullyQualifiedClassName(value, replaceColons);
+			if (replaceColons)
+			{
+				fqcn = fqcn.replace('::', '.');
+			}
+			return fqcn;
 		}
 	
 	}

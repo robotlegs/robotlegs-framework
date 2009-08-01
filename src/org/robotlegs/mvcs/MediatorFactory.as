@@ -75,7 +75,7 @@ package org.robotlegs.mvcs
 		/**
 		 * @inheritDoc
 		 */
-		public function mapMediator(viewClassOrName:Object, mediatorClass:Class, autoRegister:Boolean = true, autoRemove:Boolean = true):void
+		public function mapMediator(viewClassOrName:*, mediatorClass:Class, autoRegister:Boolean = true, autoRemove:Boolean = true):void
 		{
 			var message:String;
 			var viewClassName:String = reflector.getFQCN(viewClassOrName);
@@ -95,7 +95,10 @@ package org.robotlegs.mvcs
 			config.mediatorClass = mediatorClass;
 			config.autoRegister = autoRegister;
 			config.autoRemove = autoRemove;
-			config.typedViewClass = null;
+			if (viewClassOrName is Class)
+			{
+				config.typedViewClass = viewClassOrName;
+			}
 			mappingConfigByViewClassName[viewClassName] = config;
 			logger.info('Mediator Mapped: (' + mediatorClass + ') to concrete view class (' + viewClassName + ')');
 		}
@@ -119,18 +122,15 @@ package org.robotlegs.mvcs
 			var mediator:IMediator = mediatorByView[viewComponent];
 			if (mediator == null)
 			{
-				var viewClass:Class = reflector.getClass(viewComponent);
 				var viewClassName:String = reflector.getFQCN(viewComponent);
 				var config:MapppingConfig = mappingConfigByViewClassName[viewClassName];
 				if (config)
 				{
-					var typedViewClass:Class = (config.typedViewClass) ? config.typedViewClass : viewClass;
-					var mediatorClass:Class = config.mediatorClass;
-					mediator = new mediatorClass();
-					logger.info('Mediator Constructed: (' + mediator + ') with view component (' + viewComponent + ')');
-					injector.bindValue(typedViewClass, viewComponent);
+					mediator = new config.mediatorClass();
+					logger.info('Mediator Constructed: (' + mediator + ') with view component (' + viewComponent + ') of type (' + viewClassName + ')');
+					injector.bindValue(config.typedViewClass, viewComponent);
 					injector.injectInto(mediator);
-					injector.unbind(typedViewClass);
+					injector.unbind(config.typedViewClass);
 					registerMediator(mediator, viewComponent);
 				}
 			}

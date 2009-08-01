@@ -22,8 +22,9 @@
 
 package org.robotlegs.adapters
 {
+	import flash.utils.getQualifiedClassName;
+	
 	import org.as3commons.lang.ClassUtils;
-	import org.as3commons.lang.ObjectUtils;
 	import org.as3commons.reflect.Field;
 	import org.as3commons.reflect.MetaData;
 	import org.as3commons.reflect.Type;
@@ -61,7 +62,7 @@ package org.robotlegs.adapters
 		public function bindValue(whenAskedFor:Class, useValue:Object, named:String = null):void
 		{
 			var whenAskedForClassName:String = ClassUtils.getFullyQualifiedName(whenAskedFor);
-			var useClassName:String = ObjectUtils.getFullyQualifiedClassName(useValue);
+			var useClassName:String = getQualifiedClassName(useValue);
 			var key:String = named ? named : whenAskedForClassName;
 			registerObjectDefinition(whenAskedForClassName, useClassName, named, ObjectDefinitionScope.SINGLETON);
 			factory.cacheSingletonValue(key, useValue);
