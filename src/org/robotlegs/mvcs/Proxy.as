@@ -23,12 +23,13 @@
 package org.robotlegs.mvcs
 {
 	import flash.events.Event;
+	import flash.events.EventDispatcher;
 	
 	import org.as3commons.logging.ILogger;
 	import org.robotlegs.core.IEventBroadcaster;
 	import org.robotlegs.core.IProxy;
 	
-	public class Proxy implements IProxy
+	public class Proxy extends EventDispatcher implements IProxy
 	{
 		[Inject(name='mvcsEventBroadcaster')]
 		public var eventBroadcaster:IEventBroadcaster;
