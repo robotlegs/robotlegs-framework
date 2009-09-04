@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<flexLibProperties version="1">
+<flexLibProperties includeAllClasses="false" version="1">
   <includeClasses>
     <classEntry path="net.expantra.smartypants.extra.NoSmartyPantsLogging"/>
     <classEntry path="org.robotlegs.adapters.SmartyPantsInjector"/>
@@ -9,6 +9,7 @@
     <classEntry path="org.robotlegs.core.ICommand"/>
     <classEntry path="org.robotlegs.core.ICommandFactory"/>
     <classEntry path="org.robotlegs.core.IContext"/>
+    <classEntry path="org.robotlegs.core.IContextProvider"/>
     <classEntry path="org.robotlegs.core.IEventBroadcaster"/>
     <classEntry path="org.robotlegs.core.IInjector"/>
     <classEntry path="org.robotlegs.core.IMediator"/>
@@ -31,7 +32,6 @@
     <classEntry path="org.robotlegs.utils.DelayedFunctionQueue"/>
     <classEntry path="org.robotlegs.utils.createDelegate"/>
     <classEntry path="org.springextensions.actionscript.ioc.factory.support.RobotLegsObjectFactory"/>
-    <classEntry path="org.robotlegs.core.IContextProvider"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests>
