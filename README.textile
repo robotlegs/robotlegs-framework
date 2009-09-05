@@ -8,7 +8,7 @@ h2. Installation
 
 **Flex/FlashBuilder:**
 
-To run RobotLegs with Spring drop the following SWC files into your "libs" folder:
+To run RobotLegs with Spring ActionScript drop the following SWC files into your "libs" folder:
 * RobotLegsLib.swc
 * as3commons-lang-1.0.0.swc
 * as3commons-logging-1.0.0.swc
@@ -209,18 +209,42 @@ Proxies should not listen to the Context's event bus, and therefore they are pro
 
 Services are like Proxies, but instead of managing Models, they manage access to remote services.
 
-h2. Links
+h2. Resources
 
-* "Wiki":http://wiki.github.com/darscan/robotlegs
-* "Library Source":http://github.com/darscan/robotlegs/tree/master
-* "Demo Source":http://github.com/darscan/robotlegsdemos/tree/master
-* "Demo Flex App":http://shaun.boyblack.co.za/flash/robotlegsdemo/HelloFlex.html
-* "Issue Tracking":http://github.com/darscan/robotlegs/issues
-* "Discussion Group":http://groups.google.com/group/robotlegs
-* "Announcement":http://shaun.boyblack.co.za/blog/2009/04/16/robotlegs-an-as3-mvcs-framework-for-flash-and-flex-applications-inspired-by-puremvc/
-* "AS3 Commons":http://www.as3commons.org/
+h3. News
+
+* "RobotLegs AS3 on Twitter":http://twitter.com/robotlegs_as3/
+
+h3. Overview
+
+* [[Overview]]
+
+h3. Code
+
+* "RobotLegs AS3 Library":http://github.com/darscan/robotlegs
+* "RobotLegs AS3 Demos":http://github.com/darscan/robotlegsdemos
+* "RobotLegs AS3 Unit Tests":http://github.com/darscan/robotlegstests
+
+h3. Online Demos
+
+* "RobotLegs AS3 Demo Flex Application":http://shaun.boyblack.co.za/flash/robotlegsdemo/HelloFlex.html
+
+h3. Help and Support
+
+* "RobotLegs AS3 Discussion Group":http://groups.google.com/group/robotlegs
+* "RobotLegs AS3 Issue Tracking":http://github.com/darscan/robotlegs/issues
+
+h3. Tutorials and such on the Interblogs
+
+* "RobotLegs Bloggoweb Postings":http://shaun.boyblack.co.za/blog/category/robotlegs/
+* "Flex Image Gallery Demo - Joel Hooks":http://joelhooks.com/2009/07/17/robotlegs-as3-a-dependency-injection-driven-mvcs-framework-for-flashflex-%E2%80%93-inspired-by-puremvc/
+* "FlexUnit 4 Unit Testing and RobotLegs - Joel Hooks":http://joelhooks.com/2009/07/21/unit-testing-with-inversion-of-control-ioc-and-dependency-injection-di-with-the-robotlegs-framework-and-flexunit-4/
+
+h3. Other Resources
+
+* "SmartyPants-IOC":http://code.google.com/p/smartypants-ioc/
 * "Spring ActionScript":http://www.springactionscript.org/
-* "SmartyPants IOC":http://code.google.com/p/smartypants-ioc/
+* "AS3 Commons":http://www.as3commons.org/
 
 h2. License
 
