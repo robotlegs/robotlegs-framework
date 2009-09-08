@@ -161,7 +161,7 @@ The default Mediator implementation provides a handy utility method called addEv
 A Mediator might look something like this:
 
 <pre>
-    public class HelloFormMediator extends FlexMediator
+    public class HelloFormMediator extends Mediator
     {
     	[Inject]
     	public var helloForm:HelloForm;
@@ -197,7 +197,6 @@ The Mediator above has two dependencies:
 It listens to events from the view, invokes methods on the MessageProxy's API, and listens to the Context's event bus for MessageProxyEvent events.
 
 NOTE: addEventListenerTo() is a convenience method. It keeps track of any listeners registered and removes them when the Mediator is removed.
-NOTE: Flex Mediators should extend the FlexMediator Class, but plain ActionScript Mediators can simply extend the default Mediator Class.
 
 **Proxies**
 
