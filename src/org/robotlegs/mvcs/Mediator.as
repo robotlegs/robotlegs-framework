@@ -22,11 +22,11 @@
 
 package org.robotlegs.mvcs
 {
-	import flash.utils.getDefinitionByName;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
+	import flash.utils.getDefinitionByName;
 	import flash.utils.getTimer;
 	
 	import org.as3commons.logging.ILogger;
@@ -51,21 +51,8 @@ package org.robotlegs.mvcs
 		[Inject(name='mvcsLogger')]
 		public var logger:ILogger;
 		
-		/*
-		 * This block checks for availability of the Flex framework by trying to get the class for UIComponent.
-		 */
-		private static var uiComponentClass:Class;
-		{
-			try
-			{
-				uiComponentClass = Class(getDefinitionByName('mx.core::UIComponent'));
-			}
-			catch (error : Error)
-			{
-				//ignore error, we need all we know.
-			}
-		}
-		private static const flexAvailable:Boolean = uiComponentClass != null;
+		private static var UIComponentClass:Class;
+		private static const flexAvailable:Boolean = checkFlex();
 		
 		/**
 		 * Internal
@@ -94,7 +81,7 @@ package org.robotlegs.mvcs
 		 */
 		public function preRegister():void
 		{
-			if (flexAvailable && (viewComponent is uiComponentClass) && !viewComponent['initialized'])
+			if (flexAvailable && (viewComponent is UIComponentClass) && !viewComponent['initialized'])
 			{
 				IEventDispatcher(viewComponent).addEventListener('creationComplete', onCreationComplete, false, 0, true);
 			}
@@ -255,7 +242,22 @@ package org.robotlegs.mvcs
 				dispatcher.removeEventListener(params.type, params.listener, params.useCapture);
 			}
 		}
-	
+		
+		/**
+		 * Checks for availability of the Flex framework by trying to get the class for UIComponent.
+		 */
+		private static function checkFlex():Boolean
+		{
+			try
+			{
+				UIComponentClass = getDefinitionByName('mx.core::UIComponent') as Class;
+			}
+			catch (error:Error)
+			{
+				// do nothing
+			}
+			return UIComponentClass != null;
+		}
 		
 		/**
 		 * FlexEvent.CREATION_COMPLETE handler for this Mediator's View Component

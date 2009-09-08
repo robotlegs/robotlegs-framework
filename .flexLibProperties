@@ -24,7 +24,6 @@
     <classEntry path="org.robotlegs.mvcs.ContextError"/>
     <classEntry path="org.robotlegs.mvcs.ContextEvent"/>
     <classEntry path="org.robotlegs.mvcs.EventBroadcaster"/>
-    <classEntry path="org.robotlegs.mvcs.FlexMediator"/>
     <classEntry path="org.robotlegs.mvcs.Mediator"/>
     <classEntry path="org.robotlegs.mvcs.MediatorFactory"/>
     <classEntry path="org.robotlegs.mvcs.Proxy"/>
