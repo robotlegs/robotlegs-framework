@@ -22,6 +22,7 @@
 
 package org.robotlegs.mvcs
 {
+	import flash.utils.getDefinitionByName;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
@@ -50,6 +51,22 @@ package org.robotlegs.mvcs
 		[Inject(name='mvcsLogger')]
 		public var logger:ILogger;
 		
+		/*
+		 * This block checks for availability of the Flex framework by trying to get the class for UIComponent.
+		 */
+		private static var uiComponentClass:Class;
+		{
+			try
+			{
+				uiComponentClass = Class(getDefinitionByName('mx.core::UIComponent'));
+			}
+			catch (error : Error)
+			{
+				//ignore error, we need all we know.
+			}
+		}
+		private static const flexAvailable:Boolean = uiComponentClass != null;
+		
 		/**
 		 * Internal
 		 * This Mediator's View Component, used by the RobotLegs MVCS framework internally.
@@ -77,7 +94,14 @@ package org.robotlegs.mvcs
 		 */
 		public function preRegister():void
 		{
-			onRegister();
+			if (flexAvailable && (viewComponent is uiComponentClass) && !viewComponent['initialized'])
+			{
+				IEventDispatcher(viewComponent).addEventListener('creationComplete', onCreationComplete, false, 0, true);
+			}
+			else
+			{
+				onRegister();
+			}
 		}
 		
 		/**
@@ -232,5 +256,15 @@ package org.robotlegs.mvcs
 			}
 		}
 	
+		
+		/**
+		 * FlexEvent.CREATION_COMPLETE handler for this Mediator's View Component
+		 * @param e The Flex Event
+		 */
+		private function onCreationComplete(e:Event):void
+		{
+			IEventDispatcher(e.target).removeEventListener('creationComplete', onCreationComplete);
+			onRegister();
+		}
 	}
 }
