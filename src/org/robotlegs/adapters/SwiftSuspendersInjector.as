@@ -1,0 +1,1 @@
+package org.robotlegs.adapters{	import org.robotlegs.core.IInjector;	import org.swiftsuspenders.SwiftSuspendersInjector;	/**	 * @author tschneidereit	 */	public class SwiftSuspendersInjector extends org.swiftsuspenders.SwiftSuspendersInjector implements IInjector	{	}}

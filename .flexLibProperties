@@ -1,39 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<flexLibProperties includeAllClasses="false" version="1">
-  <includeClasses>
-    <classEntry path="net.expantra.smartypants.extra.NoSmartyPantsLogging"/>
-    <classEntry path="org.robotlegs.adapters.SmartyPantsInjector"/>
-    <classEntry path="org.robotlegs.adapters.SmartyPantsReflector"/>
-    <classEntry path="org.robotlegs.adapters.SpringInjector"/>
-    <classEntry path="org.robotlegs.adapters.SpringReflector"/>
-    <classEntry path="org.robotlegs.core.ICommand"/>
-    <classEntry path="org.robotlegs.core.ICommandFactory"/>
-    <classEntry path="org.robotlegs.core.IContext"/>
-    <classEntry path="org.robotlegs.core.IContextProvider"/>
-    <classEntry path="org.robotlegs.core.IEventBroadcaster"/>
-    <classEntry path="org.robotlegs.core.IInjector"/>
-    <classEntry path="org.robotlegs.core.IMediator"/>
-    <classEntry path="org.robotlegs.core.IMediatorFactory"/>
-    <classEntry path="org.robotlegs.core.IPropertyProvider"/>
-    <classEntry path="org.robotlegs.core.IProxy"/>
-    <classEntry path="org.robotlegs.core.IReflector"/>
-    <classEntry path="org.robotlegs.core.IService"/>
-    <classEntry path="org.robotlegs.mvcs.Command"/>
-    <classEntry path="org.robotlegs.mvcs.CommandFactory"/>
-    <classEntry path="org.robotlegs.mvcs.Context"/>
-    <classEntry path="org.robotlegs.mvcs.ContextError"/>
-    <classEntry path="org.robotlegs.mvcs.ContextEvent"/>
-    <classEntry path="org.robotlegs.mvcs.EventBroadcaster"/>
-    <classEntry path="org.robotlegs.mvcs.Mediator"/>
-    <classEntry path="org.robotlegs.mvcs.MediatorFactory"/>
-    <classEntry path="org.robotlegs.mvcs.Proxy"/>
-    <classEntry path="org.robotlegs.mvcs.Service"/>
-    <classEntry path="org.robotlegs.utils.DelayedFunctionQueue"/>
-    <classEntry path="org.robotlegs.utils.createDelegate"/>
-    <classEntry path="org.springextensions.actionscript.ioc.factory.support.RobotLegsObjectFactory"/>
-  </includeClasses>
-  <includeResources/>
-  <namespaceManifests>
-    <namespaceManifestEntry manifest="manifest.xml" namespace="http://robotlegs.org/2009"/>
-  </namespaceManifests>
+<flexLibProperties version="1">
+<includeClasses>
+<classEntry path="net.expantra.smartypants.extra.NoSmartyPantsLogging"/>
+<classEntry path="org.robotlegs.adapters.SmartyPantsInjector"/>
+<classEntry path="org.robotlegs.adapters.SmartyPantsReflector"/>
+<classEntry path="org.robotlegs.adapters.SpringInjector"/>
+<classEntry path="org.robotlegs.adapters.SpringReflector"/>
+<classEntry path="org.robotlegs.adapters.SwiftSuspendersInjector"/>
+<classEntry path="org.robotlegs.adapters.SwiftSuspendersReflector"/>
+<classEntry path="org.robotlegs.core.ICommand"/>
+<classEntry path="org.robotlegs.core.ICommandFactory"/>
+<classEntry path="org.robotlegs.core.IContext"/>
+<classEntry path="org.robotlegs.core.IContextProvider"/>
+<classEntry path="org.robotlegs.core.IEventBroadcaster"/>
+<classEntry path="org.robotlegs.core.IInjector"/>
+<classEntry path="org.robotlegs.core.IMediator"/>
+<classEntry path="org.robotlegs.core.IMediatorFactory"/>
+<classEntry path="org.robotlegs.core.IPropertyProvider"/>
+<classEntry path="org.robotlegs.core.IProxy"/>
+<classEntry path="org.robotlegs.core.IReflector"/>
+<classEntry path="org.robotlegs.core.IService"/>
+<classEntry path="org.robotlegs.mvcs.Command"/>
+<classEntry path="org.robotlegs.mvcs.CommandFactory"/>
+<classEntry path="org.robotlegs.mvcs.Context"/>
+<classEntry path="org.robotlegs.mvcs.ContextError"/>
+<classEntry path="org.robotlegs.mvcs.ContextEvent"/>
+<classEntry path="org.robotlegs.mvcs.EventBroadcaster"/>
+<classEntry path="org.robotlegs.mvcs.Mediator"/>
+<classEntry path="org.robotlegs.mvcs.MediatorFactory"/>
+<classEntry path="org.robotlegs.mvcs.Proxy"/>
+<classEntry path="org.robotlegs.mvcs.Service"/>
+<classEntry path="org.robotlegs.utils.DelayedFunctionQueue"/>
+<classEntry path="org.robotlegs.utils.createDelegate"/>
+<classEntry path="org.springextensions.actionscript.ioc.factory.support.RobotLegsObjectFactory"/>
+</includeClasses>
+<includeResources/>
+<namespaceManifests>
+<namespaceManifestEntry manifest="manifest.xml" namespace="http://robotlegs.org/2009"/>
+</namespaceManifests>
 </flexLibProperties>
