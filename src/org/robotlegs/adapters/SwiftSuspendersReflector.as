@@ -1,0 +1,1 @@
+package org.robotlegs.adapters{	import org.robotlegs.core.IReflector;	import org.swiftsuspenders.SwiftSuspendersReflector;	/**	 * @author tschneidereit	 */	public class SwiftSuspendersReflector extends org.swiftsuspenders.SwiftSuspendersReflector implements IReflector	{	}}
