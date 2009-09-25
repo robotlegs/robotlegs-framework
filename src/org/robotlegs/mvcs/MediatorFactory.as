@@ -91,7 +91,7 @@ package org.robotlegs.mvcs
 				logger.error(message);
 				throw new ContextError(message);
 			}
-			var config:MapppingConfig = new MapppingConfig();
+			var config:MappingConfig = new MappingConfig();
 			config.mediatorClass = mediatorClass;
 			config.autoRegister = autoRegister;
 			config.autoRemove = autoRemove;
@@ -109,7 +109,7 @@ package org.robotlegs.mvcs
 		public function mapModuleMediator(moduleClassName:String, localModuleClass:Class, mediatorClass:Class, autoRegister:Boolean = true, autoRemove:Boolean = true):void
 		{
 			mapMediator(moduleClassName, mediatorClass, autoRegister, autoRemove);
-			var config:MapppingConfig = mappingConfigByViewClassName[moduleClassName];
+			var config:MappingConfig = mappingConfigByViewClassName[moduleClassName];
 			config.typedViewClass = localModuleClass;
 			logger.info('Module Mapping: (' + mediatorClass + ') will be injected with local type (' + localModuleClass + ')');
 		}
@@ -123,7 +123,7 @@ package org.robotlegs.mvcs
 			if (mediator == null)
 			{
 				var viewClassName:String = reflector.getFQCN(viewComponent);
-				var config:MapppingConfig = mappingConfigByViewClassName[viewClassName];
+				var config:MappingConfig = mappingConfigByViewClassName[viewClassName];
 				if (config)
 				{
 					mediator = new config.mediatorClass();
@@ -217,7 +217,7 @@ package org.robotlegs.mvcs
 		
 		protected function onViewAdded(e:Event):void
 		{
-			var config:MapppingConfig = mappingConfigByViewClassName[reflector.getFQCN(e.target)];
+			var config:MappingConfig = mappingConfigByViewClassName[reflector.getFQCN(e.target)];
 			if (config && config.autoRegister)
 			{
 				createMediator(e.target);
@@ -226,7 +226,7 @@ package org.robotlegs.mvcs
 		
 		protected function onViewRemoved(e:Event):void
 		{
-			var config:MapppingConfig = mappingConfigByView[e.target];
+			var config:MappingConfig = mappingConfigByView[e.target];
 			if (config && config.autoRemove)
 			{
 				// Flex work-around...
@@ -252,7 +252,7 @@ package org.robotlegs.mvcs
 
 }
 
-class MapppingConfig
+class MappingConfig
 {
 	public var mediatorClass:Class;
 	public var typedViewClass:Class;
