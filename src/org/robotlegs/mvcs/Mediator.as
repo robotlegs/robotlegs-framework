@@ -140,7 +140,6 @@ package org.robotlegs.mvcs
 		 */
 		public function findProperty(name:String, type:*):*
 		{
-			var start:int = getTimer();
 			var val:*;
 			var viewDo:DisplayObject = getViewComponent() as DisplayObject;
 			var parent:DisplayObjectContainer;
