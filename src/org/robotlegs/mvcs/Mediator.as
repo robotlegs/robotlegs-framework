@@ -146,7 +146,7 @@ package org.robotlegs.mvcs
 			var parent:DisplayObjectContainer;
 			var parentMediator:IMediator;
 			var parentProvider:IPropertyProvider;
-			while ((parent = viewDo.parent as DisplayObjectContainer))
+			while ((parent = viewDo.parent))
 			{
 				if ((parentMediator = mediatorFactory.retrieveMediator(parent)))
 				{
