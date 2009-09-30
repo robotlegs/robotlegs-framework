@@ -27,9 +27,7 @@ package org.robotlegs.mvcs
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	import flash.utils.getDefinitionByName;
-	import flash.utils.getTimer;
 	
-	import org.as3commons.logging.ILogger;
 	import org.robotlegs.core.IMediator;
 	import org.robotlegs.core.IMediatorMap;
 	import org.robotlegs.core.IPropertyProvider;
@@ -47,9 +45,6 @@ package org.robotlegs.mvcs
 		
 		[Inject(name='mvcsEventDispatcher')]
 		public var eventDispatcher:IEventDispatcher;
-		
-		[Inject(name='mvcsLogger')]
-		public var logger:ILogger;
 		
 		private static var UIComponentClass:Class;
 		private static const flexAvailable:Boolean = checkFlex();
@@ -151,7 +146,6 @@ package org.robotlegs.mvcs
 				{
 					if ((parentProvider = parentMediator as IPropertyProvider) && (val = parentProvider.provideProperty(name, type)))
 					{
-						logger.info('Mediator found property (' + name + ') of type (' + type + ') with value (' + val + ') on Mediator (' + parentMediator + ')');
 						return val;
 					}
 				}
@@ -260,6 +254,7 @@ package org.robotlegs.mvcs
 		
 		/**
 		 * FlexEvent.CREATION_COMPLETE handler for this Mediator's View Component
+		 * 
 		 * @param e The Flex Event
 		 */
 		private function onCreationComplete(e:Event):void

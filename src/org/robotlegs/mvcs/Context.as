@@ -27,8 +27,6 @@ package org.robotlegs.mvcs
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
 	
-	import org.as3commons.logging.ILogger;
-	import org.as3commons.logging.impl.NullLogger;
 	import org.robotlegs.adapters.SwiftSuspendersInjector;
 	import org.robotlegs.adapters.SwiftSuspendersReflector;
 	import org.robotlegs.core.ICommandMap;
@@ -44,7 +42,6 @@ package org.robotlegs.mvcs
 	public class Context implements IContext
 	{
 		protected var contextView:DisplayObjectContainer;
-		protected var logger:ILogger;
 		protected var injector:IInjector;
 		protected var reflector:IReflector;
 		protected var commandMap:ICommandMap;
@@ -77,7 +74,6 @@ package org.robotlegs.mvcs
 		 */
 		public function startup():void
 		{
-			logger.info('Context Starting Up - ' + this);
 			eventBroadcaster.dispatchEvent(new ContextEvent(ContextEvent.STARTUP));
 		}
 		
@@ -104,13 +100,11 @@ package org.robotlegs.mvcs
 			{
 				reflector = createReflector();
 			}
-			logger = createLogger();
 			eventDispatcher = createEventDispatcher();
 			eventBroadcaster = createEventBroadcaster();
 			commandMap = createCommandMap();
 			mediatorMap = createMediatorMap();
 			initializeInjections();
-			logger.info('Context Initialized - ' + this);
 			if (autoStartup)
 			{
 				contextView.stage ? startup() : contextView.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage, false, 0, true);
@@ -121,25 +115,24 @@ package org.robotlegs.mvcs
 		 * ADDED_TO_STAGE event handler
 		 *
 		 * Only used if <code>autoStart</code> is true but the <code>contextView</code> was not on Stage during the context's construction
-		 * 
+		 *
 		 * @param e The Event
 		 */
 		protected function onAddedToStage(e:Event):void
 		{
 			contextView.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage)
-			logger.info('contextView has been added to the stage');
 			startup();
 		}
 		
 		/**
 		 * Create a default <code>IInjector</code>
-		 * 
+		 *
 		 * Override this to change the default configuration
-		 * 
+		 *
 		 * NOTE: If an <code>IInjector</code> was provided via the super constructor this method won't get called
-		 * 
+		 *
 		 * @return An <code>IInjector</code>
-		 */		
+		 */
 		protected function createInjector():IInjector
 		{
 			return new SwiftSuspendersInjector();
@@ -147,37 +140,25 @@ package org.robotlegs.mvcs
 		
 		/**
 		 * Create a default <code>IReflector</code>
-		 * 
+		 *
 		 * Override this to change the default configuration
-		 * 
+		 *
 		 * NOTE: If an <code>IReflector</code> was provided via the super constructor this method won't get called
-		 * 
+		 *
 		 * @return An <code>IReflector</code>
-		 */		
+		 */
 		protected function createReflector():IReflector
 		{
 			return new SwiftSuspendersReflector();
 		}
 		
 		/**
-		 * Create a default <code>ILogger</code>
-		 * 
-		 * Override this to change the default configuration
-		 * 
-		 * @return An <code>ILogger</code>
-		 */		
-		protected function createLogger():ILogger
-		{
-			return new NullLogger();
-		}
-		
-		/**
 		 * Create a default <code>IEventDispatcher</code>
-		 * 
+		 *
 		 * Override this to change the default configuration
-		 * 
+		 *
 		 * @return An <code>IEventDispatcher</code>
-		 */		
+		 */
 		protected function createEventDispatcher():IEventDispatcher
 		{
 			return new EventDispatcher();
@@ -185,11 +166,11 @@ package org.robotlegs.mvcs
 		
 		/**
 		 * Create a default <code>IEventBroadcaster</code>
-		 * 
+		 *
 		 * Override this to change the default configuration
-		 * 
+		 *
 		 * @return An <code>IEventBroadcaster</code>
-		 */		
+		 */
 		protected function createEventBroadcaster():IEventBroadcaster
 		{
 			return new EventBroadcaster(eventDispatcher);
@@ -197,26 +178,26 @@ package org.robotlegs.mvcs
 		
 		/**
 		 * Create a default <code>ICommandMap</code>
-		 * 
+		 *
 		 * Override this to change the default configuration
-		 * 
+		 *
 		 * @return An <code>ICommandMap</code>
-		 */		
+		 */
 		protected function createCommandMap():ICommandMap
 		{
-			return new CommandMap(eventDispatcher, injector, reflector, logger);
+			return new CommandMap(eventDispatcher, injector, reflector);
 		}
 		
 		/**
 		 * Create a default <code>IMediatorMap</code>
-		 * 
+		 *
 		 * Override this to change the default configuration
-		 * 
+		 *
 		 * @return An <code>IMediatorMap</code>
-		 */		
+		 */
 		protected function createMediatorMap():IMediatorMap
 		{
-			return new MediatorMap(contextView, injector, reflector, logger);
+			return new MediatorMap(contextView, injector, reflector);
 		}
 		
 		/**
@@ -227,7 +208,6 @@ package org.robotlegs.mvcs
 		protected function initializeInjections():void
 		{
 			injector.bindValue(DisplayObjectContainer, contextView, 'mvcsContextView');
-			injector.bindValue(ILogger, logger, 'mvcsLogger');
 			injector.bindValue(IInjector, injector, 'mvcsInjector');
 			injector.bindValue(IEventDispatcher, eventDispatcher, 'mvcsEventDispatcher');
 			injector.bindValue(IEventBroadcaster, eventBroadcaster, 'mvcsEventBroadcaster');

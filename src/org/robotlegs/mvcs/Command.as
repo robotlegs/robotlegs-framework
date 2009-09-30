@@ -25,13 +25,12 @@ package org.robotlegs.mvcs
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
 	
-	import org.as3commons.logging.ILogger;
 	import org.robotlegs.core.ICommand;
 	import org.robotlegs.core.ICommandMap;
 	import org.robotlegs.core.IEventBroadcaster;
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IMediatorMap;
-
+	
 	/**
 	 * Abstract MVCS <code>ICommand</code> implementation
 	 */
@@ -48,9 +47,6 @@ package org.robotlegs.mvcs
 		
 		[Inject(name='mvcsInjector')]
 		public var injector:IInjector;
-		
-		[Inject(name='mvcsLogger')]
-		public var logger:ILogger;
 		
 		[Inject(name='mvcsMediatorMap')]
 		public var mediatorMap:IMediatorMap;
@@ -74,6 +70,6 @@ package org.robotlegs.mvcs
 		{
 			eventBroadcaster.dispatchEvent(event);
 		}
-		
+	
 	}
 }

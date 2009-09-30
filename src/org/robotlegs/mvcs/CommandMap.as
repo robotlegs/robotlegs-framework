@@ -26,8 +26,6 @@ package org.robotlegs.mvcs
 	import flash.events.IEventDispatcher;
 	import flash.utils.Dictionary;
 	
-	import org.as3commons.logging.ILogger;
-	import org.as3commons.logging.impl.NullLogger;
 	import org.robotlegs.core.ICommand;
 	import org.robotlegs.core.ICommandMap;
 	import org.robotlegs.core.IEventBroadcaster;
@@ -56,11 +54,6 @@ package org.robotlegs.mvcs
 		protected var injector:IInjector;
 		
 		/**
-		 * The <code>ILogger</code> to log with
-		 */
-		protected var logger:ILogger;
-		
-		/**
 		 * The <code>IReflector</code> to reflect with
 		 */
 		protected var reflector:IReflector;
@@ -77,13 +70,12 @@ package org.robotlegs.mvcs
 		 * @param injector An <code>IInjector</code> to use for this context
 		 * @param reflector An <code>IReflector</code> to use for this context
 		 */
-		public function CommandMap(eventDispatcher:IEventDispatcher, injector:IInjector, reflector:IReflector, logger:ILogger = null)
+		public function CommandMap(eventDispatcher:IEventDispatcher, injector:IInjector, reflector:IReflector)
 		{
 			this.eventDispatcher = eventDispatcher;
 			this.eventBroadcaster = new EventBroadcaster(eventDispatcher);
 			this.injector = injector;
 			this.reflector = reflector;
-			this.logger = logger ? logger : new NullLogger();
 			this.typeToCallbackMap = new Dictionary(false);
 		}
 		
@@ -96,7 +88,6 @@ package org.robotlegs.mvcs
 			if (reflector.classExtendsOrImplements(commandClass, ICommand) == false)
 			{
 				message = ContextError.E_MAP_COM_IMPL + ' - ' + commandClass;
-				logger.error(message);
 				throw new ContextError(message);
 			}
 			var callbackMap:Dictionary = typeToCallbackMap[type];
@@ -108,7 +99,6 @@ package org.robotlegs.mvcs
 			if (callbackMap[commandClass] != null)
 			{
 				message = ContextError.E_MAP_COM_OVR + ' - type (' + type + ') and Command (' + commandClass + ')';
-				logger.error(message);
 				throw new ContextError(message);
 			}
 			var callback:Function = createDelegate(handleEvent, commandClass, oneshot);
@@ -124,18 +114,15 @@ package org.robotlegs.mvcs
 			var callbackMap:Dictionary = typeToCallbackMap[type];
 			if (callbackMap == null)
 			{
-				logger.warn('Type (' + type + ') was not mapped to commandClass (' + commandClass + ')');
 				return;
 			}
 			var callback:Function = callbackMap[commandClass];
 			if (callback == null)
 			{
-				logger.warn('Type (' + type + ') was not mapped to commandClass (' + commandClass + ')');
 				return;
 			}
 			eventDispatcher.removeEventListener(type, callback, false);
 			delete callbackMap[commandClass];
-			logger.info('Command Class Unmapped: (' + commandClass + ') from event type (' + type + ')');
 		}
 		
 		/**
@@ -153,7 +140,7 @@ package org.robotlegs.mvcs
 		
 		/**
 		 * Event Handler
-		 * 
+		 *
 		 * @param event The <code>Event</code>
 		 * @param commandClass The <code>ICommand<code> Class to construct and execute
 		 * @param oneshot Should this command mapping be removed after execution?
@@ -161,7 +148,6 @@ package org.robotlegs.mvcs
 		protected function handleEvent(event:Event, commandClass:Class, oneshot:Boolean):void
 		{
 			var command:Object = new commandClass();
-			logger.info('Command Constructed: (' + commandClass + ') in response to (' + event + ')');
 			var eventClass:Class = reflector.getClass(event);
 			injector.bindValue(eventClass, event);
 			injector.injectInto(command);

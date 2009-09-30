@@ -26,8 +26,6 @@ package org.robotlegs.mvcs
 	import flash.events.Event;
 	import flash.utils.Dictionary;
 	
-	import org.as3commons.logging.ILogger;
-	import org.as3commons.logging.impl.NullLogger;
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IMediator;
 	import org.robotlegs.core.IMediatorMap;
@@ -41,7 +39,6 @@ package org.robotlegs.mvcs
 	{
 		protected var contextView:DisplayObject;
 		protected var injector:IInjector;
-		protected var logger:ILogger;
 		protected var reflector:IReflector;
 		protected var useCapture:Boolean;
 		
@@ -57,12 +54,11 @@ package org.robotlegs.mvcs
 		 * @param reflector An <code>IReflector</code> to use for this context
 		 * @param useCapture Optional, change at your peril!
 		 */
-		public function MediatorMap(contextView:DisplayObject, injector:IInjector, reflector:IReflector, logger:ILogger = null, useCapture:Boolean = true)
+		public function MediatorMap(contextView:DisplayObject, injector:IInjector, reflector:IReflector, useCapture:Boolean = true)
 		{
 			this.contextView = contextView;
 			this.injector = injector;
 			this.reflector = reflector;
-			this.logger = logger ? logger : new NullLogger();
 			this.useCapture = useCapture;
 			
 			this.mediatorByView = new Dictionary(true);
@@ -82,13 +78,11 @@ package org.robotlegs.mvcs
 			if (mappingConfigByViewClassName[viewClassName] != null)
 			{
 				message = ContextError.E_MAP_EXISTS + ' - ' + mediatorClass;
-				logger.error(message);
 				throw new ContextError(message);
 			}
 			if (reflector.classExtendsOrImplements(mediatorClass, IMediator) == false)
 			{
 				message = ContextError.E_MAP_NOIMPL + ' - ' + mediatorClass
-				logger.error(message);
 				throw new ContextError(message);
 			}
 			var config:MappingConfig = new MappingConfig();
@@ -100,7 +94,6 @@ package org.robotlegs.mvcs
 				config.typedViewClass = viewClassOrName;
 			}
 			mappingConfigByViewClassName[viewClassName] = config;
-			logger.info('Mediator Mapped: (' + mediatorClass + ') to concrete view class (' + viewClassName + ')');
 		}
 		
 		/**
@@ -111,7 +104,6 @@ package org.robotlegs.mvcs
 			map(moduleClassName, mediatorClass, autoRegister, autoRemove);
 			var config:MappingConfig = mappingConfigByViewClassName[moduleClassName];
 			config.typedViewClass = localModuleClass;
-			logger.info('Module Mapping: (' + mediatorClass + ') will be injected with local type (' + localModuleClass + ')');
 		}
 		
 		/**
@@ -127,7 +119,6 @@ package org.robotlegs.mvcs
 				if (config)
 				{
 					mediator = new config.mediatorClass();
-					logger.info('Mediator Constructed: (' + mediator + ') with view component (' + viewComponent + ') of type (' + viewClassName + ')');
 					injector.bindValue(config.typedViewClass, viewComponent);
 					injector.injectInto(mediator);
 					injector.unbind(config.typedViewClass);
@@ -147,7 +138,6 @@ package org.robotlegs.mvcs
 			mappingConfigByView[viewComponent] = mappingConfigByViewClassName[reflector.getFQCN(viewComponent)];
 			mediator.setViewComponent(viewComponent);
 			mediator.preRegister();
-			logger.info('Mediator Registered: (' + mediator + ') with View Component (' + viewComponent + ')');
 		}
 		
 		/**
@@ -163,7 +153,6 @@ package org.robotlegs.mvcs
 				mediator.preRemove();
 				mediator.setViewComponent(null);
 				injector.unbind(reflector.getClass(mediator));
-				logger.info('Mediator Removed: (' + mediator + ') with View Component (' + viewComponent + ')');
 			}
 			return mediator;
 		}
@@ -230,7 +219,6 @@ package org.robotlegs.mvcs
 			if (config && config.autoRemove)
 			{
 				// Flex work-around...
-				logger.info('MediatorMap might have mistakenly lost an ' + e.target + ', double checking...');
 				DelayedFunctionQueue.add(possiblyRemoveMediator, e.target);
 			}
 		}
@@ -241,10 +229,6 @@ package org.robotlegs.mvcs
 			if (viewComponent.stage == null)
 			{
 				removeByView(viewComponent);
-			}
-			else
-			{
-				logger.info('MediatorMap false alarm for ' + viewComponent);
 			}
 		}
 	
