@@ -26,9 +26,8 @@ package org.robotlegs.mvcs
 	
 	import org.as3commons.logging.ILogger;
 	import org.robotlegs.core.IEventBroadcaster;
-	import org.robotlegs.core.IService;
 	
-	public class Service implements IService
+	public class Service
 	{
 		[Inject(name='mvcsEventBroadcaster')]
 		public var eventBroadcaster:IEventBroadcaster;

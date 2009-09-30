@@ -30,14 +30,14 @@ package org.robotlegs.mvcs
 	import org.as3commons.logging.impl.NullLogger;
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IMediator;
-	import org.robotlegs.core.IMediatorFactory;
+	import org.robotlegs.core.IMediatorMap;
 	import org.robotlegs.core.IReflector;
 	import org.robotlegs.utils.DelayedFunctionQueue;
 	
 	/**
-	 * Default MVCS <code>IMediatorFactory</code> implementation
+	 * Default MVCS <code>IMediatorMap</code> implementation
 	 */
-	public class MediatorFactory implements IMediatorFactory
+	public class MediatorMap implements IMediatorMap
 	{
 		protected var contextView:DisplayObject;
 		protected var injector:IInjector;
@@ -51,13 +51,13 @@ package org.robotlegs.mvcs
 		protected var localViewClassByViewClassName:Dictionary;
 		
 		/**
-		 * Creates a new <code>MediatorFactory</code> object
+		 * Creates a new <code>MediatorMap</code> object
 		 * @param contextView The root view node of the context. The context will listen for ADDED_TO_STAGE events on this node
 		 * @param injector An <code>IInjector</code> to use for this context
 		 * @param reflector An <code>IReflector</code> to use for this context
 		 * @param useCapture Optional, change at your peril!
 		 */
-		public function MediatorFactory(contextView:DisplayObject, injector:IInjector, reflector:IReflector, logger:ILogger = null, useCapture:Boolean = true)
+		public function MediatorMap(contextView:DisplayObject, injector:IInjector, reflector:IReflector, logger:ILogger = null, useCapture:Boolean = true)
 		{
 			this.contextView = contextView;
 			this.injector = injector;
@@ -75,7 +75,7 @@ package org.robotlegs.mvcs
 		/**
 		 * @inheritDoc
 		 */
-		public function mapMediator(viewClassOrName:*, mediatorClass:Class, autoRegister:Boolean = true, autoRemove:Boolean = true):void
+		public function map(viewClassOrName:*, mediatorClass:Class, autoRegister:Boolean = true, autoRemove:Boolean = true):void
 		{
 			var message:String;
 			var viewClassName:String = reflector.getFQCN(viewClassOrName);
@@ -106,9 +106,9 @@ package org.robotlegs.mvcs
 		/**
 		 * @inheritDoc
 		 */
-		public function mapModuleMediator(moduleClassName:String, localModuleClass:Class, mediatorClass:Class, autoRegister:Boolean = true, autoRemove:Boolean = true):void
+		public function mapModule(moduleClassName:String, localModuleClass:Class, mediatorClass:Class, autoRegister:Boolean = true, autoRemove:Boolean = true):void
 		{
-			mapMediator(moduleClassName, mediatorClass, autoRegister, autoRemove);
+			map(moduleClassName, mediatorClass, autoRegister, autoRemove);
 			var config:MappingConfig = mappingConfigByViewClassName[moduleClassName];
 			config.typedViewClass = localModuleClass;
 			logger.info('Module Mapping: (' + mediatorClass + ') will be injected with local type (' + localModuleClass + ')');
@@ -117,7 +117,7 @@ package org.robotlegs.mvcs
 		/**
 		 * @inheritDoc
 		 */
-		public function createMediator(viewComponent:Object):IMediator
+		public function create(viewComponent:Object):IMediator
 		{
 			var mediator:IMediator = mediatorByView[viewComponent];
 			if (mediator == null)
@@ -131,7 +131,7 @@ package org.robotlegs.mvcs
 					injector.bindValue(config.typedViewClass, viewComponent);
 					injector.injectInto(mediator);
 					injector.unbind(config.typedViewClass);
-					registerMediator(mediator, viewComponent);
+					register(viewComponent, mediator);
 				}
 			}
 			return mediator;
@@ -140,7 +140,7 @@ package org.robotlegs.mvcs
 		/**
 		 * @inheritDoc
 		 */
-		public function registerMediator(mediator:IMediator, viewComponent:Object):void
+		public function register(viewComponent:Object, mediator:IMediator):void
 		{
 			injector.bindValue(reflector.getClass(mediator), mediator);
 			mediatorByView[viewComponent] = mediator;
@@ -153,7 +153,7 @@ package org.robotlegs.mvcs
 		/**
 		 * @inheritDoc
 		 */
-		public function removeMediator(mediator:IMediator):IMediator
+		public function remove(mediator:IMediator):IMediator
 		{
 			if (mediator)
 			{
@@ -171,15 +171,15 @@ package org.robotlegs.mvcs
 		/**
 		 * @inheritDoc
 		 */
-		public function removeMediatorByView(viewComponent:Object):IMediator
+		public function removeByView(viewComponent:Object):IMediator
 		{
-			return removeMediator(retrieveMediator(viewComponent));
+			return remove(retrieve(viewComponent));
 		}
 		
 		/**
 		 * @inheritDoc
 		 */
-		public function retrieveMediator(viewComponent:Object):IMediator
+		public function retrieve(viewComponent:Object):IMediator
 		{
 			return mediatorByView[viewComponent];
 		}
@@ -220,7 +220,7 @@ package org.robotlegs.mvcs
 			var config:MappingConfig = mappingConfigByViewClassName[reflector.getFQCN(e.target)];
 			if (config && config.autoRegister)
 			{
-				createMediator(e.target);
+				create(e.target);
 			}
 		}
 		
@@ -230,7 +230,7 @@ package org.robotlegs.mvcs
 			if (config && config.autoRemove)
 			{
 				// Flex work-around...
-				logger.info('MediatorFactory might have mistakenly lost an ' + e.target + ', double checking...');
+				logger.info('MediatorMap might have mistakenly lost an ' + e.target + ', double checking...');
 				DelayedFunctionQueue.add(possiblyRemoveMediator, e.target);
 			}
 		}
@@ -240,11 +240,11 @@ package org.robotlegs.mvcs
 		{
 			if (viewComponent.stage == null)
 			{
-				removeMediatorByView(viewComponent);
+				removeByView(viewComponent);
 			}
 			else
 			{
-				logger.info('MediatorFactory false alarm for ' + viewComponent);
+				logger.info('MediatorMap false alarm for ' + viewComponent);
 			}
 		}
 	

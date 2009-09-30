@@ -27,10 +27,10 @@ package org.robotlegs.mvcs
 	
 	import org.as3commons.logging.ILogger;
 	import org.robotlegs.core.ICommand;
-	import org.robotlegs.core.ICommandFactory;
+	import org.robotlegs.core.ICommandMap;
 	import org.robotlegs.core.IEventBroadcaster;
 	import org.robotlegs.core.IInjector;
-	import org.robotlegs.core.IMediatorFactory;
+	import org.robotlegs.core.IMediatorMap;
 
 	/**
 	 * Abstract MVCS <code>ICommand</code> implementation
@@ -40,8 +40,8 @@ package org.robotlegs.mvcs
 		[Inject(name='mvcsContextView')]
 		public var contextView:DisplayObjectContainer;
 		
-		[Inject(name='mvcsCommandFactory')]
-		public var commandFactory:ICommandFactory;
+		[Inject(name='mvcsCommandMap')]
+		public var commandMap:ICommandMap;
 		
 		[Inject(name='mvcsEventBroadcaster')]
 		public var eventBroadcaster:IEventBroadcaster;
@@ -52,8 +52,8 @@ package org.robotlegs.mvcs
 		[Inject(name='mvcsLogger')]
 		public var logger:ILogger;
 		
-		[Inject(name='mvcsMediatorFactory')]
-		public var mediatorFactory:IMediatorFactory;
+		[Inject(name='mvcsMediatorMap')]
+		public var mediatorMap:IMediatorMap;
 		
 		public function Command()
 		{

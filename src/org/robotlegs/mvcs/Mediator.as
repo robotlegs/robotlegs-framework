@@ -31,7 +31,7 @@ package org.robotlegs.mvcs
 	
 	import org.as3commons.logging.ILogger;
 	import org.robotlegs.core.IMediator;
-	import org.robotlegs.core.IMediatorFactory;
+	import org.robotlegs.core.IMediatorMap;
 	import org.robotlegs.core.IPropertyProvider;
 	
 	/**
@@ -42,8 +42,8 @@ package org.robotlegs.mvcs
 		[Inject(name='mvcsContextView')]
 		public var contextView:DisplayObjectContainer;
 		
-		[Inject(name='mvcsMediatorFactory')]
-		public var mediatorFactory:IMediatorFactory;
+		[Inject(name='mvcsMediatorMap')]
+		public var mediatorMap:IMediatorMap;
 		
 		[Inject(name='mvcsEventDispatcher')]
 		public var eventDispatcher:IEventDispatcher;
@@ -147,7 +147,7 @@ package org.robotlegs.mvcs
 			var parentProvider:IPropertyProvider;
 			while ((parent = viewDo.parent))
 			{
-				if ((parentMediator = mediatorFactory.retrieveMediator(parent)))
+				if ((parentMediator = mediatorMap.retrieve(parent)))
 				{
 					if ((parentProvider = parentMediator as IPropertyProvider) && (val = parentProvider.provideProperty(name, type)))
 					{

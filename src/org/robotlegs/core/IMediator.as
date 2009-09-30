@@ -29,7 +29,7 @@ package org.robotlegs.core
 	public interface IMediator
 	{
 		/**
-		 * Should be invoked by the <code>IMediatorFactory</code> when the <code>IMediator</code> has been registered
+		 * Should be invoked by the <code>IMediatorMap</code> when the <code>IMediator</code> has been registered
 		 */
 		function preRegister():void;
 		
@@ -40,7 +40,7 @@ package org.robotlegs.core
 		function onRegister():void;
 		
 		/**
-		 * Invoked when the <code>IMediator</code> has been removed by the <code>IMediatorFactory</code>
+		 * Invoked when the <code>IMediator</code> has been removed by the <code>IMediatorMap</code>
 		 */
 		function preRemove():void;
 		

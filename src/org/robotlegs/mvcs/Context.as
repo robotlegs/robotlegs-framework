@@ -29,11 +29,13 @@ package org.robotlegs.mvcs
 	
 	import org.as3commons.logging.ILogger;
 	import org.as3commons.logging.impl.NullLogger;
-	import org.robotlegs.core.ICommandFactory;
+	import org.robotlegs.adapters.SwiftSuspendersInjector;
+	import org.robotlegs.adapters.SwiftSuspendersReflector;
+	import org.robotlegs.core.ICommandMap;
 	import org.robotlegs.core.IContext;
 	import org.robotlegs.core.IEventBroadcaster;
 	import org.robotlegs.core.IInjector;
-	import org.robotlegs.core.IMediatorFactory;
+	import org.robotlegs.core.IMediatorMap;
 	import org.robotlegs.core.IReflector;
 	
 	/**
@@ -45,19 +47,20 @@ package org.robotlegs.mvcs
 		protected var logger:ILogger;
 		protected var injector:IInjector;
 		protected var reflector:IReflector;
-		protected var commandFactory:ICommandFactory;
+		protected var commandMap:ICommandMap;
 		protected var eventDispatcher:IEventDispatcher;
 		protected var eventBroadcaster:IEventBroadcaster;
-		protected var mediatorFactory:IMediatorFactory;
+		protected var mediatorMap:IMediatorMap;
 		
 		/**
 		 * Default Context Implementation
+		 *
 		 * @param contextView The root view node of the context. The context will listen for ADDED_TO_STAGE events on this node
 		 * @param injector An Injector to use for this context
 		 * @param reflector A Reflector to use for this context
 		 * @param autoStartup Should this context automatically invoke it's <code>startup</code> method when it's <code>contextView</code> arrives on Stage?
 		 */
-		public function Context(contextView:DisplayObjectContainer, injector:IInjector, reflector:IReflector, autoStartup:Boolean = true)
+		public function Context(contextView:DisplayObjectContainer, injector:IInjector = null, reflector:IReflector = null, autoStartup:Boolean = true)
 		{
 			this.contextView = contextView;
 			this.injector = injector;
@@ -67,7 +70,9 @@ package org.robotlegs.mvcs
 		
 		/**
 		 * The Startup Hook
+		 *
 		 * Override this in your implementation
+		 *
 		 * Call <code>super.startup()</code> if you want to log the occasion.
 		 */
 		public function startup():void
@@ -78,6 +83,7 @@ package org.robotlegs.mvcs
 		
 		/**
 		 * Return this <code>Context</code>'s IEventDispatcher
+		 *
 		 * @return The <code>Context</code>'s IEventDispatcher
 		 */
 		public function getEventDispatcher():IEventDispatcher
@@ -86,16 +92,23 @@ package org.robotlegs.mvcs
 		}
 		
 		/**
-		 * Initialize this context
-		 * @param autoStartup Should this context automatically invoke it's <code>startup</code> method when it's <code>contextView</code> arrives on Stage?
+		 * Internal
 		 */
-		protected function initialize(autoStartup:Boolean = true):void
+		protected function initialize(autoStartup:Boolean):void
 		{
+			if (injector == null)
+			{
+				injector = createInjector();
+			}
+			if (reflector == null)
+			{
+				reflector = createReflector();
+			}
 			logger = createLogger();
 			eventDispatcher = createEventDispatcher();
 			eventBroadcaster = createEventBroadcaster();
-			commandFactory = createCommandFactory();
-			mediatorFactory = createMediatorFactory();
+			commandMap = createCommandMap();
+			mediatorMap = createMediatorMap();
 			initializeInjections();
 			logger.info('Context Initialized - ' + this);
 			if (autoStartup)
@@ -106,7 +119,9 @@ package org.robotlegs.mvcs
 		
 		/**
 		 * ADDED_TO_STAGE event handler
+		 *
 		 * Only used if <code>autoStart</code> is true but the <code>contextView</code> was not on Stage during the context's construction
+		 * 
 		 * @param e The Event
 		 */
 		protected function onAddedToStage(e:Event):void
@@ -116,33 +131,97 @@ package org.robotlegs.mvcs
 			startup();
 		}
 		
+		/**
+		 * Create a default <code>IInjector</code>
+		 * 
+		 * Override this to change the default configuration
+		 * 
+		 * NOTE: If an <code>IInjector</code> was provided via the super constructor this method won't get called
+		 * 
+		 * @return An <code>IInjector</code>
+		 */		
+		protected function createInjector():IInjector
+		{
+			return new SwiftSuspendersInjector();
+		}
+		
+		/**
+		 * Create a default <code>IReflector</code>
+		 * 
+		 * Override this to change the default configuration
+		 * 
+		 * NOTE: If an <code>IReflector</code> was provided via the super constructor this method won't get called
+		 * 
+		 * @return An <code>IReflector</code>
+		 */		
+		protected function createReflector():IReflector
+		{
+			return new SwiftSuspendersReflector();
+		}
+		
+		/**
+		 * Create a default <code>ILogger</code>
+		 * 
+		 * Override this to change the default configuration
+		 * 
+		 * @return An <code>ILogger</code>
+		 */		
 		protected function createLogger():ILogger
 		{
 			return new NullLogger();
 		}
 		
+		/**
+		 * Create a default <code>IEventDispatcher</code>
+		 * 
+		 * Override this to change the default configuration
+		 * 
+		 * @return An <code>IEventDispatcher</code>
+		 */		
 		protected function createEventDispatcher():IEventDispatcher
 		{
 			return new EventDispatcher();
 		}
 		
+		/**
+		 * Create a default <code>IEventBroadcaster</code>
+		 * 
+		 * Override this to change the default configuration
+		 * 
+		 * @return An <code>IEventBroadcaster</code>
+		 */		
 		protected function createEventBroadcaster():IEventBroadcaster
 		{
 			return new EventBroadcaster(eventDispatcher);
 		}
 		
-		protected function createCommandFactory():ICommandFactory
+		/**
+		 * Create a default <code>ICommandMap</code>
+		 * 
+		 * Override this to change the default configuration
+		 * 
+		 * @return An <code>ICommandMap</code>
+		 */		
+		protected function createCommandMap():ICommandMap
 		{
-			return new CommandFactory(eventDispatcher, injector, reflector, logger);
-		}
-		
-		protected function createMediatorFactory():IMediatorFactory
-		{
-			return new MediatorFactory(contextView, injector, reflector, logger);
+			return new CommandMap(eventDispatcher, injector, reflector, logger);
 		}
 		
 		/**
-		 * Bind some commonly needed contextual dependencies
+		 * Create a default <code>IMediatorMap</code>
+		 * 
+		 * Override this to change the default configuration
+		 * 
+		 * @return An <code>IMediatorMap</code>
+		 */		
+		protected function createMediatorMap():IMediatorMap
+		{
+			return new MediatorMap(contextView, injector, reflector, logger);
+		}
+		
+		/**
+		 * Bind some commonly needed contextual dependencies for convenience
+		 *
 		 * These are named to avoid collisions
 		 */
 		protected function initializeInjections():void
@@ -152,8 +231,8 @@ package org.robotlegs.mvcs
 			injector.bindValue(IInjector, injector, 'mvcsInjector');
 			injector.bindValue(IEventDispatcher, eventDispatcher, 'mvcsEventDispatcher');
 			injector.bindValue(IEventBroadcaster, eventBroadcaster, 'mvcsEventBroadcaster');
-			injector.bindValue(ICommandFactory, commandFactory, 'mvcsCommandFactory');
-			injector.bindValue(IMediatorFactory, mediatorFactory, 'mvcsMediatorFactory');
+			injector.bindValue(ICommandMap, commandMap, 'mvcsCommandMap');
+			injector.bindValue(IMediatorMap, mediatorMap, 'mvcsMediatorMap');
 		}
 		
 		/**

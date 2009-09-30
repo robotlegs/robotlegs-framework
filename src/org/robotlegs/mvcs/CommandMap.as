@@ -29,16 +29,16 @@ package org.robotlegs.mvcs
 	import org.as3commons.logging.ILogger;
 	import org.as3commons.logging.impl.NullLogger;
 	import org.robotlegs.core.ICommand;
-	import org.robotlegs.core.ICommandFactory;
+	import org.robotlegs.core.ICommandMap;
 	import org.robotlegs.core.IEventBroadcaster;
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IReflector;
 	import org.robotlegs.utils.createDelegate;
 	
 	/**
-	 * Default MVCS <code>ICommandFactory</code> implementation
+	 * Default MVCS <code>ICommandMap</code> implementation
 	 */
-	public class CommandFactory implements ICommandFactory
+	public class CommandMap implements ICommandMap
 	{
 		/**
 		 * The <code>IEventDispatcher</code> to listen to
@@ -71,13 +71,13 @@ package org.robotlegs.mvcs
 		protected var typeToCallbackMap:Dictionary;
 		
 		/**
-		 * Creates a new <code>CommandFactory</code> object
+		 * Creates a new <code>CommandMap</code> object
 		 *
 		 * @param eventDispatcher The <code>IEventDispatcher</code> to listen to
 		 * @param injector An <code>IInjector</code> to use for this context
 		 * @param reflector An <code>IReflector</code> to use for this context
 		 */
-		public function CommandFactory(eventDispatcher:IEventDispatcher, injector:IInjector, reflector:IReflector, logger:ILogger = null)
+		public function CommandMap(eventDispatcher:IEventDispatcher, injector:IInjector, reflector:IReflector, logger:ILogger = null)
 		{
 			this.eventDispatcher = eventDispatcher;
 			this.eventBroadcaster = new EventBroadcaster(eventDispatcher);
@@ -90,7 +90,7 @@ package org.robotlegs.mvcs
 		/**
 		 * @inheritDoc
 		 */
-		public function mapCommand(type:String, commandClass:Class, oneshot:Boolean = false):void
+		public function mapEvent(type:String, commandClass:Class, oneshot:Boolean = false):void
 		{
 			var message:String;
 			if (reflector.classExtendsOrImplements(commandClass, ICommand) == false)
@@ -119,7 +119,7 @@ package org.robotlegs.mvcs
 		/**
 		 * @inheritDoc
 		 */
-		public function unmapCommand(type:String, commandClass:Class):void
+		public function unmapEvent(type:String, commandClass:Class):void
 		{
 			var callbackMap:Dictionary = typeToCallbackMap[type];
 			if (callbackMap == null)
@@ -141,7 +141,7 @@ package org.robotlegs.mvcs
 		/**
 		 * @inheritDoc
 		 */
-		public function hasCommand(type:String, commandClass:Class):Boolean
+		public function hasEventCommand(type:String, commandClass:Class):Boolean
 		{
 			var callbackMap:Dictionary = typeToCallbackMap[type];
 			if (callbackMap == null)
@@ -153,6 +153,7 @@ package org.robotlegs.mvcs
 		
 		/**
 		 * Event Handler
+		 * 
 		 * @param event The <code>Event</code>
 		 * @param commandClass The <code>ICommand<code> Class to construct and execute
 		 * @param oneshot Should this command mapping be removed after execution?
@@ -168,7 +169,7 @@ package org.robotlegs.mvcs
 			command.execute();
 			if (oneshot)
 			{
-				unmapCommand(event.type, commandClass);
+				unmapEvent(event.type, commandClass);
 			}
 		}
 	

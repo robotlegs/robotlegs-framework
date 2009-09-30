@@ -27,9 +27,8 @@ package org.robotlegs.mvcs
 	
 	import org.as3commons.logging.ILogger;
 	import org.robotlegs.core.IEventBroadcaster;
-	import org.robotlegs.core.IProxy;
 	
-	public class Proxy extends EventDispatcher implements IProxy
+	public class Proxy extends EventDispatcher
 	{
 		[Inject(name='mvcsEventBroadcaster')]
 		public var eventBroadcaster:IEventBroadcaster;

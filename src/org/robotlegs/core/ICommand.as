@@ -30,6 +30,7 @@ package org.robotlegs.core
 	{
 		/**
 		 * Execute the <code>ICommand</code>'s logic
+		 * 
 		 * Declare the concrete <code>Event</code> as a dependency if you need
 		 * access to the <code>Event</code> that triggered this command
 		 */
