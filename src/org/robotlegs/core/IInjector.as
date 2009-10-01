@@ -35,7 +35,7 @@ package org.robotlegs.core
 		 * This is used to register an existing instance with the injector
 		 * and treat it like a Singleton.
 		 *
-		 * @param whenAskedFor A class
+		 * @param whenAskedFor A class or interface
 		 * @param useValue An instance
 		 * @param named An optional name (id)
 		 */
@@ -45,22 +45,56 @@ package org.robotlegs.core
 		 * When asked for an instance of the class <code>whenAskedFor</code>
 		 * inject a new instance of <code>instantiateClass</code>.
 		 *
-		 * @param whenAskedFor A class
+		 * This will create a new instance for each injection.
+		 *
+		 * @param whenAskedFor A class or interface
 		 * @param instantiateClass A class to instantiate
 		 * @param named An optional name (id)
 		 */
 		function bindClass(whenAskedFor:Class, instantiateClass:Class, named:String = null):void;
 		
+		/**
+		 * When asked for an instance of the class <code>whenAskedFor</code>
+		 * inject an instance of code>whenAskedFor</code>.
+		 *
+		 * This will create an instance on the first injection, but
+		 * will re-use that instance for subsequent injections.
+		 *
+		 * @param whenAskedFor A class or interface
+		 * @param named An optional name (id)
+		 */
 		function bindSingleton(whenAskedFor:Class, named:String = null):void;
 		
+		
+		/**
+		 * When asked for an instance of the class <code>whenAskedFor</code>
+		 * inject an instance of code>useSingletonOf</code>.
+		 *
+		 * This will create an instance on the first injection, but
+		 * will re-use that instance for subsequent injections.
+		 *
+		 * @param whenAskedFor A class or interface
+		 * @param useSingletonOf A class to instantiate
+		 * @param named An optional name (id)
+		 */
 		function bindSingletonOf(whenAskedFor:Class, useSingletonOf:Class, named:String = null):void;
 		
 		/**
 		 * Perform an injection into an object, satisfying all it's dependencies
-		 * @param target The object to inject into
+		 *
+		 * The <code>IInjector</code> should throw an <code>Error</code>
+		 * if it can't satisfy all dependencies of the injectee.
+		 *
+		 * @param target The object to inject into - the Injectee
 		 */
 		function injectInto(target:Object):void;
 		
+		/**
+		 * Remove a rule from the injector
+		 *
+		 * @param clazz A class or interface
+		 * @param named An optional name (id)
+		 */
 		function unbind(clazz:Class, named:String = null):void;
 	}
 }
