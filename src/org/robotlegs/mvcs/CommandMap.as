@@ -28,7 +28,6 @@ package org.robotlegs.mvcs
 	
 	import org.robotlegs.core.ICommand;
 	import org.robotlegs.core.ICommandMap;
-	import org.robotlegs.core.IEventBroadcaster;
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IReflector;
 	import org.robotlegs.utils.createDelegate;
@@ -42,11 +41,6 @@ package org.robotlegs.mvcs
 		 * The <code>IEventDispatcher</code> to listen to
 		 */
 		protected var eventDispatcher:IEventDispatcher;
-		
-		/**
-		 * The <code>IEventBroadcaster</code> to dispatch Events with
-		 */
-		protected var eventBroadcaster:IEventBroadcaster;
 		
 		/**
 		 * The <code>IInjector</code> to inject with
@@ -73,7 +67,6 @@ package org.robotlegs.mvcs
 		public function CommandMap(eventDispatcher:IEventDispatcher, injector:IInjector, reflector:IReflector)
 		{
 			this.eventDispatcher = eventDispatcher;
-			this.eventBroadcaster = new EventBroadcaster(eventDispatcher);
 			this.injector = injector;
 			this.reflector = reflector;
 			this.typeToCallbackMap = new Dictionary(false);

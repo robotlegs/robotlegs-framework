@@ -24,10 +24,10 @@ package org.robotlegs.mvcs
 {
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
+	import flash.events.IEventDispatcher;
 	
 	import org.robotlegs.core.ICommand;
 	import org.robotlegs.core.ICommandMap;
-	import org.robotlegs.core.IEventBroadcaster;
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IMediatorMap;
 	
@@ -42,8 +42,8 @@ package org.robotlegs.mvcs
 		[Inject(name='mvcsCommandMap')]
 		public var commandMap:ICommandMap;
 		
-		[Inject(name='mvcsEventBroadcaster')]
-		public var eventBroadcaster:IEventBroadcaster;
+		[Inject(name='mvcsEventDispatcher')]
+		public var eventDispatcher:IEventDispatcher;
 		
 		[Inject(name='mvcsInjector')]
 		public var injector:IInjector;
@@ -63,12 +63,15 @@ package org.robotlegs.mvcs
 		}
 		
 		/**
-		 * A helper method to dispatch Events on the default Event Broadcaster
-		 * @param event The Event to dispatch
+		 * IEventDispatcher.dispatchEvent() Helper method
+		 *
+		 * The same as calling <code>dispatchEvent</code> directly on the <code>IEventDispatcher</code>
+		 * 
+		 * @param event The <code>Event</code> to dispatch on the <code>IEventDispatcher</code>
 		 */
 		protected function dispatch(event:Event):void
 		{
-			eventBroadcaster.dispatchEvent(event);
+			eventDispatcher.dispatchEvent(event);
 		}
 	
 	}

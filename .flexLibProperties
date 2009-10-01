@@ -12,7 +12,6 @@
     <classEntry path="org.robotlegs.core.ICommandMap"/>
     <classEntry path="org.robotlegs.core.IContext"/>
     <classEntry path="org.robotlegs.core.IContextProvider"/>
-    <classEntry path="org.robotlegs.core.IEventBroadcaster"/>
     <classEntry path="org.robotlegs.core.IInjector"/>
     <classEntry path="org.robotlegs.core.IMediator"/>
     <classEntry path="org.robotlegs.core.IMediatorMap"/>
@@ -23,7 +22,6 @@
     <classEntry path="org.robotlegs.mvcs.Context"/>
     <classEntry path="org.robotlegs.mvcs.ContextError"/>
     <classEntry path="org.robotlegs.mvcs.ContextEvent"/>
-    <classEntry path="org.robotlegs.mvcs.EventBroadcaster"/>
     <classEntry path="org.robotlegs.mvcs.Mediator"/>
     <classEntry path="org.robotlegs.mvcs.MediatorMap"/>
     <classEntry path="org.robotlegs.mvcs.Proxy"/>

@@ -23,14 +23,12 @@
 package org.robotlegs.mvcs
 {
 	import flash.events.Event;
-	import flash.events.EventDispatcher;
+	import flash.events.IEventDispatcher;
 	
-	import org.robotlegs.core.IEventBroadcaster;
-	
-	public class Proxy extends EventDispatcher
+	public class Proxy
 	{
-		[Inject(name='mvcsEventBroadcaster')]
-		public var eventBroadcaster:IEventBroadcaster;
+		[Inject(name='mvcsEventDispatcher')]
+		public var eventDispatcher:IEventDispatcher;
 		
 		/**
 		 * Abstract MVCS <code>IProxy</code> implementation
@@ -40,13 +38,15 @@ package org.robotlegs.mvcs
 		}
 		
 		/**
-		 * dispatchEvent Helper method
-		 * The same as calling <code>dispatchEvent</code> directly on the <code>IEventBroadcaster</code>
-		 * @param event The <code>Event</code> to dispatch on the <code>IEventBroadcaster</code>
+		 * IEventDispatcher.dispatchEvent() Helper method
+		 *
+		 * The same as calling <code>dispatchEvent</code> directly on the <code>IEventDispatcher</code>
+		 * 
+		 * @param event The <code>Event</code> to dispatch on the <code>IEventDispatcher</code>
 		 */
 		protected function dispatch(event:Event):void
 		{
-			eventBroadcaster.dispatchEvent(event);
+			eventDispatcher.dispatchEvent(event);
 		}
 	
 	}

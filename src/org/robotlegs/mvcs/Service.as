@@ -23,13 +23,12 @@
 package org.robotlegs.mvcs
 {
 	import flash.events.Event;
-	
-	import org.robotlegs.core.IEventBroadcaster;
+	import flash.events.IEventDispatcher;
 	
 	public class Service
 	{
-		[Inject(name='mvcsEventBroadcaster')]
-		public var eventBroadcaster:IEventBroadcaster;
+		[Inject(name='mvcsEventDispatcher')]
+		public var eventDispatcher:IEventDispatcher;
 		
 		/**
 		 * Abstract MVCS <code>IService</code> implementation
@@ -39,13 +38,15 @@ package org.robotlegs.mvcs
 		}
 		
 		/**
-		 * dispatchEvent Helper method
-		 * The same as calling <code>dispatchEvent</code> directly on the <code>IEventBroadcaster</code>
-		 * @param event The <code>Event</code> to dispatch on the <code>IEventBroadcaster</code>
+		 * IEventDispatcher.dispatchEvent() Helper method
+		 *
+		 * The same as calling <code>dispatchEvent</code> directly on the <code>IEventDispatcher</code>
+		 * 
+		 * @param event The <code>Event</code> to dispatch on the <code>IEventDispatcher</code>
 		 */
 		protected function dispatch(event:Event):void
 		{
-			eventBroadcaster.dispatchEvent(event);
+			eventDispatcher.dispatchEvent(event);
 		}
 	
 	}

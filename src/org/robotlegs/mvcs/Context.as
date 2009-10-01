@@ -31,7 +31,6 @@ package org.robotlegs.mvcs
 	import org.robotlegs.adapters.SwiftSuspendersReflector;
 	import org.robotlegs.core.ICommandMap;
 	import org.robotlegs.core.IContext;
-	import org.robotlegs.core.IEventBroadcaster;
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IMediatorMap;
 	import org.robotlegs.core.IReflector;
@@ -46,7 +45,6 @@ package org.robotlegs.mvcs
 		protected var reflector:IReflector;
 		protected var commandMap:ICommandMap;
 		protected var eventDispatcher:IEventDispatcher;
-		protected var eventBroadcaster:IEventBroadcaster;
 		protected var mediatorMap:IMediatorMap;
 		
 		/**
@@ -74,7 +72,7 @@ package org.robotlegs.mvcs
 		 */
 		public function startup():void
 		{
-			eventBroadcaster.dispatchEvent(new ContextEvent(ContextEvent.STARTUP));
+			dispatch(new ContextEvent(ContextEvent.STARTUP));
 		}
 		
 		/**
@@ -101,7 +99,6 @@ package org.robotlegs.mvcs
 				reflector = createReflector();
 			}
 			eventDispatcher = createEventDispatcher();
-			eventBroadcaster = createEventBroadcaster();
 			commandMap = createCommandMap();
 			mediatorMap = createMediatorMap();
 			initializeInjections();
@@ -165,18 +162,6 @@ package org.robotlegs.mvcs
 		}
 		
 		/**
-		 * Create a default <code>IEventBroadcaster</code>
-		 *
-		 * Override this to change the default configuration
-		 *
-		 * @return An <code>IEventBroadcaster</code>
-		 */
-		protected function createEventBroadcaster():IEventBroadcaster
-		{
-			return new EventBroadcaster(eventDispatcher);
-		}
-		
-		/**
 		 * Create a default <code>ICommandMap</code>
 		 *
 		 * Override this to change the default configuration
@@ -210,7 +195,6 @@ package org.robotlegs.mvcs
 			injector.bindValue(DisplayObjectContainer, contextView, 'mvcsContextView');
 			injector.bindValue(IInjector, injector, 'mvcsInjector');
 			injector.bindValue(IEventDispatcher, eventDispatcher, 'mvcsEventDispatcher');
-			injector.bindValue(IEventBroadcaster, eventBroadcaster, 'mvcsEventBroadcaster');
 			injector.bindValue(ICommandMap, commandMap, 'mvcsCommandMap');
 			injector.bindValue(IMediatorMap, mediatorMap, 'mvcsMediatorMap');
 		}
