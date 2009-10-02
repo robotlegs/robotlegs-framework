@@ -141,9 +141,8 @@ package org.robotlegs.mvcs
 		{
 			var eventClass:Class = Object(event).constructor;
 			if (eventClass != originalEventClass) return;
-			var command:Object = new commandClass();
 			injector.mapValue(eventClass, event);
-			injector.injectInto(command);
+			var command:Object = injector.instantiate(commandClass);
 			injector.unmap(eventClass);
 			command.execute();
 			if (oneshot)

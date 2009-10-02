@@ -90,6 +90,17 @@ package org.robotlegs.core
 		function injectInto(target:Object):void;
 		
 		/**
+		 * Create an object from a class, supplying its dependencies as constructor parameters
+		 *
+		 * The <code>IInjector</code> should throw an <code>Error</code>
+		 * if it can't satisfy all dependencies of the injectee.
+		 *
+		 * @param target The class to instantiate
+		 * @return the created instance
+		 */
+		function instantiate(clazz:Class):*;
+		
+		/**
 		 * Remove a rule from the injector
 		 *
 		 * @param clazz A class or interface

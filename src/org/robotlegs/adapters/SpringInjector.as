@@ -136,6 +136,16 @@ package org.robotlegs.adapters
 		/**
 		 * @inheritDoc
 		 */
+		public function instantiate(clazz:Class):*
+		{
+			var instance : * = new clazz();
+			injectInto(instance);
+			return instance;
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
 		public function unmap(clazz:Class, named:String = null):void
 		{
 			named = named ? named : ClassUtils.getFullyQualifiedName(clazz);

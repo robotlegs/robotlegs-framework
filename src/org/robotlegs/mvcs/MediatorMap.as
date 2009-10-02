@@ -118,9 +118,8 @@ package org.robotlegs.mvcs
 				var config:MappingConfig = mappingConfigByViewClassName[viewClassName];
 				if (config)
 				{
-					mediator = new config.mediatorClass();
 					injector.mapValue(config.typedViewClass, viewComponent);
-					injector.injectInto(mediator);
+					mediator = injector.instantiate(config.mediatorClass);
 					injector.unmap(config.typedViewClass);
 					registerViewMediator(viewComponent, mediator);
 				}
