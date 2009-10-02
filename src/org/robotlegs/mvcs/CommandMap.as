@@ -55,7 +55,7 @@ package org.robotlegs.mvcs
 		/**
 		 * Internal
 		 */
-		protected var typeToCallbackMap:Dictionary;
+		protected var eventTypeMap:Dictionary;
 		
 		/**
 		 * Creates a new <code>CommandMap</code> object
@@ -69,13 +69,13 @@ package org.robotlegs.mvcs
 			this.eventDispatcher = eventDispatcher;
 			this.injector = injector;
 			this.reflector = reflector;
-			this.typeToCallbackMap = new Dictionary(false);
+			this.eventTypeMap = new Dictionary(false);
 		}
 		
 		/**
 		 * @inheritDoc
 		 */
-		public function mapEvent(type:String, commandClass:Class, oneshot:Boolean = false):void
+		public function mapEvent(commandClass:Class, eventType:String, eventClass:Class = null, oneshot:Boolean = false):void
 		{
 			var message:String;
 			if (reflector.classExtendsOrImplements(commandClass, ICommand) == false)
@@ -83,52 +83,51 @@ package org.robotlegs.mvcs
 				message = ContextError.E_MAP_COM_IMPL + ' - ' + commandClass;
 				throw new ContextError(message);
 			}
-			var callbackMap:Dictionary = typeToCallbackMap[type];
-			if (callbackMap == null)
+			eventClass = eventClass || Event;
+			
+			var eventClassMap:Dictionary = eventTypeMap[eventType]
+				|| (eventTypeMap[eventType] = new Dictionary(false));
+				
+			var callbacksByCommandClass:Dictionary = eventClassMap[eventClass]
+				|| (eventClassMap[eventClass] = new Dictionary(false));
+				
+			if (callbacksByCommandClass[commandClass] != null)
 			{
-				callbackMap = new Dictionary(false);
-				typeToCallbackMap[type] = callbackMap;
-			}
-			if (callbackMap[commandClass] != null)
-			{
-				message = ContextError.E_MAP_COM_OVR + ' - type (' + type + ') and Command (' + commandClass + ')';
+				message = ContextError.E_MAP_COM_OVR + ' - eventType (' + eventType + ') and Command (' + commandClass + ')';
 				throw new ContextError(message);
 			}
-			var callback:Function = createDelegate(handleEvent, commandClass, oneshot);
-			eventDispatcher.addEventListener(type, callback, false, 0, true);
-			callbackMap[commandClass] = callback;
+			var callback:Function = createDelegate(handleEvent, commandClass, oneshot, eventClass);
+			eventDispatcher.addEventListener(eventType, callback, false, 0, true);
+			callbacksByCommandClass[commandClass] = callback;
 		}
 		
 		/**
 		 * @inheritDoc
 		 */
-		public function unmapEvent(type:String, commandClass:Class):void
+		public function unmapEvent(commandClass:Class, eventType:String, eventClass:Class = null):void
 		{
-			var callbackMap:Dictionary = typeToCallbackMap[type];
-			if (callbackMap == null)
-			{
-				return;
-			}
-			var callback:Function = callbackMap[commandClass];
-			if (callback == null)
-			{
-				return;
-			}
-			eventDispatcher.removeEventListener(type, callback, false);
-			delete callbackMap[commandClass];
+			var eventClassMap:Dictionary = eventTypeMap[eventType];
+			if (eventClassMap == null) return;
+			var callbacksByCommandClass:Dictionary = eventClassMap[eventClass || Event];
+			if (callbacksByCommandClass == null) return;
+			var callback:Function = callbacksByCommandClass[commandClass];
+			if (callback == null) return;
+			
+			eventDispatcher.removeEventListener(eventType, callback, false);
+			delete callbacksByCommandClass[commandClass];
 		}
 		
 		/**
 		 * @inheritDoc
 		 */
-		public function hasEventCommand(type:String, commandClass:Class):Boolean
+		public function hasEventCommand(commandClass:Class, eventType:String, eventClass:Class = null):Boolean
 		{
-			var callbackMap:Dictionary = typeToCallbackMap[type];
-			if (callbackMap == null)
-			{
-				return false;
-			}
-			return callbackMap[commandClass] != null;
+			var eventClassMap:Dictionary = eventTypeMap[eventType];
+			if (eventClassMap == null) return false;
+			var callbacksByCommandClass:Dictionary = eventClassMap[eventClass || Event];
+			if (callbacksByCommandClass == null) return false;
+			
+			return callbacksByCommandClass[commandClass] != null;
 		}
 		
 		/**
@@ -138,17 +137,18 @@ package org.robotlegs.mvcs
 		 * @param commandClass The <code>ICommand<code> Class to construct and execute
 		 * @param oneshot Should this command mapping be removed after execution?
 		 */
-		protected function handleEvent(event:Event, commandClass:Class, oneshot:Boolean):void
+		protected function handleEvent(event:Event, commandClass:Class, oneshot:Boolean, originalEventClass:Class):void
 		{
+			var eventClass:Class = Object(event).constructor;
+			if (eventClass != originalEventClass) return;
 			var command:Object = new commandClass();
-			var eventClass:Class = reflector.getClass(event);
 			injector.mapValue(eventClass, event);
 			injector.injectInto(command);
 			injector.unmap(eventClass);
 			command.execute();
 			if (oneshot)
 			{
-				unmapEvent(event.type, commandClass);
+				unmapEvent(commandClass, event.type, eventClass);
 			}
 		}
 	
