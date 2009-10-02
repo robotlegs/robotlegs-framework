@@ -142,7 +142,7 @@ package org.robotlegs.mvcs
 			var parentProvider:IPropertyProvider;
 			while ((parent = viewDo.parent))
 			{
-				if ((parentMediator = mediatorMap.retrieve(parent)))
+				if ((parentMediator = mediatorMap.retrieveMediator(parent)))
 				{
 					if ((parentProvider = parentMediator as IPropertyProvider) && (val = parentProvider.provideProperty(name, type)))
 					{
@@ -254,7 +254,7 @@ package org.robotlegs.mvcs
 		
 		/**
 		 * FlexEvent.CREATION_COMPLETE handler for this Mediator's View Component
-		 * 
+		 *
 		 * @param e The Flex Event
 		 */
 		private function onCreationComplete(e:Event):void

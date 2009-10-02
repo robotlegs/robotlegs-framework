@@ -31,72 +31,86 @@ package org.robotlegs.core
 		
 		/**
 		 * Map an <code>IMediator</code> to a view Class
-		 * 
+		 *
 		 * @param viewClassOrName The concrete view Class or Fully Qualified Class Name (<code>flash.utils.getQualifiedClassName</code>::style)
 		 * @param mediatorClass The <code>IMediator</code> Class
-		 * @param autoRegister Automatically construct and register an instance of Class <code>mediatorClass</code> when an instance of Class <code>viewClass</code> is detected
+		 * @param autoCreate Automatically construct and register an instance of Class <code>mediatorClass</code> when an instance of Class <code>viewClass</code> is detected
 		 * @param autoRemove Automatically remove an instance of Class <code>mediatorClass</code> when it's <code>viewClass</code> leaves the ancestory of the context view
 		 */
-		function map(viewClassOrName:*, mediatorClass:Class, autoRegister:Boolean = true, autoRemove:Boolean = true):void
+		function mapViewMediator(viewClassOrName:*, mediatorClass:Class, autoCreate:Boolean = true, autoRemove:Boolean = true):void
 		
 		/**
 		 * Map an <code>IMediator</code> to a module
-		 * 
+		 *
 		 * @param moduleClassName Fully Qualified Class Name of the Module (<code>flash.utils.getQualifiedClassName</code>::style)
 		 * @param localModuleClass The local Class (Interface) to be inject
 		 * @param mediatorClass The <code>IMediator</code> Class
-		 * @param autoRegister Automatically construct and register an instance of Class <code>mediatorClass</code> when an instance of Class <code>moduleClassName</code> is detected
+		 * @param autoCreate Automatically construct and register an instance of Class <code>mediatorClass</code> when an instance of Class <code>moduleClassName</code> is detected
 		 * @param autoRemove Automatically remove an instance of Class <code>mediatorClass</code> when it's <code>viewClass</code> leaves the ancestory of the context view
 		 */
-		function mapModule(moduleClassName:String, localModuleClass:Class, mediatorClass:Class, autoRegister:Boolean = true, autoRemove:Boolean = true):void
+		function mapModuleMediator(moduleClassName:String, localModuleClass:Class, mediatorClass:Class, autoCreate:Boolean = true, autoRemove:Boolean = true):void
 		
 		/**
 		 * Create an instance of a mapped <code>IMediator</code>
-		 * 
+		 *
+		 * This will create a Mediator for a given View Component.
+		 * Mediator dependencies will be automatically resolved.
+		 *
 		 * @param viewComponent An instance of the view Class previously mapped to an <code>IMediator</code> Class
 		 * @return The <code>IMediator</code>
 		 */
-		function create(viewComponent:Object):IMediator;
+		function createMediator(viewComponent:Object):IMediator;
 		
 		/**
 		 * Manually register an <code>IMediator</code> instance
-		 * 
+		 *
+		 * Registering a Mediator will NOT inject it's dependencies.
+		 * It is assumed that dependencies are already satisfied.
+		 *
 		 * @param viewComponent The view component for the <code>IMediator</code>
 		 * @param mediator The <code>IMediator</code> to register
 		 */
-		function register(viewComponent:Object, mediator:IMediator):void;
+		function registerViewMediator(viewComponent:Object, mediator:IMediator):void;
 		
 		/**
 		 * Remove a registered <code>IMediator</code> instance
-		 * 
+		 *
 		 * @param mediator The <code>IMediator</code> to remove
 		 * @return The <code>IMediator</code> that was removed
 		 */
-		function remove(mediator:IMediator):IMediator;
+		function removeMediator(mediator:IMediator):IMediator;
 		
 		/**
 		 * Remove a registered <code>IMediator</code> instance
-		 * 
+		 *
 		 * @param viewComponent The view that the <code>IMediator</code> was registered with
 		 * @return The <code>IMediator</code> that was removed
 		 */
-		function removeByView(viewComponent:Object):IMediator;
+		function removeViewMediator(viewComponent:Object):IMediator;
 		
 		/**
 		 * Retrieve a registered <code>IMediator</code> instance
-		 * 
+		 *
 		 * @param viewComponent The view that the <code>IMediator</code> was registered with
 		 * @return The <code>IMediator</code>
 		 */
-		function retrieve(viewComponent:Object):IMediator;
+		function retrieveMediator(viewComponent:Object):IMediator;
 		
 		/**
 		 * Check if an <code>IMediator</code> has been registered for a view instance
-		 * 
+		 *
 		 * @param viewComponent The view that the <code>IMediator</code> was registered with
 		 * @return Whether an <code>IMediator</code> has been registered for this view instance
 		 */
-		function hasMediator(viewComponent:Object):Boolean;
+		function hasViewMediator(viewComponent:Object):Boolean;
+		
+		/**
+		 * Check if an <code>IMediator</code> has been registered
+		 *
+		 * @param mediator The <code>IMediator</code> instance
+		 * @return Whether this <code>IMediator</code> has been registered
+		 */
+		function hasMediator(mediator:IMediator):Boolean;
 	
 	}
 }
