@@ -39,7 +39,7 @@ package org.robotlegs.core
 		 * @param useValue An instance
 		 * @param named An optional name (id)
 		 */
-		function bindValue(whenAskedFor:Class, useValue:Object, named:String = null):void;
+		function mapValue(whenAskedFor:Class, useValue:Object, named:String = null):void;
 		
 		/**
 		 * When asked for an instance of the class <code>whenAskedFor</code>
@@ -51,7 +51,7 @@ package org.robotlegs.core
 		 * @param instantiateClass A class to instantiate
 		 * @param named An optional name (id)
 		 */
-		function bindClass(whenAskedFor:Class, instantiateClass:Class, named:String = null):void;
+		function mapClass(whenAskedFor:Class, instantiateClass:Class, named:String = null):void;
 		
 		/**
 		 * When asked for an instance of the class <code>whenAskedFor</code>
@@ -63,7 +63,7 @@ package org.robotlegs.core
 		 * @param whenAskedFor A class or interface
 		 * @param named An optional name (id)
 		 */
-		function bindSingleton(whenAskedFor:Class, named:String = null):void;
+		function mapSingleton(whenAskedFor:Class, named:String = null):void;
 		
 		
 		/**
@@ -77,7 +77,7 @@ package org.robotlegs.core
 		 * @param useSingletonOf A class to instantiate
 		 * @param named An optional name (id)
 		 */
-		function bindSingletonOf(whenAskedFor:Class, useSingletonOf:Class, named:String = null):void;
+		function mapSingletonOf(whenAskedFor:Class, useSingletonOf:Class, named:String = null):void;
 		
 		/**
 		 * Perform an injection into an object, satisfying all it's dependencies
@@ -95,6 +95,6 @@ package org.robotlegs.core
 		 * @param clazz A class or interface
 		 * @param named An optional name (id)
 		 */
-		function unbind(clazz:Class, named:String = null):void;
+		function unmap(clazz:Class, named:String = null):void;
 	}
 }

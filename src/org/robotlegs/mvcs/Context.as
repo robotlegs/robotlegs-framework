@@ -192,11 +192,11 @@ package org.robotlegs.mvcs
 		 */
 		protected function initializeInjections():void
 		{
-			injector.bindValue(DisplayObjectContainer, contextView, 'mvcsContextView');
-			injector.bindValue(IInjector, injector, 'mvcsInjector');
-			injector.bindValue(IEventDispatcher, eventDispatcher, 'mvcsEventDispatcher');
-			injector.bindValue(ICommandMap, commandMap, 'mvcsCommandMap');
-			injector.bindValue(IMediatorMap, mediatorMap, 'mvcsMediatorMap');
+			injector.mapValue(DisplayObjectContainer, contextView, 'mvcsContextView');
+			injector.mapValue(IInjector, injector, 'mvcsInjector');
+			injector.mapValue(IEventDispatcher, eventDispatcher, 'mvcsEventDispatcher');
+			injector.mapValue(ICommandMap, commandMap, 'mvcsCommandMap');
+			injector.mapValue(IMediatorMap, mediatorMap, 'mvcsMediatorMap');
 		}
 		
 		/**

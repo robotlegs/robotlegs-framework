@@ -119,9 +119,9 @@ package org.robotlegs.mvcs
 				if (config)
 				{
 					mediator = new config.mediatorClass();
-					injector.bindValue(config.typedViewClass, viewComponent);
+					injector.mapValue(config.typedViewClass, viewComponent);
 					injector.injectInto(mediator);
-					injector.unbind(config.typedViewClass);
+					injector.unmap(config.typedViewClass);
 					registerViewMediator(viewComponent, mediator);
 				}
 			}
@@ -133,7 +133,7 @@ package org.robotlegs.mvcs
 		 */
 		public function registerViewMediator(viewComponent:Object, mediator:IMediator):void
 		{
-			injector.bindValue(reflector.getClass(mediator), mediator);
+			injector.mapValue(reflector.getClass(mediator), mediator);
 			mediatorByView[viewComponent] = mediator;
 			mappingConfigByView[viewComponent] = mappingConfigByViewClassName[reflector.getFQCN(viewComponent)];
 			mediator.setViewComponent(viewComponent);
@@ -152,7 +152,7 @@ package org.robotlegs.mvcs
 				delete mappingConfigByView[viewComponent];
 				mediator.preRemove();
 				mediator.setViewComponent(null);
-				injector.unbind(reflector.getClass(mediator));
+				injector.unmap(reflector.getClass(mediator));
 			}
 			return mediator;
 		}

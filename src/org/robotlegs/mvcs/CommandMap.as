@@ -142,9 +142,9 @@ package org.robotlegs.mvcs
 		{
 			var command:Object = new commandClass();
 			var eventClass:Class = reflector.getClass(event);
-			injector.bindValue(eventClass, event);
+			injector.mapValue(eventClass, event);
 			injector.injectInto(command);
-			injector.unbind(eventClass);
+			injector.unmap(eventClass);
 			command.execute();
 			if (oneshot)
 			{

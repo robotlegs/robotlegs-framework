@@ -52,7 +52,7 @@ package org.robotlegs.adapters
 		/**
 		 * @inheritDoc
 		 */
-		public function bindValue(whenAskedFor:Class, useValue:Object, named:String = null):void
+		public function mapValue(whenAskedFor:Class, useValue:Object, named:String = null):void
 		{
 			getRule(whenAskedFor, named).useValue(useValue);
 		}
@@ -60,7 +60,7 @@ package org.robotlegs.adapters
 		/**
 		 * @inheritDoc
 		 */
-		public function bindClass(whenAskedFor:Class, instantiateClass:Class, named:String = null):void
+		public function mapClass(whenAskedFor:Class, instantiateClass:Class, named:String = null):void
 		{
 			getRule(whenAskedFor, named).useClass(instantiateClass);
 		}
@@ -68,7 +68,7 @@ package org.robotlegs.adapters
 		/**
 		 * @inheritDoc
 		 */
-		public function bindSingleton(whenAskedFor:Class, named:String = null):void
+		public function mapSingleton(whenAskedFor:Class, named:String = null):void
 		{
 			getRule(whenAskedFor, named).useSingleton();
 		}
@@ -76,7 +76,7 @@ package org.robotlegs.adapters
 		/**
 		 * @inheritDoc
 		 */
-		public function bindSingletonOf(whenAskedFor:Class, useSingletonOf:Class, named:String = null):void
+		public function mapSingletonOf(whenAskedFor:Class, useSingletonOf:Class, named:String = null):void
 		{
 			getRule(whenAskedFor, named).useSingletonOf(useSingletonOf);
 		}
@@ -92,7 +92,7 @@ package org.robotlegs.adapters
 		/**
 		 * @inheritDoc
 		 */
-		public function unbind(clazz:Class, named:String = null):void
+		public function unmap(clazz:Class, named:String = null):void
 		{
 			getRule(clazz, named).defaultBehaviour();
 		}
