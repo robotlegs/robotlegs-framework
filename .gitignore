@@ -1,5 +1,16 @@
 /.settings/*
+
+/html-template/*
+/bin-debug/*
+/bin-release/*
+/libs/*
 /bin/*
+
+.actionScriptProperties
+.flexProperties
+.flexLibProperties
+.project
+
+Icon
 Thumbs.db
 .DS_Store
-Icon
