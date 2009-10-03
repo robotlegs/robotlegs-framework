@@ -92,6 +92,16 @@ package org.robotlegs.adapters
 		/**
 		 * @inheritDoc
 		 */
+		public function instantiate(clazz:Class):*
+		{
+			var instance : * = new clazz();
+			injector.injectInto(instance);
+			return instance;
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
 		public function unmap(clazz:Class, named:String = null):void
 		{
 			getRule(clazz, named).defaultBehaviour();

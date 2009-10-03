@@ -1,4 +1,5 @@
 /.settings/*
+/bin/*
 Thumbs.db
 .DS_Store
 Icon
