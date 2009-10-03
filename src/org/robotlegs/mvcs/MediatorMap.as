@@ -71,7 +71,7 @@ package org.robotlegs.mvcs
 		/**
 		 * @inheritDoc
 		 */
-		public function mapViewMediator(viewClassOrName:*, mediatorClass:Class, autoCreate:Boolean = true, autoRemove:Boolean = true):void
+		public function mapView(viewClassOrName:*, mediatorClass:Class, autoCreate:Boolean = true, autoRemove:Boolean = true):void
 		{
 			var message:String;
 			var viewClassName:String = reflector.getFQCN(viewClassOrName);
@@ -99,9 +99,9 @@ package org.robotlegs.mvcs
 		/**
 		 * @inheritDoc
 		 */
-		public function mapModuleMediator(moduleClassName:String, localModuleClass:Class, mediatorClass:Class, autoCreate:Boolean = true, autoRemove:Boolean = true):void
+		public function mapModule(moduleClassName:String, localModuleClass:Class, mediatorClass:Class, autoCreate:Boolean = true, autoRemove:Boolean = true):void
 		{
-			mapViewMediator(moduleClassName, mediatorClass, autoCreate, autoRemove);
+			mapView(moduleClassName, mediatorClass, autoCreate, autoRemove);
 			var config:MappingConfig = mappingConfigByViewClassName[moduleClassName];
 			config.typedViewClass = localModuleClass;
 		}
@@ -122,7 +122,7 @@ package org.robotlegs.mvcs
 					injector.mapValue(config.typedViewClass, viewComponent);
 					injector.injectInto(mediator);
 					injector.unmap(config.typedViewClass);
-					registerViewMediator(viewComponent, mediator);
+					registerMediator(viewComponent, mediator);
 				}
 			}
 			return mediator;
@@ -131,7 +131,7 @@ package org.robotlegs.mvcs
 		/**
 		 * @inheritDoc
 		 */
-		public function registerViewMediator(viewComponent:Object, mediator:IMediator):void
+		public function registerMediator(viewComponent:Object, mediator:IMediator):void
 		{
 			injector.mapValue(reflector.getClass(mediator), mediator);
 			mediatorByView[viewComponent] = mediator;
@@ -160,7 +160,7 @@ package org.robotlegs.mvcs
 		/**
 		 * @inheritDoc
 		 */
-		public function removeViewMediator(viewComponent:Object):IMediator
+		public function removeMediatorByView(viewComponent:Object):IMediator
 		{
 			return removeMediator(retrieveMediator(viewComponent));
 		}
@@ -176,7 +176,7 @@ package org.robotlegs.mvcs
 		/**
 		 * @inheritDoc
 		 */
-		public function hasViewMediator(viewComponent:Object):Boolean
+		public function hasMediatorForView(viewComponent:Object):Boolean
 		{
 			return mediatorByView[viewComponent] != null;
 		}
@@ -246,7 +246,7 @@ package org.robotlegs.mvcs
 		{
 			if (viewComponent.stage == null)
 			{
-				removeViewMediator(viewComponent);
+				removeMediatorByView(viewComponent);
 			}
 		}
 	
