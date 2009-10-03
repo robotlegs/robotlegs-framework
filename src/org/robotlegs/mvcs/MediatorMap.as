@@ -47,6 +47,9 @@ package org.robotlegs.mvcs
 		protected var mappingConfigByViewClassName:Dictionary;
 		protected var localViewClassByViewClassName:Dictionary;
 		
+		protected var mediatorsMarkedForRemoval:Dictionary;
+		protected var hasMediatorsMarkedForRemoval:Boolean;
+		
 		/**
 		 * Creates a new <code>MediatorMap</code> object
 		 * @param contextView The root view node of the context. The context will listen for ADDED_TO_STAGE events on this node
@@ -64,6 +67,8 @@ package org.robotlegs.mvcs
 			this.mediatorByView = new Dictionary(true);
 			this.mappingConfigByView = new Dictionary(true);
 			this.mappingConfigByViewClassName = new Dictionary(false);
+			
+			this.mediatorsMarkedForRemoval = new Dictionary(false);
 			
 			initializeListeners();
 		}
@@ -223,6 +228,11 @@ package org.robotlegs.mvcs
 		
 		protected function onViewAdded(e:Event):void
 		{
+			if (mediatorsMarkedForRemoval[e.target])
+			{
+				delete mediatorsMarkedForRemoval[e.target];
+				return;
+			}
 			var config:MappingConfig = mappingConfigByViewClassName[reflector.getFQCN(e.target)];
 			if (config && config.autoCreate)
 			{
@@ -236,17 +246,27 @@ package org.robotlegs.mvcs
 			if (config && config.autoRemove)
 			{
 				// Flex work-around...
-				DelayedFunctionQueue.add(possiblyRemoveMediator, e.target);
+				mediatorsMarkedForRemoval[e.target] = e.target;
+				if (!hasMediatorsMarkedForRemoval)
+				{
+					hasMediatorsMarkedForRemoval = true;
+					DelayedFunctionQueue.add(performDelayedMediatorRemoval);
+				}
 			}
 		}
 		
 		// Private Methods ////////////////////////////////////////////////////
-		private function possiblyRemoveMediator(viewComponent:DisplayObject):void
+		private function performDelayedMediatorRemoval():void
 		{
-			if (viewComponent.stage == null)
+			for each (var view : DisplayObject in mediatorsMarkedForRemoval)
 			{
-				removeMediatorByView(viewComponent);
+				if (!view.stage)
+				{
+					removeMediatorByView(view);
+				}
+				delete mediatorsMarkedForRemoval[view];
 			}
+			hasMediatorsMarkedForRemoval = false;
 		}
 	
 	}
