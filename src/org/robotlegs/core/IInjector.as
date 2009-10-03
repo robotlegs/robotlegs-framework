@@ -90,8 +90,12 @@ package org.robotlegs.core
 		function injectInto(target:Object):void;
 		
 		/**
-		 * Create an object from a class, supplying its dependencies as constructor parameters
-		 *
+		 * Create an object of the given class, supplying its dependencies as constructor parameters 
+		 * if the used DI solution has support for constructor injection
+		 * 
+		 * Adapters for DI solutions that don't support constructor injection should just create a new 
+		 * instance and perform setter and/ or method injection on that.
+		 * 
 		 * The <code>IInjector</code> should throw an <code>Error</code>
 		 * if it can't satisfy all dependencies of the injectee.
 		 *
