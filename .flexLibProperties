@@ -1,35 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<flexLibProperties version="1">
-<includeClasses>
-<classEntry path="net.expantra.smartypants.extra.NoSmartyPantsLogging"/>
-<classEntry path="org.robotlegs.adapters.SmartyPantsInjector"/>
-<classEntry path="org.robotlegs.adapters.SmartyPantsReflector"/>
-<classEntry path="org.robotlegs.adapters.SpringInjector"/>
-<classEntry path="org.robotlegs.adapters.SpringReflector"/>
-<classEntry path="org.robotlegs.adapters.SwiftSuspendersInjector"/>
-<classEntry path="org.robotlegs.adapters.SwiftSuspendersReflector"/>
-<classEntry path="org.robotlegs.core.ICommand"/>
-<classEntry path="org.robotlegs.core.ICommandMap"/>
-<classEntry path="org.robotlegs.core.IContext"/>
-<classEntry path="org.robotlegs.core.IContextProvider"/>
-<classEntry path="org.robotlegs.core.IInjector"/>
-<classEntry path="org.robotlegs.core.IMediator"/>
-<classEntry path="org.robotlegs.core.IMediatorMap"/>
-<classEntry path="org.robotlegs.core.IPropertyProvider"/>
-<classEntry path="org.robotlegs.core.IReflector"/>
-<classEntry path="org.robotlegs.mvcs.Command"/>
-<classEntry path="org.robotlegs.mvcs.CommandMap"/>
-<classEntry path="org.robotlegs.mvcs.Context"/>
-<classEntry path="org.robotlegs.mvcs.ContextError"/>
-<classEntry path="org.robotlegs.mvcs.ContextEvent"/>
-<classEntry path="org.robotlegs.mvcs.Mediator"/>
-<classEntry path="org.robotlegs.mvcs.MediatorMap"/>
-<classEntry path="org.robotlegs.mvcs.Proxy"/>
-<classEntry path="org.robotlegs.mvcs.Service"/>
-<classEntry path="org.robotlegs.utils.DelayedFunctionQueue"/>
-<classEntry path="org.robotlegs.utils.createDelegate"/>
-<classEntry path="org.springextensions.actionscript.ioc.factory.support.RobotLegsObjectFactory"/>
-</includeClasses>
-<includeResources/>
-<namespaceManifests/>
+<flexLibProperties includeAllClasses="false" version="1">
+  <includeClasses>
+    <classEntry path="org.robotlegs.adapters.SwiftSuspendersInjector"/>
+    <classEntry path="org.robotlegs.adapters.SwiftSuspendersReflector"/>
+    <classEntry path="org.robotlegs.core.ICommand"/>
+    <classEntry path="org.robotlegs.core.ICommandMap"/>
+    <classEntry path="org.robotlegs.core.IContext"/>
+    <classEntry path="org.robotlegs.core.IContextProvider"/>
+    <classEntry path="org.robotlegs.core.IInjector"/>
+    <classEntry path="org.robotlegs.core.IMediator"/>
+    <classEntry path="org.robotlegs.core.IMediatorMap"/>
+    <classEntry path="org.robotlegs.core.IPropertyProvider"/>
+    <classEntry path="org.robotlegs.core.IReflector"/>
+    <classEntry path="org.robotlegs.mvcs.Command"/>
+    <classEntry path="org.robotlegs.mvcs.CommandMap"/>
+    <classEntry path="org.robotlegs.mvcs.Context"/>
+    <classEntry path="org.robotlegs.mvcs.ContextError"/>
+    <classEntry path="org.robotlegs.mvcs.ContextEvent"/>
+    <classEntry path="org.robotlegs.mvcs.Mediator"/>
+    <classEntry path="org.robotlegs.mvcs.MediatorMap"/>
+    <classEntry path="org.robotlegs.mvcs.Proxy"/>
+    <classEntry path="org.robotlegs.mvcs.Service"/>
+    <classEntry path="org.robotlegs.utils.DelayedFunctionQueue"/>
+    <classEntry path="org.robotlegs.utils.createDelegate"/>
+  </includeClasses>
+  <includeResources/>
+  <namespaceManifests/>
 </flexLibProperties>
