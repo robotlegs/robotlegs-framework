@@ -68,11 +68,23 @@ package org.robotlegs.mvcs
 		 *
 		 * Override this in your implementation
 		 *
-		 * Call <code>super.startup()</code> if you want to log the occasion.
+		 * Call <code>super.startup()</code> to send a <code>ContextEvent.STARTUP_COMPLETE</code> Event
 		 */
 		public function startup():void
 		{
-			dispatch(new ContextEvent(ContextEvent.STARTUP));
+			dispatch(new ContextEvent(ContextEvent.STARTUP_COMPLETE));
+		}
+		
+		/**
+		 * The Startup Hook
+		 *
+		 * Override this in your implementation
+		 *
+		 * Call <code>super.shutdown()</code> to send a <code>ContextEvent.SHUTDOWN_COMPLETE</code> Event
+		 */
+		public function shutdown():void
+		{
+			dispatch(new ContextEvent(ContextEvent.SHUTDOWN_COMPLETE));
 		}
 		
 		/**

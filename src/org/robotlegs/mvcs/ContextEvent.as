@@ -36,6 +36,9 @@ package org.robotlegs.mvcs
 		
 		/**
 		 * A generic context <code>Event</code> implementation
+		 *
+		 * This Class is handy for prototype work, but is not Best Practice
+		 *
 		 * @param type The <code>Event</code> type
 		 * @param body A loosely typed payload
 		 */

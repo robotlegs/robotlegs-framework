@@ -35,6 +35,11 @@ package org.robotlegs.core
 		function startup():void;
 		
 		/**
+		 * The <code>IContext</code>'s shutdown hook
+		 */
+		function shutdown():void;
+		
+		/**
 		 * Return this <code>IContext</code>'s <code>IEventDispatcher</code>
 		 * @return The <code>IContext</code>'s <code>IEventDispatcher</code>
 		 */
