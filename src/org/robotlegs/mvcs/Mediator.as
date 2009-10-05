@@ -27,7 +27,7 @@ package org.robotlegs.mvcs
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	
-	import org.robotlegs.base.Mediator;
+	import org.robotlegs.base.MediatorBase;
 	import org.robotlegs.core.IMediator;
 	import org.robotlegs.core.IMediatorMap;
 	import org.robotlegs.core.IPropertyProvider;
@@ -35,7 +35,7 @@ package org.robotlegs.mvcs
 	/**
 	 * Abstract MVCS <code>IMediator</code> and <code>IPropertyProvider</code> implementation
 	 */
-	public class Mediator extends org.robotlegs.base.Mediator implements IPropertyProvider
+	public class Mediator extends org.robotlegs.base.MediatorBase implements IPropertyProvider
 	{
 		[Inject(name='mvcsContextView')]
 		public var contextView:DisplayObjectContainer;

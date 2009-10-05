@@ -31,7 +31,7 @@ package org.robotlegs.base
 	/**
 	 * Abstract <code>IMediator</code> and <code>IPropertyProvider</code> implementation
 	 */
-	public class Mediator implements IMediator
+	public class MediatorBase implements IMediator
 	{
 		/**
 		 * A demonstration of Flex's poor design part #1
@@ -62,7 +62,7 @@ package org.robotlegs.base
 		/**
 		 * Creates a new <code>Mediator</code> object
 		 */
-		public function Mediator()
+		public function MediatorBase()
 		{
 			listeners = new Array();
 		}

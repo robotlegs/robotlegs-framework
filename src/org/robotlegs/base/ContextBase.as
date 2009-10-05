@@ -38,7 +38,7 @@ package org.robotlegs.base
 	/**
 	 * Abstract <code>IContext</code> implementation
 	 */
-	public class Context implements IContext
+	public class ContextBase implements IContext
 	{
 		/**
 		 * The context <code>DisplayObjectContainer</code>
@@ -78,7 +78,7 @@ package org.robotlegs.base
 		 * @param injector An Injector to use for this context
 		 * @param reflector A Reflector to use for this context
 		 */
-		public function Context(contextView:DisplayObjectContainer, autoStartup:Boolean = true, injector:IInjector = null, reflector:IReflector = null)
+		public function ContextBase(contextView:DisplayObjectContainer, autoStartup:Boolean = true, injector:IInjector = null, reflector:IReflector = null)
 		{
 			this.contextView = contextView;
 			this.injector = injector;

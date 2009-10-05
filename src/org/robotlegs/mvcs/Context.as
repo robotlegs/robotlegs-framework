@@ -26,14 +26,14 @@ package org.robotlegs.mvcs
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	
-	import org.robotlegs.base.Context;
+	import org.robotlegs.base.ContextBase;
 	import org.robotlegs.base.ContextEvent;
 	import org.robotlegs.core.ICommandMap;
 	import org.robotlegs.core.IContext;
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IMediatorMap;
 	
-	public class Context extends org.robotlegs.base.Context implements IContext
+	public class Context extends org.robotlegs.base.ContextBase implements IContext
 	{
 		public function Context(contextView:DisplayObjectContainer, autoStartup:Boolean = true)
 		{
