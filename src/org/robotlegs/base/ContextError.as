@@ -20,47 +20,20 @@
  * THE SOFTWARE.
  */
 
-package org.robotlegs.mvcs
+package org.robotlegs.base
 {
-	import flash.events.Event;
 	
-	public class ContextEvent extends Event
+	public class ContextError extends Error
 	{
-		public static const STARTUP:String = 'startup';
-		public static const STARTUP_COMPLETE:String = 'startupComplete';
+		public static const E_MAP_COM_IMPL:String = 'Command Class does not implement ICommand';
+		public static const E_MAP_COM_OVR:String = 'Cannot overwrite map';
 		
-		public static const SHUTDOWN:String = 'shutdown';
-		public static const SHUTDOWN_COMPLETE:String = 'shutdownComplete';
+		public static const E_MAP_NOIMPL:String = 'Mediator Class does not implement IMediator';
+		public static const E_MAP_EXISTS:String = 'Mediator Class has already been mapped to a View Class in this context';
 		
-		protected var _body:*;
-		
-		/**
-		 * A generic context <code>Event</code> implementation
-		 *
-		 * This Class is handy for prototype work, but is not Best Practice
-		 *
-		 * @param type The <code>Event</code> type
-		 * @param body A loosely typed payload
-		 */
-		public function ContextEvent(type:String, body:* = null)
+		public function ContextError(message:String = "", id:int = 0)
 		{
-			super(type);
-			_body = body;
+			super(message, id);
 		}
-		
-		/**
-		 * Loosely typed <code>Event</code> payload
-		 * @return Payload
-		 */
-		public function get body():*
-		{
-			return _body;
-		}
-		
-		override public function clone():Event
-		{
-			return new ContextEvent(type, body);
-		}
-	
 	}
 }

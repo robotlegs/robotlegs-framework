@@ -13,16 +13,18 @@
     <classEntry path="org.robotlegs.core.IPropertyProvider"/>
     <classEntry path="org.robotlegs.core.IReflector"/>
     <classEntry path="org.robotlegs.mvcs.Command"/>
-    <classEntry path="org.robotlegs.mvcs.CommandMap"/>
-    <classEntry path="org.robotlegs.mvcs.Context"/>
-    <classEntry path="org.robotlegs.mvcs.ContextError"/>
-    <classEntry path="org.robotlegs.mvcs.ContextEvent"/>
-    <classEntry path="org.robotlegs.mvcs.Mediator"/>
-    <classEntry path="org.robotlegs.mvcs.MediatorMap"/>
+    <classEntry path="org.robotlegs.base.CommandMap"/>
+    <classEntry path="org.robotlegs.base.Context"/>
+    <classEntry path="org.robotlegs.base.ContextError"/>
+    <classEntry path="org.robotlegs.base.ContextEvent"/>
+    <classEntry path="org.robotlegs.base.Mediator"/>
+    <classEntry path="org.robotlegs.base.MediatorMap"/>
     <classEntry path="org.robotlegs.mvcs.Proxy"/>
     <classEntry path="org.robotlegs.mvcs.Service"/>
     <classEntry path="org.robotlegs.utils.DelayedFunctionQueue"/>
     <classEntry path="org.robotlegs.utils.createDelegate"/>
+    <classEntry path="org.robotlegs.mvcs.Context"/>
+    <classEntry path="org.robotlegs.mvcs.Mediator"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

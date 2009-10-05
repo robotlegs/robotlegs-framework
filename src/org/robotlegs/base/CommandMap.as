@@ -20,17 +20,17 @@
  * THE SOFTWARE.
  */
 
-package org.robotlegs.mvcs
+package org.robotlegs.base
 {
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	import flash.utils.Dictionary;
 	
-	import org.robotlegs.core.ICommand;
-	import org.robotlegs.core.ICommandMap;
-	import org.robotlegs.core.IInjector;
-	import org.robotlegs.core.IReflector;
 	import org.robotlegs.utils.createDelegate;
+	import org.robotlegs.core.IInjector;
+	import org.robotlegs.core.ICommandMap;
+	import org.robotlegs.core.ICommand;
+	import org.robotlegs.core.IReflector;
 	
 	/**
 	 * Default MVCS <code>ICommandMap</code> implementation

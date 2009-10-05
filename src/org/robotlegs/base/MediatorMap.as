@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-package org.robotlegs.mvcs
+package org.robotlegs.base
 {
 	import flash.display.DisplayObject;
 	import flash.events.Event;
@@ -240,12 +240,14 @@ package org.robotlegs.mvcs
 			}
 		}
 		
+		/**
+		 * A demonstration of Flex's poor design part #5
+		 */
 		protected function onViewRemoved(e:Event):void
 		{
 			var config:MappingConfig = mappingConfigByView[e.target];
 			if (config && config.autoRemove)
 			{
-				// Flex work-around...
 				mediatorsMarkedForRemoval[e.target] = e.target;
 				if (!hasMediatorsMarkedForRemoval)
 				{
@@ -255,10 +257,12 @@ package org.robotlegs.mvcs
 			}
 		}
 		
-		// Private Methods ////////////////////////////////////////////////////
+		/**
+		 * A demonstration of Flex's poor design part #6
+		 */
 		private function performDelayedMediatorRemoval():void
 		{
-			for each (var view : DisplayObject in mediatorsMarkedForRemoval)
+			for each (var view:DisplayObject in mediatorsMarkedForRemoval)
 			{
 				if (!view.stage)
 				{
