@@ -26,7 +26,6 @@ package org.robotlegs.base
 	import flash.events.IEventDispatcher;
 	import flash.utils.Dictionary;
 	
-	import org.robotlegs.utils.createDelegate;
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.ICommandMap;
 	import org.robotlegs.core.ICommand;
@@ -96,7 +95,10 @@ package org.robotlegs.base
 				message = ContextError.E_MAP_COM_OVR + ' - eventType (' + eventType + ') and Command (' + commandClass + ')';
 				throw new ContextError(message);
 			}
-			var callback:Function = createDelegate(handleEvent, commandClass, oneshot, eventClass);
+			var callback:Function = function(event:Event):void
+			{
+				routeEventToCommand(event, commandClass, oneshot, eventClass);
+			};
 			eventDispatcher.addEventListener(eventType, callback, false, 0, true);
 			callbacksByCommandClass[commandClass] = callback;
 		}
@@ -137,7 +139,7 @@ package org.robotlegs.base
 		 * @param commandClass The <code>ICommand<code> Class to construct and execute
 		 * @param oneshot Should this command mapping be removed after execution?
 		 */
-		protected function handleEvent(event:Event, commandClass:Class, oneshot:Boolean, originalEventClass:Class):void
+		protected function routeEventToCommand(event:Event, commandClass:Class, oneshot:Boolean, originalEventClass:Class):void
 		{
 			var eventClass:Class = Object(event).constructor;
 			if (eventClass != originalEventClass) return;
