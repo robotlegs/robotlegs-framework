@@ -49,12 +49,12 @@ Inside the startup() method you bind a couple of Commands to a startup event and
     	
     	override public function startup():void
     	{
-    		commandFactory.mapCommand( ContextEvent.STARTUP, PrepModelCommand, true );
-    		commandFactory.mapCommand( ContextEvent.STARTUP, PrepControllerCommand, true );
-    		commandFactory.mapCommand( ContextEvent.STARTUP, PrepServicesCommand, true );
-    		commandFactory.mapCommand( ContextEvent.STARTUP, PrepViewCommand, true );
-    		commandFactory.mapCommand( ContextEvent.STARTUP, StartupCommand, true );
-    		eventBroadcaster.dispatchEvent( new ContextEvent( ContextEvent.STARTUP ) );
+    		commandMap.mapEvent( PrepModelCommand, ContextEvent.STARTUP, ContextEvent, true );
+    		commandMap.mapEvent( PrepControllerCommand, ContextEvent.STARTUP, ContextEvent, true );
+    		commandMap.mapEvent( PrepServicesCommand, ContextEvent.STARTUP, ContextEvent, true );
+    		commandMap.mapEvent( PrepViewCommand, ContextEvent.STARTUP, ContextEvent, true );
+    		commandMap.mapEvent( StartupCommand, ContextEvent.STARTUP, ContextEvent, true );
+    		eventDispatcher.dispatchEvent( new ContextEvent( ContextEvent.STARTUP ) );
     	}
     }
 </pre>
