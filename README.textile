@@ -1,24 +1,15 @@
-h1. RobotLegs AS3
+h1. Robotlegs
 
-RobotLegs AS3 is an event driven MVCS micro-architecture for Flash and Flex applications. It is inspired by the PureMVC framework, but uses Dependency Injection to do away with Singletons, Services Locators and Casting, and provides automatic Mediator registration for View Components.
+Robotlegs is a pure AS3 micro-architecture for Flash and Flex application development.
 
-No casting! No fetching! No Singletons! You can read more about it on my "blog":http://shaun.boyblack.co.za/blog/robotlegs-as3/
+Robotlegs helps you design loosely-coupled components that are easy to test, helps you wire those components together, and provides a simple mechanism for communicating between them.
 
 h2. Installation
 
 **Flex/FlashBuilder:**
 
-To run RobotLegs with Spring ActionScript drop the following SWC files into your "libs" folder:
+Drop the following SWC file into your "libs" folder:
 * RobotLegsLib.swc
-* as3commons-lang-1.0.0.swc
-* as3commons-logging-1.0.0.swc
-* as3commons-reflect-1.0.0.swc
-* spring-actionscript-core-0.8.swc
-
-To run RobotLegs with SmartyPants-IOC drop the following SWC files into your "libs" folder:
-* as3commons-logging-1.0.0.swc
-* RobotLegsLib.swc
-* SmartyPantsIOC.swc
 
 If you are building a plain ActionScript project you might need to create the "libs" folder manually:
 
@@ -27,27 +18,21 @@ Right click the project, open "properties", "Flex Build Path", "Library path", "
 
 **Other IDEs or Editors:**
 
-Include the necessary SWC files in your build path.
+Include the necessary SWC file in your build path.
 
 h2. Terminology
 
-RobotLegs AS3 uses the same terminology as PureMVC for many of it's components and concepts, such as:
+Robotlegs uses the same terminology as PureMVC for many of it's components and concepts, such as:
 
 Mediators, View Components, Proxies and Commands
 
-Collectively, these are referred to as Framework or Context Actors.
-
-RobotLegs does not, however, employ the use of the Facade design pattern or PureMVC's Notification scheme. Instead, RobotLegs uses:
-
-Contexts and Events
+Collectively, these are referred to as Framework Actors.
 
 h2. Usage
 
-**Facade/Context**
+**The Context**
 
-RobotLegs does not make use of the Facade design pattern - instead there is something known as a Context. It's not really the same thing, and is only used to bootstrap your application, and to hold references to shared Context actors.
-
-Typically, when starting a new project, you extend the default Context, provide Dependency Injection and Reflection adapters, and override the startup() method.
+Typically, when starting a new project, you extend the default mvcs Context and override the startup() method.
 
 Inside the startup() method you bind a couple of Commands to a startup event and then dispatch that event.
 
@@ -56,7 +41,7 @@ Inside the startup() method you bind a couple of Commands to a startup event and
     {
     	public function HelloFlexContext( contextView:DisplayObjectContainer )
     	{
-    		super( contextView, new SpringInjector(), new SpringReflector() );
+    		super( contextView );
     	}
     	
     	override public function startup():void
@@ -114,7 +99,7 @@ By default, a Context will automatically execute it's startup() method when it's
 
 **Commands**
 
-RobotLegs make use of native Flash Player events for framework communication. Much like PureMVC, Commands can be bound to events.
+Robotlegs make use of native Flash Player events for framework communication. Much like PureMVC, Commands can be bound to events.
 
 No parameters are passed to a Command's execute method however. Instead, you define the concrete event that will be passed to the Command as a dependency. This relieves you from having to cast the event.
 
@@ -150,7 +135,7 @@ To get a reference to the concrete event that triggered a Command, you must decl
 
 **Mediators**
 
-RobotLegs makes it easy to work with deeply-nested, lazily-instantiated View Components.
+Robotlegs makes it easy to work with deeply-nested, lazily-instantiated View Components.
 
 You map Mediator classes to View Component classes during startup, or later during runtime, and RobotLegs creates and registers Mediator instances automatically as View Components arrive on the stage (as children of the Context View).
 
@@ -212,7 +197,7 @@ h2. Resources
 
 h3. News
 
-* "RobotLegs AS3 on Twitter":http://twitter.com/robotlegs_as3/
+* "Follow Robotlegs on Twitter":http://twitter.com/robotlegs_as3/
 
 h3. Overview
 
@@ -220,27 +205,24 @@ h3. Overview
 
 h3. Code
 
-* "RobotLegs AS3 Library":http://github.com/darscan/robotlegs
-* "RobotLegs AS3 Demos":http://github.com/darscan/robotlegsdemos
-* "RobotLegs AS3 Unit Tests":http://github.com/darscan/robotlegstests
+* "Robotlegs Library":http://github.com/darscan/robotlegs
+* "Robotlegs Demos":http://github.com/darscan/robotlegsdemos
+* "Robotlegs Unit Tests":http://github.com/darscan/robotlegstests
 
-h3. Online Demos
+h3. Help, Support, Collaboration
 
-* "RobotLegs AS3 Demo Flex Application":http://shaun.boyblack.co.za/flash/robotlegsdemo/HelloFlex.html
-
-h3. Help and Support
-
-* "RobotLegs AS3 Discussion Group":http://groups.google.com/group/robotlegs
-* "RobotLegs AS3 Issue Tracking":http://github.com/darscan/robotlegs/issues
+* "Robotlegs Discussion Group":http://groups.google.com/group/robotlegs
+* "Robotlegs Issue Tracking":http://github.com/darscan/robotlegs/issues
 
 h3. Tutorials and such on the Interblogs
 
-* "RobotLegs Bloggoweb Postings":http://shaun.boyblack.co.za/blog/category/robotlegs/
+* "Robotlegs Bloggoweb Postings - Shaun Smith":http://shaun.boyblack.co.za/blog/category/robotlegs/
 * "Flex Image Gallery Demo - Joel Hooks":http://joelhooks.com/2009/07/17/robotlegs-as3-a-dependency-injection-driven-mvcs-framework-for-flashflex-%E2%80%93-inspired-by-puremvc/
-* "FlexUnit 4 Unit Testing and RobotLegs - Joel Hooks":http://joelhooks.com/2009/07/21/unit-testing-with-inversion-of-control-ioc-and-dependency-injection-di-with-the-robotlegs-framework-and-flexunit-4/
+* "FlexUnit 4 Unit Testing and Robotlegs - Joel Hooks":http://joelhooks.com/2009/07/21/unit-testing-with-inversion-of-control-ioc-and-dependency-injection-di-with-the-robotlegs-framework-and-flexunit-4/
 
 h3. Other Resources
 
+* "SwiftSuspenders":http://github.com/tschneidereit/SwiftSuspenders
 * "SmartyPants-IOC":http://code.google.com/p/smartypants-ioc/
 * "Spring ActionScript":http://www.springactionscript.org/
 * "AS3 Commons":http://www.as3commons.org/
