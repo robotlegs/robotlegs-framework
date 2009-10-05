@@ -33,7 +33,7 @@ package org.robotlegs.mvcs
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IMediatorMap;
 	
-	public class Context extends org.robotlegs.base.ContextBase implements IContext
+	public class Context extends ContextBase implements IContext
 	{
 		public function Context(contextView:DisplayObjectContainer, autoStartup:Boolean = true)
 		{

@@ -6,6 +6,9 @@ Robotlegs helps you design loosely-coupled components that are easy to test, hel
 
 h2. Installation
 
+Grab the latest SWC file from this page:
+* "Robotlegs Downloads":http://github.com/darscan/robotlegs/downloads
+
 **Flex/FlashBuilder:**
 
 Drop the following SWC file into your "libs" folder:

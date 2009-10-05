@@ -35,7 +35,7 @@ package org.robotlegs.mvcs
 	/**
 	 * Abstract MVCS <code>IMediator</code> and <code>IPropertyProvider</code> implementation
 	 */
-	public class Mediator extends org.robotlegs.base.MediatorBase implements IPropertyProvider
+	public class Mediator extends MediatorBase implements IPropertyProvider
 	{
 		[Inject(name='mvcsContextView')]
 		public var contextView:DisplayObjectContainer;
@@ -54,7 +54,7 @@ package org.robotlegs.mvcs
 		/**
 		 * Walk up the Display List looking for view components that have corresponding Mediators in this Context
 		 * Ask each Mediator for a named, typed property, and return the first non-null result
-		 * 
+		 *
 		 * This mechanism is evil. A better solution is sorely needed.
 		 *
 		 * @param name The name of the property you are looking for
