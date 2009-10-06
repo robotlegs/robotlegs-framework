@@ -1,13 +1,11 @@
 h1. Robotlegs
 
-Robotlegs is a pure AS3 micro-architecture for Flash and Flex application development.
-
-Robotlegs helps you design loosely-coupled components that are easy to test, helps you wire those components together, and provides a simple mechanism for communicating between them.
+Robotlegs is a lightweight AS3 MVCS micro-mrchitecture inspired by PureMVC. Robotlegs was created to provide a small, loosly coupled application framework that is easy to test. Where other frameworks are plagued with coupling and Singletons, Robotlegs has none. Bolier plate? Robotlegs avoids it. It is the framework you’ve been looking for.
 
 h2. Installation
 
 Grab the latest SWC file from this page:
-* "Robotlegs Downloads":http://github.com/darscan/robotlegs/downloads
+* "Robotlegs Downloads":http://github.com/robotlegs/robotlegs/downloads
 
 **Flex/FlashBuilder:**
 
@@ -208,9 +206,9 @@ h3. Overview
 
 h3. Code
 
-* "Robotlegs Library":http://github.com/darscan/robotlegs
+* "Robotlegs Library":http://github.com/robotlegs/robotlegs
 * "Robotlegs Demos":http://github.com/darscan/robotlegsdemos
-* "Robotlegs Unit Tests":http://github.com/darscan/robotlegstests
+* "Robotlegs Unit Tests":http://github.com/robotlegs/robotlegstests
 
 h3. Help, Support, Collaboration
 
