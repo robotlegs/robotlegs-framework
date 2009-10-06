@@ -23,37 +23,22 @@
 package org.robotlegs.mvcs
 {
 	import flash.display.DisplayObjectContainer;
-	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	
 	import org.robotlegs.base.ContextBase;
-	import org.robotlegs.base.ContextEvent;
 	import org.robotlegs.core.ICommandMap;
 	import org.robotlegs.core.IContext;
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IMediatorMap;
 	
+	/**
+	 * Abstract MVCS <code>IContext</code> implementation
+	 */
 	public class Context extends ContextBase implements IContext
 	{
 		public function Context(contextView:DisplayObjectContainer, autoStartup:Boolean = true)
 		{
 			super(contextView, autoStartup);
-		}
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function startup():void
-		{
-			dispatch(new ContextEvent(ContextEvent.STARTUP_COMPLETE));
-		}
-		
-		/**
-		 * @inheritDoc
-		 */
-		override public function shutdown():void
-		{
-			dispatch(new ContextEvent(ContextEvent.SHUTDOWN_COMPLETE));
 		}
 		
 		/**
@@ -67,17 +52,6 @@ package org.robotlegs.mvcs
 			injector.mapValue(ICommandMap, commandMap, 'mvcsCommandMap');
 			injector.mapValue(IMediatorMap, mediatorMap, 'mvcsMediatorMap');
 		}
-		
-		/**
-		 * dispatchEvent Helper method
-		 *
-		 * The same as calling <code>dispatchEvent</code> directly on the <code>IEventDispatcher</code>.
-		 *
-		 * @param event The <code>Event</code> to dispatch on the <code>IEventDispatcher</code>
-		 */
-		protected function dispatch(event:Event):void
-		{
-			dispatchEvent(event);
-		}
+	
 	}
 }

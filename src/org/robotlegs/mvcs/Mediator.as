@@ -55,7 +55,7 @@ package org.robotlegs.mvcs
 		 * Walk up the Display List looking for view components that have corresponding Mediators in this Context
 		 * Ask each Mediator for a named, typed property, and return the first non-null result
 		 *
-		 * This mechanism is evil. A better solution is sorely needed.
+		 * This mechanism is evil. A better solution to the "Robot Legs" problem is sorely needed.
 		 *
 		 * @param name The name of the property you are looking for
 		 * @param type The type of property you are looking for
@@ -89,7 +89,7 @@ package org.robotlegs.mvcs
 		 *
 		 * @param event The <code>Event</code> to dispatch on the <code>IEventDispatcher</code>
 		 */
-		protected function dispatch(event:Event):void
+		protected function dispatchEvent(event:Event):void
 		{
 			eventDispatcher.dispatchEvent(event);
 		}

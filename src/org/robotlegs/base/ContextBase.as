@@ -36,6 +36,9 @@ package org.robotlegs.base
 	
 	/**
 	 * Abstract <code>IContext</code> implementation
+	 * 
+	 * A 
+	 * 
 	 */
 	public class ContextBase extends EventDispatcher implements IContext
 	{
@@ -101,18 +104,14 @@ package org.robotlegs.base
 		}
 		
 		/**
-		 * Internal
+		 * Default Context Initialization
+		 * 
+		 * Override this to intercept the default startup routine
 		 */
 		protected function initialize(autoStartup:Boolean):void
 		{
-			if (injector == null)
-			{
-				injector = createInjector();
-			}
-			if (reflector == null)
-			{
-				reflector = createReflector();
-			}
+			injector = injector || createInjector();
+			reflector = reflector || createReflector();
 			commandMap = createCommandMap();
 			mediatorMap = createMediatorMap();
 			initializeInjections();
@@ -189,6 +188,8 @@ package org.robotlegs.base
 		
 		/**
 		 * Bind some commonly needed contextual dependencies for convenience
+		 * 
+		 * Override this to change the default (blank) configuration
 		 *
 		 * These should be named to avoid collisions
 		 */

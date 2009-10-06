@@ -69,7 +69,7 @@ package org.robotlegs.mvcs
 		 * 
 		 * @param event The <code>Event</code> to dispatch on the <code>IEventDispatcher</code>
 		 */
-		protected function dispatch(event:Event):void
+		protected function dispatchEvent(event:Event):void
 		{
 			eventDispatcher.dispatchEvent(event);
 		}
