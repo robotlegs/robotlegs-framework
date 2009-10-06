@@ -27,7 +27,7 @@ package org.robotlegs.core
 	/**
 	 * The interface definition for a RobotLegs Context
 	 */
-	public interface IContext
+	public interface IContext extends IEventDispatcher
 	{
 		/**
 		 * The <code>IContext</code>'s startup hook
@@ -39,10 +39,5 @@ package org.robotlegs.core
 		 */
 		function shutdown():void;
 		
-		/**
-		 * Return this <code>IContext</code>'s <code>IEventDispatcher</code>
-		 * @return The <code>IContext</code>'s <code>IEventDispatcher</code>
-		 */
-		function getEventDispatcher():IEventDispatcher;
 	}
 }

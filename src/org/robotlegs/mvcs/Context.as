@@ -63,7 +63,7 @@ package org.robotlegs.mvcs
 		{
 			injector.mapValue(DisplayObjectContainer, contextView, 'mvcsContextView');
 			injector.mapValue(IInjector, injector, 'mvcsInjector');
-			injector.mapValue(IEventDispatcher, eventDispatcher, 'mvcsEventDispatcher');
+			injector.mapValue(IEventDispatcher, this, 'mvcsEventDispatcher');
 			injector.mapValue(ICommandMap, commandMap, 'mvcsCommandMap');
 			injector.mapValue(IMediatorMap, mediatorMap, 'mvcsMediatorMap');
 		}
@@ -77,7 +77,7 @@ package org.robotlegs.mvcs
 		 */
 		protected function dispatch(event:Event):void
 		{
-			eventDispatcher.dispatchEvent(event);
+			dispatchEvent(event);
 		}
 	}
 }

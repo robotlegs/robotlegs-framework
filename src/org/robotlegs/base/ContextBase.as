@@ -25,7 +25,6 @@ package org.robotlegs.base
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import flash.events.IEventDispatcher;
 	
 	import org.robotlegs.adapters.SwiftSuspendersInjector;
 	import org.robotlegs.adapters.SwiftSuspendersReflector;
@@ -38,7 +37,7 @@ package org.robotlegs.base
 	/**
 	 * Abstract <code>IContext</code> implementation
 	 */
-	public class ContextBase implements IContext
+	public class ContextBase extends EventDispatcher implements IContext
 	{
 		/**
 		 * The context <code>DisplayObjectContainer</code>
@@ -59,11 +58,6 @@ package org.robotlegs.base
 		 * The context <code>ICommandMap</code>
 		 */
 		protected var commandMap:ICommandMap;
-		
-		/**
-		 * The context <code>IEventDispatcher</code>
-		 */
-		protected var eventDispatcher:IEventDispatcher;
 		
 		/**
 		 * The context <code>IMediatorMap</code>
@@ -93,7 +87,7 @@ package org.robotlegs.base
 		 */
 		public function startup():void
 		{
-			eventDispatcher.dispatchEvent(new ContextEvent(ContextEvent.STARTUP_COMPLETE));
+			dispatchEvent(new ContextEvent(ContextEvent.STARTUP_COMPLETE));
 		}
 		
 		/**
@@ -103,17 +97,7 @@ package org.robotlegs.base
 		 */
 		public function shutdown():void
 		{
-			eventDispatcher.dispatchEvent(new ContextEvent(ContextEvent.SHUTDOWN_COMPLETE));
-		}
-		
-		/**
-		 * Return this <code>Context</code>'s IEventDispatcher
-		 *
-		 * @return The <code>Context</code>'s IEventDispatcher
-		 */
-		public function getEventDispatcher():IEventDispatcher
-		{
-			return eventDispatcher;
+			dispatchEvent(new ContextEvent(ContextEvent.SHUTDOWN_COMPLETE));
 		}
 		
 		/**
@@ -129,7 +113,6 @@ package org.robotlegs.base
 			{
 				reflector = createReflector();
 			}
-			eventDispatcher = createEventDispatcher();
 			commandMap = createCommandMap();
 			mediatorMap = createMediatorMap();
 			initializeInjections();
@@ -181,18 +164,6 @@ package org.robotlegs.base
 		}
 		
 		/**
-		 * Create a default <code>IEventDispatcher</code>
-		 *
-		 * Override this to change the default configuration
-		 *
-		 * @return An <code>IEventDispatcher</code>
-		 */
-		protected function createEventDispatcher():IEventDispatcher
-		{
-			return new EventDispatcher();
-		}
-		
-		/**
 		 * Create a default <code>ICommandMap</code>
 		 *
 		 * Override this to change the default configuration
@@ -201,7 +172,7 @@ package org.robotlegs.base
 		 */
 		protected function createCommandMap():ICommandMap
 		{
-			return new CommandMap(eventDispatcher, injector, reflector);
+			return new CommandMap(this, injector, reflector);
 		}
 		
 		/**
