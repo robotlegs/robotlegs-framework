@@ -5,7 +5,7 @@ RobotLegs is a lightweight AS3 MVCS micro-mrchitecture inspired by PureMVC. Robo
 h2. Downloads
 
 Grab the latest SWC file here:
-* "RobotLegs Downloads":http://github.com/robotlegs/robotlegs-framework/downloads
+* "RobotLegsLib.swc":http://cloud.github.com/downloads/robotlegs/robotlegs-framework/RobotLegsLib.swc
 
 h2. Resources
 
