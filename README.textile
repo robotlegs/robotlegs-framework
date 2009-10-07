@@ -1,29 +1,33 @@
-h1. Robotlegs
+h1. RobotLegs
 
-Robotlegs is a lightweight AS3 MVCS micro-mrchitecture inspired by PureMVC. Robotlegs was created to provide a small, loosly coupled application framework that is easy to test. Where other frameworks are plagued with coupling and Singletons, Robotlegs has none. Bolier plate? Robotlegs avoids it. It is the framework you’ve been looking for.
+RobotLegs is a lightweight AS3 MVCS micro-mrchitecture inspired by PureMVC. RobotLegs was created to provide a small, loosly coupled application framework that is easy to test. Where other frameworks are plagued with coupling and Singletons, RobotLegs has none. Bolier plate? RobotLegs avoids it. It is the framework you’ve been looking for.
 
 h2. Downloads
 
 Grab the latest SWC file here:
-* "Robotlegs Downloads":http://github.com/robotlegs/robotlegs/downloads
+* "RobotLegs Downloads":http://github.com/robotlegs/robotlegs-framework/downloads
 
 h2. Resources
 
-h3. News
+h3. Getting Started
 
-* "Follow Robotlegs on Twitter":http://twitter.com/robotlegs_as3/
+* "The RobotLegs FAQ":http://wiki.github.com/robotlegs/robotlegs-framework/faq
 
 h3. Code
 
-* "Robotlegs Library":http://github.com/robotlegs/robotlegs
-* "Robotlegs Unit Tests":http://github.com/robotlegs/robotlegstests
-* "Robotlegs Demos and Utilities":http://github.com/robotlegs
+* "RobotLegs Framework":http://github.com/robotlegs/robotlegs-framework
+* "RobotLegs Unit Tests":http://github.com/robotlegs/robotlegs-tests
+* "RobotLegs Demos and Utilities":http://github.com/robotlegs-demos
 
 h3. Help, Support, Collaboration
 
-* "Robotlegs Wiki":http://wiki.github.com/robotlegs/robotlegs
-* "Robotlegs Discussion Group":http://groups.google.com/group/robotlegs
-* "Robotlegs Issue Tracking":http://github.com/robotlegs/robotlegs/issues
+* "RobotLegs Wiki":http://wiki.github.com/robotlegs/robotlegs-framework/faq
+* "RobotLegs Discussion Group":http://groups.google.com/group/robotlegs
+* "RobotLegs Issue Tracking":http://github.com/robotlegs/robotlegs-framework/issues
+
+h3. News
+
+* "Follow RobotLegs on Twitter":http://twitter.com/robotlegs_as3/
 
 h2. License
 
