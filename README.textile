@@ -11,13 +11,13 @@ h2. Resources
 
 h3. Getting Started
 
-* "The RobotLegs FAQ":http://wiki.github.com/robotlegs/robotlegs-framework/faq
+* "The Collaborative RobotLegs FAQ":http://wiki.github.com/robotlegs/robotlegs-framework/faq
 
 h3. Code
 
 * "RobotLegs Framework":http://github.com/robotlegs/robotlegs-framework
 * "RobotLegs Unit Tests":http://github.com/robotlegs/robotlegs-tests
-* "RobotLegs Demos and Utilities":http://github.com/robotlegs
+* "RobotLegs Demos, Utilities and More":http://github.com/robotlegs
 
 h3. Help, Support, Collaboration
 
@@ -27,7 +27,7 @@ h3. Help, Support, Collaboration
 
 h3. News
 
-* "Follow RobotLegs on Twitter":http://twitter.com/robotlegs_as3/
+* "Follow @robotlegs_as3 on Twitter":http://twitter.com/robotlegs_as3/
 
 h2. License
 
