@@ -53,18 +53,10 @@ package org.robotlegs.base
 		protected var viewComponent:Object;
 		
 		/**
-		 * Internal
-		 *
-		 * A list of currently registered listeners
-		 */
-		protected var listeners:Array;
-		
-		/**
 		 * Creates a new <code>Mediator</code> object
 		 */
 		public function MediatorBase()
 		{
-			listeners = new Array();
 		}
 		
 		/**
@@ -94,7 +86,6 @@ package org.robotlegs.base
 		 */
 		public function preRemove():void
 		{
-			removeListeners();
 			onRemove();
 		}
 		
@@ -121,80 +112,9 @@ package org.robotlegs.base
 			this.viewComponent = viewComponent;
 		}
 		
-		
-		/**
-		 * @inheritDoc
-		 */
-		public function provideProperty(name:String, type:*):*
-		{
-			return null;
-		}
-		
-		/**
-		 * addEventListener Helper method
-		 *
-		 * The same as calling <code>addEventListener</code> directly on the <code>IEventDispatcher</code>,
-		 * but keeps a list of listeners for easy (usually automatic) removal.
-		 *
-		 * @param dispatcher The <code>IEventDispatcher</code> to listen to
-		 * @param type The <code>Event</code> type to listen for
-		 * @param listener The <code>Event</code> handler
-		 * @param useCapture
-		 * @param priority
-		 * @param useWeakReference
-		 */
-		protected function addEventListenerTo(dispatcher:IEventDispatcher, type:String, listener:Function, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = true):void
-		{
-			// TODO: make weak - currently the listeners array keeps strong references.. bad
-			var params:Object = {dispatcher: dispatcher, type: type, listener: listener, useCapture: useCapture};
-			listeners.push(params);
-			dispatcher.addEventListener(type, listener, useCapture, priority, useWeakReference);
-		}
-		
-		/**
-		 * removeEventListener Helper method
-		 *
-		 * The same as calling <code>removeEventListener</code> directly on the <code>IEventDispatcher</code>,
-		 * but updates our local list of listeners.
-		 *
-		 * @param dispatcher The <code>IEventDispatcher</code>
-		 * @param type The <code>Event</code> type
-		 * @param listener The <code>Event</code> handler
-		 * @param useCapture
-		 */
-		protected function removeEventListenerFrom(dispatcher:IEventDispatcher, type:String, listener:Function, useCapture:Boolean = false):void
-		{
-			var params:Object;
-			var i:int = listeners.length;
-			while (i--)
-			{
-				params = listeners[i];
-				if (params.dispatcher == dispatcher && params.type == type && params.listener == listener && params.useCapture == useCapture)
-				{
-					dispatcher.removeEventListener(type, listener, useCapture);
-					listeners.splice(i, 1);
-					return;
-				}
-			}
-		}
-		
-		/**
-		 * Removes all listeners registered through <code>addEventListenerTo</code>
-		 */
-		protected function removeListeners():void
-		{
-			var params:Object;
-			var dispatcher:IEventDispatcher;
-			while (params = listeners.pop())
-			{
-				dispatcher = params.dispatcher;
-				dispatcher.removeEventListener(params.type, params.listener, params.useCapture);
-			}
-		}
-		
 		/**
 		 * A demonstration of Flex's poor design part #3
-		 * 
+		 *
 		 * Checks for availability of the Flex framework by trying to get the class for UIComponent.
 		 */
 		private static function checkFlex():Boolean
@@ -212,7 +132,7 @@ package org.robotlegs.base
 		
 		/**
 		 * A demonstration of Flex's poor design part #4
-		 * 
+		 *
 		 * FlexEvent.CREATION_COMPLETE handler for this Mediator's View Component
 		 *
 		 * @param e The Flex Event
