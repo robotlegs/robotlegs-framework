@@ -53,7 +53,7 @@ package org.robotlegs.base
 		
 		/**
 		 * Internal
-		 * 
+		 *
 		 * TODO: This needs to be documented
 		 */
 		protected var eventTypeMap:Dictionary;
@@ -144,14 +144,14 @@ package org.robotlegs.base
 		protected function routeEventToCommand(event:Event, commandClass:Class, oneshot:Boolean, originalEventClass:Class):void
 		{
 			var eventClass:Class = Object(event).constructor;
-			if (eventClass != originalEventClass) return;
+			if (!(event is originalEventClass)) return;
 			injector.mapValue(eventClass, event);
 			var command:Object = injector.instantiate(commandClass);
 			injector.unmap(eventClass);
 			command.execute();
 			if (oneshot)
 			{
-				unmapEvent(commandClass, event.type, eventClass);
+				unmapEvent(commandClass, event.type, originalEventClass);
 			}
 		}
 	
