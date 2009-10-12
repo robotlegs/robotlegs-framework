@@ -19,7 +19,7 @@
     <classEntry path="org.robotlegs.base.ContextEvent"/>
     <classEntry path="org.robotlegs.base.MediatorBase"/>
     <classEntry path="org.robotlegs.base.MediatorMap"/>
-    <classEntry path="org.robotlegs.mvcs.Proxy"/>
+    <classEntry path="org.robotlegs.mvcs.Model"/>
     <classEntry path="org.robotlegs.mvcs.Service"/>
     <classEntry path="org.robotlegs.mvcs.Context"/>
     <classEntry path="org.robotlegs.mvcs.Mediator"/>

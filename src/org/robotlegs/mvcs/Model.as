@@ -25,7 +25,7 @@ package org.robotlegs.mvcs
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	
-	public class Proxy
+	public class Model
 	{
 		[Inject(name='mvcsEventDispatcher')]
 		public var eventDispatcher:IEventDispatcher;
@@ -33,7 +33,7 @@ package org.robotlegs.mvcs
 		/**
 		 * Abstract MVCS <code>IProxy</code> implementation
 		 */
-		public function Proxy()
+		public function Model()
 		{
 		}
 		
