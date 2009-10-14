@@ -1,33 +1,42 @@
-h1. RobotLegs
+h2. Robotlegs: A pure AS3 micro-architecture for Flash and Flex
 
-RobotLegs is a lightweight AS3 MVCS micro-mrchitecture inspired by PureMVC. RobotLegs was created to provide a small, loosly coupled application framework that is easy to test. Where other frameworks are plagued with coupling and Singletons, RobotLegs has none. Bolier plate? RobotLegs avoids it. It is the framework you’ve been looking for.
-
-h2. Downloads
-
-Grab the latest SWC file here:
-* "RobotLegsLib.swc":http://cloud.github.com/downloads/robotlegs/robotlegs-framework/RobotLegsLib.swc
-
-h2. Resources
+Robotlegs is a lightweight AS3 MVCS micro-architecture. Robotlegs was created to provide a small, loosely coupled application framework that is easy to test.
 
 h3. Getting Started
 
-* "The Collaborative RobotLegs FAQ":http://wiki.github.com/robotlegs/robotlegs-framework/faq
+* "Brief Overview":http://wiki.github.com/robotlegs/robotlegs-framework/overview
+* "Best Practices":http://wiki.github.com/robotlegs/robotlegs-framework/best-practices
+* "Robotlegs Internals":http://wiki.github.com/robotlegs/robotlegs-framework/robotlegs-internals
 
 h3. Code
 
-* "RobotLegs Framework":http://github.com/robotlegs/robotlegs-framework
-* "RobotLegs Unit Tests":http://github.com/robotlegs/robotlegs-tests
-* "RobotLegs Demos, Utilities and More":http://github.com/robotlegs
+* "Robotlegs Framework":http://github.com/robotlegs/robotlegs-framework
+* "Robotlegs Unit Tests":http://github.com/robotlegs/robotlegs-tests
+* "Robotlegs Demos and Utilities":http://github.com/robotlegs
 
 h3. Help, Support, Collaboration
 
-* "RobotLegs Wiki":http://wiki.github.com/robotlegs/robotlegs-framework/faq
-* "RobotLegs Discussion Group":http://groups.google.com/group/robotlegs
-* "RobotLegs Issue Tracking":http://github.com/robotlegs/robotlegs-framework/issues
+* "Robotlegs Wiki":http://wiki.github.com/robotlegs/robotlegs-framework
+* "Robotlegs Discussion Group":http://groups.google.com/group/robotlegs
+* "Robotlegs Issue Tracking":http://github.com/robotlegs/robotlegs-framework/issues
 
-h3. News
+h3. Fictitiously Assembled Questions
 
-* "Follow @robotlegs_as3 on Twitter":http://twitter.com/robotlegs_as3/
+* "Robotlegs FAQ":http://wiki.github.com/robotlegs/robotlegs-framework/faq
+
+h3. Tutorials and such on the Interblogs:
+
+* "Robotlegs Bloggoweb Postings - Shaun Smith":http://shaun.boyblack.co.za/blog/category/robotlegs/
+* "Flex Image Gallery Demo - Joel Hooks":http://joelhooks.com/2009/07/17/robotlegs-as3-a-dependency-injection-driven-mvcs-framework-for-flashflex-%E2%80%93-inspired-by-puremvc/
+* "FlexUnit 4 Unit Testing and Robotlegs - Joel Hooks":http://joelhooks.com/2009/07/21/unit-testing-with-inversion-of-control-ioc-and-dependency-injection-di-with-the-robotlegs-framework-and-flexunit-4/
+
+h3. News:
+
+* "Follow Robotlegs on Twitter":http://twitter.com/robotlegs_as3
+
+h3. Other Resources
+
+* "SwiftSuspenders":http://github.com/tschneidereit/SwiftSuspenders
 
 h2. License
 
