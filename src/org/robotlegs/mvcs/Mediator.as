@@ -180,17 +180,5 @@ package org.robotlegs.mvcs
 			eventDispatcher.dispatchEvent(event);
 		}
 		
-		/**
-		 * Relays an event to the framework. This is used when your view component is dispatching
-		 * an event that simply needs broadcast. 
-		 * 
-		 * @param event The <code>Event</code> to relay to the framework
-		 * 
-		 */		
-		protected function relayEvent(event:Event):void
-		{
-			dispatchEvent(event);
-		}
-	
 	}
 }
