@@ -6,11 +6,9 @@
     <classEntry path="org.robotlegs.core.ICommand"/>
     <classEntry path="org.robotlegs.core.ICommandMap"/>
     <classEntry path="org.robotlegs.core.IContext"/>
-    <classEntry path="org.robotlegs.core.IContextProvider"/>
     <classEntry path="org.robotlegs.core.IInjector"/>
     <classEntry path="org.robotlegs.core.IMediator"/>
     <classEntry path="org.robotlegs.core.IMediatorMap"/>
-    <classEntry path="org.robotlegs.core.IPropertyProvider"/>
     <classEntry path="org.robotlegs.core.IReflector"/>
     <classEntry path="org.robotlegs.mvcs.Command"/>
     <classEntry path="org.robotlegs.base.CommandMap"/>

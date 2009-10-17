@@ -22,20 +22,17 @@
 
 package org.robotlegs.mvcs
 {
-	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	
 	import org.robotlegs.base.MediatorBase;
-	import org.robotlegs.core.IMediator;
 	import org.robotlegs.core.IMediatorMap;
-	import org.robotlegs.core.IPropertyProvider;
 	
 	/**
 	 * Abstract MVCS <code>IMediator</code> and <code>IPropertyProvider</code> implementation
 	 */
-	public class Mediator extends MediatorBase implements IPropertyProvider
+	public class Mediator extends MediatorBase
 	{
 		[Inject(name='mvcsContextView')]
 		public var contextView:DisplayObjectContainer;
@@ -56,45 +53,6 @@ package org.robotlegs.mvcs
 		public function Mediator()
 		{
 			listeners = new Array();
-		}
-		
-		/**
-		 * Walk up the Display List looking for view components that have corresponding Mediators in this Context
-		 * Ask each Mediator for a named, typed property, and return the first non-null result
-		 *
-		 * This mechanism is evil. A better solution to the "Robot Legs" problem is sorely needed.
-		 *
-		 * @param name The name of the property you are looking for
-		 * @param type The type of property you are looking for
-		 * @return The returned value
-		 */
-		public function findProperty(name:String, type:*):*
-		{
-			var val:*;
-			var viewDo:DisplayObject = getViewComponent() as DisplayObject;
-			var parent:DisplayObjectContainer;
-			var parentMediator:IMediator;
-			var parentProvider:IPropertyProvider;
-			while ((parent = viewDo.parent))
-			{
-				if ((parentMediator = mediatorMap.retrieveMediator(parent)))
-				{
-					if ((parentProvider = parentMediator as IPropertyProvider) && (val = parentProvider.provideProperty(name, type)))
-					{
-						return val;
-					}
-				}
-				viewDo = parent;
-			}
-			return null;
-		}
-		
-		/**
-		 * TODO: document
-		 */
-		public function provideProperty(name:String, type:*):*
-		{
-			return null;
 		}
 		
 		/**
