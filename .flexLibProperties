@@ -21,6 +21,9 @@
     <classEntry path="org.robotlegs.mvcs.Service"/>
     <classEntry path="org.robotlegs.mvcs.Context"/>
     <classEntry path="org.robotlegs.mvcs.Mediator"/>
+    <classEntry path="org.robotlegs.core.IEventMap"/>
+    <classEntry path="org.robotlegs.base.EventMap"/>
+    <classEntry path="org.robotlegs.core.IContextProvider"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

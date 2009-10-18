@@ -3,3 +3,4 @@ h2. Framework Contributors
 * "Shaun Smith":http://github.com/darscan
 * "Till Schneidereit":http://github.com/tschneidereit
 * "Robert Penner":http://github.com/robertpenner
+* "Joel Hooks":http://github.com/joelhooks
