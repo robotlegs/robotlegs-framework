@@ -23,7 +23,6 @@
 package org.robotlegs.mvcs
 {
 	import flash.display.DisplayObjectContainer;
-	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	
 	import org.robotlegs.core.ICommand;
@@ -60,18 +59,6 @@ package org.robotlegs.mvcs
 		 */
 		public function execute():void
 		{
-		}
-		
-		/**
-		 * IEventDispatcher.dispatchEvent() Helper method
-		 *
-		 * The same as calling <code>dispatchEvent</code> directly on the <code>IEventDispatcher</code>
-		 * 
-		 * @param event The <code>Event</code> to dispatch on the <code>IEventDispatcher</code>
-		 */
-		protected function dispatchEvent(event:Event):void
-		{
-			eventDispatcher.dispatchEvent(event);
 		}
 	
 	}

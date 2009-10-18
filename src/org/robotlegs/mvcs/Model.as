@@ -22,7 +22,6 @@
 
 package org.robotlegs.mvcs
 {
-	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	
 	public class Model
@@ -37,17 +36,5 @@ package org.robotlegs.mvcs
 		{
 		}
 		
-		/**
-		 * IEventDispatcher.dispatchEvent() Helper method
-		 *
-		 * The same as calling <code>dispatchEvent</code> directly on the <code>IEventDispatcher</code>
-		 * 
-		 * @param event The <code>Event</code> to dispatch on the <code>IEventDispatcher</code>
-		 */
-		protected function dispatchEvent(event:Event):void
-		{
-			eventDispatcher.dispatchEvent(event);
-		}
-	
 	}
 }
