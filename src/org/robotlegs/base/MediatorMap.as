@@ -25,7 +25,6 @@ package org.robotlegs.base
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import flash.events.IEventDispatcher;
 	import flash.utils.Dictionary;
 	
 	import org.robotlegs.core.IInjector;
@@ -82,6 +81,7 @@ package org.robotlegs.base
 		{
 			var message:String;
 			var viewClassName:String = reflector.getFQCN(viewClassOrName);
+			var contextViewClassName:String = reflector.getFQCN(contextView)
 			if (mappingConfigByViewClassName[viewClassName] != null)
 			{
 				message = ContextError.E_MAP_EXISTS + ' - ' + mediatorClass;
@@ -101,6 +101,10 @@ package org.robotlegs.base
 				config.typedViewClass = viewClassOrName;
 			}
 			mappingConfigByViewClassName[viewClassName] = config;
+			if(contextViewClassName == viewClassName && autoCreate)
+			{
+				createMediator(contextView);
+			}
 		}
 		
 		/**
