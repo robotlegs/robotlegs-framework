@@ -101,7 +101,7 @@ package org.robotlegs.base
 				config.typedViewClass = viewClassOrName;
 			}
 			mappingConfigByViewClassName[viewClassName] = config;
-			if(contextViewClassName == viewClassName && autoCreate)
+			if(autoCreate && contextViewClassName == viewClassName)
 			{
 				createMediator(contextView);
 			}
