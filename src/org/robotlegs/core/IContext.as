@@ -27,8 +27,13 @@ package org.robotlegs.core
 	/**
 	 * The interface definition for a RobotLegs Context
 	 */
-	public interface IContext extends IEventDispatcher
+	public interface IContext
 	{
+		/**
+		 * The <code>IContext</code>'s <code>IEventDispatcher</code>
+		 */
+		function get eventDispatcher():IEventDispatcher;
+		
 		/**
 		 * The <code>IContext</code>'s startup hook
 		 */

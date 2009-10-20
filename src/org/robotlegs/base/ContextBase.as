@@ -25,6 +25,7 @@ package org.robotlegs.base
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.events.IEventDispatcher;
 	
 	import org.robotlegs.adapters.SwiftSuspendersInjector;
 	import org.robotlegs.adapters.SwiftSuspendersReflector;
@@ -36,12 +37,14 @@ package org.robotlegs.base
 	
 	/**
 	 * Abstract <code>IContext</code> implementation
-	 * 
-	 * A 
-	 * 
 	 */
 	public class ContextBase extends EventDispatcher implements IContext
 	{
+		/**
+		 * The context <code>ICommandMap</code>
+		 */
+		protected var commandMap:ICommandMap;
+		
 		/**
 		 * The context <code>DisplayObjectContainer</code>
 		 */
@@ -53,19 +56,14 @@ package org.robotlegs.base
 		protected var injector:IInjector;
 		
 		/**
-		 * The context <code>IReflector</code>
-		 */
-		protected var reflector:IReflector;
-		
-		/**
-		 * The context <code>ICommandMap</code>
-		 */
-		protected var commandMap:ICommandMap;
-		
-		/**
 		 * The context <code>IMediatorMap</code>
 		 */
 		protected var mediatorMap:IMediatorMap;
+		
+		/**
+		 * The context <code>IReflector</code>
+		 */
+		protected var reflector:IReflector;
 		
 		/**
 		 * Default Context Implementation
@@ -81,6 +79,14 @@ package org.robotlegs.base
 			this.injector = injector;
 			this.reflector = reflector;
 			initialize(autoStartup);
+		}
+		
+		/**
+		 * The <code>IEventDispatcher</code> for this <code>IContext</code>
+		 */
+		public function get eventDispatcher():IEventDispatcher
+		{
+			return this;
 		}
 		
 		/**
@@ -105,7 +111,7 @@ package org.robotlegs.base
 		
 		/**
 		 * Default Context Initialization
-		 * 
+		 *
 		 * Override this to intercept the default startup routine
 		 */
 		protected function initialize(autoStartup:Boolean):void
@@ -188,7 +194,7 @@ package org.robotlegs.base
 		
 		/**
 		 * Bind some commonly needed contextual dependencies for convenience
-		 * 
+		 *
 		 * Override this to change the default (blank) configuration
 		 *
 		 * These should be named to avoid collisions
