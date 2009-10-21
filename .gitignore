@@ -5,6 +5,7 @@
 /bin-release/*
 /libs/*
 /bin/*
+docs/*
 
 .actionScriptProperties
 .flexProperties

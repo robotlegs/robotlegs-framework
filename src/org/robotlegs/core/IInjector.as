@@ -55,7 +55,7 @@ package org.robotlegs.core
 		
 		/**
 		 * When asked for an instance of the class <code>whenAskedFor</code>
-		 * inject an instance of code>whenAskedFor</code>.
+		 * inject an instance of <code>whenAskedFor</code>.
 		 *
 		 * This will create an instance on the first injection, but
 		 * will re-use that instance for subsequent injections.
@@ -68,7 +68,7 @@ package org.robotlegs.core
 		
 		/**
 		 * When asked for an instance of the class <code>whenAskedFor</code>
-		 * inject an instance of code>useSingletonOf</code>.
+		 * inject an instance of <code>useSingletonOf</code>.
 		 *
 		 * This will create an instance on the first injection, but
 		 * will re-use that instance for subsequent injections.
