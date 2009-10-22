@@ -23,6 +23,7 @@
 package org.robotlegs.mvcs
 {
 	import flash.display.DisplayObjectContainer;
+	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	
 	import org.robotlegs.base.MediatorBase;
@@ -48,6 +49,16 @@ package org.robotlegs.mvcs
 		
 		public function Mediator()
 		{
+		}
+		
+		/**
+		 * Dispatch helper method
+		 *
+		 * @param event The Event to dispatch on the <code>IContext</code>'s <code>IEventDispatcher</code>
+		 */
+		public function dispatch(event:Event):void
+		{
+			eventDispatcher.dispatchEvent(event);
 		}
 		
 		/**

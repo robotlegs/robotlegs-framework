@@ -22,12 +22,18 @@
 
 package org.robotlegs.mvcs
 {
+	import flash.events.Event;
 	import flash.events.IEventDispatcher;
+	
+	import org.robotlegs.core.IEventMap;
 	
 	public class Model
 	{
 		[Inject(name='mvcsEventDispatcher')]
 		public var eventDispatcher:IEventDispatcher;
+		
+		[Inject(name='mvcsEventMap')]
+		public var eventMap:IEventMap;
 		
 		/**
 		 * Abstract MVCS <code>IProxy</code> implementation
@@ -36,5 +42,14 @@ package org.robotlegs.mvcs
 		{
 		}
 		
+		/**
+		 * Dispatch helper method
+		 *
+		 * @param event The <code>Event</code> to dispatch on the <code>IContext</code>'s <code>IEventDispatcher</code>
+		 */
+		public function dispatch(event:Event):void
+		{
+			eventDispatcher.dispatchEvent(event);
+		}
 	}
 }
