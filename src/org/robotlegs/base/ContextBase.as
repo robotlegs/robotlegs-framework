@@ -95,6 +95,7 @@ package org.robotlegs.base
 			_autoStartup = autoStartup;
 			_injector = injector;
 			_reflector = reflector;
+			_eventDispatcher = new EventDispatcher(this);
 			if (_contextView)
 			{
 				initialize();
@@ -173,7 +174,6 @@ package org.robotlegs.base
 			{
 				throw new ContextError(ContextError.E_VIEW_NULL);
 			}
-			_eventDispatcher = new EventDispatcher(this);
 			_injector = _injector || createInjector();
 			_reflector = _reflector || createReflector();
 			_commandMap = createCommandMap();
