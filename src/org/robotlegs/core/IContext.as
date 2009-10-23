@@ -22,6 +22,7 @@
 
 package org.robotlegs.core
 {
+	import flash.display.DisplayObjectContainer;
 	import flash.events.IEventDispatcher;
 	
 	/**
@@ -35,6 +36,18 @@ package org.robotlegs.core
 		function get eventDispatcher():IEventDispatcher;
 		
 		/**
+		 * The <code>IContext</code>'s <code>DisplayObjectContainer</code>
+		 */
+		function get contextView():DisplayObjectContainer;
+		
+		/**
+		 * The <code>IContext</code>'s <code>DisplayObjectContainer</code>
+		 *
+		 * @param view The <code>DisplayObjectContainer</code> to use as scope for this <code>IContext</code>
+		 */
+		function set contextView(value:DisplayObjectContainer):void;
+		
+		/**
 		 * The <code>IContext</code>'s startup hook
 		 */
 		function startup():void;
@@ -43,6 +56,6 @@ package org.robotlegs.core
 		 * The <code>IContext</code>'s shutdown hook
 		 */
 		function shutdown():void;
-		
+	
 	}
 }

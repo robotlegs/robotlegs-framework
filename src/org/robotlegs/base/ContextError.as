@@ -25,6 +25,10 @@ package org.robotlegs.base
 	
 	public class ContextError extends Error
 	{
+		public static const E_INIT_OVR:String = 'IContext can not be initialized twice';
+		public static const E_VIEW_NULL:String = 'contextView can not be null';
+		public static const E_VIEW_OVR:String = 'Can not overwrite the contextView';
+		
 		public static const E_MAP_COM_IMPL:String = 'Command Class does not implement ICommand';
 		public static const E_MAP_COM_OVR:String = 'Cannot overwrite map';
 		

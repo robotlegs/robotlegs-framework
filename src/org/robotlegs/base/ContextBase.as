@@ -38,32 +38,48 @@ package org.robotlegs.base
 	/**
 	 * Abstract <code>IContext</code> implementation
 	 */
-	public class ContextBase extends EventDispatcher implements IContext
+	public class ContextBase implements IContext, IEventDispatcher
 	{
-		/**
-		 * The context <code>ICommandMap</code>
-		 */
-		protected var commandMap:ICommandMap;
 		
 		/**
-		 * The context <code>DisplayObjectContainer</code>
+		 * @private
 		 */
-		protected var contextView:DisplayObjectContainer;
+		protected var _autoStartup:Boolean;
 		
 		/**
-		 * The context <code>IInjector</code>
+		 * @private
 		 */
-		protected var injector:IInjector;
+		protected var _commandMap:ICommandMap;
 		
 		/**
-		 * The context <code>IMediatorMap</code>
+		 * @private
 		 */
-		protected var mediatorMap:IMediatorMap;
+		protected var _contextView:DisplayObjectContainer;
 		
 		/**
-		 * The context <code>IReflector</code>
+		 * @private
 		 */
-		protected var reflector:IReflector;
+		protected var _eventDispatcher:IEventDispatcher;
+		
+		/**
+		 * @private
+		 */
+		protected var _initialized:Boolean;
+		
+		/**
+		 * @private
+		 */
+		protected var _injector:IInjector;
+		
+		/**
+		 * @private
+		 */
+		protected var _mediatorMap:IMediatorMap;
+		
+		/**
+		 * @private
+		 */
+		protected var _reflector:IReflector;
 		
 		/**
 		 * Default Context Implementation
@@ -73,12 +89,16 @@ package org.robotlegs.base
 		 * @param injector An Injector to use for this context
 		 * @param reflector A Reflector to use for this context
 		 */
-		public function ContextBase(contextView:DisplayObjectContainer, autoStartup:Boolean = true, injector:IInjector = null, reflector:IReflector = null)
+		public function ContextBase(contextView:DisplayObjectContainer = null, autoStartup:Boolean = true, injector:IInjector = null, reflector:IReflector = null)
 		{
-			this.contextView = contextView;
-			this.injector = injector;
-			this.reflector = reflector;
-			initialize(autoStartup);
+			_contextView = contextView;
+			_autoStartup = autoStartup;
+			_injector = injector;
+			_reflector = reflector;
+			if (_contextView)
+			{
+				initialize();
+			}
 		}
 		
 		/**
@@ -86,13 +106,42 @@ package org.robotlegs.base
 		 */
 		public function get eventDispatcher():IEventDispatcher
 		{
-			return this;
+			return _eventDispatcher;
+		}
+		
+		/**
+		 * The <code>DisplayObjectContainer</code> that scopes this <code>IContext</code>
+		 */
+		public function get contextView():DisplayObjectContainer
+		{
+			return _contextView;
+		}
+		
+		/**
+		 * The <code>IContext</code>'s <code>DisplayObjectContainer</code>
+		 *
+		 * <p>Note: This can only be set once</p>
+		 *
+		 * @param view The <code>DisplayObjectContainer</code> to use as scope for this <code>IContext</code>
+		 */
+		public function set contextView(value:DisplayObjectContainer):void
+		{
+			if (contextView)
+			{
+				throw new ContextError(ContextError.E_VIEW_OVR);
+			}
+			if (!value)
+			{
+				throw new ContextError(ContextError.E_VIEW_NULL);
+			}
+			_contextView = value;
+			initialize();
 		}
 		
 		/**
 		 * The Startup Hook
 		 *
-		 * Override this in your implementation
+		 * <p>Override this in your Framework Context implementation</p>
 		 */
 		public function startup():void
 		{
@@ -102,7 +151,7 @@ package org.robotlegs.base
 		/**
 		 * The Startup Hook
 		 *
-		 * Override this in your implementation
+		 * <p>Override this in your Framework Context implementation</p>
 		 */
 		public function shutdown():void
 		{
@@ -112,16 +161,25 @@ package org.robotlegs.base
 		/**
 		 * Default Context Initialization
 		 *
-		 * Override this to intercept the default startup routine
+		 * <p>Override this to intercept the default startup routine</p>
 		 */
-		protected function initialize(autoStartup:Boolean):void
+		protected function initialize():void
 		{
-			injector = injector || createInjector();
-			reflector = reflector || createReflector();
-			commandMap = createCommandMap();
-			mediatorMap = createMediatorMap();
+			if (_initialized)
+			{
+				throw new ContextError(ContextError.E_INIT_OVR);
+			}
+			if (!_contextView)
+			{
+				throw new ContextError(ContextError.E_VIEW_NULL);
+			}
+			_eventDispatcher = new EventDispatcher(this);
+			_injector = _injector || createInjector();
+			_reflector = _reflector || createReflector();
+			_commandMap = createCommandMap();
+			_mediatorMap = createMediatorMap();
 			initializeInjections();
-			if (autoStartup)
+			if (_autoStartup)
 			{
 				contextView.stage ? startup() : contextView.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage, false, 0, true);
 			}
@@ -130,7 +188,7 @@ package org.robotlegs.base
 		/**
 		 * ADDED_TO_STAGE event handler
 		 *
-		 * Only used if <code>autoStart</code> is true but the <code>contextView</code> was not on Stage during the context's construction
+		 * <p>Only used if <code>autoStart</code> is true but the <code>contextView</code> was not on Stage</p>
 		 *
 		 * @param e The Event
 		 */
@@ -143,9 +201,9 @@ package org.robotlegs.base
 		/**
 		 * Create a default <code>IInjector</code>
 		 *
-		 * Override this to change the default configuration
+		 * <p>Override this to change the default configuration</p>
 		 *
-		 * NOTE: If an <code>IInjector</code> was provided via the super constructor this method won't get called
+		 * <p>NOTE: If an <code>IInjector</code> was provided via the super constructor this method won't get called</p>
 		 *
 		 * @return An <code>IInjector</code>
 		 */
@@ -157,9 +215,9 @@ package org.robotlegs.base
 		/**
 		 * Create a default <code>IReflector</code>
 		 *
-		 * Override this to change the default configuration
+		 * <p>Override this to change the default configuration</p>
 		 *
-		 * NOTE: If an <code>IReflector</code> was provided via the super constructor this method won't get called
+		 * <p>NOTE: If an <code>IReflector</code> was provided via the super constructor this method won't get called</p>
 		 *
 		 * @return An <code>IReflector</code>
 		 */
@@ -171,19 +229,19 @@ package org.robotlegs.base
 		/**
 		 * Create a default <code>ICommandMap</code>
 		 *
-		 * Override this to change the default configuration
+		 * <p>Override this to change the default configuration</p>
 		 *
 		 * @return An <code>ICommandMap</code>
 		 */
 		protected function createCommandMap():ICommandMap
 		{
-			return new CommandMap(this, injector, reflector);
+			return new CommandMap(eventDispatcher, injector, reflector);
 		}
 		
 		/**
 		 * Create a default <code>IMediatorMap</code>
 		 *
-		 * Override this to change the default configuration
+		 * <p>Override this to change the default configuration</p>
 		 *
 		 * @return An <code>IMediatorMap</code>
 		 */
@@ -195,13 +253,84 @@ package org.robotlegs.base
 		/**
 		 * Bind some commonly needed contextual dependencies for convenience
 		 *
-		 * Override this to change the default (blank) configuration
+		 * <p>Override this to change the default (blank) configuration</p>
 		 *
-		 * These should be named to avoid collisions
+		 * <p>These should be named to avoid collisions</p>
 		 */
 		protected function initializeInjections():void
 		{
 		}
-	
+		
+		/**
+		 * The <code>ICommandMap</code> for this <code>IContext</code>
+		 */
+		protected function get commandMap():ICommandMap
+		{
+			return _commandMap;
+		}
+		
+		/**
+		 * The <code>IInjector</code> for this <code>IContext</code>
+		 */
+		protected function get injector():IInjector
+		{
+			return _injector;
+		}
+		
+		/**
+		 * The <code>IMediatorMap</code> for this <code>IContext</code>
+		 */
+		protected function get mediatorMap():IMediatorMap
+		{
+			return _mediatorMap;
+		}
+		
+		/**
+		 * The <code>IReflector</code> for this <code>IContext</code>
+		 */
+		protected function get reflector():IReflector
+		{
+			return _reflector;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function addEventListener(type:String, listener:Function, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = false):void
+		{
+			eventDispatcher.addEventListener(type, listener, useCapture, priority);
+		}
+		
+		/**
+		 * @private
+		 */
+		public function dispatchEvent(event:Event):Boolean
+		{
+			return eventDispatcher.dispatchEvent(event);
+		}
+		
+		/**
+		 * @private
+		 */
+		public function hasEventListener(type:String):Boolean
+		{
+			return eventDispatcher.hasEventListener(type);
+		}
+		
+		/**
+		 * @private
+		 */
+		public function removeEventListener(type:String, listener:Function, useCapture:Boolean = false):void
+		{
+			eventDispatcher.removeEventListener(type, listener, useCapture);
+		}
+		
+		/**
+		 * @private
+		 */
+		public function willTrigger(type:String):Boolean
+		{
+			return eventDispatcher.willTrigger(type);
+		}
 	}
 }

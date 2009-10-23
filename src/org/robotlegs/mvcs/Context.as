@@ -38,7 +38,7 @@ package org.robotlegs.mvcs
 	 */
 	public class Context extends ContextBase implements IContext
 	{
-		public function Context(contextView:DisplayObjectContainer, autoStartup:Boolean = true)
+		public function Context(contextView:DisplayObjectContainer = null, autoStartup:Boolean = true)
 		{
 			super(contextView, autoStartup);
 		}
