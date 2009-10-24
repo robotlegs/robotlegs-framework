@@ -3,27 +3,32 @@
   <includeClasses>
     <classEntry path="org.robotlegs.adapters.SwiftSuspendersInjector"/>
     <classEntry path="org.robotlegs.adapters.SwiftSuspendersReflector"/>
+    <classEntry path="org.robotlegs.base.CommandMap"/>
+    <classEntry path="org.robotlegs.base.ContextBase"/>
+    <classEntry path="org.robotlegs.base.ContextError"/>
+    <classEntry path="org.robotlegs.base.ContextEvent"/>
+    <classEntry path="org.robotlegs.base.EventMap"/>
+    <classEntry path="org.robotlegs.base.MediatorBase"/>
+    <classEntry path="org.robotlegs.base.MediatorMap"/>
     <classEntry path="org.robotlegs.core.ICommand"/>
     <classEntry path="org.robotlegs.core.ICommandMap"/>
     <classEntry path="org.robotlegs.core.IContext"/>
+    <classEntry path="org.robotlegs.core.IContextProvider"/>
+    <classEntry path="org.robotlegs.core.IEventMap"/>
     <classEntry path="org.robotlegs.core.IInjector"/>
     <classEntry path="org.robotlegs.core.IMediator"/>
     <classEntry path="org.robotlegs.core.IMediatorMap"/>
     <classEntry path="org.robotlegs.core.IReflector"/>
     <classEntry path="org.robotlegs.mvcs.Command"/>
-    <classEntry path="org.robotlegs.base.CommandMap"/>
-    <classEntry path="org.robotlegs.base.ContextBase"/>
-    <classEntry path="org.robotlegs.base.ContextError"/>
-    <classEntry path="org.robotlegs.base.ContextEvent"/>
-    <classEntry path="org.robotlegs.base.MediatorBase"/>
-    <classEntry path="org.robotlegs.base.MediatorMap"/>
-    <classEntry path="org.robotlegs.mvcs.Model"/>
-    <classEntry path="org.robotlegs.mvcs.Service"/>
     <classEntry path="org.robotlegs.mvcs.Context"/>
     <classEntry path="org.robotlegs.mvcs.Mediator"/>
-    <classEntry path="org.robotlegs.core.IEventMap"/>
-    <classEntry path="org.robotlegs.base.EventMap"/>
-    <classEntry path="org.robotlegs.core.IContextProvider"/>
+    <classEntry path="org.robotlegs.mvcs.Model"/>
+    <classEntry path="org.robotlegs.mvcs.Service"/>
+    <classEntry path="org.robotlegs.nometa.Command"/>
+    <classEntry path="org.robotlegs.nometa.Context"/>
+    <classEntry path="org.robotlegs.nometa.Mediator"/>
+    <classEntry path="org.robotlegs.nometa.Model"/>
+    <classEntry path="org.robotlegs.nometa.Service"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
