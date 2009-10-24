@@ -23,6 +23,7 @@
 package org.robotlegs.base
 {
 	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.utils.Dictionary;
@@ -38,7 +39,9 @@ package org.robotlegs.base
 	public class MediatorMap implements IMediatorMap
 	{
 		protected static const enterFrameDispatcher:Sprite = new Sprite();
-		protected var contextView:DisplayObject;
+		
+		protected var _enabled:Boolean = true;
+		protected var _contextView:DisplayObjectContainer;
 		protected var injector:IInjector;
 		protected var reflector:IReflector;
 		protected var useCapture:Boolean;
@@ -58,9 +61,8 @@ package org.robotlegs.base
 		 * @param reflector An <code>IReflector</code> to use for this context
 		 * @param useCapture Optional, change at your peril!
 		 */
-		public function MediatorMap(contextView:DisplayObject, injector:IInjector, reflector:IReflector, useCapture:Boolean = true)
+		public function MediatorMap(contextView:DisplayObjectContainer, injector:IInjector, reflector:IReflector, useCapture:Boolean = true)
 		{
-			this.contextView = contextView;
 			this.injector = injector;
 			this.reflector = reflector;
 			this.useCapture = useCapture;
@@ -71,7 +73,7 @@ package org.robotlegs.base
 			
 			this.mediatorsMarkedForRemoval = new Dictionary(false);
 			
-			initializeListeners();
+			this.contextView = contextView;
 		}
 		
 		/**
@@ -79,18 +81,15 @@ package org.robotlegs.base
 		 */
 		public function mapView(viewClassOrName:*, mediatorClass:Class, autoCreate:Boolean = true, autoRemove:Boolean = true):void
 		{
-			var message:String;
 			var viewClassName:String = reflector.getFQCN(viewClassOrName);
 			var contextViewClassName:String = reflector.getFQCN(contextView)
 			if (mappingConfigByViewClassName[viewClassName] != null)
 			{
-				message = ContextError.E_MAP_EXISTS + ' - ' + mediatorClass;
-				throw new ContextError(message);
+				throw new ContextError(ContextError.E_MAP_EXISTS + ' - ' + mediatorClass);
 			}
 			if (reflector.classExtendsOrImplements(mediatorClass, IMediator) == false)
 			{
-				message = ContextError.E_MAP_NOIMPL + ' - ' + mediatorClass
-				throw new ContextError(message);
+				throw new ContextError(ContextError.E_MAP_NOIMPL + ' - ' + mediatorClass);
 			}
 			var config:MappingConfig = new MappingConfig();
 			config.mediatorClass = mediatorClass;
@@ -101,7 +100,7 @@ package org.robotlegs.base
 				config.typedViewClass = viewClassOrName;
 			}
 			mappingConfigByViewClassName[viewClassName] = config;
-			if(autoCreate && contextViewClassName == viewClassName)
+			if (autoCreate && contextViewClassName == viewClassName)
 			{
 				createMediator(contextView);
 			}
@@ -219,17 +218,54 @@ package org.robotlegs.base
 			contextView = null;
 		}
 		
-		// Protected Methods //////////////////////////////////////////////////
-		protected function initializeListeners():void
+		public function get contextView():DisplayObjectContainer
 		{
-			contextView.addEventListener(Event.ADDED_TO_STAGE, onViewAdded, useCapture, 0, true);
-			contextView.addEventListener(Event.REMOVED_FROM_STAGE, onViewRemoved, useCapture, 0, true);
+			return _contextView;
+		}
+		
+		public function set contextView(value:DisplayObjectContainer):void
+		{
+			if (value != _contextView)
+			{
+				removeListeners();
+				_contextView = value;
+				addListeners();
+			}
+		}
+		
+		public function get enabled():Boolean
+		{
+			return _enabled;
+		}
+		
+		public function set enabled(value:Boolean):void
+		{
+			if (value != _enabled)
+			{
+				removeListeners();
+				_enabled = value;
+				addListeners();
+			}
+		}
+		
+		// Protected Methods //////////////////////////////////////////////////
+		
+		protected function addListeners():void
+		{
+			if (contextView && enabled)
+			{
+				contextView.addEventListener(Event.ADDED_TO_STAGE, onViewAdded, useCapture, 0, true);
+				contextView.addEventListener(Event.REMOVED_FROM_STAGE, onViewRemoved, useCapture, 0, true);
+			}
 		}
 		
 		protected function removeListeners():void
 		{
-			contextView.removeEventListener(Event.ADDED_TO_STAGE, onViewAdded, useCapture);
-			contextView.removeEventListener(Event.REMOVED_FROM_STAGE, onViewRemoved, useCapture);
+			if (contextView && enabled)
+			{
+				contextView.removeEventListener(Event.ADDED_TO_STAGE, onViewAdded, useCapture);
+				contextView.removeEventListener(Event.REMOVED_FROM_STAGE, onViewRemoved, useCapture);
+			}
 		}
 		
 		protected function onViewAdded(e:Event):void

@@ -22,6 +22,7 @@
 
 package org.robotlegs.core
 {
+	import flash.display.DisplayObjectContainer;
 	
 	/**
 	 * The interface definition for a RobotLegs MediatorMap
@@ -53,8 +54,8 @@ package org.robotlegs.core
 		/**
 		 * Create an instance of a mapped <code>IMediator</code>
 		 *
-		 * This will create a Mediator for a given View Component.
-		 * Mediator dependencies will be automatically resolved.
+		 * <p>This will create a Mediator for a given View Component.
+		 * Mediator dependencies will be automatically resolved.</p>
 		 *
 		 * @param viewComponent An instance of the view Class previously mapped to an <code>IMediator</code> Class
 		 * @return The <code>IMediator</code>
@@ -64,8 +65,8 @@ package org.robotlegs.core
 		/**
 		 * Manually register an <code>IMediator</code> instance
 		 *
-		 * Registering a Mediator will NOT inject it's dependencies.
-		 * It is assumed that dependencies are already satisfied.
+		 * <p>NOTE: Registering a Mediator will NOT inject it's dependencies.
+		 * It is assumed that dependencies are already satisfied.</p>
 		 *
 		 * @param viewComponent The view component for the <code>IMediator</code>
 		 * @param mediator The <code>IMediator</code> to register
@@ -111,6 +112,12 @@ package org.robotlegs.core
 		 * @return Whether an <code>IMediator</code> has been registered for this view instance
 		 */
 		function hasMediatorForView(viewComponent:Object):Boolean;
+		
+		function get contextView():DisplayObjectContainer;
+		function set contextView(value:DisplayObjectContainer):void;
+		
+		function get enabled():Boolean;
+		function set enabled(value:Boolean):void;
 	
 	}
 }

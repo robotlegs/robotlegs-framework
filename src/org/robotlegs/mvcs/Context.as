@@ -46,7 +46,7 @@ package org.robotlegs.mvcs
 		/**
 		 * @inheritDoc
 		 */
-		override protected function initializeInjections():void
+		override protected function mapInjections():void
 		{
 			injector.mapValue(DisplayObjectContainer, contextView, 'mvcsContextView');
 			injector.mapValue(IInjector, injector, 'mvcsInjector');

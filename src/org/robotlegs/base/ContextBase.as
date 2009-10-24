@@ -41,44 +41,12 @@ package org.robotlegs.base
 	public class ContextBase implements IContext, IEventDispatcher
 	{
 		
-		/**
-		 * @private
-		 */
 		protected var _autoStartup:Boolean;
-		
-		/**
-		 * @private
-		 */
 		protected var _commandMap:ICommandMap;
-		
-		/**
-		 * @private
-		 */
 		protected var _contextView:DisplayObjectContainer;
-		
-		/**
-		 * @private
-		 */
 		protected var _eventDispatcher:IEventDispatcher;
-		
-		/**
-		 * @private
-		 */
-		protected var _initialized:Boolean;
-		
-		/**
-		 * @private
-		 */
 		protected var _injector:IInjector;
-		
-		/**
-		 * @private
-		 */
 		protected var _mediatorMap:IMediatorMap;
-		
-		/**
-		 * @private
-		 */
 		protected var _reflector:IReflector;
 		
 		/**
@@ -91,53 +59,15 @@ package org.robotlegs.base
 		 */
 		public function ContextBase(contextView:DisplayObjectContainer = null, autoStartup:Boolean = true, injector:IInjector = null, reflector:IReflector = null)
 		{
+			_eventDispatcher = new EventDispatcher(this);
 			_contextView = contextView;
 			_autoStartup = autoStartup;
 			_injector = injector;
 			_reflector = reflector;
-			_eventDispatcher = new EventDispatcher(this);
-			if (_contextView)
-			{
-				initialize();
-			}
-		}
-		
-		/**
-		 * The <code>IEventDispatcher</code> for this <code>IContext</code>
-		 */
-		public function get eventDispatcher():IEventDispatcher
-		{
-			return _eventDispatcher;
-		}
-		
-		/**
-		 * The <code>DisplayObjectContainer</code> that scopes this <code>IContext</code>
-		 */
-		public function get contextView():DisplayObjectContainer
-		{
-			return _contextView;
-		}
-		
-		/**
-		 * The <code>IContext</code>'s <code>DisplayObjectContainer</code>
-		 *
-		 * <p>Note: This can only be set once</p>
-		 *
-		 * @param view The <code>DisplayObjectContainer</code> to use as scope for this <code>IContext</code>
-		 */
-		public function set contextView(value:DisplayObjectContainer):void
-		{
-			if (contextView)
-			{
-				throw new ContextError(ContextError.E_VIEW_OVR);
-			}
-			if (!value)
-			{
-				throw new ContextError(ContextError.E_VIEW_NULL);
-			}
-			_contextView = value;
 			initialize();
 		}
+		
+		// API ////////////////////////////////////////////////////////////////
 		
 		/**
 		 * The Startup Hook
@@ -160,94 +90,50 @@ package org.robotlegs.base
 		}
 		
 		/**
-		 * Default Context Initialization
+		 * The <code>IEventDispatcher</code> for this <code>IContext</code>
+		 */
+		public function get eventDispatcher():IEventDispatcher
+		{
+			return _eventDispatcher;
+		}
+		
+		/**
+		 * The <code>DisplayObjectContainer</code> that scopes this <code>IContext</code>
+		 */
+		public function get contextView():DisplayObjectContainer
+		{
+			return _contextView;
+		}
+		
+		/**
+		 * The <code>IContext</code>'s <code>DisplayObjectContainer</code>
 		 *
-		 * <p>Override this to intercept the default startup routine</p>
+		 * @param view The <code>DisplayObjectContainer</code> to use as scope for this <code>IContext</code>
+		 */
+		public function set contextView(value:DisplayObjectContainer):void
+		{
+			if (_contextView != value)
+			{
+				_contextView = value;
+				mediatorMap.contextView = value;
+				mapInjections();
+				checkAutoStartup();
+			}
+		}
+		
+		// CPI ////////////////////////////////////////////////////////////////
+		
+		/**
+		 * @private
 		 */
 		protected function initialize():void
 		{
-			if (_initialized)
-			{
-				throw new ContextError(ContextError.E_INIT_OVR);
-			}
-			if (!_contextView)
-			{
-				throw new ContextError(ContextError.E_VIEW_NULL);
-			}
-			_injector = _injector || createInjector();
-			_reflector = _reflector || createReflector();
-			_commandMap = createCommandMap();
-			_mediatorMap = createMediatorMap();
-			initializeInjections();
-			if (_autoStartup)
-			{
-				contextView.stage ? startup() : contextView.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage, false, 0, true);
-			}
-		}
-		
-		/**
-		 * ADDED_TO_STAGE event handler
-		 *
-		 * <p>Only used if <code>autoStart</code> is true but the <code>contextView</code> was not on Stage</p>
-		 *
-		 * @param e The Event
-		 */
-		protected function onAddedToStage(e:Event):void
-		{
-			contextView.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage)
-			startup();
-		}
-		
-		/**
-		 * Create a default <code>IInjector</code>
-		 *
-		 * <p>Override this to change the default configuration</p>
-		 *
-		 * <p>NOTE: If an <code>IInjector</code> was provided via the super constructor this method won't get called</p>
-		 *
-		 * @return An <code>IInjector</code>
-		 */
-		protected function createInjector():IInjector
-		{
-			return new SwiftSuspendersInjector();
-		}
-		
-		/**
-		 * Create a default <code>IReflector</code>
-		 *
-		 * <p>Override this to change the default configuration</p>
-		 *
-		 * <p>NOTE: If an <code>IReflector</code> was provided via the super constructor this method won't get called</p>
-		 *
-		 * @return An <code>IReflector</code>
-		 */
-		protected function createReflector():IReflector
-		{
-			return new SwiftSuspendersReflector();
-		}
-		
-		/**
-		 * Create a default <code>ICommandMap</code>
-		 *
-		 * <p>Override this to change the default configuration</p>
-		 *
-		 * @return An <code>ICommandMap</code>
-		 */
-		protected function createCommandMap():ICommandMap
-		{
-			return new CommandMap(eventDispatcher, injector, reflector);
-		}
-		
-		/**
-		 * Create a default <code>IMediatorMap</code>
-		 *
-		 * <p>Override this to change the default configuration</p>
-		 *
-		 * @return An <code>IMediatorMap</code>
-		 */
-		protected function createMediatorMap():IMediatorMap
-		{
-			return new MediatorMap(contextView, injector, reflector);
+			_injector = _injector || new SwiftSuspendersInjector();
+			_reflector = _reflector || new SwiftSuspendersReflector()
+			_commandMap = _commandMap || new CommandMap(eventDispatcher, injector, reflector);
+			_mediatorMap = _mediatorMap || new MediatorMap(contextView, injector, reflector);
+			mapInjections();
+			checkAutoStartup();
 		}
 		
 		/**
@@ -255,11 +141,34 @@ package org.robotlegs.base
 		 *
 		 * <p>Override this to change the default (blank) configuration</p>
 		 *
-		 * <p>These should be named to avoid collisions</p>
+		 * <p>Beware of collisions in your container</p>
 		 */
-		protected function initializeInjections():void
+		protected function mapInjections():void
 		{
 		}
+		
+		
+		/**
+		 * @private
+		 */
+		protected function checkAutoStartup():void
+		{
+			if (_autoStartup && contextView)
+			{
+				contextView.stage ? startup() : contextView.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage, false, 0, true);
+			}
+		}
+		
+		/**
+		 * @private
+		 */
+		protected function onAddedToStage(e:Event):void
+		{
+			contextView.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage)
+			startup();
+		}
+		
+		// FPI ////////////////////////////////////////////////////////////////
 		
 		/**
 		 * The <code>ICommandMap</code> for this <code>IContext</code>
@@ -292,6 +201,8 @@ package org.robotlegs.base
 		{
 			return _reflector;
 		}
+		
+		// EventDispatcher Boilerplate ////////////////////////////////////////
 		
 		/**
 		 * @private
