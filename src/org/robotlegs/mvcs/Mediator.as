@@ -35,16 +35,16 @@ package org.robotlegs.mvcs
 	 */
 	public class Mediator extends MediatorBase
 	{
-		[Inject(name='mvcsContextView')]
+		[Inject]
 		public var contextView:DisplayObjectContainer;
 		
-		[Inject(name='mvcsMediatorMap')]
+		[Inject]
 		public var mediatorMap:IMediatorMap;
 		
-		[Inject(name='mvcsEventDispatcher')]
+		[Inject]
 		public var eventDispatcher:IEventDispatcher;
 		
-		[Inject(name='mvcsEventMap')]
+		[Inject]
 		public var eventMap:IEventMap;
 		
 		public function Mediator()

@@ -29,10 +29,10 @@ package org.robotlegs.mvcs
 	
 	public class Model
 	{
-		[Inject(name='mvcsEventDispatcher')]
+		[Inject]
 		public var eventDispatcher:IEventDispatcher;
 		
-		[Inject(name='mvcsEventMap')]
+		[Inject]
 		public var eventMap:IEventMap;
 		
 		/**

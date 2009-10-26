@@ -48,12 +48,12 @@ package org.robotlegs.mvcs
 		 */
 		override protected function mapInjections():void
 		{
-			injector.mapValue(DisplayObjectContainer, contextView, 'mvcsContextView');
-			injector.mapValue(IInjector, injector, 'mvcsInjector');
-			injector.mapValue(IEventDispatcher, this, 'mvcsEventDispatcher');
-			injector.mapValue(ICommandMap, commandMap, 'mvcsCommandMap');
-			injector.mapValue(IMediatorMap, mediatorMap, 'mvcsMediatorMap');
-			injector.mapClass(IEventMap, EventMap, 'mvcsEventMap');
+			injector.mapValue(DisplayObjectContainer, contextView);
+			injector.mapValue(IInjector, injector);
+			injector.mapValue(IEventDispatcher, eventDispatcher);
+			injector.mapValue(ICommandMap, commandMap);
+			injector.mapValue(IMediatorMap, mediatorMap);
+			injector.mapClass(IEventMap, EventMap);
 		}
 	
 	}

@@ -36,19 +36,19 @@ package org.robotlegs.mvcs
 	 */
 	public class Command implements ICommand
 	{
-		[Inject(name='mvcsContextView')]
+		[Inject]
 		public var contextView:DisplayObjectContainer;
 		
-		[Inject(name='mvcsCommandMap')]
+		[Inject]
 		public var commandMap:ICommandMap;
 		
-		[Inject(name='mvcsEventDispatcher')]
+		[Inject]
 		public var eventDispatcher:IEventDispatcher;
 		
-		[Inject(name='mvcsInjector')]
+		[Inject]
 		public var injector:IInjector;
 		
-		[Inject(name='mvcsMediatorMap')]
+		[Inject]
 		public var mediatorMap:IMediatorMap;
 		
 		public function Command()
