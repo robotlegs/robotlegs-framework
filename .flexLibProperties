@@ -24,6 +24,11 @@
     <classEntry path="org.robotlegs.mvcs.Mediator"/>
     <classEntry path="org.robotlegs.mvcs.Model"/>
     <classEntry path="org.robotlegs.mvcs.Service"/>
+    <classEntry path="org.robotlegs.nometa.Command"/>
+    <classEntry path="org.robotlegs.nometa.Context"/>
+    <classEntry path="org.robotlegs.nometa.Mediator"/>
+    <classEntry path="org.robotlegs.nometa.Model"/>
+    <classEntry path="org.robotlegs.nometa.Service"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
