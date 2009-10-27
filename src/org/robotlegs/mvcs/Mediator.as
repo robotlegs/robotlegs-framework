@@ -26,6 +26,7 @@ package org.robotlegs.mvcs
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	
+	import org.robotlegs.base.EventMap;
 	import org.robotlegs.base.MediatorBase;
 	import org.robotlegs.core.IEventMap;
 	import org.robotlegs.core.IMediatorMap;
@@ -44,8 +45,7 @@ package org.robotlegs.mvcs
 		[Inject]
 		public var eventDispatcher:IEventDispatcher;
 		
-		[Inject]
-		public var eventMap:IEventMap;
+		protected var _eventMap:IEventMap;
 		
 		public function Mediator()
 		{
@@ -70,5 +70,9 @@ package org.robotlegs.mvcs
 			super.preRemove();
 		}
 	
+		protected function get eventMap():IEventMap
+		{
+			return _eventMap || new EventMap(eventDispatcher);
+		}
 	}
 }

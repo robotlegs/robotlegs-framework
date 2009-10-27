@@ -25,21 +25,23 @@ package org.robotlegs.mvcs
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	
+	import org.robotlegs.base.EventMap;
 	import org.robotlegs.core.IEventMap;
 	
-	public class Service
+	public class Actor
 	{
 		[Inject]
 		public var eventDispatcher:IEventDispatcher;
 		
-		[Inject]
-		public var eventMap:IEventMap;
+		protected var _eventMap:IEventMap;
 		
-		/**
-		 * Abstract MVCS <code>IService</code> implementation
-		 */
-		public function Service()
+		public function Actor()
 		{
+		}
+		
+		protected function get eventMap():IEventMap
+		{
+			return _eventMap || new EventMap(eventDispatcher);
 		}
 		
 		/**
@@ -47,7 +49,7 @@ package org.robotlegs.mvcs
 		 *
 		 * @param event The <code>Event</code> to dispatch on the <code>IContext</code>'s <code>IEventDispatcher</code>
 		 */
-		public function dispatch(event:Event):void
+		protected function dispatch(event:Event):void
 		{
 			eventDispatcher.dispatchEvent(event);
 		}
