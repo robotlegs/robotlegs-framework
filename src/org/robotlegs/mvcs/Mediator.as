@@ -52,16 +52,6 @@ package org.robotlegs.mvcs
 		}
 		
 		/**
-		 * Dispatch helper method
-		 *
-		 * @param event The Event to dispatch on the <code>IContext</code>'s <code>IEventDispatcher</code>
-		 */
-		public function dispatch(event:Event):void
-		{
-			eventDispatcher.dispatchEvent(event);
-		}
-		
-		/**
 		 * @inheritDoc
 		 */
 		override public function preRemove():void
@@ -74,5 +64,16 @@ package org.robotlegs.mvcs
 		{
 			return _eventMap || (_eventMap = new EventMap(eventDispatcher));
 		}
+		
+		/**
+		 * Dispatch helper method
+		 *
+		 * @param event The Event to dispatch on the <code>IContext</code>'s <code>IEventDispatcher</code>
+		 */
+		protected function dispatch(event:Event):void
+		{
+			eventDispatcher.dispatchEvent(event);
+		}
+		
 	}
 }

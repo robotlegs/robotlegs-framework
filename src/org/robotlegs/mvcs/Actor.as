@@ -41,7 +41,7 @@ package org.robotlegs.mvcs
 		
 		protected function get eventMap():IEventMap
 		{
-			return _eventMap || new EventMap(eventDispatcher);
+			return _eventMap || (_eventMap = new EventMap(eventDispatcher));
 		}
 		
 		/**
