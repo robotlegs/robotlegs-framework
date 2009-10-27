@@ -48,7 +48,7 @@ package org.robotlegs.nometa
 		{
 			injector.mapValue(DisplayObjectContainer, contextView);
 			injector.mapValue(IInjector, injector);
-			injector.mapValue(IEventDispatcher, this);
+			injector.mapValue(IEventDispatcher, eventDispatcher);
 			injector.mapValue(ICommandMap, commandMap);
 			injector.mapValue(IMediatorMap, mediatorMap);
 		}
