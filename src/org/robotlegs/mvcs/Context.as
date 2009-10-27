@@ -26,10 +26,8 @@ package org.robotlegs.mvcs
 	import flash.events.IEventDispatcher;
 	
 	import org.robotlegs.base.ContextBase;
-	import org.robotlegs.base.EventMap;
 	import org.robotlegs.core.ICommandMap;
 	import org.robotlegs.core.IContext;
-	import org.robotlegs.core.IEventMap;
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IMediatorMap;
 	
@@ -53,7 +51,6 @@ package org.robotlegs.mvcs
 			injector.mapValue(IEventDispatcher, eventDispatcher);
 			injector.mapValue(ICommandMap, commandMap);
 			injector.mapValue(IMediatorMap, mediatorMap);
-			injector.mapClass(IEventMap, EventMap);
 		}
 	
 	}

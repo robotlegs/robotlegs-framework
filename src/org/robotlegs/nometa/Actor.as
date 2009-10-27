@@ -20,26 +20,23 @@
  * THE SOFTWARE.
  */
 
-package org.robotlegs.mvcs
+package org.robotlegs.nometa
 {
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	
+	import org.robotlegs.base.EventMap;
 	import org.robotlegs.core.IEventMap;
 	
-	public class Model
+	public class Actor
 	{
-		[Inject]
-		public var eventDispatcher:IEventDispatcher;
+		protected var eventDispatcher:IEventDispatcher;
+		protected var eventMap:IEventMap;
 		
-		[Inject]
-		public var eventMap:IEventMap;
-		
-		/**
-		 * Abstract MVCS <code>IProxy</code> implementation
-		 */
-		public function Model()
+		public function Actor(eventDispatcher:IEventDispatcher)
 		{
+			this.eventDispatcher = eventDispatcher;
+			eventMap = new EventMap(eventDispatcher);
 		}
 		
 		/**

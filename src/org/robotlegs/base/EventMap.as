@@ -29,7 +29,7 @@ package org.robotlegs.base
 	public class EventMap implements IEventMap
 	{
 		/**
-		 * The <code>IEventDispatcher</code> to listen to
+		 * The <code>IEventDispatcher</code>
 		 */
 		protected var eventDispatcher:IEventDispatcher;
 		
@@ -40,9 +40,10 @@ package org.robotlegs.base
 		 */
 		protected var listeners:Array;
 		
-		public function EventMap()
+		public function EventMap(eventDispatcher:IEventDispatcher)
 		{
 			listeners = new Array();
+			this.eventDispatcher = eventDispatcher;
 		}
 		
 		/**

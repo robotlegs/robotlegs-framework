@@ -40,7 +40,7 @@ package org.robotlegs.nometa
 		public function Mediator(eventDispatcher:IEventDispatcher)
 		{
 			this.eventDispatcher = eventDispatcher;
-			eventMap = new EventMap();
+			eventMap = new EventMap(eventDispatcher);
 		}
 		
 		/**
