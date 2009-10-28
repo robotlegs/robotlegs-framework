@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application  xmlns:mx="http://www.adobe.com/2006/mxml"
+				xmlns:fu="http://www.adobe.com/2009/flexUnitUIRunner"
+				creationComplete="onCreationComplete()">
+	
+
+	<mx:Script>
+		<![CDATA[
+			import org.robotlegs.RobotLegsTestSuite;
+			import org.flexunit.listeners.UIListener;
+			import org.flexunit.listeners.CIListener;
+			import org.flexunit.runner.FlexUnitCore;
+			
+			private var core:FlexUnitCore;
+			
+			private function onCreationComplete():void
+			{
+				core = new FlexUnitCore();
+				core.addListener(new UIListener(uiListener));
+				core.addListener(new CIListener());
+				core.run(RobotLegsTestSuite);
+			}
+		]]>
+	</mx:Script>
+	
+	<fu:TestRunnerBase id="uiListener"/>
+
+</mx:Application>
