@@ -44,22 +44,22 @@ package org.robotlegs.nometa
 		}
 		
 		/**
-		 * Dispatch helper method
-		 *
-		 * @param event The Event to dispatch on the <code>IContext</code>'s <code>IEventDispatcher</code>
-		 */
-		public function dispatch(event:Event):void
-		{
-			eventDispatcher.dispatchEvent(event);
-		}
-		
-		/**
 		 * @inheritDoc
 		 */
 		override public function preRemove():void
 		{
 			eventMap.unmapListeners();
 			super.preRemove();
+		}
+		
+		/**
+		 * Dispatch helper method
+		 *
+		 * @param event The Event to dispatch on the <code>IContext</code>'s <code>IEventDispatcher</code>
+		 */
+		protected function dispatch(event:Event):void
+		{
+			eventDispatcher.dispatchEvent(event);
 		}
 	
 	}
