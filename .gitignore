@@ -3,7 +3,6 @@
 /html-template/*
 /bin-debug/*
 /bin-release/*
-/libs/*
 /bin/*
 docs/*
 obj/*
