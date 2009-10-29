@@ -77,7 +77,7 @@ package org.robotlegs.mvcs
 		{
 			Assert.assertFalse("Command should NOT have executed", commandExecuted);
 			
-			commandMap.mapEvent(TestCommand, TEST_EVENT);
+			commandMap.mapEvent(TEST_EVENT, TestCommand);
 			eventDispatcher.dispatchEvent(new Event(TEST_EVENT));
 			Assert.assertTrue("Command should have executed", commandExecuted);
 		}

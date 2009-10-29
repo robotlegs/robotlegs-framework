@@ -76,8 +76,8 @@ package org.robotlegs.mvcs
 		[Test]
 		public function hasCommandForSpecifiedEventClass():void
 		{
-			commandMap.mapEvent(CustomEventCommand, CustomEvent.STARTED, CustomEvent);
-			var hasCommand:Boolean = commandMap.hasEventCommand(CustomEventCommand, CustomEvent.STARTED, CustomEvent);
+			commandMap.mapEvent(CustomEvent.STARTED, CustomEventCommand, CustomEvent);
+			var hasCommand:Boolean = commandMap.hasEventCommand(CustomEvent.STARTED, CustomEventCommand, CustomEvent);
 			Assert.assertTrue('Command Map should have Command', hasCommand);
 		}
 		
@@ -85,15 +85,15 @@ package org.robotlegs.mvcs
 		public function shouldNotHaveCommandForUnmappedEventClass():void
 		{
 			var unmappedEventClass:Class = MouseEvent;
-			commandMap.mapEvent(CustomEventCommand, CustomEvent.STARTED, CustomEvent);
-			var hasCommand:Boolean = commandMap.hasEventCommand(CustomEventCommand, CustomEvent.STARTED, unmappedEventClass);
+			commandMap.mapEvent(CustomEvent.STARTED, CustomEventCommand, CustomEvent);
+			var hasCommand:Boolean = commandMap.hasEventCommand(CustomEvent.STARTED, CustomEventCommand, unmappedEventClass);
 			Assert.assertFalse('Command Map should not have Command for wrong event class', hasCommand);
 		}
 		
 		[Test]
 		public function normalCommand():void
 		{
-			commandMap.mapEvent(CustomEventCommand, CustomEvent.STARTED, CustomEvent);
+			commandMap.mapEvent(CustomEvent.STARTED, CustomEventCommand, CustomEvent);
 			eventDispatcher.dispatchEvent(new CustomEvent(CustomEvent.STARTED));
 			Assert.assertTrue('Command should have reponded to event', commandExecuted);
 		}
@@ -102,7 +102,7 @@ package org.robotlegs.mvcs
 		public function dispatchingUnmappedEventClassShouldNotExecuteCommand():void
 		{
 			var unmappedEventClass:Class = MouseEvent;
-			commandMap.mapEvent(CustomEventCommand, CustomEvent.STARTED, CustomEvent);
+			commandMap.mapEvent(CustomEvent.STARTED, CustomEventCommand, CustomEvent);
 			eventDispatcher.dispatchEvent(new unmappedEventClass(CustomEvent.STARTED));
 			Assert.assertFalse('Command should not have reponded to unmapped event', commandExecuted);
 		}
@@ -110,7 +110,7 @@ package org.robotlegs.mvcs
 		[Test]
 		public function normalCommandRepeated():void
 		{
-			commandMap.mapEvent(CustomEventCommand, CustomEvent.STARTED, CustomEvent);
+			commandMap.mapEvent(CustomEvent.STARTED, CustomEventCommand, CustomEvent);
 			eventDispatcher.dispatchEvent(new CustomEvent(CustomEvent.STARTED));
 			Assert.assertTrue('Command should have reponded to event', commandExecuted);
 			resetCommandExecuted();
@@ -122,9 +122,9 @@ package org.robotlegs.mvcs
 		public function oneshotCommandShouldBeRemovedAfterFirstExecution():void
 		{
 			var oneshot:Boolean = true;
-			commandMap.mapEvent(CustomEventCommand, CustomEvent.STARTED, CustomEvent, oneshot);
+			commandMap.mapEvent(CustomEvent.STARTED, CustomEventCommand, CustomEvent, oneshot);
 			eventDispatcher.dispatchEvent(new CustomEvent(CustomEvent.STARTED));
-			var hasCommand:Boolean = commandMap.hasEventCommand(CustomEventCommand, CustomEvent.STARTED, CustomEvent);
+			var hasCommand:Boolean = commandMap.hasEventCommand(CustomEvent.STARTED, CustomEventCommand, CustomEvent);
 			Assert.assertFalse('Command Map should NOT have oneshot Command after first execution', hasCommand);
 		}
 		
@@ -132,7 +132,7 @@ package org.robotlegs.mvcs
 		public function oneshotCommandShouldNotExecuteASecondTime():void
 		{
 			var oneshot:Boolean = true;
-			commandMap.mapEvent(CustomEventCommand, CustomEvent.STARTED, CustomEvent, oneshot);
+			commandMap.mapEvent(CustomEvent.STARTED, CustomEventCommand, CustomEvent, oneshot);
 			eventDispatcher.dispatchEvent(new CustomEvent(CustomEvent.STARTED));
 			Assert.assertTrue('Command should have reponded to event', commandExecuted);
 			resetCommandExecuted();
@@ -143,11 +143,11 @@ package org.robotlegs.mvcs
 		[Test]
 		public function normalCommandRemoved():void
 		{
-			commandMap.mapEvent(CustomEventCommand, CustomEvent.STARTED, CustomEvent);
+			commandMap.mapEvent(CustomEvent.STARTED, CustomEventCommand, CustomEvent);
 			eventDispatcher.dispatchEvent(new CustomEvent(CustomEvent.STARTED));
 			Assert.assertTrue('Command should have reponded to event', commandExecuted);
 			resetCommandExecuted();
-			commandMap.unmapEvent(CustomEventCommand, CustomEvent.STARTED, CustomEvent);
+			commandMap.unmapEvent(CustomEvent.STARTED, CustomEventCommand, CustomEvent);
 			eventDispatcher.dispatchEvent(new CustomEvent(CustomEvent.STARTED));
 			Assert.assertFalse('Command should NOT have reponded to event', commandExecuted);
 		}
@@ -155,14 +155,14 @@ package org.robotlegs.mvcs
 		[Test(expects="org.robotlegs.base.ContextError")]
 		public function mappingNonCommandClassShouldFail():void
 		{
-			commandMap.mapEvent(Object, CustomEvent.STARTED, CustomEvent);
+			commandMap.mapEvent(CustomEvent.STARTED, Object, CustomEvent);
 		}
 		
 		[Test(expects="org.robotlegs.base.ContextError")]
 		public function mappingSameThingTwiceShouldFail():void
 		{
-			commandMap.mapEvent(CustomEventCommand, CustomEvent.STARTED, CustomEvent);
-			commandMap.mapEvent(CustomEventCommand, CustomEvent.STARTED, CustomEvent);
+			commandMap.mapEvent(CustomEvent.STARTED, CustomEventCommand, CustomEvent);
+			commandMap.mapEvent(CustomEvent.STARTED, CustomEventCommand, CustomEvent);
 		}
 		
 		public function markCommandExecuted():void

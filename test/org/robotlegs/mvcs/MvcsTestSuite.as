@@ -22,15 +22,6 @@
 
 package org.robotlegs.mvcs
 {
-	import org.robotlegs.mvcs.CommandMapTests;
-	import org.robotlegs.mvcs.CommandMapWithEventClassTests;
-	import org.robotlegs.mvcs.CommandTests;
-	import org.robotlegs.mvcs.ContextTests;
-	import org.robotlegs.mvcs.MediatorMapTests;
-	import org.robotlegs.mvcs.MediatorProtectedTests;
-	import org.robotlegs.mvcs.ActorTests;
-	import org.robotlegs.mvcs.ActorProtectedTests;
-	
 	[Suite]
 	[RunWith("org.flexunit.runners.Suite")]
 	public class MvcsTestSuite
@@ -43,5 +34,6 @@ package org.robotlegs.mvcs
 		public var contextTests:ContextTests;
 		public var actorTests:ActorTests;
 		public var actorProtectedTests:ActorProtectedTests;
+		public var eventMapTests:EventMapTests;
 	}
 }
