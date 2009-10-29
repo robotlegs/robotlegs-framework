@@ -1,12 +1,14 @@
-<!-- 
-	For the most detail when running this build, call "ant -v clean package".
- -->
-<project name="robotlegs-framework" basedir="." default="package">
+<project name="robotlegs-framework" basedir="." default="test">
 	<!-- setup a prefix for all environment variables -->
+	<property environment="env." />
+	
+	<!-- identify properties file -->
 	<property file="build.properties" />
 
+	<!-- System environment must contain FLEX_SDK variable that points to Flex SDK -->
+	<property name="FLEX_HOME" location="${env.FLEX_HOME}" />
+	
 	<!-- Setup Flex and FlexUnit ant tasks -->
-	<property name="FLEX_HOME" location="${sdk.loc}" />
 	<taskdef resource="flexTasks.tasks" classpath="${lib.loc}/flexTasks.jar" />
 	<taskdef resource="flexUnitTasks.tasks" classpath="${lib.loc}/flexUnitTasks.jar" />
 
@@ -23,29 +25,29 @@
 				<include name="**/*" />
 			</fileset>
 		</delete>
+		<echo>build directories removed</echo> 
 	</target>
 
-	<target name="init">
+	<target name="init" depends="clean">
 		<!-- Create directories needed for the build process -->
 		<mkdir dir="${bin.loc}" />
 		<mkdir dir="${report.loc}" />
-		<mkdir dir="${dist.loc}" />
+		 <echo>bin and report directories created</echo> 
 	</target>
 	
 	<target name="compile" depends="init"> 
-        <compc output="${bin.loc}/robotlegs-framework.swc" incremental="true">  
+		<echo>using Flex SDK at: ${FLEX_HOME}</echo>
+		<!-- it won't let me use ${output.swc.name} here for some reason :/ -->
+        <compc output="${bin.loc}/robotlegs-framework-${ver.num}.swc" incremental="true">  
             <!-- include our Class packages into the build (com folder) -->  
             <include-sources dir="${main.src.loc}/org" includes="*" />  
 			<library-path dir="${lib.loc}" append="true">
 				<include name="*.swc" />
 			</library-path>
-			<library-path dir="${swift.suspenders.loc}" append="true">
-				<include name="*.swc" />
-			</library-path>
 			<compiler.verbose-stacktraces>true</compiler.verbose-stacktraces>
 			<compiler.headless-server>true</compiler.headless-server>
         </compc>  
-        <echo>SWC created successfully</echo>  
+        <echo>SWC ${output.swc.name}-${ver.num}.swc created successfully</echo>  
 	</target>  
 	
 	<target name="test" depends="compile" >
@@ -53,9 +55,6 @@
 		<mxmlc file="${test.src.loc}/RobotlegsTest.mxml" output="${bin.loc}/TestRunner.swf" incremental="true">
 			<source-path path-element="${main.src.loc}" />
 			<library-path dir="${lib.loc}" append="true">
-				<include name="*.swc" />
-			</library-path>
-			<library-path dir="${swift.suspenders.loc}" append="true">
 				<include name="*.swc" />
 			</library-path>
 			<compiler.verbose-stacktraces>true</compiler.verbose-stacktraces>
@@ -76,16 +75,31 @@
 	
 	<target name="create-docs" >
 		<exec executable="${asdoc.loc}" failonerror="true" >
-			<arg line="-external-library-path ${swift.suspenders.loc}" />
+			<arg line="-external-library-path ${lib.loc}" />
 			<arg line="-doc-sources ${main.src.loc}" />
 			<arg line="-source-path ${main.src.loc}" />
 			<arg line="-output ${doc.loc}" />
 		</exec>
 		<echo>ASDOC created successfully</echo>
 	</target>
-	
-	
+
 	<target name="package" depends="test">
-		<!-- Assemble final website -->
+		<!-- Assemble  -->
+		<echo>Packaging Release</echo>
+		<mkdir dir="${dist.loc}" />
+		<mkdir dir="${dist.loc}/bin" />
+		<mkdir dir="${dist.loc}/src" />
+		<copy file="${bin.loc}/${output.swc.name}-${ver.num}.swc" todir="${dist.loc}/bin" />
+		<copy todir="${dist.loc}/src/org">
+			<fileset dir="${main.src.loc}/org"/>
+		</copy>
+		<!-- Zip It  -->
+		<zip destfile="${dist.loc}/${output.swc.name}-${ver.num}.zip">
+			<fileset dir="${dist.loc}" />
+		</zip>
+		<!-- Clean Up  -->
+		<delete file="${dist.loc}/${output.swc.name}-${ver.num}.swc"/>
+		<delete dir="${dist.loc}/bin"/>
+		<delete dir="${dist.loc}/src"/>
 	</target>
 </project>
