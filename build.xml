@@ -33,7 +33,7 @@
 	</target>
 	
 	<target name="compile" depends="init"> 
-        <compc output="${bin.loc}/robotlegs-framework.swc">  
+        <compc output="${bin.loc}/robotlegs-framework.swc" incremental="true">  
             <!-- include our Class packages into the build (com folder) -->  
             <include-sources dir="${main.src.loc}/org" includes="*" />  
 			<library-path dir="${lib.loc}" append="true">
@@ -48,9 +48,9 @@
         <echo>SWC created successfully</echo>  
 	</target>  
 	
-	<target name="test" depends="compile">
+	<target name="test" depends="compile" >
 		<!-- Compile TestRunner.mxml as a SWF -->
-		<mxmlc file="${test.src.loc}/RobotlegsTest.mxml" output="${bin.loc}/TestRunner.swf">
+		<mxmlc file="${test.src.loc}/RobotlegsTest.mxml" output="${bin.loc}/TestRunner.swf" incremental="true">
 			<source-path path-element="${main.src.loc}" />
 			<library-path dir="${lib.loc}" append="true">
 				<include name="*.swc" />
@@ -73,14 +73,19 @@
 			<report format="frames" todir="${report.loc}/html" />
 		</junitreport>
 	</target>
-
+	
+	<target name="create-docs" >
+		<exec executable="${asdoc.loc}" failonerror="true" >
+			<arg line="-external-library-path ${swift.suspenders.loc}" />
+			<arg line="-doc-sources ${main.src.loc}" />
+			<arg line="-source-path ${main.src.loc}" />
+			<arg line="-output ${doc.loc}" />
+		</exec>
+		<echo>ASDOC created successfully</echo>
+	</target>
+	
+	
 	<target name="package" depends="test">
 		<!-- Assemble final website -->
-		<copy file="${bin.loc}/robotlegs-framework.swc" todir="${dist.loc}" />
-
-		<!-- Zip up final website -->
-		<zip destfile="${dist.loc}/${ant.project.name}.${build.version}.zip">
-			<fileset dir="${dist.loc}" />
-		</zip>
 	</target>
 </project>
