@@ -33,11 +33,12 @@ package org.robotlegs.core
 		 * @param dispatcher The <code>IEventDispatcher</code> to listen to
 		 * @param type The <code>Event</code> type to listen for
 		 * @param listener The <code>Event</code> handler
+		 * @param eventClass Optional Event class for a stronger mapping. Defaults to <code>flash.events.Event</code>.
 		 * @param useCapture
 		 * @param priority
 		 * @param useWeakReference
 		 */
-		function mapListener(dispatcher:IEventDispatcher, type:String, listener:Function, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = true):void;
+		function mapListener(dispatcher:IEventDispatcher, type:String, listener:Function, eventClass:Class = null, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = true):void;
 		
 		/**
 		 * The same as calling <code>removeEventListener</code> directly on the <code>IEventDispatcher</code>,
@@ -46,9 +47,10 @@ package org.robotlegs.core
 		 * @param dispatcher The <code>IEventDispatcher</code>
 		 * @param type The <code>Event</code> type
 		 * @param listener The <code>Event</code> handler
+		 * @param eventClass Optional Event class for a stronger mapping. Defaults to <code>flash.events.Event</code>.
 		 * @param useCapture
 		 */
-		function unmapListener(dispatcher:IEventDispatcher, type:String, listener:Function, useCapture:Boolean = false):void;
+		function unmapListener(dispatcher:IEventDispatcher, type:String, listener:Function, eventClass:Class = null, useCapture:Boolean = false):void;
 		
 		/**
 		 * Removes all listeners registered through <code>mapListener</code>

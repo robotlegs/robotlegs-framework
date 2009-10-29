@@ -25,15 +25,13 @@ package org.robotlegs.base
 	
 	public class ContextError extends Error
 	{
-		public static const E_INIT_OVR:String = 'IContext can not be initialized twice';
-		public static const E_VIEW_NULL:String = 'contextView can not be null';
-		public static const E_VIEW_OVR:String = 'Can not overwrite the contextView';
+		public static const E_COMMANDMAP_NOIMPL:String = 'Command Class does not implement ICommand';
+		public static const E_COMMANDMAP_OVR:String = 'Cannot overwrite map';
 		
-		public static const E_MAP_COM_IMPL:String = 'Command Class does not implement ICommand';
-		public static const E_MAP_COM_OVR:String = 'Cannot overwrite map';
+		public static const E_MEDIATORMAP_NOIMPL:String = 'Mediator Class does not implement IMediator';
+		public static const E_MEDIATORMAP_OVR:String = 'Mediator Class has already been mapped to a View Class in this context';
 		
-		public static const E_MAP_NOIMPL:String = 'Mediator Class does not implement IMediator';
-		public static const E_MAP_EXISTS:String = 'Mediator Class has already been mapped to a View Class in this context';
+		public static const E_EVENTMAP_NOSNOOPING:String = 'Listening to the context eventDispatcher is not enabled for this EventMap';
 		
 		public function ContextError(message:String = "", id:int = 0)
 		{

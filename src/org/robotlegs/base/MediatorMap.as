@@ -85,11 +85,11 @@ package org.robotlegs.base
 			var contextViewClassName:String = reflector.getFQCN(contextView)
 			if (mappingConfigByViewClassName[viewClassName] != null)
 			{
-				throw new ContextError(ContextError.E_MAP_EXISTS + ' - ' + mediatorClass);
+				throw new ContextError(ContextError.E_MEDIATORMAP_OVR + ' - ' + mediatorClass);
 			}
 			if (reflector.classExtendsOrImplements(mediatorClass, IMediator) == false)
 			{
-				throw new ContextError(ContextError.E_MAP_NOIMPL + ' - ' + mediatorClass);
+				throw new ContextError(ContextError.E_MEDIATORMAP_NOIMPL + ' - ' + mediatorClass);
 			}
 			var config:MappingConfig = new MappingConfig();
 			config.mediatorClass = mediatorClass;

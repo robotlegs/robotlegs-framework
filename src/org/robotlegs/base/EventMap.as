@@ -22,6 +22,7 @@
 
 package org.robotlegs.base
 {
+	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	
 	import org.robotlegs.core.IEventMap;
@@ -33,6 +34,8 @@ package org.robotlegs.base
 		 */
 		protected var eventDispatcher:IEventDispatcher;
 		
+		protected var dispatcherListeningEnabled:Boolean;
+		
 		/**
 		 * Internal
 		 *
@@ -40,10 +43,11 @@ package org.robotlegs.base
 		 */
 		protected var listeners:Array;
 		
-		public function EventMap(eventDispatcher:IEventDispatcher)
+		public function EventMap(eventDispatcher:IEventDispatcher, dispatcherListeningEnabled:Boolean = true)
 		{
 			listeners = new Array();
 			this.eventDispatcher = eventDispatcher;
+			this.dispatcherListeningEnabled = dispatcherListeningEnabled;
 		}
 		
 		/**
@@ -53,15 +57,32 @@ package org.robotlegs.base
 		 * @param dispatcher The <code>IEventDispatcher</code> to listen to
 		 * @param type The <code>Event</code> type to listen for
 		 * @param listener The <code>Event</code> handler
+		 * @param eventClass Optional Event class for a stronger mapping. Defaults to <code>flash.events.Event</code>.
 		 * @param useCapture
 		 * @param priority
 		 * @param useWeakReference
 		 */
-		public function mapListener(dispatcher:IEventDispatcher, type:String, listener:Function, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = true):void
+		public function mapListener(dispatcher:IEventDispatcher, type:String, listener:Function, eventClass:Class = null, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = true):void
 		{
-			var params:Object = {dispatcher: dispatcher, type: type, listener: listener, useCapture: useCapture};
+			if (dispatcherListeningEnabled == false && dispatcher == eventDispatcher)
+			{
+				throw new ContextError(ContextError.E_EVENTMAP_NOSNOOPING);
+			}
+			eventClass = eventClass || Event;
+			var callback:Function = function(event:Event):void
+			{
+				routeEventToListener(event, listener, eventClass);
+			};
+			var params:Object = {
+				dispatcher: dispatcher,
+				type: type,
+				listener: listener,
+				eventClass: eventClass,
+				callback: callback,
+				useCapture: useCapture
+			};
 			listeners.push(params);
-			dispatcher.addEventListener(type, listener, useCapture, priority, useWeakReference);
+			dispatcher.addEventListener(type, callback, useCapture, priority, useWeakReference);
 		}
 		
 		/**
@@ -71,18 +92,24 @@ package org.robotlegs.base
 		 * @param dispatcher The <code>IEventDispatcher</code>
 		 * @param type The <code>Event</code> type
 		 * @param listener The <code>Event</code> handler
+		 * @param eventClass Optional Event class for a stronger mapping. Defaults to <code>flash.events.Event</code>.
 		 * @param useCapture
 		 */
-		public function unmapListener(dispatcher:IEventDispatcher, type:String, listener:Function, useCapture:Boolean = false):void
+		public function unmapListener(dispatcher:IEventDispatcher, type:String, listener:Function, eventClass:Class = null, useCapture:Boolean = false):void
 		{
+			eventClass = eventClass || Event;
 			var params:Object;
 			var i:int = listeners.length;
 			while (i--)
 			{
 				params = listeners[i];
-				if (params.dispatcher == dispatcher && params.type == type && params.listener == listener && params.useCapture == useCapture)
+				if (params.dispatcher == dispatcher
+					&& params.type == type
+					&& params.listener == listener
+					&& params.useCapture == useCapture
+					&& params.eventClass == eventClass)
 				{
-					dispatcher.removeEventListener(type, listener, useCapture);
+					dispatcher.removeEventListener(type, params.callback, useCapture);
 					listeners.splice(i, 1);
 					return;
 				}
@@ -99,9 +126,24 @@ package org.robotlegs.base
 			while (params = listeners.pop())
 			{
 				dispatcher = params.dispatcher;
-				dispatcher.removeEventListener(params.type, params.listener, params.useCapture);
+				dispatcher.removeEventListener(params.type, params.callback, params.useCapture);
 			}
 		}
 	
+		/**
+		 * Event Handler
+		 *
+		 * @param event The <code>Event</code>
+		 * @param commandClass The <code>ICommand</code> Class to construct and execute
+		 * @param oneshot Should this command mapping be removed after execution?
+		 */
+		protected function routeEventToListener(event:Event, listener:Function, originalEventClass:Class):void
+		{
+			var eventClass:Class = Object(event).constructor;
+			if (event is originalEventClass)
+			{
+				listener(event);
+			}
+		}
 	}
 }

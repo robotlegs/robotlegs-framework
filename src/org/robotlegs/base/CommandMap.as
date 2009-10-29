@@ -78,11 +78,9 @@ package org.robotlegs.base
 		 */
 		public function mapEvent(eventType:String, commandClass:Class, eventClass:Class = null, oneshot:Boolean = false):void
 		{
-			var message:String;
 			if (reflector.classExtendsOrImplements(commandClass, ICommand) == false)
 			{
-				message = ContextError.E_MAP_COM_IMPL + ' - ' + commandClass;
-				throw new ContextError(message);
+				throw new ContextError(ContextError.E_COMMANDMAP_NOIMPL + ' - ' + commandClass);
 			}
 			eventClass = eventClass || Event;
 			
@@ -94,8 +92,7 @@ package org.robotlegs.base
 				
 			if (callbacksByCommandClass[commandClass] != null)
 			{
-				message = ContextError.E_MAP_COM_OVR + ' - eventType (' + eventType + ') and Command (' + commandClass + ')';
-				throw new ContextError(message);
+				throw new ContextError(ContextError.E_COMMANDMAP_OVR + ' - eventType (' + eventType + ') and Command (' + commandClass + ')');
 			}
 			var callback:Function = function(event:Event):void
 			{
