@@ -76,7 +76,7 @@ package org.robotlegs.base
 		/**
 		 * @inheritDoc
 		 */
-		public function mapEvent(commandClass:Class, eventType:String, eventClass:Class = null, oneshot:Boolean = false):void
+		public function mapEvent(eventType:String, commandClass:Class, eventClass:Class = null, oneshot:Boolean = false):void
 		{
 			var message:String;
 			if (reflector.classExtendsOrImplements(commandClass, ICommand) == false)
@@ -108,7 +108,7 @@ package org.robotlegs.base
 		/**
 		 * @inheritDoc
 		 */
-		public function unmapEvent(commandClass:Class, eventType:String, eventClass:Class = null):void
+		public function unmapEvent(eventType:String, commandClass:Class, eventClass:Class = null):void
 		{
 			var eventClassMap:Dictionary = eventTypeMap[eventType];
 			if (eventClassMap == null) return;
@@ -124,7 +124,7 @@ package org.robotlegs.base
 		/**
 		 * @inheritDoc
 		 */
-		public function hasEventCommand(commandClass:Class, eventType:String, eventClass:Class = null):Boolean
+		public function hasEventCommand(eventType:String, commandClass:Class, eventClass:Class = null):Boolean
 		{
 			var eventClassMap:Dictionary = eventTypeMap[eventType];
 			if (eventClassMap == null) return false;
@@ -151,7 +151,7 @@ package org.robotlegs.base
 			command.execute();
 			if (oneshot)
 			{
-				unmapEvent(commandClass, event.type, originalEventClass);
+				unmapEvent(event.type, commandClass, originalEventClass);
 			}
 		}
 	
