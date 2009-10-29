@@ -5,7 +5,7 @@
 	<!-- identify properties file -->
 	<property file="build.properties" />
 
-	<!-- System environment must contain FLEX_SDK variable that points to Flex SDK -->
+	<!-- System environment must contain FLEX_HOME variable that points to Flex SDK -->
 	<property name="FLEX_HOME" location="${env.FLEX_HOME}" />
 	
 	<!-- Setup Flex and FlexUnit ant tasks -->
