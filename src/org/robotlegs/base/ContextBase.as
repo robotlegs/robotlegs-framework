@@ -62,9 +62,10 @@ package org.robotlegs.base
 			_eventDispatcher = new EventDispatcher(this);
 			_contextView = contextView;
 			_autoStartup = autoStartup;
-			_injector = injector;
-			_reflector = reflector;
-			initialize();
+			_injector = injector || new SwiftSuspendersInjector();
+			_reflector = reflector || new SwiftSuspendersReflector();
+			mapInjections();
+			checkAutoStartup();
 		}
 		
 		// API ////////////////////////////////////////////////////////////////
@@ -124,19 +125,6 @@ package org.robotlegs.base
 		// CPI ////////////////////////////////////////////////////////////////
 		
 		/**
-		 * @private
-		 */
-		protected function initialize():void
-		{
-			_injector = _injector || new SwiftSuspendersInjector();
-			_reflector = _reflector || new SwiftSuspendersReflector()
-			_commandMap = _commandMap || new CommandMap(eventDispatcher, injector, reflector);
-			_mediatorMap = _mediatorMap || new MediatorMap(contextView, injector, reflector);
-			mapInjections();
-			checkAutoStartup();
-		}
-		
-		/**
 		 * Bind some commonly needed contextual dependencies for convenience
 		 *
 		 * <p>Override this to change the default (blank) configuration</p>
@@ -146,7 +134,6 @@ package org.robotlegs.base
 		protected function mapInjections():void
 		{
 		}
-		
 		
 		/**
 		 * @private
@@ -175,7 +162,7 @@ package org.robotlegs.base
 		 */
 		protected function get commandMap():ICommandMap
 		{
-			return _commandMap;
+			return _commandMap || (_commandMap = new CommandMap(eventDispatcher, injector, reflector));
 		}
 		
 		/**
@@ -191,7 +178,7 @@ package org.robotlegs.base
 		 */
 		protected function get mediatorMap():IMediatorMap
 		{
-			return _mediatorMap;
+			return _mediatorMap || (_mediatorMap = new MediatorMap(contextView, injector, reflector));
 		}
 		
 		/**
