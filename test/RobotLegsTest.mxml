@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application  xmlns:mx="http://www.adobe.com/2006/mxml"
 				xmlns:fu="http://www.adobe.com/2009/flexUnitUIRunner"
-				creationComplete="onCreationComplete()">
-	
-
+				creationComplete="onCreationComplete()" 
+				width="200" height="200" 
+				backgroundColor="#000000" horizontalScrollPolicy="off" verticalScrollPolicy="off">
 	<mx:Script>
 		<![CDATA[
 			import org.robotlegs.RobotLegsTestSuite;
-			import org.flexunit.listeners.UIListener;
 			import org.flexunit.listeners.CIListener;
 			import org.flexunit.runner.FlexUnitCore;
 			
 			private var core:FlexUnitCore;
+			
+			/*embedded just for fun*/
+			[Bindable]
+			[Embed(source="../build/assets/rl_justlegs.png")]
+			private var Logo:Class;
 			
 			private function onCreationComplete():void
 			{
@@ -21,6 +25,5 @@
 			}
 		]]>
 	</mx:Script>
-	
-
+	<mx:Image source="{Logo}" horizontalCenter="0" verticalCenter="0"/>
 </mx:Application>
