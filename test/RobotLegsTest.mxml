@@ -16,13 +16,11 @@
 			private function onCreationComplete():void
 			{
 				core = new FlexUnitCore();
-				core.addListener(new UIListener(uiListener));
 				core.addListener(new CIListener());
 				core.run(RobotLegsTestSuite);
 			}
 		]]>
 	</mx:Script>
 	
-	<fu:TestRunnerBase id="uiListener"/>
 
 </mx:Application>
