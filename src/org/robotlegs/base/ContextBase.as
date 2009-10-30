@@ -52,6 +52,8 @@ package org.robotlegs.base
 		/**
 		 * Default Context Implementation
 		 *
+		 * <p>Extend this class to create a Framework or Application context</p>
+		 *
 		 * @param contextView The root view node of the context. The context will listen for ADDED_TO_STAGE events on this node
 		 * @param autoStartup Should this context automatically invoke it's <code>startup</code> method when it's <code>contextView</code> arrives on Stage?
 		 * @param injector An Injector to use for this context
@@ -62,10 +64,9 @@ package org.robotlegs.base
 			_eventDispatcher = new EventDispatcher(this);
 			_contextView = contextView;
 			_autoStartup = autoStartup;
-			_injector = injector || new SwiftSuspendersInjector();
-			_reflector = reflector || new SwiftSuspendersReflector();
-			mapInjections();
-			checkAutoStartup();
+			_injector = injector;
+			_reflector = reflector;
+			initialize();
 		}
 		
 		// API ////////////////////////////////////////////////////////////////
@@ -73,7 +74,7 @@ package org.robotlegs.base
 		/**
 		 * The Startup Hook
 		 *
-		 * <p>Override this in your Framework Context implementation</p>
+		 * <p>Override this in your Application context</p>
 		 */
 		public function startup():void
 		{
@@ -83,7 +84,7 @@ package org.robotlegs.base
 		/**
 		 * The Startup Hook
 		 *
-		 * <p>Override this in your Framework Context implementation</p>
+		 * <p>Override this in your Application context</p>
 		 */
 		public function shutdown():void
 		{
@@ -96,14 +97,6 @@ package org.robotlegs.base
 		public function get eventDispatcher():IEventDispatcher
 		{
 			return _eventDispatcher;
-		}
-		
-		/**
-		 * The <code>DisplayObjectContainer</code> that scopes this <code>IContext</code>
-		 */
-		public function get contextView():DisplayObjectContainer
-		{
-			return _contextView;
 		}
 		
 		/**
@@ -122,12 +115,35 @@ package org.robotlegs.base
 			}
 		}
 		
+		/**
+		 * The <code>DisplayObjectContainer</code> that scopes this <code>IContext</code>
+		 */
+		public function get contextView():DisplayObjectContainer
+		{
+			return _contextView;
+		}
+		
 		// CPI ////////////////////////////////////////////////////////////////
+		
+		/**
+		 * Initialize the Framework apparatus
+		 *
+		 * <p>Override this in your Framework or Application context to alter the default (fallback) apparatus</p>
+		 *
+		 * <p>NOTE: be sure to call <code>super.initialize()</code> at the end to proceed with the the Injection Mapping and autoStartup check</p>
+		 *
+		 * <p>You might however decide to completely intercept the startup check should you so wish</p>
+		 */
+		protected function initialize():void
+		{
+			mapInjections();
+			checkAutoStartup();
+		}
 		
 		/**
 		 * Bind some commonly needed contextual dependencies for convenience
 		 *
-		 * <p>Override this to change the default (blank) configuration</p>
+		 * <p>Override this in your Framework context to change the default (blank) configuration</p>
 		 *
 		 * <p>Beware of collisions in your container</p>
 		 */
@@ -160,6 +176,14 @@ package org.robotlegs.base
 		/**
 		 * The <code>ICommandMap</code> for this <code>IContext</code>
 		 */
+		protected function set commandMap(value:ICommandMap):void
+		{
+			_commandMap = value;
+		}
+		
+		/**
+		 * The <code>ICommandMap</code> for this <code>IContext</code>
+		 */
 		protected function get commandMap():ICommandMap
 		{
 			return _commandMap || (_commandMap = new CommandMap(eventDispatcher, injector, reflector));
@@ -168,9 +192,25 @@ package org.robotlegs.base
 		/**
 		 * The <code>IInjector</code> for this <code>IContext</code>
 		 */
+		protected function set injector(value:IInjector):void
+		{
+			_injector = value;
+		}
+		
+		/**
+		 * The <code>IInjector</code> for this <code>IContext</code>
+		 */
 		protected function get injector():IInjector
 		{
-			return _injector;
+			return _injector || (_injector = new SwiftSuspendersInjector());
+		}
+		
+		/**
+		 * The <code>IMediatorMap</code> for this <code>IContext</code>
+		 */
+		protected function set mediatorMap(value:IMediatorMap):void
+		{
+			_mediatorMap = value;
 		}
 		
 		/**
@@ -184,9 +224,17 @@ package org.robotlegs.base
 		/**
 		 * The <code>IReflector</code> for this <code>IContext</code>
 		 */
+		protected function set reflector(value:IReflector):void
+		{
+			_reflector = value;
+		}
+		
+		/**
+		 * The <code>IReflector</code> for this <code>IContext</code>
+		 */
 		protected function get reflector():IReflector
 		{
-			return _reflector;
+			return _reflector || (_reflector = new SwiftSuspendersReflector());
 		}
 		
 		// EventDispatcher Boilerplate ////////////////////////////////////////
