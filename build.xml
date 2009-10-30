@@ -56,6 +56,8 @@
 			<library-path dir="${lib.loc}" append="true">
 				<include name="*.swc" />
 			</library-path>
+			<default-size width="200" height="200" />
+			<default-background-color>0x000000</default-background-color>
 			<compiler.verbose-stacktraces>true</compiler.verbose-stacktraces>
 			<compiler.headless-server>true</compiler.headless-server>
 		</mxmlc>
