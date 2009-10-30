@@ -44,7 +44,7 @@ package org.robotlegs.nometa
 		 *
 		 * @param event The <code>Event</code> to dispatch on the <code>IContext</code>'s <code>IEventDispatcher</code>
 		 */
-		public function dispatch(event:Event):void
+		protected function dispatch(event:Event):void
 		{
 			eventDispatcher.dispatchEvent(event);
 		}
