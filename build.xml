@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="robotlegs-framework" basedir="." default="create-docs">
+<project name="robotlegs-framework" basedir="." default="usage">
 
   <!-- set up a prefix for all environment variables -->
   <property environment="env."/>
@@ -13,6 +13,22 @@
   <!-- Set up Flex and FlexUnit ant tasks -->
   <taskdef resource="flexTasks.tasks" classpath="${lib.loc}/flexTasks.jar"/>
   <taskdef resource="flexUnitTasks.tasks" classpath="${lib.loc}/flexUnitTasks.jar"/>
+
+  <target name="usage">
+      <echo message=""/>
+      <echo message="Robotlegs Build Usage"/>
+      <echo message="-----------------------------------"/>
+      <echo message=""/>
+      <echo message="Available targets are:"/>
+      <echo message=""/>
+      <echo message="test          --> Build Robotlegs SWC and run unit tests"/>
+      <echo message="asdoc         --> Build Robotlegs SWC, test, and generate asdocs"/>
+      <echo message="package       --> Build Robotlegs SWC, test, and create release zip"/>
+	  <echo message="compile       --> Build Robotlegs SWC"/>
+      <echo message="clean         --> Remove all folders created by build script"/>
+      <echo message="init          --> Clean and create build folders"/>
+      <echo message=""/>
+  </target>
   
   <!-- Clean Build and Report files -->
   <target name="clean">
@@ -82,7 +98,7 @@
   </target>
   
   <!-- Build Documentation -->
-  <target name="create-docs" depends="test">
+  <target name="asdoc" depends="test">
     <echo>[create-docs] Generating ASDOC documentation</echo>
     <tstamp>
       <format property="docgen.time" pattern="MM/dd/yyyy hh:mm aa" unit="hour"/>
