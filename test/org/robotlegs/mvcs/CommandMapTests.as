@@ -38,11 +38,11 @@ package org.robotlegs.mvcs
 	
 	public class CommandMapTests implements ICommandTest
 	{
-		private var eventDispatcher:IEventDispatcher;
-		private var commandExecuted:Boolean;
-		private var commandMap:ICommandMap;
-		private var injector:IInjector;
-		private var reflector:IReflector;
+		protected var eventDispatcher:IEventDispatcher;
+		protected var commandExecuted:Boolean;
+		protected var commandMap:ICommandMap;
+		protected var injector:IInjector;
+		protected var reflector:IReflector;
 		
 		[BeforeClass]
 		public static function runBeforeEntireSuite():void

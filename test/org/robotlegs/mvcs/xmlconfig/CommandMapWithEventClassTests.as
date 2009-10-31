@@ -19,77 +19,44 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.robotlegs.mvcs
+
+package org.robotlegs.mvcs.xmlconfig
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
+	import flash.events.MouseEvent;
 	
 	import org.flexunit.Assert;
-	import org.robotlegs.adapters.SwiftSuspendersInjector;
+	import org.robotlegs.adapters.SwiftSuspendersXMLConfigInjector;
 	import org.robotlegs.adapters.SwiftSuspendersReflector;
 	import org.robotlegs.base.CommandMap;
 	import org.robotlegs.core.ICommandMap;
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IReflector;
 	import org.robotlegs.mvcs.support.ICommandTest;
-	import org.robotlegs.mvcs.support.TestCommand;
+	import org.robotlegs.mvcs.support.CustomEventCommand;
+	import org.robotlegs.mvcs.support.CustomEvent;
+	import org.robotlegs.mvcs.CommandMapWithEventClassTests;
 	
-	public class CommandTests implements ICommandTest
+	public class CommandMapWithEventClassTests extends org.robotlegs.mvcs.CommandMapWithEventClassTests
 	{
-		public static const TEST_EVENT:String = 'testEvent';
-		
-		protected var eventDispatcher:IEventDispatcher;
-		protected var commandExecuted:Boolean;
-		protected var commandMap:ICommandMap;
-		protected var injector:IInjector;
-		protected var reflector:IReflector;
-		
-		[BeforeClass]
-		public static function runBeforeEntireSuite():void
-		{
-		}
-		
-		[AfterClass]
-		public static function runAfterEntireSuite():void
-		{
-		}
+		protected static const XML_CONFIG : XML = 
+			<types>
+				<type name='org.robotlegs.mvcs.support::CustomEventCommand'>
+					<field name='event'/>
+					<field name='testSuite'/>
+				</type>
+			</types>;
 		
 		[Before]
-		public function runBeforeEachTest():void
+		override public function runBeforeEachTest():void
 		{
 			eventDispatcher = new EventDispatcher();
-			injector = new SwiftSuspendersInjector();
+			injector = new SwiftSuspendersXMLConfigInjector(XML_CONFIG);
 			reflector = new SwiftSuspendersReflector();
 			commandMap = new CommandMap(eventDispatcher, injector, reflector);
 			injector.mapValue(ICommandTest, this);
-		}
-		
-		[After]
-		public function runAfterEachTest():void
-		{
-			injector.unmap(ICommandTest);
-			resetCommandExecuted();
-		}
-		
-		[Test]
-		public function commandIsExecuted():void
-		{
-			Assert.assertFalse("Command should NOT have executed", commandExecuted);
-			
-			commandMap.mapEvent(TEST_EVENT, TestCommand);
-			eventDispatcher.dispatchEvent(new Event(TEST_EVENT));
-			Assert.assertTrue("Command should have executed", commandExecuted);
-		}
-		
-		public function markCommandExecuted():void
-		{
-			commandExecuted = true;
-		}
-		
-		public function resetCommandExecuted():void
-		{
-			commandExecuted = false;
 		}
 	}
 }

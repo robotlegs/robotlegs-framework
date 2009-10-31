@@ -19,19 +19,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
-package org.robotlegs
+package org.robotlegs.mvcs.xmlconfig
 {
-	import org.robotlegs.mvcs.MvcsTestSuite;
-	import org.robotlegs.mvcs.xmlconfig.XmlConfigMvcsTestSuite;
-	import org.robotlegs.nometa.NoMetaTestSuite;
+	import flash.display.DisplayObjectContainer;
+	import flash.events.Event;
+	import flash.events.IEventDispatcher;
 	
-	[Suite]
-	[RunWith("org.flexunit.runners.Suite")]
-	public class RobotLegsTestSuite
+	import org.flexunit.Assert;
+	import org.flexunit.async.Async;
+	import org.fluint.uiImpersonation.UIImpersonator;
+	import org.robotlegs.core.IInjector;
+	import org.robotlegs.mvcs.support.TestActor;
+	import org.robotlegs.mvcs.xmlconfig.support.TestContext;
+	import org.robotlegs.mvcs.support.TestContextView;
+	import org.robotlegs.mvcs.ActorTests;
+	
+	public class ActorTests extends org.robotlegs.mvcs.ActorTests
 	{
-		public var mvcsTestSuite:MvcsTestSuite;
-		public var noMetaTestSuite:NoMetaTestSuite;
-		public var xmlConfigTestSuite:XmlConfigMvcsTestSuite;
+		[Before(ui)]
+		override public function runBeforeEachTest():void
+		{
+			contextView = new TestContextView();
+			context = new TestContext(contextView);
+			actor = new TestActor()
+			injector = context.getInjector()
+			UIImpersonator.addChild(contextView);
+			injector.injectInto(actor);
+		}
 	}
 }
