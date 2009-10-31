@@ -28,6 +28,9 @@ package org.robotlegs.nometa
 	import org.robotlegs.base.EventMap;
 	import org.robotlegs.core.IEventMap;
 	
+	/**
+	 * Abstract Nometa <code>IActor</code> implementation
+	 */
 	public class Actor
 	{
 		protected var eventDispatcher:IEventDispatcher;

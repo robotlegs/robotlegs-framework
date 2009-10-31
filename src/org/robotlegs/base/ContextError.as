@@ -23,6 +23,9 @@
 package org.robotlegs.base
 {
 	
+	/**
+	 * A framework Error implementation
+	 */
 	public class ContextError extends Error
 	{
 		public static const E_COMMANDMAP_NOIMPL:String = 'Command Class does not implement ICommand';

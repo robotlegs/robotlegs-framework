@@ -24,18 +24,19 @@ package org.robotlegs.core
 {
 	
 	/**
-	 * The interface definition for a RobotLegs Mediator
+	 * The Robotlegs Mediator contract
 	 */
 	public interface IMediator
 	{
 		/**
-		 * Should be invoked by the <code>IMediatorMap</code> when the <code>IMediator</code> has been registered
+		 * Should be invoked by the <code>IMediatorMap</code> during <code>IMediator</code> registration
 		 */
 		function preRegister():void;
 		
 		/**
 		 * Should be invoked by the <code>IMediator</code> itself when it is ready to be interacted with
-		 * Override and place your initialization code here
+		 *
+		 * <p>Override and place your initialization code here</p>
 		 */
 		function onRegister():void;
 		
@@ -46,18 +47,21 @@ package org.robotlegs.core
 		
 		/**
 		 * Should be invoked by the <code>IMediator</code> itself when it is ready to for cleanup
-		 * Override and place your cleanup code here
+		 *
+		 * <p>Override and place your cleanup code here</p>
 		 */
 		function onRemove():void;
 		
 		/**
-		 * Get the <code>IMediator</code>'s view component
+		 * The <code>IMediator</code>'s view component
+		 *
 		 * @return The view component
 		 */
 		function getViewComponent():Object;
 		
 		/**
-		 * Set the <code>IMediator</code>'s view component
+		 * The <code>IMediator</code>'s view component
+		 *
 		 * @param The view component
 		 */
 		function setViewComponent(viewComponent:Object):void;

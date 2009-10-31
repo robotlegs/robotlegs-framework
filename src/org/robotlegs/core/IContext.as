@@ -26,7 +26,7 @@ package org.robotlegs.core
 	import flash.events.IEventDispatcher;
 	
 	/**
-	 * The interface definition for a RobotLegs Context
+	 * The Robotlegs Context contract
 	 */
 	public interface IContext
 	{
@@ -43,7 +43,7 @@ package org.robotlegs.core
 		/**
 		 * The <code>IContext</code>'s <code>DisplayObjectContainer</code>
 		 *
-		 * @param view The <code>DisplayObjectContainer</code> to use as scope for this <code>IContext</code>
+		 * @param value The <code>DisplayObjectContainer</code> to use as scope for this <code>IContext</code>
 		 */
 		function set contextView(value:DisplayObjectContainer):void;
 		

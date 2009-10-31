@@ -25,7 +25,7 @@ package org.robotlegs.core
 	import flash.display.DisplayObjectContainer;
 	
 	/**
-	 * The interface definition for a RobotLegs MediatorMap
+	 * The Robotlegs MediatorMap contract
 	 */
 	public interface IMediatorMap
 	{
@@ -42,6 +42,8 @@ package org.robotlegs.core
 		
 		/**
 		 * Map an <code>IMediator</code> to a module
+		 * 
+		 * <p></p>
 		 *
 		 * @param moduleClassName Fully Qualified Class Name of the Module (<code>flash.utils.getQualifiedClassName</code>::style)
 		 * @param localModuleClass The local Class (Interface) to be injected
@@ -54,7 +56,7 @@ package org.robotlegs.core
 		/**
 		 * Create an instance of a mapped <code>IMediator</code>
 		 *
-		 * <p>This will create a Mediator for a given View Component.
+		 * <p>This will instantiate and register a Mediator for a given View Component.
 		 * Mediator dependencies will be automatically resolved.</p>
 		 *
 		 * @param viewComponent An instance of the view Class previously mapped to an <code>IMediator</code> Class
@@ -113,10 +115,32 @@ package org.robotlegs.core
 		 */
 		function hasMediatorForView(viewComponent:Object):Boolean;
 		
+		/**
+		 * The <code>IMediatorMap</code>'s <code>DisplayObjectContainer</code>
+		 *
+		 * @return view The <code>DisplayObjectContainer</code> to use as scope for this <code>IMediatorMap</code>
+		 */
 		function get contextView():DisplayObjectContainer;
+		
+		/**
+		 * The <code>IMediatorMap</code>'s <code>DisplayObjectContainer</code>
+		 *
+		 * @param value The <code>DisplayObjectContainer</code> to use as scope for this <code>IMediatorMap</code>
+		 */
 		function set contextView(value:DisplayObjectContainer):void;
 		
+		/**
+		 * The <code>IMediatorMap</code>'s enabled status
+		 * 
+		 * @return Whether the <code>IMediatorMap</code> is enabled
+		 */		
 		function get enabled():Boolean;
+		
+		/**
+		 * The <code>IMediatorMap</code>'s enabled status
+		 * 
+		 * @param value Whether the <code>IMediatorMap</code> should be enabled
+		 */		
 		function set enabled(value:Boolean):void;
 	
 	}

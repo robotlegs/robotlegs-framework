@@ -25,13 +25,14 @@ package org.robotlegs.core
 	import flash.system.ApplicationDomain;
 	
 	/**
-	 * The interface definition for a RobotLegs <code>IReflector</code>
+	 * The Robotlegs Reflector contract
 	 */
 	public interface IReflector
 	{
 		
 		/**
 		 * Does this class or class name implement this superclass or interface?
+		 * 
 		 * @param classOrClassName
 		 * @param superclass
 		 * @param applicationDomain
@@ -41,15 +42,16 @@ package org.robotlegs.core
 		
 		/**
 		 * Get the class of this instance
+		 * 
 		 * @param value The instance
 		 * @param applicationDomain
 		 * @return Class
-		 *
 		 */
 		function getClass(value:*, applicationDomain:ApplicationDomain = null):Class
 		
 		/**
 		 * Get the Fully Qualified Class Name of this instance, class name, or class
+		 * 
 		 * @param value The instance, class name, or class
 		 * @param replaceColons
 		 * @return The Fully Qualified Class Name

@@ -32,7 +32,7 @@ package org.robotlegs.mvcs
 	import org.robotlegs.core.IMediatorMap;
 	
 	/**
-	 * Abstract MVCS <code>IMediator</code> and <code>IPropertyProvider</code> implementation
+	 * Abstract MVCS <code>IMediator</code> implementation
 	 */
 	public class Mediator extends MediatorBase
 	{

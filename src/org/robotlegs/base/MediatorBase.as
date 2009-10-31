@@ -29,26 +29,26 @@ package org.robotlegs.base
 	import org.robotlegs.core.IMediator;
 	
 	/**
-	 * Abstract <code>IMediator</code> and <code>IPropertyProvider</code> implementation
+	 * An abstract <code>IMediator</code> implementation
 	 */
 	public class MediatorBase implements IMediator
 	{
 		/**
-		 * A demonstration of Flex's poor design part #1
+		 * Flex framework work-around part #1
 		 */
 		private static var UIComponentClass:Class;
 		
 		/**
-		 * A demonstration of Flex's poor design part #2
+		 * Flex framework work-around part #2
 		 */
 		private static const flexAvailable:Boolean = checkFlex();
 		
 		/**
 		 * Internal
 		 *
-		 * This Mediator's View Component, used by the RobotLegs MVCS framework internally.
+		 * <p>This Mediator's View Component, used by the RobotLegs MVCS framework internally.
 		 * You should declare a dependency on a concrete view component in your
-		 * implementation instead of working with this property
+		 * implementation instead of working with this property</p>
 		 */
 		protected var viewComponent:Object;
 		
@@ -113,9 +113,9 @@ package org.robotlegs.base
 		}
 		
 		/**
-		 * A demonstration of Flex's poor design part #3
+		 * Flex framework work-around part #3
 		 *
-		 * Checks for availability of the Flex framework by trying to get the class for UIComponent.
+		 * <p>Checks for availability of the Flex framework by trying to get the class for UIComponent.</p>
 		 */
 		private static function checkFlex():Boolean
 		{
@@ -131,11 +131,11 @@ package org.robotlegs.base
 		}
 		
 		/**
-		 * A demonstration of Flex's poor design part #4
+		 * Flex framework work-around part #4
 		 *
-		 * FlexEvent.CREATION_COMPLETE handler for this Mediator's View Component
+		 * <p><code>FlexEvent.CREATION_COMPLETE</code> handler for this Mediator's View Component</p>
 		 *
-		 * @param e The Flex Event
+		 * @param e The Flex <code>FlexEvent</code> event
 		 */
 		private function onCreationComplete(e:Event):void
 		{

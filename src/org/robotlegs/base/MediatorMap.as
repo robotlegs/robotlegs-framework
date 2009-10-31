@@ -34,7 +34,7 @@ package org.robotlegs.base
 	import org.robotlegs.core.IReflector;
 	
 	/**
-	 * Default MVCS <code>IMediatorMap</code> implementation
+	 * An abstract <code>IMediatorMap</code> implementation
 	 */
 	public class MediatorMap implements IMediatorMap
 	{
@@ -56,6 +56,7 @@ package org.robotlegs.base
 		
 		/**
 		 * Creates a new <code>MediatorMap</code> object
+		 *
 		 * @param contextView The root view node of the context. The context will listen for ADDED_TO_STAGE events on this node
 		 * @param injector An <code>IInjector</code> to use for this context
 		 * @param reflector An <code>IReflector</code> to use for this context
@@ -205,19 +206,6 @@ package org.robotlegs.base
 			return false;
 		}
 		
-		/**
-		 * This shouldn't be needed, but if you're in the mood..
-		 */
-		public function destroy():void
-		{
-			removeListeners();
-			injector = null;
-			mediatorByView = null;
-			mappingConfigByView = null;
-			mappingConfigByViewClassName = null;
-			contextView = null;
-		}
-		
 		public function get contextView():DisplayObjectContainer
 		{
 			return _contextView;
@@ -283,7 +271,7 @@ package org.robotlegs.base
 		}
 		
 		/**
-		 * A demonstration of Flex's poor design part #5
+		 * Flex framework work-around part #5
 		 */
 		protected function onViewRemoved(e:Event):void
 		{
@@ -300,7 +288,7 @@ package org.robotlegs.base
 		}
 		
 		/**
-		 * A demonstration of Flex's poor design part #6
+		 * Flex framework work-around part #6
 		 */
 		private function removeMediatorLater(event:Event):void
 		{

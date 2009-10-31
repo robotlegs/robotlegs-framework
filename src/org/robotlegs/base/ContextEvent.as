@@ -24,6 +24,9 @@ package org.robotlegs.base
 {
 	import flash.events.Event;
 	
+	/**
+	 * A framework Error implementation
+	 */
 	public class ContextEvent extends Event
 	{
 		public static const STARTUP:String = 'startup';
@@ -37,7 +40,7 @@ package org.robotlegs.base
 		/**
 		 * A generic context <code>Event</code> implementation
 		 *
-		 * This Class is handy for prototype work, but is not Best Practice
+		 * <p>This class is handy for prototype work, but it's usage is not considered Best Practice</p>
 		 *
 		 * @param type The <code>Event</code> type
 		 * @param body A loosely typed payload

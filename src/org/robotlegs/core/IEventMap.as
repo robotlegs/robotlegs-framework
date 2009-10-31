@@ -24,6 +24,9 @@ package org.robotlegs.core
 {
 	import flash.events.IEventDispatcher;
 	
+	/**
+	 * The Robotlegs EventMap contract
+	 */
 	public interface IEventMap
 	{
 		/**

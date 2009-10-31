@@ -32,7 +32,7 @@ package org.robotlegs.base
 	import org.robotlegs.core.IReflector;
 	
 	/**
-	 * Default MVCS <code>ICommandMap</code> implementation
+	 * An abstract <code>ICommandMap</code> implementation
 	 */
 	public class CommandMap implements ICommandMap
 	{

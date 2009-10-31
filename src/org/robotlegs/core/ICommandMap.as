@@ -24,13 +24,13 @@ package org.robotlegs.core
 {
 	
 	/**
-	 * The interface definition for a RobotLegs CommandMap
+	 * The Robotlegs CommandMap contract
 	 */
 	public interface ICommandMap
 	{
 		/**
 		 * Map an <code>ICommand</code> Class to an Event type
-		 *
+		 * 
 		 * @param eventType The Event type to listen for
 		 * @param commandClass The <code>ICommand</code> Class to instantiate and execute
 		 * @param eventClass Optional Event class for a stronger mapping. Defaults to <code>flash.events.Event</code>.

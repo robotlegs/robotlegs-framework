@@ -27,6 +27,9 @@ package org.robotlegs.base
 	
 	import org.robotlegs.core.IEventMap;
 	
+	/**
+	 * An abstract <code>IEventMap</code> implementation
+	 */
 	public class EventMap implements IEventMap
 	{
 		/**
@@ -70,17 +73,17 @@ package org.robotlegs.base
 			}
 			eventClass = eventClass || Event;
 			var callback:Function = function(event:Event):void
-			{
-				routeEventToListener(event, listener, eventClass);
-			};
+				{
+					routeEventToListener(event, listener, eventClass);
+				};
 			var params:Object = {
-				dispatcher: dispatcher,
-				type: type,
-				listener: listener,
-				eventClass: eventClass,
-				callback: callback,
-				useCapture: useCapture
-			};
+					dispatcher: dispatcher,
+					type: type,
+					listener: listener,
+					eventClass: eventClass,
+					callback: callback,
+					useCapture: useCapture
+				};
 			listeners.push(params);
 			dispatcher.addEventListener(type, callback, useCapture, priority, useWeakReference);
 		}
@@ -129,7 +132,7 @@ package org.robotlegs.base
 				dispatcher.removeEventListener(params.type, params.callback, params.useCapture);
 			}
 		}
-	
+		
 		/**
 		 * Event Handler
 		 *

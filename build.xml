@@ -1,128 +1,148 @@
-<project name="robotlegs-framework" basedir="." default="test">
-	<!-- setup a prefix for all environment variables -->
-	<property environment="env." />
-	
-	<!-- identify properties file -->
-	<property file="build.properties" />
+<?xml version="1.0"?>
+<project name="robotlegs-framework" basedir="." default="create-docs">
 
-	<!-- System environment must contain FLEX_HOME variable that points to Flex SDK -->
-	<property name="FLEX_HOME" location="${env.FLEX_HOME}" />
-	
-	<!-- Setup Flex and FlexUnit ant tasks -->
-	<taskdef resource="flexTasks.tasks" classpath="${lib.loc}/flexTasks.jar" />
-	<taskdef resource="flexUnitTasks.tasks" classpath="${lib.loc}/flexUnitTasks.jar" />
+  <!-- set up a prefix for all environment variables -->
+  <property environment="env."/>
 
-	<target name="clean">
-		<!-- Remove all directories created during the build process -->
-		<delete includeemptydirs="true" failonerror="false">
-			<fileset dir="${report.loc}" defaultexcludes="false">
-				<include name="**/*" />
-			</fileset>
-			<fileset dir="${dist.loc}" defaultexcludes="false">
-				<include name="**/*" />
-			</fileset>
-		</delete>
-		<echo>build directories removed</echo> 
-	</target>
+  <!-- System environment must contain FLEX_HOME variable that points to Flex SDK -->
+  <property name="FLEX_HOME" location="${env.FLEX_HOME}"/>
+  
+  <!-- identify properties file -->
+  <property file="build.properties"/>
+  
+  <!-- Set up Flex and FlexUnit ant tasks -->
+  <taskdef resource="flexTasks.tasks" classpath="${lib.loc}/flexTasks.jar"/>
+  <taskdef resource="flexUnitTasks.tasks" classpath="${lib.loc}/flexUnitTasks.jar"/>
+  
+  <!-- Clean Build and Report files -->
+  <target name="clean">
+    <!-- Remove all directories created during the build process -->
+    <echo>[clean] Removing Build and Report directories</echo>
+    <delete includeemptydirs="true" failonerror="false">
+      <fileset dir="${report.loc}" defaultexcludes="false">
+        <include name="**/*"/>
+      </fileset>
+      <fileset dir="${dist.loc}" defaultexcludes="false">
+        <include name="**/*"/>
+      </fileset>
+    </delete>
+    <echo>[clean] Build and Report directories removed</echo>
+  </target>
+  
+  <!-- Create directories needed for the build process -->
+  <target name="init" depends="clean">
+    <echo>[init] Creating Bin and Report directories</echo>
+    <mkdir dir="${bin.loc}"/>
+    <mkdir dir="${report.loc}"/>
+    <echo>[init] Bin and Report directories created</echo>
+  </target>
+  
+  <!-- Compile Release SWC -->
+  <target name="compile" depends="init">
+    <echo>[compile] Compiling release SWC</echo>
+    <echo>[compile] Using Flex SDK at: ${FLEX_HOME}</echo>
+    <!-- it won't let me use ${project.name} here for some reason :/ -->
+    <compc output="${bin.loc}/robotlegs-framework-${robotlegs.ver.num}.swc" incremental="true" static-link-runtime-shared-libraries="true">
+      <!-- include our Class packages into the build (com folder) -->
+      <include-sources dir="${main.src.loc}/org" includes="*"/>
+      <library-path dir="${lib.loc}" append="true">
+        <include name="*.swc"/>
+      </library-path>
+      <compiler.verbose-stacktraces>true</compiler.verbose-stacktraces>
+      <compiler.headless-server>true</compiler.headless-server>
+      <keep-as3-metadata name="Inject"/>
+    </compc>
+    <echo>[compile] Release SWC ${project.name}-${robotlegs.ver.num}.swc created successfully</echo>
+  </target>
+  
+  <!-- Run Unit Tests -->
+  <target name="test" depends="compile">
+    <echo>[test] Running Unit Tests</echo>
+    <!-- Compile TestRunner.mxml as a SWF -->
+    <mxmlc file="${test.src.loc}/RobotlegsTest.mxml" output="${bin.loc}/TestRunner.swf" incremental="true">
+      <source-path path-element="${main.src.loc}"/>
+      <library-path dir="${lib.loc}" append="true">
+        <include name="*.swc"/>
+      </library-path>
+      <default-size width="200" height="200"/>
+      <default-background-color>0x000000</default-background-color>
+      <compiler.verbose-stacktraces>true</compiler.verbose-stacktraces>
+      <compiler.headless-server>true</compiler.headless-server>
+    </mxmlc>
+    <!-- Execute TestRunner.swf as FlexUnit tests and publish reports -->
+    <flexunit swf="bin/TestRunner.swf" toDir="${report.loc}" haltonfailure="false" verbose="true" localTrusted="true"/>
+    <!-- Generate readable JUnit-style reports -->
+    <junitreport todir="${report.loc}">
+      <fileset dir="${report.loc}">
+        <include name="TEST-*.xml"/>
+      </fileset>
+      <report format="frames" todir="${report.loc}/html"/>
+    </junitreport>
+    <echo>[test] Finished running Unit Tests</echo>
+  </target>
+  
+  <!-- Build Documentation -->
+  <target name="create-docs" depends="test">
+    <echo>[create-docs] Generating ASDOC documentation</echo>
+    <tstamp>
+      <format property="docgen.time" pattern="MM/dd/yyyy hh:mm aa" unit="hour"/>
+    </tstamp>
+    <exec executable="${asdoc.loc}" failonerror="true">
+      <arg line="-external-library-path ${lib.loc}"/>
+      <arg line="-doc-sources ${main.src.loc}"/>
+      <arg line="-source-path ${main.src.loc}"/>
+      <arg line="-output ${doc.loc}"/>
+      <arg line="-window-title 'Robotlegs ${robotlegs.ver.num}'"/>
+      <arg line="-main-title 'Robotlegs ${robotlegs.ver.num}'"/>
+      <arg line="-footer 'Robotlegs - http://www.robotlegs.org/ - Documentation generated at: ${docgen.time}'" />
+      <arg line="-package org.robotlegs.adapters 'Adapters to bridge third-party Di/IoC and reflection libraries'"/>
+      <arg line="-package org.robotlegs.base 'Base classes used to build custom Robotlegs frameworks'"/>
+      <arg line="-package org.robotlegs.core 'The core Robotlegs Framework apparatus contracts'"/>
+      <arg line="-package org.robotlegs.mvcs 'The reference MVCS Robotlegs Framework implementation'"/>
+      <arg line="-package org.robotlegs.nometa 'A Robotlegs Framework implementation that does not rely on metadata'"/>
+    </exec>
+    <echo>[create-docs] ASDOC documentation generated successfully</echo>
+  </target>
+  
+  <!-- Package the Build -->
+  <target name="package" depends="test">
+    <tstamp>
+      <format property="touch.time" pattern="MM/dd/yyyy hh:mm aa" unit="hour"/>
+    </tstamp>
+    <!-- Assemble  -->
+    <echo>[package] Packaging Release</echo>
+    <mkdir dir="${dist.loc}"/>
+    <mkdir dir="${dist.loc}/bin"/>
+    <mkdir dir="${dist.loc}/src"/>
+    <copy file="${bin.loc}/${project.name}-${robotlegs.ver.num}.swc" todir="${dist.loc}/bin"/>
+    <copy todir="${dist.loc}/src/org">
+      <fileset dir="${main.src.loc}/org"/>
+    </copy>
+    <!-- Copy README  -->
+    <copy file="${template.loc}/README.tmpl" tofile="${dist.loc}/README" overwrite="true">
+      <filterchain>
+        <replacetokens>
+          <token key="date" value="${touch.time}"/>
+          <token key="rlversion" value="${robotlegs.ver.num}"/>
+          <token key="releasename" value="${project.name}-${robotlegs.ver.num}"/>
+          <token key="ssversion" value="${swift.suspenders.version}"/>
+          <token key="sslink" value="${swift.suspenders.link}"/>
+          <token key="rlprojectlink" value="${robotlegs.project.link}"/>
+          <token key="bestpracticeslink" value="${robotlegs.faq.link}"/>
+          <token key="faqlink" value="${robotlegs.best.practices.link}"/>
+        </replacetokens>
+      </filterchain>
+    </copy>
+    <!-- Zip It  -->
+    <zip destfile="${dist.loc}/${project.name}-${robotlegs.ver.num}.zip">
+      <fileset dir="${dist.loc}"/>
+    </zip>
+    <!-- Clean Up  -->
+    <delete file="${dist.loc}/${project.name}-${robotlegs.ver.num}.swc"/>
+    <delete file="${dist.loc}/README"/>
+    <delete dir="${dist.loc}/bin"/>
+    <delete dir="${dist.loc}/src"/>
+    <echo>[package] Release packaged successfully</echo>
+  </target>
 
-	<target name="init" depends="clean">
-		<!-- Create directories needed for the build process -->
-		<mkdir dir="${bin.loc}" />
-		<mkdir dir="${report.loc}" />
-		 <echo>bin and report directories created</echo> 
-	</target>
-	
-	<target name="compile" depends="init"> 
-		<echo>using Flex SDK at: ${FLEX_HOME}</echo>
-		<!-- it won't let me use ${project.name} here for some reason :/ -->
-        <compc output="${bin.loc}/robotlegs-framework-${robotlegs.ver.num}.swc" incremental="true" static-link-runtime-shared-libraries="true">  
-            <!-- include our Class packages into the build (com folder) -->  
-            <include-sources dir="${main.src.loc}/org" includes="*" />  
-			<library-path dir="${lib.loc}" append="true">
-				<include name="*.swc" />
-			</library-path>
-			<compiler.verbose-stacktraces>true</compiler.verbose-stacktraces>
-			<compiler.headless-server>true</compiler.headless-server>
-
-            <keep-as3-metadata name="Inject"/>
-        </compc>  
-        <echo>SWC ${project.name}-${robotlegs.ver.num}.swc created successfully</echo>  
-	</target>  
-	
-	<target name="test" depends="compile" >
-		<!-- Compile TestRunner.mxml as a SWF -->
-		<mxmlc file="${test.src.loc}/RobotlegsTest.mxml" output="${bin.loc}/TestRunner.swf" incremental="true">
-			<source-path path-element="${main.src.loc}" />
-			<library-path dir="${lib.loc}" append="true">
-				<include name="*.swc" />
-			</library-path>
-			<default-size width="200" height="200" />
-			<default-background-color>0x000000</default-background-color>
-			<compiler.verbose-stacktraces>true</compiler.verbose-stacktraces>
-			<compiler.headless-server>true</compiler.headless-server>
-		</mxmlc>
-
-		<!-- Execute TestRunner.swf as FlexUnit tests and publish reports -->
-		<flexunit swf="bin/TestRunner.swf" toDir="${report.loc}" haltonfailure="false" verbose="true" localTrusted="true" />
-
-		<!-- Generate readable JUnit-style reports -->
-		<junitreport todir="${report.loc}">
-			<fileset dir="${report.loc}">
-				<include name="TEST-*.xml" />
-			</fileset>
-			<report format="frames" todir="${report.loc}/html" />
-		</junitreport>
-	</target>
-	
-	<target name="create-docs" >
-		<exec executable="${asdoc.loc}" failonerror="true" >
-			<arg line="-external-library-path ${lib.loc}" />
-			<arg line="-doc-sources ${main.src.loc}" />
-			<arg line="-source-path ${main.src.loc}" />
-			<arg line="-output ${doc.loc}" />
-		</exec>
-		<echo>ASDOC created successfully</echo>
-	</target>
-
-
-	<target name="package" depends="test">
-		 <tstamp>
-		 	<format property="touch.time" pattern="MM/dd/yyyy hh:mm aa" unit="hour"/>
-		 </tstamp>
-		<!-- Assemble  -->
-		<echo>Packaging Release</echo>
-		<mkdir dir="${dist.loc}" />
-		<mkdir dir="${dist.loc}/bin" />
-		<mkdir dir="${dist.loc}/src" />
-		<copy file="${bin.loc}/${project.name}-${robotlegs.ver.num}.swc" todir="${dist.loc}/bin" />
-		<copy todir="${dist.loc}/src/org">
-			<fileset dir="${main.src.loc}/org"/>
-		</copy>
-		<!-- Copy README  -->
-        <copy file="${template.loc}/README.tmpl" 
-              tofile="${dist.loc}/README" 
-              overwrite="true" >
-            <filterchain>
-                <replacetokens>
-                    <token key="date"      value="${touch.time}"      />
-                	<token key="rlversion" value="${robotlegs.ver.num}" />
-                	<token key="releasename"      value="${project.name}-${robotlegs.ver.num}"      />
-					<token key="ssversion"      value="${swift.suspenders.version}"      />
-					<token key="sslink"      value="${swift.suspenders.link}"      />
-					<token key="rlprojectlink"      value="${robotlegs.project.link}"      />
-					<token key="bestpracticeslink"      value="${robotlegs.faq.link}"      />
-					<token key="faqlink"      value="${robotlegs.best.practices.link}"      />
-                </replacetokens>
-            </filterchain>
-        </copy>
-		<!-- Zip It  -->
-		<zip destfile="${dist.loc}/${project.name}-${robotlegs.ver.num}.zip">
-			<fileset dir="${dist.loc}" />
-		</zip>
-		<!-- Clean Up  -->
-		<delete file="${dist.loc}/${project.name}-${robotlegs.ver.num}.swc"/>
-		<delete file="${dist.loc}/README"/>
-		<delete dir="${dist.loc}/bin"/>
-		<delete dir="${dist.loc}/src"/>
-	</target>
 </project>

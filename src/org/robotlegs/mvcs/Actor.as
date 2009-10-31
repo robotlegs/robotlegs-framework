@@ -28,6 +28,9 @@ package org.robotlegs.mvcs
 	import org.robotlegs.base.EventMap;
 	import org.robotlegs.core.IEventMap;
 	
+	/**
+	 * Abstract MVCS <code>IActor</code> implementation
+	 */
 	public class Actor
 	{
 		[Inject]

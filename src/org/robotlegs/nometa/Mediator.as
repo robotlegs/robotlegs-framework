@@ -30,7 +30,7 @@ package org.robotlegs.nometa
 	import org.robotlegs.core.IEventMap;
 	
 	/**
-	 * Abstract MVCS <code>IMediator</code> and <code>IPropertyProvider</code> implementation
+	 * Abstract Nometa <code>IMediator</code> implementation
 	 */
 	public class Mediator extends MediatorBase
 	{

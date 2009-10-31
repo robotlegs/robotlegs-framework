@@ -28,7 +28,7 @@ package org.robotlegs.nometa
 	import org.robotlegs.core.ICommand;
 	
 	/**
-	 * Abstract MVCS <code>ICommand</code> implementation
+	 * Abstract Nometa <code>ICommand</code> implementation
 	 */
 	public class Command implements ICommand
 	{

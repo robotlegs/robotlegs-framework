@@ -36,7 +36,7 @@ package org.robotlegs.base
 	import org.robotlegs.core.IReflector;
 	
 	/**
-	 * Abstract <code>IContext</code> implementation
+	 * An abstract <code>IContext</code> implementation
 	 */
 	public class ContextBase implements IContext, IEventDispatcher
 	{

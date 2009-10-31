@@ -32,7 +32,7 @@ package org.robotlegs.nometa
 	import org.robotlegs.core.IMediatorMap;
 	
 	/**
-	 * Abstract MVCS <code>IContext</code> implementation
+	 * Abstract Nometa <code>IContext</code> implementation
 	 */
 	public class Context extends ContextBase implements IContext
 	{

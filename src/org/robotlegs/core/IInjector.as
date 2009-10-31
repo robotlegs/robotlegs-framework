@@ -24,7 +24,7 @@ package org.robotlegs.core
 {
 	
 	/**
-	 * The interface definition for a RobotLegs Injector
+	 * The Robotlegs Injector contract
 	 */
 	public interface IInjector
 	{
@@ -32,8 +32,8 @@ package org.robotlegs.core
 		 * When asked for an instance of the class <code>whenAskedFor</code>
 		 * inject the instance <code>useValue</code>.
 		 *
-		 * This is used to register an existing instance with the injector
-		 * and treat it like a Singleton.
+		 * <p>This is used to register an existing instance with the injector
+		 * and treat it like a Singleton.</p>
 		 *
 		 * @param whenAskedFor A class or interface
 		 * @param useValue An instance
@@ -45,7 +45,7 @@ package org.robotlegs.core
 		 * When asked for an instance of the class <code>whenAskedFor</code>
 		 * inject a new instance of <code>instantiateClass</code>.
 		 *
-		 * This will create a new instance for each injection.
+		 * <p>This will create a new instance for each injection.</p>
 		 *
 		 * @param whenAskedFor A class or interface
 		 * @param instantiateClass A class to instantiate
@@ -57,8 +57,8 @@ package org.robotlegs.core
 		 * When asked for an instance of the class <code>whenAskedFor</code>
 		 * inject an instance of <code>whenAskedFor</code>.
 		 *
-		 * This will create an instance on the first injection, but
-		 * will re-use that instance for subsequent injections.
+		 * <p>This will create an instance on the first injection, but
+		 * will re-use that instance for subsequent injections.</p>
 		 *
 		 * @param whenAskedFor A class or interface
 		 * @param named An optional name (id)
@@ -70,8 +70,8 @@ package org.robotlegs.core
 		 * When asked for an instance of the class <code>whenAskedFor</code>
 		 * inject an instance of <code>useSingletonOf</code>.
 		 *
-		 * This will create an instance on the first injection, but
-		 * will re-use that instance for subsequent injections.
+		 * <p>This will create an instance on the first injection, but
+		 * will re-use that instance for subsequent injections.</p>
 		 *
 		 * @param whenAskedFor A class or interface
 		 * @param useSingletonOf A class to instantiate
@@ -82,22 +82,22 @@ package org.robotlegs.core
 		/**
 		 * Perform an injection into an object, satisfying all it's dependencies
 		 *
-		 * The <code>IInjector</code> should throw an <code>Error</code>
-		 * if it can't satisfy all dependencies of the injectee.
+		 * <p>The <code>IInjector</code> should throw an <code>Error</code>
+		 * if it can't satisfy all dependencies of the injectee.</p>
 		 *
 		 * @param target The object to inject into - the Injectee
 		 */
 		function injectInto(target:Object):void;
 		
 		/**
-		 * Create an object of the given class, supplying its dependencies as constructor parameters 
+		 * Create an object of the given class, supplying its dependencies as constructor parameters
 		 * if the used DI solution has support for constructor injection
-		 * 
-		 * Adapters for DI solutions that don't support constructor injection should just create a new 
-		 * instance and perform setter and/ or method injection on that.
-		 * 
-		 * The <code>IInjector</code> should throw an <code>Error</code>
-		 * if it can't satisfy all dependencies of the injectee.
+		 *
+		 * <p>Adapters for DI solutions that don't support constructor injection should just create a new
+		 * instance and perform setter and/ or method injection on that.</p>
+		 *
+		 * <p>The <code>IInjector</code> should throw an <code>Error</code>
+		 * if it can't satisfy all dependencies of the injectee.</p>
 		 *
 		 * @param target The class to instantiate
 		 * @return the created instance
