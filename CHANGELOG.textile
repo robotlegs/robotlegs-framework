@@ -1,3 +1,113 @@
 h2. Robotlegs Framework Changelog:
 
-todo
+h3. v0.9.6 - PanelBeaten
+
+Added the dispatch() helper method back to mvcs actors
+Removed named injection points
+
+*MediatorMap*
+Enabled automatic creation of mediator for contextView if mapped
+
+*ContextBase*
+Made all ContextBase constructor arguments optional to enable declarative (mxml) Context instantiation
+
+*Nometa*
+Introduced Nometa implementation
+
+*Actor*
+Unified Model and Service into Actor
+Removed Model
+Removed Service
+
+*EventMap*
+Added strong event mapping to EventMap
+Re-ordered the mapping arguments
+
+From: mapEvent(commandClass:Class, eventType:String, eventClass:Class = null, oneshot:Boolean = false):void
+To: mapEvent(eventType:String, commandClass:Class, eventClass:Class = null, oneshot:Boolean = false):void
+
+h3. v0.9.5 - BigMistake2
+
+Removed dispatchEvent() helper method - Again, really sorry about that little mixup there
+
+*Mediator*
+
+addEventListenerTo() becomes eventMap.mapListener()
+
+h3. v0.9.4 - WhatProxyWhere?
+
+Proxy renamed to Model
+
+h3. v0.9.3 - Untitled3
+
+CommandMap bugfix
+
+h3. v0.9.2 - Untitled2
+
+No changes!
+
+h3. v0.9.1 - BigMistake1
+
+dispatch() helper method renamed to dispatchEvent()
+
+h3. v0.9 - ElasticChaos
+
+Removed "as3commons-logging":http://www.as3commons.org/
+Removed EventBroadcaster
+
+MediatorFactory renamed to MediatorMap
+CommandFactory renamed to CommandMap
+IInjector.bind* renamed to IInjector.map*
+
+*ICommandMap*
+CommandMap now accepts optional Event class parameter for stronger mapping.
+The argument order had to be re-arranged so that the optional eventClass would come after the mandatory commandClass.
+
+From: mapEvent(type:String, commandClass:Class, oneshot:Boolean = false):void;
+To: mapEvent(commandClass:Class, eventType:String, eventClass:Class = null, oneshot:Boolean = false):void;
+
+*Constructor Injection*
+Changed all automated instantiation to use IInjector#instantiate to enable constructor injection, changed DI adapters accordingly and added new SwiftSuspenders support constructor injection
+
+*Bonus Adapters Removed*
+Removed Spring Action Script and SmartyPants-IOC adapters (they can be installed separately)
+
+h3. v0.8.1 - SwiftyPants
+
+Added adapters for "SwiftSuspenders":http://github.com/tschneidereit/SwiftSuspenders
+
+h3. v0.8 - ByeByeFlex
+
+FlexMediator decoupled from Flex and merged into Mediator
+Removed FlexMediator
+
+h3. v0.7 - ShortWave
+
+Added dispatch() helper method
+
+h3. v0.6 - Untitled1
+
+Introduced "as3commons-logging":http://www.as3commons.org/
+
+h3. v0.5.2 - TheRegister
+
+IMediator.onRegisterComplete renamed to IMediator.onRegister
+
+h3. v0.4 - OrganDonor
+
+net.boyblack.robotlegs.* renamed to org.robotlegs.*
+
+h3. v0.3 - ElastoBoot
+
+Added Spring ActionScript adapters
+Provided adapters: "SmartyPants-IOC":http://smartypants.expantra.net/
+Provided adapters: "SpringActionScript":http://www.springactionscript.org/
+
+h3. v0.2 - ReversiblePants
+
+Introduced DI and reflection adapters
+Provided adapters: "SmartyPants-IOC":http://smartypants.expantra.net/
+
+h3. v0.1
+
+Proof-of-concept prototype
