@@ -49,13 +49,13 @@ package org.robotlegs.mvcs
 	{
 		public static const TEST_EVENT:String = 'testEvent';
 		
-		private var contextView:DisplayObjectContainer;
-		private var eventDispatcher:IEventDispatcher;
-		private var commandExecuted:Boolean;
-		private var mediatorMap:MediatorMap;
-		private var injector:IInjector;
-		private var reflector:IReflector;
-		private var eventMap:IEventMap;
+		protected var contextView:DisplayObjectContainer;
+		protected var eventDispatcher:IEventDispatcher;
+		protected var commandExecuted:Boolean;
+		protected var mediatorMap:MediatorMap;
+		protected var injector:IInjector;
+		protected var reflector:IReflector;
+		protected var eventMap:IEventMap;
 		
 		[BeforeClass]
 		public static function runBeforeEntireSuite():void

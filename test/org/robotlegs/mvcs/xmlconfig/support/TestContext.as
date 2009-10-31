@@ -19,19 +19,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
-package org.robotlegs
+package org.robotlegs.mvcs.xmlconfig.support
 {
-	import org.robotlegs.mvcs.MvcsTestSuite;
-	import org.robotlegs.mvcs.xmlconfig.XmlConfigMvcsTestSuite;
-	import org.robotlegs.nometa.NoMetaTestSuite;
+	import flash.display.DisplayObjectContainer;
+	import org.robotlegs.adapters.SwiftSuspendersXMLConfigInjector;
+	import org.robotlegs.core.IInjector;
+	import org.robotlegs.mvcs.support.TestContext;
 	
-	[Suite]
-	[RunWith("org.flexunit.runners.Suite")]
-	public class RobotLegsTestSuite
+	public class TestContext extends org.robotlegs.mvcs.support.TestContext
 	{
-		public var mvcsTestSuite:MvcsTestSuite;
-		public var noMetaTestSuite:NoMetaTestSuite;
-		public var xmlConfigTestSuite:XmlConfigMvcsTestSuite;
+		public function TestContext(contextView:DisplayObjectContainer = null, autoStartup:Boolean = true)
+		{
+			super(contextView, autoStartup);
+		}
+		override protected function get injector():IInjector
+		{
+			return _injector || (_injector = new SwiftSuspendersXMLConfigInjector(<types/>));
+		}
 	}
 }

@@ -20,18 +20,16 @@
  * THE SOFTWARE.
  */
 
-package org.robotlegs
+package org.robotlegs.mvcs.xmlconfig
 {
-	import org.robotlegs.mvcs.MvcsTestSuite;
-	import org.robotlegs.mvcs.xmlconfig.XmlConfigMvcsTestSuite;
-	import org.robotlegs.nometa.NoMetaTestSuite;
-	
 	[Suite]
 	[RunWith("org.flexunit.runners.Suite")]
-	public class RobotLegsTestSuite
+	public class XmlConfigMvcsTestSuite
 	{
-		public var mvcsTestSuite:MvcsTestSuite;
-		public var noMetaTestSuite:NoMetaTestSuite;
-		public var xmlConfigTestSuite:XmlConfigMvcsTestSuite;
+		public var commandMapTests:CommandMapTests;
+		public var commandMapWithEventClassTests:CommandMapWithEventClassTests;
+		public var mediatorMapTests:MediatorMapTests;
+		public var commandTests:CommandTests;
+		public var actorTests:ActorTests;
 	}
 }

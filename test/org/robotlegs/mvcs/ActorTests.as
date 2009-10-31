@@ -37,11 +37,11 @@ package org.robotlegs.mvcs
 	{
 		public static const TEST_EVENT:String = "testEvent";
 		
-		private var context:TestContext;
-		private var contextView:DisplayObjectContainer;
-		private var actor:TestActor;
-		private var injector:IInjector;
-		private var eventDispatcher:IEventDispatcher;
+		protected var context:TestContext;
+		protected var contextView:DisplayObjectContainer;
+		protected var actor:TestActor;
+		protected var injector:IInjector;
+		protected var eventDispatcher:IEventDispatcher;
 		
 		[BeforeClass]
 		public static function runBeforeEntireSuite():void
