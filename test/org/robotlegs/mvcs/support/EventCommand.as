@@ -22,10 +22,9 @@
 
 package org.robotlegs.mvcs.support
 {
-	import org.robotlegs.core.ICommand;
 	import flash.events.Event;
 
-	public class EventCommand implements ICommand
+	public class EventCommand
 	{
 		[Inject]
 		public var testSuite:ICommandTest;

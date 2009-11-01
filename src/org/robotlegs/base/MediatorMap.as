@@ -80,7 +80,7 @@ package org.robotlegs.base
 		/**
 		 * @inheritDoc
 		 */
-		public function mapView(viewClassOrName:*, mediatorClass:Class, autoCreate:Boolean = true, autoRemove:Boolean = true):void
+		public function mapView(viewClassOrName:*, mediatorClass:Class, injectViewAs:Class = null, autoCreate:Boolean = true, autoRemove:Boolean = true):void
 		{
 			var viewClassName:String = reflector.getFQCN(viewClassOrName);
 			var contextViewClassName:String = reflector.getFQCN(contextView)
@@ -96,7 +96,11 @@ package org.robotlegs.base
 			config.mediatorClass = mediatorClass;
 			config.autoCreate = autoCreate;
 			config.autoRemove = autoRemove;
-			if (viewClassOrName is Class)
+			if (injectViewAs)
+			{
+				config.typedViewClass = injectViewAs;
+			}
+			else if (viewClassOrName is Class)
 			{
 				config.typedViewClass = viewClassOrName;
 			}
@@ -105,16 +109,6 @@ package org.robotlegs.base
 			{
 				createMediator(contextView);
 			}
-		}
-		
-		/**
-		 * @inheritDoc
-		 */
-		public function mapModule(moduleClassName:String, localModuleClass:Class, mediatorClass:Class, autoCreate:Boolean = true, autoRemove:Boolean = true):void
-		{
-			mapView(moduleClassName, mediatorClass, autoCreate, autoRemove);
-			var config:MappingConfig = mappingConfigByViewClassName[moduleClassName];
-			config.typedViewClass = localModuleClass;
 		}
 		
 		/**

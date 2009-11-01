@@ -26,7 +26,6 @@ package org.robotlegs.mvcs
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	
-	import org.robotlegs.core.ICommand;
 	import org.robotlegs.core.ICommandMap;
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IMediatorMap;
@@ -34,7 +33,7 @@ package org.robotlegs.mvcs
 	/**
 	 * Abstract MVCS <code>ICommand</code> implementation
 	 */
-	public class Command implements ICommand
+	public class Command
 	{
 		[Inject]
 		public var contextView:DisplayObjectContainer;

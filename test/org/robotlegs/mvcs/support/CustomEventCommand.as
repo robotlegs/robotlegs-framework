@@ -22,9 +22,7 @@
 
 package org.robotlegs.mvcs.support
 {
-	import org.robotlegs.core.ICommand;
-
-	public class CustomEventCommand implements ICommand
+	public class CustomEventCommand
 	{
 		[Inject]
 		public var event:CustomEvent;

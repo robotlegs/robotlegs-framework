@@ -28,7 +28,7 @@ package org.robotlegs.base
 	 */
 	public class ContextError extends Error
 	{
-		public static const E_COMMANDMAP_NOIMPL:String = 'Command Class does not implement ICommand';
+		public static const E_COMMANDMAP_NOIMPL:String = 'Command Class does not implement an execute() method';
 		public static const E_COMMANDMAP_OVR:String = 'Cannot overwrite map';
 		
 		public static const E_MEDIATORMAP_NOIMPL:String = 'Mediator Class does not implement IMediator';

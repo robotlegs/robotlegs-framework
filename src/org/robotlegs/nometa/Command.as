@@ -25,12 +25,10 @@ package org.robotlegs.nometa
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	
-	import org.robotlegs.core.ICommand;
-	
 	/**
 	 * Abstract Nometa <code>ICommand</code> implementation
 	 */
-	public class Command implements ICommand
+	public class Command
 	{
 		protected var eventDispatcher:IEventDispatcher;
 		

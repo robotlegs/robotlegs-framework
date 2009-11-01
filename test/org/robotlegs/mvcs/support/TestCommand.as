@@ -22,9 +22,7 @@
 
 package org.robotlegs.mvcs.support
 {
-	import org.robotlegs.core.ICommand;
-
-	public class TestCommand implements ICommand
+	public class TestCommand
 	{
 		[Inject]
 		public var testSuite:ICommandTest;

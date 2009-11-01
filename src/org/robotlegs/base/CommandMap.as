@@ -28,7 +28,6 @@ package org.robotlegs.base
 	
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.ICommandMap;
-	import org.robotlegs.core.ICommand;
 	import org.robotlegs.core.IReflector;
 	
 	/**
@@ -78,7 +77,8 @@ package org.robotlegs.base
 		 */
 		public function mapEvent(eventType:String, commandClass:Class, eventClass:Class = null, oneshot:Boolean = false):void
 		{
-			if (reflector.classExtendsOrImplements(commandClass, ICommand) == false)
+			// TODO: check that the commandClass has the required execute() method
+			if (false)
 			{
 				throw new ContextError(ContextError.E_COMMANDMAP_NOIMPL + ' - ' + commandClass);
 			}

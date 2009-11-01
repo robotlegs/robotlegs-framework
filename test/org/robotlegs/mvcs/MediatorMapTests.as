@@ -94,7 +94,7 @@ package org.robotlegs.mvcs
 		[Test]
 		public function mediatorIsMappedAndCreatedForView():void
 		{
-			mediatorMap.mapView(ViewComponent, ViewMediator, false, false);
+			mediatorMap.mapView(ViewComponent, ViewMediator, null, false, false);
 			var viewComponent:ViewComponent = new ViewComponent();
 			contextView.addChild(viewComponent);
 			var mediator:IMediator = mediatorMap.createMediator(viewComponent);
@@ -109,7 +109,7 @@ package org.robotlegs.mvcs
 			var viewComponent:ViewComponent = new ViewComponent();
 			var mediator:IMediator;
 			
-			mediatorMap.mapView(ViewComponent, ViewMediator, false, false);
+			mediatorMap.mapView(ViewComponent, ViewMediator, null, false, false);
 			contextView.addChild(viewComponent);
 			mediator = mediatorMap.createMediator(viewComponent);
 			Assert.assertNotNull('Mediator should have been created', mediator);
@@ -126,7 +126,7 @@ package org.robotlegs.mvcs
 			var viewComponent:ViewComponent = new ViewComponent();
 			var mediator:IMediator;
 			
-			mediatorMap.mapView(ViewComponent, ViewMediator, false, false);
+			mediatorMap.mapView(ViewComponent, ViewMediator, null, false, false);
 			contextView.addChild(viewComponent);
 			mediator = mediatorMap.createMediator(viewComponent);
 			Assert.assertNotNull('Mediator should have been created', mediator);
@@ -140,7 +140,7 @@ package org.robotlegs.mvcs
 		[Test]
 		public function autoRegister():void
 		{
-			mediatorMap.mapView(ViewComponent, ViewMediator, true, true);
+			mediatorMap.mapView(ViewComponent, ViewMediator, null, true, true);
 			var viewComponent:ViewComponent = new ViewComponent();
 			contextView.addChild(viewComponent);
 			Assert.assertTrue('Mediator should have been created for View Component', mediatorMap.hasMediatorForView(viewComponent));
@@ -152,7 +152,7 @@ package org.robotlegs.mvcs
 			var viewComponent:ViewComponent = new ViewComponent();
 			var mediator:IMediator;
 			
-			mediatorMap.mapView(ViewComponent, ViewMediator, false, true);
+			mediatorMap.mapView(ViewComponent, ViewMediator, null, false, true);
 			contextView.addChild(viewComponent);
 			mediator = mediatorMap.createMediator(viewComponent);
 			Assert.assertNotNull('Mediator should have been created', mediator);
@@ -179,7 +179,7 @@ package org.robotlegs.mvcs
 			var viewComponent:ViewComponent = new ViewComponent();
 			var mediator:IMediator;
 			
-			mediatorMap.mapView(ViewComponent, ViewMediator, false, true);
+			mediatorMap.mapView(ViewComponent, ViewMediator, null, false, true);
 			contextView.addChild(viewComponent);
 			mediator = mediatorMap.createMediator(viewComponent);
 			Assert.assertNotNull('Mediator should have been created', mediator);
@@ -215,7 +215,7 @@ package org.robotlegs.mvcs
 		[Test]
 		public function contextViewMediatorIsNotCreatedWhenMappedAndAutoCreateIsFalse():void
 		{
-			mediatorMap.mapView( TestContextView, TestContextViewMediator, false );
+			mediatorMap.mapView( TestContextView, TestContextViewMediator, null, false );
 			Assert.assertFalse('Mediator should NOT have been created for contextView', mediatorMap.hasMediatorForView(contextView));
 		}
 		
