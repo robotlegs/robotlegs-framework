@@ -21,8 +21,9 @@ Removed Service
 
 *EventMap*
 Added strong event mapping to EventMap
-Re-ordered the mapping arguments
 
+*CommandMap*
+Re-ordered the mapping arguments
 From: mapEvent(commandClass:Class, eventType:String, eventClass:Class = null, oneshot:Boolean = false):void
 To: mapEvent(eventType:String, commandClass:Class, eventClass:Class = null, oneshot:Boolean = false):void
 
