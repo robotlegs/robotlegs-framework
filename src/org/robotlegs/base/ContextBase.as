@@ -50,7 +50,7 @@ package org.robotlegs.base
 		protected var _reflector:IReflector;
 		
 		/**
-		 * Default Context Implementation
+		 * Abstarct Context Implementation
 		 *
 		 * <p>Extend this class to create a Framework or Application context</p>
 		 *
@@ -67,6 +67,8 @@ package org.robotlegs.base
 			_injector = injector;
 			_reflector = reflector;
 			initialize();
+			mapInjections();
+			checkAutoStartup();
 		}
 		
 		// API ////////////////////////////////////////////////////////////////
@@ -123,26 +125,20 @@ package org.robotlegs.base
 			return _contextView;
 		}
 		
-		// CPI ////////////////////////////////////////////////////////////////
+		// HOOKS //////////////////////////////////////////////////////////////
 		
 		/**
-		 * Initialize the Framework apparatus
-		 *
-		 * <p>Override this in your Framework or Application context to alter the default (fallback) apparatus</p>
-		 *
-		 * <p>NOTE: be sure to call <code>super.initialize()</code> at the end to proceed with the the Injection Mapping and autoStartup check</p>
-		 *
-		 * <p>You might however decide to completely intercept the startup check should you so wish</p>
+		 * Initialize Hook
+		 * 
+		 * <p>Override this hook to reconfigure the default framework aparatus</p>
 		 */
 		protected function initialize():void
 		{
-			mapInjections();
-			checkAutoStartup();
 		}
 		
 		/**
-		 * Bind some commonly needed contextual dependencies for convenience
-		 *
+		 * Injection Mapping Hook
+		 * 
 		 * <p>Override this in your Framework context to change the default (blank) configuration</p>
 		 *
 		 * <p>Beware of collisions in your container</p>
