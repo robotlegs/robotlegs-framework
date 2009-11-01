@@ -1,5 +1,14 @@
 h2. Robotlegs Framework Changelog:
 
+h3. v0.9.8 - Untitled4
+
+Removed ICommand
+
+*MediatorMap*
+Merged MediatorMap#mapModule into MediatorMap#mapView
+New view mapping signature
+mapView(viewClassOrName:*, mediatorClass:Class, injectViewAs:Class = null, autoCreate:Boolean = true, autoRemove:Boolean = true):void
+
 h3. v0.9.7 - XtensibleMixdownLoafers
 
 Enabled XML configuration of injection points
