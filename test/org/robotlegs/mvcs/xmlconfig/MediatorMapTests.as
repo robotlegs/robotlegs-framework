@@ -23,28 +23,17 @@
 package org.robotlegs.mvcs.xmlconfig
 {
 	import flash.display.DisplayObjectContainer;
-	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
 	
-	import mx.core.UIComponent;
-	
-	import org.flexunit.Assert;
-	import org.flexunit.async.Async;
 	import org.fluint.uiImpersonation.UIImpersonator;
-	import org.robotlegs.adapters.SwiftSuspendersXMLConfigInjector;
+	import org.robotlegs.adapters.SwiftSuspendersInjector;
 	import org.robotlegs.adapters.SwiftSuspendersReflector;
 	import org.robotlegs.base.MediatorMap;
-	import org.robotlegs.core.IEventMap;
 	import org.robotlegs.core.IInjector;
-	import org.robotlegs.core.IMediator;
 	import org.robotlegs.core.IMediatorMap;
-	import org.robotlegs.core.IReflector;
-	import org.robotlegs.mvcs.support.TestContextView;
-	import org.robotlegs.mvcs.support.TestContextViewMediator;
-	import org.robotlegs.mvcs.support.ViewComponent;
-	import org.robotlegs.mvcs.support.ViewMediator;
 	import org.robotlegs.mvcs.MediatorMapTests;
+	import org.robotlegs.mvcs.support.TestContextView;
 	
 	public class MediatorMapTests extends org.robotlegs.mvcs.MediatorMapTests
 	{
@@ -61,7 +50,7 @@ package org.robotlegs.mvcs.xmlconfig
 		{
 			contextView = new TestContextView();
 			eventDispatcher = new EventDispatcher();
-			injector = new SwiftSuspendersXMLConfigInjector(XML_CONFIG);
+			injector = new SwiftSuspendersInjector(XML_CONFIG);
 			reflector = new SwiftSuspendersReflector();
 			mediatorMap = new MediatorMap(contextView, injector, reflector);
 			

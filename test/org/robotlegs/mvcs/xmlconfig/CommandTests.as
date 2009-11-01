@@ -21,20 +21,13 @@
  */
 package org.robotlegs.mvcs.xmlconfig
 {
-	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import flash.events.IEventDispatcher;
 	
-	import org.flexunit.Assert;
-	import org.robotlegs.adapters.SwiftSuspendersXMLConfigInjector;
+	import org.robotlegs.adapters.SwiftSuspendersInjector;
 	import org.robotlegs.adapters.SwiftSuspendersReflector;
 	import org.robotlegs.base.CommandMap;
-	import org.robotlegs.core.ICommandMap;
-	import org.robotlegs.core.IInjector;
-	import org.robotlegs.core.IReflector;
-	import org.robotlegs.mvcs.support.ICommandTest;
-	import org.robotlegs.mvcs.support.TestCommand;
 	import org.robotlegs.mvcs.CommandTests;
+	import org.robotlegs.mvcs.support.ICommandTest;
 	
 	public class CommandTests extends org.robotlegs.mvcs.CommandTests
 	{
@@ -49,7 +42,7 @@ package org.robotlegs.mvcs.xmlconfig
 		override public function runBeforeEachTest():void
 		{
 			eventDispatcher = new EventDispatcher();
-			injector = new SwiftSuspendersXMLConfigInjector(XML_CONFIG);
+			injector = new SwiftSuspendersInjector(XML_CONFIG);
 			reflector = new SwiftSuspendersReflector();
 			commandMap = new CommandMap(eventDispatcher, injector, reflector);
 			injector.mapValue(ICommandTest, this);

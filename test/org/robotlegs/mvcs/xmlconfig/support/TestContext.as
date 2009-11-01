@@ -22,7 +22,8 @@
 package org.robotlegs.mvcs.xmlconfig.support
 {
 	import flash.display.DisplayObjectContainer;
-	import org.robotlegs.adapters.SwiftSuspendersXMLConfigInjector;
+	
+	import org.robotlegs.adapters.SwiftSuspendersInjector;
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.mvcs.support.TestContext;
 	
@@ -32,9 +33,10 @@ package org.robotlegs.mvcs.xmlconfig.support
 		{
 			super(contextView, autoStartup);
 		}
+		
 		override protected function get injector():IInjector
 		{
-			return _injector || (_injector = new SwiftSuspendersXMLConfigInjector(<types/>));
+			return _injector || (_injector = new SwiftSuspendersInjector());
 		}
 	}
 }
