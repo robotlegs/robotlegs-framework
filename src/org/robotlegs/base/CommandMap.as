@@ -24,6 +24,7 @@ package org.robotlegs.base
 {
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
+	import flash.utils.describeType;
 	import flash.utils.Dictionary;
 	
 	import org.robotlegs.core.IInjector;
@@ -77,8 +78,8 @@ package org.robotlegs.base
 		 */
 		public function mapEvent(eventType:String, commandClass:Class, eventClass:Class = null, oneshot:Boolean = false):void
 		{
-			// TODO: check that the commandClass has the required execute() method
-			if (false)
+			// TODO: cache type info
+			if (!describeType(commandClass).factory.method.(@name == "execute").length())
 			{
 				throw new ContextError(ContextError.E_COMMANDMAP_NOIMPL + ' - ' + commandClass);
 			}
