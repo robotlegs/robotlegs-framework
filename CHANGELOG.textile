@@ -1,5 +1,9 @@
 h2. Robotlegs Framework Changelog:
 
+h3. v0.9.7 - XtensibleMixdownLoafers
+
+Enabled XML configuration of injection points
+
 h3. v0.9.6 - PanelBeaten
 
 Added the dispatch() helper method back to mvcs actors
