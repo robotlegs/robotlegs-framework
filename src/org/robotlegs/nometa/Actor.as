@@ -34,12 +34,16 @@ package org.robotlegs.nometa
 	public class Actor
 	{
 		protected var eventDispatcher:IEventDispatcher;
-		protected var eventMap:IEventMap;
+		protected var _eventMap:IEventMap;
 		
 		public function Actor(eventDispatcher:IEventDispatcher)
 		{
 			this.eventDispatcher = eventDispatcher;
-			eventMap = new EventMap(eventDispatcher);
+		}
+		
+		protected function get eventMap():IEventMap
+		{
+			return _eventMap || (_eventMap = new EventMap(eventDispatcher));
 		}
 		
 		/**

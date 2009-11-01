@@ -35,12 +35,11 @@ package org.robotlegs.nometa
 	public class Mediator extends MediatorBase
 	{
 		protected var eventDispatcher:IEventDispatcher;
-		protected var eventMap:IEventMap;
+		protected var _eventMap:IEventMap;
 		
 		public function Mediator(eventDispatcher:IEventDispatcher)
 		{
 			this.eventDispatcher = eventDispatcher;
-			eventMap = new EventMap(eventDispatcher);
 		}
 		
 		/**
@@ -50,6 +49,11 @@ package org.robotlegs.nometa
 		{
 			eventMap.unmapListeners();
 			super.preRemove();
+		}
+		
+		protected function get eventMap():IEventMap
+		{
+			return _eventMap || (_eventMap = new EventMap(eventDispatcher));
 		}
 		
 		/**
