@@ -115,7 +115,6 @@
       <arg line="-package org.robotlegs.base 'Base classes used to build custom Robotlegs frameworks'"/>
       <arg line="-package org.robotlegs.core 'The core Robotlegs Framework apparatus contracts'"/>
       <arg line="-package org.robotlegs.mvcs 'The reference MVCS Robotlegs Framework implementation'"/>
-      <arg line="-package org.robotlegs.nometa 'A Robotlegs Framework implementation that does not rely on metadata'"/>
     </exec>
     <echo>[create-docs] ASDOC documentation generated successfully</echo>
   </target>
