@@ -1,5 +1,17 @@
 h2. Robotlegs Framework Changelog:
 
+h3. v1.0RC3
+
+Removed nometa package
+
+h3. v1.0RC2
+
+CommandMap Bug fix
+
+h3. v1.0RC1
+
+No changes
+
 h3. v0.9.8 - Untitled4
 
 Removed ICommand

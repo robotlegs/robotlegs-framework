@@ -24,14 +24,12 @@ package org.robotlegs
 {
 	import org.robotlegs.mvcs.MvcsTestSuite;
 	import org.robotlegs.mvcs.xmlconfig.XmlConfigMvcsTestSuite;
-	import org.robotlegs.nometa.NoMetaTestSuite;
 	
 	[Suite]
 	[RunWith("org.flexunit.runners.Suite")]
 	public class RobotLegsTestSuite
 	{
 		public var mvcsTestSuite:MvcsTestSuite;
-		public var noMetaTestSuite:NoMetaTestSuite;
 		public var xmlConfigTestSuite:XmlConfigMvcsTestSuite;
 	}
 }

@@ -30,8 +30,8 @@ package org.robotlegs.mvcs
 	import org.flexunit.async.Async;
 	import org.fluint.uiImpersonation.UIImpersonator;
 	import org.robotlegs.base.ContextEvent;
-	import org.robotlegs.nometa.support.TestContext;
-	import org.robotlegs.nometa.support.TestContextView;
+	import org.robotlegs.mvcs.support.TestContext;
+	import org.robotlegs.mvcs.support.TestContextView;
 	
 	public class ContextTests
 	{
