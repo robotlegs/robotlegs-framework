@@ -38,8 +38,10 @@ package org.robotlegs.core
 		 * @param whenAskedFor A class or interface
 		 * @param useValue An instance
 		 * @param named An optional name (id)
+		 * 
+		 * @return * A reference to the rule for this injection. To be used with <code>mapRule</code>
 		 */
-		function mapValue(whenAskedFor:Class, useValue:Object, named:String = ""):void;
+		function mapValue(whenAskedFor:Class, useValue:Object, named:String = ""):*;
 		
 		/**
 		 * When asked for an instance of the class <code>whenAskedFor</code>
@@ -50,8 +52,10 @@ package org.robotlegs.core
 		 * @param whenAskedFor A class or interface
 		 * @param instantiateClass A class to instantiate
 		 * @param named An optional name (id)
+		 * 
+		 * @return * A reference to the rule for this injection. To be used with <code>mapRule</code>
 		 */
-		function mapClass(whenAskedFor:Class, instantiateClass:Class, named:String = ""):void;
+		function mapClass(whenAskedFor:Class, instantiateClass:Class, named:String = ""):*;
 		
 		/**
 		 * When asked for an instance of the class <code>whenAskedFor</code>
@@ -62,8 +66,10 @@ package org.robotlegs.core
 		 *
 		 * @param whenAskedFor A class or interface
 		 * @param named An optional name (id)
+		 * 
+		 * @return * A reference to the rule for this injection. To be used with <code>mapRule</code>
 		 */
-		function mapSingleton(whenAskedFor:Class, named:String = ""):void;
+		function mapSingleton(whenAskedFor:Class, named:String = ""):*;
 		
 		
 		/**
@@ -76,8 +82,25 @@ package org.robotlegs.core
 		 * @param whenAskedFor A class or interface
 		 * @param useSingletonOf A class to instantiate
 		 * @param named An optional name (id)
+		 * 
+		 * @return * A reference to the rule for this injection. To be used with <code>mapRule</code>
 		 */
-		function mapSingletonOf(whenAskedFor:Class, useSingletonOf:Class, named:String = ""):void;
+		function mapSingletonOf(whenAskedFor:Class, useSingletonOf:Class, named:String = ""):*;
+		
+		/**
+		 * When asked for an instance of the class <code>whenAskedFor</code>
+		 * use rule <code>useRule</code> to determine the correct injection.
+		 *
+		 * <p>This will use whatever injection is set by the given injection rule as created using 
+		 * one of the other mapping methods.</p>
+		 *
+		 * @param whenAskedFor A class or interface
+		 * @param useRule The rule to use for the injection
+		 * @param named An optional name (id)
+		 * 
+		 * @return * A reference to the rule for this injection. To be used with <code>mapRule</code>
+		 */
+		function mapRule(whenAskedFor:Class, useRule:*, named:String = ""):*;
 		
 		/**
 		 * Perform an injection into an object, satisfying all it's dependencies
