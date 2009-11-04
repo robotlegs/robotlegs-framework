@@ -57,6 +57,12 @@ package org.robotlegs.base
 		 * TODO: This needs to be documented
 		 */
 		protected var eventTypeMap:Dictionary;
+		/**
+		 * Internal
+		 *
+		 * Collection of command classes that have been verified to implement an <code>execute</code> method
+		 */
+		protected var verifiedCommandClasses:Dictionary;
 		
 		/**
 		 * Creates a new <code>CommandMap</code> object
@@ -71,6 +77,7 @@ package org.robotlegs.base
 			this.injector = injector;
 			this.reflector = reflector;
 			this.eventTypeMap = new Dictionary(false);
+			this.verifiedCommandClasses = new Dictionary(false);
 		}
 		
 		/**
@@ -78,10 +85,13 @@ package org.robotlegs.base
 		 */
 		public function mapEvent(eventType:String, commandClass:Class, eventClass:Class = null, oneshot:Boolean = false):void
 		{
-			// TODO: cache type info
-			if (!describeType(commandClass).factory.method.(@name == "execute").length())
+			if (!verifiedCommandClasses[commandClass])
 			{
-				throw new ContextError(ContextError.E_COMMANDMAP_NOIMPL + ' - ' + commandClass);
+				verifiedCommandClasses[commandClass] = describeType(commandClass).factory.method.(@name == "execute").length() == 1;
+				if (!verifiedCommandClasses[commandClass])
+				{
+					throw new ContextError(ContextError.E_COMMANDMAP_NOIMPL + ' - ' + commandClass);
+				}
 			}
 			eventClass = eventClass || Event;
 			
