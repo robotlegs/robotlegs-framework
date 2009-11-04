@@ -31,7 +31,7 @@ package org.robotlegs.mvcs
 	import org.robotlegs.core.IMediatorMap;
 	
 	/**
-	 * Abstract MVCS <code>ICommand</code> implementation
+	 * Abstract MVCS command implementation
 	 */
 	public class Command
 	{

@@ -146,7 +146,7 @@ package org.robotlegs.base
 		 * Event Handler
 		 *
 		 * @param event The <code>Event</code>
-		 * @param commandClass The <code>ICommand</code> Class to construct and execute
+		 * @param commandClass The Class to construct and execute
 		 * @param oneshot Should this command mapping be removed after execution?
 		 */
 		protected function routeEventToCommand(event:Event, commandClass:Class, oneshot:Boolean, originalEventClass:Class):void
