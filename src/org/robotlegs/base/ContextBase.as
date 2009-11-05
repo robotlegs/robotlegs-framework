@@ -22,7 +22,6 @@
 
 package org.robotlegs.base
 {
-	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
@@ -38,74 +37,38 @@ package org.robotlegs.base
 	 */
 	public class ContextBase implements IContext, IEventDispatcher
 	{
-		protected var _autoStartup:Boolean;
-		
-		protected var _contextView:DisplayObjectContainer;
+		/**
+		 * @private
+		 */
 		protected var _eventDispatcher:IEventDispatcher;
+		
+		/**
+		 * @private
+		 */
 		protected var _injector:IInjector;
+		
+		/**
+		 * @private
+		 */
 		protected var _reflector:IReflector;
+		
+		//---------------------------------------------------------------------
+		//  Constructor
+		//---------------------------------------------------------------------
 		
 		/**
 		 * Abstract Context Implementation
 		 *
 		 * <p>Extend this class to create a Framework or Application context</p>
-		 *
-		 * @param contextView The root view node of the context. The context will listen for ADDED_TO_STAGE events on this node
-		 * @param autoStartup Should this context automatically invoke it's <code>startup</code> method when it's <code>contextView</code> arrives on Stage?
 		 */
-		public function ContextBase(contextView:DisplayObjectContainer = null, autoStartup:Boolean = true)
+		public function ContextBase()
 		{
 			_eventDispatcher = new EventDispatcher(this);
-			_contextView = contextView;
-			_autoStartup = autoStartup;
-			mapInjections();
-			checkAutoStartup();
 		}
 		
-		// API ////////////////////////////////////////////////////////////////
-		
-		/**
-		 * The Startup Hook
-		 *
-		 * <p>Override this in your Application context</p>
-		 */
-		public function startup():void
-		{
-			dispatchEvent(new ContextEvent(ContextEvent.STARTUP_COMPLETE));
-		}
-		
-		/**
-		 * The Startup Hook
-		 *
-		 * <p>Override this in your Application context</p>
-		 */
-		public function shutdown():void
-		{
-			dispatchEvent(new ContextEvent(ContextEvent.SHUTDOWN_COMPLETE));
-		}
-		
-		/**
-		 * The <code>DisplayObjectContainer</code> that scopes this <code>IContext</code>
-		 */
-		public function get contextView():DisplayObjectContainer
-		{
-			return _contextView;
-		}
-		
-		/**
-		 * The <code>IContext</code>'s <code>DisplayObjectContainer</code>
-		 *
-		 * @param view The <code>DisplayObjectContainer</code> to use as scope for this <code>IContext</code>
-		 */
-		public function set contextView(value:DisplayObjectContainer):void
-		{
-			if (_contextView != value)
-			{
-				_contextView = value;
-				mapInjections();
-				checkAutoStartup();
-			}
-		}
+		//---------------------------------------------------------------------
+		//  API
+		//---------------------------------------------------------------------
 		
 		/**
 		 * @inheritDoc
@@ -115,18 +78,12 @@ package org.robotlegs.base
 			return _eventDispatcher;
 		}
 		
-		// FPI ////////////////////////////////////////////////////////////////
+		//---------------------------------------------------------------------
+		//  Protected, Lazy Getters and Setters
+		//---------------------------------------------------------------------
 		
 		/**
 		 * The <code>IInjector</code> for this <code>IContext</code>
-		 */
-		protected function set injector(value:IInjector):void
-		{
-			_injector = value;
-		}
-		
-		/**
-		 * @inheritDoc
 		 */
 		protected function get injector():IInjector
 		{
@@ -134,57 +91,32 @@ package org.robotlegs.base
 		}
 		
 		/**
-		 * The <code>IReflector</code> for this <code>IContext</code>
+		 * @private
 		 */
-		protected function set reflector(value:IReflector):void
+		protected function set injector(value:IInjector):void
 		{
-			_reflector = value;
+			_injector = value;
 		}
 		
 		/**
-		 * @inheritDoc
+		 * The <code>IReflector</code> for this <code>IContext</code>
 		 */
 		protected function get reflector():IReflector
 		{
 			return _reflector || (_reflector = new SwiftSuspendersReflector());
 		}
 		
-		// Hooks //////////////////////////////////////////////////////////////
-		
-		/**
-		 * Injection Mapping Hook
-		 *
-		 * <p>Override this in your Framework context to change the default configuration</p>
-		 *
-		 * <p>Beware of collisions in your container</p>
-		 */
-		protected function mapInjections():void
-		{
-		}
-		
-		// Internal ///////////////////////////////////////////////////////////
-		
 		/**
 		 * @private
 		 */
-		protected function checkAutoStartup():void
+		protected function set reflector(value:IReflector):void
 		{
-			if (_autoStartup && contextView)
-			{
-				contextView.stage ? startup() : contextView.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage, false, 0, true);
-			}
+			_reflector = value;
 		}
 		
-		/**
-		 * @private
-		 */
-		protected function onAddedToStage(e:Event):void
-		{
-			contextView.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-			startup();
-		}
-		
-		// EventDispatcher Boilerplate ////////////////////////////////////////
+		//---------------------------------------------------------------------
+		//  EventDispatcher Boilerplate
+		//---------------------------------------------------------------------
 		
 		/**
 		 * @private

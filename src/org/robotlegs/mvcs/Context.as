@@ -23,10 +23,12 @@
 package org.robotlegs.mvcs
 {
 	import flash.display.DisplayObjectContainer;
+	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	
 	import org.robotlegs.base.CommandMap;
 	import org.robotlegs.base.ContextBase;
+	import org.robotlegs.base.ContextEvent;
 	import org.robotlegs.base.EventMap;
 	import org.robotlegs.base.MediatorMap;
 	import org.robotlegs.base.ViewMap;
@@ -43,9 +45,35 @@ package org.robotlegs.mvcs
 	 */
 	public class Context extends ContextBase implements IContext
 	{
+		
+		/**
+		 * @private
+		 */
+		protected var _autoStartup:Boolean;
+		
+		/**
+		 * @private
+		 */
+		protected var _contextView:DisplayObjectContainer;
+		
+		/**
+		 * @private
+		 */
 		protected var _commandMap:ICommandMap;
+		
+		/**
+		 * @private
+		 */
 		protected var _mediatorMap:IMediatorMap;
+		
+		/**
+		 * @private
+		 */
 		protected var _viewMap:IViewMap;
+		
+		//---------------------------------------------------------------------
+		//  Constructor
+		//---------------------------------------------------------------------
 		
 		/**
 		 * Abstract Context Implementation
@@ -57,17 +85,49 @@ package org.robotlegs.mvcs
 		 */
 		public function Context(contextView:DisplayObjectContainer = null, autoStartup:Boolean = true)
 		{
-			super(contextView, autoStartup);
+			super();
+			_contextView = contextView;
+			_autoStartup = autoStartup;
+			mapInjections();
+			checkAutoStartup();
 		}
 		
-		// API ////////////////////////////////////////////////////////////////
+		//---------------------------------------------------------------------
+		//  API
+		//---------------------------------------------------------------------
 		
 		/**
-		 * The <code>IContext</code>'s <code>DisplayObjectContainer</code>
+		 * The Startup Hook
 		 *
-		 * @param view The <code>DisplayObjectContainer</code> to use as scope for this <code>IContext</code>
+		 * <p>Override this in your Application context</p>
 		 */
-		override public function set contextView(value:DisplayObjectContainer):void
+		public function startup():void
+		{
+			dispatchEvent(new ContextEvent(ContextEvent.STARTUP_COMPLETE));
+		}
+		
+		/**
+		 * The Startup Hook
+		 *
+		 * <p>Override this in your Application context</p>
+		 */
+		public function shutdown():void
+		{
+			dispatchEvent(new ContextEvent(ContextEvent.SHUTDOWN_COMPLETE));
+		}
+		
+		/**
+		 * The <code>DisplayObjectContainer</code> that scopes this <code>IContext</code>
+		 */
+		public function get contextView():DisplayObjectContainer
+		{
+			return _contextView;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set contextView(value:DisplayObjectContainer):void
 		{
 			if (_contextView != value)
 			{
@@ -79,7 +139,9 @@ package org.robotlegs.mvcs
 			}
 		}
 		
-		// FPI ////////////////////////////////////////////////////////////////
+		//---------------------------------------------------------------------
+		//  Protected, Lazy Getters and Setters
+		//---------------------------------------------------------------------
 		
 		/**
 		 * The <code>ICommandMap</code> for this <code>IContext</code>
@@ -90,7 +152,7 @@ package org.robotlegs.mvcs
 		}
 		
 		/**
-		 * The <code>ICommandMap</code> for this <code>IContext</code>
+		 * @private
 		 */
 		protected function set commandMap(value:ICommandMap):void
 		{
@@ -106,7 +168,7 @@ package org.robotlegs.mvcs
 		}
 		
 		/**
-		 * The <code>IMediatorMap</code> for this <code>IContext</code>
+		 * @private
 		 */
 		protected function set mediatorMap(value:IMediatorMap):void
 		{
@@ -114,7 +176,7 @@ package org.robotlegs.mvcs
 		}
 		
 		/**
-		 * The <code>IMediatorMap</code> for this <code>IContext</code>
+		 * The <code>IViewMap</code> for this <code>IContext</code>
 		 */
 		protected function get viewMap():IViewMap
 		{
@@ -122,14 +184,16 @@ package org.robotlegs.mvcs
 		}
 		
 		/**
-		 * The <code>IViewMap</code> for this <code>IContext</code>
+		 * @private
 		 */
 		protected function set viewMap(value:IViewMap):void
 		{
 			_viewMap = value;
 		}
 		
-		// HOOKS ////////////////////////////////////////////////////////////////
+		//---------------------------------------------------------------------
+		//  Framework Hooks
+		//---------------------------------------------------------------------
 		
 		/**
 		 * Injection Mapping Hook
@@ -138,7 +202,7 @@ package org.robotlegs.mvcs
 		 *
 		 * <p>Beware of collisions in your container</p>
 		 */
-		override protected function mapInjections():void
+		protected function mapInjections():void
 		{
 			injector.mapValue(IReflector, reflector);
 			injector.mapValue(IInjector, injector);
@@ -149,7 +213,30 @@ package org.robotlegs.mvcs
 			injector.mapValue(IViewMap, viewMap);
 			injector.mapClass(IEventMap, EventMap);
 		}
-	
+		
+		//---------------------------------------------------------------------
+		//  Internal
+		//---------------------------------------------------------------------
+		
+		/**
+		 * @private
+		 */
+		protected function checkAutoStartup():void
+		{
+			if (_autoStartup && contextView)
+			{
+				contextView.stage ? startup() : contextView.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage, false, 0, true);
+			}
+		}
+		
+		/**
+		 * @private
+		 */
+		protected function onAddedToStage(e:Event):void
+		{
+			contextView.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			startup();
+		}
 	
 	}
 }

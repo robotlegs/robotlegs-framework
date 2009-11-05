@@ -37,37 +37,46 @@ package org.robotlegs.base
 		 */
 		protected var eventDispatcher:IEventDispatcher;
 		
+		/**
+		 * @private
+		 */
 		protected var _dispatcherListeningEnabled:Boolean = true;
 		
 		/**
-		 * Internal
-		 *
-		 * A list of currently registered listeners
+		 * @private
 		 */
 		protected var listeners:Array;
 		
+		//---------------------------------------------------------------------
+		//  Constructor
+		//---------------------------------------------------------------------
+		
 		/**
 		 * Creates a new <code>EventMap</code> object
-		 * 
+		 *
 		 * @param eventDispatcher An <code>IEventDispatcher</code> to treat as a bus
-		 */		
+		 */
 		public function EventMap(eventDispatcher:IEventDispatcher)
 		{
 			listeners = new Array();
 			this.eventDispatcher = eventDispatcher;
 		}
 		
+		//---------------------------------------------------------------------
+		//  API
+		//---------------------------------------------------------------------
+		
 		/**
 		 * @return Is shared dispatcher listening allowed?
-		 */		
+		 */
 		public function get dispatcherListeningEnabled():Boolean
 		{
 			return _dispatcherListeningEnabled;
 		}
 		
 		/**
-		 * @param value Is shared dispatcher listening allowed?
-		 */		
+		 * @private
+		 */
 		public function set dispatcherListeningEnabled(value:Boolean):void
 		{
 			_dispatcherListeningEnabled = value;
@@ -152,6 +161,10 @@ package org.robotlegs.base
 				dispatcher.removeEventListener(params.type, params.callback, params.useCapture);
 			}
 		}
+		
+		//---------------------------------------------------------------------
+		//  Internal
+		//---------------------------------------------------------------------
 		
 		/**
 		 * Event Handler

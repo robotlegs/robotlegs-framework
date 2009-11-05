@@ -53,10 +53,14 @@ package org.robotlegs.base
 		protected var mediatorsMarkedForRemoval:Dictionary;
 		protected var hasMediatorsMarkedForRemoval:Boolean;
 		
+		//---------------------------------------------------------------------
+		//  Constructor
+		//---------------------------------------------------------------------
+		
 		/**
 		 * Creates a new <code>MediatorMap</code> object
 		 *
-		 * @param contextView The root view node of the context. The context will listen for ADDED_TO_STAGE events on this node
+		 * @param contextView The root view node of the context. The map will listen for ADDED_TO_STAGE events on this node
 		 * @param injector An <code>IInjector</code> to use for this context
 		 * @param reflector An <code>IReflector</code> to use for this context
 		 */
@@ -77,6 +81,10 @@ package org.robotlegs.base
 			// this must come last, see the setter
 			this.contextView = contextView;
 		}
+		
+		//---------------------------------------------------------------------
+		//  API
+		//---------------------------------------------------------------------
 		
 		/**
 		 * @inheritDoc
@@ -200,11 +208,17 @@ package org.robotlegs.base
 			return false;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function get contextView():DisplayObjectContainer
 		{
 			return _contextView;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set contextView(value:DisplayObjectContainer):void
 		{
 			if (value != _contextView)
@@ -215,11 +229,17 @@ package org.robotlegs.base
 			}
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function get enabled():Boolean
 		{
 			return _enabled;
 		}
 		
+		/**
+		 * @private
+		 */
 		public function set enabled(value:Boolean):void
 		{
 			if (value != _enabled)
@@ -230,8 +250,13 @@ package org.robotlegs.base
 			}
 		}
 		
-		// Protected Methods //////////////////////////////////////////////////
+		//---------------------------------------------------------------------
+		//  Internal
+		//---------------------------------------------------------------------
 		
+		/**
+		 * @private
+		 */		
 		protected function addListeners():void
 		{
 			if (contextView && enabled)
@@ -241,6 +266,9 @@ package org.robotlegs.base
 			}
 		}
 		
+		/**
+		 * @private
+		 */		
 		protected function removeListeners():void
 		{
 			if (contextView && enabled)
@@ -250,6 +278,9 @@ package org.robotlegs.base
 			}
 		}
 		
+		/**
+		 * @private
+		 */		
 		protected function onViewAdded(e:Event):void
 		{
 			if (mediatorsMarkedForRemoval[e.target])
@@ -284,7 +315,7 @@ package org.robotlegs.base
 		/**
 		 * Flex framework work-around part #6
 		 */
-		private function removeMediatorLater(event:Event):void
+		protected function removeMediatorLater(event:Event):void
 		{
 			enterFrameDispatcher.removeEventListener(Event.ENTER_FRAME, removeMediatorLater);
 			for each (var view:DisplayObject in mediatorsMarkedForRemoval)

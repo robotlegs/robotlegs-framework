@@ -36,12 +36,12 @@ package org.robotlegs.base
 		/**
 		 * Flex framework work-around part #1
 		 */
-		private static var UIComponentClass:Class;
+		protected static var UIComponentClass:Class;
 		
 		/**
 		 * Flex framework work-around part #2
 		 */
-		private static const flexAvailable:Boolean = checkFlex();
+		protected static const flexAvailable:Boolean = checkFlex();
 		
 		/**
 		 * Internal
@@ -52,12 +52,20 @@ package org.robotlegs.base
 		 */
 		protected var viewComponent:Object;
 		
+		//---------------------------------------------------------------------
+		//  Constructor
+		//---------------------------------------------------------------------
+		
 		/**
 		 * Creates a new <code>Mediator</code> object
 		 */
 		public function MediatorBase()
 		{
 		}
+		
+		//---------------------------------------------------------------------
+		//  API
+		//---------------------------------------------------------------------
 		
 		/**
 		 * @inheritDoc
@@ -112,12 +120,16 @@ package org.robotlegs.base
 			this.viewComponent = viewComponent;
 		}
 		
+		//---------------------------------------------------------------------
+		//  Internal
+		//---------------------------------------------------------------------
+		
 		/**
 		 * Flex framework work-around part #3
 		 *
 		 * <p>Checks for availability of the Flex framework by trying to get the class for UIComponent.</p>
 		 */
-		private static function checkFlex():Boolean
+		protected static function checkFlex():Boolean
 		{
 			try
 			{
@@ -137,10 +149,11 @@ package org.robotlegs.base
 		 *
 		 * @param e The Flex <code>FlexEvent</code> event
 		 */
-		private function onCreationComplete(e:Event):void
+		protected function onCreationComplete(e:Event):void
 		{
 			IEventDispatcher(e.target).removeEventListener('creationComplete', onCreationComplete);
 			onRegister();
 		}
+	
 	}
 }

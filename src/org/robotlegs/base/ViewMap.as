@@ -41,6 +41,17 @@ package org.robotlegs.base
 		
 		protected var mappedByViewClassName:Dictionary;
 		
+		//---------------------------------------------------------------------
+		//  Constructor
+		//---------------------------------------------------------------------
+		
+		/**
+		 * Creates a new <code>ViewMap</code> object
+		 *
+		 * @param contextView The root view node of the context. The map will listen for ADDED_TO_STAGE events on this node
+		 * @param injector An <code>IInjector</code> to use for this context
+		 * @param reflector An <code>IReflector</code> to use for this context
+		 */
 		public function ViewMap(contextView:DisplayObjectContainer, injector:IInjector, reflector:IReflector)
 		{
 			this.injector = injector;
@@ -54,7 +65,9 @@ package org.robotlegs.base
 			this.contextView = contextView;
 		}
 		
-		// API ////////////////////////////////////////////////////////////////
+		//---------------------------------------------------------------------
+		//  API
+		//---------------------------------------------------------------------
 		
 		/**
 		 * @inheritDoc
@@ -118,7 +131,9 @@ package org.robotlegs.base
 			}
 		}
 		
-		// Protected Methods //////////////////////////////////////////////////
+		//---------------------------------------------------------------------
+		//  Internal
+		//---------------------------------------------------------------------
 		
 		protected function addListeners():void
 		{

@@ -64,6 +64,10 @@ package org.robotlegs.base
 		 */
 		protected var verifiedCommandClasses:Dictionary;
 		
+		//---------------------------------------------------------------------
+		//  Constructor
+		//---------------------------------------------------------------------
+		
 		/**
 		 * Creates a new <code>CommandMap</code> object
 		 *
@@ -79,6 +83,10 @@ package org.robotlegs.base
 			this.eventTypeMap = new Dictionary(false);
 			this.verifiedCommandClasses = new Dictionary(false);
 		}
+		
+		//---------------------------------------------------------------------
+		//  API
+		//---------------------------------------------------------------------
 		
 		/**
 		 * @inheritDoc
@@ -141,6 +149,10 @@ package org.robotlegs.base
 			
 			return callbacksByCommandClass[commandClass] != null;
 		}
+		
+		//---------------------------------------------------------------------
+		//  Internal
+		//---------------------------------------------------------------------
 		
 		/**
 		 * Event Handler
