@@ -30,6 +30,9 @@ package org.robotlegs.base
 	import org.robotlegs.core.IReflector;
 	import org.robotlegs.core.IViewMap;
 	
+	/**
+	 * An abstract <code>IViewMap</code> implementation
+	 */
 	public class ViewMap implements IViewMap
 	{
 		protected var _enabled:Boolean = true;

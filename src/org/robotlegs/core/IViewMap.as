@@ -24,6 +24,9 @@ package org.robotlegs.core
 {
 	import flash.display.DisplayObjectContainer;
 	
+	/**
+	 * The Robotlegs ViewMap contract
+	 */
 	public interface IViewMap
 	{
 		/**
