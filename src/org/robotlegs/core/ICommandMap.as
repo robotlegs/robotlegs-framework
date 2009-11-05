@@ -29,31 +29,33 @@ package org.robotlegs.core
 	public interface ICommandMap
 	{
 		/**
-		 * Map an <code>ICommand</code> Class to an Event type
+		 * Map a Class to an Event type
+		 * 
+		 * <p>The <code>commandClass</code> must implement an execute() method</p>
 		 * 
 		 * @param eventType The Event type to listen for
-		 * @param commandClass The <code>ICommand</code> Class to instantiate and execute
+		 * @param commandClass The Class to instantiate - must have an execute() method
 		 * @param eventClass Optional Event class for a stronger mapping. Defaults to <code>flash.events.Event</code>.
-		 * @param oneshot Unmap the <code>ICommand</code> Class after execution?
+		 * @param oneshot Unmap the Class after execution?
 		 */
 		function mapEvent(eventType:String, commandClass:Class, eventClass:Class = null, oneshot:Boolean = false):void;
 		
 		/**
-		 * Unmap an <code>ICommand</code> Class to Event type mapping
+		 * Unmap a Class to Event type mapping
 		 *
 		 * @param eventType The Event type
-		 * @param commandClass The <code>ICommand</code> Class to unmap
+		 * @param commandClass The Class to unmap
 		 * @param eventClass Optional Event class for a stronger mapping. Defaults to <code>flash.events.Event</code>.
 		 */
 		function unmapEvent(eventType:String, commandClass:Class, eventClass:Class = null):void;
 		
 		/**
-		 * Check if an <code>ICommand</code> Class has been mapped to an Event type
+		 * Check if a Class has been mapped to an Event type
 		 *
 		 * @param eventType The Event type
-		 * @param commandClass The <code>ICommand</code> Class
+		 * @param commandClass The Class
 		 * @param eventClass Optional Event class for a stronger mapping. Defaults to <code>flash.events.Event</code>.
-		 * @return Whether the <code>ICommand</code> is mapped to this Event type
+		 * @return Whether the Class is mapped to this Event type
 		 */
 		function hasEventCommand(eventType:String, commandClass:Class, eventClass:Class = null):Boolean;
 	}

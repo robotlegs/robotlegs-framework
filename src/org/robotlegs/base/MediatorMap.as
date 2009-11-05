@@ -49,7 +49,6 @@ package org.robotlegs.base
 		protected var mediatorByView:Dictionary;
 		protected var mappingConfigByView:Dictionary;
 		protected var mappingConfigByViewClassName:Dictionary;
-		protected var localViewClassByViewClassName:Dictionary;
 		
 		protected var mediatorsMarkedForRemoval:Dictionary;
 		protected var hasMediatorsMarkedForRemoval:Boolean;
@@ -60,20 +59,22 @@ package org.robotlegs.base
 		 * @param contextView The root view node of the context. The context will listen for ADDED_TO_STAGE events on this node
 		 * @param injector An <code>IInjector</code> to use for this context
 		 * @param reflector An <code>IReflector</code> to use for this context
-		 * @param useCapture Optional, change at your peril!
 		 */
-		public function MediatorMap(contextView:DisplayObjectContainer, injector:IInjector, reflector:IReflector, useCapture:Boolean = true)
+		public function MediatorMap(contextView:DisplayObjectContainer, injector:IInjector, reflector:IReflector)
 		{
 			this.injector = injector;
 			this.reflector = reflector;
-			this.useCapture = useCapture;
 			
+			// mappings - if you can do with fewer dictionaries you get a prize
 			this.mediatorByView = new Dictionary(true);
 			this.mappingConfigByView = new Dictionary(true);
 			this.mappingConfigByViewClassName = new Dictionary(false);
-			
 			this.mediatorsMarkedForRemoval = new Dictionary(false);
 			
+			// change this at your peril lest ye understand the problem and have a better solution
+			this.useCapture = true;
+			
+			// this must come last, see the setter
 			this.contextView = contextView;
 		}
 		
@@ -83,7 +84,6 @@ package org.robotlegs.base
 		public function mapView(viewClassOrName:*, mediatorClass:Class, injectViewAs:Class = null, autoCreate:Boolean = true, autoRemove:Boolean = true):void
 		{
 			var viewClassName:String = reflector.getFQCN(viewClassOrName);
-			var contextViewClassName:String = reflector.getFQCN(contextView)
 			if (mappingConfigByViewClassName[viewClassName] != null)
 			{
 				throw new ContextError(ContextError.E_MEDIATORMAP_OVR + ' - ' + mediatorClass);
@@ -105,7 +105,7 @@ package org.robotlegs.base
 				config.typedViewClass = viewClassOrName;
 			}
 			mappingConfigByViewClassName[viewClassName] = config;
-			if (autoCreate && contextViewClassName == viewClassName)
+			if (autoCreate && contextView && (viewClassName == reflector.getFQCN(contextView) ))
 			{
 				createMediator(contextView);
 			}
