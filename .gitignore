@@ -10,6 +10,7 @@ obj/*
 .actionScriptProperties
 .flexProperties
 .flexLibProperties
+.FlexUnitSettings
 .project
 
 Icon
@@ -19,3 +20,4 @@ dist/*
 report/*
 doc/*
 
+src/FlexUnitApplication.mxml
