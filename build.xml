@@ -23,7 +23,7 @@
       <echo message="test          --> Build Robotlegs SWC and run unit tests"/>
       <echo message="asdoc         --> Build Robotlegs SWC, test, and generate asdocs"/>
       <echo message="package       --> Build Robotlegs SWC, test, and create release zip"/>
-	  <echo message="compile       --> Build Robotlegs SWC"/>
+    <echo message="compile       --> Build Robotlegs SWC"/>
       <echo message="clean         --> Remove all folders created by build script"/>
       <echo message="init          --> Clean and create build folders"/>
       <echo message=""/>
@@ -56,27 +56,27 @@
   <target name="compile" depends="init">
     <echo>[compile] Compiling release SWC</echo>
     <echo>[compile] Using Flex SDK at: ${FLEX_HOME}</echo>
-	
-	<java jar="${FLEX_HOME}/lib/compc.jar" dir="${FLEX_HOME}/frameworks" fork="true" failonerror="true">
+
+    <java jar="${FLEX_HOME}/lib/compc.jar" dir="${FLEX_HOME}/frameworks" fork="true" failonerror="true">
       <!-- Build our SWC with a versioned name. -->
       <arg value="-output=${bin.loc}/${project.name.versioned}.swc" />
-	
+
       <!-- We want all the org package classes in the SWC being built. -->
       <arg value="-include-sources=${main.src.loc}/org" />
-	
+
       <!-- Include classes from SWCs in this folder, but only the ones we use. -->
       <arg value="-library-path+=${lib.loc}" />
-	
-	  <!-- Keep the magic alive. -->
+
+    <!-- Keep the magic alive. -->
       <arg value="-keep-as3-metadata+=Inject" />
-	
-	  <!-- Boolean mosh pit! -->
+
+    <!-- Boolean mosh pit! -->
       <arg value="-incremental=true" />
       <arg value="-static-link-runtime-shared-libraries=true" />
       <arg value="-verbose-stacktraces=true" />
       <arg value="-headless-server=true" />
-	</java>
-	
+    </java>
+
     <echo>[compile] Release SWC ${project.name.versioned}.swc created successfully</echo>
   </target>
 
@@ -84,24 +84,24 @@
   <target name="test" depends="compile">
     <echo>[test] Running Unit Tests</echo>
     <!-- Compile TestRunner.mxml as a SWF -->
-	<java jar="${FLEX_HOME}/lib/mxmlc.jar" dir="${FLEX_HOME}/frameworks" fork="true" failonerror="true">
+    <java jar="${FLEX_HOME}/lib/mxmlc.jar" dir="${FLEX_HOME}/frameworks" fork="true" failonerror="true">
       <arg value="${test.src.loc}/RobotlegsTest.mxml" />
       <arg value="-source-path=${main.src.loc}" />
-	
-	  <!-- Flash those sweet legs. Blink and you'll miss 'em. -->
+
+    <!-- Flash those sweet legs. Blink and you'll miss 'em. -->
       <arg value="-output=${bin.loc}/TestRunner.swf" />
       <arg value="-default-size=200,200" />
       <arg value="-default-background-color=0x000000" />
-		
+
       <!-- Include classes from SWCs in this folder, but only the ones we use. -->
       <arg value="-library-path+=${lib.loc}" />
-	
-	  <!-- So true. -->
+
+    <!-- So true. -->
       <arg value="-incremental=true" />
       <arg value="-verbose-stacktraces=true" />
       <arg value="-headless-server=true" />
-	</java>
-	
+    </java>
+
     <!-- Execute TestRunner.swf as FlexUnit tests and publish reports -->
     <flexunit swf="bin/TestRunner.swf" toDir="${report.loc}" haltonfailure="false" verbose="true" localTrusted="true"/>
     <!-- Generate readable JUnit-style reports -->
@@ -120,7 +120,7 @@
     <tstamp>
       <format property="docgen.time" pattern="MM/dd/yyyy hh:mm aa" unit="hour"/>
     </tstamp>
-	
+
     <java jar="${FLEX_HOME}/lib/asdoc.jar" dir="${FLEX_HOME}/frameworks" fork="true" failonerror="true">
       <arg line="-external-library-path ${lib.loc}"/>
       <arg line="-doc-sources ${main.src.loc}"/>
@@ -133,8 +133,8 @@
       <arg line="-package org.robotlegs.base 'Base classes used to build custom Robotlegs frameworks'"/>
       <arg line="-package org.robotlegs.core 'The core Robotlegs Framework apparatus contracts'"/>
       <arg line="-package org.robotlegs.mvcs 'The reference MVCS Robotlegs Framework implementation'"/>
-	</java>
-	
+    </java>
+
     <echo>[create-docs] ASDOC documentation generated successfully</echo>
   </target>
 
