@@ -37,7 +37,7 @@ package org.robotlegs.base
 		 */
 		protected var eventDispatcher:IEventDispatcher;
 		
-		protected var dispatcherListeningEnabled:Boolean;
+		protected var _dispatcherListeningEnabled:Boolean = true;
 		
 		/**
 		 * Internal
@@ -46,11 +46,31 @@ package org.robotlegs.base
 		 */
 		protected var listeners:Array;
 		
-		public function EventMap(eventDispatcher:IEventDispatcher, dispatcherListeningEnabled:Boolean = true)
+		/**
+		 * Creates a new <code>EventMap</code> object
+		 * 
+		 * @param eventDispatcher An <code>IEventDispatcher</code> to treat as a bus
+		 */		
+		public function EventMap(eventDispatcher:IEventDispatcher)
 		{
 			listeners = new Array();
 			this.eventDispatcher = eventDispatcher;
-			this.dispatcherListeningEnabled = dispatcherListeningEnabled;
+		}
+		
+		/**
+		 * @return Is shared dispatcher listening allowed?
+		 */		
+		public function get dispatcherListeningEnabled():Boolean
+		{
+			return _dispatcherListeningEnabled;
+		}
+		
+		/**
+		 * @param value Is shared dispatcher listening allowed?
+		 */		
+		public function set dispatcherListeningEnabled(value:Boolean):void
+		{
+			_dispatcherListeningEnabled = value;
 		}
 		
 		/**
