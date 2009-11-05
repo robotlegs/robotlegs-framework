@@ -29,10 +29,8 @@ package org.robotlegs.base
 	
 	import org.robotlegs.adapters.SwiftSuspendersInjector;
 	import org.robotlegs.adapters.SwiftSuspendersReflector;
-	import org.robotlegs.core.ICommandMap;
 	import org.robotlegs.core.IContext;
 	import org.robotlegs.core.IInjector;
-	import org.robotlegs.core.IMediatorMap;
 	import org.robotlegs.core.IReflector;
 	
 	/**
@@ -40,33 +38,26 @@ package org.robotlegs.base
 	 */
 	public class ContextBase implements IContext, IEventDispatcher
 	{
-		
 		protected var _autoStartup:Boolean;
-		protected var _commandMap:ICommandMap;
+		
 		protected var _contextView:DisplayObjectContainer;
 		protected var _eventDispatcher:IEventDispatcher;
 		protected var _injector:IInjector;
-		protected var _mediatorMap:IMediatorMap;
 		protected var _reflector:IReflector;
 		
 		/**
-		 * Abstarct Context Implementation
+		 * Abstract Context Implementation
 		 *
 		 * <p>Extend this class to create a Framework or Application context</p>
 		 *
 		 * @param contextView The root view node of the context. The context will listen for ADDED_TO_STAGE events on this node
 		 * @param autoStartup Should this context automatically invoke it's <code>startup</code> method when it's <code>contextView</code> arrives on Stage?
-		 * @param injector An Injector to use for this context
-		 * @param reflector A Reflector to use for this context
 		 */
-		public function ContextBase(contextView:DisplayObjectContainer = null, autoStartup:Boolean = true, injector:IInjector = null, reflector:IReflector = null)
+		public function ContextBase(contextView:DisplayObjectContainer = null, autoStartup:Boolean = true)
 		{
 			_eventDispatcher = new EventDispatcher(this);
 			_contextView = contextView;
 			_autoStartup = autoStartup;
-			_injector = injector;
-			_reflector = reflector;
-			initialize();
 			mapInjections();
 			checkAutoStartup();
 		}
@@ -94,11 +85,11 @@ package org.robotlegs.base
 		}
 		
 		/**
-		 * The <code>IEventDispatcher</code> for this <code>IContext</code>
+		 * The <code>DisplayObjectContainer</code> that scopes this <code>IContext</code>
 		 */
-		public function get eventDispatcher():IEventDispatcher
+		public function get contextView():DisplayObjectContainer
 		{
-			return _eventDispatcher;
+			return _contextView;
 		}
 		
 		/**
@@ -111,41 +102,67 @@ package org.robotlegs.base
 			if (_contextView != value)
 			{
 				_contextView = value;
-				mediatorMap.contextView = value;
 				mapInjections();
 				checkAutoStartup();
 			}
 		}
 		
 		/**
-		 * The <code>DisplayObjectContainer</code> that scopes this <code>IContext</code>
+		 * @inheritDoc
 		 */
-		public function get contextView():DisplayObjectContainer
+		public function get eventDispatcher():IEventDispatcher
 		{
-			return _contextView;
+			return _eventDispatcher;
 		}
 		
-		// HOOKS //////////////////////////////////////////////////////////////
+		// FPI ////////////////////////////////////////////////////////////////
 		
 		/**
-		 * Initialize Hook
-		 * 
-		 * <p>Override this hook to reconfigure the default framework aparatus</p>
+		 * The <code>IInjector</code> for this <code>IContext</code>
 		 */
-		protected function initialize():void
+		protected function set injector(value:IInjector):void
 		{
+			_injector = value;
 		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		protected function get injector():IInjector
+		{
+			return _injector || (_injector = new SwiftSuspendersInjector());
+		}
+		
+		/**
+		 * The <code>IReflector</code> for this <code>IContext</code>
+		 */
+		protected function set reflector(value:IReflector):void
+		{
+			_reflector = value;
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		protected function get reflector():IReflector
+		{
+			return _reflector || (_reflector = new SwiftSuspendersReflector());
+		}
+		
+		// Hooks //////////////////////////////////////////////////////////////
 		
 		/**
 		 * Injection Mapping Hook
-		 * 
-		 * <p>Override this in your Framework context to change the default (blank) configuration</p>
+		 *
+		 * <p>Override this in your Framework context to change the default configuration</p>
 		 *
 		 * <p>Beware of collisions in your container</p>
 		 */
 		protected function mapInjections():void
 		{
 		}
+		
+		// Internal ///////////////////////////////////////////////////////////
 		
 		/**
 		 * @private
@@ -163,74 +180,8 @@ package org.robotlegs.base
 		 */
 		protected function onAddedToStage(e:Event):void
 		{
-			contextView.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage)
+			contextView.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			startup();
-		}
-		
-		// FPI ////////////////////////////////////////////////////////////////
-		
-		/**
-		 * The <code>ICommandMap</code> for this <code>IContext</code>
-		 */
-		protected function set commandMap(value:ICommandMap):void
-		{
-			_commandMap = value;
-		}
-		
-		/**
-		 * The <code>ICommandMap</code> for this <code>IContext</code>
-		 */
-		protected function get commandMap():ICommandMap
-		{
-			return _commandMap || (_commandMap = new CommandMap(eventDispatcher, injector, reflector));
-		}
-		
-		/**
-		 * The <code>IInjector</code> for this <code>IContext</code>
-		 */
-		protected function set injector(value:IInjector):void
-		{
-			_injector = value;
-		}
-		
-		/**
-		 * The <code>IInjector</code> for this <code>IContext</code>
-		 */
-		protected function get injector():IInjector
-		{
-			return _injector || (_injector = new SwiftSuspendersInjector());
-		}
-		
-		/**
-		 * The <code>IMediatorMap</code> for this <code>IContext</code>
-		 */
-		protected function set mediatorMap(value:IMediatorMap):void
-		{
-			_mediatorMap = value;
-		}
-		
-		/**
-		 * The <code>IMediatorMap</code> for this <code>IContext</code>
-		 */
-		protected function get mediatorMap():IMediatorMap
-		{
-			return _mediatorMap || (_mediatorMap = new MediatorMap(contextView, injector, reflector));
-		}
-		
-		/**
-		 * The <code>IReflector</code> for this <code>IContext</code>
-		 */
-		protected function set reflector(value:IReflector):void
-		{
-			_reflector = value;
-		}
-		
-		/**
-		 * The <code>IReflector</code> for this <code>IContext</code>
-		 */
-		protected function get reflector():IReflector
-		{
-			return _reflector || (_reflector = new SwiftSuspendersReflector());
 		}
 		
 		// EventDispatcher Boilerplate ////////////////////////////////////////

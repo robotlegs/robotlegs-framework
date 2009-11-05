@@ -22,17 +22,44 @@
 
 package org.robotlegs.core
 {
-	import flash.events.IEventDispatcher;
+	import flash.display.DisplayObjectContainer;
 	
-	/**
-	 * The Robotlegs Context contract
-	 */
-	public interface IContext
+	public interface IViewMap
 	{
 		/**
-		 * The <code>IContext</code>'s <code>IEventDispatcher</code>
+		 * Map a view component Class for injection
+		 *
+		 * @param viewClassOrName The concrete view Class or Fully Qualified Class Name
 		 */
-		function get eventDispatcher():IEventDispatcher;
+		function mapView(viewClassOrName:*):void;
+		
+		/**
+		 * The <code>IViewMap</code>'s <code>DisplayObjectContainer</code>
+		 *
+		 * @return view The <code>DisplayObjectContainer</code> to use as scope for this <code>IViewMap</code>
+		 */
+		function get contextView():DisplayObjectContainer;
+		
+		/**
+		 * The <code>IViewMap</code>'s <code>DisplayObjectContainer</code>
+		 *
+		 * @param value The <code>DisplayObjectContainer</code> to use as scope for this <code>IViewMap</code>
+		 */
+		function set contextView(value:DisplayObjectContainer):void;
+		
+		/**
+		 * The <code>IViewMap</code>'s enabled status
+		 *
+		 * @return Whether the <code>IViewMap</code> is enabled
+		 */
+		function get enabled():Boolean;
+		
+		/**
+		 * The <code>IViewMap</code>'s enabled status
+		 *
+		 * @param value Whether the <code>IViewMap</code> should be enabled
+		 */
+		function set enabled(value:Boolean):void;
 	
 	}
 }
