@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="robotlegs-framework" basedir="." default="usage">
+<project name="robotlegs-framework" basedir="." default="test">
 
   <!-- set up a prefix for all environment variables -->
   <property environment="env."/>
