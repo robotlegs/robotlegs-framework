@@ -10,8 +10,7 @@
   <!-- identify properties file -->
   <property file="build.properties"/>
 
-  <!-- Set up Flex and FlexUnit ant tasks -->
-  <taskdef resource="flexTasks.tasks" classpath="${lib.loc}/flexTasks.jar"/>
+  <!-- Set up FlexUnit Ant tasks -->
   <taskdef resource="flexUnitTasks.tasks" classpath="${lib.loc}/flexUnitTasks.jar"/>
 
   <target name="usage">
@@ -85,16 +84,24 @@
   <target name="test" depends="compile">
     <echo>[test] Running Unit Tests</echo>
     <!-- Compile TestRunner.mxml as a SWF -->
-    <mxmlc file="${test.src.loc}/RobotlegsTest.mxml" output="${bin.loc}/TestRunner.swf" incremental="true">
-      <source-path path-element="${main.src.loc}"/>
-      <library-path dir="${lib.loc}" append="true">
-        <include name="*.swc"/>
-      </library-path>
-      <default-size width="200" height="200"/>
-      <default-background-color>0x000000</default-background-color>
-      <compiler.verbose-stacktraces>true</compiler.verbose-stacktraces>
-      <compiler.headless-server>true</compiler.headless-server>
-    </mxmlc>
+	<java jar="${FLEX_HOME}/lib/mxmlc.jar" dir="${FLEX_HOME}/frameworks" fork="true" failonerror="true">
+      <arg value="${test.src.loc}/RobotlegsTest.mxml" />
+      <arg value="-source-path=${main.src.loc}" />
+	
+	  <!-- Flash those sweet legs. Blink and you'll miss 'em. -->
+      <arg value="-output=${bin.loc}/TestRunner.swf" />
+      <arg value="-default-size=200,200" />
+      <arg value="-default-background-color=0x000000" />
+		
+      <!-- Include classes from SWCs in this folder, but only the ones we use. -->
+      <arg value="-library-path+=${lib.loc}" />
+	
+	  <!-- So true. -->
+      <arg value="-incremental=true" />
+      <arg value="-verbose-stacktraces=true" />
+      <arg value="-headless-server=true" />
+	</java>
+	
     <!-- Execute TestRunner.swf as FlexUnit tests and publish reports -->
     <flexunit swf="bin/TestRunner.swf" toDir="${report.loc}" haltonfailure="false" verbose="true" localTrusted="true"/>
     <!-- Generate readable JUnit-style reports -->
