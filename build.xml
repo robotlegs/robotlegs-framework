@@ -58,16 +58,25 @@
     <echo>[compile] Compiling release SWC</echo>
     <echo>[compile] Using Flex SDK at: ${FLEX_HOME}</echo>
     <!-- it won't let me use ${project.name} here for some reason :/ -->
-    <compc output="${bin.loc}/robotlegs-framework-${robotlegs.ver.num}.swc" incremental="true" static-link-runtime-shared-libraries="true">
-      <!-- include our Class packages into the build (com folder) -->
-      <include-sources dir="${main.src.loc}/org" includes="*"/>
-      <library-path dir="${lib.loc}" append="true">
-        <include name="*.swc"/>
-      </library-path>
-      <compiler.verbose-stacktraces>true</compiler.verbose-stacktraces>
-      <compiler.headless-server>true</compiler.headless-server>
-      <keep-as3-metadata name="Inject"/>
-    </compc>
+	<java jar="${FLEX_HOME}/lib/compc.jar" dir="${FLEX_HOME}/frameworks" fork="true" failonerror="true">
+      <!-- Build our SWC with a versioned name. -->
+      <arg value="-output=${bin.loc}/robotlegs-framework-${robotlegs.ver.num}.swc" />
+	
+      <!-- We want all the org package classes in the SWC being built. -->
+      <arg value="-include-sources=${main.src.loc}/org" />
+	
+      <!-- Include classes from SWCs in this folder, but only the ones we use. -->
+      <arg value="-library-path+=${lib.loc}" />
+	
+	  <!-- Keep the magic alive. -->
+      <arg value="-keep-as3-metadata+=Inject" />
+	
+	  <!-- Boolean mosh pit! -->
+      <arg value="-incremental=true" />
+      <arg value="-static-link-runtime-shared-libraries=true" />
+      <arg value="-verbose-stacktraces=true" />
+      <arg value="-headless-server=true" />
+	</java>
     <echo>[compile] Release SWC ${project.name}-${robotlegs.ver.num}.swc created successfully</echo>
   </target>
 
