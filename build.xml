@@ -57,10 +57,10 @@
   <target name="compile" depends="init">
     <echo>[compile] Compiling release SWC</echo>
     <echo>[compile] Using Flex SDK at: ${FLEX_HOME}</echo>
-    <!-- it won't let me use ${project.name} here for some reason :/ -->
+	
 	<java jar="${FLEX_HOME}/lib/compc.jar" dir="${FLEX_HOME}/frameworks" fork="true" failonerror="true">
       <!-- Build our SWC with a versioned name. -->
-      <arg value="-output=${bin.loc}/robotlegs-framework-${robotlegs.ver.num}.swc" />
+      <arg value="-output=${bin.loc}/${project.name.versioned}.swc" />
 	
       <!-- We want all the org package classes in the SWC being built. -->
       <arg value="-include-sources=${main.src.loc}/org" />
@@ -77,7 +77,8 @@
       <arg value="-verbose-stacktraces=true" />
       <arg value="-headless-server=true" />
 	</java>
-    <echo>[compile] Release SWC ${project.name}-${robotlegs.ver.num}.swc created successfully</echo>
+	
+    <echo>[compile] Release SWC ${project.name.versioned}.swc created successfully</echo>
   </target>
 
   <!-- Run Unit Tests -->
@@ -140,7 +141,7 @@
     <mkdir dir="${dist.loc}"/>
     <mkdir dir="${dist.loc}/bin"/>
     <mkdir dir="${dist.loc}/src"/>
-    <copy file="${bin.loc}/${project.name}-${robotlegs.ver.num}.swc" todir="${dist.loc}/bin"/>
+    <copy file="${bin.loc}/${project.name.versioned}.swc" todir="${dist.loc}/bin"/>
     <copy todir="${dist.loc}/src/org">
       <fileset dir="${main.src.loc}/org"/>
     </copy>
@@ -150,7 +151,7 @@
         <replacetokens>
           <token key="date" value="${touch.time}"/>
           <token key="rlversion" value="${robotlegs.ver.num}"/>
-          <token key="releasename" value="${project.name}-${robotlegs.ver.num}"/>
+          <token key="releasename" value="${project.name.versioned}"/>
           <token key="ssversion" value="${swift.suspenders.version}"/>
           <token key="sslink" value="${swift.suspenders.link}"/>
           <token key="rlprojectlink" value="${robotlegs.project.link}"/>
@@ -160,11 +161,11 @@
       </filterchain>
     </copy>
     <!-- Zip It  -->
-    <zip destfile="${dist.loc}/${project.name}-${robotlegs.ver.num}.zip">
+    <zip destfile="${dist.loc}/${project.name.versioned}.zip">
       <fileset dir="${dist.loc}"/>
     </zip>
     <!-- Clean Up  -->
-    <delete file="${dist.loc}/${project.name}-${robotlegs.ver.num}.swc"/>
+    <delete file="${dist.loc}/${project.name.versioned}.swc"/>
     <delete file="${dist.loc}/README"/>
     <delete dir="${dist.loc}/bin"/>
     <delete dir="${dist.loc}/src"/>
