@@ -20,18 +20,12 @@
  * THE SOFTWARE.
  */
 
-package org.robotlegs
+package org.robotlegs.base
 {
-	import org.robotlegs.base.BaseTestSuite;
-	import org.robotlegs.mvcs.MvcsTestSuite;
-	import org.robotlegs.mvcs.xmlconfig.XmlConfigMvcsTestSuite;
-	
 	[Suite]
 	[RunWith("org.flexunit.runners.Suite")]
-	public class RobotLegsTestSuite
+	public class BaseTestSuite
 	{
-		public var baseTestSuite:BaseTestSuite;
-		public var mvcsTestSuite:MvcsTestSuite;
-		public var xmlConfigTestSuite:XmlConfigMvcsTestSuite;
+		public var viewMapTests:ViewMapTests;
 	}
 }

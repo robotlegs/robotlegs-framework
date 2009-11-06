@@ -42,7 +42,8 @@ package org.robotlegs.base
 		protected var reflector:IReflector;
 		protected var useCapture:Boolean;
 		
-		protected var mappedByViewClassName:Dictionary;
+		protected var mappedClassNames:Dictionary;
+		protected var injectedViews:Dictionary;
 		
 		//---------------------------------------------------------------------
 		//  Constructor
@@ -59,7 +60,10 @@ package org.robotlegs.base
 		{
 			this.injector = injector;
 			this.reflector = reflector;
-			this.mappedByViewClassName = new Dictionary(false);
+			
+			// mappings - if you can do with fewer dictionaries you get a prize
+			this.mappedClassNames = new Dictionary(false);
+			this.injectedViews = new Dictionary(true);
 			
 			// change this at your peril lest ye understand the problem and have a better solution
 			this.useCapture = true;
@@ -75,21 +79,39 @@ package org.robotlegs.base
 		/**
 		 * @inheritDoc
 		 */
-		public function mapView(viewClassOrName:*):void
+		public function mapClass(viewClassOrName:*):void
 		{
 			var viewClassName:String = reflector.getFQCN(viewClassOrName);
 			
-			if (mappedByViewClassName[viewClassName])
+			if (mappedClassNames[viewClassName])
 			{
 				return;
 			}
 			
-			mappedByViewClassName[viewClassName] = true;
+			mappedClassNames[viewClassName] = true;
 			
 			if (contextView && (viewClassName == reflector.getFQCN(contextView)))
 			{
 				injector.injectInto(contextView);
 			}
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function unmapClass(viewClassOrName:*):void
+		{
+			var viewClassName:String = reflector.getFQCN(viewClassOrName);
+			delete mappedClassNames[viewClassName];
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function hasClass(viewClassOrName:*):Boolean
+		{
+			var viewClassName:String = reflector.getFQCN(viewClassOrName);
+			return mappedClassNames[viewClassName];
 		}
 		
 		/**
@@ -138,6 +160,9 @@ package org.robotlegs.base
 		//  Internal
 		//---------------------------------------------------------------------
 		
+		/**
+		 * @private
+		 */
 		protected function addListeners():void
 		{
 			if (contextView && enabled)
@@ -146,6 +171,9 @@ package org.robotlegs.base
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function removeListeners():void
 		{
 			if (contextView && enabled)
@@ -154,11 +182,15 @@ package org.robotlegs.base
 			}
 		}
 		
+		/**
+		 * @private
+		 */
 		protected function onViewAdded(e:Event):void
 		{
-			if (mappedByViewClassName[reflector.getFQCN(e.target)])
+			if (mappedClassNames[reflector.getFQCN(e.target)] && !injectedViews[e.target])
 			{
 				injector.injectInto(e.target);
+				injectedViews[e.target] = true;
 			}
 		}
 	

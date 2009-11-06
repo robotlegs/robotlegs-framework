@@ -20,18 +20,17 @@
  * THE SOFTWARE.
  */
 
-package org.robotlegs
+package org.robotlegs.base.support
 {
-	import org.robotlegs.base.BaseTestSuite;
-	import org.robotlegs.mvcs.MvcsTestSuite;
-	import org.robotlegs.mvcs.xmlconfig.XmlConfigMvcsTestSuite;
+	import mx.core.UIComponent;
 	
-	[Suite]
-	[RunWith("org.flexunit.runners.Suite")]
-	public class RobotLegsTestSuite
+	public class CanvasComponent extends UIComponent
 	{
-		public var baseTestSuite:BaseTestSuite;
-		public var mvcsTestSuite:MvcsTestSuite;
-		public var xmlConfigTestSuite:XmlConfigMvcsTestSuite;
+		[Inject(name="injectionName")]
+		public var injectionPoint:String;
+		
+		public function CanvasComponent()
+		{
+		}
 	}
 }

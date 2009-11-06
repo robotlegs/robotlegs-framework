@@ -19,19 +19,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
-package org.robotlegs
+package org.robotlegs.base.support
 {
-	import org.robotlegs.base.BaseTestSuite;
-	import org.robotlegs.mvcs.MvcsTestSuite;
-	import org.robotlegs.mvcs.xmlconfig.XmlConfigMvcsTestSuite;
+	import mx.containers.Canvas;
 	
-	[Suite]
-	[RunWith("org.flexunit.runners.Suite")]
-	public class RobotLegsTestSuite
+	public class TestContextCanvasView extends Canvas
 	{
-		public var baseTestSuite:BaseTestSuite;
-		public var mvcsTestSuite:MvcsTestSuite;
-		public var xmlConfigTestSuite:XmlConfigMvcsTestSuite;
+		
+		public function TestContextCanvasView()
+		{
+		}
 	}
 }

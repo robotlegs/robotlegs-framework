@@ -30,11 +30,26 @@ package org.robotlegs.core
 	public interface IViewMap
 	{
 		/**
-		 * Map a view component Class for injection
+		 * Map a view component Class for automatic injection
 		 *
 		 * @param viewClassOrName The concrete view Class or Fully Qualified Class Name
 		 */
-		function mapView(viewClassOrName:*):void;
+		function mapClass(viewClassOrName:*):void;
+		
+		/**
+		 * Unmap a view component Class
+		 *
+		 * @param viewClassOrName The concrete view Class or Fully Qualified Class Name
+		 */
+		function unmapClass(viewClassOrName:*):void;
+		
+		/**
+		 * Check if a Class has been registered for automatic injection
+		 *
+		 * @param viewClassOrName The concrete view Class or Fully Qualified Class Name
+		 * @return Whether a Class has been registered for automatic injection
+		 */
+		function hasClass(viewClassOrName:*):Boolean;
 		
 		/**
 		 * The <code>IViewMap</code>'s <code>DisplayObjectContainer</code>
