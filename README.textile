@@ -6,9 +6,9 @@ Robotlegs is a lightweight AS3 MVCS micro-architecture. Robotlegs was created to
 
 h3. Getting Started
 
-* "Brief Overview":http://wiki.github.com/robotlegs/robotlegs-framework/overview
-* "Best Practices":http://wiki.github.com/robotlegs/robotlegs-framework/best-practices
-* "Robotlegs Internals":http://wiki.github.com/robotlegs/robotlegs-framework/robotlegs-internals
+* "Brief Overview (draft)":http://wiki.github.com/robotlegs/robotlegs-framework/overview
+* "Best Practices (draft)":http://wiki.github.com/robotlegs/robotlegs-framework/best-practices
+* "Robotlegs Internals (draft)":http://wiki.github.com/robotlegs/robotlegs-framework/robotlegs-internals
 
 h3. Code
 
@@ -20,6 +20,7 @@ h3. Help, Support, Collaboration
 * "Robotlegs Knowledge Base":http://knowledge.robotlegs.org
 * "Robotlegs Development Discussion Group":http://groups.google.com/group/robotlegs
 * "Robotlegs Issue Tracking":http://robotlegs.lighthouseapp.com/tickets
+
 
 h3. Tutorials and such on the Interblogs:
 
