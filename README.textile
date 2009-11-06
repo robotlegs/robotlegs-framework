@@ -11,7 +11,6 @@ h3. Getting Started
 h3. Code
 
 * "Robotlegs Framework":http://github.com/robotlegs/robotlegs-framework
-* "Robotlegs Unit Tests":http://github.com/robotlegs/robotlegs-tests
 * "Robotlegs Demos and Utilities":http://github.com/robotlegs
 
 h3. Help, Support, Collaboration
