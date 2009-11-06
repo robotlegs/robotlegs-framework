@@ -2,6 +2,8 @@ h2. Robotlegs: A pure AS3 micro-architecture for Flash and Flex
 
 Robotlegs is a lightweight AS3 MVCS micro-architecture. Robotlegs was created to provide a small, loosely coupled application framework that is easy to test.
 
+"Robotlegs Website":http://www.robotlegs.org
+
 h3. Getting Started
 
 * "Brief Overview (draft)":http://wiki.github.com/robotlegs/robotlegs-framework/overview
@@ -10,14 +12,15 @@ h3. Getting Started
 
 h3. Code
 
-* "Robotlegs Framework and Tests":http://github.com/robotlegs/robotlegs-framework
+* "Robotlegs Framework":http://github.com/robotlegs/robotlegs-framework
 * "Robotlegs Demos and Utilities":http://github.com/robotlegs
 
 h3. Help, Support, Collaboration
 
-* "Robotlegs Knowledgebase":http://knowledge.robotlegs.org/
-* "Robotlegs Issue Tracking":http://robotlegs.lighthouseapp.com/
-* "Robotlegs Discussion Group":http://groups.google.com/group/robotlegs
+* "Robotlegs Knowledge Base":http://knowledge.robotlegs.org
+* "Robotlegs Development Discussion Group":http://groups.google.com/group/robotlegs
+* "Robotlegs Issue Tracking":http://robotlegs.lighthouseapp.com/tickets
+
 
 h3. Tutorials and such on the Interblogs:
 
