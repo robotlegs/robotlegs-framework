@@ -26,14 +26,10 @@ package org.robotlegs.mvcs
 	[RunWith("org.flexunit.runners.Suite")]
 	public class MvcsTestSuite
 	{
-		public var commandMapTests:CommandMapTests;
-		public var commandMapWithEventClassTests:CommandMapWithEventClassTests;
-		public var mediatorMapTests:MediatorMapTests;
 		public var mediatorProtectedTests:MediatorProtectedTests;
 		public var commandTests:CommandTests;
 		public var contextTests:ContextTests;
 		public var actorTests:ActorTests;
 		public var actorProtectedTests:ActorProtectedTests;
-		public var eventMapTests:EventMapTests;
 	}
 }

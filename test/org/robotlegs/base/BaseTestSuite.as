@@ -27,5 +27,9 @@ package org.robotlegs.base
 	public class BaseTestSuite
 	{
 		public var viewMapTests:ViewMapTests;
+		public var commandMapTests:CommandMapTests;
+		public var commandMapWithEventClassTests:CommandMapWithEventClassTests;
+		public var mediatorMapTests:MediatorMapTests;
+		public var eventMapTests:EventMapTests;
 	}
 }
