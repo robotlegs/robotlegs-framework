@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-package org.robotlegs.mvcs
+package org.robotlegs.base
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -117,9 +117,9 @@ package org.robotlegs.mvcs
 			eventMap.mapListener(eventDispatcher, CustomEvent.STARTED, listener, CustomEvent);
 			eventMap.unmapListeners();
 			eventDispatcher.dispatchEvent(new Event(CustomEvent.STARTED));
-			Assert.assertFalse('Listener should NOT have reponded to plain event', listenerExecuted);			
+			Assert.assertFalse('Listener should NOT have reponded to plain event', listenerExecuted);
 			eventDispatcher.dispatchEvent(new CustomEvent(CustomEvent.STARTED));
-			Assert.assertFalse('Listener should NOT have reponded to strong event', listenerExecuted);			
+			Assert.assertFalse('Listener should NOT have reponded to strong event', listenerExecuted);
 		}
 		
 		// Helpers

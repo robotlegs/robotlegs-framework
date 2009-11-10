@@ -20,7 +20,7 @@
 * THE SOFTWARE.
 */
 
-package org.robotlegs.mvcs
+package org.robotlegs.base
 {
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;

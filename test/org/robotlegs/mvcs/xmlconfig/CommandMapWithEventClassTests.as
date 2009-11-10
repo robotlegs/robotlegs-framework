@@ -27,12 +27,12 @@ package org.robotlegs.mvcs.xmlconfig
 	import org.robotlegs.adapters.SwiftSuspendersInjector;
 	import org.robotlegs.adapters.SwiftSuspendersReflector;
 	import org.robotlegs.base.CommandMap;
-	import org.robotlegs.mvcs.CommandMapWithEventClassTests;
+	import org.robotlegs.base.CommandMapWithEventClassTests;
 	import org.robotlegs.mvcs.support.ICommandTest;
 	
-	public class CommandMapWithEventClassTests extends org.robotlegs.mvcs.CommandMapWithEventClassTests
+	public class CommandMapWithEventClassTests extends org.robotlegs.base.CommandMapWithEventClassTests
 	{
-		protected static const XML_CONFIG : XML = 
+		protected static const XML_CONFIG : XML =
 			<types>
 				<type name='org.robotlegs.mvcs.support::CustomEventCommand'>
 					<field name='event'/>

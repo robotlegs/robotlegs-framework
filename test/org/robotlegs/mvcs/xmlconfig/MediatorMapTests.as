@@ -32,12 +32,12 @@ package org.robotlegs.mvcs.xmlconfig
 	import org.robotlegs.base.MediatorMap;
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IMediatorMap;
-	import org.robotlegs.mvcs.MediatorMapTests;
+	import org.robotlegs.base.MediatorMapTests;
 	import org.robotlegs.mvcs.support.TestContextView;
 	
-	public class MediatorMapTests extends org.robotlegs.mvcs.MediatorMapTests
+	public class MediatorMapTests extends org.robotlegs.base.MediatorMapTests
 	{
-		protected static const XML_CONFIG : XML = 
+		protected static const XML_CONFIG : XML =
 			<types>
 				<type name='org.robotlegs.mvcs.support::CustomEventCommand'>
 					<field name='event'/>
