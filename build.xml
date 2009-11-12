@@ -167,6 +167,8 @@
         </replacetokens>
       </filterchain>
     </copy>
+    <!-- Copy LICENSE  -->
+    <copy file="LICENSE" tofile="${dist.loc}/LICENSE" overwrite="true"/>
     <!-- Zip It  -->
     <zip destfile="${dist.loc}/${project.name.versioned}.zip">
       <fileset dir="${dist.loc}"/>
@@ -174,6 +176,7 @@
     <!-- Clean Up  -->
     <delete file="${dist.loc}/${project.name.versioned}.swc"/>
     <delete file="${dist.loc}/README"/>
+    <delete file="${dist.loc}/LICENSE"/>
     <delete dir="${dist.loc}/bin"/>
     <delete dir="${dist.loc}/src"/>
     <echo>[package] Release packaged successfully</echo>
