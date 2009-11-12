@@ -116,7 +116,9 @@ package org.robotlegs.base
 		 */
 		public function dispatchEvent(event:Event):Boolean
 		{
-			return eventDispatcher.dispatchEvent(event);
+ 		    if(eventDispatcher.hasEventListener(event.type))
+ 		        return eventDispatcher.dispatchEvent(event);
+ 		 	return false;
 		}
 		
 		/**

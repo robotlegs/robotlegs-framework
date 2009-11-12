@@ -53,9 +53,11 @@ package org.robotlegs.mvcs
 		 *
 		 * @param event The <code>Event</code> to dispatch on the <code>IContext</code>'s <code>IEventDispatcher</code>
 		 */
-		protected function dispatch(event:Event):void
+		protected function dispatch(event:Event):Boolean
 		{
-			eventDispatcher.dispatchEvent(event);
+ 		    if(eventDispatcher.hasEventListener(event.type))
+ 		        return eventDispatcher.dispatchEvent(event);
+ 		 	return false;
 		}
 	}
 }
