@@ -14,6 +14,7 @@ package org.robotlegs.base
 	import org.robotlegs.adapters.SwiftSuspendersInjector;
 	import org.robotlegs.adapters.SwiftSuspendersReflector;
 	import org.robotlegs.base.support.CanvasComponent;
+	import org.robotlegs.base.support.ITestComponent;
 	import org.robotlegs.base.support.TestContextCanvasView;
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IReflector;
@@ -94,6 +95,50 @@ package org.robotlegs.base
 			contextView.addChild(testView);
 			Assert.assertNull("View should NOT be injected into twice", testView.injectionPoint);
 		}
-	
+		
+		[Test]
+		public function mapInterface():void
+		{
+			viewMap.mapClass(ITestComponent);
+			var mapped:Boolean = viewMap.hasClass(ITestComponent);
+			Assert.assertTrue("Inteface should be mapped", mapped);			
+		}
+
+		[Test]
+		public function unmapInterface():void
+		{
+			viewMap.mapClass(ITestComponent);
+			viewMap.unmapClass(ITestComponent);
+			var mapped:Boolean = viewMap.hasClass(ITestComponent);
+			Assert.assertFalse("Class should NOT be mapped", mapped);
+		}
+		
+		[Test]
+		public function mappedInterfaceIsInjected():void
+		{
+			viewMap.mapClass(ITestComponent);
+			contextView.addChild(testView);
+			Assert.assertEquals("Injection points should be satisfied", INJECTION_STRING, testView.injectionPoint);
+		}
+		
+		[Test]
+		public function unmappedInterfaceShouldNotBeInjected():void
+		{
+			viewMap.mapClass(ITestComponent);
+			viewMap.unmapClass(ITestComponent);
+			contextView.addChild(testView);
+			Assert.assertNull("Injection points should NOT be satisfied after unmapping", testView.injectionPoint);
+		}
+
+		[Test]
+		public function mappedInterfaceNotInjectedTwiceWhenRemovedAndAdded():void
+		{
+			viewMap.mapClass(ITestComponent);
+			contextView.addChild(testView);
+			testView.injectionPoint = null;
+			contextView.removeChild(testView);
+			contextView.addChild(testView);
+			Assert.assertNull("View should NOT be injected into twice", testView.injectionPoint);
+		}
 	}
 }

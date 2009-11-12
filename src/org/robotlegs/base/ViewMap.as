@@ -67,17 +67,20 @@ package org.robotlegs.base
 		public function mapClass(viewClassOrName:*):void
 		{
 			var viewClassName:String = reflector.getFQCN(viewClassOrName);
-			
-			if (mappedClassNames[viewClassName])
+			if(viewClassOrName is String)
+				viewClassOrName = reflector.getClass(viewClassOrName);
+			trace(viewClassName);
+			if (mappedClassNames[viewClassOrName])
 			{
 				return;
 			}
 			
-			mappedClassNames[viewClassName] = true;
+			mappedClassNames[viewClassOrName] = true;
 			
 			if (contextView && (viewClassName == reflector.getFQCN(contextView)))
 			{
 				injector.injectInto(contextView);
+				injectedViews[contextView] = true;
 			}
 		}
 		
@@ -86,8 +89,10 @@ package org.robotlegs.base
 		 */
 		public function unmapClass(viewClassOrName:*):void
 		{
-			var viewClassName:String = reflector.getFQCN(viewClassOrName);
-			delete mappedClassNames[viewClassName];
+			//var viewClassName:String = reflector.getFQCN(viewClassOrName);
+			if(viewClassOrName is String)
+				viewClassOrName = reflector.getClass(viewClassOrName);
+			delete mappedClassNames[viewClassOrName];
 		}
 		
 		/**
@@ -95,8 +100,10 @@ package org.robotlegs.base
 		 */
 		public function hasClass(viewClassOrName:*):Boolean
 		{
-			var viewClassName:String = reflector.getFQCN(viewClassOrName);
-			return mappedClassNames[viewClassName];
+			//var viewClassName:String = reflector.getFQCN(viewClassOrName);
+			if(viewClassOrName is String)
+				viewClassOrName = reflector.getClass(viewClassOrName);
+			return mappedClassNames[viewClassOrName];
 		}
 		
 		/**
@@ -172,12 +179,17 @@ package org.robotlegs.base
 		 */
 		protected function onViewAdded(e:Event):void
 		{
-			if (mappedClassNames[reflector.getFQCN(e.target)] && !injectedViews[e.target])
+			for(var test:* in mappedClassNames)
 			{
-				injector.injectInto(e.target);
-				injectedViews[e.target] = true;
+				var targetClass:Class = reflector.getClass(e.target);
+				var targetIsMapped:Boolean = reflector.classExtendsOrImplements(targetClass, test);
+				if( targetIsMapped && !injectedViews[e.target])
+				{
+					injector.injectInto(e.target);
+					injectedViews[e.target] = true;
+					break;
+				}
 			}
 		}
-	
 	}
 }

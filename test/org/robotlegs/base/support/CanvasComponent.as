@@ -9,7 +9,7 @@ package org.robotlegs.base.support
 {
 	import mx.core.UIComponent;
 	
-	public class CanvasComponent extends UIComponent
+	public class CanvasComponent extends UIComponent implements ITestComponent
 	{
 		[Inject(name="injectionName")]
 		public var injectionPoint:String;
