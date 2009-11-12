@@ -69,7 +69,6 @@ package org.robotlegs.base
 			var viewClassName:String = reflector.getFQCN(viewClassOrName);
 			if(viewClassOrName is String)
 				viewClassOrName = reflector.getClass(viewClassOrName);
-			trace(viewClassName);
 			if (mappedClassNames[viewClassOrName])
 			{
 				return;
@@ -89,7 +88,6 @@ package org.robotlegs.base
 		 */
 		public function unmapClass(viewClassOrName:*):void
 		{
-			//var viewClassName:String = reflector.getFQCN(viewClassOrName);
 			if(viewClassOrName is String)
 				viewClassOrName = reflector.getClass(viewClassOrName);
 			delete mappedClassNames[viewClassOrName];
@@ -100,7 +98,6 @@ package org.robotlegs.base
 		 */
 		public function hasClass(viewClassOrName:*):Boolean
 		{
-			//var viewClassName:String = reflector.getFQCN(viewClassOrName);
 			if(viewClassOrName is String)
 				viewClassOrName = reflector.getClass(viewClassOrName);
 			return mappedClassNames[viewClassOrName];
