@@ -27,11 +27,10 @@ package org.robotlegs.base
 		protected var reflector:IReflector;
 		protected var useCapture:Boolean;
 		
-		protected var mappedClassNames:Dictionary;
-		protected var mappedInterfaces:Dictionary;
+		protected var mappedPackages:Array;
+		protected var mappedTypes:Dictionary;
 		
 		protected var injectedViews:Dictionary;
-		protected var packageNames:Array;
 		
 		//---------------------------------------------------------------------
 		// Constructor
@@ -50,10 +49,9 @@ package org.robotlegs.base
 			this.reflector = reflector;
 			
 			// mappings - if you can do it with fewer dictionaries you get a prize
-			this.mappedClassNames = new Dictionary(false);
-			this.mappedInterfaces = new Dictionary(false);
+			this.mappedPackages = new Array();
+			this.mappedTypes = new Dictionary(false);
 			this.injectedViews = new Dictionary(true);
-			this.packageNames = new Array();
 			
 			// change this at your peril lest ye understand the problem and have a better solution
 			this.useCapture = true;
@@ -69,41 +67,12 @@ package org.robotlegs.base
 		/**
 		 * @inheritDoc
 		 */
-		public function mapClass(viewClassOrName:*):void
-		{
-			var viewClassName:String = reflector.getFQCN(viewClassOrName);
-			
-			if (mappedClassNames[viewClassName])
-			{
-				return;
-			}
-			
-			mappedClassNames[viewClassName] = true;
-			
-			if (contextView && (viewClassName == reflector.getFQCN(contextView)))
-			{
-				injector.injectInto(contextView);
-			}
-		}
-		
-		/**
-		 * @inheritDoc
-		 */
 		public function mapPackage(packageName:String):void
 		{
-			if (packageNames.indexOf(packageName) == -1)
+			if (mappedPackages.indexOf(packageName) == -1)
 			{
-				packageNames.push(packageName);
+				mappedPackages.push(packageName);
 			}
-		}
-		
-		/**
-		 * @inheritDoc
-		 */
-		public function unmapClass(viewClassOrName:*):void
-		{
-			var viewClassName:String = reflector.getFQCN(viewClassOrName);
-			delete mappedClassNames[viewClassName];
 		}
 		
 		/**
@@ -111,68 +80,53 @@ package org.robotlegs.base
 		 */
 		public function unmapPackage(packageName:String):void
 		{
-			var index:int = packageNames.indexOf(packageName);
+			var index:int = mappedPackages.indexOf(packageName);
 			if (index > -1)
 			{
-				packageNames.splice(index, 1);
+				mappedPackages.splice(index, 1);
 			}
 		}
 		
 		/**
 		 * @inheritDoc
 		 */
-		public function hasClass(viewClassOrName:*):Boolean
+		public function mapType(type:Class):void
 		{
-			var viewClassName:String = reflector.getFQCN(viewClassOrName);
-			return mappedClassNames[viewClassName];
-		}
-		
-		/**
-		 * @inheritDoc
-		 */
-		public function mapInterface(type:Class):void
-		{
-			if (mappedInterfaces[type])
+			if (mappedTypes[type])
 			{
 				return;
 			}
 			
-			mappedInterfaces[type] = type;
+			mappedTypes[type] = type;
 			
 			if (contextView && (contextView is type))
 			{
-				injector.injectInto(contextView);
+				injectInto(contextView);
 			}
 		}
 		
 		/**
 		 * @inheritDoc
 		 */
-		public function unmapInterface(type:Class):void
+		public function unmapType(type:Class):void
 		{
-			delete mappedInterfaces[type];
+			delete mappedTypes[type];
 		}
 		
 		/**
 		 * @inheritDoc
 		 */
-		public function hasInterface(type:Class):Boolean
+		public function hasType(type:Class):Boolean
 		{
-			return (mappedInterfaces[type] != null);
+			return (mappedTypes[type] != null);
 		}
 				
-		
-		
-		
-		
-		
-		
 		/**
 		 * @inheritDoc
 		 */
 		public function hasPackage(packageName:String):Boolean
 		{
-			return packageNames.indexOf(packageName) > -1;
+			return mappedPackages.indexOf(packageName) > -1;
 		}
 		
 		/**
@@ -253,31 +207,27 @@ package org.robotlegs.base
 				return;
 			}
 			
-			if (mappedClassNames[reflector.getFQCN(e.target)]) 
+			for each (var type:Class in mappedTypes)
 			{
-				injectInto(e.target);
-			}
-			else 
-			{
-				for each (var type:Class in mappedInterfaces)
+				if (e.target is type)
 				{
-					if (e.target is type)
-					{
-						injectInto(e.target);
-					}
+					injectInto(e.target);
+					return;
 				}
 			}
 			
-			var packageName:String;
-			var len:int = packageNames.length;
-			for (var i:int = 0; i < len; i++)
+			var len:int = mappedPackages.length;
+			if (len > 0)
 			{
-				packageName = packageNames[i];
-				if (packageName == className.substr(0, packageName.length))
+				var className:String = reflector.getFQCN(e.target);
+				for (var i:int = 0; i < len; i++)
 				{
-					injector.injectInto(e.target);
-					injectedViews[e.target] = true;
-					return;
+					var packageName:String = mappedPackages[i];
+					if (packageName == className.substr(0, packageName.length))
+					{
+						injectInto(e.target);
+						return;
+					}
 				}
 			}
 		}

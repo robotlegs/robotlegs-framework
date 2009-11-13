@@ -52,43 +52,43 @@ package org.robotlegs.base
 		}
 		
 		[Test]
-		public function mapClass():void
+		public function mapType():void
 		{
-			viewMap.mapClass(CanvasComponent);
-			var mapped:Boolean = viewMap.hasClass(CanvasComponent);
+			viewMap.mapType(CanvasComponent);
+			var mapped:Boolean = viewMap.hasType(CanvasComponent);
 			Assert.assertTrue("Class should be mapped", mapped);
 		}
 		
 		[Test]
-		public function unmapClass():void
+		public function unmapType():void
 		{
-			viewMap.mapClass(CanvasComponent);
-			viewMap.unmapClass(CanvasComponent);
-			var mapped:Boolean = viewMap.hasClass(CanvasComponent);
+			viewMap.mapType(CanvasComponent);
+			viewMap.unmapType(CanvasComponent);
+			var mapped:Boolean = viewMap.hasType(CanvasComponent);
 			Assert.assertFalse("Class should NOT be mapped", mapped);
 		}
 		
 		[Test]
-		public function mapClassAndAddToDisplay():void
+		public function mapTypeAndAddToDisplay():void
 		{
-			viewMap.mapClass(CanvasComponent);
+			viewMap.mapType(CanvasComponent);
 			contextView.addChild(testView);
 			Assert.assertEquals("Injection points should be satisfied", INJECTION_STRING, testView.injectionPoint);
 		}
 		
 		[Test]
-		public function unmapClassAndAddToDisplay():void
+		public function unmapTypeAndAddToDisplay():void
 		{
-			viewMap.mapClass(CanvasComponent);
-			viewMap.unmapClass(CanvasComponent);
+			viewMap.mapType(CanvasComponent);
+			viewMap.unmapType(CanvasComponent);
 			contextView.addChild(testView);
 			Assert.assertNull("Injection points should NOT be satisfied after unmapping", testView.injectionPoint);
 		}
 		
 		[Test]
-		public function mapClassAndAddToDisplayTwice():void
+		public function mapTypeAndAddToDisplayTwice():void
 		{
-			viewMap.mapClass(CanvasComponent);
+			viewMap.mapType(CanvasComponent);
 			contextView.addChild(testView);
 			testView.injectionPoint = null;
 			contextView.removeChild(testView);
@@ -142,6 +142,51 @@ package org.robotlegs.base
 		public function mappedPackageNotInjectedTwiceWhenRemovedAndAdded():void
 		{
 			viewMap.mapPackage('org.robotlegs');
+			contextView.addChild(testView);
+			testView.injectionPoint = null;
+			contextView.removeChild(testView);
+			contextView.addChild(testView);
+			Assert.assertNull("View should NOT be injected into twice", testView.injectionPoint);
+		}
+		
+		[Test]
+		public function mapInterface():void
+		{
+			viewMap.mapType(ITestComponent);
+			var mapped:Boolean = viewMap.hasType(ITestComponent);
+			Assert.assertTrue("Inteface should be mapped", mapped);
+		}
+		
+		[Test]
+		public function unmapInterface():void
+		{
+			viewMap.mapType(ITestComponent);
+			viewMap.unmapType(ITestComponent);
+			var mapped:Boolean = viewMap.hasType(ITestComponent);
+			Assert.assertFalse("Class should NOT be mapped", mapped);
+		}
+		
+		[Test]
+		public function mappedInterfaceIsInjected():void
+		{
+			viewMap.mapType(ITestComponent);
+			contextView.addChild(testView);
+			Assert.assertEquals("Injection points should be satisfied", INJECTION_STRING, testView.injectionPoint);
+		}
+		
+		[Test]
+		public function unmappedInterfaceShouldNotBeInjected():void
+		{
+			viewMap.mapType(ITestComponent);
+			viewMap.unmapType(ITestComponent);
+			contextView.addChild(testView);
+			Assert.assertNull("Injection points should NOT be satisfied after unmapping", testView.injectionPoint);
+		}
+		
+		[Test]
+		public function mappedInterfaceNotInjectedTwiceWhenRemovedAndAdded():void
+		{
+			viewMap.mapType(ITestComponent);
 			contextView.addChild(testView);
 			testView.injectionPoint = null;
 			contextView.removeChild(testView);

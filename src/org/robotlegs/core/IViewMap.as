@@ -15,25 +15,11 @@ package org.robotlegs.core
 	public interface IViewMap
 	{
 		/**
-		 * Map a view component Class for automatic injection
-		 *
-		 * @param viewClassOrName The concrete view Class or Fully Qualified Class Name
-		 */
-		function mapClass(viewClassOrName:*):void;
-		
-		/**
 		 * Map an entire package (including sub-packages) for automatic injection
 		 * 
 		 * @param packageName The substring to compare
 		 */		
 		function mapPackage(packageName:String):void;
-		
-		/**
-		 * Unmap a view component Class
-		 *
-		 * @param viewClassOrName The concrete view Class or Fully Qualified Class Name
-		 */
-		function unmapClass(viewClassOrName:*):void;
 		
 		/**
 		 * Unmap a package
@@ -43,34 +29,34 @@ package org.robotlegs.core
 		function unmapPackage(packageName:String):void;
 		
 		/**
-		 * Check if a Class has been registered for automatic injection
+		 * Check if a package has been registered for automatic injection
 		 *
-		 * @param viewClassOrName The concrete view Class or Fully Qualified Class Name
-		 * @return Whether a Class has been registered for automatic injection
+		 * @param packageName The substring to compare
+		 * @return Whether a package has been registered for automatic injection
 		 */
-		function hasClass(viewClassOrName:*):Boolean;
+		function hasPackage(packageName:String):Boolean;
 		
 		/**
-		 * Map a view component interface for automatic injection
-		 *
-		 * @param type The concrete view Interface
-		 */
-		function mapInterface(type:Class):void;
-		
-		/**
-		 * Unmap a view component interface
+		 * Map a view component class or interface for automatic injection
 		 *
 		 * @param type The concrete view Interface
 		 */
-		function unmapInterface(type:Class):void;
+		function mapType(type:Class):void;
 		
 		/**
-		 * Check if a interface has been registered for automatic injection
+		 * Unmap a view component class or interface
+		 *
+		 * @param type The concrete view Interface
+		 */
+		function unmapType(type:Class):void;
+		
+		/**
+		 * Check if a class or interface has been registered for automatic injection
 		 *
 		 * @param type The concrete view interface 
 		 * @return Whether an interface has been registered for automatic injection
 		 */
-		function hasInterface(type:Class):Boolean;
+		function hasType(type:Class):Boolean;
 		
 		/**
 		 * The <code>IViewMap</code>'s <code>DisplayObjectContainer</code>
