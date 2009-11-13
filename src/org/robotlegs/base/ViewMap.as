@@ -28,6 +28,8 @@ package org.robotlegs.base
 		protected var useCapture:Boolean;
 		
 		protected var mappedClassNames:Dictionary;
+		protected var mappedInterfaces:Dictionary;
+		
 		protected var injectedViews:Dictionary;
 		protected var packageNames:Array;
 		
@@ -49,6 +51,7 @@ package org.robotlegs.base
 			
 			// mappings - if you can do it with fewer dictionaries you get a prize
 			this.mappedClassNames = new Dictionary(false);
+			this.mappedInterfaces = new Dictionary(false);
 			this.injectedViews = new Dictionary(true);
 			this.packageNames = new Array();
 			
@@ -123,6 +126,46 @@ package org.robotlegs.base
 			var viewClassName:String = reflector.getFQCN(viewClassOrName);
 			return mappedClassNames[viewClassName];
 		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function mapInterface(type:Class):void
+		{
+			if (mappedInterfaces[type])
+			{
+				return;
+			}
+			
+			mappedInterfaces[type] = type;
+			
+			if (contextView && (contextView is type))
+			{
+				injector.injectInto(contextView);
+			}
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function unmapInterface(type:Class):void
+		{
+			delete mappedInterfaces[type];
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function hasInterface(type:Class):Boolean
+		{
+			return (mappedInterfaces[type] != null);
+		}
+				
+		
+		
+		
+		
+		
 		
 		/**
 		 * @inheritDoc
@@ -206,15 +249,23 @@ package org.robotlegs.base
 		protected function onViewAdded(e:Event):void
 		{
 			if (injectedViews[e.target])
-				return;
-			
-			var className:String = reflector.getFQCN(e.target);
-			
-			if (mappedClassNames[className])
 			{
-				injector.injectInto(e.target);
-				injectedViews[e.target] = true;
 				return;
+			}
+			
+			if (mappedClassNames[reflector.getFQCN(e.target)]) 
+			{
+				injectInto(e.target);
+			}
+			else 
+			{
+				for each (var type:Class in mappedInterfaces)
+				{
+					if (e.target is type)
+					{
+						injectInto(e.target);
+					}
+				}
 			}
 			
 			var packageName:String;
@@ -230,6 +281,11 @@ package org.robotlegs.base
 				}
 			}
 		}
-	
+		
+		protected function injectInto(target:*):void
+		{
+			injector.injectInto(target);
+			injectedViews[target] = true;
+		}
 	}
 }
