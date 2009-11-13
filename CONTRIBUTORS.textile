@@ -4,3 +4,4 @@ h2. Framework Contributors
 * "Till Schneidereit":http://github.com/tschneidereit
 * "Robert Penner":http://github.com/robertpenner
 * "Joel Hooks":http://github.com/joelhooks
+* "Sean Hess":http://github.com/seanhess
