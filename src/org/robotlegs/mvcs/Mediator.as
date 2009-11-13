@@ -27,9 +27,14 @@ package org.robotlegs.mvcs
 		[Inject]
 		public var mediatorMap:IMediatorMap;
 		
-		[Inject]
-		public var eventDispatcher:IEventDispatcher;
+		/**
+		 * @private
+		 */
+		protected var _eventDispatcher:IEventDispatcher;
 		
+		/**
+		 * @private
+		 */
 		protected var _eventMap:IEventMap;
 		
 		public function Mediator()
@@ -44,7 +49,29 @@ package org.robotlegs.mvcs
 			eventMap.unmapListeners();
 			super.preRemove();
 		}
-	
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function get eventDispatcher():IEventDispatcher
+		{
+			return _eventDispatcher;
+		}
+		
+		[Inject]
+		/**
+		 * @private
+		 */
+		public function set eventDispatcher(value:IEventDispatcher):void
+		{
+			_eventDispatcher = value;
+		}
+		
+		/**
+		 * Local EventMap
+		 *
+		 * @return The EventMap for this Actor
+		 */
 		protected function get eventMap():IEventMap
 		{
 			return _eventMap || (_eventMap = new EventMap(eventDispatcher));
@@ -61,6 +88,6 @@ package org.robotlegs.mvcs
  		        return eventDispatcher.dispatchEvent(event);
  		 	return false;
 		}
-		
+	
 	}
 }
