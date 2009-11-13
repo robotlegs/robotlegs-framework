@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 the original author or authors
- * 
- * Permission is hereby granted to use, modify, and distribute this file 
+ *
+ * Permission is hereby granted to use, modify, and distribute this file
  * in accordance with the terms of the license agreement accompanying it.
  */
 
@@ -29,9 +29,10 @@ package org.robotlegs.base
 		
 		protected var mappedClassNames:Dictionary;
 		protected var injectedViews:Dictionary;
+		protected var packageNames:Array;
 		
 		//---------------------------------------------------------------------
-		//  Constructor
+		// Constructor
 		//---------------------------------------------------------------------
 		
 		/**
@@ -46,9 +47,10 @@ package org.robotlegs.base
 			this.injector = injector;
 			this.reflector = reflector;
 			
-			// mappings - if you can do with fewer dictionaries you get a prize
+			// mappings - if you can do it with fewer dictionaries you get a prize
 			this.mappedClassNames = new Dictionary(false);
 			this.injectedViews = new Dictionary(true);
+			this.packageNames = new Array();
 			
 			// change this at your peril lest ye understand the problem and have a better solution
 			this.useCapture = true;
@@ -58,7 +60,7 @@ package org.robotlegs.base
 		}
 		
 		//---------------------------------------------------------------------
-		//  API
+		// API
 		//---------------------------------------------------------------------
 		
 		/**
@@ -67,19 +69,28 @@ package org.robotlegs.base
 		public function mapClass(viewClassOrName:*):void
 		{
 			var viewClassName:String = reflector.getFQCN(viewClassOrName);
-			if(viewClassOrName is String)
-				viewClassOrName = reflector.getClass(viewClassOrName);
-			if (mappedClassNames[viewClassOrName])
+			
+			if (mappedClassNames[viewClassName])
 			{
 				return;
 			}
 			
-			mappedClassNames[viewClassOrName] = true;
+			mappedClassNames[viewClassName] = true;
 			
 			if (contextView && (viewClassName == reflector.getFQCN(contextView)))
 			{
 				injector.injectInto(contextView);
-				injectedViews[contextView] = true;
+			}
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function mapPackage(packageName:String):void
+		{
+			if (packageNames.indexOf(packageName) == -1)
+			{
+				packageNames.push(packageName);
 			}
 		}
 		
@@ -88,9 +99,20 @@ package org.robotlegs.base
 		 */
 		public function unmapClass(viewClassOrName:*):void
 		{
-			if(viewClassOrName is String)
-				viewClassOrName = reflector.getClass(viewClassOrName);
-			delete mappedClassNames[viewClassOrName];
+			var viewClassName:String = reflector.getFQCN(viewClassOrName);
+			delete mappedClassNames[viewClassName];
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function unmapPackage(packageName:String):void
+		{
+			var index:int = packageNames.indexOf(packageName);
+			if (index > -1)
+			{
+				packageNames.splice(index, 1);
+			}
 		}
 		
 		/**
@@ -98,9 +120,16 @@ package org.robotlegs.base
 		 */
 		public function hasClass(viewClassOrName:*):Boolean
 		{
-			if(viewClassOrName is String)
-				viewClassOrName = reflector.getClass(viewClassOrName);
-			return mappedClassNames[viewClassOrName];
+			var viewClassName:String = reflector.getFQCN(viewClassOrName);
+			return mappedClassNames[viewClassName];
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function hasPackage(packageName:String):Boolean
+		{
+			return packageNames.indexOf(packageName) > -1;
 		}
 		
 		/**
@@ -146,7 +175,7 @@ package org.robotlegs.base
 		}
 		
 		//---------------------------------------------------------------------
-		//  Internal
+		// Internal
 		//---------------------------------------------------------------------
 		
 		/**
@@ -176,17 +205,31 @@ package org.robotlegs.base
 		 */
 		protected function onViewAdded(e:Event):void
 		{
-			for(var test:* in mappedClassNames)
+			if (injectedViews[e.target])
+				return;
+			
+			var className:String = reflector.getFQCN(e.target);
+			
+			if (mappedClassNames[className])
 			{
-				var targetClass:Class = reflector.getClass(e.target);
-				var targetIsMapped:Boolean = reflector.classExtendsOrImplements(targetClass, test);
-				if( targetIsMapped && !injectedViews[e.target])
+				injector.injectInto(e.target);
+				injectedViews[e.target] = true;
+				return;
+			}
+			
+			var packageName:String;
+			var len:int = packageNames.length;
+			for (var i:int = 0; i < len; i++)
+			{
+				packageName = packageNames[i];
+				if (packageName == className.substr(0, packageName.length))
 				{
 					injector.injectInto(e.target);
 					injectedViews[e.target] = true;
-					break;
+					return;
 				}
 			}
 		}
+	
 	}
 }

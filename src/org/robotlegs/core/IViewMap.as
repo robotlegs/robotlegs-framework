@@ -22,11 +22,25 @@ package org.robotlegs.core
 		function mapClass(viewClassOrName:*):void;
 		
 		/**
+		 * Map an entire package (including sub-packages) for automatic injection
+		 * 
+		 * @param packageName The substring to compare
+		 */		
+		function mapPackage(packageName:String):void;
+		
+		/**
 		 * Unmap a view component Class
 		 *
 		 * @param viewClassOrName The concrete view Class or Fully Qualified Class Name
 		 */
 		function unmapClass(viewClassOrName:*):void;
+		
+		/**
+		 * Unmap a package
+		 * 
+		 * @param packageName The substring to compare
+		 */		
+		function unmapPackage(packageName:String):void;
 		
 		/**
 		 * Check if a Class has been registered for automatic injection
@@ -35,6 +49,14 @@ package org.robotlegs.core
 		 * @return Whether a Class has been registered for automatic injection
 		 */
 		function hasClass(viewClassOrName:*):Boolean;
+		
+		/**
+		 * Check if a package has been registered for automatic injection
+		 * 
+		 * @param packageName The substring to compare
+		 * @return Whether a package has been registered for automatic injection
+		 */		
+		function hasPackage(packageName:String):Boolean;
 		
 		/**
 		 * The <code>IViewMap</code>'s <code>DisplayObjectContainer</code>
