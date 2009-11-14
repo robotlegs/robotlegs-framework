@@ -21,15 +21,9 @@ package org.robotlegs.base
 	/**
 	 * An abstract <code>IMediatorMap</code> implementation
 	 */
-	public class MediatorMap implements IMediatorMap
+	public class MediatorMap extends ViewMapBase implements IMediatorMap
 	{
 		protected static const enterFrameDispatcher:Sprite = new Sprite();
-		
-		protected var _enabled:Boolean = true;
-		protected var _contextView:DisplayObjectContainer;
-		protected var injector:IInjector;
-		protected var reflector:IReflector;
-		protected var useCapture:Boolean;
 		
 		protected var mediatorByView:Dictionary;
 		protected var mappingConfigByView:Dictionary;
@@ -51,20 +45,13 @@ package org.robotlegs.base
 		 */
 		public function MediatorMap(contextView:DisplayObjectContainer, injector:IInjector, reflector:IReflector)
 		{
-			this.injector = injector;
-			this.reflector = reflector;
+			super(contextView, injector, reflector);
 			
 			// mappings - if you can do with fewer dictionaries you get a prize
 			this.mediatorByView = new Dictionary(true);
 			this.mappingConfigByView = new Dictionary(true);
 			this.mappingConfigByViewClassName = new Dictionary(false);
 			this.mediatorsMarkedForRemoval = new Dictionary(false);
-			
-			// change this at your peril lest ye understand the problem and have a better solution
-			this.useCapture = true;
-			
-			// this must come last, see the setter
-			this.contextView = contextView;
 		}
 		
 		//---------------------------------------------------------------------
@@ -193,48 +180,6 @@ package org.robotlegs.base
 			return false;
 		}
 		
-		/**
-		 * @inheritDoc
-		 */
-		public function get contextView():DisplayObjectContainer
-		{
-			return _contextView;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set contextView(value:DisplayObjectContainer):void
-		{
-			if (value != _contextView)
-			{
-				removeListeners();
-				_contextView = value;
-				addListeners();
-			}
-		}
-		
-		/**
-		 * @inheritDoc
-		 */
-		public function get enabled():Boolean
-		{
-			return _enabled;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set enabled(value:Boolean):void
-		{
-			if (value != _enabled)
-			{
-				removeListeners();
-				_enabled = value;
-				addListeners();
-			}
-		}
-		
 		//---------------------------------------------------------------------
 		//  Internal
 		//---------------------------------------------------------------------
@@ -242,7 +187,7 @@ package org.robotlegs.base
 		/**
 		 * @private
 		 */		
-		protected function addListeners():void
+		protected override function addListeners():void
 		{
 			if (contextView && enabled)
 			{
@@ -254,7 +199,7 @@ package org.robotlegs.base
 		/**
 		 * @private
 		 */		
-		protected function removeListeners():void
+		protected override function removeListeners():void
 		{
 			if (contextView && enabled)
 			{
@@ -266,7 +211,7 @@ package org.robotlegs.base
 		/**
 		 * @private
 		 */		
-		protected function onViewAdded(e:Event):void
+		protected override function onViewAdded(e:Event):void
 		{
 			if (mediatorsMarkedForRemoval[e.target])
 			{
