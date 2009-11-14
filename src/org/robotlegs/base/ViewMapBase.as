@@ -18,6 +18,7 @@ package org.robotlegs.base
 	public class ViewMapBase
 	{
 		protected var _enabled:Boolean = true;
+		protected var _active:Boolean = true;
 		protected var _contextView:DisplayObjectContainer;
 		
 		protected var injector:IInjector;
@@ -93,6 +94,18 @@ package org.robotlegs.base
 		//---------------------------------------------------------------------
 		// Internal
 		//---------------------------------------------------------------------
+		
+		/**
+		 * @private
+		 */
+		protected function activate():void
+		{
+			if (!_active)
+			{
+				_active = true;
+				addListeners();
+			}
+		}
 		
 		/**
 		 * @private

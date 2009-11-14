@@ -58,6 +58,7 @@ package org.robotlegs.base
 			if (mappedPackages.indexOf(packageName) == -1)
 			{
 				mappedPackages.push(packageName);
+				activate();
 			}
 		}
 		
@@ -89,6 +90,8 @@ package org.robotlegs.base
 			{
 				injectInto(contextView);
 			}
+			
+			activate();
 		}
 		
 		/**
@@ -124,7 +127,7 @@ package org.robotlegs.base
 		 */
 		protected override function addListeners():void
 		{
-			if (contextView && enabled)
+			if (contextView && enabled && _active)
 			{
 				contextView.addEventListener(Event.ADDED_TO_STAGE, onViewAdded, useCapture, 0, true);
 			}
@@ -135,7 +138,7 @@ package org.robotlegs.base
 		 */
 		protected override function removeListeners():void
 		{
-			if (contextView && enabled)
+			if (contextView && enabled && _active)
 			{
 				contextView.removeEventListener(Event.ADDED_TO_STAGE, onViewAdded, useCapture);
 			}
