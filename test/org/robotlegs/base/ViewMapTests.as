@@ -38,7 +38,7 @@ package org.robotlegs.base
 			testView = new CanvasComponent();
 			injector = new SwiftSuspendersInjector();
 			reflector = new SwiftSuspendersReflector();
-			viewMap = new ViewMap(contextView, injector, reflector);
+			viewMap = new ViewMap(contextView, injector);
 			
 			injector.mapValue(String, INJECTION_STRING, INJECTION_NAME);
 			

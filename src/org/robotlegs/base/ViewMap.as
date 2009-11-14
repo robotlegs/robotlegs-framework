@@ -10,9 +10,9 @@ package org.robotlegs.base
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
 	import flash.utils.Dictionary;
+	import flash.utils.getQualifiedClassName;
 	
 	import org.robotlegs.core.IInjector;
-	import org.robotlegs.core.IReflector;
 	import org.robotlegs.core.IViewMap;
 	
 	/**
@@ -36,9 +36,9 @@ package org.robotlegs.base
 		 * @param injector An <code>IInjector</code> to use for this context
 		 * @param reflector An <code>IReflector</code> to use for this context
 		 */
-		public function ViewMap(contextView:DisplayObjectContainer, injector:IInjector, reflector:IReflector)
+		public function ViewMap(contextView:DisplayObjectContainer, injector:IInjector)
 		{
-			super(contextView, injector, reflector);
+			super(contextView, injector);
 			
 			// mappings - if you can do it with fewer dictionaries you get a prize
 			this.mappedPackages = new Array();
@@ -163,7 +163,7 @@ package org.robotlegs.base
 			var len:int = mappedPackages.length;
 			if (len > 0)
 			{
-				var className:String = reflector.getFQCN(e.target);
+				var className:String = getQualifiedClassName(e.target);
 				for (var i:int = 0; i < len; i++)
 				{
 					var packageName:String = mappedPackages[i];

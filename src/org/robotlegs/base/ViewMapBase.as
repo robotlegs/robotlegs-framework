@@ -11,7 +11,6 @@ package org.robotlegs.base
 	import flash.events.Event;
 	
 	import org.robotlegs.core.IInjector;
-	import org.robotlegs.core.IReflector;
 	
 	/**
 	 * An abstract <code>IViewMap</code> implementation
@@ -22,7 +21,6 @@ package org.robotlegs.base
 		protected var _contextView:DisplayObjectContainer;
 		
 		protected var injector:IInjector;
-		protected var reflector:IReflector;
 		protected var useCapture:Boolean;
 		
 		//---------------------------------------------------------------------
@@ -36,10 +34,9 @@ package org.robotlegs.base
 		 * @param injector An <code>IInjector</code> to use for this context
 		 * @param reflector An <code>IReflector</code> to use for this context
 		 */
-		public function ViewMapBase(contextView:DisplayObjectContainer, injector:IInjector, reflector:IReflector)
+		public function ViewMapBase(contextView:DisplayObjectContainer, injector:IInjector)
 		{
 			this.injector = injector;
-			this.reflector = reflector;
 			
 			// change this at your peril lest ye understand the problem and have a better solution
 			this.useCapture = true;

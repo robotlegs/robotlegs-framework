@@ -165,7 +165,7 @@ package org.robotlegs.mvcs
 		 */
 		protected function get viewMap():IViewMap
 		{
-			return _viewMap || (_viewMap = new ViewMap(contextView, injector, reflector));
+			return _viewMap || (_viewMap = new ViewMap(contextView, injector));
 		}
 		
 		/**
