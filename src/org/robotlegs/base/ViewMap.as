@@ -223,7 +223,7 @@ package org.robotlegs.base
 				for (var i:int = 0; i < len; i++)
 				{
 					var packageName:String = mappedPackages[i];
-					if (packageName == className.substr(0, packageName.length))
+					if (className.indexOf(packageName) == 0)
 					{
 						injectInto(e.target);
 						return;
