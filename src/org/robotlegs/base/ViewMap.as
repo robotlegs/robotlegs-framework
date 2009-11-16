@@ -7,6 +7,7 @@
 
 package org.robotlegs.base
 {
+	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
 	import flash.utils.Dictionary;
@@ -148,16 +149,17 @@ package org.robotlegs.base
 		 */
 		protected override function onViewAdded(e:Event):void
 		{
-			if (injectedViews[e.target])
+			var target:DisplayObject = DisplayObject(e.target);
+			if (injectedViews[target])
 			{
 				return;
 			}
 			
 			for each (var type:Class in mappedTypes)
 			{
-				if (e.target is type)
+				if (target is type)
 				{
-					injectInto(e.target);
+					injectInto(target);
 					return;
 				}
 			}
@@ -165,20 +167,20 @@ package org.robotlegs.base
 			var len:int = mappedPackages.length;
 			if (len > 0)
 			{
-				var className:String = getQualifiedClassName(e.target);
+				var className:String = getQualifiedClassName(target);
 				for (var i:int = 0; i < len; i++)
 				{
 					var packageName:String = mappedPackages[i];
 					if (className.indexOf(packageName) == 0)
 					{
-						injectInto(e.target);
+						injectInto(target);
 						return;
 					}
 				}
 			}
 		}
 		
-		protected function injectInto(target:*):void
+		protected function injectInto(target:DisplayObject):void
 		{
 			injector.injectInto(target);
 			injectedViews[target] = true;
