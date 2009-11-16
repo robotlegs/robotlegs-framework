@@ -34,7 +34,6 @@ package org.robotlegs.base
 		 *
 		 * @param contextView The root view node of the context. The map will listen for ADDED_TO_STAGE events on this node
 		 * @param injector An <code>IInjector</code> to use for this context
-		 * @param reflector An <code>IReflector</code> to use for this context
 		 */
 		public function ViewMap(contextView:DisplayObjectContainer, injector:IInjector)
 		{
