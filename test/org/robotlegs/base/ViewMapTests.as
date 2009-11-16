@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 the original author or authors
- * 
- * Permission is hereby granted to use, modify, and distribute this file 
+ *
+ * Permission is hereby granted to use, modify, and distribute this file
  * in accordance with the terms of the license agreement accompanying it.
  */
 
@@ -25,7 +25,7 @@ package org.robotlegs.base
 		protected static const INJECTION_NAME:String = 'injectionName';
 		protected static const INJECTION_STRING:String = 'injectionString';
 		
-		protected var contextView:DisplayObjectContainer;
+		protected var contextView:TestContextCanvasView;
 		protected var testView:CanvasComponent;
 		protected var injector:IInjector;
 		protected var reflector:IReflector;
@@ -97,11 +97,27 @@ package org.robotlegs.base
 		}
 		
 		[Test]
+		public function mapTypeOfContextViewShouldInjectIntoIt():void
+		{
+			viewMap.mapType(TestContextCanvasView);
+			Assert.assertEquals("Injection points in contextView should be satisfied", INJECTION_STRING, contextView.injectionPoint);
+		}
+		
+		[Test]
+		public function mapTypeOfContextViewTwiceShouldInjectOnlyOnce():void
+		{
+			viewMap.mapType(TestContextCanvasView);
+			contextView.injectionPoint = null;
+			viewMap.mapType(TestContextCanvasView);
+			Assert.assertNull("contextView should NOT be injected into twice", testView.injectionPoint);
+		}
+		
+		[Test]
 		public function mapPackage():void
 		{
 			viewMap.mapPackage('org.robotlegs');
 			var mapped:Boolean = viewMap.hasPackage('org.robotlegs');
-			Assert.assertTrue("Package should be mapped", mapped);			
+			Assert.assertTrue("Package should be mapped", mapped);
 		}
 
 		[Test]
