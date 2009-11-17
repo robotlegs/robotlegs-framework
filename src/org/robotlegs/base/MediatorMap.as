@@ -100,6 +100,15 @@ package org.robotlegs.base
 		/**
 		 * @inheritDoc
 		 */
+		public function unmapView(viewClassOrName:*):void
+		{
+			var viewClassName:String = reflector.getFQCN(viewClassOrName); 
+			delete mappingConfigByViewClassName[viewClassName];
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
 		public function createMediator(viewComponent:Object):IMediator
 		{
 			var mediator:IMediator = mediatorByView[viewComponent];

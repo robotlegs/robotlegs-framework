@@ -27,6 +27,13 @@ package org.robotlegs.core
 		function mapView(viewClassOrName:*, mediatorClass:Class, injectViewAs:Class = null, autoCreate:Boolean = true, autoRemove:Boolean = true):void;
 		
 		/**
+		 * Unmap a view Class
+		 *  
+		 * @param viewClassOrName The concrete view Class or Fully Qualified Class Name
+		 */		
+		function unmapView(viewClassOrName:*):void;
+		
+		/**
 		 * Create an instance of a mapped <code>IMediator</code>
 		 *
 		 * <p>This will instantiate and register a Mediator for a given View Component.

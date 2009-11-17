@@ -19,7 +19,6 @@ package org.robotlegs.base
 	import org.fluint.uiImpersonation.UIImpersonator;
 	import org.robotlegs.adapters.SwiftSuspendersInjector;
 	import org.robotlegs.adapters.SwiftSuspendersReflector;
-	import org.robotlegs.base.MediatorMap;
 	import org.robotlegs.core.IEventMap;
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IMediator;
@@ -202,6 +201,17 @@ package org.robotlegs.base
 		{
 			mediatorMap.mapView( TestContextView, TestContextViewMediator, null, false );
 			Assert.assertFalse('Mediator should NOT have been created for contextView', mediatorMap.hasMediatorForView(contextView));
+		}
+		
+		[Test]
+		public function unmapView():void
+		{
+			mediatorMap.mapView(ViewComponent, ViewMediator);
+			mediatorMap.unmapView(ViewComponent);
+			var viewComponent:ViewComponent = new ViewComponent();
+			contextView.addChild(viewComponent);
+			var hasMediator:Boolean = mediatorMap.hasMediatorForView(viewComponent);
+			Assert.assertFalse('Mediator should NOT have been created for View Component', hasMediator);
 		}
 		
 	}
