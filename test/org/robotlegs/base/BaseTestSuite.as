@@ -5,16 +5,16 @@
  * in accordance with the terms of the license agreement accompanying it.
  */
 
-package org.robotlegs.mvcs.xmlconfig
+package org.robotlegs.base
 {
 	[Suite]
 	[RunWith("org.flexunit.runners.Suite")]
-	public class XmlConfigMvcsTestSuite
+	public class BaseTestSuite
 	{
+		public var viewMapTests:ViewMapTests;
 		public var commandMapTests:CommandMapTests;
 		public var commandMapWithEventClassTests:CommandMapWithEventClassTests;
 		public var mediatorMapTests:MediatorMapTests;
-		public var commandTests:CommandTests;
-		public var actorTests:ActorTests;
+		public var eventMapTests:EventMapTests;
 	}
 }

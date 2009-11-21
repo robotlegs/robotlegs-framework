@@ -1,23 +1,8 @@
 /*
  * Copyright (c) 2009 the original author or authors
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * 
+ * Permission is hereby granted to use, modify, and distribute this file 
+ * in accordance with the terms of the license agreement accompanying it.
  */
 
 package org.robotlegs.mvcs.xmlconfig
@@ -27,12 +12,12 @@ package org.robotlegs.mvcs.xmlconfig
 	import org.robotlegs.adapters.SwiftSuspendersInjector;
 	import org.robotlegs.adapters.SwiftSuspendersReflector;
 	import org.robotlegs.base.CommandMap;
-	import org.robotlegs.mvcs.CommandMapWithEventClassTests;
+	import org.robotlegs.base.CommandMapWithEventClassTests;
 	import org.robotlegs.mvcs.support.ICommandTest;
 	
-	public class CommandMapWithEventClassTests extends org.robotlegs.mvcs.CommandMapWithEventClassTests
+	public class CommandMapWithEventClassTests extends org.robotlegs.base.CommandMapWithEventClassTests
 	{
-		protected static const XML_CONFIG : XML = 
+		protected static const XML_CONFIG : XML =
 			<types>
 				<type name='org.robotlegs.mvcs.support::CustomEventCommand'>
 					<field name='event'/>

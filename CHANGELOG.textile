@@ -1,5 +1,23 @@
 h2. Robotlegs Framework Changelog:
 
+h3. v1.0RC7
+
+ViewMap.mapClass() changed to ViewMap.mapType()
+
+h3. v1.0RC6
+
+Internal changes: ContextBase cleaned up - initialize() removed. Overriding the default apparatus:
+
+    public function MyContext()
+    {
+	    injector = new SwiftSuspendersInjector(xmlConfig);
+	    super();
+    }
+
+h3. v1.0RC4/5
+
+Fixes to SwiftSuspenders
+
 h3. v1.0RC3
 
 Removed nometa package

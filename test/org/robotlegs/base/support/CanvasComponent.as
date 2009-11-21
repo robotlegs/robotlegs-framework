@@ -5,13 +5,16 @@
  * in accordance with the terms of the license agreement accompanying it.
  */
 
-package org.robotlegs.mvcs.support
+package org.robotlegs.base.support
 {
 	import mx.core.UIComponent;
-
-	public class ViewComponent extends UIComponent
+	
+	public class CanvasComponent extends UIComponent implements ITestComponent
 	{
-		public function ViewComponent()
+		[Inject(name="injectionName")]
+		public var injectionPoint:String;
+		
+		public function CanvasComponent()
 		{
 		}
 	}

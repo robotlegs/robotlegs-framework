@@ -1,23 +1,8 @@
 /*
  * Copyright (c) 2009 the original author or authors
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * 
+ * Permission is hereby granted to use, modify, and distribute this file 
+ * in accordance with the terms of the license agreement accompanying it.
  */
 
 package org.robotlegs.base
@@ -27,6 +12,7 @@ package org.robotlegs.base
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.utils.Dictionary;
+	import flash.utils.getQualifiedClassName;
 	
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IMediator;
@@ -36,15 +22,9 @@ package org.robotlegs.base
 	/**
 	 * An abstract <code>IMediatorMap</code> implementation
 	 */
-	public class MediatorMap implements IMediatorMap
+	public class MediatorMap extends ViewMapBase implements IMediatorMap
 	{
 		protected static const enterFrameDispatcher:Sprite = new Sprite();
-		
-		protected var _enabled:Boolean = true;
-		protected var _contextView:DisplayObjectContainer;
-		protected var injector:IInjector;
-		protected var reflector:IReflector;
-		protected var useCapture:Boolean;
 		
 		protected var mediatorByView:Dictionary;
 		protected var mappingConfigByView:Dictionary;
@@ -53,16 +33,23 @@ package org.robotlegs.base
 		protected var mediatorsMarkedForRemoval:Dictionary;
 		protected var hasMediatorsMarkedForRemoval:Boolean;
 		
+		protected var reflector:IReflector;
+		
+		//---------------------------------------------------------------------
+		//  Constructor
+		//---------------------------------------------------------------------
+		
 		/**
 		 * Creates a new <code>MediatorMap</code> object
 		 *
-		 * @param contextView The root view node of the context. The context will listen for ADDED_TO_STAGE events on this node
+		 * @param contextView The root view node of the context. The map will listen for ADDED_TO_STAGE events on this node
 		 * @param injector An <code>IInjector</code> to use for this context
 		 * @param reflector An <code>IReflector</code> to use for this context
 		 */
 		public function MediatorMap(contextView:DisplayObjectContainer, injector:IInjector, reflector:IReflector)
 		{
-			this.injector = injector;
+			super(contextView, injector);
+			
 			this.reflector = reflector;
 			
 			// mappings - if you can do with fewer dictionaries you get a prize
@@ -70,13 +57,11 @@ package org.robotlegs.base
 			this.mappingConfigByView = new Dictionary(true);
 			this.mappingConfigByViewClassName = new Dictionary(false);
 			this.mediatorsMarkedForRemoval = new Dictionary(false);
-			
-			// change this at your peril lest ye understand the problem and have a better solution
-			this.useCapture = true;
-			
-			// this must come last, see the setter
-			this.contextView = contextView;
 		}
+		
+		//---------------------------------------------------------------------
+		//  API
+		//---------------------------------------------------------------------
 		
 		/**
 		 * @inheritDoc
@@ -105,10 +90,20 @@ package org.robotlegs.base
 				config.typedViewClass = viewClassOrName;
 			}
 			mappingConfigByViewClassName[viewClassName] = config;
-			if (autoCreate && contextView && (viewClassName == reflector.getFQCN(contextView) ))
+			if (autoCreate && contextView && (viewClassName == getQualifiedClassName(contextView) ))
 			{
 				createMediator(contextView);
 			}
+			activate();
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function unmapView(viewClassOrName:*):void
+		{
+			var viewClassName:String = reflector.getFQCN(viewClassOrName); 
+			delete mappingConfigByViewClassName[viewClassName];
 		}
 		
 		/**
@@ -119,7 +114,7 @@ package org.robotlegs.base
 			var mediator:IMediator = mediatorByView[viewComponent];
 			if (mediator == null)
 			{
-				var viewClassName:String = reflector.getFQCN(viewComponent);
+				var viewClassName:String = getQualifiedClassName(viewComponent);
 				var config:MappingConfig = mappingConfigByViewClassName[viewClassName];
 				if (config)
 				{
@@ -139,7 +134,7 @@ package org.robotlegs.base
 		{
 			injector.mapValue(reflector.getClass(mediator), mediator);
 			mediatorByView[viewComponent] = mediator;
-			mappingConfigByView[viewComponent] = mappingConfigByViewClassName[reflector.getFQCN(viewComponent)];
+			mappingConfigByView[viewComponent] = mappingConfigByViewClassName[getQualifiedClassName(viewComponent)];
 			mediator.setViewComponent(viewComponent);
 			mediator.preRegister();
 		}
@@ -200,64 +195,45 @@ package org.robotlegs.base
 			return false;
 		}
 		
-		public function get contextView():DisplayObjectContainer
-		{
-			return _contextView;
-		}
+		//---------------------------------------------------------------------
+		//  Internal
+		//---------------------------------------------------------------------
 		
-		public function set contextView(value:DisplayObjectContainer):void
+		/**
+		 * @private
+		 */		
+		protected override function addListeners():void
 		{
-			if (value != _contextView)
-			{
-				removeListeners();
-				_contextView = value;
-				addListeners();
-			}
-		}
-		
-		public function get enabled():Boolean
-		{
-			return _enabled;
-		}
-		
-		public function set enabled(value:Boolean):void
-		{
-			if (value != _enabled)
-			{
-				removeListeners();
-				_enabled = value;
-				addListeners();
-			}
-		}
-		
-		// Protected Methods //////////////////////////////////////////////////
-		
-		protected function addListeners():void
-		{
-			if (contextView && enabled)
+			if (contextView && enabled && _active)
 			{
 				contextView.addEventListener(Event.ADDED_TO_STAGE, onViewAdded, useCapture, 0, true);
 				contextView.addEventListener(Event.REMOVED_FROM_STAGE, onViewRemoved, useCapture, 0, true);
 			}
 		}
 		
-		protected function removeListeners():void
+		/**
+		 * @private
+		 */		
+		protected override function removeListeners():void
 		{
-			if (contextView && enabled)
+			if (contextView && enabled && _active)
 			{
 				contextView.removeEventListener(Event.ADDED_TO_STAGE, onViewAdded, useCapture);
 				contextView.removeEventListener(Event.REMOVED_FROM_STAGE, onViewRemoved, useCapture);
 			}
 		}
 		
-		protected function onViewAdded(e:Event):void
+		/**
+		 * @private
+		 */		
+		protected override function onViewAdded(e:Event):void
 		{
 			if (mediatorsMarkedForRemoval[e.target])
 			{
 				delete mediatorsMarkedForRemoval[e.target];
 				return;
 			}
-			var config:MappingConfig = mappingConfigByViewClassName[reflector.getFQCN(e.target)];
+			var config:MappingConfig = mappingConfigByViewClassName[getQualifiedClassName(e.target)];
 			if (config && config.autoCreate)
 			{
 				createMediator(e.target);
@@ -284,7 +260,7 @@ package org.robotlegs.base
 		/**
 		 * Flex framework work-around part #6
 		 */
-		private function removeMediatorLater(event:Event):void
+		protected function removeMediatorLater(event:Event):void
 		{
 			enterFrameDispatcher.removeEventListener(Event.ENTER_FRAME, removeMediatorLater);
 			for each (var view:DisplayObject in mediatorsMarkedForRemoval)

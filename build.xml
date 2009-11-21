@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="robotlegs-framework" basedir="." default="usage">
+<project name="robotlegs-framework" basedir="." default="test">
 
   <!-- set up a prefix for all environment variables -->
   <property environment="env."/>
@@ -103,7 +103,7 @@
     </java>
 
     <!-- Execute TestRunner.swf as FlexUnit tests and publish reports -->
-    <flexunit swf="bin/TestRunner.swf" toDir="${report.loc}" haltonfailure="false" verbose="true" localTrusted="true"/>
+    <flexunit swf="bin/TestRunner.swf" toDir="${report.loc}" haltonfailure="true" verbose="true" localTrusted="true"/>
     <!-- Generate readable JUnit-style reports -->
     <junitreport todir="${report.loc}">
       <fileset dir="${report.loc}">
@@ -167,6 +167,8 @@
         </replacetokens>
       </filterchain>
     </copy>
+    <!-- Copy LICENSE  -->
+    <copy file="LICENSE" tofile="${dist.loc}/LICENSE" overwrite="true"/>
     <!-- Zip It  -->
     <zip destfile="${dist.loc}/${project.name.versioned}.zip">
       <fileset dir="${dist.loc}"/>
@@ -174,6 +176,7 @@
     <!-- Clean Up  -->
     <delete file="${dist.loc}/${project.name.versioned}.swc"/>
     <delete file="${dist.loc}/README"/>
+    <delete file="${dist.loc}/LICENSE"/>
     <delete dir="${dist.loc}/bin"/>
     <delete dir="${dist.loc}/src"/>
     <echo>[package] Release packaged successfully</echo>
