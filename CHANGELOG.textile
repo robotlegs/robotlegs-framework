@@ -1,5 +1,13 @@
 h2. Robotlegs Framework Changelog:
 
+h3. v1.0RC9
+
+Fixes to SwiftSuspenders
+
+h3. v1.0RC8
+
+Added IMediatorMap.unmapView()
+
 h3. v1.0RC7
 
 ViewMap.mapClass() changed to ViewMap.mapType()
