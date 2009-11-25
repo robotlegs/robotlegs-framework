@@ -42,6 +42,7 @@ package org.robotlegs.base
 		 * TODO: This needs to be documented
 		 */
 		protected var eventTypeMap:Dictionary;
+		
 		/**
 		 * Internal
 		 *

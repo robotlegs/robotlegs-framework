@@ -21,9 +21,19 @@ package org.robotlegs.base
 	 */
 	public class ViewMap extends ViewMapBase implements IViewMap
 	{
+		/**
+		 * @private
+		 */
 		protected var mappedPackages:Array;
+		
+		/**
+		 * @private
+		 */
 		protected var mappedTypes:Dictionary;
 		
+		/**
+		 * @private
+		 */
 		protected var injectedViews:Dictionary;
 		
 		//---------------------------------------------------------------------

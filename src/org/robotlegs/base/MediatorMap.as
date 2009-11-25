@@ -24,15 +24,39 @@ package org.robotlegs.base
 	 */
 	public class MediatorMap extends ViewMapBase implements IMediatorMap
 	{
+		/**
+		 * @private
+		 */
 		protected static const enterFrameDispatcher:Sprite = new Sprite();
 		
+		/**
+		 * @private
+		 */
 		protected var mediatorByView:Dictionary;
+		
+		/**
+		 * @private
+		 */
 		protected var mappingConfigByView:Dictionary;
+		
+		/**
+		 * @private
+		 */
 		protected var mappingConfigByViewClassName:Dictionary;
 		
+		/**
+		 * @private
+		 */
 		protected var mediatorsMarkedForRemoval:Dictionary;
+		
+		/**
+		 * @private
+		 */
 		protected var hasMediatorsMarkedForRemoval:Boolean;
 		
+		/**
+		 * @private
+		 */
 		protected var reflector:IReflector;
 		
 		//---------------------------------------------------------------------
@@ -52,7 +76,7 @@ package org.robotlegs.base
 			
 			this.reflector = reflector;
 			
-			// mappings - if you can do with fewer dictionaries you get a prize
+			// mappings - if you can do it with fewer dictionaries you get a prize
 			this.mediatorByView = new Dictionary(true);
 			this.mappingConfigByView = new Dictionary(true);
 			this.mappingConfigByViewClassName = new Dictionary(false);

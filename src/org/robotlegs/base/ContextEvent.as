@@ -10,7 +10,7 @@ package org.robotlegs.base
 	import flash.events.Event;
 	
 	/**
-	 * A framework Error implementation
+	 * A framework Event implementation
 	 */
 	public class ContextEvent extends Event
 	{
