@@ -1,0 +1,3 @@
+# Rename this file to user.properties to override default properties
+
+FLEX_HOME = /Developer/SDKs/flex_sdk_4.0.0.10485

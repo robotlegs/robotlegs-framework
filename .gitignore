@@ -21,3 +21,5 @@ report/*
 doc/*
 
 src/FlexUnitApplication.mxml
+
+user.properties

@@ -2,6 +2,8 @@
 <project name="robotlegs-framework" basedir="." default="test">
 <!-- set up a prefix for all environment variables -->
   <property environment="env."/>
+<!-- load user properties to override defaults -->
+  <property file="user.properties"/>
 <!-- System environment must contain FLEX_HOME variable that points to Flex SDK -->
   <property name="FLEX_HOME" location="${env.FLEX_HOME}"/>
 <!-- identify properties file -->
