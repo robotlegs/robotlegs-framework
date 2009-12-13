@@ -13,15 +13,33 @@ package org.robotlegs.base
 	import org.robotlegs.core.IInjector;
 	
 	/**
-	 * An abstract <code>IViewMap</code> implementation
+	 * A base ViewMap implementation
 	 */
 	public class ViewMapBase
 	{
+		/**
+		 * @private
+		 */
 		protected var _enabled:Boolean = true;
+		
+		/**
+		 * @private
+		 */
 		protected var _active:Boolean = true;
+		
+		/**
+		 * @private
+		 */
 		protected var _contextView:DisplayObjectContainer;
 		
+		/**
+		 * @private
+		 */
 		protected var injector:IInjector;
+		
+		/**
+		 * @private
+		 */
 		protected var useCapture:Boolean;
 		
 		//---------------------------------------------------------------------
@@ -33,7 +51,6 @@ package org.robotlegs.base
 		 *
 		 * @param contextView The root view node of the context. The map will listen for ADDED_TO_STAGE events on this node
 		 * @param injector An <code>IInjector</code> to use for this context
-		 * @param reflector An <code>IReflector</code> to use for this context
 		 */
 		public function ViewMapBase(contextView:DisplayObjectContainer, injector:IInjector)
 		{
