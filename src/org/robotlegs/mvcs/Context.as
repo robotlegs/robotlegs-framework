@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 the original author or authors
- * 
- * Permission is hereby granted to use, modify, and distribute this file 
+ *
+ * Permission is hereby granted to use, modify, and distribute this file
  * in accordance with the terms of the license agreement accompanying it.
  */
 
@@ -125,6 +125,29 @@ package org.robotlegs.mvcs
 		}
 		
 		//---------------------------------------------------------------------
+		//  Framework Hooks
+		//---------------------------------------------------------------------
+		
+		/**
+		 * Injection Mapping Hook
+		 *
+		 * <p>Override this in your Framework context to change the default configuration</p>
+		 *
+		 * <p>Beware of collisions in your container</p>
+		 */
+		protected function mapInjections():void
+		{
+			injector.mapValue(IReflector, reflector);
+			injector.mapValue(IInjector, injector);
+			injector.mapValue(IEventDispatcher, eventDispatcher);
+			injector.mapValue(DisplayObjectContainer, contextView);
+			injector.mapValue(ICommandMap, commandMap);
+			injector.mapValue(IMediatorMap, mediatorMap);
+			injector.mapValue(IViewMap, viewMap);
+			injector.mapClass(IEventMap, EventMap);
+		}
+		
+		//---------------------------------------------------------------------
 		//  Protected, Lazy Getters and Setters
 		//---------------------------------------------------------------------
 		
@@ -133,7 +156,7 @@ package org.robotlegs.mvcs
 		 */
 		protected function get commandMap():ICommandMap
 		{
-			return _commandMap || (_commandMap = new CommandMap(eventDispatcher, injector, reflector));
+			return _commandMap || (_commandMap = new CommandMap(eventDispatcher, injector));
 		}
 		
 		/**
@@ -174,29 +197,6 @@ package org.robotlegs.mvcs
 		protected function set viewMap(value:IViewMap):void
 		{
 			_viewMap = value;
-		}
-		
-		//---------------------------------------------------------------------
-		//  Framework Hooks
-		//---------------------------------------------------------------------
-		
-		/**
-		 * Injection Mapping Hook
-		 *
-		 * <p>Override this in your Framework context to change the default configuration</p>
-		 *
-		 * <p>Beware of collisions in your container</p>
-		 */
-		protected function mapInjections():void
-		{
-			injector.mapValue(IReflector, reflector);
-			injector.mapValue(IInjector, injector);
-			injector.mapValue(IEventDispatcher, eventDispatcher);
-			injector.mapValue(DisplayObjectContainer, contextView);
-			injector.mapValue(ICommandMap, commandMap);
-			injector.mapValue(IMediatorMap, mediatorMap);
-			injector.mapValue(IViewMap, viewMap);
-			injector.mapClass(IEventMap, EventMap);
 		}
 		
 		//---------------------------------------------------------------------

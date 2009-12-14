@@ -9,7 +9,6 @@ package org.robotlegs.mvcs.xmlconfig
 	import flash.events.EventDispatcher;
 	
 	import org.robotlegs.adapters.SwiftSuspendersInjector;
-	import org.robotlegs.adapters.SwiftSuspendersReflector;
 	import org.robotlegs.base.CommandMap;
 	import org.robotlegs.mvcs.CommandTests;
 	import org.robotlegs.mvcs.support.ICommandTest;
@@ -28,8 +27,7 @@ package org.robotlegs.mvcs.xmlconfig
 		{
 			eventDispatcher = new EventDispatcher();
 			injector = new SwiftSuspendersInjector(XML_CONFIG);
-			reflector = new SwiftSuspendersReflector();
-			commandMap = new CommandMap(eventDispatcher, injector, reflector);
+			commandMap = new CommandMap(eventDispatcher, injector);
 			injector.mapValue(ICommandTest, this);
 		}
 	}
