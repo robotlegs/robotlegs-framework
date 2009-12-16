@@ -12,9 +12,11 @@ package org.robotlegs.base
 	
 	import org.flexunit.Assert;
 	import org.robotlegs.adapters.SwiftSuspendersInjector;
+	import org.robotlegs.adapters.SwiftSuspendersReflector;
 	import org.robotlegs.base.CommandMap;
 	import org.robotlegs.core.ICommandMap;
 	import org.robotlegs.core.IInjector;
+	import org.robotlegs.core.IReflector;
 	import org.robotlegs.mvcs.support.ICommandTest;
 	import org.robotlegs.mvcs.support.EventCommand;
 	import org.robotlegs.mvcs.support.CustomEvent;
@@ -25,6 +27,7 @@ package org.robotlegs.base
 		protected var commandExecuted:Boolean;
 		protected var commandMap:ICommandMap;
 		protected var injector:IInjector;
+		protected var reflector:IReflector;
 		
 		[BeforeClass]
 		public static function runBeforeEntireSuite():void
@@ -41,7 +44,8 @@ package org.robotlegs.base
 		{
 			eventDispatcher = new EventDispatcher();
 			injector = new SwiftSuspendersInjector();
-			commandMap = new CommandMap(eventDispatcher, injector);
+			reflector = new SwiftSuspendersReflector();
+			commandMap = new CommandMap(eventDispatcher, injector, reflector);
 			injector.mapValue(ICommandTest, this);
 		}
 		

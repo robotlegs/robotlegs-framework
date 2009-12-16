@@ -14,6 +14,7 @@ package org.robotlegs.base
 	
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.ICommandMap;
+	import org.robotlegs.core.IReflector;
 	
 	/**
 	 * An abstract <code>ICommandMap</code> implementation
@@ -29,6 +30,11 @@ package org.robotlegs.base
 		 * The <code>IInjector</code> to inject with
 		 */
 		protected var injector:IInjector;
+		
+		/**
+		 * The <code>IReflector</code> to reflect with
+		 */
+		protected var reflector:IReflector;
 		
 		/**
 		 * Internal
@@ -53,11 +59,13 @@ package org.robotlegs.base
 		 *
 		 * @param eventDispatcher The <code>IEventDispatcher</code> to listen to
 		 * @param injector An <code>IInjector</code> to use for this context
+		 * @param reflector An <code>IReflector</code> to use for this context
 		 */
-		public function CommandMap(eventDispatcher:IEventDispatcher, injector:IInjector)
+		public function CommandMap(eventDispatcher:IEventDispatcher, injector:IInjector, reflector:IReflector)
 		{
 			this.eventDispatcher = eventDispatcher;
 			this.injector = injector;
+			this.reflector = reflector;
 			this.eventTypeMap = new Dictionary(false);
 			this.verifiedCommandClasses = new Dictionary(false);
 		}
