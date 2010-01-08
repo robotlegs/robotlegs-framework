@@ -27,7 +27,7 @@ package org.robotlegs.adapters
 					<field name='mediatorMap'/>
 					<field name='eventDispatcher'/>
 					<field name='injector'/>
-					<field name='mediatorMap'/>
+					<field name='CommandMap'/>
 				</type>
 				<type name='org.robotlegs.mvcs::Mediator'>
 					<field name='contextView'/>
