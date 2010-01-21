@@ -21,3 +21,6 @@ report/*
 doc/*
 
 src/FlexUnitApplication.mxml
+*.iml
+*.ipr
+*.iws
