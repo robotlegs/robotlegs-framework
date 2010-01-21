@@ -100,7 +100,7 @@ package org.robotlegs.mvcs
 		 * @param useWeakReference
 		 * 
 		 */		
-		protected function mapViewListener(type:String, listener:Function, eventClass:Class = null, useCapture:Boolean = false, priority:int = 0,					 useWeakReference:Boolean = true):void 
+		protected function addViewListener(type:String, listener:Function, eventClass:Class = null, useCapture:Boolean = false, priority:int = 0,					 useWeakReference:Boolean = true):void 
 		{
 			eventMap.mapListener(IEventDispatcher(viewComponent), type, listener, 
 				eventClass, useCapture, priority, useWeakReference); 
@@ -118,7 +118,7 @@ package org.robotlegs.mvcs
 		 * @param useWeakReference
 		 * 
 		 */		
-		protected function mapListener(type:String, listener:Function, eventClass:Class = null, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = true):void
+		protected function addContextListener(type:String, listener:Function, eventClass:Class = null, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = true):void
 	 	{
 			eventMap.mapListener(eventDispatcher, type, listener, 
 				eventClass, useCapture, priority, useWeakReference); 									   
