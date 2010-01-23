@@ -21,6 +21,7 @@ package org.robotlegs.base
 		protected var eventDispatcher:IEventDispatcher;
 		protected var eventMap:IEventMap;
 		protected var listenerExecuted:Boolean;
+		protected var listenerExecutedCount:uint;
 		
 		[Before]
 		public function runBeforeEachTest():void
@@ -33,6 +34,7 @@ package org.robotlegs.base
 		public function runAfterEachTest():void
 		{
 			resetListenerExecuted();
+			resetListenerExecutedCount();
 		}
 		
 		[Test]
@@ -61,6 +63,18 @@ package org.robotlegs.base
 			Assert.assertFalse('Listener should NOT have reponded to plain event', listenerExecuted);
 			eventDispatcher.dispatchEvent(new CustomEvent(CustomEvent.STARTED));
 			Assert.assertTrue('Listener should have reponded to strong event', listenerExecuted);
+		}
+		
+		[Test]
+		public function mapListenerTwice():void {
+			eventMap.mapListener(eventDispatcher, CustomEvent.STARTED, mapListenerTwiceListener, CustomEvent);
+			eventMap.mapListener(eventDispatcher, CustomEvent.STARTED, mapListenerTwiceListener, CustomEvent);
+			eventDispatcher.dispatchEvent(new CustomEvent(CustomEvent.STARTED));
+			Assert.assertEquals('Listener should have only responded once', 1, listenerExecutedCount);
+			eventMap.unmapListener(eventDispatcher, CustomEvent.STARTED, mapListenerTwiceListener, CustomEvent);
+			resetListenerExecutedCount();
+			eventDispatcher.dispatchEvent(new CustomEvent(CustomEvent.STARTED));
+			Assert.assertEquals('Listener should NOT have responded', 0, listenerExecutedCount);
 		}
 		
 		[Test]
@@ -116,6 +130,13 @@ package org.robotlegs.base
 		protected function resetListenerExecuted():void
 		{
 			listenerExecuted = false;
+		}
+		
+		protected function mapListenerTwiceListener(e:Event):void {
+			listenerExecutedCount++;
+		}
+		protected function resetListenerExecutedCount():void {
+			listenerExecutedCount = 0;
 		}
 	}
 }

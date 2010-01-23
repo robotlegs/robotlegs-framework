@@ -86,11 +86,27 @@ package org.robotlegs.base
 				throw new ContextError(ContextError.E_EVENTMAP_NOSNOOPING);
 			}
 			eventClass = eventClass || Event;
+			
+			var params:Object;
+			var i:int = listeners.length;
+			while (i--)
+			{
+				params = listeners[i];
+				if (params.dispatcher == dispatcher
+					&& params.type == type
+					&& params.listener == listener
+					&& params.useCapture == useCapture
+					&& params.eventClass == eventClass)
+				{
+					return;
+				}
+			}
+			
 			var callback:Function = function(event:Event):void
 				{
 					routeEventToListener(event, listener, eventClass);
 				};
-			var params:Object = {
+			params = {
 					dispatcher: dispatcher,
 					type: type,
 					listener: listener,
