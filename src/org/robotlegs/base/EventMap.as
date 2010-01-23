@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 the original author or authors
- * 
- * Permission is hereby granted to use, modify, and distribute this file 
+ *
+ * Permission is hereby granted to use, modify, and distribute this file
  * in accordance with the terms of the license agreement accompanying it.
  */
 
@@ -86,11 +86,27 @@ package org.robotlegs.base
 				throw new ContextError(ContextError.E_EVENTMAP_NOSNOOPING);
 			}
 			eventClass = eventClass || Event;
+			
+			var params:Object;
+			var i:int = listeners.length;
+			while (i--)
+			{
+				params = listeners[i];
+				if (params.dispatcher == dispatcher
+					&& params.type == type
+					&& params.listener == listener
+					&& params.useCapture == useCapture
+					&& params.eventClass == eventClass)
+				{
+					return;
+				}
+			}
+			
 			var callback:Function = function(event:Event):void
 				{
 					routeEventToListener(event, listener, eventClass);
 				};
-			var params:Object = {
+			params = {
 					dispatcher: dispatcher,
 					type: type,
 					listener: listener,
@@ -160,7 +176,6 @@ package org.robotlegs.base
 		 */
 		protected function routeEventToListener(event:Event, listener:Function, originalEventClass:Class):void
 		{
-			var eventClass:Class = Object(event).constructor;
 			if (event is originalEventClass)
 			{
 				listener(event);
