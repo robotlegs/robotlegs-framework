@@ -5,3 +5,4 @@ h2. Framework Contributors
 * "Robert Penner":http://github.com/robertpenner
 * "Joel Hooks":http://github.com/joelhooks
 * "Sean Hess":http://github.com/seanhess
+* "Jonnie Hallman":http://github.com/destroytoday
