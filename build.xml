@@ -99,7 +99,7 @@
   </target>
 <!-- Build Documentation -->
   <target name="asdoc" depends="test">
-    <echo>[create-docs] Generating ASDOC documentation</echo>
+    <echo>[asdoc] Generating ASDOC documentation</echo>
     <tstamp>
       <format property="docgen.time" pattern="MM/dd/yyyy hh:mm aa" unit="hour"/>
     </tstamp>
@@ -116,7 +116,7 @@
       <arg line="-package org.robotlegs.core 'The core Robotlegs Framework apparatus contracts'"/>
       <arg line="-package org.robotlegs.mvcs 'The reference MVCS Robotlegs Framework implementation'"/>
     </java>
-    <echo>[create-docs] ASDOC documentation generated successfully</echo>
+    <echo>[asdoc] ASDOC documentation generated successfully</echo>
   </target>
 <!-- Package the Build -->
   <target name="package" depends="asdoc">

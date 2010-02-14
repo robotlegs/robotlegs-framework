@@ -20,7 +20,7 @@ package org.robotlegs.core
 		 * 
 		 * @param eventType The Event type to listen for
 		 * @param commandClass The Class to instantiate - must have an execute() method
-		 * @param eventClass Optional Event class for a stronger mapping. Defaults to <code>flash.events.Event</code>.
+		 * @param eventClass Optional Event class for a stronger mapping. Defaults to <code>flash.events.Event</code>. Your commandClass can optionally [Inject] a variable of this type to access the event that triggered the command.
 		 * @param oneshot Unmap the Class after execution?
 		 */
 		function mapEvent(eventType:String, commandClass:Class, eventClass:Class = null, oneshot:Boolean = false):void;
