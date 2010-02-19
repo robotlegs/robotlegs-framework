@@ -79,14 +79,7 @@ package org.robotlegs.base
 		 */
 		public function mapEvent(eventType:String, commandClass:Class, eventClass:Class = null, oneshot:Boolean = false):void
 		{
-			if (!verifiedCommandClasses[commandClass])
-			{
-				verifiedCommandClasses[commandClass] = describeType(commandClass).factory.method.(@name == "execute").length() == 1;
-				if (!verifiedCommandClasses[commandClass])
-				{
-					throw new ContextError(ContextError.E_COMMANDMAP_NOIMPL + ' - ' + commandClass);
-				}
-			}
+			verifyCommandClass(commandClass);
 			eventClass = eventClass || Event;
 			
 			var eventClassMap:Dictionary = eventTypeMap[eventType]
@@ -136,9 +129,37 @@ package org.robotlegs.base
 			return callbacksByCommandClass[commandClass] != null;
 		}
 		
+		public function executeCommand(commandClass:Class, payloadClass:Class = null, payload:Object = null, named:String = ''):void
+		{
+			verifyCommandClass(commandClass);
+			if (payloadClass)
+			{
+				injector.mapValue(payloadClass, payload, named);
+			}
+			var command:Object = injector.instantiate(commandClass);
+			if (payloadClass)
+			{
+				injector.unmap(payloadClass, named);
+			}
+			command.execute();
+		}
+		
 		//---------------------------------------------------------------------
 		//  Internal
 		//---------------------------------------------------------------------
+		
+		/** @throws org.robotlegs.base::ContextError */
+		protected function verifyCommandClass(commandClass:Class):void
+		{
+			if (!verifiedCommandClasses[commandClass])
+			{
+				verifiedCommandClasses[commandClass] = describeType(commandClass).factory.method.(@name == "execute").length();
+				if (!verifiedCommandClasses[commandClass])
+				{
+					throw new ContextError(ContextError.E_COMMANDMAP_NOIMPL + ' - ' + commandClass);
+				}
+			}
+		}
 		
 		/**
 		 * Event Handler
@@ -149,12 +170,9 @@ package org.robotlegs.base
 		 */
 		protected function routeEventToCommand(event:Event, commandClass:Class, oneshot:Boolean, originalEventClass:Class):void
 		{
-			var eventClass:Class = Object(event).constructor;
+			var eventClass:Class = reflector.getClass(event);
 			if (!(event is originalEventClass)) return;
-			injector.mapValue(eventClass, event);
-			var command:Object = injector.instantiate(commandClass);
-			injector.unmap(eventClass);
-			command.execute();
+			executeCommand(commandClass, eventClass, event);
 			if (oneshot)
 			{
 				unmapEvent(event.type, commandClass, originalEventClass);
