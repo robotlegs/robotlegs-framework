@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+<!-- USE PROPERTIES FILES -->
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.robotlegs</groupId>
+    <artifactId>robotlegs-framework</artifactId>
+    <version>1.0.1</version>
+	<packaging>swc</packaging>
+    <name>Robotlegs Framework</name>
+
+    <properties>
+        <flex.debug>true</flex.debug>
+		<flex.skipTests>false</flex.skipTests>
+
+        <flex.version>3.4.0.9271</flex.version>
+		<flashplayer.version>10.0.0</flashplayer.version>
+        <flexmojos.compiler.version>3.5.0</flexmojos.compiler.version>
+        <flexunit.version>4.0-beta-2</flexunit.version>
+        <swiftsuspenders.version>1.0.1</swiftsuspenders.version>
+    </properties>
+
+    <build>
+        <sourceDirectory>src</sourceDirectory>
+        <testSourceDirectory>test</testSourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.sonatype.flexmojos</groupId>
+                <artifactId>flexmojos-maven-plugin</artifactId>
+                <version>${flexmojos.compiler.version}</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <skipTest>${flex.skipTests}</skipTest>
+                        <debug>${flex.debug}</debug>
+                        <ignoreVersionIssues>true</ignoreVersionIssues>
+                        <!--<targetPlayer>${flashplayer.version}</targetPlayer>-->
+                        <allowSourcePathOverlap>true</allowSourcePathOverlap>
+                        <includeSources>${project.sourceDirectory}</includeSources>
+                        <keepAs3Metadatas>
+                            <keepAs3Metadata>Inject</keepAs3Metadata>
+                            <keepAs3Metadata>PostConstruct</keepAs3Metadata>
+                        </keepAs3Metadatas>
+                        <incremental>true</incremental>
+                        <staticLinkRuntimeSharedLibraries>true</staticLinkRuntimeSharedLibraries>
+                        <verboseStacktraces>true</verboseStacktraces>
+                        <headlessServer>true</headlessServer>
+                        <configurationReport>true</configurationReport>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.adobe.flex</groupId>
+                            <artifactId>compiler</artifactId>
+                            <version>${flex.version}</version>
+                            <type>pom</type>
+                        </dependency>
+                    </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <!-- Third Party Dependencies -->
+        <dependency>
+            <groupId>org.swiftsuspenders</groupId>
+            <artifactId>swiftsuspenders</artifactId>
+            <version>${swiftsuspenders.version}</version>
+            <type>swc</type>
+        </dependency>
+
+        <!-- Flex SDK Dependencies -->
+		<dependency>
+            <groupId>com.adobe.flex.framework</groupId>
+            <artifactId>playerglobal</artifactId>
+            <version>${flex.version}</version>
+            <classifier>10</classifier>
+            <type>swc</type>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.adobe.flex.framework</groupId>
+            <artifactId>flex</artifactId>
+            <version>${flex.version}</version>
+            <type>swc</type>
+        </dependency>
+        <dependency>
+            <groupId>com.adobe.flex.framework</groupId>
+            <artifactId>framework</artifactId>
+            <version>${flex.version}</version>
+            <type>swc</type>
+        </dependency>
+        <dependency>
+            <groupId>com.adobe.flex.framework</groupId>
+            <artifactId>framework</artifactId>
+            <version>${flex.version}</version>
+            <type>rb.swc</type>
+        </dependency>
+        <dependency>
+            <groupId>com.adobe.flex.framework</groupId>
+            <artifactId>utilities</artifactId>
+            <version>${flex.version}</version>
+            <type>swc</type>
+        </dependency>
+		
+        <!-- Testing Dependencies -->
+        <!-- group/artifactId used b/c flexmojos requires this format: https://docs.sonatype.org/display/FLEXMOJOS/Unit+test+frameworks+GAV -->
+        <dependency>
+            <groupId>com.adobe.flexunit</groupId>
+            <artifactId>flexunit</artifactId>
+            <version>${flexunit.version}</version>
+            <type>swc</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.adobe.flexunit</groupId>
+            <artifactId>flexunit-cilistener</artifactId>
+            <version>${flexunit.version}</version>
+            <type>swc</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.adobe.flexunit</groupId>
+            <artifactId>flexunit-uilistener</artifactId>
+            <version>${flexunit.version}</version>
+            <type>swc</type>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+</project>
