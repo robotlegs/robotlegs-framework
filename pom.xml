@@ -114,20 +114,6 @@
             <type>swc</type>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.adobe.flexunit</groupId>
-            <artifactId>flexunit-cilistener</artifactId>
-            <version>${flexunit.version}</version>
-            <type>swc</type>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.adobe.flexunit</groupId>
-            <artifactId>flexunit-uilistener</artifactId>
-            <version>${flexunit.version}</version>
-            <type>swc</type>
-            <scope>test</scope>
-        </dependency>
 
     </dependencies>
 </project>
