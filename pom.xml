@@ -44,6 +44,11 @@
                         <verboseStacktraces>true</verboseStacktraces>
                         <headlessServer>true</headlessServer>
                         <configurationReport>true</configurationReport>
+                        <includeTestFiles>
+                            <includeTestFile>org/robotlegs/base/*Tests.as</includeTestFile>
+                            <includeTestFile>org/robotlegs/mvcs/*Tests.as</includeTestFile>
+                            <includeTestFile>org/robotlegs/mvcs/xmlconfig/*Tests.as</includeTestFile>
+                        </includeTestFiles>
                     </configuration>
                     <dependencies>
                         <dependency>
