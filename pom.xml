@@ -8,16 +8,59 @@
 	<packaging>swc</packaging>
     <name>Robotlegs Framework</name>
 
+    <developers>
+        <developer>
+            <id>darscan</id>
+            <name>Shaun Smith</name>
+            <email></email>
+            <roles>
+                <role>Founder</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>joelhooks</id>
+            <name>Joel Hooks</name>
+            <email>joelhooks@gmail.com</email>
+            <url>http://joelhooks.com/</url>
+        </developer>
+    </developers>
+    <contributors>
+        <contributor>
+            <name>Craig Wickesser</name>
+            <email>codecraig@gmail.com</email>
+            <url>http://digitalchickenscratch.com/</url>
+        </contributor>
+    </contributors>
+    <organization>
+        <name>Robotlegs</name>
+        <url>http://www.robotlegs.org/</url>
+    </organization>
+
+    <repositories>
+        <repository>
+            <id>Sonatype Flex Group</id>
+            <url>http://repository.sonatype.org/content/groups/flexgroup/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
     <properties>
         <flex.debug>true</flex.debug>
 		<flex.skipTests>false</flex.skipTests>
 
+        <maven.version>2.0.9</maven.version>
         <flex.version>3.4.0.9271</flex.version>
 		<flashplayer.version>10.0.0</flashplayer.version>
         <flexmojos.compiler.version>3.5.0</flexmojos.compiler.version>
         <flexunit.version>4.0-beta-2</flexunit.version>
         <swiftsuspenders.version>1.0.1</swiftsuspenders.version>
     </properties>
+
+    <prerequisites>
+        <maven>${maven.version}</maven>
+    </prerequisites>
 
     <build>
         <sourceDirectory>src</sourceDirectory>
@@ -29,6 +72,7 @@
                 <version>${flexmojos.compiler.version}</version>
                     <extensions>true</extensions>
                     <configuration>
+                        <output>target/${project.name.versioned}.${project.packaging}</output>
                         <skipTest>${flex.skipTests}</skipTest>
                         <debug>${flex.debug}</debug>
                         <ignoreVersionIssues>true</ignoreVersionIssues>
@@ -59,10 +103,34 @@
                         </dependency>
                     </dependencies>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.0-alpha-1</version>
+                <executions>
+                  <execution>
+                    <phase>initialize</phase>
+                    <goals>
+                      <goal>read-project-properties</goal>
+                    </goals>
+                    <configuration>
+                      <files>
+                        <file>${basedir}/build.properties</file>
+                      </files>
+                    </configuration>
+                  </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
     <dependencies>
+        <dependency>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>properties-maven-plugin</artifactId>
+            <version>1.0-alpha-1</version>
+        </dependency>
+
         <!-- Third Party Dependencies -->
         <dependency>
             <groupId>org.swiftsuspenders</groupId>
