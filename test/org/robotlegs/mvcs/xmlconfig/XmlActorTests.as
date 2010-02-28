@@ -19,7 +19,7 @@ package org.robotlegs.mvcs.xmlconfig
 	import org.robotlegs.mvcs.support.TestContextView;
 	import org.robotlegs.mvcs.ActorTests;
 	
-	public class ActorTests extends org.robotlegs.mvcs.ActorTests
+	public class XmlActorTests extends org.robotlegs.mvcs.ActorTests
 	{
 		[Before(ui)]
 		override public function runBeforeEachTest():void
