@@ -20,7 +20,7 @@ package org.robotlegs.mvcs.xmlconfig
 	import org.robotlegs.base.MediatorMapTests;
 	import org.robotlegs.mvcs.support.TestContextView;
 	
-	public class MediatorMapTests extends org.robotlegs.base.MediatorMapTests
+	public class XmlMediatorMapTests extends org.robotlegs.base.MediatorMapTests
 	{
 		protected static const XML_CONFIG : XML =
 			<types>

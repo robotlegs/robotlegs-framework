@@ -15,7 +15,7 @@ package org.robotlegs.mvcs.xmlconfig
 	import org.robotlegs.base.CommandMapWithEventClassTests;
 	import org.robotlegs.mvcs.support.ICommandTest;
 	
-	public class CommandMapWithEventClassTests extends org.robotlegs.base.CommandMapWithEventClassTests
+	public class XmlCommandMapWithEventClassTests extends org.robotlegs.base.CommandMapWithEventClassTests
 	{
 		protected static const XML_CONFIG : XML =
 			<types>
