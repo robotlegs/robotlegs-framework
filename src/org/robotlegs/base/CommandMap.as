@@ -146,19 +146,26 @@ package org.robotlegs.base
 		 * @param event The <code>Event</code>
 		 * @param commandClass The Class to construct and execute
 		 * @param oneshot Should this command mapping be removed after execution?
+         * @return <code>true</code> if the event was routed to a Command and the Command was executed,
+         *         <code>false</code> otherwise
 		 */
-		protected function routeEventToCommand(event:Event, commandClass:Class, oneshot:Boolean, originalEventClass:Class):void
+		protected function routeEventToCommand(event:Event, commandClass:Class, oneshot:Boolean, originalEventClass:Class):Boolean
 		{
 			var eventClass:Class = Object(event).constructor;
-			if (!(event is originalEventClass)) return;
-			injector.mapValue(eventClass, event);
-			var command:Object = injector.instantiate(commandClass);
-			injector.unmap(eventClass);
-			command.execute();
-			if (oneshot)
-			{
-				unmapEvent(event.type, commandClass, originalEventClass);
-			}
+			if (!(event is originalEventClass)) return false;
+            try {
+                injector.mapValue(eventClass, event);
+                var command:Object = injector.instantiate(commandClass);
+                injector.unmap(eventClass);
+                command.execute();
+                if (oneshot)
+                {
+                    unmapEvent(event.type, commandClass, originalEventClass);
+                }
+            }
+            finally {
+                return true;
+            }
 		}
 	
 	}
