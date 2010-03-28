@@ -144,6 +144,7 @@ package org.robotlegs.base
 		{
 			var eventClassMap:Dictionary = eventTypeMap[eventType];
 			if (eventClassMap == null) return false;
+			
 			var callbacksByCommandClass:Dictionary = eventClassMap[eventClass || Event];
 			if (callbacksByCommandClass == null) return false;
 			
@@ -153,18 +154,21 @@ package org.robotlegs.base
 		/**
 		 * @inheritDoc
 		 */
-		public function executeCommand(commandClass:Class, payloadClass:Class = null, payload:Object = null, named:String = ''):void
+		public function executeCommand(commandClass:Class, payload:Object = null, payloadClass:Class = null, named:String = ''):void
 		{
 			verifyCommandClass(commandClass);
-			if (payloadClass)
+			
+			if (payload != null || payloadClass != null)
 			{
+				payloadClass ||= reflector.getClass(payload);
 				injector.mapValue(payloadClass, payload, named);
 			}
+			
 			var command:Object = injector.instantiate(commandClass);
-			if (payloadClass)
-			{
+			
+			if (payload !== null || payloadClass != null)
 				injector.unmap(payloadClass, named);
-			}
+			
 			command.execute();
 		}
 		
@@ -172,16 +176,16 @@ package org.robotlegs.base
 		//  Internal
 		//---------------------------------------------------------------------
 		
-		/** @throws org.robotlegs.base::ContextError */
+		/**
+		 * @throws org.robotlegs.base::ContextError 
+		 */
 		protected function verifyCommandClass(commandClass:Class):void
 		{
 			if (!verifiedCommandClasses[commandClass])
 			{
 				verifiedCommandClasses[commandClass] = describeType(commandClass).factory.method.(@name == "execute").length();
 				if (!verifiedCommandClasses[commandClass])
-				{
 					throw new ContextError(ContextError.E_COMMANDMAP_NOIMPL + ' - ' + commandClass);
-				}
 			}
 		}
 		
@@ -196,13 +200,12 @@ package org.robotlegs.base
 		 */
 		protected function routeEventToCommand(event:Event, commandClass:Class, oneshot:Boolean, originalEventClass:Class):Boolean
 		{
-			var eventClass:Class = reflector.getClass(event);
 			if (!(event is originalEventClass)) return false;
-			executeCommand(commandClass, eventClass, event);
-			if (oneshot)
-			{
-				unmapEvent(event.type, commandClass, originalEventClass);
-			}
+			
+			executeCommand(commandClass, event);
+			
+			if (oneshot) unmapEvent(event.type, commandClass, originalEventClass);
+			
 			return true;
 		}
 	
