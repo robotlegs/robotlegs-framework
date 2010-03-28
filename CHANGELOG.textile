@@ -1,5 +1,15 @@
 h2. Robotlegs Framework Changelog:
 
+h3. v1.1.0
+
+Deprecated IContextProvider
+
+Added ICommandMap#executeCommand(commandClass:Class, payload:Object = null, payloadClass:Class = null, named:String = ''):void
+
+Added ICommandMap#unmapEvents()
+
+Added mvcs.Mediator EventMap Sugar: addViewListener() and addContextListener()
+
 h3. v1.0.3
 
 Fixed: http://github.com/robotlegs/robotlegs-framework/issues#issue/2
