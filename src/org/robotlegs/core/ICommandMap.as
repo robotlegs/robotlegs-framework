@@ -35,6 +35,11 @@ package org.robotlegs.core
 		function unmapEvent(eventType:String, commandClass:Class, eventClass:Class = null):void;
 		
 		/**
+		 * Removes all mappings made through <code>mapEvent</code>
+		 */		
+		function unmapEvents():void;
+		
+		/**
 		 * Check if a Class has been mapped to an Event type
 		 *
 		 * @param eventType The Event type

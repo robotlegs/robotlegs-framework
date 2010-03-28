@@ -9,11 +9,11 @@ package org.robotlegs.base
 {
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
-	import flash.utils.describeType;
 	import flash.utils.Dictionary;
+	import flash.utils.describeType;
 	
-	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.ICommandMap;
+	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IReflector;
 	
 	/**
@@ -107,13 +107,34 @@ package org.robotlegs.base
 		{
 			var eventClassMap:Dictionary = eventTypeMap[eventType];
 			if (eventClassMap == null) return;
+			
 			var callbacksByCommandClass:Dictionary = eventClassMap[eventClass || Event];
 			if (callbacksByCommandClass == null) return;
+			
 			var callback:Function = callbacksByCommandClass[commandClass];
 			if (callback == null) return;
 			
 			eventDispatcher.removeEventListener(eventType, callback, false);
 			delete callbacksByCommandClass[commandClass];
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function unmapEvents():void
+		{
+			for (var eventType:String in eventTypeMap)
+			{
+				var eventClassMap:Dictionary = eventTypeMap[eventType];
+				for each (var callbacksByCommandClass:Dictionary in eventClassMap)
+				{
+					for each ( var callback:Function in callbacksByCommandClass)
+					{
+						eventDispatcher.removeEventListener(eventType, callback, false);
+					}
+				}
+			}
+			eventTypeMap = new Dictionary(false);
 		}
 		
 		/**
@@ -129,6 +150,9 @@ package org.robotlegs.base
 			return callbacksByCommandClass[commandClass] != null;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		public function executeCommand(commandClass:Class, payloadClass:Class = null, payload:Object = null, named:String = ''):void
 		{
 			verifyCommandClass(commandClass);
