@@ -7,14 +7,15 @@
 
 package org.robotlegs.core
 {
-	
+	[Deprecated("This interface is fluffy and must be destroyed. Roll Your Own.")]
 	/**
-	 * The Robotlegs Context Provider contract
+	 * Deprecated - The Robotlegs Context Provider contract
 	 */
 	public interface IContextProvider
 	{
+		[Deprecated("This interface is fluffy and must be destroyed. Roll Your Own.")]
 		/**
-		 * Retrieve the <code>IContext</code>
+		 * Deprecated - Retrieve the <code>IContext</code>
 		 * @return The <code>IContext</code>
 		 */
 		function getContext():IContext;
