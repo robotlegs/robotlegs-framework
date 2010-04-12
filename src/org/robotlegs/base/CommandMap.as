@@ -50,6 +50,8 @@ package org.robotlegs.base
 		 */
 		protected var verifiedCommandClasses:Dictionary;
 		
+		protected var detainedCommands:Dictionary;
+		
 		//---------------------------------------------------------------------
 		//  Constructor
 		//---------------------------------------------------------------------
@@ -68,6 +70,7 @@ package org.robotlegs.base
 			this.reflector = reflector;
 			this.eventTypeMap = new Dictionary(false);
 			this.verifiedCommandClasses = new Dictionary(false);
+			this.detainedCommands = new Dictionary(false);
 		}
 		
 		//---------------------------------------------------------------------
@@ -170,6 +173,23 @@ package org.robotlegs.base
 				injector.unmap(payloadClass, named);
 			
 			command.execute();
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function detain(command:Object):void
+		{
+			detainedCommands[command] = true;
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function release(command:Object):void
+		{
+			if (detainedCommands[command])
+				delete detainedCommands[command];
 		}
 		
 		//---------------------------------------------------------------------

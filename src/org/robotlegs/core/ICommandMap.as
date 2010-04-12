@@ -13,6 +13,19 @@ package org.robotlegs.core
 	 */
 	public interface ICommandMap
 	{
+		/**
+		 * Detain a Command instance
+		 * 
+		 * @param command The Command instance to detain
+		 */		
+		function detain(command:Object):void;
+		
+		/**
+		 * Release a Command instance
+		 * 
+		 * @param command The Command instance to release for garbage collection
+		 */		
+		function release(command:Object):void;
 		
 		/**
 		 * Execute a Command with an optional payload
