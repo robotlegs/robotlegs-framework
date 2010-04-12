@@ -4,9 +4,11 @@ h3. v1.1.0
 
 Deprecated IContextProvider
 
-Added ICommandMap#executeCommand(commandClass:Class, payload:Object = null, payloadClass:Class = null, named:String = ''):void
+Added ICommandMap#execute(commandClass:Class, payload:Object = null, payloadClass:Class = null, named:String = ''):void
 
-Added ICommandMap#unmapEvents()
+Added ICommandMap#unmapEvents() - unmaps all event mappings
+
+Added ICommandMap#detain() and release() - enables Async Commands
 
 Added mvcs.Mediator EventMap Sugar: addViewListener() and addContextListener()
 
