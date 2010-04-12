@@ -26,7 +26,7 @@ package org.robotlegs.core
 		 * 
 		 * @throws org.robotlegs.base::ContextError
 		 */		
-		function executeCommand(commandClass:Class, payload:Object = null, payloadClass:Class = null, named:String = ''):void;
+		function execute(commandClass:Class, payload:Object = null, payloadClass:Class = null, named:String = ''):void;
 		
 		/**
 		 * Map a Class to an Event type

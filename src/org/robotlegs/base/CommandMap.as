@@ -154,7 +154,7 @@ package org.robotlegs.base
 		/**
 		 * @inheritDoc
 		 */
-		public function executeCommand(commandClass:Class, payload:Object = null, payloadClass:Class = null, named:String = ''):void
+		public function execute(commandClass:Class, payload:Object = null, payloadClass:Class = null, named:String = ''):void
 		{
 			verifyCommandClass(commandClass);
 			
@@ -202,7 +202,7 @@ package org.robotlegs.base
 		{
 			if (!(event is originalEventClass)) return false;
 			
-			executeCommand(commandClass, event);
+			execute(commandClass, event);
 			
 			if (oneshot) unmapEvent(event.type, commandClass, originalEventClass);
 			
