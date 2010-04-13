@@ -129,7 +129,7 @@ package org.robotlegs.core
 		 * 
 		 * @return The injector 
 		 */		
-		function createChildInjector():IInjector;
+		function createChild():IInjector;
 		
 		/**
 		 * Remove a rule from the injector

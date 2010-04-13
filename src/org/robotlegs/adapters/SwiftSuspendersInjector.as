@@ -15,10 +15,8 @@ package org.robotlegs.adapters
 	 *
 	 * @author tschneidereit
 	 */
-	public class SwiftSuspendersInjector implements IInjector
+	public class SwiftSuspendersInjector extends Injector implements IInjector
 	{
-		protected var injector:Injector;
-		
 		protected static const XML_CONFIG:XML =
 			<types>
 				<type name='org.robotlegs.mvcs::Actor'>
@@ -38,7 +36,7 @@ package org.robotlegs.adapters
 				</type>
 			</types>;
 		
-		public function SwiftSuspendersInjector(xmlConfig:XML = null, injector:Injector = null)
+		public function SwiftSuspendersInjector(xmlConfig:XML = null)
 		{
 			if (xmlConfig)
 			{
@@ -47,87 +45,17 @@ package org.robotlegs.adapters
 					xmlConfig.appendChild(typeNode);
 				}
 			}
-			this.injector = injector || new Injector(xmlConfig);
+			super(xmlConfig);
 		}
 		
 		/**
 		 * @inheritDoc
 		 */
-		public function mapValue(whenAskedFor:Class, useValue:Object, named:String = ""):*
+		public function createChild():IInjector
 		{
-			return injector.mapValue(whenAskedFor, useValue, named);
-		}
-		
-		/**
-		 * @inheritDoc
-		 */
-		public function mapClass(whenAskedFor:Class, instantiateClass:Class, named:String = ""):*
-		{
-			return injector.mapClass(whenAskedFor, instantiateClass, named);
-		}
-		
-		/**
-		 * @inheritDoc
-		 */
-		public function mapSingleton(whenAskedFor:Class, named:String = ""):*
-		{
-			return injector.mapSingleton(whenAskedFor, named);
-		}
-		
-		/**
-		 * @inheritDoc
-		 */
-		public function mapSingletonOf(whenAskedFor:Class, useSingletonOf:Class, named:String = ""):*
-		{
-			return injector.mapSingletonOf(whenAskedFor, useSingletonOf, named);
-		}
-		
-		/**
-		 * @inheritDoc
-		 */
-		public function mapRule(whenAskedFor:Class, useRule:*, named:String = ""):*
-		{
-			return injector.mapRule(whenAskedFor, useRule, named);
-		}
-		
-		/**
-		 * @inheritDoc
-		 */
-		public function injectInto(target:Object):void
-		{
-			injector.injectInto(target);
-		}
-		
-		/**
-		 * @inheritDoc
-		 */
-		public function instantiate(clazz:Class):*
-		{
-			return injector.instantiate(clazz);
-		}
-		
-		/**
-		 * @inheritDoc
-		 */
-		public function getInstance(clazz:Class, named:String = ""):*
-		{
-			return injector.getInstance(clazz, named);
-		}
-		
-		/**
-		 * @inheritDoc
-		 */
-		public function createChildInjector():IInjector
-		{
-			return new SwiftSuspendersInjector(null, injector.createChildInjector());
-		}
-		
-		/**
-		 * @inheritDoc
-		 */
-		public function unmap(clazz:Class, named:String = ""):void
-		{
-			injector.unmap(clazz, named);
+			var injector:SwiftSuspendersInjector = new SwiftSuspendersInjector();
+			injector.setParentInjector(this);
+			return injector;
 		}
 	
 	}
