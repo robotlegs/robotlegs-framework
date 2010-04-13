@@ -103,14 +103,33 @@ package org.robotlegs.core
 		 *
 		 * <p>Adapters for DI solutions that don't support constructor injection should just create a new
 		 * instance and perform setter and/ or method injection on that.</p>
+		 * 
+		 * <p>NOTE: This method will always create a new instance. If you need to retrieve an instance
+		 * consider using <code>getInstance</code></p>
 		 *
 		 * <p>The <code>IInjector</code> should throw an <code>Error</code>
 		 * if it can't satisfy all dependencies of the injectee.</p>
 		 *
-		 * @param target The class to instantiate
-		 * @return the created instance
+		 * @param clazz The class to instantiate
+		 * @return * The created instance
 		 */
 		function instantiate(clazz:Class):*;
+		
+		/**
+		 * Create or retrieve an instance of the given class
+		 * 
+		 * @param clazz
+		 * @param named An optional name (id)
+		 * @return * An instance
+		 */		
+		function getInstance(clazz:Class, named:String = ""):*;
+		
+		/**
+		 * Create an injector that inherits rules from its parent
+		 * 
+		 * @return The injector 
+		 */		
+		function createChildInjector():IInjector;
 		
 		/**
 		 * Remove a rule from the injector
