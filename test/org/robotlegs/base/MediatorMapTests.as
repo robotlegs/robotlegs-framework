@@ -72,7 +72,7 @@ package org.robotlegs.base
 		public function runAfterEachTest():void
 		{
 			UIImpersonator.removeAllChildren();
-			injector.unmap(MediatorMap);
+			injector.unmap(IMediatorMap);
 		}
 		
 		[Test]
