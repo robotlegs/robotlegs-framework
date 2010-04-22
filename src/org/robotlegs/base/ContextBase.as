@@ -11,8 +11,6 @@ package org.robotlegs.base
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
 	
-	import org.robotlegs.adapters.SwiftSuspendersInjector;
-	import org.robotlegs.adapters.SwiftSuspendersReflector;
 	import org.robotlegs.core.IContext;
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IReflector;
@@ -72,7 +70,8 @@ package org.robotlegs.base
 		 */
 		protected function get injector():IInjector
 		{
-			return _injector || (_injector = new SwiftSuspendersInjector());
+			throw new ContextError(ContextError.E_CONTEXT_INJECTOR);
+			return null;
 		}
 		
 		/**
@@ -88,7 +87,8 @@ package org.robotlegs.base
 		 */
 		protected function get reflector():IReflector
 		{
-			return _reflector || (_reflector = new SwiftSuspendersReflector());
+			throw new ContextError(ContextError.E_CONTEXT_REFLECTOR);
+			return null;
 		}
 		
 		/**

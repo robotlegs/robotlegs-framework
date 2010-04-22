@@ -11,6 +11,8 @@ package org.robotlegs.mvcs
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	
+	import org.robotlegs.adapters.SwiftSuspendersInjector;
+	import org.robotlegs.adapters.SwiftSuspendersReflector;
 	import org.robotlegs.base.CommandMap;
 	import org.robotlegs.base.ContextBase;
 	import org.robotlegs.base.ContextEvent;
@@ -127,6 +129,38 @@ package org.robotlegs.mvcs
 		//---------------------------------------------------------------------
 		//  Protected, Lazy Getters and Setters
 		//---------------------------------------------------------------------
+		
+		/**
+		 * The <code>IInjector</code> for this <code>IContext</code>
+		 */
+		override protected function get injector():IInjector
+		{
+			return _injector || (_injector = new SwiftSuspendersInjector());
+		}
+		
+		/**
+		 * @private
+		 */
+		override protected function set injector(value:IInjector):void
+		{
+			_injector = value;
+		}
+		
+		/**
+		 * The <code>IReflector</code> for this <code>IContext</code>
+		 */
+		override protected function get reflector():IReflector
+		{
+			return _reflector || (_reflector = new SwiftSuspendersReflector());
+		}
+		
+		/**
+		 * @private
+		 */
+		override protected function set reflector(value:IReflector):void
+		{
+			_reflector = value;
+		}
 		
 		/**
 		 * The <code>ICommandMap</code> for this <code>IContext</code>
