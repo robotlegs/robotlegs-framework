@@ -36,6 +36,16 @@ package org.robotlegs.mvcs
 		/**
 		 * @private
 		 */
+		protected var _injector:IInjector;
+		
+		/**
+		 * @private
+		 */
+		protected var _reflector:IReflector;
+		
+		/**
+		 * @private
+		 */
 		protected var _autoStartup:Boolean;
 		
 		/**
@@ -133,7 +143,7 @@ package org.robotlegs.mvcs
 		/**
 		 * The <code>IInjector</code> for this <code>IContext</code>
 		 */
-		override protected function get injector():IInjector
+		protected function get injector():IInjector
 		{
 			return _injector || (_injector = new SwiftSuspendersInjector());
 		}
@@ -141,7 +151,7 @@ package org.robotlegs.mvcs
 		/**
 		 * @private
 		 */
-		override protected function set injector(value:IInjector):void
+		protected function set injector(value:IInjector):void
 		{
 			_injector = value;
 		}
@@ -149,7 +159,7 @@ package org.robotlegs.mvcs
 		/**
 		 * The <code>IReflector</code> for this <code>IContext</code>
 		 */
-		override protected function get reflector():IReflector
+		protected function get reflector():IReflector
 		{
 			return _reflector || (_reflector = new SwiftSuspendersReflector());
 		}
@@ -157,7 +167,7 @@ package org.robotlegs.mvcs
 		/**
 		 * @private
 		 */
-		override protected function set reflector(value:IReflector):void
+		protected function set reflector(value:IReflector):void
 		{
 			_reflector = value;
 		}
