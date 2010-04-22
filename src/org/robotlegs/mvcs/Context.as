@@ -133,7 +133,7 @@ package org.robotlegs.mvcs
 		 */
 		protected function get commandMap():ICommandMap
 		{
-			return _commandMap || (_commandMap = new CommandMap(eventDispatcher, injector, reflector));
+			return _commandMap || (_commandMap = new CommandMap(eventDispatcher, injector.createChild(), reflector));
 		}
 		
 		/**
@@ -149,7 +149,7 @@ package org.robotlegs.mvcs
 		 */
 		protected function get mediatorMap():IMediatorMap
 		{
-			return _mediatorMap || (_mediatorMap = new MediatorMap(contextView, injector, reflector));
+			return _mediatorMap || (_mediatorMap = new MediatorMap(contextView, injector.createChild(), reflector));
 		}
 		
 		/**
