@@ -138,5 +138,15 @@ package org.robotlegs.core
 		 * @param named An optional name (id)
 		 */
 		function unmap(clazz:Class, named:String = ""):void;
+		
+		/**
+		 * Does a rule exist to satsify such a request?
+		 * 
+		 * @param clazz A class or interface
+		 * @param named An optional name (id)
+		 * @return Whether such a mapping exists
+		 */		
+		function hasMapping(clazz:Class, named:String = ""):Boolean;
+		
 	}
 }

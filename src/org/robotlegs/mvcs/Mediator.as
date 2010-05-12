@@ -46,7 +46,8 @@ package org.robotlegs.mvcs
 		 */
 		override public function preRemove():void
 		{
-			eventMap.unmapListeners();
+			if (_eventMap)
+				_eventMap.unmapListeners();
 			super.preRemove();
 		}
 		
