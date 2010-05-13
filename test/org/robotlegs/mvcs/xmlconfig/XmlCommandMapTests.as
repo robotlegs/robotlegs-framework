@@ -22,6 +22,9 @@ package org.robotlegs.mvcs.xmlconfig
 				<type name='org.robotlegs.mvcs.support::EventCommand'>
 					<field name='testSuite'/>
 				</type>
+				<type name='org.robotlegs.base.support::ManualCommand'>
+					<field name='testSuite'/>
+				</type>
 			</types>;
 		
 		[Before]
