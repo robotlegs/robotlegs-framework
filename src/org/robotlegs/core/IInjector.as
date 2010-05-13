@@ -7,6 +7,7 @@
 
 package org.robotlegs.core
 {
+    import flash.system.ApplicationDomain;
 	
 	/**
 	 * The Robotlegs Injector contract
@@ -129,7 +130,7 @@ package org.robotlegs.core
 		 * 
 		 * @return The injector 
 		 */		
-		function createChild():IInjector;
+		function createChild(applicationDomain:ApplicationDomain = null):IInjector;
 		
 		/**
 		 * Remove a rule from the injector

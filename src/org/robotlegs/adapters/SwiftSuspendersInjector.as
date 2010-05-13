@@ -7,6 +7,8 @@
 
 package org.robotlegs.adapters
 {
+	import flash.system.ApplicationDomain;
+	
 	import org.robotlegs.core.IInjector;
 	import org.swiftsuspenders.Injector;
 	
@@ -51,9 +53,10 @@ package org.robotlegs.adapters
 		/**
 		 * @inheritDoc
 		 */
-		public function createChild():IInjector
+		public function createChild(applicationDomain:ApplicationDomain = null):IInjector
 		{
 			var injector:SwiftSuspendersInjector = new SwiftSuspendersInjector();
+            injector.setApplicationDomain(applicationDomain);
 			injector.setParentInjector(this);
 			return injector;
 		}
