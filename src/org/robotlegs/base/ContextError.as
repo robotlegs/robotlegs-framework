@@ -21,6 +21,9 @@ package org.robotlegs.base
 		
 		public static const E_EVENTMAP_NOSNOOPING:String = 'Listening to the context eventDispatcher is not enabled for this EventMap';
 		
+		public static const E_CONTEXT_INJECTOR:String = 'The ContextBase does not specify a concrete IInjector. Please override the injector getter in your concrete or abstract Context.';
+		public static const E_CONTEXT_REFLECTOR:String = 'The ContextBase does not specify a concrete IReflector. Please override the reflector getter in your concrete or abstract Context.';
+		
 		public function ContextError(message:String = "", id:int = 0)
 		{
 			super(message, id);

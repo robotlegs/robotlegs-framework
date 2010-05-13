@@ -11,6 +11,8 @@ package org.robotlegs.mvcs
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	
+	import org.robotlegs.adapters.SwiftSuspendersInjector;
+	import org.robotlegs.adapters.SwiftSuspendersReflector;
 	import org.robotlegs.base.CommandMap;
 	import org.robotlegs.base.ContextBase;
 	import org.robotlegs.base.ContextEvent;
@@ -30,6 +32,16 @@ package org.robotlegs.mvcs
 	 */
 	public class Context extends ContextBase implements IContext
 	{
+		
+		/**
+		 * @private
+		 */
+		protected var _injector:IInjector;
+		
+		/**
+		 * @private
+		 */
+		protected var _reflector:IReflector;
 		
 		/**
 		 * @private
@@ -129,11 +141,43 @@ package org.robotlegs.mvcs
 		//---------------------------------------------------------------------
 		
 		/**
+		 * The <code>IInjector</code> for this <code>IContext</code>
+		 */
+		protected function get injector():IInjector
+		{
+			return _injector || (_injector = new SwiftSuspendersInjector());
+		}
+		
+		/**
+		 * @private
+		 */
+		protected function set injector(value:IInjector):void
+		{
+			_injector = value;
+		}
+		
+		/**
+		 * The <code>IReflector</code> for this <code>IContext</code>
+		 */
+		protected function get reflector():IReflector
+		{
+			return _reflector || (_reflector = new SwiftSuspendersReflector());
+		}
+		
+		/**
+		 * @private
+		 */
+		protected function set reflector(value:IReflector):void
+		{
+			_reflector = value;
+		}
+		
+		/**
 		 * The <code>ICommandMap</code> for this <code>IContext</code>
 		 */
 		protected function get commandMap():ICommandMap
 		{
-			return _commandMap || (_commandMap = new CommandMap(eventDispatcher, injector, reflector));
+			return _commandMap || (_commandMap = new CommandMap(eventDispatcher, injector.createChild(), reflector));
 		}
 		
 		/**
@@ -149,7 +193,7 @@ package org.robotlegs.mvcs
 		 */
 		protected function get mediatorMap():IMediatorMap
 		{
-			return _mediatorMap || (_mediatorMap = new MediatorMap(contextView, injector, reflector));
+			return _mediatorMap || (_mediatorMap = new MediatorMap(contextView, injector.createChild(), reflector));
 		}
 		
 		/**
