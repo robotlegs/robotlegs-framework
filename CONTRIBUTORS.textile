@@ -6,3 +6,4 @@ h2. Framework Contributors
 * "Joel Hooks":http://github.com/joelhooks
 * "Sean Hess":http://github.com/seanhess
 * "Jonnie Hallman":http://github.com/destroytoday
+* "Craig Wickesser":http://github.com/codecraig

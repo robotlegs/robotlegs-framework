@@ -14,12 +14,13 @@ package org.robotlegs.base
 	import org.robotlegs.adapters.SwiftSuspendersInjector;
 	import org.robotlegs.adapters.SwiftSuspendersReflector;
 	import org.robotlegs.base.CommandMap;
+	import org.robotlegs.base.support.ManualCommand;
 	import org.robotlegs.core.ICommandMap;
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IReflector;
-	import org.robotlegs.mvcs.support.ICommandTest;
-	import org.robotlegs.mvcs.support.EventCommand;
 	import org.robotlegs.mvcs.support.CustomEvent;
+	import org.robotlegs.mvcs.support.EventCommand;
+	import org.robotlegs.mvcs.support.ICommandTest;
 	
 	public class CommandMapTests implements ICommandTest
 	{
@@ -111,6 +112,28 @@ package org.robotlegs.base
 			commandMap.unmapEvent(CustomEvent.STARTED, EventCommand);
 			eventDispatcher.dispatchEvent(new CustomEvent(CustomEvent.STARTED));
 			Assert.assertFalse('Command should NOT have reponded to event', commandExecuted);
+		}
+		
+		[Test]
+		public function unmapEvents():void
+		{
+			commandMap.mapEvent(CustomEvent.EVENT0, EventCommand);
+			commandMap.mapEvent(CustomEvent.EVENT1, EventCommand);
+			commandMap.mapEvent(CustomEvent.EVENT2, EventCommand);
+			commandMap.mapEvent(CustomEvent.EVENT3, EventCommand);
+			commandMap.unmapEvents();
+			eventDispatcher.dispatchEvent(new CustomEvent(CustomEvent.EVENT0));
+			eventDispatcher.dispatchEvent(new CustomEvent(CustomEvent.EVENT1));
+			eventDispatcher.dispatchEvent(new CustomEvent(CustomEvent.EVENT2));
+			eventDispatcher.dispatchEvent(new CustomEvent(CustomEvent.EVENT3));
+			Assert.assertFalse('Command should NOT have reponded to event', commandExecuted);
+		}
+		
+		[Test]
+		public function manuallyExecute():void
+		{
+			commandMap.execute(ManualCommand, {});
+			Assert.assertTrue('Command should have executed with custom payload', commandExecuted);
 		}
 		
 		[Test(expects="org.robotlegs.base.ContextError")]

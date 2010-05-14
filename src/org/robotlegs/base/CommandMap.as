@@ -9,11 +9,11 @@ package org.robotlegs.base
 {
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
-	import flash.utils.describeType;
 	import flash.utils.Dictionary;
+	import flash.utils.describeType;
 	
-	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.ICommandMap;
+	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IReflector;
 	
 	/**
@@ -50,6 +50,8 @@ package org.robotlegs.base
 		 */
 		protected var verifiedCommandClasses:Dictionary;
 		
+		protected var detainedCommands:Dictionary;
+		
 		//---------------------------------------------------------------------
 		//  Constructor
 		//---------------------------------------------------------------------
@@ -68,6 +70,7 @@ package org.robotlegs.base
 			this.reflector = reflector;
 			this.eventTypeMap = new Dictionary(false);
 			this.verifiedCommandClasses = new Dictionary(false);
+			this.detainedCommands = new Dictionary(false);
 		}
 		
 		//---------------------------------------------------------------------
@@ -79,14 +82,7 @@ package org.robotlegs.base
 		 */
 		public function mapEvent(eventType:String, commandClass:Class, eventClass:Class = null, oneshot:Boolean = false):void
 		{
-			if (!verifiedCommandClasses[commandClass])
-			{
-				verifiedCommandClasses[commandClass] = describeType(commandClass).factory.method.(@name == "execute").length() == 1;
-				if (!verifiedCommandClasses[commandClass])
-				{
-					throw new ContextError(ContextError.E_COMMANDMAP_NOIMPL + ' - ' + commandClass);
-				}
-			}
+			verifyCommandClass(commandClass);
 			eventClass = eventClass || Event;
 			
 			var eventClassMap:Dictionary = eventTypeMap[eventType]
@@ -114,8 +110,10 @@ package org.robotlegs.base
 		{
 			var eventClassMap:Dictionary = eventTypeMap[eventType];
 			if (eventClassMap == null) return;
+			
 			var callbacksByCommandClass:Dictionary = eventClassMap[eventClass || Event];
 			if (callbacksByCommandClass == null) return;
+			
 			var callback:Function = callbacksByCommandClass[commandClass];
 			if (callback == null) return;
 			
@@ -126,14 +124,72 @@ package org.robotlegs.base
 		/**
 		 * @inheritDoc
 		 */
+		public function unmapEvents():void
+		{
+			for (var eventType:String in eventTypeMap)
+			{
+				var eventClassMap:Dictionary = eventTypeMap[eventType];
+				for each (var callbacksByCommandClass:Dictionary in eventClassMap)
+				{
+					for each ( var callback:Function in callbacksByCommandClass)
+					{
+						eventDispatcher.removeEventListener(eventType, callback, false);
+					}
+				}
+			}
+			eventTypeMap = new Dictionary(false);
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
 		public function hasEventCommand(eventType:String, commandClass:Class, eventClass:Class = null):Boolean
 		{
 			var eventClassMap:Dictionary = eventTypeMap[eventType];
 			if (eventClassMap == null) return false;
+			
 			var callbacksByCommandClass:Dictionary = eventClassMap[eventClass || Event];
 			if (callbacksByCommandClass == null) return false;
 			
 			return callbacksByCommandClass[commandClass] != null;
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function execute(commandClass:Class, payload:Object = null, payloadClass:Class = null, named:String = ''):void
+		{
+			verifyCommandClass(commandClass);
+			
+			if (payload != null || payloadClass != null)
+			{
+				payloadClass ||= reflector.getClass(payload);
+				injector.mapValue(payloadClass, payload, named);
+			}
+			
+			var command:Object = injector.instantiate(commandClass);
+			
+			if (payload !== null || payloadClass != null)
+				injector.unmap(payloadClass, named);
+			
+			command.execute();
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function detain(command:Object):void
+		{
+			detainedCommands[command] = true;
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function release(command:Object):void
+		{
+			if (detainedCommands[command])
+				delete detainedCommands[command];
 		}
 		
 		//---------------------------------------------------------------------
@@ -141,24 +197,36 @@ package org.robotlegs.base
 		//---------------------------------------------------------------------
 		
 		/**
+		 * @throws org.robotlegs.base::ContextError 
+		 */
+		protected function verifyCommandClass(commandClass:Class):void
+		{
+			if (!verifiedCommandClasses[commandClass])
+			{
+				verifiedCommandClasses[commandClass] = describeType(commandClass).factory.method.(@name == "execute").length();
+				if (!verifiedCommandClasses[commandClass])
+					throw new ContextError(ContextError.E_COMMANDMAP_NOIMPL + ' - ' + commandClass);
+			}
+		}
+		
+		/**
 		 * Event Handler
 		 *
 		 * @param event The <code>Event</code>
 		 * @param commandClass The Class to construct and execute
 		 * @param oneshot Should this command mapping be removed after execution?
+         * @return <code>true</code> if the event was routed to a Command and the Command was executed,
+         *         <code>false</code> otherwise
 		 */
-		protected function routeEventToCommand(event:Event, commandClass:Class, oneshot:Boolean, originalEventClass:Class):void
+		protected function routeEventToCommand(event:Event, commandClass:Class, oneshot:Boolean, originalEventClass:Class):Boolean
 		{
-			var eventClass:Class = Object(event).constructor;
-			if (!(event is originalEventClass)) return;
-			injector.mapValue(eventClass, event);
-			var command:Object = injector.instantiate(commandClass);
-			injector.unmap(eventClass);
-			command.execute();
-			if (oneshot)
-			{
-				unmapEvent(event.type, commandClass, originalEventClass);
-			}
+			if (!(event is originalEventClass)) return false;
+			
+			execute(commandClass, event);
+			
+			if (oneshot) unmapEvent(event.type, commandClass, originalEventClass);
+			
+			return true;
 		}
 	
 	}

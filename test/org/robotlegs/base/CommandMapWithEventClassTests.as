@@ -137,6 +137,21 @@ package org.robotlegs.base
 			Assert.assertFalse('Command should NOT have reponded to event', commandExecuted);
 		}
 		
+		[Test]
+		public function unmapEvents():void
+		{
+			commandMap.mapEvent(CustomEvent.EVENT0, CustomEventCommand, CustomEvent);
+			commandMap.mapEvent(CustomEvent.EVENT1, CustomEventCommand, CustomEvent);
+			commandMap.mapEvent(CustomEvent.EVENT2, CustomEventCommand, CustomEvent);
+			commandMap.mapEvent(CustomEvent.EVENT3, CustomEventCommand, CustomEvent);
+			commandMap.unmapEvents();
+			eventDispatcher.dispatchEvent(new CustomEvent(CustomEvent.EVENT0));
+			eventDispatcher.dispatchEvent(new CustomEvent(CustomEvent.EVENT1));
+			eventDispatcher.dispatchEvent(new CustomEvent(CustomEvent.EVENT2));
+			eventDispatcher.dispatchEvent(new CustomEvent(CustomEvent.EVENT3));
+			Assert.assertFalse('Command should NOT have reponded to event', commandExecuted);
+		}
+		
 		[Test(expects="org.robotlegs.base.ContextError")]
 		public function mappingNonCommandClassShouldFail():void
 		{

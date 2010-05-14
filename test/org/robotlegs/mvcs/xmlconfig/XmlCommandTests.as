@@ -14,7 +14,7 @@ package org.robotlegs.mvcs.xmlconfig
 	import org.robotlegs.mvcs.CommandTests;
 	import org.robotlegs.mvcs.support.ICommandTest;
 	
-	public class CommandTests extends org.robotlegs.mvcs.CommandTests
+	public class XmlCommandTests extends org.robotlegs.mvcs.CommandTests
 	{
 		protected static const XML_CONFIG : XML = 
 			<types>

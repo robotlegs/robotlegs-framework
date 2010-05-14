@@ -11,10 +11,10 @@ package org.robotlegs.mvcs.xmlconfig
 	[RunWith("org.flexunit.runners.Suite")]
 	public class XmlConfigMvcsTestSuite
 	{
-		public var commandMapTests:CommandMapTests;
-		public var commandMapWithEventClassTests:CommandMapWithEventClassTests;
-		public var mediatorMapTests:MediatorMapTests;
-		public var commandTests:CommandTests;
-		public var actorTests:ActorTests;
+		public var commandMapTests:XmlCommandMapTests;
+		public var commandMapWithEventClassTests:XmlCommandMapWithEventClassTests;
+		public var mediatorMapTests:XmlMediatorMapTests;
+		public var commandTests:XmlCommandTests;
+		public var actorTests:XmlActorTests;
 	}
 }

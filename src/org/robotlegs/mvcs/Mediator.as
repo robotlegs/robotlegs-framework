@@ -46,7 +46,8 @@ package org.robotlegs.mvcs
 		 */
 		override public function preRemove():void
 		{
-			eventMap.unmapListeners();
+			if (_eventMap)
+				_eventMap.unmapListeners();
 			super.preRemove();
 		}
 		
@@ -88,6 +89,40 @@ package org.robotlegs.mvcs
  		        return eventDispatcher.dispatchEvent(event);
  		 	return false;
 		}
-	
+		
+		/**
+		 * Syntactical sugar for mapping a listener to the <code>viewComponent</code> 
+		 * 
+		 * @param type
+		 * @param listener
+		 * @param eventClass
+		 * @param useCapture
+		 * @param priority
+		 * @param useWeakReference
+		 * 
+		 */		
+		protected function addViewListener(type:String, listener:Function, eventClass:Class = null, useCapture:Boolean = false, priority:int = 0,					 useWeakReference:Boolean = true):void 
+		{
+			eventMap.mapListener(IEventDispatcher(viewComponent), type, listener, 
+				eventClass, useCapture, priority, useWeakReference); 
+		}
+		
+		/**
+		 * Syntactical sugar for mapping a listener to an <code>IEventDispatcher</code> 
+		 * 
+		 * @param dispatcher
+		 * @param type
+		 * @param listener
+		 * @param eventClass
+		 * @param useCapture
+		 * @param priority
+		 * @param useWeakReference
+		 * 
+		 */		
+		protected function addContextListener(type:String, listener:Function, eventClass:Class = null, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = true):void
+	 	{
+			eventMap.mapListener(eventDispatcher, type, listener, 
+				eventClass, useCapture, priority, useWeakReference); 									   
+		}
 	}
 }
