@@ -145,8 +145,8 @@
           <token key="ssversion" value="${swift.suspenders.version}"/>
           <token key="sslink" value="${swift.suspenders.link}"/>
           <token key="rlprojectlink" value="${robotlegs.project.link}"/>
-          <token key="bestpracticeslink" value="${robotlegs.faq.link}"/>
-          <token key="faqlink" value="${robotlegs.best.practices.link}"/>
+          <token key="bestpracticeslink" value="${robotlegs.best.practices.link}"/>
+          <token key="faqlink" value="${robotlegs.faq.link}"/>
         </replacetokens>
       </filterchain>
     </copy>
