@@ -1,5 +1,9 @@
 h2. Robotlegs Framework Changelog:
 
+h3. v1.1.1
+
+Fixed: http://github.com/robotlegs/robotlegs-framework/issues/#issue/6
+
 h3. v1.1.0
 
 mvcs.Context: CommandMap and MediatorMap are handed child injectors - to enable non-destructive temporary mappings.
