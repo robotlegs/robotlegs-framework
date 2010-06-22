@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 the original author or authors
- * 
- * Permission is hereby granted to use, modify, and distribute this file 
+ *
+ * Permission is hereby granted to use, modify, and distribute this file
  * in accordance with the terms of the license agreement accompanying it.
  */
 
@@ -31,11 +31,19 @@ package org.robotlegs.base
 		/**
 		 * Internal
 		 *
-		 * <p>This Mediator's View Component, used by the RobotLegs MVCS framework internally.
+		 * <p>This Mediator's View Component - used by the RobotLegs MVCS framework internally.
 		 * You should declare a dependency on a concrete view component in your
 		 * implementation instead of working with this property</p>
 		 */
 		protected var viewComponent:Object;
+		
+		/**
+		 * Internal
+		 *
+		 * <p>In the case of deffered instantiation, onRemove might get called before
+		 * onCreationComplete has fired. This here Bool helps us track that scenario.</p>
+		 */
+		protected var removed:Boolean;
 		
 		//---------------------------------------------------------------------
 		//  Constructor
@@ -57,6 +65,8 @@ package org.robotlegs.base
 		 */
 		public function preRegister():void
 		{
+			removed = false;
+			
 			if (flexAvailable && (viewComponent is UIComponentClass) && !viewComponent['initialized'])
 			{
 				IEventDispatcher(viewComponent).addEventListener('creationComplete', onCreationComplete, false, 0, true);
@@ -79,6 +89,7 @@ package org.robotlegs.base
 		 */
 		public function preRemove():void
 		{
+			removed = true;
 			onRemove();
 		}
 		
@@ -137,7 +148,9 @@ package org.robotlegs.base
 		protected function onCreationComplete(e:Event):void
 		{
 			IEventDispatcher(e.target).removeEventListener('creationComplete', onCreationComplete);
-			onRegister();
+			
+			if (!removed)
+				onRegister();
 		}
 	
 	}

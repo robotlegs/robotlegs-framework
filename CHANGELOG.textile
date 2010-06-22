@@ -1,24 +1,32 @@
 h2. Robotlegs Framework Changelog:
 
+h3. v1.1.1
+
+*Mediator*
+Fixed: http://github.com/robotlegs/robotlegs-framework/issues/#issue/6
+
 h3. v1.1.0
 
-mvcs.Context: CommandMap and MediatorMap are handed child injectors - to enable non-destructive temporary mappings.
+*SwiftSuspenders*
+Updated SwiftSuspenders to v1.5.1
+PLEASE NOTE: mapValue no longer injects into the value instance - the old behaviour was incorrect.
 
-Deprecated IContextProvider
+*Injector*
+Added IInjector#hasMapping(clazz:Class, named:String = ""):Boolean;
+Added IInjector#getInstance(clazz:Class, named:String = ""):*;
+Added IInjector#createChild():IInjector;
 
+*CommandMap*
 Added ICommandMap#execute(commandClass:Class, payload:Object = null, payloadClass:Class = null, named:String = ''):void
-
 Added ICommandMap#unmapEvents() - unmaps all event mappings
-
 Added ICommandMap#detain() and release() - enables Async Commands
 
+*Mediator*
 Added mvcs.Mediator EventMap Sugar: addViewListener() and addContextListener()
 
-Added IInjector#hasMapping(clazz:Class, named:String = ""):Boolean;
-
-Added IInjector#getInstance(clazz:Class, named:String = ""):*;
-
-Added IInjector#createChild():IInjector;
+*Misc*
+mvcs.Context: CommandMap and MediatorMap are handed child injectors - to enable non-destructive temporary mappings.
+Deprecated IContextProvider
 
 h3. v1.0.3
 
