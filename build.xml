@@ -108,6 +108,8 @@
       <arg line="-doc-sources ${main.src.loc}"/>
       <arg line="-source-path ${main.src.loc}"/>
       <arg line="-output ${doc.loc}"/>
+      <arg value="-keep-xml=true"/>
+      <arg value="-lenient=true"/>
       <arg line="-window-title 'Robotlegs ${robotlegs.ver.num}'"/>
       <arg line="-main-title 'Robotlegs ${robotlegs.ver.num}'"/>
       <arg line="-footer 'Robotlegs - http://www.robotlegs.org/ - Documentation generated at: ${docgen.time}'"/>
@@ -137,6 +139,14 @@
     <copy todir="${dist.loc}/docs">
       <fileset dir="${doc.loc}"/>
     </copy>
+    <delete dir="${dist.loc}/docs/tempdita"/>
+<!-- Add ASDoc xml to swc for Flex Builder Tooltips -->
+    <zip destfile="${dist.loc}/bin/${project.name.versioned}.swc" update="true">
+      <zipfileset dir="${doc.loc}/tempdita" prefix="docs">
+        <include name="*packages.dita*"/>
+        <include name="*org.*"/>
+      </zipfileset>
+    </zip>
 <!-- Copy README  -->
     <copy file="${template.loc}/README.tmpl" tofile="${dist.loc}/README" overwrite="true">
       <filterchain>
