@@ -7,3 +7,5 @@ h2. Framework Contributors
 * "Sean Hess":http://github.com/seanhess
 * "Jonnie Hallman":http://github.com/destroytoday
 * "Craig Wickesser":http://github.com/codecraig
+* "Jon Toland":http://github.com/dnalot
+* "Simon Gregory":http://github.com/simongregory
