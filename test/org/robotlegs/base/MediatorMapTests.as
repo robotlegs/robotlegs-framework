@@ -27,7 +27,9 @@ package org.robotlegs.base
 	import org.robotlegs.mvcs.support.TestContextView;
 	import org.robotlegs.mvcs.support.TestContextViewMediator;
 	import org.robotlegs.mvcs.support.ViewComponent;
+	import org.robotlegs.mvcs.support.ViewComponentAdvanced;
 	import org.robotlegs.mvcs.support.ViewMediator;
+	import org.robotlegs.mvcs.support.ViewMediatorAdvanced;
 	
 	public class MediatorMapTests
 	{
@@ -84,6 +86,50 @@ package org.robotlegs.base
 			var mediator:IMediator = mediatorMap.createMediator(viewComponent);
 			Assert.assertNotNull('Mediator should have been created ', mediator);
 			Assert.assertTrue('Mediator should have been created for View Component', mediatorMap.hasMediatorForView(viewComponent));
+		}
+		
+		[Test]
+		public function mediatorIsMappedAndCreatedWithInjectViewAsClass():void {
+			mediatorMap.mapView(ViewComponent, ViewMediator, ViewComponent, false, false);
+			var viewComponent:ViewComponent = new ViewComponent();
+			contextView.addChild(viewComponent);
+			var mediator:IMediator = mediatorMap.createMediator(viewComponent);
+			var exactMediator:ViewMediator = mediator as ViewMediator;
+			Assert.assertNotNull('Mediator should have been created', mediator);
+			Assert.assertTrue('Mediator should have been created of the exact desired class', mediator is ViewMediator);
+			Assert.assertTrue('Mediator should have been created for View Component', mediatorMap.hasMediatorForView(viewComponent));
+			Assert.assertNotNull('View Component should have been injected into Mediator', exactMediator.view);
+			Assert.assertTrue('View Component injected should match the desired class type', exactMediator.view is ViewComponent);
+		}
+		
+		[Test]
+		public function mediatorIsMappedAndCreatedWithInjectViewAsArrayOfSameClass():void {
+			mediatorMap.mapView(ViewComponent, ViewMediator, [ViewComponent], false, false);
+			var viewComponent:ViewComponent = new ViewComponent();
+			contextView.addChild(viewComponent);
+			var mediator:IMediator = mediatorMap.createMediator(viewComponent);
+			var exactMediator:ViewMediator = mediator as ViewMediator;
+			Assert.assertNotNull('Mediator should have been created', mediator);
+			Assert.assertTrue('Mediator should have been created of the exact desired class', mediator is ViewMediator);
+			Assert.assertTrue('Mediator should have been created for View Component', mediatorMap.hasMediatorForView(viewComponent));
+			Assert.assertNotNull('View Component should have been injected into Mediator', exactMediator.view);
+			Assert.assertTrue('View Component injected should match the desired class type', exactMediator.view is ViewComponent);
+		}
+		
+		[Test]
+		public function mediatorIsMappedAndCreatedWithInjectViewAsArrayOfRelatedClass():void {
+			mediatorMap.mapView(ViewComponentAdvanced, ViewMediatorAdvanced, [ViewComponent, ViewComponentAdvanced], false, false);
+			var viewComponentAdvanced:ViewComponentAdvanced = new ViewComponentAdvanced();
+			contextView.addChild(viewComponentAdvanced);
+			var mediator:IMediator = mediatorMap.createMediator(viewComponentAdvanced);
+			var exactMediator:ViewMediatorAdvanced = mediator as ViewMediatorAdvanced;
+			Assert.assertNotNull('Mediator should have been created', mediator);
+			Assert.assertTrue('Mediator should have been created of the exact desired class', mediator is ViewMediatorAdvanced);
+			Assert.assertTrue('Mediator should have been created for View Component', mediatorMap.hasMediatorForView(viewComponentAdvanced));
+			Assert.assertNotNull('First Class in the "injectViewAs" array should have been injected into Mediator', exactMediator.view);
+			Assert.assertNotNull('Second Class in the "injectViewAs" array should have been injected into Mediator', exactMediator.viewAdvanced);
+			Assert.assertTrue('First Class injected via the "injectViewAs" array should match the desired class type', exactMediator.view is ViewComponent);
+			Assert.assertTrue('Second Class injected via the "injectViewAs" array should match the desired class type', exactMediator.viewAdvanced is ViewComponentAdvanced);
 		}
 		
 		

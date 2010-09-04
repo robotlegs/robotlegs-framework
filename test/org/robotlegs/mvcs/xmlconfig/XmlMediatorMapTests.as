@@ -28,6 +28,13 @@ package org.robotlegs.mvcs.xmlconfig
 					<field name='event'/>
 					<field name='testSuite'/>
 				</type>
+				<type name='org.robotlegs.mvcs.support::ViewMediator'>
+					<field name='view'/>
+				</type>
+				<type name='org.robotlegs.mvcs.support::ViewMediatorAdvanced'>
+					<field name='view'/>
+					<field name='viewAdvanced'/>
+				</type>
 			</types>;
 		
 		[Before(ui)]
