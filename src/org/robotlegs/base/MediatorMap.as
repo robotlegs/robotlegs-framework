@@ -90,7 +90,7 @@ package org.robotlegs.base
 		/**
 		 * @inheritDoc
 		 */
-		public function mapView(viewClassOrName:*, mediatorClass:Class, injectViewAs:Class = null, autoCreate:Boolean = true, autoRemove:Boolean = true):void
+		public function mapView(viewClassOrName:*, mediatorClass:Class, injectViewAs:* = null, autoCreate:Boolean = true, autoRemove:Boolean = true):void
 		{
 			var viewClassName:String = reflector.getFQCN(viewClassOrName);
 			if (mappingConfigByViewClassName[viewClassName] != null)
@@ -107,11 +107,18 @@ package org.robotlegs.base
 			config.autoRemove = autoRemove;
 			if (injectViewAs)
 			{
-				config.typedViewClass = injectViewAs;
+				if (injectViewAs is Array)
+				{
+					config.typedViewClasses = (injectViewAs as Array).concat();
+				}
+				else if (injectViewAs is Class)
+				{
+					config.typedViewClasses = [injectViewAs];
+				}
 			}
 			else if (viewClassOrName is Class)
 			{
-				config.typedViewClass = viewClassOrName;
+				config.typedViewClasses = [viewClassOrName];
 			}
 			mappingConfigByViewClassName[viewClassName] = config;
 			if (autoCreate && contextView && (viewClassName == getQualifiedClassName(contextView) ))
@@ -142,9 +149,13 @@ package org.robotlegs.base
 				var config:MappingConfig = mappingConfigByViewClassName[viewClassName];
 				if (config)
 				{
-					injector.mapValue(config.typedViewClass, viewComponent);
+					for each (var claxx:Class in config.typedViewClasses) {
+						injector.mapValue(claxx, viewComponent);
+					}
 					mediator = injector.instantiate(config.mediatorClass);
-					injector.unmap(config.typedViewClass);
+					for each (var clazz:Class in config.typedViewClasses) {
+						injector.unmap(clazz);
+					}
 					registerMediator(viewComponent, mediator);
 				}
 			}
@@ -303,7 +314,7 @@ package org.robotlegs.base
 class MappingConfig
 {
 	public var mediatorClass:Class;
-	public var typedViewClass:Class;
+	public var typedViewClasses:Array;
 	public var autoCreate:Boolean;
 	public var autoRemove:Boolean;
 }
