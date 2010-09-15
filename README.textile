@@ -13,10 +13,10 @@ Robotlegs enables:
 
 h3. Getting Started
 
-* "Brief Overview":http://wiki.github.com/robotlegs/robotlegs-framework/overview
-* "Common Problems":http://wiki.github.com/robotlegs/robotlegs-framework/common-problems
-* "Best Practices":http://wiki.github.com/robotlegs/robotlegs-framework/best-practices
-* "Robotlegs Internals":http://wiki.github.com/robotlegs/robotlegs-framework/robotlegs-internals
+* "Brief Overview":http://github.com/robotlegs/robotlegs-framework/wiki/Overview
+* "Common Problems":http://github.com/robotlegs/robotlegs-framework/wiki/Common-Problems
+* "Best Practices":http://github.com/robotlegs/robotlegs-framework/wiki/Best-Practices
+* "Robotlegs Internals":http://github.com/robotlegs/robotlegs-framework/wiki/Robotlegs-Internals
 
 h3. Code
 
