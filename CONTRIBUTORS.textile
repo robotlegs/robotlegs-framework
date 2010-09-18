@@ -1,11 +1,3 @@
 h2. Framework Contributors
 
-* "Shaun Smith":http://github.com/darscan
-* "Till Schneidereit":http://github.com/tschneidereit
-* "Robert Penner":http://github.com/robertpenner
-* "Joel Hooks":http://github.com/joelhooks
-* "Sean Hess":http://github.com/seanhess
-* "Jonnie Hallman":http://github.com/destroytoday
-* "Craig Wickesser":http://github.com/codecraig
-* "Jon Toland":http://github.com/dnalot
-* "Simon Gregory":http://github.com/simongregory
+"robotlegs-framework/contributors":http://github.com/robotlegs/robotlegs-framework/contributors

@@ -1,5 +1,10 @@
 h2. Robotlegs Framework Changelog:
 
+h3. v1.2.0
+
+*MediatorMap.mapView*
+The injectViewAs parameter is changed from expecting a Class to expecting a Class or an Array of Classes.
+
 h3. v1.1.2
 
 *ASDocs*
