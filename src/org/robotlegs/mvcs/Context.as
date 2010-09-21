@@ -129,8 +129,10 @@ package org.robotlegs.mvcs
 			if (_contextView != value)
 			{
 				_contextView = value;
-				mediatorMap.contextView = value;
-				viewMap.contextView = value;
+				// Hack: We have to clear these out and re-map them
+				_commandMap = null;
+				_mediatorMap = null;
+				_viewMap = null;
 				mapInjections();
 				checkAutoStartup();
 			}
@@ -145,7 +147,7 @@ package org.robotlegs.mvcs
 		 */
 		protected function get injector():IInjector
 		{
-			return _injector || (_injector = new SwiftSuspendersInjector());
+			return _injector ||= new SwiftSuspendersInjector();
 		}
 		
 		/**
@@ -161,7 +163,7 @@ package org.robotlegs.mvcs
 		 */
 		protected function get reflector():IReflector
 		{
-			return _reflector || (_reflector = new SwiftSuspendersReflector());
+			return _reflector ||= new SwiftSuspendersReflector();
 		}
 		
 		/**
@@ -177,7 +179,7 @@ package org.robotlegs.mvcs
 		 */
 		protected function get commandMap():ICommandMap
 		{
-			return _commandMap || (_commandMap = new CommandMap(eventDispatcher, injector.createChild(), reflector));
+			return _commandMap ||= new CommandMap(eventDispatcher, createChildInjector(), reflector);
 		}
 		
 		/**
@@ -193,7 +195,7 @@ package org.robotlegs.mvcs
 		 */
 		protected function get mediatorMap():IMediatorMap
 		{
-			return _mediatorMap || (_mediatorMap = new MediatorMap(contextView, injector.createChild(), reflector));
+			return _mediatorMap ||= new MediatorMap(contextView, createChildInjector(), reflector);
 		}
 		
 		/**
@@ -209,7 +211,7 @@ package org.robotlegs.mvcs
 		 */
 		protected function get viewMap():IViewMap
 		{
-			return _viewMap || (_viewMap = new ViewMap(contextView, injector));
+			return _viewMap ||= new ViewMap(contextView, injector);
 		}
 		
 		/**
@@ -265,6 +267,16 @@ package org.robotlegs.mvcs
 		{
 			contextView.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			startup();
+		}
+		
+		/**
+		 * @private
+		 */
+		protected function createChildInjector():IInjector
+		{
+			if (contextView && contextView.loaderInfo)
+				return injector.createChild(contextView.loaderInfo.applicationDomain);
+			return injector.createChild();
 		}
 	
 	}
