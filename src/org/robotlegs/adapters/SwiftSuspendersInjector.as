@@ -56,9 +56,25 @@ package org.robotlegs.adapters
 		public function createChild(applicationDomain:ApplicationDomain = null):IInjector
 		{
 			var injector:SwiftSuspendersInjector = new SwiftSuspendersInjector();
-            injector.setApplicationDomain(applicationDomain);
+			injector.setApplicationDomain(applicationDomain);
 			injector.setParentInjector(this);
 			return injector;
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function get applicationDomain():ApplicationDomain
+		{
+			return getApplicationDomain();
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function set applicationDomain(value:ApplicationDomain):void
+		{
+			setApplicationDomain(value);
 		}
 	
 	}

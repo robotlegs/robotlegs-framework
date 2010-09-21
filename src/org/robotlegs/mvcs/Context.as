@@ -10,6 +10,7 @@ package org.robotlegs.mvcs
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
+	import flash.system.ApplicationDomain;
 	
 	import org.robotlegs.adapters.SwiftSuspendersInjector;
 	import org.robotlegs.adapters.SwiftSuspendersReflector;
@@ -130,6 +131,7 @@ package org.robotlegs.mvcs
 			{
 				_contextView = value;
 				// Hack: We have to clear these out and re-map them
+				_injector.applicationDomain = getApplicationDomainFromContextView();
 				_commandMap = null;
 				_mediatorMap = null;
 				_viewMap = null;
@@ -147,7 +149,7 @@ package org.robotlegs.mvcs
 		 */
 		protected function get injector():IInjector
 		{
-			return _injector ||= new SwiftSuspendersInjector();
+			return _injector ||= createInjector();
 		}
 		
 		/**
@@ -272,11 +274,29 @@ package org.robotlegs.mvcs
 		/**
 		 * @private
 		 */
+		protected function createInjector():IInjector
+		{
+			var injector:IInjector = new SwiftSuspendersInjector();
+			injector.applicationDomain = getApplicationDomainFromContextView();
+			return injector;
+		}
+		
+		/**
+		 * @private
+		 */
 		protected function createChildInjector():IInjector
 		{
+			return injector.createChild(getApplicationDomainFromContextView());
+		}
+		
+		/**
+		 * @private
+		 */
+		protected function getApplicationDomainFromContextView():ApplicationDomain
+		{
 			if (contextView && contextView.loaderInfo)
-				return injector.createChild(contextView.loaderInfo.applicationDomain);
-			return injector.createChild();
+				return contextView.loaderInfo.applicationDomain;
+			return ApplicationDomain.currentDomain;
 		}
 	
 	}

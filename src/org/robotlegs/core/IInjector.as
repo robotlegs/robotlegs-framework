@@ -149,5 +149,15 @@ package org.robotlegs.core
 		 */		
 		function hasMapping(clazz:Class, named:String = ""):Boolean;
 		
+		/**
+		 * @return The Application Domain
+		 */		
+		function get applicationDomain():ApplicationDomain;
+		
+		/**
+		 * @param value The Application Domain
+		 */		
+		function set applicationDomain(value:ApplicationDomain):void;
+		
 	}
 }
