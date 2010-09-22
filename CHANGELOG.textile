@@ -1,5 +1,10 @@
 h2. Robotlegs Framework Changelog:
 
+h3. v1.3.0
+
+*ApplicationDomain*
+Added applicationDomain getter/setter to IInjector to help with Application Domains.
+
 h3. v1.2.0
 
 *MediatorMap.mapView*
