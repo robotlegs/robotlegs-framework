@@ -125,7 +125,6 @@ package org.robotlegs.base
 			{
 				createMediatorUsing(contextView, viewClassName, config);
 			}
-			activate();
 		}
 		
 		/**
@@ -222,7 +221,7 @@ package org.robotlegs.base
 		 */		
 		protected override function addListeners():void
 		{
-			if (contextView && enabled && _active)
+			if (contextView && enabled)
 			{
 				contextView.addEventListener(Event.ADDED_TO_STAGE, onViewAdded, useCapture, 0, true);
 				contextView.addEventListener(Event.REMOVED_FROM_STAGE, onViewRemoved, useCapture, 0, true);
@@ -234,7 +233,7 @@ package org.robotlegs.base
 		 */		
 		protected override function removeListeners():void
 		{
-			if (contextView && enabled && _active)
+			if (contextView && enabled)
 			{
 				contextView.removeEventListener(Event.ADDED_TO_STAGE, onViewAdded, useCapture);
 				contextView.removeEventListener(Event.REMOVED_FROM_STAGE, onViewRemoved, useCapture);

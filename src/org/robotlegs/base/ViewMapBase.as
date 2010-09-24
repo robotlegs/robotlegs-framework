@@ -25,11 +25,6 @@ package org.robotlegs.base
 		/**
 		 * @private
 		 */
-		protected var _active:Boolean = true;
-		
-		/**
-		 * @private
-		 */
 		protected var _contextView:DisplayObjectContainer;
 		
 		/**
@@ -111,18 +106,6 @@ package org.robotlegs.base
 		//---------------------------------------------------------------------
 		// Internal
 		//---------------------------------------------------------------------
-		
-		/**
-		 * @private
-		 */
-		protected function activate():void
-		{
-			if (!_active)
-			{
-				_active = true;
-				addListeners();
-			}
-		}
 		
 		/**
 		 * @private
