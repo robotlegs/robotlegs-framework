@@ -123,7 +123,7 @@ package org.robotlegs.base
 			mappingConfigByViewClassName[viewClassName] = config;
 			if (autoCreate && contextView && (viewClassName == getQualifiedClassName(contextView) ))
 			{
-				createMediator(contextView);
+				createMediatorUsing(contextView, viewClassName, config);
 			}
 			activate();
 		}
@@ -142,24 +142,7 @@ package org.robotlegs.base
 		 */
 		public function createMediator(viewComponent:Object):IMediator
 		{
-			var mediator:IMediator = mediatorByView[viewComponent];
-			if (mediator == null)
-			{
-				var viewClassName:String = getQualifiedClassName(viewComponent);
-				var config:MappingConfig = mappingConfigByViewClassName[viewClassName];
-				if (config)
-				{
-					for each (var claxx:Class in config.typedViewClasses) {
-						injector.mapValue(claxx, viewComponent);
-					}
-					mediator = injector.instantiate(config.mediatorClass);
-					for each (var clazz:Class in config.typedViewClasses) {
-						injector.unmap(clazz);
-					}
-					registerMediator(viewComponent, mediator);
-				}
-			}
-			return mediator;
+			return createMediatorUsing(viewComponent);
 		}
 		
 		/**
@@ -268,12 +251,40 @@ package org.robotlegs.base
 				delete mediatorsMarkedForRemoval[e.target];
 				return;
 			}
-			var config:MappingConfig = mappingConfigByViewClassName[getQualifiedClassName(e.target)];
+			var viewClassName:String = getQualifiedClassName(e.target);
+			var config:MappingConfig = mappingConfigByViewClassName[viewClassName];
 			if (config && config.autoCreate)
 			{
-				createMediator(e.target);
+				createMediatorUsing(e.target, viewClassName, config);
 			}
 		}
+		
+		/**
+		 * @private
+		 */		
+		protected function createMediatorUsing(viewComponent:Object, viewClassName:String = '', config:MappingConfig = null):IMediator
+		{
+			var mediator:IMediator = mediatorByView[viewComponent];
+			if (mediator == null)
+			{
+				viewClassName ||= getQualifiedClassName(viewComponent);
+				config ||= mappingConfigByViewClassName[viewClassName];
+				if (config)
+				{
+					for each (var claxx:Class in config.typedViewClasses) 
+					{
+						injector.mapValue(claxx, viewComponent);
+					}
+					mediator = injector.instantiate(config.mediatorClass);
+					for each (var clazz:Class in config.typedViewClasses) 
+					{
+						injector.unmap(clazz);
+					}
+					registerMediator(viewComponent, mediator);
+				}
+			}
+			return mediator;			
+		}		
 		
 		/**
 		 * Flex framework work-around part #5
