@@ -20,9 +20,9 @@ package org.robotlegs.core
 		 *
 		 * @param viewClassOrName The concrete view Class or Fully Qualified Class Name
 		 * @param mediatorClass The <code>IMediator</code> Class
-		 * @param injectViewAs The explicit view Interface or Class that the mediator depends on OR an Array of such Interfaces/Classess.
+		 * @param injectViewAs The explicit view Interface or Class that the mediator depends on OR an Array of such Interfaces/Classes.
 		 * @param autoCreate Automatically construct and register an instance of Class <code>mediatorClass</code> when an instance of Class <code>viewClass</code> is detected
-		 * @param autoRemove Automatically remove an instance of Class <code>mediatorClass</code> when it's <code>viewClass</code> leaves the ancestory of the context view
+		 * @param autoRemove Automatically remove an instance of Class <code>mediatorClass</code> when its <code>viewClass</code> leaves the ancestory of the context view
 		 */
 		function mapView(viewClassOrName:*, mediatorClass:Class, injectViewAs:* = null, autoCreate:Boolean = true, autoRemove:Boolean = true):void;
 		
@@ -47,7 +47,7 @@ package org.robotlegs.core
 		/**
 		 * Manually register an <code>IMediator</code> instance
 		 *
-		 * <p>NOTE: Registering a Mediator will NOT inject it's dependencies.
+		 * <p>NOTE: Registering a Mediator will NOT inject its dependencies.
 		 * It is assumed that dependencies are already satisfied.</p>
 		 *
 		 * @param viewComponent The view component for the <code>IMediator</code>
