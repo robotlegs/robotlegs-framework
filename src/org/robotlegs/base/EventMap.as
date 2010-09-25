@@ -85,7 +85,7 @@ package org.robotlegs.base
 			{
 				throw new ContextError(ContextError.E_EVENTMAP_NOSNOOPING);
 			}
-			eventClass = eventClass || Event;
+			eventClass ||= Event;
 			
 			var params:Object;
 			var i:int = listeners.length;
@@ -130,7 +130,7 @@ package org.robotlegs.base
 		 */
 		public function unmapListener(dispatcher:IEventDispatcher, type:String, listener:Function, eventClass:Class = null, useCapture:Boolean = false):void
 		{
-			eventClass = eventClass || Event;
+			eventClass ||= Event;
 			var params:Object;
 			var i:int = listeners.length;
 			while (i--)

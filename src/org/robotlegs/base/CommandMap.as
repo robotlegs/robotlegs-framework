@@ -85,11 +85,9 @@ package org.robotlegs.base
 			verifyCommandClass(commandClass);
 			eventClass = eventClass || Event;
 			
-			var eventClassMap:Dictionary = eventTypeMap[eventType]
-				|| (eventTypeMap[eventType] = new Dictionary(false));
+			var eventClassMap:Dictionary = eventTypeMap[eventType] ||= new Dictionary(false);
 				
-			var callbacksByCommandClass:Dictionary = eventClassMap[eventClass]
-				|| (eventClassMap[eventClass] = new Dictionary(false));
+			var callbacksByCommandClass:Dictionary = eventClassMap[eventClass] ||= new Dictionary(false);
 				
 			if (callbacksByCommandClass[commandClass] != null)
 			{
