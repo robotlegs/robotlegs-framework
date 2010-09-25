@@ -95,12 +95,7 @@ package org.robotlegs.base
 		 */
 		public function set enabled(value:Boolean):void
 		{
-			if (value != _enabled)
-			{
-				removeListeners();
-				_enabled = value;
-				addListeners();
-			}
+			_enabled = value;
 		}
 		
 		//---------------------------------------------------------------------
