@@ -80,6 +80,15 @@ package org.robotlegs.core
 		function retrieveMediator(viewComponent:Object):IMediator;
 		
 		/**
+		 * Check if the view Class has been mapped or not
+		 * 
+		 * @param viewClassOrName The concrete view Class or Fully Qualified Class Name
+		 * 
+		 * @return Whether this view class has been mapped
+		 */
+		function hasMapping(viewClassOrName:*):Boolean
+		
+		/**
 		 * Check if the <code>IMediator</code> has been registered
 		 *
 		 * @param mediator The <code>IMediator</code> instance
