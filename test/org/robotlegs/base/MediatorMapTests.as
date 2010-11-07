@@ -84,8 +84,10 @@ package org.robotlegs.base
 			var viewComponent:ViewComponent = new ViewComponent();
 			contextView.addChild(viewComponent);
 			var mediator:IMediator = mediatorMap.createMediator(viewComponent);
+			var hasMapping:Boolean = mediatorMap.hasMapping(ViewComponent);
 			Assert.assertNotNull('Mediator should have been created ', mediator);
 			Assert.assertTrue('Mediator should have been created for View Component', mediatorMap.hasMediatorForView(viewComponent));
+			Assert.assertTrue('View mapping should exist for View Component', hasMapping);
 		}
 		
 		[Test]
@@ -257,7 +259,9 @@ package org.robotlegs.base
 			var viewComponent:ViewComponent = new ViewComponent();
 			contextView.addChild(viewComponent);
 			var hasMediator:Boolean = mediatorMap.hasMediatorForView(viewComponent);
+			var hasMapping:Boolean = mediatorMap.hasMapping(ViewComponent);
 			Assert.assertFalse('Mediator should NOT have been created for View Component', hasMediator);
+			Assert.assertFalse('View mapping should NOT exist for View Component', hasMapping);
 		}
 		
 		[Test]

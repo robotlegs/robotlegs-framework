@@ -206,6 +206,15 @@ package org.robotlegs.base
 		/**
 		 * @inheritDoc
 		 */
+		public function hasMapping(viewClassOrName:*):Boolean
+		{
+			var viewClassName:String = reflector.getFQCN(viewClassOrName);
+			return (mappingConfigByViewClassName[viewClassName] != null);
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
 		public function hasMediatorForView(viewComponent:Object):Boolean
 		{
 			return mediatorByView[viewComponent] != null;
