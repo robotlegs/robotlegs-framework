@@ -86,7 +86,7 @@ package org.robotlegs.core
 		 * 
 		 * @return Whether this view class has been mapped
 		 */
-		function hasMapping(viewClassOrName:*):Boolean
+		function hasMapping(viewClassOrName:*):Boolean;
 		
 		/**
 		 * Check if the <code>IMediator</code> has been registered

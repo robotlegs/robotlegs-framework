@@ -1,5 +1,13 @@
 h2. Robotlegs Framework Changelog:
 
+h3. v1.4.0
+
+*ViewMap & MediatorMap*
+contextView stage listener optimizations.
+
+*MediatorMap*
+Added IMediatorMap#hasMapping(viewClassOrName:*):Boolean;
+
 h3. v1.3.0
 
 *ApplicationDomain*
