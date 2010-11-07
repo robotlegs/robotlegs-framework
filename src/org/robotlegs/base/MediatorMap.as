@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009 the original author or authors
+ * Copyright (c) 2009, 2010 the original author or authors
  * 
  * Permission is hereby granted to use, modify, and distribute this file 
  * in accordance with the terms of the license agreement accompanying it.
@@ -59,6 +59,7 @@ package org.robotlegs.base
 		 */
 		protected var reflector:IReflector;
 		
+		
 		//---------------------------------------------------------------------
 		//  Constructor
 		//---------------------------------------------------------------------
@@ -93,14 +94,13 @@ package org.robotlegs.base
 		public function mapView(viewClassOrName:*, mediatorClass:Class, injectViewAs:* = null, autoCreate:Boolean = true, autoRemove:Boolean = true):void
 		{
 			var viewClassName:String = reflector.getFQCN(viewClassOrName);
+			
 			if (mappingConfigByViewClassName[viewClassName] != null)
-			{
 				throw new ContextError(ContextError.E_MEDIATORMAP_OVR + ' - ' + mediatorClass);
-			}
+			
 			if (reflector.classExtendsOrImplements(mediatorClass, IMediator) == false)
-			{
 				throw new ContextError(ContextError.E_MEDIATORMAP_NOIMPL + ' - ' + mediatorClass);
-			}
+			
 			var config:MappingConfig = new MappingConfig();
 			config.mediatorClass = mediatorClass;
 			config.autoCreate = autoCreate;
@@ -121,10 +121,17 @@ package org.robotlegs.base
 				config.typedViewClasses = [viewClassOrName];
 			}
 			mappingConfigByViewClassName[viewClassName] = config;
-			if (autoCreate && contextView && (viewClassName == getQualifiedClassName(contextView) ))
+			
+			if (autoCreate || autoRemove)
 			{
-				createMediatorUsing(contextView, viewClassName, config);
+				viewListenerCount++;
+				if (viewListenerCount == 1)
+					addListeners();
 			}
+			
+			// This was a bad idea - causes unexpected eager instantiation of object graph 
+			if (autoCreate && contextView && (viewClassName == getQualifiedClassName(contextView) ))
+				createMediatorUsing(contextView, viewClassName, config);
 		}
 		
 		/**
@@ -132,7 +139,14 @@ package org.robotlegs.base
 		 */
 		public function unmapView(viewClassOrName:*):void
 		{
-			var viewClassName:String = reflector.getFQCN(viewClassOrName); 
+			var viewClassName:String = reflector.getFQCN(viewClassOrName);
+			var config:MappingConfig = mappingConfigByViewClassName[viewClassName];
+			if (config && (config.autoCreate || config.autoRemove))
+			{
+				viewListenerCount--;
+				if (viewListenerCount == 0)
+					removeListeners();
+			}
 			delete mappingConfigByViewClassName[viewClassName];
 		}
 		
@@ -203,12 +217,8 @@ package org.robotlegs.base
 		public function hasMediator(mediator:IMediator):Boolean
 		{
 			for each (var med:IMediator in mediatorByView)
-			{
 				if (med == mediator)
-				{
 					return true;
-				}
-			}
 			return false;
 		}
 		
@@ -233,7 +243,7 @@ package org.robotlegs.base
 		 */		
 		protected override function removeListeners():void
 		{
-			if (contextView && enabled)
+			if (contextView)
 			{
 				contextView.removeEventListener(Event.ADDED_TO_STAGE, onViewAdded, useCapture);
 				contextView.removeEventListener(Event.REMOVED_FROM_STAGE, onViewRemoved, useCapture);
@@ -253,9 +263,7 @@ package org.robotlegs.base
 			var viewClassName:String = getQualifiedClassName(e.target);
 			var config:MappingConfig = mappingConfigByViewClassName[viewClassName];
 			if (config && config.autoCreate)
-			{
 				createMediatorUsing(e.target, viewClassName, config);
-			}
 		}
 		
 		/**
@@ -311,9 +319,7 @@ package org.robotlegs.base
 			for each (var view:DisplayObject in mediatorsMarkedForRemoval)
 			{
 				if (!view.stage)
-				{
 					removeMediatorByView(view);
-				}
 				delete mediatorsMarkedForRemoval[view];
 			}
 			hasMediatorsMarkedForRemoval = false;
