@@ -11,7 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.robotlegs</groupId>
     <artifactId>robotlegs-framework</artifactId>
-    <version>1.0.3</version>
+    <version>1.3.0</version>
 	<packaging>swc</packaging>
     <name>Robotlegs Framework</name>
     <description>Robotlegs is a pure AS3 micro-architecture (framework) with a light footprint and limited scope. Simply put, Robotlegs is there to help you wire your objects together. It provides the glue that your application needs to easily function in a decoupled way. Through the use of automated metadata based dependency injection Robotlegs removes boilerplate code in an application. By promoting loose coupling and avoiding the use of Singletons and statics in the framework Robotlegs can help you write code that is highly testable.</description>
