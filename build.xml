@@ -65,6 +65,7 @@
       <arg value="-static-link-runtime-shared-libraries=true"/>
       <arg value="-verbose-stacktraces=true"/>
       <arg value="-headless-server=true"/>
+      <arg line="-include-file=metadata.xml,'${main.src.loc}'/metadata.xml" />
     </java>
     <echo>[compile] Release SWC ${project.name.versioned}.swc created successfully</echo>
   </target>

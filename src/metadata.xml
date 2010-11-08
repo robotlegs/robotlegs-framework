@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<annotations version="1.0">
+	<metadata name="Inject" description="Robotlegs dependency injection">
+		<context name="variable" />
+		<context name="setter" />
+		<context name="method" />
+		<attribute name="name" type="String" description="Name for a named injection" />
+	</metadata>
+	<metadata name="PostConstruct" description="Robotlegs flag to automatically call this method after object construction (after injected properties are available)">
+		<context name="method" />
+	</metadata>
+</annotations>
