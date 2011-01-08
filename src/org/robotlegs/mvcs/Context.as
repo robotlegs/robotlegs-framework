@@ -29,6 +29,39 @@ package org.robotlegs.mvcs
 	import org.robotlegs.core.IViewMap;
 	
 	/**
+	 * Dispatched by the <code>startup()</code> method when it finishes
+	 * executing.
+	 * 
+	 * <p>One common pattern for application startup/bootstrapping makes use
+	 * of the <code>startupComplete</code> event. In this pattern, you do the
+	 * following:</p>
+	 * <ul>
+	 *   <li>Override the <code>startup()</code> method in your Context 
+	 *       subclass and set up application mappings in your 
+	 *       <code>startup()</code> override as you always do in Robotlegs.</li>
+	 *   <li>Create commands that perform startup/bootstrapping operations
+	 *       such as loading the initial data, checking for application updates,
+	 *       etc.</li>
+	 *   <li><p>Map those commands to the <code>ContextEvent.STARTUP_COMPLETE</code>
+	 *       event:</p>
+	 *       <listing>commandMap.mapEvent(ContextEvent.STARTUP_COMPLETE, LoadInitialDataCommand, ContextEvent, true):</listing>
+	 *       </li>
+	 *   <li>Dispatch the <code>startupComplete</code> (<code>ContextEvent.STARTUP_COMPLETE</code>)
+	 *       event from your <code>startup()</code> override. You can do this
+	 *       in one of two ways: dispatch the event yourself, or call 
+	 *       <code>super.startup()</code>. (The Context class's 
+	 *       <code>startup()</code> method dispatches the 
+	 *       <code>startupComplete</code> event.)</li>
+	 * </ul>
+	 * 
+	 * @eventType org.robotlegs.base.ContextEvent.STARTUP_COMPLETE
+	 * 
+	 * @see #startup()
+	 */
+	[Event(name="startupComplete", type="org.robotlegs.base.ContextEvent")]
+	
+	
+	/**
 	 * Abstract MVCS <code>IContext</code> implementation
 	 */
 	public class Context extends ContextBase implements IContext
@@ -98,6 +131,14 @@ package org.robotlegs.mvcs
 		 * The Startup Hook
 		 *
 		 * <p>Override this in your Application context</p>
+		 * 
+		 * @event startupComplete ContextEvent.STARTUP_COMPLETE Dispatched at the end of the
+		 *                        <code>startup()</code> method's execution. This
+		 *                        is often used to trigger startup/bootstrapping
+		 *                        commands by wiring them to this event and 
+		 *                        calling <code>super.startup()</code> in the 
+		 *                        last line of your <code>startup()</code>
+		 *                        override.
 		 */
 		public function startup():void
 		{
