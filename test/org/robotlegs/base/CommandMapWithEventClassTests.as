@@ -19,9 +19,10 @@ package org.robotlegs.base
 	import org.robotlegs.core.ICommandMap;
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IReflector;
-	import org.robotlegs.mvcs.support.ICommandTest;
-	import org.robotlegs.mvcs.support.CustomEventCommand;
+	import org.robotlegs.mvcs.support.BlendCommand;
 	import org.robotlegs.mvcs.support.CustomEvent;
+	import org.robotlegs.mvcs.support.CustomEventCommand;
+	import org.robotlegs.mvcs.support.ICommandTest;
 	
 	public class CommandMapWithEventClassTests implements ICommandTest
 	{
@@ -164,7 +165,22 @@ package org.robotlegs.base
 			commandMap.mapEvent(CustomEvent.STARTED, CustomEventCommand, CustomEvent);
 			commandMap.mapEvent(CustomEvent.STARTED, CustomEventCommand, CustomEvent);
 		}
-		
+
+		[Test]
+		public function blendCommand():void
+		{
+			commandMap.mapEvent(Event.COMPLETE, BlendCommand, Event);
+			commandMap.mapEvent(CustomEvent.STARTED, BlendCommand, CustomEvent);
+
+			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
+			Assert.assertTrue('Command should have reponded to event', commandExecuted);
+
+			resetCommandExecuted();
+
+			eventDispatcher.dispatchEvent(new CustomEvent(CustomEvent.STARTED));
+			Assert.assertTrue('Command should have reponded to event', commandExecuted);
+		}
+
 		public function markCommandExecuted():void
 		{
 			commandExecuted = true;

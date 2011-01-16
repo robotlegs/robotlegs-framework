@@ -20,9 +20,14 @@ package org.robotlegs.mvcs.xmlconfig
 		protected static const XML_CONFIG : XML =
 			<types>
 				<type name='org.robotlegs.mvcs.support::EventCommand'>
+					<field name='event'/>
 					<field name='testSuite'/>
 				</type>
 				<type name='org.robotlegs.base.support::ManualCommand'>
+					<field name='testSuite'/>
+				</type>
+				<type name='org.robotlegs.mvcs.support::BlendCommand'>
+					<field name='event'/>
 					<field name='testSuite'/>
 				</type>
 			</types>;

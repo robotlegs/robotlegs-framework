@@ -7,6 +7,7 @@
 
 package org.robotlegs.base
 {
+	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
 	
@@ -18,6 +19,7 @@ package org.robotlegs.base
 	import org.robotlegs.core.ICommandMap;
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IReflector;
+	import org.robotlegs.mvcs.support.BlendCommand;
 	import org.robotlegs.mvcs.support.CustomEvent;
 	import org.robotlegs.mvcs.support.EventCommand;
 	import org.robotlegs.mvcs.support.ICommandTest;
@@ -148,7 +150,22 @@ package org.robotlegs.base
 			commandMap.mapEvent(CustomEvent.STARTED, EventCommand);
 			commandMap.mapEvent(CustomEvent.STARTED, EventCommand);
 		}
-		
+
+		[Test]
+		public function blendCommand():void
+		{
+			commandMap.mapEvent(Event.COMPLETE, BlendCommand);
+			commandMap.mapEvent(CustomEvent.STARTED, BlendCommand);
+
+			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
+			Assert.assertTrue('Command should have reponded to event', commandExecuted);
+
+			resetCommandExecuted();
+
+			eventDispatcher.dispatchEvent(new CustomEvent(CustomEvent.STARTED));
+			Assert.assertTrue('Command should have reponded to event', commandExecuted);
+		}
+
 		public function markCommandExecuted():void
 		{
 			commandExecuted = true;

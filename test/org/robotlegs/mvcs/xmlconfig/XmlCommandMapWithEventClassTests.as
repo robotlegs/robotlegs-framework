@@ -21,6 +21,11 @@ package org.robotlegs.mvcs.xmlconfig
 			<types>
 				<type name='org.robotlegs.mvcs.support::CustomEventCommand'>
 					<field name='event'/>
+					<field name='customEvent'/>
+					<field name='testSuite'/>
+				</type>
+				<type name='org.robotlegs.mvcs.support::BlendCommand'>
+					<field name='event'/>
 					<field name='testSuite'/>
 				</type>
 			</types>;

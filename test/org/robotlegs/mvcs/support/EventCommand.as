@@ -7,16 +7,22 @@
 
 package org.robotlegs.mvcs.support
 {
+
 	import flash.events.Event;
 
 	public class EventCommand
 	{
+
+		[Inject]
+		public var event:Event;
+
 		[Inject]
 		public var testSuite:ICommandTest;
 		
 		public function execute():void
 		{
-			testSuite.markCommandExecuted();
+			if (event)
+				testSuite.markCommandExecuted();
 		}
 	
 	}
