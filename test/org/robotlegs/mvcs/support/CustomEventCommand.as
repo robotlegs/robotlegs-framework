@@ -7,25 +7,17 @@
 
 package org.robotlegs.mvcs.support
 {
-
-	import flash.events.Event;
-
 	public class CustomEventCommand
 	{
-
 		[Inject]
-		public var event:Event;
-
-		[Inject]
-		public var customEvent:CustomEvent;
+		public var event:CustomEvent;
 		
 		[Inject]
 		public var testSuite:ICommandTest;
 		
 		public function execute():void
 		{
-			if (event == customEvent)
-				testSuite.markCommandExecuted();
+			testSuite.markCommandExecuted();
 		}
 	
 	}
