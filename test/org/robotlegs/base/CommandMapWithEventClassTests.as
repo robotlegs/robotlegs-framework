@@ -7,7 +7,6 @@
 
 package org.robotlegs.base
 {
-	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
 	import flash.events.MouseEvent;
@@ -15,13 +14,12 @@ package org.robotlegs.base
 	import org.flexunit.Assert;
 	import org.robotlegs.adapters.SwiftSuspendersInjector;
 	import org.robotlegs.adapters.SwiftSuspendersReflector;
-	import org.robotlegs.base.CommandMap;
 	import org.robotlegs.core.ICommandMap;
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IReflector;
-	import org.robotlegs.mvcs.support.ICommandTest;
-	import org.robotlegs.mvcs.support.CustomEventCommand;
 	import org.robotlegs.mvcs.support.CustomEvent;
+	import org.robotlegs.mvcs.support.CustomEventCommand;
+	import org.robotlegs.mvcs.support.ICommandTest;
 	
 	public class CommandMapWithEventClassTests implements ICommandTest
 	{

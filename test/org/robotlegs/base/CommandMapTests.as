@@ -13,7 +13,6 @@ package org.robotlegs.base
 	import org.flexunit.Assert;
 	import org.robotlegs.adapters.SwiftSuspendersInjector;
 	import org.robotlegs.adapters.SwiftSuspendersReflector;
-	import org.robotlegs.base.CommandMap;
 	import org.robotlegs.base.support.ManualCommand;
 	import org.robotlegs.core.ICommandMap;
 	import org.robotlegs.core.IInjector;
