@@ -164,7 +164,7 @@ package org.robotlegs.base
 				payloadClass ||= reflector.getClass(payload);
 
 				if (payload is Event && payloadClass != Event)
-					injector.mapValue(Event, payload, named);
+					injector.mapValue(Event, payload);
 
 				injector.mapValue(payloadClass, payload, named);
 			}
@@ -174,7 +174,7 @@ package org.robotlegs.base
 			if (payload !== null || payloadClass != null)
 			{
 				if (payload is Event && payloadClass != Event)
-					injector.unmap(Event, named);
+					injector.unmap(Event);
 
 				injector.unmap(payloadClass, named);
 			}
