@@ -28,6 +28,11 @@ package org.robotlegs.mvcs.xmlconfig
 					<field name='event'/>
 					<field name='customEvent'/>
 				</type>
+				<type name='org.robotlegs.mvcs.support::AbstractEventNamedCommand'>
+					<field name='testSuite'/>
+					<field name='event'/>
+					<field name='customEvent' injectionname='custom'/>
+				</type>
 			</types>;
 		
 		[Before]

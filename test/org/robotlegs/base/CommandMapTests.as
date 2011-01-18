@@ -18,6 +18,7 @@ package org.robotlegs.base
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IReflector;
 	import org.robotlegs.mvcs.support.AbstractEventCommand;
+	import org.robotlegs.mvcs.support.AbstractEventNamedCommand;
 	import org.robotlegs.mvcs.support.CustomEvent;
 	import org.robotlegs.mvcs.support.EventCommand;
 	import org.robotlegs.mvcs.support.ICommandTest;
@@ -155,6 +156,16 @@ package org.robotlegs.base
 			commandMap.mapEvent(CustomEvent.STARTED, AbstractEventCommand);
 			eventDispatcher.dispatchEvent(new CustomEvent(CustomEvent.STARTED));
 			Assert.assertTrue('Command should have been injected with CustomEvent and Event', commandExecuted);
+		}
+
+		[Test]
+		public function abstractEventInjectingNamedCommand():void
+		{
+			var event:CustomEvent = new CustomEvent(CustomEvent.STARTED);
+
+			commandMap.mapEvent(CustomEvent.STARTED, AbstractEventNamedCommand);
+			commandMap.execute(AbstractEventNamedCommand, event, null, "custom");
+			Assert.assertTrue('Command should have been injected with named CustomEvent and Event', commandExecuted);
 		}
 
 		public function markCommandExecuted():void
