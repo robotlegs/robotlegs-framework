@@ -7,7 +7,6 @@
 
 package org.robotlegs.base
 {
-	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
 	import flash.events.MouseEvent;
@@ -15,13 +14,14 @@ package org.robotlegs.base
 	import org.flexunit.Assert;
 	import org.robotlegs.adapters.SwiftSuspendersInjector;
 	import org.robotlegs.adapters.SwiftSuspendersReflector;
-	import org.robotlegs.base.CommandMap;
 	import org.robotlegs.core.ICommandMap;
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IReflector;
-	import org.robotlegs.mvcs.support.ICommandTest;
-	import org.robotlegs.mvcs.support.CustomEventCommand;
+	import org.robotlegs.mvcs.support.AbstractEventCommand;
+	import org.robotlegs.mvcs.support.AbstractEventNamedCommand;
 	import org.robotlegs.mvcs.support.CustomEvent;
+	import org.robotlegs.mvcs.support.CustomEventCommand;
+	import org.robotlegs.mvcs.support.ICommandTest;
 	
 	public class CommandMapWithEventClassTests implements ICommandTest
 	{
@@ -165,6 +165,24 @@ package org.robotlegs.base
 			commandMap.mapEvent(CustomEvent.STARTED, CustomEventCommand, CustomEvent);
 		}
 		
+		[Test]
+		public function abstractEventInjectingCommand():void
+		{
+			commandMap.mapEvent(CustomEvent.STARTED, AbstractEventCommand, CustomEvent);
+			eventDispatcher.dispatchEvent(new CustomEvent(CustomEvent.STARTED));
+			Assert.assertTrue('Command should have been injected with CustomEvent and Event', commandExecuted);
+		}
+
+		[Test]
+		public function abstractEventInjectingNamedCommand():void
+		{
+			var event:CustomEvent = new CustomEvent(CustomEvent.STARTED);
+
+			commandMap.mapEvent(CustomEvent.STARTED, AbstractEventNamedCommand, CustomEvent);
+			commandMap.execute(AbstractEventNamedCommand, event, CustomEvent, "custom");
+			Assert.assertTrue('Command should have been injected with named CustomEvent and Event', commandExecuted);
+		}
+
 		public function markCommandExecuted():void
 		{
 			commandExecuted = true;

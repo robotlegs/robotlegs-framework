@@ -162,13 +162,22 @@ package org.robotlegs.base
 			if (payload != null || payloadClass != null)
 			{
 				payloadClass ||= reflector.getClass(payload);
+
+				if (payload is Event && payloadClass != Event)
+					injector.mapValue(Event, payload);
+
 				injector.mapValue(payloadClass, payload, named);
 			}
 			
 			var command:Object = injector.instantiate(commandClass);
 			
 			if (payload !== null || payloadClass != null)
+			{
+				if (payload is Event && payloadClass != Event)
+					injector.unmap(Event);
+
 				injector.unmap(payloadClass, named);
+			}
 			
 			command.execute();
 		}
