@@ -101,12 +101,27 @@ package org.robotlegs.mvcs
 		 * @param useWeakReference
 		 * 
 		 */		
-		protected function addViewListener(type:String, listener:Function, eventClass:Class = null, useCapture:Boolean = false, priority:int = 0,					 useWeakReference:Boolean = true):void 
+		protected function addViewListener(type:String, listener:Function, eventClass:Class = null, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = true):void
 		{
 			eventMap.mapListener(IEventDispatcher(viewComponent), type, listener, 
 				eventClass, useCapture, priority, useWeakReference); 
 		}
-		
+
+        /**
+		 * Syntactical sugar for mapping a listener from the <code>viewComponent</code>
+		 *
+		 * @param type
+		 * @param listener
+		 * @param eventClass
+		 * @param useCapture
+		 *
+		 */
+		protected function removeViewListener(type:String, listener:Function, eventClass:Class = null, useCapture:Boolean = false):void
+		{
+			eventMap.unmapListener(IEventDispatcher(viewComponent), type, listener,
+				eventClass, useCapture);
+		}
+
 		/**
 		 * Syntactical sugar for mapping a listener to an <code>IEventDispatcher</code> 
 		 * 
@@ -123,6 +138,22 @@ package org.robotlegs.mvcs
 	 	{
 			eventMap.mapListener(eventDispatcher, type, listener, 
 				eventClass, useCapture, priority, useWeakReference); 									   
+		}
+
+		/**
+		 * Syntactical sugar for unmapping a listener from an <code>IEventDispatcher</code>
+		 *
+		 * @param dispatcher
+		 * @param type
+		 * @param listener
+		 * @param eventClass
+		 * @param useCapture
+		 *
+		 */
+		protected function removeContextListener(type:String, listener:Function, eventClass:Class = null, useCapture:Boolean = false):void
+	 	{
+			eventMap.unmapListener(eventDispatcher, type, listener,
+				eventClass, useCapture);
 		}
 	}
 }
