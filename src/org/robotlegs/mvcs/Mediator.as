@@ -14,6 +14,7 @@ package org.robotlegs.mvcs
 	import org.robotlegs.base.EventMap;
 	import org.robotlegs.base.MediatorBase;
 	import org.robotlegs.core.IEventMap;
+	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IMediatorMap;
 	
 	/**
@@ -27,6 +28,9 @@ package org.robotlegs.mvcs
 		[Inject]
 		public var mediatorMap:IMediatorMap;
 		
+		[Inject]
+		public var injector:IInjector;
+
 		/**
 		 * @private
 		 */
