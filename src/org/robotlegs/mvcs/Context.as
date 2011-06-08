@@ -16,6 +16,7 @@ package org.robotlegs.mvcs
 	import org.robotlegs.adapters.SwiftSuspendersReflector;
 	import org.robotlegs.base.CommandMap;
 	import org.robotlegs.base.ContextBase;
+	import org.robotlegs.base.ContextError;
 	import org.robotlegs.base.ContextEvent;
 	import org.robotlegs.base.EventMap;
 	import org.robotlegs.base.MediatorMap;
@@ -117,10 +118,15 @@ package org.robotlegs.mvcs
 		public function Context(contextView:DisplayObjectContainer = null, autoStartup:Boolean = true)
 		{
 			super();
+			
 			_contextView = contextView;
 			_autoStartup = autoStartup;
-			mapInjections();
-			checkAutoStartup();
+			
+			if (_contextView)
+			{
+				mapInjections();
+				checkAutoStartup();
+			}
 		}
 		
 		//---------------------------------------------------------------------
@@ -168,14 +174,12 @@ package org.robotlegs.mvcs
 		 */
 		public function set contextView(value:DisplayObjectContainer):void
 		{
-			if (_contextView != value)
+			if (_contextView)
+				throw new ContextError(ContextError.E_CONTEXT_VIEW_OVR);
+			
+			if (value)
 			{
 				_contextView = value;
-				// Hack: We have to clear these out and re-map them
-				_injector.applicationDomain = getApplicationDomainFromContextView();
-				_commandMap = null;
-				_mediatorMap = null;
-				_viewMap = null;
 				mapInjections();
 				checkAutoStartup();
 			}
