@@ -44,48 +44,48 @@ package org.roburntlegs.experiments {
 		}                                  
 
 		public function test_addInterestIn_event_triggers_two_passed_callbacks_after_relevant_event_on_correct_target():void { 
-			addInterestIn(_correctTarget, RELEVANT_EVENT, firstCallback);                                
-			addInterestIn(_correctTarget, RELEVANT_EVENT, secondCallback);                                
+			instance.addInterestIn(_correctTarget, RELEVANT_EVENT, firstCallback);                                
+			instance.addInterestIn(_correctTarget, RELEVANT_EVENT, secondCallback);                                
 			_correctTarget.dispatchEvent(new Event(RELEVANT_EVENT));
 			assertTrue("Both callbacks called", _firstCallbackCalled && _secondCallbackCalled);
 		}     
 		
 		public function test_addInterestIn_event_triggers_two_passed_callbacks_after_relevant_events_on_correct_target():void { 
-			addInterestIn(_correctTarget, RELEVANT_EVENT, firstCallback);                                
-			addInterestIn(_secondCorrectTarget, SECOND_RELEVANT_EVENT, secondCallback);                                
+			instance.addInterestIn(_correctTarget, RELEVANT_EVENT, firstCallback);                                
+			instance.addInterestIn(_secondCorrectTarget, SECOND_RELEVANT_EVENT, secondCallback);                                
 			_correctTarget.dispatchEvent(new Event(RELEVANT_EVENT));
 			_secondCorrectTarget.dispatchEvent(new Event(SECOND_RELEVANT_EVENT));
 			assertTrue("Both callbacks called", _firstCallbackCalled && _secondCallbackCalled);
 		}     
 		                
 		public function test_addInterestIn_event_doesnt_trigger_either_callback_after_relevant_events_on_incorrect_targets():void { 
-			addInterestIn(_correctTarget, RELEVANT_EVENT, firstCallback);                                
-			addInterestIn(_secondCorrectTarget, SECOND_RELEVANT_EVENT, secondCallback);                                
+			instance.addInterestIn(_correctTarget, RELEVANT_EVENT, firstCallback);                                
+			instance.addInterestIn(_secondCorrectTarget, SECOND_RELEVANT_EVENT, secondCallback);                                
 			_secondCorrectTarget.dispatchEvent(new Event(RELEVANT_EVENT));
 			_correctTarget.dispatchEvent(new Event(SECOND_RELEVANT_EVENT));
 			assertFalse("Neither callback called", _firstCallbackCalled || _secondCallbackCalled);
 		}     
 		
 		public function test_addInterestIn_event_triggers_passed_callback_after_relevant_event_on_correct_target():void { 
-			addInterestIn(_correctTarget, RELEVANT_EVENT, firstCallback);                                
+			instance.addInterestIn(_correctTarget, RELEVANT_EVENT, firstCallback);                                
 			_correctTarget.dispatchEvent(new Event(RELEVANT_EVENT));
 			assertTrue("Callback called", _firstCallbackCalled);
 		}  
 
 		public function test_addInterestIn_event_does_not_trigger_passed_callback_after_relevant_event_on_incorrect_target():void { 
-			addInterestIn(_correctTarget, RELEVANT_EVENT, firstCallback);                                
+			instance.addInterestIn(_correctTarget, RELEVANT_EVENT, firstCallback);                                
 		    _incorrectTarget.dispatchEvent(new Event(RELEVANT_EVENT));
 			assertFalse("Callback not called", _firstCallbackCalled);
 		}  
 
 		public function test_addInterestIn_event_does_not_trigger_passed_callback_after_irrelevant_event():void { 
-			addInterestIn(_correctTarget, RELEVANT_EVENT, firstCallback);                                
+			instance.addInterestIn(_correctTarget, RELEVANT_EVENT, firstCallback);                                
 			_correctTarget.dispatchEvent(new Event(IRRELEVANT_EVENT));
 			assertFalse("Callback not called", _firstCallbackCalled);
 		}  
 		
 		public function test_addInterest_doesnt_call_interested_callback_after_no_event():void {
-			addInterestIn(_correctTarget, RELEVANT_EVENT, firstCallback);                                
+			instance.addInterestIn(_correctTarget, RELEVANT_EVENT, firstCallback);                                
 			assertFalse("Callback not called", _firstCallbackCalled);
 		} 
 		
@@ -103,14 +103,6 @@ package org.roburntlegs.experiments {
 		
 		//****************
 		
-		protected function addInterestIn(target:IEventDispatcher, eventType:String, interestedFunc:Function):void
-		{                                                      
-			function handler(e:*):void
-			{
-				interestedFunc();
-			}
-			target.addEventListener(eventType, handler);
-		}
 		
 		//******************
 		
