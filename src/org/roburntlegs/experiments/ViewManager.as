@@ -16,15 +16,22 @@ package org.roburntlegs.experiments
 		
 		public function addInterestIn(target:IEventDispatcher, eventType:String, interestedFunc:Function):void
 		{                                                      
-			_listenersByTargetAndEventType[target] ||= new Dictionary();
+			const targetMap:Dictionary = _listenersByTargetAndEventType[target] ||= new Dictionary();
 			
-			if(!_listenersByTargetAndEventType[target][eventType])
+			var targetEventList:Vector.<Function> = targetMap[eventType];
+			
+			if(!targetEventList)
 			{
-				_listenersByTargetAndEventType[target][eventType] = new Vector.<Function>();
+				targetEventList = targetMap[eventType] = new Vector.<Function>();
 				target.addEventListener(eventType, runCallbacks);
-			} 
+			}                                                  
 			
-			_listenersByTargetAndEventType[target][eventType].push(interestedFunc);
+			if(targetEventList.indexOf(interestedFunc) != -1)
+			{
+				throw new ArgumentError("Added same handler - you must be mistaken...");
+			}
+			
+			targetEventList.push(interestedFunc);
 		}
 		
 		protected function runCallbacks(e:Event):void

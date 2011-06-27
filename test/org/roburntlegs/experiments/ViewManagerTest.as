@@ -4,6 +4,7 @@ package org.roburntlegs.experiments {
 	import flash.events.IEventDispatcher;
 	import flash.events.EventDispatcher;
 	import flash.events.Event;
+	import ArgumentError;
 
 	public class ViewManagerTest extends TestCase {
 		private var instance:ViewManager;  
@@ -87,9 +88,18 @@ package org.roburntlegs.experiments {
 		public function test_addInterest_doesnt_call_interested_callback_after_no_event():void {
 			instance.addInterestIn(_correctTarget, RELEVANT_EVENT, firstCallback);                                
 			assertFalse("Callback not called", _firstCallbackCalled);
-		} 
+		}
 		
-		
+		public function test_adding_same_callback_to_same_target_and_event_twice_throws_error():void {
+			var testBlock:Function = function():void
+			{
+				instance.addInterestIn(_correctTarget, RELEVANT_EVENT, firstCallback);                                
+				instance.addInterestIn(_correctTarget, RELEVANT_EVENT, firstCallback);                                
+			}
+			
+			assertThrows(ArgumentError, testBlock);
+		}
+
 				
 		protected function firstCallback():void
 		{
