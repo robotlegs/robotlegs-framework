@@ -28,6 +28,7 @@ project_model :model do |m|
   m.compiler_gem_version  = '>= 4.0.0'
   # m.source_path           << "#{m.lib_dir}/somelib"
   m.source_path           << "#{m.lib_dir}/mockolate"  
+  m.source_path           << "support"  
   m.library_path          << 'lib/asx.swc'
   m.library_path          << 'lib/hamcrest.swc'
   m.library_path          << 'lib/FLoxy.swc'

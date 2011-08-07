@@ -7,12 +7,16 @@ package {
 	 */
 
 	import asunit.framework.TestSuite;
-	import org.roburntlegs.experiments.ViewManagerTest;
+//	import org.robotlegs.v2.viewmanager.ContainerViewBindingTest;
+	import org.robotlegs.v2.viewmanager.ContainerViewFinderTest;
+//	import org.roburntlegs.experiments.ViewManagerTest;
 
 	public class AllTests extends TestSuite {
 
 		public function AllTests() {
-			addTest(new org.roburntlegs.experiments.ViewManagerTest());
+//			addTest(new org.robotlegs.v2.viewmanager.ContainerViewBindingTest());
+			addTest(new org.robotlegs.v2.viewmanager.ContainerViewFinderTest());
+//			addTest(new org.roburntlegs.experiments.ViewManagerTest());
 		}
 	}
 }
