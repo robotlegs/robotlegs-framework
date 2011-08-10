@@ -11,6 +11,8 @@ package org.robotlegs.v2.viewmanager
 		
 		function includeContainer(containerView:DisplayObjectContainer):IContainerViewBinding;
 		
-		function excludeContainer(containerView:DisplayObjectContainer):IContainerViewBinding; 
+		function excludeContainer(containerView:DisplayObjectContainer):IContainerViewBinding;
+		
+		function get rootContainerViewBindings():Vector.<IContainerViewBinding>; 
 	}
 }

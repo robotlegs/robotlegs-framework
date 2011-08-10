@@ -6,11 +6,13 @@ package org.robotlegs.v2.viewmanager
 	
 	public class ContainerViewFinder implements IContainerViewFinder 
 	{
-		protected var _bindingsByContainer:Dictionary;
+		protected const _bindingsByContainer:Dictionary = new Dictionary();
+		protected var _rootBindings:Vector.<IContainerViewBinding>;
+		protected var _rootChangeHandler:Function;
 		
-		public function ContainerViewFinder() 
+		public function ContainerViewFinder(rootChangeHandler:Function = null) 
 		{
-			_bindingsByContainer = new Dictionary();
+			_rootChangeHandler = rootChangeHandler;
 		}
 		
 		public function findParentBindingFor(targetObject:DisplayObject):IContainerViewBinding
@@ -34,15 +36,39 @@ package org.robotlegs.v2.viewmanager
 
 		public function includeContainer(containerView:DisplayObjectContainer):IContainerViewBinding
 		{            
-			return _bindingsByContainer[containerView] ||= createBindingFor(containerView);
+			var binding:IContainerViewBinding = _bindingsByContainer[containerView] ||= createBindingFor(containerView);
+ 			buildRootBindings(binding);
+			return binding;
 		}   
 
 		public function excludeContainer(containerView:DisplayObjectContainer):IContainerViewBinding
 		{                          
 			if(!_bindingsByContainer[containerView])
 				return null;
-			return removeBindingFor(containerView);
-		}    
+			var binding:IContainerViewBinding = removeBindingFor(containerView);
+ 			buildRootBindings(binding);
+			return binding;
+		}
+		
+		public function get rootContainerViewBindings():Vector.<IContainerViewBinding>
+		{          
+			return _rootBindings;
+		} 
+		
+		protected function buildRootBindings(includedOrExcludedBinding:IContainerViewBinding):void
+		{
+			if(includedOrExcludedBinding.parent)
+				return;
+
+			_rootBindings = new Vector.<IContainerViewBinding>();
+			for each (var binding:IContainerViewBinding in _bindingsByContainer)
+			{
+				if(binding.parent == null)
+				{
+					_rootBindings.push(binding)
+				}
+			}
+		}   
 
 		protected function createBindingFor(containerView:DisplayObjectContainer):IContainerViewBinding
 		{

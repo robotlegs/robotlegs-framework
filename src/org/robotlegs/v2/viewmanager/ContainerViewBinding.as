@@ -29,16 +29,6 @@ package org.robotlegs.v2.viewmanager
         	return _containerView;
         }
 
-        public function suspend():IContainerViewBinding
-        {
-        	return null;
-        }
-
-        public function resume():IContainerViewBinding
-        {
-        	return null;
-        }
-
         public function remove():IContainerViewBinding
         {              
 			_removeHandler(this);

@@ -50,6 +50,6 @@ package org.robotlegs.v2.viewmanager {
 		protected function removeHandler(binding:IContainerViewBinding):void
 		{
 			_removedBinding = binding;
-		}
+		} 
 	}
 }

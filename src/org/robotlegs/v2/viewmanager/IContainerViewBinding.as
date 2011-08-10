@@ -10,10 +10,6 @@ package org.robotlegs.v2.viewmanager
 		
 		function get containerView():DisplayObjectContainer;
 		
-		function suspend():IContainerViewBinding;
-		
-		function resume():IContainerViewBinding;
-		
 		function remove():IContainerViewBinding;
 	}
 }

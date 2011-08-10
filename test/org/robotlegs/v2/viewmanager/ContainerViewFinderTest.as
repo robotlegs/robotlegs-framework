@@ -8,6 +8,7 @@ package org.robotlegs.v2.viewmanager {
 
 	public class ContainerViewFinderTest extends TestCase {
 		private var instance:ContainerViewFinder;
+		private var rootsReceived:Vector.<IContainerViewBinding>;
 
 		public function ContainerViewFinderTest(methodName:String=null) {
 			super(methodName)
@@ -16,6 +17,7 @@ package org.robotlegs.v2.viewmanager {
 		override protected function setUp():void {
 			super.setUp();
 			instance = new ContainerViewFinder();
+			rootsReceived = null;
 		}
 
 		override protected function tearDown():void {
@@ -160,7 +162,54 @@ package org.robotlegs.v2.viewmanager {
 			assertEquals("Returns null if not inside an included view", null, result);
 		}
 		
+		public function test_returns_root_container_view_bindings_one_item():void {
+			var searchTrees:Vector.<TreeSpriteSupport> = createTrees(1, 1);
+			var expectedBinding:IContainerViewBinding = instance.includeContainer(searchTrees[0]);
+            var expectedRootBindings:Vector.<IContainerViewBinding> = new <IContainerViewBinding>[expectedBinding];
+			assertEqualsVectorsIgnoringOrder("Returns root container view bindings one item", expectedRootBindings, instance.rootContainerViewBindings);
+		}
 		
+		public function test_returns_root_container_view_bindings_many_items():void {
+			var searchTrees:Vector.<TreeSpriteSupport> = createTrees(5, 4);     
+			
+			var firstExpectedBinding:IContainerViewBinding = instance.includeContainer(searchTrees[0]);
+			
+			instance.includeContainer(searchTrees[1].children[3].children[2].children[3]);
+			instance.includeContainer(searchTrees[1].children[3].children[2]);
+			
+			var secondExpectedBinding:IContainerViewBinding = instance.includeContainer(searchTrees[1]);          
+			
+			instance.includeContainer(searchTrees[1].children[3]);  
+            
+			var expectedRootBindings:Vector.<IContainerViewBinding> = new <IContainerViewBinding>[firstExpectedBinding, secondExpectedBinding];
+			
+			assertEqualsVectorsIgnoringOrder("Returns root container view bindings one item", expectedRootBindings, instance.rootContainerViewBindings);
+		}
+		
+		public function test_returns_root_container_view_bindings_many_items_after_removals():void {
+			var searchTrees:Vector.<TreeSpriteSupport> = createTrees(5, 4);     
+			
+			var firstExpectedBinding:IContainerViewBinding = instance.includeContainer(searchTrees[0]);
+			
+			instance.includeContainer(searchTrees[1].children[3].children[2].children[3]);
+			instance.includeContainer(searchTrees[1].children[3].children[2]);
+			instance.includeContainer(searchTrees[1]);
+			
+			var secondExpectedBinding:IContainerViewBinding = instance.includeContainer(searchTrees[1].children[3]);          
+			
+			instance.excludeContainer(searchTrees[1]);  
+            
+			var expectedRootBindings:Vector.<IContainerViewBinding> = new <IContainerViewBinding>[firstExpectedBinding, secondExpectedBinding];
+			
+			assertEqualsVectorsIgnoringOrder("Returns root container view bindings one item", expectedRootBindings, instance.rootContainerViewBindings);
+		}   
+		
+		public function test_root_change_handler_fires_for_first_item():void {
+			
+			assertTrue("Root change handler fires for first item -> not implemented", false);
+		}
+		
+				
 		public function test_comparison_with_contains_and_brute_force():void {
 			var searchTrees:Vector.<TreeSpriteSupport> = createTrees(5, 4);
 			var searchItem:Sprite = searchTrees[1].children[3].children[2].children[3].children[3];
