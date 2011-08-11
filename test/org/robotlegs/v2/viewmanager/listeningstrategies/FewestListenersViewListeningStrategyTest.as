@@ -2,7 +2,7 @@ package org.robotlegs.v2.viewmanager.listeningstrategies {
 
 	import asunit.framework.TestCase;
 	import flash.display.Sprite;
-	import org.robotlegs.v2.viewmanager.IViewListeningStrategy;
+	import org.robotlegs.v2.viewmanager.IListeningStrategy;
 	import flash.display.DisplayObjectContainer;
 
 	public class FewestListenersViewListeningStrategyTest extends TestCase {
@@ -14,7 +14,7 @@ package org.robotlegs.v2.viewmanager.listeningstrategies {
 
 		override protected function setUp():void {
 			super.setUp();
-			instance = new FewestListenersViewListeningStrategy();
+			instance = new FewestListenersViewListeningStrategy(null);
 		}
 
 		override protected function tearDown():void {
@@ -26,8 +26,8 @@ package org.robotlegs.v2.viewmanager.listeningstrategies {
 			assertTrue("instance is FewestListenersViewListeningStrategy", instance is FewestListenersViewListeningStrategy);
 		}  
 		
-		public function test_implements_IViewListeningStrategy():void {
-			assertTrue("Implements IViewListeningStrategy", instance is IViewListeningStrategy);
+		public function test_implements_IListeningStrategy():void {
+			assertTrue("Implements IListeningStrategy", instance is IListeningStrategy);
 		}
 		
 		public function testFailure():void {

@@ -3,21 +3,21 @@ package org.robotlegs.v2.viewmanager {
 	import asunit.framework.TestCase;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
-	import org.robotlegs.v2.viewmanager.IContainerViewBinding;
+	import org.robotlegs.v2.viewmanager.IContainerBinding;
 
-	public class ContainerViewBindingTest extends TestCase {
-		private var instance:ContainerViewBinding;
+	public class ContainerBindingTest extends TestCase {
+		private var instance:ContainerBinding;
 		protected const CONTAINER_VIEW:DisplayObjectContainer = new Sprite(); 
-		protected const PARENT:ContainerViewBinding = new ContainerViewBinding(new Sprite(), removeHandler);
-		protected var _removedBinding:IContainerViewBinding;
+		protected const PARENT:ContainerBinding = new ContainerBinding(new Sprite(), removeHandler);
+		protected var _removedBinding:IContainerBinding;
 
-		public function ContainerViewBindingTest(methodName:String=null) {
+		public function ContainerBindingTest(methodName:String=null) {
 			super(methodName)
 		}
 
 		override protected function setUp():void {
 			super.setUp();
-			instance = new ContainerViewBinding(CONTAINER_VIEW, removeHandler);
+			instance = new ContainerBinding(CONTAINER_VIEW, removeHandler);
 		}
 
 		override protected function tearDown():void {
@@ -26,15 +26,15 @@ package org.robotlegs.v2.viewmanager {
 		}
 
 		public function testInstantiated():void {
-			assertTrue("instance is ContainerViewBinding", instance is ContainerViewBinding);
+			assertTrue("instance is ContainerBinding", instance is ContainerBinding);
 		}
 
 		public function testFailure():void {
 			assertTrue("Failing test", true);
 		}
 		
-		public function test_get_containerView():void {
-			assertEquals("Get containerView", CONTAINER_VIEW, instance.containerView);
+		public function test_get_container():void {
+			assertEquals("Get container", CONTAINER_VIEW, instance.container);
 		}  
 		
 		public function test_set_parent():void {
@@ -47,7 +47,7 @@ package org.robotlegs.v2.viewmanager {
 			assertEquals("Remove runs removeHandler passing self ", instance, _removedBinding);
 		}
 		
-		protected function removeHandler(binding:IContainerViewBinding):void
+		protected function removeHandler(binding:IContainerBinding):void
 		{
 			_removedBinding = binding;
 		} 

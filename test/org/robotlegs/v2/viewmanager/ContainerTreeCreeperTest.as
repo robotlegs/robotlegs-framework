@@ -1,22 +1,22 @@
 package org.robotlegs.v2.viewmanager {
 
 	import asunit.framework.TestCase;
-	import org.robotlegs.v2.viewmanager.IContainerViewBinding;
+	import org.robotlegs.v2.viewmanager.IContainerBinding;
 	import flash.display.Sprite;
 	import flash.utils.getTimer;
 	import flash.display.DisplayObjectContainer;
 
-	public class ContainerViewFinderTest extends TestCase {
-		private var instance:ContainerViewFinder;
-		private var rootsReceived:Vector.<IContainerViewBinding>;
+	public class ContainerTreeCreeperTest extends TestCase {
+		private var instance:ContainerTreeCreeper;
+		private var rootsReceived:Vector.<IContainerBinding>;
 
-		public function ContainerViewFinderTest(methodName:String=null) {
+		public function ContainerTreeCreeperTest(methodName:String=null) {
 			super(methodName)
 		}
 
 		override protected function setUp():void {
 			super.setUp();
-			instance = new ContainerViewFinder();
+			instance = new ContainerTreeCreeper();
 			rootsReceived = null;
 		}
 
@@ -26,7 +26,7 @@ package org.robotlegs.v2.viewmanager {
 		}
 
 		public function testInstantiated():void {
-			assertTrue("instance is ContainerViewFinder", instance is ContainerViewFinder);
+			assertTrue("instance is ContainerTreeCreeper", instance is ContainerTreeCreeper);
 		}
 
 		public function testFailure():void {
@@ -43,10 +43,10 @@ package org.robotlegs.v2.viewmanager {
 			var searchItem:Sprite = correctTree.children[3].children[3].children[3].children[3];
 		    
 			var preTime:Number = getTimer();
-			var result:IContainerViewBinding = instance.findParentBindingFor(searchItem);
+			var result:IContainerBinding = instance.findParentBindingFor(searchItem);
 			trace("found parent " + String(getTimer()-preTime) + " ms");                                                                                                                     
 					
-	    	assertEquals("Finds correct nearest interested container view and returns its binding", correctTree, result.containerView);
+	    	assertEquals("Finds correct nearest interested container view and returns its binding", correctTree, result.container);
 	    }
 	
 		public function test_binding_returns_with_correct_interested_parent_chain():void {
@@ -58,11 +58,11 @@ package org.robotlegs.v2.viewmanager {
 			var searchItem:Sprite = searchTrees[1].children[3].children[3].children[3].children[3];
 		    
 			var preTime:Number = getTimer();
-			var result:IContainerViewBinding = instance.findParentBindingFor(searchItem);
+			var result:IContainerBinding = instance.findParentBindingFor(searchItem);
 			trace("found parent " + String(getTimer()-preTime) + " ms");                                                                                                                     
 			                                                                                                                     
-			assertEquals("Binding returns with correct container view", searchTrees[1].children[3], result.containerView);
-			assertEquals("Binding returns with correct container parent view", searchTrees[1], result.parent.containerView);
+			assertEquals("Binding returns with correct container view", searchTrees[1].children[3], result.container);
+			assertEquals("Binding returns with correct container parent view", searchTrees[1], result.parent.container);
 			assertEquals("Further parents are null", null, result.parent.parent); 
 		}
 		
@@ -75,10 +75,10 @@ package org.robotlegs.v2.viewmanager {
 			var searchItem:Sprite = searchTrees[1].children[3].children[3].children[3].children[3];
 		    
 			var preTime:Number = getTimer();
-			var result:IContainerViewBinding = instance.findParentBindingFor(searchItem);
+			var result:IContainerBinding = instance.findParentBindingFor(searchItem);
 			trace("found parent " + String(getTimer()-preTime) + " ms");                                                                                                                     
-			assertEquals("Binding returns with correct container view", searchTrees[1].children[3], result.containerView);
-			assertEquals("Binding returns with correct container parent view", searchTrees[1], result.parent.containerView);
+			assertEquals("Binding returns with correct container view", searchTrees[1].children[3], result.container);
+			assertEquals("Binding returns with correct container parent view", searchTrees[1], result.parent.container);
 			assertEquals("Further parents are null", null, result.parent.parent); 
 		}
 
@@ -92,10 +92,10 @@ package org.robotlegs.v2.viewmanager {
 			var searchItem:Sprite = searchTrees[1].children[3].children[2].children[3].children[3];
 		    
 			var preTime:Number = getTimer();
-			var result:IContainerViewBinding = instance.findParentBindingFor(searchItem);
+			var result:IContainerBinding = instance.findParentBindingFor(searchItem);
 			trace("found parent " + String(getTimer()-preTime) + " ms");                                                                                                                     
-			assertEquals("Binding returns with correct container view", searchTrees[1].children[3].children[2], result.containerView);
-			assertEquals("Binding returns with correct container parent view", searchTrees[1], result.parent.containerView);
+			assertEquals("Binding returns with correct container view", searchTrees[1].children[3].children[2], result.container);
+			assertEquals("Binding returns with correct container parent view", searchTrees[1], result.parent.container);
 			assertEquals("Further parents are null", null, result.parent.parent); 
 		}
 		
@@ -112,12 +112,12 @@ package org.robotlegs.v2.viewmanager {
 			var searchItem:Sprite = searchTrees[1].children[3].children[2].children[3].children[3];
 
 			var preTime:Number = getTimer();
-			var result:IContainerViewBinding = instance.findParentBindingFor(searchItem);
+			var result:IContainerBinding = instance.findParentBindingFor(searchItem);
 			trace("found parent " + String(getTimer()-preTime) + " ms");                                                                                                                     
 
-			assertEquals("Binding returns with correct container view", searchTrees[1].children[3].children[2].children[3], result.containerView);
-			assertEquals("Binding returns with correct container parent view", searchTrees[1].children[3], result.parent.containerView);
-			assertEquals("Binding returns with correct container parent parent view", searchTrees[1], result.parent.parent.containerView);
+			assertEquals("Binding returns with correct container view", searchTrees[1].children[3].children[2].children[3], result.container);
+			assertEquals("Binding returns with correct container parent view", searchTrees[1].children[3], result.parent.container);
+			assertEquals("Binding returns with correct container parent parent view", searchTrees[1], result.parent.parent.container);
 			assertEquals("Further parents are null", null, result.parent.parent.parent); 
 		}
 		
@@ -126,7 +126,7 @@ package org.robotlegs.v2.viewmanager {
 			instance.includeContainer(searchTrees[0]);
 			instance.includeContainer(searchTrees[1]);          
 			instance.includeContainer(searchTrees[1].children[3].children[2].children[3]);
-			var bindingToRemove:IContainerViewBinding = instance.includeContainer(searchTrees[1].children[3].children[2]);
+			var bindingToRemove:IContainerBinding = instance.includeContainer(searchTrees[1].children[3].children[2]);
 			instance.includeContainer(searchTrees[1].children[3]);  
 			
 			bindingToRemove.remove();
@@ -134,12 +134,12 @@ package org.robotlegs.v2.viewmanager {
 			var searchItem:Sprite = searchTrees[1].children[3].children[2].children[3].children[3];
 
 			var preTime:Number = getTimer();
-			var result:IContainerViewBinding = instance.findParentBindingFor(searchItem);
+			var result:IContainerBinding = instance.findParentBindingFor(searchItem);
 			trace("found parent " + String(getTimer()-preTime) + " ms");                                                                                                                     
 
-			assertEquals("Binding returns with correct container view", searchTrees[1].children[3].children[2].children[3], result.containerView);
-			assertEquals("Binding returns with correct container parent view", searchTrees[1].children[3], result.parent.containerView);
-			assertEquals("Binding returns with correct container parent parent view", searchTrees[1], result.parent.parent.containerView);
+			assertEquals("Binding returns with correct container view", searchTrees[1].children[3].children[2].children[3], result.container);
+			assertEquals("Binding returns with correct container parent view", searchTrees[1].children[3], result.parent.container);
+			assertEquals("Binding returns with correct container parent parent view", searchTrees[1], result.parent.parent.container);
 			assertEquals("Further parents are null", null, result.parent.parent.parent); 
 		}
 		
@@ -156,7 +156,7 @@ package org.robotlegs.v2.viewmanager {
 			var searchItem:Sprite = searchTrees[2].children[3].children[2].children[3].children[3];
 
 			var preTime:Number = getTimer();
-			var result:IContainerViewBinding = instance.findParentBindingFor(searchItem);
+			var result:IContainerBinding = instance.findParentBindingFor(searchItem);
 			trace("found parent " + String(getTimer()-preTime) + " ms");                                                                                                                     
 
 			assertEquals("Returns null if not inside an included view", null, result);
@@ -164,51 +164,45 @@ package org.robotlegs.v2.viewmanager {
 		
 		public function test_returns_root_container_view_bindings_one_item():void {
 			var searchTrees:Vector.<TreeSpriteSupport> = createTrees(1, 1);
-			var expectedBinding:IContainerViewBinding = instance.includeContainer(searchTrees[0]);
-            var expectedRootBindings:Vector.<IContainerViewBinding> = new <IContainerViewBinding>[expectedBinding];
-			assertEqualsVectorsIgnoringOrder("Returns root container view bindings one item", expectedRootBindings, instance.rootContainerViewBindings);
+			var expectedBinding:IContainerBinding = instance.includeContainer(searchTrees[0]);
+            var expectedRootBindings:Vector.<IContainerBinding> = new <IContainerBinding>[expectedBinding];
+			assertEqualsVectorsIgnoringOrder("Returns root container view bindings one item", expectedRootBindings, instance.rootContainerBindings);
 		}
 		
 		public function test_returns_root_container_view_bindings_many_items():void {
 			var searchTrees:Vector.<TreeSpriteSupport> = createTrees(5, 4);     
 			
-			var firstExpectedBinding:IContainerViewBinding = instance.includeContainer(searchTrees[0]);
+			var firstExpectedBinding:IContainerBinding = instance.includeContainer(searchTrees[0]);
 			
 			instance.includeContainer(searchTrees[1].children[3].children[2].children[3]);
 			instance.includeContainer(searchTrees[1].children[3].children[2]);
 			
-			var secondExpectedBinding:IContainerViewBinding = instance.includeContainer(searchTrees[1]);          
+			var secondExpectedBinding:IContainerBinding = instance.includeContainer(searchTrees[1]);          
 			
 			instance.includeContainer(searchTrees[1].children[3]);  
             
-			var expectedRootBindings:Vector.<IContainerViewBinding> = new <IContainerViewBinding>[firstExpectedBinding, secondExpectedBinding];
+			var expectedRootBindings:Vector.<IContainerBinding> = new <IContainerBinding>[firstExpectedBinding, secondExpectedBinding];
 			
-			assertEqualsVectorsIgnoringOrder("Returns root container view bindings one item", expectedRootBindings, instance.rootContainerViewBindings);
+			assertEqualsVectorsIgnoringOrder("Returns root container view bindings one item", expectedRootBindings, instance.rootContainerBindings);
 		}
 		
 		public function test_returns_root_container_view_bindings_many_items_after_removals():void {
 			var searchTrees:Vector.<TreeSpriteSupport> = createTrees(5, 4);     
 			
-			var firstExpectedBinding:IContainerViewBinding = instance.includeContainer(searchTrees[0]);
+			var firstExpectedBinding:IContainerBinding = instance.includeContainer(searchTrees[0]);
 			
 			instance.includeContainer(searchTrees[1].children[3].children[2].children[3]);
 			instance.includeContainer(searchTrees[1].children[3].children[2]);
 			instance.includeContainer(searchTrees[1]);
 			
-			var secondExpectedBinding:IContainerViewBinding = instance.includeContainer(searchTrees[1].children[3]);          
+			var secondExpectedBinding:IContainerBinding = instance.includeContainer(searchTrees[1].children[3]);          
 			
 			instance.excludeContainer(searchTrees[1]);  
             
-			var expectedRootBindings:Vector.<IContainerViewBinding> = new <IContainerViewBinding>[firstExpectedBinding, secondExpectedBinding];
+			var expectedRootBindings:Vector.<IContainerBinding> = new <IContainerBinding>[firstExpectedBinding, secondExpectedBinding];
 			
-			assertEqualsVectorsIgnoringOrder("Returns root container view bindings one item", expectedRootBindings, instance.rootContainerViewBindings);
+			assertEqualsVectorsIgnoringOrder("Returns root container view bindings one item", expectedRootBindings, instance.rootContainerBindings);
 		}   
-		
-		public function test_root_change_handler_fires_for_first_item():void {
-			
-			assertTrue("Root change handler fires for first item -> not implemented", false);
-		}
-		
 				
 		public function test_comparison_with_contains_and_brute_force():void {
 			var searchTrees:Vector.<TreeSpriteSupport> = createTrees(5, 4);
@@ -251,7 +245,7 @@ package org.robotlegs.v2.viewmanager {
 			var searchItem:Sprite = searchTrees[2].children[3].children[2].children[3].children[3].children[3].children[2];
                               
 			var preTime:Number = getTimer();
-			var result:IContainerViewBinding;
+			var result:IContainerBinding;
 			
 			var iLength:uint = 10000;
 			for (var i:uint = 0; i < iLength; i++)

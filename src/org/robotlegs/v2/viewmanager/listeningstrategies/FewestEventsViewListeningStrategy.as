@@ -1,16 +1,14 @@
 package org.robotlegs.v2.viewmanager.listeningstrategies 
 {
-	import org.robotlegs.v2.viewmanager.IViewListeningStrategy;
+	import org.robotlegs.v2.viewmanager.IListeningStrategy;
 	import flash.display.DisplayObjectContainer;
 	
-	public class FewestEventsViewListeningStrategy implements IViewListeningStrategy
+	public class FewestEventsViewListeningStrategy extends ViewListeningStrategy implements IListeningStrategy
 	{
-		protected var _targets:Vector.<DisplayObjectContainer>;
-	
-	   	public function get targets():Vector.<DisplayObjectContainer>
-	   	{
-			return _targets || new Vector.<DisplayObjectContainer>();
-	   	}
+		public function FewestEventsViewListeningStrategy(targets:Vector.<DisplayObjectContainer>)
+		{
+		   super(targets);
+		}
 
 	   	public function updateTargets(value:Vector.<DisplayObjectContainer>):Boolean
 	   	{      

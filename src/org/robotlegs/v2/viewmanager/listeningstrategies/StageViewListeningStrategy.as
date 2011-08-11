@@ -1,27 +1,25 @@
 package org.robotlegs.v2.viewmanager.listeningstrategies 
 {
 	import flash.display.DisplayObjectContainer;
-	import org.robotlegs.v2.viewmanager.IViewListeningStrategy;
+	import org.robotlegs.v2.viewmanager.IListeningStrategy;
 	
-	public class StageViewListeningStrategy implements IViewListeningStrategy 
+	public class StageViewListeningStrategy extends ViewListeningStrategy implements IListeningStrategy 
 	{
-		protected var _stageVector:Vector.<DisplayObjectContainer>;
-	
-		public function get targets():Vector.<DisplayObjectContainer>
+		public function StageViewListeningStrategy(targets:Vector.<DisplayObjectContainer>)
 		{
-			 return _stageVector || new Vector.<DisplayObjectContainer>();
+			super(targets);
 		}
 
 		public function updateTargets(value:Vector.<DisplayObjectContainer>):Boolean
 		{
-			if(!_stageVector && value && value.length>0)
+			if(!_targets && value && value.length>0)
 			{
-				_stageVector = new <DisplayObjectContainer>[value[0].stage];
+				_targets = new <DisplayObjectContainer>[value[0].stage];
 				return true;
 			}                           
-			else if (_stageVector && (!value || value.length == 0))
+			else if (_targets && (!value || value.length == 0))
 			{
-				_stageVector = null;
+				_targets = null;
 				return true;
 			}
 			return false;

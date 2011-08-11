@@ -2,20 +2,18 @@ package org.robotlegs.v2.viewmanager.listeningstrategies
 {
 	import flash.display.DisplayObjectContainer;
 	import flash.utils.Dictionary;
-	import org.robotlegs.v2.viewmanager.IViewListeningStrategy;
+	import org.robotlegs.v2.viewmanager.IListeningStrategy;
 	import org.robotlegs.v2.viewmanager.listeningstrategies.areDifferentVectorsIgnoringOrder;
 	
-	public class FewestListenersViewListeningStrategy implements IViewListeningStrategy
+	public class FewestListenersViewListeningStrategy extends ViewListeningStrategy implements IListeningStrategy
 	{
-	    protected var _commonParents:Vector.<DisplayObjectContainer>;
-	
 		// Finds the nearest common parent for the possible targets
 		// Will return a single value unless possible targets are in diff windows
-		public function get targets():Vector.<DisplayObjectContainer>
+		public function FewestListenersViewListeningStrategy(targets:Vector.<DisplayObjectContainer>):void
 		{
-			return _commonParents || new Vector.<DisplayObjectContainer>();
+			super(targets);
 		}
-
+	
 		public function updateTargets(value:Vector.<DisplayObjectContainer>):Boolean
 		{
 			var foundCommonParents:Vector.<DisplayObjectContainer> = findCommonParents(value);
@@ -27,10 +25,10 @@ package org.robotlegs.v2.viewmanager.listeningstrategies
 		
 		protected function changeCommonParents(updatedCommonParents:Vector.<DisplayObjectContainer>):Boolean
 		{             
-			var oldCommonParents:Vector.<DisplayObjectContainer> = _commonParents;
-		   	_commonParents = updatedCommonParents;
+			var oldCommonParents:Vector.<DisplayObjectContainer> = _targets;
+		   	_targets = updatedCommonParents;
 		
-			return areDifferentVectorsIgnoringOrder(_commonParents, oldCommonParents);
+			return areDifferentVectorsIgnoringOrder(_targets, oldCommonParents);
 		}    
 		
 		protected function findCommonParents(value:Vector.<DisplayObjectContainer>):Vector.<DisplayObjectContainer>
