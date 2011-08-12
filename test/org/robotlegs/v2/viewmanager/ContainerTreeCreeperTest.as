@@ -5,6 +5,9 @@ package org.robotlegs.v2.viewmanager {
 	import flash.display.Sprite;
 	import flash.utils.getTimer;
 	import flash.display.DisplayObjectContainer;
+	import flash.display.DisplayObject;
+	import flash.utils.Dictionary;
+	import org.robotlegs.v2.viewmanager.TreeNode;
 
 	public class ContainerTreeCreeperTest extends TestCase {
 		private var instance:ContainerTreeCreeper;
@@ -24,7 +27,7 @@ package org.robotlegs.v2.viewmanager {
 			super.tearDown();
 			instance = null;
 		}
-
+        
 		public function testInstantiated():void {
 			assertTrue("instance is ContainerTreeCreeper", instance is ContainerTreeCreeper);
 		}
@@ -254,8 +257,9 @@ package org.robotlegs.v2.viewmanager {
 			}                                                                          
             trace("found parent 10000 times in " + String(getTimer()-preTime) + " ms");                                                                                                                     
 			assertEquals("result is null", null, result);
-		}
+		} 
 		
+		/*
 		public function test_comparison_with_contains_and_brute_force_worst_case_10000_times():void {
 			var searchTrees:Vector.<TreeSpriteSupport> = createTrees(7, 4);
 			var searchItem:Sprite = searchTrees[2].children[3].children[2].children[3].children[3].children[3].children[2];
@@ -295,8 +299,430 @@ package org.robotlegs.v2.viewmanager {
 			
 			trace("found parent vector 10000 times " + String(getTimer()-preTime) + " ms");                                                                                                                     
 			assertEquals('no results', 0, results.length);
+		}   */
+		
+		public function test_running_parent_loop_on_100_depth_single_branch():void 
+		{
+			var target:DisplayObject = new Sprite();
+			var originalTarget:DisplayObject = target;
+			var parent:DisplayObjectContainer;
+			var iLength:uint = 100;
+			for (var i:uint = 0; i < iLength; i++)
+			{
+				parent = new Sprite();
+				parent.addChild(target);
+				target = parent;
+			}
+			
+			var preTime:Number = getTimer();
+			
+			var jLength:uint = 10000; 
+
+			for (var j:int = 0; j < jLength; j++)
+			{
+				parent = originalTarget.parent;
+
+				while(parent)
+				{
+					// do nothing
+					parent = parent.parent;
+				}
+			}
+            
+			trace("found parent list for 100 depth, 10000 times in " + String(getTimer()-preTime) + " ms");
+   		}
+
+		public function test_running_parent_loop_on_30_depth_single_branch():void 
+		{
+			var target:DisplayObject = new Sprite();
+			var originalTarget:DisplayObject = target;
+			var parent:DisplayObjectContainer;
+			var iLength:uint = 30;
+			for (var i:uint = 0; i < iLength; i++)
+			{
+				parent = new Sprite();
+				parent.addChild(target);
+				target = parent;
+			}
+			
+			var preTime:Number = getTimer();
+			
+			var jLength:uint = 10000; 
+
+			for (var j:int = 0; j < jLength; j++)
+			{
+				parent = originalTarget.parent;
+
+				while(parent)
+				{
+					// do nothing
+					parent = parent.parent;
+				}
+			}
+            
+			trace("found parent list for 30 depth, 10000 times in " + String(getTimer()-preTime) + " ms");
+   		}
+
+		public function test_running_parent_loop_on_24_depth_single_branch():void 
+		{
+			var target:DisplayObject = new Sprite();
+			var originalTarget:DisplayObject = target;
+			var parent:DisplayObjectContainer;
+			var iLength:uint = 24;
+			for (var i:uint = 0; i < iLength; i++)
+			{
+				parent = new Sprite();
+				parent.addChild(target);
+				target = parent;
+			}
+			
+			var preTime:Number = getTimer();
+			
+			var jLength:uint = 10000; 
+
+			for (var j:int = 0; j < jLength; j++)
+			{
+				parent = originalTarget.parent;
+
+				while(parent)
+				{
+					// do nothing
+					parent = parent.parent;
+				}
+			}
+            
+			trace("found parent list for 24 depth, 10000 times in " + String(getTimer()-preTime) + " ms");
+   		}
+
+		public function test_running_parent_loop_on_15_depth_single_branch():void 
+		{
+			var target:DisplayObject = new Sprite();
+			var originalTarget:DisplayObject = target;
+			var parent:DisplayObjectContainer;
+			var iLength:uint = 15;
+			for (var i:uint = 0; i < iLength; i++)
+			{
+				parent = new Sprite();
+				parent.addChild(target);
+				target = parent;
+			}
+			
+			var preTime:Number = getTimer();
+			
+			var jLength:uint = 10000; 
+
+			for (var j:int = 0; j < jLength; j++)
+			{
+				parent = originalTarget.parent;
+
+				while(parent)
+				{
+					// do nothing
+					parent = parent.parent;
+				}
+			}
+            
+			trace("found parent list for 15 depth, 10000 times in " + String(getTimer()-preTime) + " ms");
+   		} 
+		
+        /*
+		public function test_running_contains_on_100_depth_single_branch():void 
+		{
+			var target:DisplayObject = new Sprite();
+			var originalTarget:DisplayObject = target;
+			var parent:DisplayObjectContainer;
+			var iLength:uint = 100;
+			for (var i:uint = 0; i < iLength; i++)
+			{
+				parent = new Sprite();
+				parent.addChild(target);
+				target = parent;
+			}
+			
+			var lastParent:DisplayObjectContainer = parent;
+			
+			var preTime:Number = getTimer();
+			
+			var jLength:uint = 10000; 
+
+			for (var j:int = 0; j < jLength; j++)
+			{
+				parent = originalTarget.parent;
+
+				if(parent.contains(originalTarget))
+				{
+					// do nothing
+				}
+			}
+            
+			trace("found parent contains for 100 depth, 10000 times in " + String(getTimer()-preTime) + " ms");
+   		}  
+
+		public function test_finding_containers_in_order_on_15_depth_tree_double_branch_using_contains_5_containers():void
+		{			
+			var searchTrees:Vector.<TreeSpriteSupport> = createTrees(15, 2);
+			
+			var searchItem:Sprite = searchTrees[1].children[1].children[1].children[1].children[0].children[1].children[0];
+			
+			var childrenByContainer:Dictionary = new Dictionary();
+			childrenByContainer[searchTrees[1]] = new <DisplayObjectContainer>[searchTrees[1].children[0], searchTrees[1].children[1]];
+			childrenByContainer[searchTrees[1].children[0]] = new <DisplayObjectContainer>[searchTrees[1].children[0].children[1], searchTrees[1].children[0].children[0]];
+			childrenByContainer[searchTrees[1].children[1]] = new <DisplayObjectContainer>[searchTrees[1].children[1].children[1], searchTrees[1].children[1].children[0]];
+			childrenByContainer[searchTrees[1].children[1].children[1]] = new <DisplayObjectContainer>[searchTrees[1].children[1].children[0].children[1], searchTrees[1].children[1].children[1].children[1]]
+			childrenByContainer[searchTrees[1].children[1].children[1].children[1]] = new <DisplayObjectContainer>[searchTrees[1].children[1].children[1].children[1].children[0], searchTrees[1].children[1].children[1].children[1].children[1]]
+		    
+			var preTime:Number = getTimer();
+		    
+			var kLength:uint = 10000;
+			for(var k:uint = 0; k<kLength; k++)
+			{
+		    	var possibleContainer:DisplayObjectContainer = searchTrees[1];
+			    var foundContainer:DisplayObjectContainer;
+		    
+				var containerList:Vector.<DisplayObjectContainer> = new Vector.<DisplayObjectContainer>();  
+			
+				var containersToSearch:Vector.<DisplayObjectContainer>;
+			
+				var iLength:uint;
+		                        
+			    if(possibleContainer.contains(searchItem))
+				{
+				    foundContainer = possibleContainer;
+					while(foundContainer)
+					{
+						containerList.push(foundContainer);
+				
+						if(childrenByContainer[foundContainer])
+						{                          
+							containersToSearch = childrenByContainer[possibleContainer];
+							iLength = containersToSearch.length;
+							for (var i:uint = 0; i < iLength; i++)
+							{
+								if(containersToSearch[i].contains(searchItem))
+								{
+									foundContainer = containersToSearch[i];
+									i = iLength;
+								}
+							}                                              
+							foundContainer = null;
+						}
+					}   
+				} 
+			}
+			
+			trace("found parent contains list for 15 depth, 5 containers, 10000 times in " + String(getTimer()-preTime) + " ms");
+			trace(containerList);
 		}
-	
+		
+		public function test_finding_containers_in_order_on_15_depth_tree_double_branch_using_contains_4_containers():void
+		{			
+			var searchTrees:Vector.<TreeSpriteSupport> = createTrees(15, 2);
+			
+			var searchItem:Sprite = searchTrees[1].children[1].children[1].children[1].children[0].children[1].children[0];
+			
+			var childrenByContainer:Dictionary = new Dictionary();
+			childrenByContainer[searchTrees[1]] = new <DisplayObjectContainer>[searchTrees[1].children[0], searchTrees[1].children[1]];
+			childrenByContainer[searchTrees[1].children[0]] = new <DisplayObjectContainer>[searchTrees[1].children[0].children[1], searchTrees[1].children[0].children[0]];
+			childrenByContainer[searchTrees[1].children[1]] = new <DisplayObjectContainer>[searchTrees[1].children[1].children[1], searchTrees[1].children[1].children[0]];
+			childrenByContainer[searchTrees[1].children[1].children[1]] = new <DisplayObjectContainer>[searchTrees[1].children[1].children[0].children[1], searchTrees[1].children[1].children[1].children[1]]
+		    
+			var preTime:Number = getTimer();
+		    
+			var kLength:uint = 10000;
+			for(var k:uint = 0; k<kLength; k++)
+			{
+		    	var possibleContainer:DisplayObjectContainer = searchTrees[1];
+			    var foundContainer:DisplayObjectContainer;
+		    
+				var containerList:Vector.<DisplayObjectContainer> = new Vector.<DisplayObjectContainer>();  
+			
+				var containersToSearch:Vector.<DisplayObjectContainer>;
+			
+				var iLength:uint;
+		                        
+			    if(possibleContainer.contains(searchItem))
+				{
+				    foundContainer = possibleContainer;
+					while(foundContainer)
+					{
+						containerList.push(foundContainer);
+				
+						if(childrenByContainer[foundContainer])
+						{                          
+							containersToSearch = childrenByContainer[possibleContainer];
+							iLength = containersToSearch.length;
+							for (var i:uint = 0; i < iLength; i++)
+							{
+								if(containersToSearch[i].contains(searchItem))
+								{
+									foundContainer = containersToSearch[i];
+									i = iLength;
+								}
+							}                                              
+							foundContainer = null;
+						}
+					}   
+				} 
+			}
+			
+			trace("found parent contains list for 15 depth, 4 containers, 10000 times in " + String(getTimer()-preTime) + " ms");
+			trace(containerList);
+		}
+		
+		public function test_finding_containers_in_order_on_15_depth_tree_double_branch_using_contains_3_containers():void
+		{			
+			var searchTrees:Vector.<TreeSpriteSupport> = createTrees(15, 2);
+			
+			var searchItem:Sprite = searchTrees[1].children[1].children[1].children[1].children[1].children[1].children[1];
+			
+			var childrenByContainer:Dictionary = new Dictionary();
+			childrenByContainer[searchTrees[1]] = new <DisplayObjectContainer>[searchTrees[1].children[0], searchTrees[1].children[1]];
+			childrenByContainer[searchTrees[1].children[0]] = new <DisplayObjectContainer>[searchTrees[1].children[0].children[1], searchTrees[1].children[0].children[0]];
+			childrenByContainer[searchTrees[1].children[1]] = new <DisplayObjectContainer>[searchTrees[1].children[1].children[1], searchTrees[1].children[1].children[0]];
+		    
+			
+			var containerList:Vector.<DisplayObjectContainer>;
+			var containersToSearch:Vector.<DisplayObjectContainer>;
+		    var foundContainer:DisplayObjectContainer;
+			var possibleContainer:DisplayObjectContainer
+		    var iLength:uint;
+			var kLength:uint = 10000;
+
+			var preTime:Number = getTimer();   
+
+			for(var k:uint = 0; k<kLength; k++)
+			{
+		    	possibleContainer = searchTrees[1];
+		    
+				containerList = new Vector.<DisplayObjectContainer>();  
+			
+			    if(possibleContainer.contains(searchItem))
+				{
+				    foundContainer = possibleContainer;
+					containerList.push(foundContainer);
+                    
+					while(foundContainer)
+					{
+						if(childrenByContainer[foundContainer])
+						{                          
+							containersToSearch = childrenByContainer[possibleContainer];
+							iLength = containersToSearch.length;
+							for (var i:uint = 0; i < iLength; i++)
+							{
+								if(containersToSearch[i].contains(searchItem))
+								{
+									foundContainer = containersToSearch[i];
+									containerList.push(foundContainer);
+									i = iLength;
+								}
+							}
+							foundContainer = null;                                              
+						} 
+					}
+				} 
+			}
+			
+			trace("found parent contains list for 15 depth, 3 containers, 10000 times in " + String(getTimer()-preTime) + " ms");
+			trace(containerList);
+		}  */
+		
+		public function test_finding_containers_in_order_on_5_depth_tree_triple_branch_using_6_tree_nodes():void
+		{			
+			var searchTrees:Vector.<TreeSpriteSupport> = createTrees(5, 3);
+			
+			var searchItem:Sprite = searchTrees[1].children[1].children[2].children[1].children[0];
+			
+			var treeNode_A2:TreeNode = new TreeNode(searchTrees[1]);
+			var treeNode_A2_1:TreeNode = new TreeNode(searchTrees[1].children[0]);
+			var treeNode_A2_2:TreeNode = new TreeNode(searchTrees[1].children[1]);
+			var treeNode_A2_2_1:TreeNode = new TreeNode(searchTrees[1].children[1].children[0]);
+			var treeNode_A2_2_2:TreeNode = new TreeNode(searchTrees[1].children[1].children[1]);
+			var treeNode_A2_2_3:TreeNode = new TreeNode(searchTrees[1].children[1].children[2]);
+
+			treeNode_A2_2_2.sibling = treeNode_A2_2_3;
+			treeNode_A2_2_1.sibling = treeNode_A2_2_2;
+			treeNode_A2_2.firstChild = treeNode_A2_2_1;
+			treeNode_A2_1.sibling = treeNode_A2_2;
+			treeNode_A2.firstChild = treeNode_A2_1;
+		    
+			trace(treeNode_A2.getAncestory(searchItem));
+			assertEquals("finds 3 nodes", 3, treeNode_A2.getAncestory(searchItem).length);
+		    
+			var preTime:Number = getTimer();
+		    var ancestory:Vector.<TreeNode>;
+			
+			var kLength:uint = 10000;
+			for(var k:uint = 0; k<kLength; k++)
+			{
+		    	ancestory = treeNode_A2.getAncestory(searchItem);
+			}
+			
+			trace("found parent contains list for 5 depth triple branch using 6 tree nodes, 10000 times in " + String(getTimer()-preTime) + " ms");
+		} 
+		
+		public function test_finding_deepest_child_on_5_depth_tree_triple_branch_using_6_tree_nodes():void
+		{			
+			var searchTrees:Vector.<TreeSpriteSupport> = createTrees(5, 3);
+			
+			var searchItem:Sprite = searchTrees[1].children[1].children[2].children[1].children[0];
+			
+			var treeNode_A2:TreeNode = new TreeNode(searchTrees[1]);
+			var treeNode_A2_1:TreeNode = new TreeNode(searchTrees[1].children[0]);
+			var treeNode_A2_2:TreeNode = new TreeNode(searchTrees[1].children[1]);
+			var treeNode_A2_2_1:TreeNode = new TreeNode(searchTrees[1].children[1].children[0]);
+			var treeNode_A2_2_2:TreeNode = new TreeNode(searchTrees[1].children[1].children[1]);
+			var treeNode_A2_2_3:TreeNode = new TreeNode(searchTrees[1].children[1].children[2]);
+
+			treeNode_A2_2_2.sibling = treeNode_A2_2_3;
+			treeNode_A2_2_1.sibling = treeNode_A2_2_2;
+			treeNode_A2_2.firstChild = treeNode_A2_2_1;
+			treeNode_A2_1.sibling = treeNode_A2_2;
+			treeNode_A2.firstChild = treeNode_A2_1;
+		    
+			assertEquals("finds deepest child", treeNode_A2_2_3, treeNode_A2.getDeepestChildContaining(searchItem));
+		    var deepestChild:TreeNode;
+		 
+			var preTime:Number = getTimer();
+						
+			var kLength:uint = 10000;
+			for(var k:uint = 0; k<kLength; k++)
+			{
+		    	deepestChild = treeNode_A2.getDeepestChildContaining(searchItem);
+			}
+			
+			trace("found deepest child for 5 depth triple branch using 6 tree nodes, 10000 times in " + String(getTimer()-preTime) + " ms");
+		}
+		
+		public function test_finding_deepest_child_on_5_depth_tree_triple_branch_using_4_tree_nodes():void
+		{			
+			var searchTrees:Vector.<TreeSpriteSupport> = createTrees(5, 3);
+			
+			var searchItem:Sprite = searchTrees[1].children[0].children[1].children[1].children[0];
+			
+			var treeNode_A2:TreeNode = new TreeNode(searchTrees[1]);
+			var treeNode_A2_1:TreeNode = new TreeNode(searchTrees[1].children[0]);
+			var treeNode_A2_1_1:TreeNode = new TreeNode(searchTrees[1].children[0].children[0]);
+			var treeNode_A2_1_2:TreeNode = new TreeNode(searchTrees[1].children[0].children[1]);
+
+			treeNode_A2_1_1.sibling = treeNode_A2_1_2;
+			treeNode_A2_1.firstChild = treeNode_A2_1_1;
+			treeNode_A2.firstChild = treeNode_A2_1;
+		    
+			assertEquals("finds deepest child", treeNode_A2_1_2, treeNode_A2.getDeepestChildContaining(searchItem));
+		    var deepestChild:TreeNode;
+		 
+			var preTime:Number = getTimer();
+						
+			var kLength:uint = 10000;
+			for(var k:uint = 0; k<kLength; k++)
+			{
+		    	deepestChild = treeNode_A2.getDeepestChildContaining(searchItem);
+			}
+			
+			trace("found deepest child for 5 depth triple branch using 4 tree nodes, 10000 times in " + String(getTimer()-preTime) + " ms");
+		}
+				
+		
 		protected function createTrees(tree_depth:uint, tree_width:uint):Vector.<TreeSpriteSupport>
 		{
 			var preTime:Number = getTimer();
