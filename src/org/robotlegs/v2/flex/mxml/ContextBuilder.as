@@ -10,10 +10,10 @@ package org.robotlegs.v2.flex.mxml
 	import flash.display.DisplayObjectContainer;
 	import mx.core.IMXMLObject;
 	import org.robotlegs.v2.context.api.IContextBuilderConfig;
-	import org.robotlegs.v2.context.restricted.ContextBuilder;
+	import org.robotlegs.v2.context.impl.ContextBuilder;
 
 	[DefaultProperty("configs")]
-	public class ContextBuilder extends org.robotlegs.v2.context.restricted.ContextBuilder implements IMXMLObject
+	public class ContextBuilder extends org.robotlegs.v2.context.impl.ContextBuilder implements IMXMLObject
 	{
 
 		/*============================================================================*/
@@ -44,7 +44,9 @@ package org.robotlegs.v2.flex.mxml
 				installConfig(config);
 			}, this);
 
-			if (!_contextView)
+			configs = null;
+
+			if (!context.contextView)
 			{
 				const container:DisplayObjectContainer = document as DisplayObjectContainer;
 				container && withContextView(container);

@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.context.restricted
+package org.robotlegs.v2.context.impl
 {
 	import flash.display.DisplayObjectContainer;
 	import flash.errors.IllegalOperationError;
@@ -15,10 +15,10 @@ package org.robotlegs.v2.context.restricted
 	import org.robotlegs.v2.context.api.IContext;
 	import org.robotlegs.v2.context.api.IContextBuilder;
 	import org.robotlegs.v2.context.api.IContextBuilderConfig;
+	import org.robotlegs.v2.context.api.IContextProcessor;
 	import org.swiftsuspenders.v2.core.FactoryMap;
 	import org.swiftsuspenders.v2.core.FactoryMapper;
 	import org.swiftsuspenders.v2.core.FactoryRequest;
-	import org.swiftsuspenders.v2.core.Injector;
 	import org.swiftsuspenders.v2.dsl.IFactoryMap;
 	import org.swiftsuspenders.v2.dsl.IFactoryMapping;
 	import org.swiftsuspenders.v2.dsl.IInjector;
@@ -33,30 +33,11 @@ package org.robotlegs.v2.context.restricted
 
 		protected var buildLocked:Boolean;
 
-		protected var context:IContext;
+		protected const context:IContext = new Context();
 
-		protected var _contextView:DisplayObjectContainer;
+		protected const factoryMap:IFactoryMap = new FactoryMap();
 
-		protected function get contextView():DisplayObjectContainer
-		{
-			return _contextView;
-		}
-
-		protected var _dispatcher:IEventDispatcher;
-
-		protected function get dispatcher():IEventDispatcher
-		{
-			return _dispatcher ||= new EventDispatcher();
-		}
-
-		protected var factoryMap:IFactoryMap = new FactoryMap();
-
-		protected var _injector:IInjector;
-
-		protected function get injector():IInjector
-		{
-			return _injector ||= new Injector();
-		}
+		protected const processors:Vector.<IContextProcessor> = new Vector.<IContextProcessor>;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -76,12 +57,7 @@ package org.robotlegs.v2.context.restricted
 		{
 			buildLocked && throwBuildLockedError();
 			buildLocked = true;
-
-			configureInjections();
-			configureUtilities();
-			createUtilities();
-
-			dispatchEvent(new ContextBuilderEvent(ContextBuilderEvent.CONTEXT_BUILD_COMPLETE, this));
+			runProcessors();
 			return context;
 		}
 
@@ -89,6 +65,13 @@ package org.robotlegs.v2.context.restricted
 		{
 			buildLocked && throwBuildLockedError();
 			config.configure(this);
+			return this;
+		}
+
+		public function installProcessor(processor:IContextProcessor):IContextBuilder
+		{
+			buildLocked && throwBuildLockedError();
+			processors.push(processor);
 			return this;
 		}
 
@@ -101,27 +84,27 @@ package org.robotlegs.v2.context.restricted
 			return this;
 		}
 
-		public function withContextView(container:DisplayObjectContainer):IContextBuilder
+		public function withContextView(value:DisplayObjectContainer):IContextBuilder
 		{
-			buildLocked && throwBuildLockedError();
-			_contextView && throwContextViewLockedError();
-			_contextView = container;
+			context.contextView = value;
 			return this;
 		}
 
-		public function withDispatcher(dispatcher:IEventDispatcher):IContextBuilder
+		public function withDispatcher(value:IEventDispatcher):IContextBuilder
 		{
-			buildLocked && throwBuildLockedError();
-			_dispatcher && throwDispatcherLockedError();
-			_dispatcher = dispatcher;
+			context.dispatcher = value;
 			return this;
 		}
 
-		public function withInjector(injector:IInjector):IContextBuilder
+		public function withInjector(value:IInjector):IContextBuilder
 		{
-			buildLocked && throwBuildLockedError();
-			_injector && throwInjectorLockedError();
-			_injector = injector;
+			context.injector = value;
+			return this;
+		}
+
+		public function withParent(value:IContext):IContextBuilder
+		{
+			context.parent = value;
 			return this;
 		}
 
@@ -129,21 +112,11 @@ package org.robotlegs.v2.context.restricted
 		/* Protected Functions                                                        */
 		/*============================================================================*/
 
-		protected function configureInjections():void
-		{
-			context = new Context(injector);
-			injector.map(IInjector).asSingleton(Injector);
-			injector.map(IEventDispatcher).toInstance(dispatcher);
-			injector.map(IContextBuilder).toInstance(this);
-			injector.map(IContext).toInstance(context);
-			contextView && injector.map(DisplayObjectContainer).toInstance(contextView);
-		}
-
 		protected function configureUtilities():void
 		{
 			factoryMap.mappings.forEach(function(mapping:IFactoryMapping, ... rest):void
 			{
-				injector.map(mapping.request.type, mapping.request.name)
+				context.injector.map(mapping.request.type, mapping.request.name)
 					.toFactory(mapping.factory);
 			}, this);
 		}
@@ -152,32 +125,42 @@ package org.robotlegs.v2.context.restricted
 		{
 			factoryMap.mappings.forEach(function(mapping:IFactoryMapping, ... rest):void
 			{
-				injector.getInstance(mapping.request.type, mapping.request.name);
+				context.injector.getInstance(mapping.request.type, mapping.request.name);
 			}, this);
 		}
 
-		/*============================================================================*/
-		/* Private Functions                                                          */
-		/*============================================================================*/
-
-		private function throwBuildLockedError():void
+		protected function finish(error:Object = null):void
 		{
-			throw new IllegalOperationError("ContextBuilder: build has started and is now locked");
+			if (error)
+				throw new Error(error);
+
+			context.initialize();
+			configureUtilities();
+			createUtilities();
+
+			dispatchEvent(new ContextBuilderEvent(ContextBuilderEvent.CONTEXT_BUILD_COMPLETE, this));
 		}
 
-		private function throwContextViewLockedError():void
+		protected function processorCallback(error:Object = null):void
 		{
-			throw new IllegalOperationError("ContextBuilder: contextView has been set and is now locked");
+			if (error || processors.length == 0)
+			{
+				finish(error);
+			}
+			else
+			{
+				processors.shift().process(context, processorCallback);
+			}
 		}
 
-		private function throwDispatcherLockedError():void
+		protected function runProcessors():void
 		{
-			throw new IllegalOperationError("ContextBuilder: dispatcher has been set and is now locked");
+			processorCallback();
 		}
 
-		private function throwInjectorLockedError():void
+		protected function throwBuildLockedError():void
 		{
-			throw new IllegalOperationError("ContextBuilder: injector has been set and is now locked");
+			throw new IllegalOperationError("ContextBuilder: build has started and is now locked.");
 		}
 	}
 }

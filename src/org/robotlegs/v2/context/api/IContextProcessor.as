@@ -5,13 +5,11 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.view.api
+package org.robotlegs.v2.context.api
 {
 
-	public interface IDisplayListObserver
+	public interface IContextProcessor
 	{
-		function configure(displayList:IDisplayList):void;
-
-		function destroy():void;
+		function process(context:IContext, callback:Function):void;
 	}
 }

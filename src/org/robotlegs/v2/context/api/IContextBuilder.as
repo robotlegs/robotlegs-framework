@@ -18,12 +18,16 @@ package org.robotlegs.v2.context.api
 
 		function installConfig(config:IContextBuilderConfig):IContextBuilder;
 
+		function installProcessor(processor:IContextProcessor):IContextBuilder;
+
 		function installUtility(clazz:Class, injectAs:Class = null, named:String = ''):IContextBuilder;
 
-		function withContextView(container:DisplayObjectContainer):IContextBuilder;
+		function withContextView(value:DisplayObjectContainer):IContextBuilder;
 
-		function withDispatcher(dispatcher:IEventDispatcher):IContextBuilder;
+		function withDispatcher(value:IEventDispatcher):IContextBuilder;
 
-		function withInjector(injector:IInjector):IContextBuilder;
+		function withInjector(value:IInjector):IContextBuilder;
+
+		function withParent(value:IContext):IContextBuilder;
 	}
 }

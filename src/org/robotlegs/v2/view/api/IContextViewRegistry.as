@@ -8,20 +8,14 @@
 package org.robotlegs.v2.view.api
 {
 	import flash.display.DisplayObjectContainer;
+	import org.robotlegs.v2.context.api.IContext;
 
-	public interface IContainerBinding
+	public interface IContextViewRegistry
 	{
+		function addContext(context:IContext):void;
 
-		function get children():Vector.<IContainerBinding>;
+		function getContexts(view:DisplayObjectContainer):Vector.<IContext>;
 
-		function set children(value:Vector.<IContainerBinding>):void;
-
-		function get container():DisplayObjectContainer;
-
-		function get handler():IViewHandler;
-
-		function get parent():IContainerBinding;
-
-		function set parent(value:IContainerBinding):void;
+		function removeContext(context:IContext):void;
 	}
 }
