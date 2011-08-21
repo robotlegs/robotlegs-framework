@@ -8,6 +8,7 @@
 package org.robotlegs.v2.flex.mxml
 {
 	import flash.display.DisplayObjectContainer;
+	import flash.utils.setTimeout;
 	import mx.core.IMXMLObject;
 	import org.robotlegs.v2.context.api.IContextBuilderConfig;
 	import org.robotlegs.v2.context.impl.ContextBuilder;
@@ -20,7 +21,7 @@ package org.robotlegs.v2.flex.mxml
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		private var _configs:Vector.<IContextBuilderConfig> = new Vector.<IContextBuilderConfig>;
+		protected var _configs:Vector.<IContextBuilderConfig> = new Vector.<IContextBuilderConfig>;
 
 		public function get configs():Vector.<IContextBuilderConfig>
 		{
@@ -32,6 +33,19 @@ package org.robotlegs.v2.flex.mxml
 			_configs = value;
 		}
 
+		protected var _contextView:DisplayObjectContainer;
+
+		public function set contextView(value:DisplayObjectContainer):void
+		{
+			_contextView = value;
+		}
+
+		/*============================================================================*/
+		/* Protected Properties                                                       */
+		/*============================================================================*/
+
+		protected var _documentView:DisplayObjectContainer;
+
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
@@ -39,18 +53,28 @@ package org.robotlegs.v2.flex.mxml
 
 		public function initialized(document:Object, id:String):void
 		{
+			_documentView = document as DisplayObjectContainer;
+			// if the contextView is bound it will only be set a frame later
+			setTimeout(configureBuilder, 1);
+		}
+
+		/*============================================================================*/
+		/* Protected Functions                                                        */
+		/*============================================================================*/
+
+		protected function configureBuilder():void
+		{
+			if (!context.contextView)
+			{
+				withContextView(_contextView || _documentView);
+			}
+
 			configs.forEach(function(config:IContextBuilderConfig, ... rest):void
 			{
 				installConfig(config);
 			}, this);
 
 			configs = null;
-
-			if (!context.contextView)
-			{
-				const container:DisplayObjectContainer = document as DisplayObjectContainer;
-				container && withContextView(container);
-			}
 
 			build();
 		}

@@ -11,6 +11,8 @@ package org.robotlegs.v2.context.impl
 	import flash.errors.IllegalOperationError;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
+	import flash.utils.Dictionary;
+	
 	import org.robotlegs.v2.context.api.ContextBuilderEvent;
 	import org.robotlegs.v2.context.api.IContext;
 	import org.robotlegs.v2.context.api.IContextBuilder;
@@ -38,6 +40,8 @@ package org.robotlegs.v2.context.impl
 		protected const factoryMap:IFactoryMap = new FactoryMap();
 
 		protected const processors:Vector.<IContextProcessor> = new Vector.<IContextProcessor>;
+		
+		private var hack_implByReq:Dictionary = new Dictionary();
 
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -81,6 +85,7 @@ package org.robotlegs.v2.context.impl
 			const request:FactoryRequest = new FactoryRequest(type, named);
 			const mapper:FactoryMapper = new FactoryMapper(factoryMap, request);
 			mapper.asSingleton(implementation);
+			hack_implByReq[request] = implementation || type;
 			return this;
 		}
 
@@ -117,7 +122,8 @@ package org.robotlegs.v2.context.impl
 			factoryMap.mappings.forEach(function(mapping:IFactoryMapping, ... rest):void
 			{
 				context.injector.map(mapping.request.type, mapping.request.name)
-					.toFactory(mapping.factory);
+					.asSingleton(hack_implByReq[mapping.request]);
+				//	.toFactory(mapping.factory);
 			}, this);
 		}
 

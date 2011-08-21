@@ -7,12 +7,13 @@
 
 package org.swiftsuspenders.v2.core
 {
+	import org.robotlegs.adapters.SwiftSuspendersInjector;
+	import org.robotlegs.core.IInjector;
 	import org.swiftsuspenders.v2.dsl.IFactoryMap;
 	import org.swiftsuspenders.v2.dsl.IFactoryMapper;
 	import org.swiftsuspenders.v2.dsl.IInjector;
-	import org.swiftsuspenders.v2.factories.Hack;
 
-	public class Injector implements IInjector
+	public class Injector implements org.swiftsuspenders.v2.dsl.IInjector
 	{
 
 		/*============================================================================*/
@@ -21,6 +22,17 @@ package org.swiftsuspenders.v2.core
 
 		private var factoryMap:IFactoryMap = new FactoryMap();
 
+		public var hack_inj:org.robotlegs.core.IInjector
+
+		/*============================================================================*/
+		/* Constructor                                                                */
+		/*============================================================================*/
+
+		public function Injector()
+		{
+			hack_inj = new SwiftSuspendersInjector();
+		}
+
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
@@ -28,13 +40,13 @@ package org.swiftsuspenders.v2.core
 
 		public function getInstance(type:Class, named:String = ''):*
 		{
-			return Hack.inj.getInstance(type, named);
+			return hack_inj.getInstance(type, named);
 		}
 
 		public function map(type:Class, named:String = ''):IFactoryMapper
 		{
 			const request:FactoryRequest = new FactoryRequest(type, named);
-			const mapper:FactoryMapper = new FactoryMapper(factoryMap, request);
+			const mapper:FactoryMapper = new FactoryMapper(factoryMap, request, hack_inj);
 			return mapper;
 		}
 	}

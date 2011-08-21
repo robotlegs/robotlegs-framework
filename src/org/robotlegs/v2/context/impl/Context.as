@@ -11,6 +11,7 @@ package org.robotlegs.v2.context.impl
 	import flash.errors.IllegalOperationError;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
+	
 	import org.robotlegs.v2.context.api.IContext;
 	import org.robotlegs.v2.view.impl.ContextViewRegistry;
 	import org.swiftsuspenders.v2.core.Injector;
@@ -111,6 +112,9 @@ package org.robotlegs.v2.context.impl
 			injector.map(IInjector).toInstance(injector);
 			injector.map(IEventDispatcher).toInstance(dispatcher);
 			injector.map(DisplayObjectContainer).toInstance(contextView);
+			
+			// hack in the old RL1 mappings
+			new HackOldMappings(injector);
 
 			if (contextView)
 				ContextViewRegistry.getSingleton().addContext(this);

@@ -7,12 +7,12 @@
 
 package org.swiftsuspenders.v2.core
 {
+	import org.robotlegs.core.IInjector;
 	import org.swiftsuspenders.v2.dsl.IFactory;
 	import org.swiftsuspenders.v2.dsl.IFactoryMap;
 	import org.swiftsuspenders.v2.dsl.IFactoryMapper;
 	import org.swiftsuspenders.v2.dsl.IFactoryMapping;
 	import org.swiftsuspenders.v2.dsl.IFactoryRequest;
-	import org.swiftsuspenders.v2.factories.Hack;
 	import org.swiftsuspenders.v2.factories.SingletonFactory;
 
 	public class FactoryMapper implements IFactoryMapper
@@ -24,16 +24,19 @@ package org.swiftsuspenders.v2.core
 
 		private var factoryMap:IFactoryMap;
 
+		private var hack_inj:IInjector;
+
 		private var request:IFactoryRequest;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function FactoryMapper(factoryMap:IFactoryMap, request:IFactoryRequest)
+		public function FactoryMapper(factoryMap:IFactoryMap, request:IFactoryRequest, hack_inj:IInjector=null)
 		{
 			this.factoryMap = factoryMap;
 			this.request = request;
+			this.hack_inj = hack_inj;
 		}
 
 
@@ -43,13 +46,13 @@ package org.swiftsuspenders.v2.core
 
 		public function asPrototype(implementation:Class = null):IFactory
 		{
-			Hack.inj.mapClass(request.type, implementation || request.type, request.name);
+			hack_inj && hack_inj.mapClass(request.type, implementation || request.type, request.name);
 			return null;
 		}
 
 		public function asSingleton(implementation:Class = null):IFactory
 		{
-			Hack.inj.mapSingletonOf(request.type, implementation || request.type, request.name);
+			hack_inj && hack_inj.mapSingletonOf(request.type, implementation || request.type, request.name);
 			return toFactory(new SingletonFactory(implementation));
 		}
 
@@ -67,7 +70,7 @@ package org.swiftsuspenders.v2.core
 
 		public function toInstance(instance:*):IFactory
 		{
-			Hack.inj.mapValue(request.type, instance, request.name);
+			hack_inj && hack_inj.mapValue(request.type, instance, request.name);
 			return null;
 		}
 	}
