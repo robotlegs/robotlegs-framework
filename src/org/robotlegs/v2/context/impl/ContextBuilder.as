@@ -11,19 +11,12 @@ package org.robotlegs.v2.context.impl
 	import flash.errors.IllegalOperationError;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
-	import flash.utils.Dictionary;
-	
+	import org.robotlegs.core.IInjector;
 	import org.robotlegs.v2.context.api.ContextBuilderEvent;
 	import org.robotlegs.v2.context.api.IContext;
 	import org.robotlegs.v2.context.api.IContextBuilder;
 	import org.robotlegs.v2.context.api.IContextBuilderConfig;
 	import org.robotlegs.v2.context.api.IContextProcessor;
-	import org.swiftsuspenders.v2.core.FactoryMap;
-	import org.swiftsuspenders.v2.core.FactoryMapper;
-	import org.swiftsuspenders.v2.core.FactoryRequest;
-	import org.swiftsuspenders.v2.dsl.IFactoryMap;
-	import org.swiftsuspenders.v2.dsl.IFactoryMapping;
-	import org.swiftsuspenders.v2.dsl.IInjector;
 
 	[Event(name="contextBuildComplete", type="org.robotlegs.v2.context.api.ContextBuilderEvent")]
 	public class ContextBuilder extends EventDispatcher implements IContextBuilder
@@ -37,11 +30,9 @@ package org.robotlegs.v2.context.impl
 
 		protected const context:IContext = new Context();
 
-		protected const factoryMap:IFactoryMap = new FactoryMap();
-
 		protected const processors:Vector.<IContextProcessor> = new Vector.<IContextProcessor>;
-		
-		private var hack_implByReq:Dictionary = new Dictionary();
+
+		protected const utilityConfigs:Vector.<UtilityConfig> = new Vector.<UtilityConfig>;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -82,10 +73,11 @@ package org.robotlegs.v2.context.impl
 		public function installUtility(type:Class, implementation:Class = null, named:String = ''):IContextBuilder
 		{
 			buildLocked && throwBuildLockedError();
-			const request:FactoryRequest = new FactoryRequest(type, named);
-			const mapper:FactoryMapper = new FactoryMapper(factoryMap, request);
-			mapper.asSingleton(implementation);
-			hack_implByReq[request] = implementation || type;
+			const config:UtilityConfig = new UtilityConfig();
+			config.type = type;
+			config.implementation = implementation || type;
+			config.name = named;
+			utilityConfigs.push(config);
 			return this;
 		}
 
@@ -119,19 +111,17 @@ package org.robotlegs.v2.context.impl
 
 		protected function configureUtilities():void
 		{
-			factoryMap.mappings.forEach(function(mapping:IFactoryMapping, ... rest):void
+			utilityConfigs.forEach(function(config:UtilityConfig, ... rest):void
 			{
-				context.injector.map(mapping.request.type, mapping.request.name)
-					.asSingleton(hack_implByReq[mapping.request]);
-				//	.toFactory(mapping.factory);
+				context.injector.mapSingletonOf(config.type, config.implementation, config.name);
 			}, this);
 		}
 
 		protected function createUtilities():void
 		{
-			factoryMap.mappings.forEach(function(mapping:IFactoryMapping, ... rest):void
+			utilityConfigs.forEach(function(config:UtilityConfig, ... rest):void
 			{
-				context.injector.getInstance(mapping.request.type, mapping.request.name);
+				context.injector.getInstance(config.type, config.name);
 			}, this);
 		}
 
@@ -169,4 +159,18 @@ package org.robotlegs.v2.context.impl
 			throw new IllegalOperationError("ContextBuilder: build has started and is now locked.");
 		}
 	}
+}
+
+class UtilityConfig
+{
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
+	public var implementation:Class;
+
+	public var name:String;
+
+	public var type:Class;
 }

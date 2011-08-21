@@ -18,7 +18,6 @@ package org.robotlegs.v2.context.impl
 	import org.robotlegs.core.IMediatorMap;
 	import org.robotlegs.core.IReflector;
 	import org.robotlegs.core.IViewMap;
-	import org.swiftsuspenders.v2.dsl.IInjector;
 
 	public class HackOldMappings
 	{
@@ -27,19 +26,15 @@ package org.robotlegs.v2.context.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function HackOldMappings(inj:org.swiftsuspenders.v2.dsl.IInjector)
+		public function HackOldMappings(injector:IInjector)
 		{
-			var injector:org.robotlegs.core.IInjector = inj['hack_inj'];
-
 			injector.mapValue(IReflector, new SwiftSuspendersReflector());
-			injector.mapValue(org.robotlegs.core.IInjector, injector);
 
 			injector.mapSingletonOf(ICommandMap, CommandMap);
 			injector.mapSingletonOf(IMediatorMap, MediatorMap);
 			injector.mapSingletonOf(IViewMap, ViewMap);
 
 			injector.mapClass(IEventMap, EventMap);
-
 		}
 	}
 }

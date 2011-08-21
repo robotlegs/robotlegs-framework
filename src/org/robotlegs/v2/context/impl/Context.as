@@ -11,11 +11,10 @@ package org.robotlegs.v2.context.impl
 	import flash.errors.IllegalOperationError;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
-	
+	import org.robotlegs.adapters.SwiftSuspendersInjector;
+	import org.robotlegs.core.IInjector;
 	import org.robotlegs.v2.context.api.IContext;
 	import org.robotlegs.v2.view.impl.ContextViewRegistry;
-	import org.swiftsuspenders.v2.core.Injector;
-	import org.swiftsuspenders.v2.dsl.IInjector;
 
 	public class Context implements IContext
 	{
@@ -86,14 +85,6 @@ package org.robotlegs.v2.context.impl
 			_parent = value;
 		}
 
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
-
-		public function Context()
-		{
-		}
-
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
@@ -105,14 +96,14 @@ package org.robotlegs.v2.context.impl
 			_initialized = true;
 
 			// todo: set parent injector based on context.parent
-			_injector ||= new Injector();
+			_injector ||= new SwiftSuspendersInjector();
 			_dispatcher ||= new EventDispatcher();
 
-			injector.map(IContext).toInstance(this);
-			injector.map(IInjector).toInstance(injector);
-			injector.map(IEventDispatcher).toInstance(dispatcher);
-			injector.map(DisplayObjectContainer).toInstance(contextView);
-			
+			injector.mapValue(IContext, this);
+			injector.mapValue(IInjector, injector);
+			injector.mapValue(IEventDispatcher, dispatcher);
+			injector.mapValue(DisplayObjectContainer, contextView);
+
 			// hack in the old RL1 mappings
 			new HackOldMappings(injector);
 

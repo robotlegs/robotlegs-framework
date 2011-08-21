@@ -9,7 +9,7 @@ package org.robotlegs.v2.context.api
 {
 	import flash.display.DisplayObjectContainer;
 	import flash.events.IEventDispatcher;
-	import org.swiftsuspenders.v2.dsl.IInjector;
+	import org.robotlegs.core.IInjector;
 
 	public interface IContext
 	{
