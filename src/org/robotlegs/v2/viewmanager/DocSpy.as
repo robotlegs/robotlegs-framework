@@ -7,22 +7,25 @@ package org.robotlegs.v2.viewmanager
 	import flash.utils.Dictionary;
 	import org.robotlegs.v2.viewmanager.ContainerTreeCreeper;
 	import org.robotlegs.v2.viewmanager.IContainerBinding;
-	import org.robotlegs.v2.viewmanager.IListeningStrategyFactory;
 	import org.robotlegs.v2.viewmanager.listeningstrategies.ListeningStrategies;
-	import org.robotlegs.v2.viewmanager.tasks.TaskHandler;
+	import org.robotlegs.v2.viewmanager.IContainerTreeCreeper;
+	import org.robotlegs.v2.viewmanager.IListeningStrategy;
+	import org.robotlegs.v2.viewmanager.IListenerMap;
+	import org.robotlegs.v2.viewmanager.ListenerMap;
+	import org.robotlegs.v2.viewmanager.tasks.ITaskHandler;
+	import org.robotlegs.v2.viewmanager.tasks.TaskHandlerResponse;
 	
 	// that's "DoctorSpy" to the likes of you (or DisplayObjectContainerSpy)
 	public class DocSpy implements ISpy 
 	{
-		protected const _listeningStrategyFactory:IListeningStrategyFactory = new ListeningStrategyFactory();
+		protected const _taskHandlersByDoc:Dictionary = new Dictionary(false);
 		protected var _listeningStrategy:IListeningStrategy = ListeningStrategies.AUTO;
-		                                                                                 
-		// Four dictionaries... count em!
-		
-		protected var _treeCreepersByEventType:Dictionary = new Dictionary(false);
-		protected var _taskHandlersByTreeCreeperAndDoc:Dictionary = new Dictionary(false);
-		protected var _listenerStrategiesByTreeCreeper:Dictionary = new Dictionary(false);
-		protected var _listenerMapsByTreeCreeper:Dictionary = new Dictionary(false);
+		protected var _addedListenerMap:IListenerMap;
+		protected var _removedListenerMap:IListenerMap;
+		protected var _treeCreeper:IContainerTreeCreeper;
+		protected const _addedType:String = Event.ADDED_TO_STAGE;
+		protected const _removedType:String = Event.REMOVED_FROM_STAGE;
+		protected const _removedHandlersByHandledView:Dictionary = new Dictionary(false);
 		
 		public function get listeningStrategy():IListeningStrategy
 		{
@@ -37,45 +40,44 @@ package org.robotlegs.v2.viewmanager
 		// taskType eg "ViewMediationTask" to allow for blocking of further handling of this task-flavour by outer containers
 		// and should we return the binding here? In which case we could add another function to the binding that allowed you to
 		// removeInterest() in one go? Maybe it should be an InterestBinding, containing the ContainerBinding?
-		public function addInterestIn(target:DisplayObjectContainer, eventType:String, callback:Function, taskType:Class):void
+		public function addInterest(target:DisplayObjectContainer, taskHandler:ITaskHandler):void
 		{
 			// TODO - are we going to permit more than one handler per target per eventType per taskType?
 			// but then how does the 'I got this!' work if different maps are overlapping... hrm. 
 			// warn them if they add more than one? Or error?
 			
-			const treeCreeper:ContainerTreeCreeper = _treeCreepersByEventType[eventType] ||= createTreeCreeperForEvent(eventType);
+			if(!_treeCreeper)
+			{
+				initialise();
+			}
+						
+			_treeCreeper.includeContainer(target);
 			
-			treeCreeper.includeContainer(target);
+			const taskHandlers:Dictionary = _taskHandlersByDoc[target] ||= new Dictionary();
+			taskHandlers[taskHandler.taskType] = taskHandler;
 			
-			const taskHandlers:Dictionary = _taskHandlersByTreeCreeperAndDoc[treeCreeper][target] ||= new Dictionary();
-			taskHandlers[taskType] = callback;
-			
-			updateRootsAndListenerTargets(treeCreeper);
+			updateRootsAndListenerTargets(_treeCreeper);
 		}    
 		
 		// could return the removed binding if it was symmetrical with above
-		public function removeInterestIn(target:DisplayObjectContainer, eventType:String, callback:Function, taskType:Class):void
+		public function removeInterest(target:DisplayObjectContainer, taskHandler:ITaskHandler):void
 		{
-			const treeCreeper:ContainerTreeCreeper = _treeCreepersByEventType[eventType];
-			
-			if((!treeCreeper) || (!_taskHandlersByTreeCreeperAndDoc[treeCreeper][target]) ||
-			 	(!_taskHandlersByTreeCreeperAndDoc[treeCreeper][target][taskType] ) )
+			if((!_treeCreeper) || (!_taskHandlersByDoc[target]) ||
+			 	(!_taskHandlersByDoc[target][taskHandler.taskType] ) )
 			{
 				return;
 			}
 			
-			treeCreeper.excludeContainer(target);
+			_treeCreeper.excludeContainer(target);
 			
-			delete _taskHandlersByTreeCreeperAndDoc[treeCreeper][target][taskType];
+			delete _taskHandlersByDoc[target][taskHandler.taskType];
 			
-			updateRootsAndListenerTargets(treeCreeper);
-		}                                          
+			updateRootsAndListenerTargets(_treeCreeper);
+		} 
 		
-		
-		
-		protected function updateRootsAndListenerTargets(treeCreeper:ContainerTreeCreeper):void
+		protected function updateRootsAndListenerTargets(treeCreeper:IContainerTreeCreeper):void
 		{
-			const roots:Vector.<IContainerBinding> = treeCreeper.rootContainerBindings;
+			const roots:Vector.<IContainerBinding> = _treeCreeper.rootContainerBindings;
 			const docRoots:Vector.<DisplayObjectContainer> = new Vector.<DisplayObjectContainer>();
 			
 			const iLength:uint = roots.length;
@@ -84,36 +86,27 @@ package org.robotlegs.v2.viewmanager
 				docRoots.push(roots[i].container);
 			}
 			
-			const treeListeningStrategy:IListeningStrategy = _listenerStrategiesByTreeCreeper[treeCreeper];
-			const listenerChangeRequired:Boolean = treeListeningStrategy.updateTargets(docRoots);
+			const listenerChangeRequired:Boolean = _listeningStrategy.updateTargets(docRoots);
 			if(listenerChangeRequired)
 			{
-				_listenerMapsByTreeCreeper[treeCreeper].updateListenerTargets(Vector.<IEventDispatcher>(treeListeningStrategy.targets));
+				_addedListenerMap.updateListenerTargets(Vector.<IEventDispatcher>(_listeningStrategy.targets));
+				_removedListenerMap.updateListenerTargets(Vector.<IEventDispatcher>(_listeningStrategy.targets));
 			}
 		}                                                                          
 		
-		protected function createListenerFor(treeCreeper:ContainerTreeCreeper):Function
+		protected function routeAddedEventToInterestedParties(e:Event):void
 		{
-			const evtHandler:Function = function(e:Event):void
-			{
-				routeEventToInterestedParties(e, treeCreeper);
-			}
-			
-			return evtHandler;
-		} 
-		
-		protected function routeEventToInterestedParties(e:Event, treeCreeper:ContainerTreeCreeper):void
-		{
-			var targetContainerBinding:IContainerBinding = treeCreeper.findParentBindingFor(e.target as DisplayObject); 
+			var targetContainerBinding:IContainerBinding = _treeCreeper.findParentBindingFor(e.target as DisplayObject); 
 			
 		    const blockedTasks:Dictionary = new Dictionary();
 			var handlersByTask:Dictionary;
-			var allowFurtherResponses:Boolean;
-			var taskType:*;    
+			var response:uint;
+			var taskType:*;
+			const removedHandlersForThisView:Vector.<Function> = new Vector.<Function>();    
 		
 			while(targetContainerBinding)
 			{
-				handlersByTask = _taskHandlersByTreeCreeperAndDoc[treeCreeper][targetContainerBinding.container];
+				handlersByTask = _taskHandlersByDoc[targetContainerBinding.container];
 				
 				for (taskType in handlersByTask)
 				{
@@ -121,27 +114,51 @@ package org.robotlegs.v2.viewmanager
 					{
 						// blocked on a task type basis
 						// ie a 'ViewMediationTask' can block further ViewMediationTasks
-						allowFurtherResponses = handlersByTask[taskType](e);
-						if(!allowFurtherResponses)
+						response = handlersByTask[taskType].addedHandler(e);
+						if(response == TaskHandlerResponse.HANDLED_AND_BLOCKED)
 						{
 							blockedTasks[taskType] = targetContainerBinding.container;
+						}
+						if((response > 0) && (handlersByTask[taskType].removedHandler))
+						{
+							removedHandlersForThisView.push(handlersByTask[taskType].removedHandler);
 						}          
 					}
 				}
 
 				targetContainerBinding = targetContainerBinding.parent;
 			}
+			
+			if(removedHandlersForThisView.length > 0)
+			{
+				_removedHandlersByHandledView[e.target] = removedHandlersForThisView;
+			}
+		} 
+		
+		protected function routeRemovedEventToInterestedParties(e:Event):void
+		{
+			if(!_removedHandlersByHandledView[e.target])
+			{
+				return;
+			}
+			           
+			const removedHandlersForThisView:Vector.<Function> = _removedHandlersByHandledView[e.target];
+			
+			const iLength:uint = removedHandlersForThisView.length;
+			for (var i:uint = 0; i < iLength; i++)
+			{
+				removedHandlersForThisView[i](e);
+			}                                    
+			
+			delete _removedHandlersByHandledView[e.target];
 		}
 
-		protected function createTreeCreeperForEvent(eventType:String):ContainerTreeCreeper
+		protected function initialise():IContainerTreeCreeper
 		{
-			const treeCreeper:ContainerTreeCreeper = new ContainerTreeCreeper();
-			const strategy:IListeningStrategy = _listeningStrategyFactory.createStrategyLike(_listeningStrategy);
-			_listenerStrategiesByTreeCreeper[treeCreeper] = strategy;  
-			_taskHandlersByTreeCreeperAndDoc[treeCreeper] = new Dictionary();
-			_listenerMapsByTreeCreeper[treeCreeper] = new ListenerMap(eventType, createListenerFor(treeCreeper));
-			
-			return treeCreeper;
+			_treeCreeper = new ContainerTreeCreeper();
+			_addedListenerMap = new ListenerMap(_addedType, routeAddedEventToInterestedParties);
+			_removedListenerMap = new ListenerMap(_removedType, routeRemovedEventToInterestedParties);
+			return _treeCreeper;
 		}
 	}
 }

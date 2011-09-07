@@ -8,8 +8,8 @@ package {
 
 	import asunit.framework.TestSuite;
 //	import org.robotlegs.v2.viewmanager.ContainerBindingTest;
-	import org.robotlegs.v2.viewmanager.ContainerTreeCreeperTest;
-//	import org.robotlegs.v2.viewmanager.DocSpyTest;
+//	import org.robotlegs.v2.viewmanager.ContainerTreeCreeperTest;
+	import org.robotlegs.v2.viewmanager.DocSpyTest;
 //	import org.robotlegs.v2.viewmanager.ListenerMapTest;
 //	import org.robotlegs.v2.viewmanager.listeningstrategies.AutoViewListeningStrategyTest;
 //	import org.robotlegs.v2.viewmanager.listeningstrategies.FewestEventsViewListeningStrategyTest;
@@ -25,8 +25,8 @@ package {
 
 		public function AllTests() {
 //			addTest(new org.robotlegs.v2.viewmanager.ContainerBindingTest());
-			addTest(new org.robotlegs.v2.viewmanager.ContainerTreeCreeperTest());
-//			addTest(new org.robotlegs.v2.viewmanager.DocSpyTest());
+//			addTest(new org.robotlegs.v2.viewmanager.ContainerTreeCreeperTest());
+			addTest(new org.robotlegs.v2.viewmanager.DocSpyTest());
 //			addTest(new org.robotlegs.v2.viewmanager.ListenerMapTest());
 //			addTest(new org.robotlegs.v2.viewmanager.listeningstrategies.AutoViewListeningStrategyTest());
 //			addTest(new org.robotlegs.v2.viewmanager.listeningstrategies.FewestEventsViewListeningStrategyTest());
