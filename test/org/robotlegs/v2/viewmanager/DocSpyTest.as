@@ -10,6 +10,7 @@ package org.robotlegs.v2.viewmanager {
 	import org.robotlegs.v2.viewmanager.tasks.TaskHandlerResponse;
 	import org.robotlegs.v2.viewmanager.tasks.ITaskHandler;
 	import org.robotlegs.v2.viewmanager.tasks.TaskHandler;
+	import flash.utils.getTimer;
 
 	public class DocSpyTest extends TestCase {
 		private var instance:DocSpy; 
@@ -160,7 +161,35 @@ package org.robotlegs.v2.viewmanager {
 			_targetContainer.addChild(_viewToIgnore);
 			_targetContainer.removeChild(_viewToIgnore);
 			assertEquals("Doesnt run removed for a view that wasnt handled", 0, _removedHandlerCount);
-		} 
+		}
+		
+		public function test_add_performance_test():void {
+			var startTime:uint = getTimer();
+
+			var iLength:uint = 10000;
+			for (var i:uint = 0; i < iLength; i++)
+			{
+				_targetContainer.addChild(new Sprite());
+			}                                           
+			
+			trace("add perf test: " + (getTimer() - startTime));
+		}
+		
+		public function test_add_performance_test_with_handler():void {
+			var taskHandler:ITaskHandler = new TaskHandler(ViewMediationTask, handler1, null);
+			instance.addInterest(_targetContainer, taskHandler);
+
+			var startTime:uint = getTimer();
+
+			var iLength:uint = 10000;
+			for (var i:uint = 0; i < iLength; i++)
+			{
+				_targetContainer.addChild(new Sprite());
+			}                                           
+			
+			trace("add perf test with handler: " + (getTimer() - startTime));
+		}
+		 
 
 		protected function fussy_handler(e:Event):uint
 		{

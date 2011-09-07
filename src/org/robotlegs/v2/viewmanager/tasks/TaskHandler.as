@@ -27,7 +27,7 @@ package org.robotlegs.v2.viewmanager.tasks
 		
 		public function removedHandler(e:Event):uint
 		{
-			if ( _removedHandler)
+			if ( _removedHandler != null)
 			{
 				return _removedHandler(e);
 			}

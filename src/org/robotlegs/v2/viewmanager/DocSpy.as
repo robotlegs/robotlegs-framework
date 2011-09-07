@@ -19,13 +19,14 @@ package org.robotlegs.v2.viewmanager
 	public class DocSpy implements ISpy 
 	{
 		protected const _taskHandlersByDoc:Dictionary = new Dictionary(false);
+		protected const _addedType:String = Event.ADDED_TO_STAGE;
+		protected const _removedType:String = Event.REMOVED_FROM_STAGE;
+		protected const _removedHandlersByHandledView:Dictionary = new Dictionary(false);
+
 		protected var _listeningStrategy:IListeningStrategy = ListeningStrategies.AUTO;
 		protected var _addedListenerMap:IListenerMap;
 		protected var _removedListenerMap:IListenerMap;
 		protected var _treeCreeper:IContainerTreeCreeper;
-		protected const _addedType:String = Event.ADDED_TO_STAGE;
-		protected const _removedType:String = Event.REMOVED_FROM_STAGE;
-		protected const _removedHandlersByHandledView:Dictionary = new Dictionary(false);
 		
 		public function get listeningStrategy():IListeningStrategy
 		{
@@ -59,7 +60,8 @@ package org.robotlegs.v2.viewmanager
 			updateRootsAndListenerTargets(_treeCreeper);
 		}    
 		
-		// could return the removed binding if it was symmetrical with above
+		// could return the removed binding if it was symmetrical with above  
+		// TODO - needs to remove the 'removed from stage' handler too
 		public function removeInterest(target:DisplayObjectContainer, taskHandler:ITaskHandler):void
 		{
 			if((!_treeCreeper) || (!_taskHandlersByDoc[target]) ||
