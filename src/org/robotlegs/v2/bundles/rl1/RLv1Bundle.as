@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.context.impl
+package org.robotlegs.v2.bundles.rl1
 {
 	import org.robotlegs.adapters.SwiftSuspendersReflector;
 	import org.robotlegs.base.CommandMap;
@@ -14,27 +14,29 @@ package org.robotlegs.v2.context.impl
 	import org.robotlegs.base.ViewMap;
 	import org.robotlegs.core.ICommandMap;
 	import org.robotlegs.core.IEventMap;
-	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IMediatorMap;
 	import org.robotlegs.core.IReflector;
 	import org.robotlegs.core.IViewMap;
+	import org.robotlegs.v2.context.api.IContextBuilder;
+	import org.robotlegs.v2.context.api.IContextBuilderConfig;
+	import org.robotlegs.v2.processors.ParentContextFinder;
 
-	public class HackOldMappings
+	public class RLv1Bundle implements IContextBuilderConfig
 	{
 
 		/*============================================================================*/
-		/* Constructor                                                                */
+		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function HackOldMappings(injector:IInjector)
+		public function configure(builder:IContextBuilder):void
 		{
-			injector.mapValue(IReflector, new SwiftSuspendersReflector());
-
-			injector.mapSingletonOf(ICommandMap, CommandMap);
-			injector.mapSingletonOf(IMediatorMap, MediatorMap);
-			injector.mapSingletonOf(IViewMap, ViewMap);
-
-			injector.mapClass(IEventMap, EventMap);
+			builder
+				.addProcessor(new ParentContextFinder())
+				.addUtility(IReflector, SwiftSuspendersReflector)
+				.addUtility(ICommandMap, CommandMap)
+				.addUtility(IMediatorMap, MediatorMap)
+				.addUtility(IViewMap, ViewMap)
+				.addUtility(IEventMap, EventMap, false);
 		}
 	}
 }

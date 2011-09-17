@@ -48,6 +48,28 @@ package org.robotlegs.v2.context.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		public function addProcessor(processor:IContextProcessor):IContextBuilder
+		{
+			buildLocked && throwBuildLockedError();
+			processors.push(processor);
+			return this;
+		}
+
+		/**
+		 * This is horrible, but we need a way to configure dependencies before the injector has been set
+		 */
+		public function addUtility(type:Class, implementation:Class = null, asSingleton:Boolean = true, named:String = ''):IContextBuilder
+		{
+			buildLocked && throwBuildLockedError();
+			const config:UtilityConfig = new UtilityConfig();
+			config.type = type;
+			config.implementation = implementation || type;
+			config.asSingleton = asSingleton;
+			config.name = named;
+			utilityConfigs.push(config);
+			return this;
+		}
+
 		public function build():IContext
 		{
 			buildLocked && throwBuildLockedError();
@@ -60,24 +82,6 @@ package org.robotlegs.v2.context.impl
 		{
 			buildLocked && throwBuildLockedError();
 			config.configure(this);
-			return this;
-		}
-
-		public function installProcessor(processor:IContextProcessor):IContextBuilder
-		{
-			buildLocked && throwBuildLockedError();
-			processors.push(processor);
-			return this;
-		}
-
-		public function installUtility(type:Class, implementation:Class = null, named:String = ''):IContextBuilder
-		{
-			buildLocked && throwBuildLockedError();
-			const config:UtilityConfig = new UtilityConfig();
-			config.type = type;
-			config.implementation = implementation || type;
-			config.name = named;
-			utilityConfigs.push(config);
 			return this;
 		}
 
@@ -113,7 +117,14 @@ package org.robotlegs.v2.context.impl
 		{
 			utilityConfigs.forEach(function(config:UtilityConfig, ... rest):void
 			{
-				context.injector.mapSingletonOf(config.type, config.implementation, config.name);
+				if (config.asSingleton)
+				{
+					context.injector.mapSingletonOf(config.type, config.implementation, config.name);
+				}
+				else
+				{
+					context.injector.mapClass(config.type, config.implementation, config.name);
+				}
 			}, this);
 		}
 
@@ -121,31 +132,34 @@ package org.robotlegs.v2.context.impl
 		{
 			utilityConfigs.forEach(function(config:UtilityConfig, ... rest):void
 			{
-				context.injector.getInstance(config.type, config.name);
+				if (config.asSingleton)
+				{
+					context.injector.getInstance(config.type, config.name);
+				}
 			}, this);
 		}
 
-		protected function finish(error:Object = null):void
+		protected function finishBuild():void
 		{
-			if (error)
-				throw new Error(error);
-
 			context.initialize();
 			configureUtilities();
 			createUtilities();
-
-			dispatchEvent(new ContextBuilderEvent(ContextBuilderEvent.CONTEXT_BUILD_COMPLETE, this));
+			dispatchEvent(new ContextBuilderEvent(ContextBuilderEvent.CONTEXT_BUILD_COMPLETE, this, context));
 		}
 
 		protected function processorCallback(error:Object = null):void
 		{
-			if (error || processors.length == 0)
+			if (error)
 			{
-				finish(error);
+				throw new Error(error);
+			}
+			else if (processors.length > 0)
+			{
+				processors.shift().process(context, processorCallback);
 			}
 			else
 			{
-				processors.shift().process(context, processorCallback);
+				finishBuild();
 			}
 		}
 
@@ -167,6 +181,8 @@ class UtilityConfig
 	/*============================================================================*/
 	/* Public Properties                                                          */
 	/*============================================================================*/
+
+	public var asSingleton:Boolean;
 
 	public var implementation:Class;
 

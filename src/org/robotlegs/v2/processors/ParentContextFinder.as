@@ -5,14 +5,14 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.context.processors
+package org.robotlegs.v2.processors
 {
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
 	import org.robotlegs.v2.context.api.IContext;
 	import org.robotlegs.v2.context.api.IContextProcessor;
-	import org.robotlegs.v2.view.impl.ContextViewRegistry;
 	import org.robotlegs.v2.view.api.IContextViewRegistry;
+	import org.robotlegs.v2.view.impl.ContextViewRegistry;
 
 	public class ParentContextFinder implements IContextProcessor
 	{
@@ -50,13 +50,16 @@ package org.robotlegs.v2.context.processors
 
 			if (parentContext)
 			{
+				// we found a parent, set it and let's get out of here!
 				context.parent = parentContext;
 				callback();
+				return;
 			}
 			else if (contextView.stage)
 			{
 				// we didn't find one, and we're already on stage, so there's no parent
 				callback();
+				return;
 			}
 			else
 			{
@@ -94,6 +97,7 @@ package org.robotlegs.v2.context.processors
 			{
 				context.parent = parentContext;
 			}
+			// we either found a parent or we didn't, regardless, it's time to move on
 			callback();
 		}
 	}

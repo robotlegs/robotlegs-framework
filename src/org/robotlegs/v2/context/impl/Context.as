@@ -11,6 +11,7 @@ package org.robotlegs.v2.context.impl
 	import flash.errors.IllegalOperationError;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
+	import flash.system.ApplicationDomain;
 	import org.robotlegs.adapters.SwiftSuspendersInjector;
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.v2.context.api.IContext;
@@ -22,6 +23,14 @@ package org.robotlegs.v2.context.impl
 		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
+
+		protected var _applicationDomain:ApplicationDomain;
+
+		public function get applicationDomain():ApplicationDomain
+		{
+			return _applicationDomain;
+		}
+
 
 		protected var _contextView:DisplayObjectContainer;
 
@@ -90,30 +99,63 @@ package org.robotlegs.v2.context.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		public function destroy():void
+		{
+			// todo: cleanup
+		}
+
 		public function initialize():void
 		{
 			_initialized && throwContextLockedError();
 			_initialized = true;
-
-			// todo: set parent injector based on context.parent
-			_injector ||= new SwiftSuspendersInjector();
-			_dispatcher ||= new EventDispatcher();
-
-			injector.mapValue(IContext, this);
-			injector.mapValue(IInjector, injector);
-			injector.mapValue(IEventDispatcher, dispatcher);
-			injector.mapValue(DisplayObjectContainer, contextView);
-
-			// hack in the old RL1 mappings
-			new HackOldMappings(injector);
-
-			if (contextView)
-				ContextViewRegistry.getSingleton().addContext(this);
+			configureApplicationDomain();
+			configureDispatcher();
+			configureInjector();
+			mapInjections();
+			addToContextViewRegistry();
 		}
 
 		/*============================================================================*/
 		/* Protected Functions                                                        */
 		/*============================================================================*/
+
+		protected function addToContextViewRegistry():void
+		{
+			if (contextView)
+				ContextViewRegistry.getSingleton().addContext(this);
+		}
+
+		protected function configureApplicationDomain():void
+		{
+			if (contextView && contextView.loaderInfo)
+			{
+				_applicationDomain = contextView.loaderInfo.applicationDomain;
+			}
+			else
+			{
+				_applicationDomain = ApplicationDomain.currentDomain;
+			}
+		}
+
+		protected function configureDispatcher():void
+		{
+			_dispatcher ||= new EventDispatcher();
+		}
+
+		protected function configureInjector():void
+		{
+			_injector ||= parent ?
+				parent.injector.createChild(_applicationDomain) :
+				new SwiftSuspendersInjector();
+		}
+
+		protected function mapInjections():void
+		{
+			injector.mapValue(IContext, this);
+			injector.mapValue(IInjector, injector);
+			injector.mapValue(IEventDispatcher, dispatcher);
+			injector.mapValue(DisplayObjectContainer, contextView);
+		}
 
 		protected function throwContextLockedError():void
 		{

@@ -14,13 +14,14 @@ package org.robotlegs.v2.context.api
 	[Event(name="contextBuildComplete", type="org.robotlegs.v2.context.api.ContextBuilderEvent")]
 	public interface IContextBuilder extends IEventDispatcher
 	{
+
+		function addProcessor(processor:IContextProcessor):IContextBuilder;
+
+		function addUtility(type:Class, implementation:Class = null, asSingleton:Boolean = true, named:String = ''):IContextBuilder;
+
 		function build():IContext;
 
 		function installConfig(config:IContextBuilderConfig):IContextBuilder;
-
-		function installProcessor(processor:IContextProcessor):IContextBuilder;
-
-		function installUtility(clazz:Class, injectAs:Class = null, named:String = ''):IContextBuilder;
 
 		function withContextView(value:DisplayObjectContainer):IContextBuilder;
 

@@ -9,10 +9,12 @@ package org.robotlegs.v2.context.api
 {
 	import flash.display.DisplayObjectContainer;
 	import flash.events.IEventDispatcher;
+	import flash.system.ApplicationDomain;
 	import org.robotlegs.core.IInjector;
 
 	public interface IContext
 	{
+		function get applicationDomain():ApplicationDomain;
 
 		function get contextView():DisplayObjectContainer;
 		function set contextView(value:DisplayObjectContainer):void;
@@ -27,6 +29,8 @@ package org.robotlegs.v2.context.api
 
 		function get parent():IContext;
 		function set parent(value:IContext):void;
+
+		function destroy():void;
 
 		function initialize():void;
 	}

@@ -10,6 +10,6 @@ package org.robotlegs.v2.context.api
 
 	public interface IContextBuilderConfig
 	{
-		function configure(contextBuilder:IContextBuilder):void;
+		function configure(builder:IContextBuilder):void;
 	}
 }

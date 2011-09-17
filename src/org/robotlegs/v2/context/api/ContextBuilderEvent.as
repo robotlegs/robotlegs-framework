@@ -30,14 +30,22 @@ package org.robotlegs.v2.context.api
 			return _builder;
 		}
 
+		private var _context:IContext;
+
+		public function get context():IContext
+		{
+			return _context;
+		}
+
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function ContextBuilderEvent(type:String, builder:IContextBuilder)
+		public function ContextBuilderEvent(type:String, builder:IContextBuilder, context:IContext)
 		{
 			super(type);
 			_builder = builder;
+			_context = context;
 		}
 
 
@@ -47,7 +55,7 @@ package org.robotlegs.v2.context.api
 
 		override public function clone():Event
 		{
-			return new ContextBuilderEvent(type, builder);
+			return new ContextBuilderEvent(type, builder, context);
 		}
 	}
 }
