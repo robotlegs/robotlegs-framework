@@ -10,7 +10,7 @@ package org.robotlegs.v2.flex.mxml
 	import flash.display.DisplayObjectContainer;
 	import flash.utils.setTimeout;
 	import mx.core.IMXMLObject;
-	import org.robotlegs.v2.context.api.IContextBuilderConfig;
+	import org.robotlegs.v2.context.api.IContextBuilderBundle;
 	import org.robotlegs.v2.context.impl.ContextBuilder;
 
 	[DefaultProperty("configs")]
@@ -21,14 +21,14 @@ package org.robotlegs.v2.flex.mxml
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		protected var _configs:Vector.<IContextBuilderConfig> = new Vector.<IContextBuilderConfig>;
+		protected var _configs:Vector.<IContextBuilderBundle> = new Vector.<IContextBuilderBundle>;
 
-		public function get configs():Vector.<IContextBuilderConfig>
+		public function get configs():Vector.<IContextBuilderBundle>
 		{
 			return _configs;
 		}
 
-		public function set configs(value:Vector.<IContextBuilderConfig>):void
+		public function set configs(value:Vector.<IContextBuilderBundle>):void
 		{
 			_configs = value;
 		}
@@ -69,9 +69,9 @@ package org.robotlegs.v2.flex.mxml
 				withContextView(_contextView || _documentView);
 			}
 
-			configs.forEach(function(config:IContextBuilderConfig, ... rest):void
+			configs.forEach(function(config:IContextBuilderBundle, ... rest):void
 			{
-				installConfig(config);
+				installBundle(config);
 			}, this);
 
 			configs = null;

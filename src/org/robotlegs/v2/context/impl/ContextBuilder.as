@@ -15,7 +15,7 @@ package org.robotlegs.v2.context.impl
 	import org.robotlegs.v2.context.api.ContextBuilderEvent;
 	import org.robotlegs.v2.context.api.IContext;
 	import org.robotlegs.v2.context.api.IContextBuilder;
-	import org.robotlegs.v2.context.api.IContextBuilderConfig;
+	import org.robotlegs.v2.context.api.IContextBuilderBundle;
 	import org.robotlegs.v2.context.api.IContextProcessor;
 
 	[Event(name="contextBuildComplete", type="org.robotlegs.v2.context.api.ContextBuilderEvent")]
@@ -27,6 +27,8 @@ package org.robotlegs.v2.context.impl
 		/*============================================================================*/
 
 		protected var buildLocked:Boolean;
+
+		protected const configClasses:Vector.<Class> = new Vector.<Class>;
 
 		protected const context:IContext = new Context();
 
@@ -47,6 +49,13 @@ package org.robotlegs.v2.context.impl
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
+
+		public function addConfig(configClass:Class):IContextBuilder
+		{
+			buildLocked && throwBuildLockedError();
+			configClasses.push(configClass);
+			return this;
+		}
 
 		public function addProcessor(processor:IContextProcessor):IContextBuilder
 		{
@@ -78,10 +87,10 @@ package org.robotlegs.v2.context.impl
 			return context;
 		}
 
-		public function installConfig(config:IContextBuilderConfig):IContextBuilder
+		public function installBundle(bundle:IContextBuilderBundle):IContextBuilder
 		{
 			buildLocked && throwBuildLockedError();
-			config.configure(this);
+			bundle.install(this);
 			return this;
 		}
 
@@ -128,6 +137,14 @@ package org.robotlegs.v2.context.impl
 			}, this);
 		}
 
+		protected function createConfigs():void
+		{
+			configClasses.forEach(function(configClass:Class, ... rest):void
+			{
+				context.injector.instantiate(configClass);
+			}, this);
+		}
+
 		protected function createUtilities():void
 		{
 			utilityConfigs.forEach(function(config:UtilityConfig, ... rest):void
@@ -144,6 +161,7 @@ package org.robotlegs.v2.context.impl
 			context.initialize();
 			configureUtilities();
 			createUtilities();
+			createConfigs();
 			dispatchEvent(new ContextBuilderEvent(ContextBuilderEvent.CONTEXT_BUILD_COMPLETE, this, context));
 		}
 

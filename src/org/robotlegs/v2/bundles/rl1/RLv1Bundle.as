@@ -18,17 +18,17 @@ package org.robotlegs.v2.bundles.rl1
 	import org.robotlegs.core.IReflector;
 	import org.robotlegs.core.IViewMap;
 	import org.robotlegs.v2.context.api.IContextBuilder;
-	import org.robotlegs.v2.context.api.IContextBuilderConfig;
+	import org.robotlegs.v2.context.api.IContextBuilderBundle;
 	import org.robotlegs.v2.processors.ParentContextFinder;
 
-	public class RLv1Bundle implements IContextBuilderConfig
+	public class RLv1Bundle implements IContextBuilderBundle
 	{
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function configure(builder:IContextBuilder):void
+		public function install(builder:IContextBuilder):void
 		{
 			builder
 				.addProcessor(new ParentContextFinder())

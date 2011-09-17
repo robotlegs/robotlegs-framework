@@ -8,8 +8,8 @@
 package org.robotlegs.v2.context.api
 {
 
-	public interface IContextBuilderConfig
+	public interface IContextBuilderBundle
 	{
-		function configure(builder:IContextBuilder):void;
+		function install(builder:IContextBuilder):void;
 	}
 }
