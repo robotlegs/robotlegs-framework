@@ -1,6 +1,7 @@
 package mockolate.ingredients
 {
 	import asx.array.detect;
+	import asx.array.invoke;
 	import asx.number.bound;
 	import asx.object.isDefined;
 	import asx.string.substitute;
