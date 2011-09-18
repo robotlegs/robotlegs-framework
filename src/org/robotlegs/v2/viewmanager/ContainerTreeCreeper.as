@@ -7,7 +7,7 @@ package org.robotlegs.v2.viewmanager
 	public class ContainerTreeCreeper implements IContainerTreeCreeper 
 	{
 		protected const _bindingsByContainer:Dictionary = new Dictionary();
-		protected var _rootBindings:Vector.<IContainerBinding>;
+		protected var _rootBindings:Vector.<IContainerBinding>; 
 		
 		public function findParentBindingFor(targetObject:DisplayObject):IContainerBinding
 		{         

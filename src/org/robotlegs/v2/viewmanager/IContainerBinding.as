@@ -11,5 +11,5 @@ package org.robotlegs.v2.viewmanager
 		function get container():DisplayObjectContainer;
 		
 		function remove():IContainerBinding;
-	}
+  	}
 }
