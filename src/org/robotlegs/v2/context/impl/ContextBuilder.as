@@ -11,6 +11,8 @@ package org.robotlegs.v2.context.impl
 	import flash.errors.IllegalOperationError;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
+	import org.as3commons.logging.api.ILogger;
+	import org.as3commons.logging.api.getLogger;
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.v2.context.api.ContextBuilderEvent;
 	import org.robotlegs.v2.context.api.IContext;
@@ -21,6 +23,13 @@ package org.robotlegs.v2.context.impl
 	[Event(name="contextBuildComplete", type="org.robotlegs.v2.context.api.ContextBuilderEvent")]
 	public class ContextBuilder extends EventDispatcher implements IContextBuilder
 	{
+
+		/*============================================================================*/
+		/* Protected Static Properties                                                */
+		/*============================================================================*/
+
+		protected static const logger:ILogger = getLogger(ContextBuilder);
+
 
 		/*============================================================================*/
 		/* Protected Properties                                                       */
@@ -52,6 +61,7 @@ package org.robotlegs.v2.context.impl
 
 		public function addConfig(configClass:Class):IContextBuilder
 		{
+			logger.info('adding config: {0}', [configClass]);
 			buildLocked && throwBuildLockedError();
 			configClasses.push(configClass);
 			return this;
@@ -59,6 +69,7 @@ package org.robotlegs.v2.context.impl
 
 		public function addProcessor(processor:IContextProcessor):IContextBuilder
 		{
+			logger.info('adding processor: {0}', [processor]);
 			buildLocked && throwBuildLockedError();
 			processors.push(processor);
 			return this;
@@ -69,18 +80,16 @@ package org.robotlegs.v2.context.impl
 		 */
 		public function addUtility(type:Class, implementation:Class = null, asSingleton:Boolean = true, named:String = ''):IContextBuilder
 		{
+			logger.info('adding utility: {0} {1}', [type, named]);
 			buildLocked && throwBuildLockedError();
-			const config:UtilityConfig = new UtilityConfig();
-			config.type = type;
-			config.implementation = implementation || type;
-			config.asSingleton = asSingleton;
-			config.name = named;
+			const config:UtilityConfig = new UtilityConfig(type, implementation, asSingleton, named);
 			utilityConfigs.push(config);
 			return this;
 		}
 
 		public function build():IContext
 		{
+			logger.info('starting build');
 			buildLocked && throwBuildLockedError();
 			buildLocked = true;
 			runProcessors();
@@ -89,6 +98,7 @@ package org.robotlegs.v2.context.impl
 
 		public function installBundle(bundle:IContextBuilderBundle):IContextBuilder
 		{
+			logger.info('installing bundle: {0}', [bundle]);
 			buildLocked && throwBuildLockedError();
 			bundle.install(this);
 			return this;
@@ -124,6 +134,7 @@ package org.robotlegs.v2.context.impl
 
 		protected function configureUtilities():void
 		{
+			logger.info('configuring utilities');
 			utilityConfigs.forEach(function(config:UtilityConfig, ... rest):void
 			{
 				if (config.asSingleton)
@@ -139,6 +150,7 @@ package org.robotlegs.v2.context.impl
 
 		protected function createConfigs():void
 		{
+			logger.info('creating configs');
 			configClasses.forEach(function(configClass:Class, ... rest):void
 			{
 				context.injector.instantiate(configClass);
@@ -147,6 +159,7 @@ package org.robotlegs.v2.context.impl
 
 		protected function createUtilities():void
 		{
+			logger.info('creating utilities');
 			utilityConfigs.forEach(function(config:UtilityConfig, ... rest):void
 			{
 				if (config.asSingleton)
@@ -173,7 +186,9 @@ package org.robotlegs.v2.context.impl
 			}
 			else if (processors.length > 0)
 			{
-				processors.shift().process(context, processorCallback);
+				const processor:IContextProcessor = processors.shift();
+				logger.info('executing processor: {0}', [processor]);
+				processor.process(context, processorCallback);
 			}
 			else
 			{
@@ -183,12 +198,15 @@ package org.robotlegs.v2.context.impl
 
 		protected function runProcessors():void
 		{
+			logger.info('running processors');
 			processorCallback();
 		}
 
 		protected function throwBuildLockedError():void
 		{
-			throw new IllegalOperationError("ContextBuilder: build has started and is now locked.");
+			const message:String = 'The build has started and is now locked';
+			logger.fatal(message);
+			throw new IllegalOperationError(message);
 		}
 	}
 }
@@ -207,4 +225,16 @@ class UtilityConfig
 	public var name:String;
 
 	public var type:Class;
+
+	/*============================================================================*/
+	/* Constructor                                                                */
+	/*============================================================================*/
+
+	public function UtilityConfig(type:Class, implementation:Class, asSingleton:Boolean, named:String)
+	{
+		this.type = type;
+		this.implementation = implementation || type;
+		this.asSingleton = asSingleton;
+		this.name = named;
+	}
 }

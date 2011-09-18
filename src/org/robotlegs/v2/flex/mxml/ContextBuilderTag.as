@@ -14,7 +14,7 @@ package org.robotlegs.v2.flex.mxml
 	import org.robotlegs.v2.context.impl.ContextBuilder;
 
 	[DefaultProperty("configs")]
-	public class ContextBuilder extends org.robotlegs.v2.context.impl.ContextBuilder implements IMXMLObject
+	public class ContextBuilderTag extends org.robotlegs.v2.context.impl.ContextBuilder implements IMXMLObject
 	{
 
 		/*============================================================================*/

@@ -13,7 +13,7 @@
 
 	<component 
 		id="ContextBuilder"
-		class="org.robotlegs.v2.flex.mxml.ContextBuilder"
+		class="org.robotlegs.v2.flex.mxml.ContextBuilderTag"
 		/>
 
 </componentPackage>

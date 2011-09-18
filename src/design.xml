@@ -13,7 +13,7 @@
 	<namespaces>
 		<namespace 
 			prefix="rl2"
-			uri="library://ns.robotlegs.org/rl2/flex"
+			uri="library://ns.robotlegs.org/flex/rl2"
 			/>
 	</namespaces>
 </design>

@@ -12,6 +12,8 @@ package org.robotlegs.v2.context.impl
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
 	import flash.system.ApplicationDomain;
+	import org.as3commons.logging.api.ILogger;
+	import org.as3commons.logging.api.getLogger;
 	import org.robotlegs.adapters.SwiftSuspendersInjector;
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.v2.context.api.IContext;
@@ -19,6 +21,13 @@ package org.robotlegs.v2.context.impl
 
 	public class Context implements IContext
 	{
+
+		/*============================================================================*/
+		/* Protected Static Properties                                                */
+		/*============================================================================*/
+
+		protected static const logger:ILogger = getLogger(Context);
+
 
 		/*============================================================================*/
 		/* Public Properties                                                          */
@@ -106,6 +115,7 @@ package org.robotlegs.v2.context.impl
 
 		public function initialize():void
 		{
+			logger.info('initializing');
 			_initialized && throwContextLockedError();
 			_initialized = true;
 			configureApplicationDomain();
@@ -159,7 +169,9 @@ package org.robotlegs.v2.context.impl
 
 		protected function throwContextLockedError():void
 		{
-			throw new IllegalOperationError("Context: the context has already been initialized and is now locked.");
+			const message:String = 'This context has already been initialized and is now locked';
+			logger.fatal(message);
+			throw new IllegalOperationError(message);
 		}
 	}
 }

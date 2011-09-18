@@ -9,6 +9,8 @@ package org.robotlegs.v2.processors
 {
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
+	import org.as3commons.logging.api.ILogger;
+	import org.as3commons.logging.api.getLogger;
 	import org.robotlegs.v2.context.api.IContext;
 	import org.robotlegs.v2.context.api.IContextProcessor;
 	import org.robotlegs.v2.view.api.IContextViewRegistry;
@@ -16,6 +18,13 @@ package org.robotlegs.v2.processors
 
 	public class ParentContextFinder implements IContextProcessor
 	{
+
+		/*============================================================================*/
+		/* Protected Static Properties                                                */
+		/*============================================================================*/
+
+		protected static const logger:ILogger = getLogger(ParentContextFinder);
+
 
 		/*============================================================================*/
 		/* Protected Properties                                                       */
@@ -34,9 +43,18 @@ package org.robotlegs.v2.processors
 
 		public function process(context:IContext, callback:Function):void
 		{
-			// the parent is already set, or we have no way of finding it
-			if (context.parent || context.contextView == null)
+			logger.info('looking for parent of context: {0}', [context]);
+
+			if (context.parent)
 			{
+				logger.info('parent has already been set. parent: {0}', [context.parent]);
+				callback();
+				return;
+			}
+
+			if (context.contextView == null)
+			{
+				logger.info('no way to find parent for context (no context view)');
 				callback();
 				return;
 			}
@@ -45,25 +63,23 @@ package org.robotlegs.v2.processors
 			this.callback = callback;
 			this.contextView = context.contextView;
 
-			// try to find the parent right now
 			const parentContext:IContext = findParentContext();
-
 			if (parentContext)
 			{
-				// we found a parent, set it and let's get out of here!
+				logger.info('parent context found immediately: {0}', [parentContext]);
 				context.parent = parentContext;
 				callback();
 				return;
 			}
 			else if (contextView.stage)
 			{
-				// we didn't find one, and we're already on stage, so there's no parent
+				logger.info('no way to find parent for context');
 				callback();
 				return;
 			}
 			else
 			{
-				// we didn't find one, but we're not on stage yet, so let's wait and try again
+				logger.info('not yet on stage, waiting for ADDED_TO_STAGE...');
 				contextView.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			}
 		}
@@ -91,13 +107,19 @@ package org.robotlegs.v2.processors
 
 		protected function onAddedToStage(event:Event):void
 		{
+			logger.info('added to stage, looking for parent of context: {0}', [context]);
 			contextView.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			const parentContext:IContext = findParentContext();
 			if (parentContext)
 			{
+				logger.info('found parent {0} for context {1}', [parentContext, context]);
 				context.parent = parentContext;
 			}
-			// we either found a parent or we didn't, regardless, it's time to move on
+			else
+			{
+				logger.info('no parent found for context: {0}', [context]);
+			}
+			// and.. we're done!
 			callback();
 		}
 	}
