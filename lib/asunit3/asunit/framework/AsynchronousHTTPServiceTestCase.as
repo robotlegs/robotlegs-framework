@@ -14,7 +14,7 @@ package asunit.framework {
      * Extend this class if you have a TestCase that requires the
      * asynchronous load of external data.
      */
-    public class AsynchronousHTTPServiceTestCase extends TestCase implements Test {
+    public class AsynchronousHTTPServiceTestCase extends AsynchronousTestCase implements Test {
         
         public function AsynchronousHTTPServiceTestCase(testMethod:String = null) {
             super(testMethod);
