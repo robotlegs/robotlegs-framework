@@ -12,6 +12,7 @@ package org.robotlegs.v2.context.impl
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
 	import flash.system.ApplicationDomain;
+	import flash.utils.getTimer;
 	import org.as3commons.logging.api.ILogger;
 	import org.as3commons.logging.api.getLogger;
 	import org.robotlegs.adapters.SwiftSuspendersInjector;
@@ -21,13 +22,6 @@ package org.robotlegs.v2.context.impl
 
 	public class Context implements IContext
 	{
-
-		/*============================================================================*/
-		/* Protected Static Properties                                                */
-		/*============================================================================*/
-
-		protected static const logger:ILogger = getLogger(Context);
-
 
 		/*============================================================================*/
 		/* Public Properties                                                          */
@@ -52,6 +46,7 @@ package org.robotlegs.v2.context.impl
 		{
 			_initialized && throwContextLockedError();
 			_contextView = value;
+			logger.info('context view externally set to {0}', [value]);
 		}
 
 
@@ -66,6 +61,7 @@ package org.robotlegs.v2.context.impl
 		{
 			_initialized && throwContextLockedError();
 			_dispatcher = value;
+			logger.info('event dispatcher externally set to {0}', [value]);
 		}
 
 		protected var _initialized:Boolean;
@@ -87,6 +83,7 @@ package org.robotlegs.v2.context.impl
 		{
 			_initialized && throwContextLockedError();
 			_injector = value;
+			logger.info('injector externally set to {0}', [value]);
 		}
 
 
@@ -101,6 +98,24 @@ package org.robotlegs.v2.context.impl
 		{
 			_initialized && throwContextLockedError();
 			_parent = value;
+			logger.info('parent context externally set to {0}', [value]);
+		}
+
+		/*============================================================================*/
+		/* Protected Properties                                                       */
+		/*============================================================================*/
+
+		protected const _id:String = 'Context' + getTimer();
+
+		protected const logger:ILogger = getLogger(_id);
+
+		/*============================================================================*/
+		/* Constructor                                                                */
+		/*============================================================================*/
+
+		public function Context()
+		{
+			// This page intentionally left blank
 		}
 
 
@@ -110,12 +125,13 @@ package org.robotlegs.v2.context.impl
 
 		public function destroy():void
 		{
-			// todo: cleanup
+			logger.info('destroying context');
+			// todo: implement
 		}
 
 		public function initialize():void
 		{
-			logger.info('initializing');
+			logger.info('initializing context');
 			_initialized && throwContextLockedError();
 			_initialized = true;
 			configureApplicationDomain();
@@ -123,6 +139,12 @@ package org.robotlegs.v2.context.impl
 			configureInjector();
 			mapInjections();
 			addToContextViewRegistry();
+			logger.info('context initialization complete');
+		}
+
+		public function toString():String
+		{
+			return _id;
 		}
 
 		/*============================================================================*/
@@ -131,12 +153,14 @@ package org.robotlegs.v2.context.impl
 
 		protected function addToContextViewRegistry():void
 		{
+			logger.info('adding context to context view registry');
 			if (contextView)
 				ContextViewRegistry.getSingleton().addContext(this);
 		}
 
 		protected function configureApplicationDomain():void
 		{
+			logger.info('configuring application domain');
 			if (contextView && contextView.loaderInfo)
 			{
 				_applicationDomain = contextView.loaderInfo.applicationDomain;
@@ -149,11 +173,13 @@ package org.robotlegs.v2.context.impl
 
 		protected function configureDispatcher():void
 		{
+			logger.info('configuring event dispatcher');
 			_dispatcher ||= new EventDispatcher();
 		}
 
 		protected function configureInjector():void
 		{
+			logger.info('configuring injector');
 			_injector ||= parent ?
 				parent.injector.createChild(_applicationDomain) :
 				new SwiftSuspendersInjector();
@@ -161,6 +187,7 @@ package org.robotlegs.v2.context.impl
 
 		protected function mapInjections():void
 		{
+			logger.info('mapping injections');
 			injector.mapValue(IContext, this);
 			injector.mapValue(IInjector, injector);
 			injector.mapValue(IEventDispatcher, dispatcher);

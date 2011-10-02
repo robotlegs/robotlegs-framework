@@ -11,6 +11,7 @@ package org.robotlegs.v2.context.impl
 	import flash.errors.IllegalOperationError;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
+	import flash.utils.getTimer;
 	import org.as3commons.logging.api.ILogger;
 	import org.as3commons.logging.api.getLogger;
 	import org.robotlegs.core.IInjector;
@@ -25,21 +26,18 @@ package org.robotlegs.v2.context.impl
 	{
 
 		/*============================================================================*/
-		/* Protected Static Properties                                                */
-		/*============================================================================*/
-
-		protected static const logger:ILogger = getLogger(ContextBuilder);
-
-
-		/*============================================================================*/
 		/* Protected Properties                                                       */
 		/*============================================================================*/
+
+		protected const _id:String = 'ContextBuilder' + getTimer();
 
 		protected var buildLocked:Boolean;
 
 		protected const configClasses:Vector.<Class> = new Vector.<Class>;
 
 		protected const context:IContext = new Context();
+
+		protected const logger:ILogger = getLogger(_id);
 
 		protected const processors:Vector.<IContextProcessor> = new Vector.<IContextProcessor>;
 
@@ -102,6 +100,11 @@ package org.robotlegs.v2.context.impl
 			buildLocked && throwBuildLockedError();
 			bundle.install(this);
 			return this;
+		}
+
+		override public function toString():String
+		{
+			return _id;
 		}
 
 		public function withContextView(value:DisplayObjectContainer):IContextBuilder
