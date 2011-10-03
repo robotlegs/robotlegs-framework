@@ -13,8 +13,8 @@ package org.robotlegs.v2.processors
 	import org.as3commons.logging.api.getLogger;
 	import org.robotlegs.v2.context.api.IContext;
 	import org.robotlegs.v2.context.api.IContextProcessor;
-	import org.robotlegs.v2.view.api.IContextViewRegistry;
-	import org.robotlegs.v2.view.impl.ContextViewRegistry;
+	import org.robotlegs.v2.context.api.IContextViewRegistry;
+	import org.robotlegs.v2.context.impl.ContextViewRegistry;
 
 	public class ParentContextFinder implements IContextProcessor
 	{

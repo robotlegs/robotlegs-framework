@@ -5,12 +5,12 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.view.impl
+package org.robotlegs.v2.context.impl
 {
 	import flash.display.DisplayObjectContainer;
 	import flash.utils.Dictionary;
 	import org.robotlegs.v2.context.api.IContext;
-	import org.robotlegs.v2.view.api.IContextViewRegistry;
+	import org.robotlegs.v2.context.api.IContextViewRegistry;
 
 	public class ContextViewRegistry implements IContextViewRegistry
 	{

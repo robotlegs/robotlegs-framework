@@ -18,7 +18,6 @@ package org.robotlegs.v2.context.impl
 	import org.robotlegs.adapters.SwiftSuspendersInjector;
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.v2.context.api.IContext;
-	import org.robotlegs.v2.view.impl.ContextViewRegistry;
 
 	public class Context implements IContext
 	{
