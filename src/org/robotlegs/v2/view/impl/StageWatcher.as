@@ -9,6 +9,7 @@ package org.robotlegs.v2.view.impl
 {
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
+	import flash.events.Event;
 	import flash.utils.Dictionary;
 	import org.as3commons.logging.api.ILogger;
 	import org.as3commons.logging.api.getLogger;
@@ -16,14 +17,14 @@ package org.robotlegs.v2.view.impl
 	import org.robotlegs.v2.view.api.IViewHandler;
 	import org.robotlegs.v2.view.api.IViewWatcher;
 
-	public class ViewWatcher implements IViewWatcher
+	public class StageWatcher implements IViewWatcher
 	{
 
 		/*============================================================================*/
 		/* Protected Static Properties                                                */
 		/*============================================================================*/
 
-		protected static const logger:ILogger = getLogger(ViewWatcher);
+		protected static const logger:ILogger = getLogger(StageWatcher);
 
 
 		/*============================================================================*/
@@ -32,13 +33,11 @@ package org.robotlegs.v2.view.impl
 
 		protected const _bindingsByContainer:Dictionary = new Dictionary(false);
 
-		protected const _rootBindings:Vector.<IContainerBinding> = new Vector.<IContainerBinding>;
-
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function ViewWatcher()
+		public function StageWatcher()
 		{
 		}
 
@@ -74,6 +73,7 @@ package org.robotlegs.v2.view.impl
 		protected function addRootBinding(binding:IContainerBinding):void
 		{
 			trace('adding root binding for container ', binding.container);
+			binding.container.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage, true);
 		}
 
 		protected function createBindingFor(container:DisplayObjectContainer):IContainerBinding
@@ -124,6 +124,11 @@ package org.robotlegs.v2.view.impl
 			return null;
 		}
 
+		protected function onAddedToStage(event:Event):void
+		{
+			trace('onAddedToStage... ' + event.target);
+		}
+
 		protected function removeBinding(binding:IContainerBinding):void
 		{
 			delete _bindingsByContainer[binding.container];
@@ -150,6 +155,7 @@ package org.robotlegs.v2.view.impl
 		protected function removeRootBinding(binding:IContainerBinding):void
 		{
 			trace('removing root binding for container ', binding.container);
+			binding.container.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage, true);
 		}
 	}
 }

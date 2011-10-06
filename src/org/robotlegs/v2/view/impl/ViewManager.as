@@ -23,15 +23,14 @@ package org.robotlegs.v2.view.impl
 
 		private const _handlers:Vector.<IViewHandler> = new Vector.<IViewHandler>;
 
-		private var _viewWatcher:IViewWatcher;
+		private const _watchers:Vector.<IViewWatcher> = new Vector.<IViewWatcher>;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function ViewManager(viewWatcher:IViewWatcher)
+		public function ViewManager()
 		{
-			_viewWatcher = viewWatcher;
 		}
 
 
@@ -48,7 +47,10 @@ package org.robotlegs.v2.view.impl
 
 			for each (var handler:IViewHandler in _handlers)
 			{
-				_viewWatcher.addHandler(handler, container);
+				for each (var watcher:IViewWatcher in _watchers)
+				{
+					watcher.addHandler(handler, container);
+				}
 			}
 		}
 
@@ -61,7 +63,26 @@ package org.robotlegs.v2.view.impl
 
 			for each (var container:DisplayObjectContainer in _containers)
 			{
-				_viewWatcher.addHandler(handler, container);
+				for each (var watcher:IViewWatcher in _watchers)
+				{
+					watcher.addHandler(handler, container);
+				}
+			}
+		}
+
+		public function addWatcher(watcher:IViewWatcher):void
+		{
+			if (_watchers.indexOf(watcher) != -1)
+				return;
+
+			_watchers.push(watcher);
+
+			for each (var handler:IViewHandler in _handlers)
+			{
+				for each (var container:DisplayObjectContainer in _containers)
+				{
+					watcher.addHandler(handler, container);
+				}
 			}
 		}
 
@@ -75,7 +96,10 @@ package org.robotlegs.v2.view.impl
 
 			for each (var handler:IViewHandler in _handlers)
 			{
-				_viewWatcher.removeHandler(handler, container);
+				for each (var watcher:IViewWatcher in _watchers)
+				{
+					watcher.removeHandler(handler, container);
+				}
 			}
 		}
 
@@ -89,7 +113,27 @@ package org.robotlegs.v2.view.impl
 
 			for each (var container:DisplayObjectContainer in _containers)
 			{
-				_viewWatcher.removeHandler(handler, container);
+				for each (var watcher:IViewWatcher in _watchers)
+				{
+					watcher.removeHandler(handler, container);
+				}
+			}
+		}
+
+		public function removeWatcher(watcher:IViewWatcher):void
+		{
+			const index:int = _watchers.indexOf(watcher);
+			if (index == -1)
+				return;
+
+			_watchers.splice(index, 1);
+
+			for each (var handler:IViewHandler in _handlers)
+			{
+				for each (var container:DisplayObjectContainer in _containers)
+				{
+					watcher.removeHandler(handler, container);
+				}
 			}
 		}
 	}

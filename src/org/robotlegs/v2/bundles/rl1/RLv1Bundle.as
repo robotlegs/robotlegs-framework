@@ -7,16 +7,6 @@
 
 package org.robotlegs.v2.bundles.rl1
 {
-	import org.robotlegs.adapters.SwiftSuspendersReflector;
-	import org.robotlegs.base.CommandMap;
-	import org.robotlegs.base.EventMap;
-	import org.robotlegs.base.MediatorMap;
-	import org.robotlegs.base.ViewMap;
-	import org.robotlegs.core.ICommandMap;
-	import org.robotlegs.core.IEventMap;
-	import org.robotlegs.core.IMediatorMap;
-	import org.robotlegs.core.IReflector;
-	import org.robotlegs.core.IViewMap;
 	import org.robotlegs.v2.context.api.IContextBuilder;
 	import org.robotlegs.v2.context.api.IContextBuilderBundle;
 	import org.robotlegs.v2.processors.ParentContextFinder;
@@ -31,12 +21,8 @@ package org.robotlegs.v2.bundles.rl1
 		public function install(builder:IContextBuilder):void
 		{
 			builder
-				.addProcessor(new ParentContextFinder())
-				.addUtility(IReflector, SwiftSuspendersReflector)
-				.addUtility(ICommandMap, CommandMap)
-				.addUtility(IMediatorMap, MediatorMap)
-				.addUtility(IViewMap, ViewMap)
-				.addUtility(IEventMap, EventMap, false);
+				.installProcessor(new ParentContextFinder())
+				.installUtility(new RLv1UtilitiesInstaller());
 		}
 	}
 }

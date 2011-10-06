@@ -20,6 +20,7 @@ package org.robotlegs.v2.context.impl
 	import org.robotlegs.v2.context.api.IContextBuilder;
 	import org.robotlegs.v2.context.api.IContextBuilderBundle;
 	import org.robotlegs.v2.context.api.IContextProcessor;
+	import org.robotlegs.v2.context.api.IUtilityInstaller;
 
 	[Event(name="contextBuildComplete", type="org.robotlegs.v2.context.api.ContextBuilderEvent")]
 	public class ContextBuilder extends EventDispatcher implements IContextBuilder
@@ -41,7 +42,7 @@ package org.robotlegs.v2.context.impl
 
 		protected const processors:Vector.<IContextProcessor> = new Vector.<IContextProcessor>;
 
-		protected const utilityConfigs:Vector.<UtilityConfig> = new Vector.<UtilityConfig>;
+		protected const utilityInstallers:Vector.<IUtilityInstaller> = new Vector.<IUtilityInstaller>;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -57,31 +58,11 @@ package org.robotlegs.v2.context.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function addConfig(configClass:Class):IContextBuilder
-		{
-			logger.info('adding config: {0}', [configClass]);
-			buildLocked && throwBuildLockedError();
-			configClasses.push(configClass);
-			return this;
-		}
-
-		public function addProcessor(processor:IContextProcessor):IContextBuilder
+		public function installProcessor(processor:IContextProcessor):IContextBuilder
 		{
 			logger.info('adding processor: {0}', [processor]);
 			buildLocked && throwBuildLockedError();
 			processors.push(processor);
-			return this;
-		}
-
-		/**
-		 * This is horrible, but we need a way to configure dependencies before the injector has been set
-		 */
-		public function addUtility(type:Class, implementation:Class = null, asSingleton:Boolean = true, named:String = ''):IContextBuilder
-		{
-			logger.info('adding utility: {0} {1}', [type, named]);
-			buildLocked && throwBuildLockedError();
-			const config:UtilityConfig = new UtilityConfig(type, implementation, asSingleton, named);
-			utilityConfigs.push(config);
 			return this;
 		}
 
@@ -102,9 +83,25 @@ package org.robotlegs.v2.context.impl
 			return this;
 		}
 
+		public function installUtility(installer:IUtilityInstaller):IContextBuilder
+		{
+			logger.info('adding utility installer: {0}', [installer]);
+			buildLocked && throwBuildLockedError();
+			utilityInstallers.push(installer);
+			return this;
+		}
+
 		override public function toString():String
 		{
 			return _id;
+		}
+
+		public function withConfig(configClass:Class):IContextBuilder
+		{
+			logger.info('adding config: {0}', [configClass]);
+			buildLocked && throwBuildLockedError();
+			configClasses.push(configClass);
+			return this;
 		}
 
 		public function withContextView(value:DisplayObjectContainer):IContextBuilder
@@ -135,22 +132,6 @@ package org.robotlegs.v2.context.impl
 		/* Protected Functions                                                        */
 		/*============================================================================*/
 
-		protected function configureUtilities():void
-		{
-			logger.info('configuring utilities');
-			utilityConfigs.forEach(function(config:UtilityConfig, ... rest):void
-			{
-				if (config.asSingleton)
-				{
-					context.injector.mapSingletonOf(config.type, config.implementation, config.name);
-				}
-				else
-				{
-					context.injector.mapClass(config.type, config.implementation, config.name);
-				}
-			}, this);
-		}
-
 		protected function createConfigs():void
 		{
 			logger.info('creating configs');
@@ -160,25 +141,22 @@ package org.robotlegs.v2.context.impl
 			}, this);
 		}
 
-		protected function createUtilities():void
-		{
-			logger.info('creating utilities');
-			utilityConfigs.forEach(function(config:UtilityConfig, ... rest):void
-			{
-				if (config.asSingleton)
-				{
-					context.injector.getInstance(config.type, config.name);
-				}
-			}, this);
-		}
-
 		protected function finishBuild():void
 		{
 			context.initialize();
-			configureUtilities();
-			createUtilities();
+			installUtilities();
+			startUtilities();
 			createConfigs();
 			dispatchEvent(new ContextBuilderEvent(ContextBuilderEvent.CONTEXT_BUILD_COMPLETE, this, context));
+		}
+
+		protected function installUtilities():void
+		{
+			logger.info('installing utilities');
+			utilityInstallers.forEach(function(installer:IUtilityInstaller, ... rest):void
+			{
+				installer.install(context);
+			}, this);
 		}
 
 		protected function processorCallback(error:Object = null):void
@@ -205,6 +183,15 @@ package org.robotlegs.v2.context.impl
 			processorCallback();
 		}
 
+		protected function startUtilities():void
+		{
+			logger.info('starting utilities');
+			utilityInstallers.forEach(function(installer:IUtilityInstaller, ... rest):void
+			{
+				installer.start();
+			}, this);
+		}
+
 		protected function throwBuildLockedError():void
 		{
 			const message:String = 'The build has started and is now locked';
@@ -214,30 +201,3 @@ package org.robotlegs.v2.context.impl
 	}
 }
 
-class UtilityConfig
-{
-
-	/*============================================================================*/
-	/* Public Properties                                                          */
-	/*============================================================================*/
-
-	public var asSingleton:Boolean;
-
-	public var implementation:Class;
-
-	public var name:String;
-
-	public var type:Class;
-
-	/*============================================================================*/
-	/* Constructor                                                                */
-	/*============================================================================*/
-
-	public function UtilityConfig(type:Class, implementation:Class, asSingleton:Boolean, named:String)
-	{
-		this.type = type;
-		this.implementation = implementation || type;
-		this.asSingleton = asSingleton;
-		this.name = named;
-	}
-}
