@@ -12,6 +12,7 @@ package org.robotlegs.v2.view.api
 	public interface IViewWatcher
 	{
 		function addHandler(handler:IViewHandler, container:DisplayObjectContainer):void;
+
 		function removeHandler(handler:IViewHandler, container:DisplayObjectContainer):void;
 	}
 }

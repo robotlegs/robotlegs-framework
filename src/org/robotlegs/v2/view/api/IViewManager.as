@@ -12,11 +12,15 @@ package org.robotlegs.v2.view.api
 	public interface IViewManager
 	{
 		function addContainer(container:DisplayObjectContainer):void;
+
 		function addHandler(handler:IViewHandler):void;
+
 		function addWatcher(watcher:IViewWatcher):void;
-		
+
 		function removeContainer(container:DisplayObjectContainer):void;
+
 		function removeHandler(handler:IViewHandler):void;
+
 		function removeWatcher(watcher:IViewWatcher):void;
 	}
 }

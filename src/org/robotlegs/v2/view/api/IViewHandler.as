@@ -11,7 +11,10 @@ package org.robotlegs.v2.view.api
 
 	public interface IViewHandler
 	{
+		function get interests():uint;
+
 		function handleViewAdded(view:DisplayObject, info:IViewClassInfo):uint;
+
 		function handleViewRemoved(view:DisplayObject):void;
 	}
 }

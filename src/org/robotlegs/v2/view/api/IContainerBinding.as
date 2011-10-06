@@ -11,7 +11,6 @@ package org.robotlegs.v2.view.api
 
 	public interface IContainerBinding
 	{
-
 		function get container():DisplayObjectContainer;
 
 		function get handlers():Vector.<IViewHandler>;
