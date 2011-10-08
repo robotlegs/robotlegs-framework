@@ -12,21 +12,28 @@ package org.robotlegs.v2.core.impl
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
 	import flash.system.ApplicationDomain;
-	import flash.utils.getTimer;
 	import org.as3commons.logging.api.ILogger;
 	import org.as3commons.logging.api.getLogger;
 	import org.robotlegs.adapters.SwiftSuspendersInjector;
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.v2.core.api.IContext;
+	import org.robotlegs.v2.core.api.IContextExtension;
 
 	public class Context implements IContext
 	{
 
 		/*============================================================================*/
+		/* Private Static Properties                                                  */
+		/*============================================================================*/
+
+		private static var counter:int;
+
+
+		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		protected var _applicationDomain:ApplicationDomain;
+		private var _applicationDomain:ApplicationDomain;
 
 		public function get applicationDomain():ApplicationDomain
 		{
@@ -34,7 +41,7 @@ package org.robotlegs.v2.core.impl
 		}
 
 
-		protected var _contextView:DisplayObjectContainer;
+		private var _contextView:DisplayObjectContainer;
 
 		public function get contextView():DisplayObjectContainer
 		{
@@ -48,8 +55,14 @@ package org.robotlegs.v2.core.impl
 			logger.info('context view externally set to {0}', [value]);
 		}
 
+		private var _destroyed:Boolean;
 
-		protected var _dispatcher:IEventDispatcher;
+		public function get destroyed():Boolean
+		{
+			return _destroyed;
+		}
+
+		private var _dispatcher:IEventDispatcher;
 
 		public function get dispatcher():IEventDispatcher
 		{
@@ -63,7 +76,7 @@ package org.robotlegs.v2.core.impl
 			logger.info('event dispatcher externally set to {0}', [value]);
 		}
 
-		protected var _initialized:Boolean;
+		private var _initialized:Boolean;
 
 		public function get initialized():Boolean
 		{
@@ -71,7 +84,7 @@ package org.robotlegs.v2.core.impl
 		}
 
 
-		protected var _injector:IInjector;
+		private var _injector:IInjector;
 
 		public function get injector():IInjector
 		{
@@ -86,7 +99,7 @@ package org.robotlegs.v2.core.impl
 		}
 
 
-		protected var _parent:IContext;
+		private var _parent:IContext;
 
 		public function get parent():IContext
 		{
@@ -101,12 +114,14 @@ package org.robotlegs.v2.core.impl
 		}
 
 		/*============================================================================*/
-		/* Protected Properties                                                       */
+		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		protected const _id:String = 'Context' + getTimer();
+		private const _id:String = 'Context' + counter++;
 
-		protected const logger:ILogger = getLogger(_id);
+		private const extensions:Vector.<IContextExtension> = new Vector.<IContextExtension>;
+
+		private const logger:ILogger = getLogger(_id);
 
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -125,7 +140,9 @@ package org.robotlegs.v2.core.impl
 		public function destroy():void
 		{
 			logger.info('destroying context');
-			// todo: implement
+			_destroyed && throwContextDestroyedError();
+			uninstallExtensions();
+			_destroyed = true;
 		}
 
 		public function initialize():void
@@ -137,8 +154,24 @@ package org.robotlegs.v2.core.impl
 			configureDispatcher();
 			configureInjector();
 			mapInjections();
-			addToContextViewRegistry();
+			addContextToContextViewRegistry();
+			installExtensions();
+			initializeExtensions();
 			logger.info('context initialization complete');
+		}
+
+		public function installExtension(extension:IContextExtension):void
+		{
+			logger.info('installing extension {0}', [extension]);
+			_destroyed && throwContextDestroyedError();
+			if (extensions.indexOf(extension) != -1)
+				return;
+			extensions.push(extension);
+			if (initialized)
+			{
+				extension.install(this);
+				extension.initialize(this);
+			}
 		}
 
 		public function toString():String
@@ -146,18 +179,30 @@ package org.robotlegs.v2.core.impl
 			return _id;
 		}
 
+		public function uninstallExtension(extension:IContextExtension):void
+		{
+			logger.info('uninstalling extension {0}', [extension]);
+			_destroyed && throwContextDestroyedError();
+			const index:int = extensions.indexOf(extension);
+			if (index > -1)
+			{
+				extensions.splice(index, 1);
+				extension.uninstall(this);
+			}
+		}
+
 		/*============================================================================*/
-		/* Protected Functions                                                        */
+		/* Private Functions                                                          */
 		/*============================================================================*/
 
-		protected function addToContextViewRegistry():void
+		private function addContextToContextViewRegistry():void
 		{
 			logger.info('adding context to context view registry');
 			if (contextView)
 				ContextViewRegistry.getSingleton().addContext(this);
 		}
 
-		protected function configureApplicationDomain():void
+		private function configureApplicationDomain():void
 		{
 			logger.info('configuring application domain');
 			if (contextView && contextView.loaderInfo)
@@ -170,13 +215,13 @@ package org.robotlegs.v2.core.impl
 			}
 		}
 
-		protected function configureDispatcher():void
+		private function configureDispatcher():void
 		{
 			logger.info('configuring event dispatcher');
 			_dispatcher ||= new EventDispatcher();
 		}
 
-		protected function configureInjector():void
+		private function configureInjector():void
 		{
 			logger.info('configuring injector');
 			_injector ||= parent && parent.injector ?
@@ -184,7 +229,26 @@ package org.robotlegs.v2.core.impl
 				new SwiftSuspendersInjector();
 		}
 
-		protected function mapInjections():void
+		private function initializeExtensions():void
+		{
+			logger.info('initializing extensions');
+			extensions.forEach(function(extension:IContextExtension, ... rest):void
+			{
+				extension.initialize(this);
+			}, this);
+		}
+
+		private function installExtensions():void
+		{
+			logger.info('installing extensions');
+
+			extensions.forEach(function(extension:IContextExtension, ... rest):void
+			{
+				extension.install(this);
+			}, this);
+		}
+
+		private function mapInjections():void
 		{
 			logger.info('mapping injections');
 			injector.mapValue(IContext, this);
@@ -193,11 +257,30 @@ package org.robotlegs.v2.core.impl
 			injector.mapValue(DisplayObjectContainer, contextView);
 		}
 
-		protected function throwContextLockedError():void
+		private function throwContextDestroyedError():void
+		{
+			const message:String = 'This context has been destroyed and is now dead';
+			logger.fatal(message);
+			throw new IllegalOperationError(message);
+		}
+
+		private function throwContextLockedError():void
 		{
 			const message:String = 'This context has already been initialized and is now locked';
 			logger.fatal(message);
 			throw new IllegalOperationError(message);
+		}
+
+		private function uninstallExtensions():void
+		{
+			logger.info('uninstalling extensions');
+
+			extensions.forEach(function(extension:IContextExtension, ... rest):void
+			{
+				extension.uninstall(this);
+			}, this);
+
+			extensions.length = 0;
 		}
 	}
 }

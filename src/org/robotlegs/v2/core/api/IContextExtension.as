@@ -8,10 +8,12 @@
 package org.robotlegs.v2.core.api
 {
 
-	public interface IUtilityInstaller
+	public interface IContextExtension
 	{
+		function initialize(context:IContext):void;
+
 		function install(context:IContext):void;
-		function start():void;
-		function uninstall():void;
+
+		function uninstall(context:IContext):void;
 	}
 }

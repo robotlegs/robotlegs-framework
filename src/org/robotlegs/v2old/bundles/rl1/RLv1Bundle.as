@@ -21,8 +21,8 @@ package org.robotlegs.v2old.bundles.rl1
 		public function install(builder:IContextBuilder):void
 		{
 			builder
-				.installProcessor(new ParentContextFinder())
-				.installUtility(new RLv1UtilitiesInstaller());
+				.withProcessor(new ParentContextFinder())
+				.withExtension(new RLv1Extension());
 		}
 	}
 }

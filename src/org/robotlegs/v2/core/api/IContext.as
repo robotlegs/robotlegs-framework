@@ -19,6 +19,8 @@ package org.robotlegs.v2.core.api
 		function get contextView():DisplayObjectContainer;
 		function set contextView(value:DisplayObjectContainer):void;
 
+		function get destroyed():Boolean;
+
 		function get dispatcher():IEventDispatcher;
 		function set dispatcher(value:IEventDispatcher):void;
 
@@ -33,5 +35,9 @@ package org.robotlegs.v2.core.api
 		function destroy():void;
 
 		function initialize():void;
+
+		function installExtension(extension:IContextExtension):void;
+
+		function uninstallExtension(extension:IContextExtension):void;
 	}
 }

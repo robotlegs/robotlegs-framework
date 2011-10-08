@@ -71,7 +71,7 @@ package org.robotlegs.v2.flex.mxml
 
 			configs.forEach(function(config:IContextBuilderBundle, ... rest):void
 			{
-				installBundle(config);
+				withBundle(config);
 			}, this);
 
 			configs = null;

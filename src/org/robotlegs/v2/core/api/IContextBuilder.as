@@ -16,11 +16,7 @@ package org.robotlegs.v2.core.api
 	{
 		function build():IContext;
 
-		function installBundle(bundle:IContextBuilderBundle):IContextBuilder;
-
-		function installProcessor(processor:IContextProcessor):IContextBuilder;
-
-		function installUtility(installer:IUtilityInstaller):IContextBuilder;
+		function withBundle(bundle:IContextBuilderBundle):IContextBuilder;
 
 		function withConfig(configClass:Class):IContextBuilder;
 
@@ -28,8 +24,12 @@ package org.robotlegs.v2.core.api
 
 		function withDispatcher(value:IEventDispatcher):IContextBuilder;
 
+		function withExtension(extension:IContextExtension):IContextBuilder;
+
 		function withInjector(value:IInjector):IContextBuilder;
 
 		function withParent(value:IContext):IContextBuilder;
+
+		function withProcessor(processor:IContextProcessor):IContextBuilder;
 	}
 }

@@ -19,9 +19,9 @@ package org.robotlegs.v2old.bundles.rl1
 	import org.robotlegs.core.IReflector;
 	import org.robotlegs.core.IViewMap;
 	import org.robotlegs.v2.core.api.IContext;
-	import org.robotlegs.v2.core.api.IUtilityInstaller;
+	import org.robotlegs.v2.core.api.IContextExtension;
 
-	public class RLv1UtilitiesInstaller implements IUtilityInstaller
+	public class RLv1Extension implements IContextExtension
 	{
 
 		/*============================================================================*/
@@ -37,6 +37,10 @@ package org.robotlegs.v2old.bundles.rl1
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		public function initialize(context:IContext):void
+		{
+		}
+
 		public function install(context:IContext):void
 		{
 			this.context = context;
@@ -49,11 +53,7 @@ package org.robotlegs.v2old.bundles.rl1
 
 		}
 
-		public function start():void
-		{
-		}
-
-		public function uninstall():void
+		public function uninstall(context:IContext):void
 		{
 		}
 	}
