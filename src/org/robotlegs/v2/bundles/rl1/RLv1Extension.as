@@ -19,14 +19,10 @@ package org.robotlegs.v2.bundles.rl1
 	import org.robotlegs.core.IViewMap;
 	import org.robotlegs.v2.core.api.IContext;
 	import org.robotlegs.v2.core.api.IContextExtension;
+	import org.swiftsuspenders.Injector;
 
 	public class RLv1Extension implements IContextExtension
 	{
-
-		/*============================================================================*/
-		/* Private Properties                                                         */
-		/*============================================================================*/
-
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
@@ -38,7 +34,7 @@ package org.robotlegs.v2.bundles.rl1
 
 		public function install(context:IContext):void
 		{
-			const injector : Injector = context.injector;
+			const injector:Injector = context.injector;
 			injector.mapSingletonOf(IReflector, SwiftSuspendersReflector);
 			injector.mapSingletonOf(ICommandMap, CommandMap);
 			injector.mapSingletonOf(IMediatorMap, MediatorMap);

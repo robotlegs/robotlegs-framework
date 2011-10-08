@@ -1,5 +1,10 @@
 package 
 {
+	import flash.display.DisplayObject;
+	
+	import org.robotlegs.v2.view.api.IViewClassInfo;
+	import org.robotlegs.v2.view.api.IViewHandler;
+
 	public class ViewHandlerSupport implements IViewHandler
 	{
 		protected var _addedHandler:Function;
@@ -31,7 +36,7 @@ package
 			
 			if(blocked)
 			{
-				_taskID = _taskID | _this['BLOCK_' + taskID];
+				_taskID = _taskID | this['BLOCK_' + taskID];
 			}
 			
 			_blocked = blocked;
@@ -51,11 +56,12 @@ package
 		public function handleViewAdded(view:DisplayObject, info:IViewClassInfo):uint
 		{
 			_addedHandler(view, info);
+			return _taskID;
 		}
 
 		public function handleViewRemoved(view:DisplayObject):void
 		{
-			_removedHandler(view, info);
+			_removedHandler(view);
 		}
 	}
 }

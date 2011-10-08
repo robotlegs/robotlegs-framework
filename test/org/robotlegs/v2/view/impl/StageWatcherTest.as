@@ -7,12 +7,16 @@
 
 package org.robotlegs.v2.view.impl
 {
+	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
-	import mx.containers.Canvas;
+	import mx.core.UIComponent;
 	import org.flexunit.assertThat;
 	import org.fluint.uiImpersonation.UIImpersonator;
 	import org.hamcrest.object.isTrue;
+	import org.robotlegs.v2.view.api.IViewClassInfo;
 	import org.robotlegs.v2.view.api.IViewWatcher;
+	import org.robotlegs.v2.view.impl.support.ViewHandlerSupport;
 
 	public class StageWatcherTest
 	{
@@ -21,7 +25,9 @@ package org.robotlegs.v2.view.impl
 		/* Protected Properties                                                       */
 		/*============================================================================*/
 
-		protected var container:Canvas;
+		protected var container:DisplayObjectContainer;
+
+		protected var group:UIComponent;
 
 		protected var watcher:IViewWatcher;
 
@@ -34,24 +40,37 @@ package org.robotlegs.v2.view.impl
 		public function addHandler_results_in_handler_running_when_view_lands_in_container():void
 		{
 			var view:Sprite = new Sprite();
-			//watcher.addHandler(handler, container);
+			var wasAdded:Boolean;
+			var handler:ViewHandlerSupport = new ViewHandlerSupport(1, false,
+				function onAdded(view:DisplayObject, info:IViewClassInfo):void
+				{
+					wasAdded = true;
+				},
+				function onRemoved(view:DisplayObject):void
+				{
+
+				});
+			watcher.addHandler(handler, container);
 			container.addChild(view);
-			//assertThat(wasHandled, isTrue());
+			assertThat(wasAdded, isTrue());
 		}
 
 		[Before(ui)]
 		public function setUp():void
 		{
-			container = new Canvas();
+			group = new UIComponent()
+			container = new Sprite();
 			watcher = new StageWatcher();
 
-			UIImpersonator.addChild(container);
+			group.addChild(container)
+			UIImpersonator.addChild(group);
 		}
 
 		[After]
 		public function tearDown():void
 		{
 			watcher = null;
+			UIImpersonator.removeAllChildren();
 		}
 	}
 }

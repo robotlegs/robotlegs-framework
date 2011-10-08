@@ -8,6 +8,7 @@
 package org.robotlegs.adapters
 {
 	import org.robotlegs.core.IReflector;
+	import org.swiftsuspenders.DescribeTypeJSONReflector;
 	import org.swiftsuspenders.Reflector;
 	
 	/**
@@ -15,7 +16,7 @@ package org.robotlegs.adapters
 	 * 
 	 * @author tschneidereit
 	 */
-	public class SwiftSuspendersReflector implements IReflector
+	public class SwiftSuspendersReflector extends DescribeTypeJSONReflector implements IReflector
 	{
 	}
 }
