@@ -5,13 +5,15 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2old.bundles.rl1
+package org.robotlegs.v2.bundles.logging
 {
+	import org.as3commons.logging.api.LOGGER_FACTORY;
+	import org.as3commons.logging.setup.SimpleTargetSetup;
+	import org.as3commons.logging.setup.target.TraceTarget;
 	import org.robotlegs.v2.core.api.IContextBuilder;
 	import org.robotlegs.v2.core.api.IContextBuilderBundle;
-	import org.robotlegs.v2old.processors.ParentContextFinder;
 
-	public class RLv1Bundle implements IContextBuilderBundle
+	public class SimpleLoggingBundle implements IContextBuilderBundle
 	{
 
 		/*============================================================================*/
@@ -20,9 +22,7 @@ package org.robotlegs.v2old.bundles.rl1
 
 		public function install(builder:IContextBuilder):void
 		{
-			builder
-				.withProcessor(new ParentContextFinder())
-				.withExtension(new RLv1Extension());
+			LOGGER_FACTORY.setup = new SimpleTargetSetup(new TraceTarget());
 		}
 	}
 }

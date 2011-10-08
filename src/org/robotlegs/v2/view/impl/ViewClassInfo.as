@@ -5,52 +5,58 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2old.view.impl
+package org.robotlegs.v2.view.impl
 {
-	import flash.display.DisplayObjectContainer;
-	import org.robotlegs.v2old.view.api.IContainerBinding;
-	import org.robotlegs.v2old.view.api.IViewHandler;
+	import flash.system.ApplicationDomain;
+	import org.robotlegs.v2.view.api.IViewClassInfo;
 
-	public class ContainerBinding implements IContainerBinding
+	public class ViewClassInfo implements IViewClassInfo
 	{
 
 		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		protected var _container:DisplayObjectContainer;
-
-		public function get container():DisplayObjectContainer
+		public function get applicationDomain():ApplicationDomain
 		{
-			return _container;
+			return _domain;
 		}
 
-		protected const _handlers:Vector.<IViewHandler> = new Vector.<IViewHandler>;
+		private var _fqcn:String;
 
-		public function get handlers():Vector.<IViewHandler>
+		public function get fqcn():String
 		{
-			return _handlers;
+			return _fqcn;
 		}
 
-		protected var _parent:IContainerBinding;
+		private var _type:Class;
 
-		public function get parent():IContainerBinding
+		public function get type():Class
 		{
-			return _parent;
+			return _type;
 		}
 
-		public function set parent(value:IContainerBinding):void
+		public function get typeNames():Vector.<String>
 		{
-			_parent = value;
+			// todo: lazy, cached list of type names
+			return null;
 		}
+
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
+
+		private var _domain:ApplicationDomain;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function ContainerBinding(container:DisplayObjectContainer)
+		public function ViewClassInfo(type:Class, fqcn:String, domain:ApplicationDomain)
 		{
-			_container = container;
+			_type = type;
+			_fqcn = fqcn;
+			_domain = domain;
 		}
 
 
@@ -58,22 +64,10 @@ package org.robotlegs.v2old.view.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function addHandler(handler:IViewHandler):void
+		public function isType(type:Class):Boolean
 		{
-			if (_handlers.indexOf(handler) == -1)
-				_handlers.push(handler);
-		}
-
-		public function hasHandlers():Boolean
-		{
-			return _handlers.length > 0;
-		}
-
-		public function removeHandler(handler:IViewHandler):void
-		{
-			const index:int = _handlers.indexOf(handler);
-			if (index > -1)
-				_handlers.splice(index, 1);
+			// todo: lazy, cached evaluation
+			return false;
 		}
 	}
 }

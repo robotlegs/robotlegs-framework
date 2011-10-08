@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2old.view.impl
+package org.robotlegs.v2.view.impl
 {
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
@@ -13,9 +13,9 @@ package org.robotlegs.v2old.view.impl
 	import flash.utils.Dictionary;
 	import org.as3commons.logging.api.ILogger;
 	import org.as3commons.logging.api.getLogger;
-	import org.robotlegs.v2old.view.api.IContainerBinding;
-	import org.robotlegs.v2old.view.api.IViewHandler;
-	import org.robotlegs.v2old.view.api.IViewWatcher;
+	import org.robotlegs.v2.view.api.IContainerBinding;
+	import org.robotlegs.v2.view.api.IViewHandler;
+	import org.robotlegs.v2.view.api.IViewWatcher;
 
 	public class StageWatcher implements IViewWatcher
 	{

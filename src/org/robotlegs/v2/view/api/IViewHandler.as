@@ -5,17 +5,16 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2old.view.api
+package org.robotlegs.v2.view.api
 {
-	import flash.system.ApplicationDomain;
+	import flash.display.DisplayObject;
 
-	public interface IViewClassInfo
+	public interface IViewHandler
 	{
-		function get applicationDomain():ApplicationDomain;
-		function get fqcn():String;
-		function get type():Class;
-		function get typeNames():Vector.<String>;
+		function get interests():uint;
 
-		function isType(type:Class):Boolean;
+		function handleViewAdded(view:DisplayObject, info:IViewClassInfo):uint;
+
+		function handleViewRemoved(view:DisplayObject):void;
 	}
 }

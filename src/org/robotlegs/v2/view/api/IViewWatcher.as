@@ -5,16 +5,14 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2old.view.api
+package org.robotlegs.v2.view.api
 {
-	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
 
-	public interface IViewHandler
+	public interface IViewWatcher
 	{
-		function get interests():uint;
+		function addHandler(handler:IViewHandler, container:DisplayObjectContainer):void;
 
-		function handleViewAdded(view:DisplayObject, info:IViewClassInfo):uint;
-
-		function handleViewRemoved(view:DisplayObject):void;
+		function removeHandler(handler:IViewHandler, container:DisplayObjectContainer):void;
 	}
 }

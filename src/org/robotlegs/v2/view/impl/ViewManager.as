@@ -5,12 +5,12 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2old.view.impl
+package org.robotlegs.v2.view.impl
 {
 	import flash.display.DisplayObjectContainer;
-	import org.robotlegs.v2old.view.api.IViewHandler;
-	import org.robotlegs.v2old.view.api.IViewManager;
-	import org.robotlegs.v2old.view.api.IViewWatcher;
+	import org.robotlegs.v2.view.api.IViewHandler;
+	import org.robotlegs.v2.view.api.IViewManager;
+	import org.robotlegs.v2.view.api.IViewWatcher;
 
 	public class ViewManager implements IViewManager
 	{
