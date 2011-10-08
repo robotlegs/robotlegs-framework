@@ -1,8 +1,8 @@
 package org.robotlegs.v2.viewmanager 
 {
 	import flash.display.DisplayObjectContainer;
-	
-	public interface IContainerBinding 
+
+	public interface IContainerBinding
 	{
 		function get parent():IContainerBinding;   
 		

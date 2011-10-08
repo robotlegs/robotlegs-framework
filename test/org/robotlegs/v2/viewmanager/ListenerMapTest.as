@@ -1,9 +1,10 @@
 package org.robotlegs.v2.viewmanager {
 
 	import asunit.framework.TestCase;
+
+	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
-	import flash.events.Event;
 
 	public class ListenerMapTest extends TestCase {
 		private var instance:ListenerMap;

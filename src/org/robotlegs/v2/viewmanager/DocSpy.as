@@ -5,16 +5,11 @@ package org.robotlegs.v2.viewmanager
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	import flash.utils.Dictionary;
-	import org.robotlegs.v2.viewmanager.ContainerTreeCreeper;
-	import org.robotlegs.v2.viewmanager.IContainerBinding;
+
 	import org.robotlegs.v2.viewmanager.listeningstrategies.ListeningStrategies;
-	import org.robotlegs.v2.viewmanager.IContainerTreeCreeper;
-	import org.robotlegs.v2.viewmanager.IListeningStrategy;
-	import org.robotlegs.v2.viewmanager.IListenerMap;
-	import org.robotlegs.v2.viewmanager.ListenerMap;
 	import org.robotlegs.v2.viewmanager.tasks.ITaskHandler;
 	import org.robotlegs.v2.viewmanager.tasks.TaskHandlerResponse;
-	
+
 	// that's "DoctorSpy" to the likes of you (or DisplayObjectContainerSpy)
 	public class DocSpy implements ISpy 
 	{

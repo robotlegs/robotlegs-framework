@@ -1,16 +1,18 @@
 package org.robotlegs.v2.viewmanager {
 
 	import asunit.framework.TestCase;
-	import org.robotlegs.v2.viewmanager.listeningstrategies.ListeningStrategies;
+
+	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import flash.display.DisplayObjectContainer;
-	import org.robotlegs.v2.viewmanager.tasks.LoggingTask;
-	import org.robotlegs.v2.viewmanager.tasks.ViewMediationTask;
-	import org.robotlegs.v2.viewmanager.tasks.TaskHandlerResponse;
-	import org.robotlegs.v2.viewmanager.tasks.ITaskHandler;
-	import org.robotlegs.v2.viewmanager.tasks.TaskHandler;
 	import flash.utils.getTimer;
+
+	import org.robotlegs.v2.viewmanager.listeningstrategies.ListeningStrategies;
+	import org.robotlegs.v2.viewmanager.tasks.ITaskHandler;
+	import org.robotlegs.v2.viewmanager.tasks.LoggingTask;
+	import org.robotlegs.v2.viewmanager.tasks.TaskHandler;
+	import org.robotlegs.v2.viewmanager.tasks.TaskHandlerResponse;
+	import org.robotlegs.v2.viewmanager.tasks.ViewMediationTask;
 
 	public class DocSpyTest extends TestCase {
 		private var instance:DocSpy; 

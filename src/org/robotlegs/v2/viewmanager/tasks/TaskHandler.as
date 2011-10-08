@@ -1,7 +1,7 @@
 package org.robotlegs.v2.viewmanager.tasks
 {
 	import flash.events.Event;
-	
+
 	public class TaskHandler implements ITaskHandler
 	{                          
 		protected var _taskType:Class;

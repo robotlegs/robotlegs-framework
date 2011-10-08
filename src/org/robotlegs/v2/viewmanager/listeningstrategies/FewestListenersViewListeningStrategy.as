@@ -2,9 +2,9 @@ package org.robotlegs.v2.viewmanager.listeningstrategies
 {
 	import flash.display.DisplayObjectContainer;
 	import flash.utils.Dictionary;
+
 	import org.robotlegs.v2.viewmanager.IListeningStrategy;
-	import org.robotlegs.v2.viewmanager.listeningstrategies.areDifferentVectorsIgnoringOrder;
-	
+
 	public class FewestListenersViewListeningStrategy extends ViewListeningStrategy implements IListeningStrategy
 	{
 		// Finds the nearest common parent for the possible targets

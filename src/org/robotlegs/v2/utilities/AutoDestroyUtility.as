@@ -9,6 +9,7 @@ package org.robotlegs.v2.utilities
 {
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
+
 	import org.robotlegs.v2.core.api.IContext;
 
 	public class AutoDestroyUtility

@@ -55,7 +55,7 @@ package org.robotlegs.v2.viewmanager
 			{
 				if(child.contains(needle))
 				{
-					ancestory = child.getAncestory(needle)
+					ancestory = child.getAncestory(needle);
 					ancestory.unshift(this);
 					return ancestory;
 				}

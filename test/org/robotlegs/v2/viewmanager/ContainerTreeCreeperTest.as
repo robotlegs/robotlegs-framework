@@ -1,13 +1,11 @@
 package org.robotlegs.v2.viewmanager {
 
 	import asunit.framework.TestCase;
-	import org.robotlegs.v2.viewmanager.IContainerBinding;
+
+	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import flash.utils.getTimer;
-	import flash.display.DisplayObjectContainer;
-	import flash.display.DisplayObject;
-	import flash.utils.Dictionary;
-	import org.robotlegs.v2.viewmanager.TreeNode;
 
 	public class ContainerTreeCreeperTest extends TestCase {
 		private var instance:ContainerTreeCreeper;

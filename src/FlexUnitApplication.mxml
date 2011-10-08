@@ -9,18 +9,17 @@
 			   minWidth="955" minHeight="600" creationComplete="onCreationComplete()">
 	<fx:Script>
 		<![CDATA[
-			import org.robotlegs.v2.context.impl.ContextBuilderTest;
 			import suites.ContextBuilderTestSuite;
-			
-			public function currentRunTestSuite():Array
+
+			public function currentRunTestSuite() : Array
 			{
-				var testsToRun:Array = new Array();
-				testsToRun.push(suites.ContextBuilderTestSuite);
+				var testsToRun : Array = new Array();
+				testsToRun.push(ContextBuilderTestSuite);
 				return testsToRun;
 			}
-			
-			
-			private function onCreationComplete():void
+
+
+			private function onCreationComplete() : void
 			{
 				testRunner.runWithFlexUnit4Runner(currentRunTestSuite(), "robotlegs2-framework");
 			}

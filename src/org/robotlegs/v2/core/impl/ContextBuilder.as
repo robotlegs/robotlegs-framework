@@ -11,15 +11,16 @@ package org.robotlegs.v2.core.impl
 	import flash.errors.IllegalOperationError;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
+
 	import org.as3commons.logging.api.ILogger;
 	import org.as3commons.logging.api.getLogger;
-	import org.robotlegs.core.IInjector;
 	import org.robotlegs.v2.core.api.ContextBuilderEvent;
 	import org.robotlegs.v2.core.api.IContext;
 	import org.robotlegs.v2.core.api.IContextBuilder;
 	import org.robotlegs.v2.core.api.IContextBuilderBundle;
 	import org.robotlegs.v2.core.api.IContextExtension;
 	import org.robotlegs.v2.core.api.IContextProcessor;
+	import org.swiftsuspenders.Injector;
 
 	[Event(name="contextBuildComplete", type="org.robotlegs.v2.core.api.ContextBuilderEvent")]
 	public class ContextBuilder extends EventDispatcher implements IContextBuilder
@@ -112,7 +113,7 @@ package org.robotlegs.v2.core.impl
 			return this;
 		}
 
-		public function withInjector(value:IInjector):IContextBuilder
+		public function withInjector(value:Injector):IContextBuilder
 		{
 			context.injector = value;
 			return this;
@@ -143,7 +144,7 @@ package org.robotlegs.v2.core.impl
 			logger.info('creating configs');
 			configClasses.forEach(function(configClass:Class, ... rest):void
 			{
-				context.injector.instantiate(configClass);
+				context.injector.getInstance(configClass);
 			}, this);
 		}
 

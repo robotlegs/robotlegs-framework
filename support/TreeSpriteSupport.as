@@ -1,7 +1,7 @@
 package  {
-	                                 
+
 	import flash.display.Sprite;
-	
+
 	public class TreeSpriteSupport extends Sprite {
 		
 		// Testable constants

@@ -1,8 +1,7 @@
 package {
-	import flash.display.Sprite;
 	import flash.display.DisplayObject;
-	import skins.ViewManagerExperimentsSkin;
-	
+	import flash.display.Sprite;
+
 	public class ViewManagerExperiments extends Sprite {
 
 		public function ViewManagerExperiments() {

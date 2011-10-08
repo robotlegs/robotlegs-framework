@@ -1,7 +1,5 @@
 package 
 {
-	import org.robotlegs.v2.view.api.IViewHandler;
-
 	public class ViewHandlerSupport implements IViewHandler
 	{
 		protected var _addedHandler:Function;

@@ -10,7 +10,8 @@ package org.robotlegs.v2.core.api
 	import flash.display.DisplayObjectContainer;
 	import flash.events.IEventDispatcher;
 	import flash.system.ApplicationDomain;
-	import org.robotlegs.core.IInjector;
+
+	import org.swiftsuspenders.Injector;
 
 	public interface IContext
 	{
@@ -26,8 +27,8 @@ package org.robotlegs.v2.core.api
 
 		function get initialized():Boolean;
 
-		function get injector():IInjector;
-		function set injector(value:IInjector):void;
+		function get injector():Injector;
+		function set injector(value:Injector):void;
 
 		function get parent():IContext;
 		function set parent(value:IContext):void;

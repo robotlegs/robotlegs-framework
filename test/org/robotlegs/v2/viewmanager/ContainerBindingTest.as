@@ -1,9 +1,9 @@
 package org.robotlegs.v2.viewmanager {
 
 	import asunit.framework.TestCase;
+
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
-	import org.robotlegs.v2.viewmanager.IContainerBinding;
 
 	public class ContainerBindingTest extends TestCase {
 		private var instance:ContainerBinding;

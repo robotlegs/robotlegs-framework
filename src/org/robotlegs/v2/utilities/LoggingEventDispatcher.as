@@ -9,6 +9,7 @@ package org.robotlegs.v2.utilities
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+
 	import org.as3commons.logging.api.ILogger;
 	import org.as3commons.logging.api.getLogger;
 

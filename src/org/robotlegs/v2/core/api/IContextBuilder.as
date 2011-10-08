@@ -9,7 +9,8 @@ package org.robotlegs.v2.core.api
 {
 	import flash.display.DisplayObjectContainer;
 	import flash.events.IEventDispatcher;
-	import org.robotlegs.core.IInjector;
+
+	import org.swiftsuspenders.Injector;
 
 	[Event(name="contextBuildComplete", type="org.robotlegs.v2.core.api.ContextBuilderEvent")]
 	public interface IContextBuilder extends IEventDispatcher
@@ -26,7 +27,7 @@ package org.robotlegs.v2.core.api
 
 		function withExtension(extension:IContextExtension):IContextBuilder;
 
-		function withInjector(value:IInjector):IContextBuilder;
+		function withInjector(value:Injector):IContextBuilder;
 
 		function withParent(value:IContext):IContextBuilder;
 

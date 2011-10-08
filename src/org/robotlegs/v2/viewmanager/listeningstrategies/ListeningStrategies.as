@@ -1,8 +1,8 @@
 package org.robotlegs.v2.viewmanager.listeningstrategies 
 {
 	import org.robotlegs.v2.viewmanager.IListeningStrategy;
-	
-	public class ListeningStrategies 
+
+	public class ListeningStrategies
 	{
 		
 		public static const STAGE:IListeningStrategy = new StageViewListeningStrategy(null);

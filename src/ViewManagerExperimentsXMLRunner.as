@@ -1,7 +1,4 @@
 package {
-	import asunit.textui.TestRunner;
-	import asunit.textui.XMLResultPrinter;
-	
 	public class ViewManagerExperimentsXMLRunner extends TestRunner {
 
 		public function ViewManagerExperimentsXMLRunner() {

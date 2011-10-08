@@ -1,7 +1,7 @@
 package org.robotlegs.v2.viewmanager 
 {
 	import flash.display.DisplayObjectContainer;
-	
+
 	public class ContainerBinding implements IContainerBinding
 	{                
 		protected var _container:DisplayObjectContainer;

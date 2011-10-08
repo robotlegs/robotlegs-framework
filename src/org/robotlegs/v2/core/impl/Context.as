@@ -12,12 +12,12 @@ package org.robotlegs.v2.core.impl
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
 	import flash.system.ApplicationDomain;
+
 	import org.as3commons.logging.api.ILogger;
 	import org.as3commons.logging.api.getLogger;
-	import org.robotlegs.adapters.SwiftSuspendersInjector;
-	import org.robotlegs.core.IInjector;
 	import org.robotlegs.v2.core.api.IContext;
 	import org.robotlegs.v2.core.api.IContextExtension;
+	import org.swiftsuspenders.Injector;
 
 	public class Context implements IContext
 	{
@@ -84,14 +84,14 @@ package org.robotlegs.v2.core.impl
 		}
 
 
-		private var _injector:IInjector;
+		private var _injector:Injector;
 
-		public function get injector():IInjector
+		public function get injector():Injector
 		{
 			return _injector;
 		}
 
-		public function set injector(value:IInjector):void
+		public function set injector(value:Injector):void
 		{
 			_initialized && throwContextLockedError();
 			_injector = value;
@@ -225,8 +225,8 @@ package org.robotlegs.v2.core.impl
 		{
 			logger.info('configuring injector');
 			_injector ||= parent && parent.injector ?
-				parent.injector.createChild(_applicationDomain) :
-				new SwiftSuspendersInjector();
+				parent.injector.createChildInjector(_applicationDomain) :
+				new Injector();
 		}
 
 		private function initializeExtensions():void
@@ -251,10 +251,10 @@ package org.robotlegs.v2.core.impl
 		private function mapInjections():void
 		{
 			logger.info('mapping injections');
-			injector.mapValue(IContext, this);
-			injector.mapValue(IInjector, injector);
-			injector.mapValue(IEventDispatcher, dispatcher);
-			injector.mapValue(DisplayObjectContainer, contextView);
+			injector.map(IContext).toValue(this);
+			injector.map(Injector).toValue(injector);
+			injector.map(IEventDispatcher).toValue(dispatcher);
+			injector.map(DisplayObjectContainer).toValue(contextView);
 		}
 
 		private function throwContextDestroyedError():void

@@ -1,10 +1,10 @@
 package org.roburntlegs.experiments {
 
 	import asunit.framework.TestCase;
-	import flash.events.IEventDispatcher;
-	import flash.events.EventDispatcher;
+
 	import flash.events.Event;
-	import ArgumentError;
+	import flash.events.EventDispatcher;
+	import flash.events.IEventDispatcher;
 
 	public class ViewManagerTest extends TestCase {
 		private var instance:ViewManager;  

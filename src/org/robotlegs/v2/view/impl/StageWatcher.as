@@ -11,6 +11,7 @@ package org.robotlegs.v2.view.impl
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
 	import flash.utils.Dictionary;
+
 	import org.as3commons.logging.api.ILogger;
 	import org.as3commons.logging.api.getLogger;
 	import org.robotlegs.v2.view.api.IContainerBinding;

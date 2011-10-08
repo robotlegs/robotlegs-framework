@@ -1,11 +1,12 @@
 package org.robotlegs.v2.viewmanager {
 
 	import asunit.framework.TestCase;
-	import org.robotlegs.v2.viewmanager.listeningstrategies.FewestListenersViewListeningStrategy;
-	import org.robotlegs.v2.viewmanager.IListeningStrategy;
-	import org.robotlegs.v2.viewmanager.listeningstrategies.ManualViewListeningStrategy;
+
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
+
+	import org.robotlegs.v2.viewmanager.listeningstrategies.FewestListenersViewListeningStrategy;
+	import org.robotlegs.v2.viewmanager.listeningstrategies.ManualViewListeningStrategy;
 
 	public class ListeningStrategyFactoryTest extends TestCase {
 		private var instance:ListeningStrategyFactory;

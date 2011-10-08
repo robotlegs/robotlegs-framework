@@ -11,12 +11,15 @@ package org.robotlegs.v2.context.impl
 	import flash.display.Sprite;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
+
 	import org.flexunit.asserts.assertEquals;
+
 	import org.robotlegs.adapters.SwiftSuspendersInjector;
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.v2.core.api.IContext;
 	import org.robotlegs.v2.core.impl.Context;
 	import org.robotlegs.v2.core.impl.ContextBuilder;
+	import org.swiftsuspenders.Injector;
 
 	public class ContextBuilderTest
 	{
@@ -53,7 +56,7 @@ package org.robotlegs.v2.context.impl
 		[Test]
 		public function context_should_have_the_injector_that_we_set_before_build():void
 		{
-			const injector:IInjector = new SwiftSuspendersInjector();
+			const injector:Injector = new Injector();
 			builder.withInjector(injector);
 			const context:IContext = builder.build();
 			assertEquals(injector, context.injector);

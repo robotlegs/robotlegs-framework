@@ -1,8 +1,9 @@
 package org.robotlegs.v2.viewmanager.listeningstrategies 
 {
-	import org.robotlegs.v2.viewmanager.IListeningStrategy;
 	import flash.display.DisplayObjectContainer;
-	
+
+	import org.robotlegs.v2.viewmanager.IListeningStrategy;
+
 	public class ManualViewListeningStrategy extends ViewListeningStrategy implements IListeningStrategy
 	{		
 		public function ManualViewListeningStrategy(targets:Vector.<DisplayObjectContainer>)

@@ -9,6 +9,7 @@ package org.robotlegs.v2.processors
 {
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
+
 	import org.as3commons.logging.api.ILogger;
 	import org.as3commons.logging.api.getLogger;
 	import org.robotlegs.v2.core.api.IContext;
@@ -71,17 +72,14 @@ package org.robotlegs.v2.processors
 				callback();
 				return;
 			}
-			else if (contextView.stage)
+			if (contextView.stage)
 			{
 				logger.info('no way to find parent for context');
 				callback();
 				return;
 			}
-			else
-			{
-				logger.info('not yet on stage, waiting for ADDED_TO_STAGE...');
-				contextView.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-			}
+			logger.info('not yet on stage, waiting for ADDED_TO_STAGE...');
+			contextView.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
 
 		/*============================================================================*/

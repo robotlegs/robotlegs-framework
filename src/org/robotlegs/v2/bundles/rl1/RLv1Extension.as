@@ -14,7 +14,6 @@ package org.robotlegs.v2.bundles.rl1
 	import org.robotlegs.base.ViewMap;
 	import org.robotlegs.core.ICommandMap;
 	import org.robotlegs.core.IEventMap;
-	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IMediatorMap;
 	import org.robotlegs.core.IReflector;
 	import org.robotlegs.core.IViewMap;
@@ -28,10 +27,6 @@ package org.robotlegs.v2.bundles.rl1
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var context:IContext;
-
-		private var injector:IInjector;
-
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
@@ -43,8 +38,7 @@ package org.robotlegs.v2.bundles.rl1
 
 		public function install(context:IContext):void
 		{
-			this.context = context;
-			injector = context.injector;
+			const injector : Injector = context.injector;
 			injector.mapSingletonOf(IReflector, SwiftSuspendersReflector);
 			injector.mapSingletonOf(ICommandMap, CommandMap);
 			injector.mapSingletonOf(IMediatorMap, MediatorMap);

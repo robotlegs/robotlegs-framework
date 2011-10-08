@@ -1,7 +1,7 @@
 package org.robotlegs.v2.viewmanager.listeningstrategies
-{                                                       
+{
 	import flash.display.DisplayObjectContainer;
-	
+
 	// this function does not find an empty vector and a null vector to be different
 	
 	internal function areDifferentVectorsIgnoringOrder(v1:Vector.<DisplayObjectContainer>, v2:Vector.<DisplayObjectContainer>):Boolean

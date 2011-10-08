@@ -1,10 +1,10 @@
 package org.robotlegs.v2.viewmanager 
 {
-	import flash.display.DisplayObjectContainer;
 	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
 	import flash.utils.Dictionary;
-	
-	public class ContainerTreeCreeper implements IContainerTreeCreeper 
+
+	public class ContainerTreeCreeper implements IContainerTreeCreeper
 	{
 		protected const _bindingsByContainer:Dictionary = new Dictionary();
 		protected var _rootBindings:Vector.<IContainerBinding>; 

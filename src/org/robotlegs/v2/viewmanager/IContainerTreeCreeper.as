@@ -2,8 +2,8 @@ package org.robotlegs.v2.viewmanager
 {
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
-	
-	public interface IContainerTreeCreeper 
+
+	public interface IContainerTreeCreeper
 	{
 		function findParentBindingFor(targetObject:DisplayObject):IContainerBinding;
 

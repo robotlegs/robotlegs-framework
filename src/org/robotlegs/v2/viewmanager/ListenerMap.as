@@ -2,7 +2,7 @@ package org.robotlegs.v2.viewmanager
 {
 	import flash.events.IEventDispatcher;
 	import flash.utils.Dictionary;
-	
+
 	// the event type and handler persist, and we encapsulate
 	// the adding and removing of listeners as the list of
 	// required targets varies
