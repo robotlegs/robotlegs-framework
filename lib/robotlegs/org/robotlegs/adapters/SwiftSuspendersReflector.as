@@ -15,7 +15,7 @@ package org.robotlegs.adapters
 	 * 
 	 * @author tschneidereit
 	 */
-	public class SwiftSuspendersReflector extends Reflector implements IReflector
+	public class SwiftSuspendersReflector implements IReflector
 	{
 	}
 }

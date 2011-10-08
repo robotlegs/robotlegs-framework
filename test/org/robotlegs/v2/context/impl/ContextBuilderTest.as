@@ -17,6 +17,7 @@ package org.robotlegs.v2.context.impl
 	import org.robotlegs.adapters.SwiftSuspendersInjector;
 	import org.robotlegs.core.IInjector;
 	import org.robotlegs.v2.core.api.IContext;
+	import org.robotlegs.v2.core.api.IContextBuilder;
 	import org.robotlegs.v2.core.impl.Context;
 	import org.robotlegs.v2.core.impl.ContextBuilder;
 	import org.swiftsuspenders.Injector;
@@ -28,7 +29,7 @@ package org.robotlegs.v2.context.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var builder:ContextBuilder;
+		private var builder:IContextBuilder;
 
 
 		/*============================================================================*/

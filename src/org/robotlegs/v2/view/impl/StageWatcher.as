@@ -49,14 +49,12 @@ package org.robotlegs.v2.view.impl
 
 		public function addHandler(handler:IViewHandler, container:DisplayObjectContainer):void
 		{
-			// trace('ViewWatcher::addHandler', handler, container);
 			const binding:IContainerBinding = _bindingsByContainer[container] ||= createBindingFor(container);
 			binding.addHandler(handler);
 		}
 
 		public function removeHandler(handler:IViewHandler, container:DisplayObjectContainer):void
 		{
-			// trace('ViewWatcher::removeHandler', handler, container);
 			const binding:IContainerBinding = _bindingsByContainer[container];
 			if (!binding)
 				return;
@@ -73,7 +71,6 @@ package org.robotlegs.v2.view.impl
 
 		protected function addRootBinding(binding:IContainerBinding):void
 		{
-			trace('adding root binding for container ', binding.container);
 			binding.container.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage, true);
 		}
 
@@ -127,7 +124,23 @@ package org.robotlegs.v2.view.impl
 
 		protected function onAddedToStage(event:Event):void
 		{
-			trace('onAddedToStage... ' + event.target);
+			const target:DisplayObject = event.target as DisplayObject;
+
+			var handler:IViewHandler;
+			var handlers:Vector.<IViewHandler>;
+			var binding:IContainerBinding = findParentBindingFor(target);
+			while (binding)
+			{
+				handlers = binding.handlers;
+				var totalHandlers:int = handlers.length;
+				for (var i:int = 0; i < totalHandlers; i++)
+				{
+					handler = handlers[i];
+					handler.handleViewAdded(target, null);
+				}
+
+				binding = binding.parent;
+			}
 		}
 
 		protected function removeBinding(binding:IContainerBinding):void
@@ -155,7 +168,6 @@ package org.robotlegs.v2.view.impl
 
 		protected function removeRootBinding(binding:IContainerBinding):void
 		{
-			trace('removing root binding for container ', binding.container);
 			binding.container.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage, true);
 		}
 	}
