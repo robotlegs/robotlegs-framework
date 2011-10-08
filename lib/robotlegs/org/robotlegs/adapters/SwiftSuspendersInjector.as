@@ -1,71 +1,155 @@
-/*
- * Copyright (c) 2009 the original author or authors
- *
- * Permission is hereby granted to use, modify, and distribute this file
- * in accordance with the terms of the license agreement accompanying it.
- */
+//------------------------------------------------------------------------------
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted you to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
+//------------------------------------------------------------------------------
 
 package org.robotlegs.adapters
 {
 	import flash.system.ApplicationDomain;
-	
 	import org.robotlegs.core.IInjector;
 	import org.swiftsuspenders.Injector;
 	import org.swiftsuspenders.dependencyproviders.ForwardingProvider;
 
 	/**
-	 * SwiftSuspender <code>IInjector</code> adpater - See: <a href="http://github.com/tschneidereit/SwiftSuspenders">SwiftSuspenders</a>
+	 * SwiftSuspender <code>IInjector</code> adpater - See:
+	 *
+	 * <a href="http://github.com/tschneidereit/SwiftSuspenders">SwiftSuspenders</a>
 	 *
 	 * @author tschneidereit
 	 */
-	public class SwiftSuspendersInjector extends Injector implements IInjector
+	public class SwiftSuspendersInjector implements IInjector
 	{
+
+		/*============================================================================*/
+		/* Public Properties                                                          */
+		/*============================================================================*/
+
+
+		public function get applicationDomain():ApplicationDomain
+		{
+			return injector.applicationDomain;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function set applicationDomain(value:ApplicationDomain):void
+		{
+			injector.applicationDomain = value;
+		}
+
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
+
+		private var injector:Injector;
+
+		/*============================================================================*/
+		/* Constructor                                                                */
+		/*============================================================================*/
+
+		public function SwiftSuspendersInjector(injector:Injector)
+		{
+			this.injector = injector;
+		}
+
+
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
+
 		/**
 		 * @inheritDoc
 		 */
 		public function createChild(applicationDomain:ApplicationDomain = null):IInjector
 		{
-			var injector:SwiftSuspendersInjector = new SwiftSuspendersInjector();
-			injector.applicationDomain = applicationDomain;
-			injector.parentInjector = this;
-			return injector;
+			return new SwiftSuspendersInjector(
+				injector.createChildInjector(applicationDomain)
+				);
 		}
 
-		public function mapValue(whenAskedFor : Class, useValue : Object, named : String = "") : *
+		/**
+		 * @inheritDoc
+		 */
+		public function getInstance(clazz:Class, named:String = ""):*
 		{
-			return map(whenAskedFor, named).toValue(useValue);
+			return injector.getInstance(clazz, named);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
+		public function hasMapping(clazz:Class, named:String = ""):Boolean
+		{
+			return injector.satisfies(clazz, named);
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function injectInto(target:Object):void
+		{
+			injector.injectInto(target);
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function instantiate(clazz:Class):*
+		{
+			return injector.getInstance(clazz);
+		}
+
+		/**
+		 * @inheritDoc
+		 */
 		public function mapClass(
-				whenAskedFor : Class, instantiateClass : Class, named : String = "") : *
+			whenAskedFor:Class, instantiateClass:Class, named:String = ""):*
 		{
-			return map(whenAskedFor, named).toType(instantiateClass);
+			return injector.map(whenAskedFor, named).toType(instantiateClass);
 		}
 
-		public function mapSingleton(whenAskedFor : Class, named : String = "") : *
+		/**
+		 * @inheritDoc
+		 */
+		public function mapRule(whenAskedFor:Class, useRule:*, named:String = ""):*
 		{
-			return map(whenAskedFor, named).asSingleton();
+			return injector.map(whenAskedFor, named).toProvider(new ForwardingProvider(useRule));
 		}
 
+		/**
+		 * @inheritDoc
+		 */
+		public function mapSingleton(whenAskedFor:Class, named:String = ""):*
+		{
+			return injector.map(whenAskedFor, named).asSingleton();
+		}
+
+		/**
+		 * @inheritDoc
+		 */
 		public function mapSingletonOf(
-				whenAskedFor : Class, useSingletonOf : Class, named : String = "") : *
+			whenAskedFor:Class, useSingletonOf:Class, named:String = ""):*
 		{
-			return map(whenAskedFor, named).toSingleton(useSingletonOf);
+			return injector.map(whenAskedFor, named).toSingleton(useSingletonOf);
 		}
 
-		public function mapRule(whenAskedFor : Class, useRule : *, named : String = "") : *
+		/**
+		 * @inheritDoc
+		 */
+		public function mapValue(whenAskedFor:Class, useValue:Object, named:String = ""):*
 		{
-			return map(whenAskedFor, named).toProvider(new ForwardingProvider(useRule));
+			return injector.map(whenAskedFor, named).toValue(useValue);
 		}
 
-		public function instantiate(clazz : Class) : *
+		/**
+		 * @inheritDoc
+		 */
+		public function unmap(clazz:Class, named:String = ""):void
 		{
-			return getInstance(clazz);
-		}
-
-		public function hasMapping(clazz : Class, named : String = "") : Boolean
-		{
-			return satisfies(clazz, named);
+			injector.unmap(clazz, named);
 		}
 	}
 }

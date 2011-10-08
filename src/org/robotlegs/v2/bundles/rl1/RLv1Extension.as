@@ -7,6 +7,7 @@
 
 package org.robotlegs.v2.bundles.rl1
 {
+	import org.robotlegs.adapters.SwiftSuspendersInjector;
 	import org.robotlegs.adapters.SwiftSuspendersReflector;
 	import org.robotlegs.base.CommandMap;
 	import org.robotlegs.base.EventMap;
@@ -14,6 +15,7 @@ package org.robotlegs.v2.bundles.rl1
 	import org.robotlegs.base.ViewMap;
 	import org.robotlegs.core.ICommandMap;
 	import org.robotlegs.core.IEventMap;
+	import org.robotlegs.core.IInjector;
 	import org.robotlegs.core.IMediatorMap;
 	import org.robotlegs.core.IReflector;
 	import org.robotlegs.core.IViewMap;
@@ -35,12 +37,14 @@ package org.robotlegs.v2.bundles.rl1
 		public function install(context:IContext):void
 		{
 			const injector:Injector = context.injector;
-			injector.mapSingletonOf(IReflector, SwiftSuspendersReflector);
-			injector.mapSingletonOf(ICommandMap, CommandMap);
-			injector.mapSingletonOf(IMediatorMap, MediatorMap);
-			injector.mapSingletonOf(IViewMap, ViewMap);
-			injector.mapClass(IEventMap, EventMap);
+			const iinjector:IInjector = new SwiftSuspendersInjector(injector);
 
+			injector.map(IInjector).toValue(iinjector);
+			injector.map(IReflector).toSingleton(SwiftSuspendersReflector);
+			injector.map(ICommandMap).toSingleton(CommandMap);
+			injector.map(IMediatorMap).toSingleton(MediatorMap);
+			injector.map(IViewMap).toSingleton(ViewMap);
+			injector.map(IEventMap).toType(EventMap);
 		}
 
 		public function uninstall(context:IContext):void
