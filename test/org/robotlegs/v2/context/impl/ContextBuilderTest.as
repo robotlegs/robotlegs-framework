@@ -11,11 +11,7 @@ package org.robotlegs.v2.context.impl
 	import flash.display.Sprite;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
-
 	import org.flexunit.asserts.assertEquals;
-
-	import org.robotlegs.adapters.SwiftSuspendersInjector;
-	import org.robotlegs.core.IInjector;
 	import org.robotlegs.v2.core.api.IContext;
 	import org.robotlegs.v2.core.api.IContextBuilder;
 	import org.robotlegs.v2.core.impl.Context;
@@ -35,6 +31,13 @@ package org.robotlegs.v2.context.impl
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
+
+		[Test(expects='Error')]
+		public function build_should_throw_if_called_twice():void
+		{
+			builder.build();
+			builder.build();
+		}
 
 		[Test]
 		public function context_should_have_the_contextView_that_we_set_before_build():void
