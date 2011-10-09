@@ -98,7 +98,7 @@ package org.robotlegs.v2.view.impl.support
 
 		public function handleViewAdded(view:DisplayObject, info:IViewClassInfo):uint
 		{
-			_addedHandler(view, info);
+			_addedHandler(view, info, _response);
 			return _response;
 		}
 
