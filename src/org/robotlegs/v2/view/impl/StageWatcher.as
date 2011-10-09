@@ -24,6 +24,8 @@ package org.robotlegs.v2.view.impl
 		/* Private Static Properties                                                  */
 		/*============================================================================*/
 
+		private static const BLOCKING_MASK:uint = uint(parseInt('10101010101010101010101010101010', 2));
+
 		private static const logger:ILogger = getLogger(StageWatcher);
 
 
@@ -131,6 +133,8 @@ package org.robotlegs.v2.view.impl
 		{
 			const target:DisplayObject = event.target as DisplayObject;
 
+			var handlerResponse:uint = 0;
+			var combinedResponse:uint = 0;
 			var handler:IViewHandler;
 			var handlers:Vector.<IViewHandler>;
 			var binding:IContainerBinding = findParentBindingFor(target);
@@ -141,7 +145,17 @@ package org.robotlegs.v2.view.impl
 				for (var i:int = 0; i < totalHandlers; i++)
 				{
 					handler = handlers[i];
-					handler.handleViewAdded(target, null);
+
+					if (!((combinedResponse & BLOCKING_MASK) ^ (handler.interests << 1)))
+						continue;
+
+					handlerResponse = handler.handleViewAdded(target, null);
+					combinedResponse |= handlerResponse;
+
+					if (handlerResponse)
+					{
+						// todo: add removed listener
+					}
 				}
 
 				binding = binding.parent;

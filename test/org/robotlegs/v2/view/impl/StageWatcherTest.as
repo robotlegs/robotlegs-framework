@@ -52,11 +52,25 @@ package org.robotlegs.v2.view.impl
 		}
 
 		[Test]
+		public function bitmasking_should_work_as_expected():void
+		{
+			var combinedResponse:uint = 0;
+			const BLOCKING_MASK:uint = uint(parseInt('10101010101010101010101010101010', 2));
+			const interests:uint = uint(parseInt('00000000000000000000000000000001', 2));
+			const response:uint = uint(parseInt('00000000000000000000000000000011', 2));
+			const skipFirst:Boolean = !((combinedResponse & BLOCKING_MASK) ^ (interests << 1));
+			combinedResponse |= response;
+			const skipSecond:Boolean = !((combinedResponse & BLOCKING_MASK) ^ (interests << 1));
+			assertThat(skipFirst, isFalse());
+			assertThat(skipSecond, isTrue());
+		}
+
+		[Test]
 		public function first_blocking_handler_should_prevent_second_interested_handler_from_being_called():void
 		{
 			const blocking:Boolean = true;
 			const secondHandlerAddedCalled:Boolean =
-				add_two_handlers_add_and_remove_view_and_return_results(blocking).secondHandlerAddedCalled;
+				add_two_handlers_and_add_and_remove_view_and_return_results(1, 1, blocking, blocking).secondHandlerAddedCalled;
 			assertThat(secondHandlerAddedCalled, isFalse());
 		}
 
@@ -112,12 +126,12 @@ package org.robotlegs.v2.view.impl
 				};
 		}
 
-		private function add_two_handlers_add_and_remove_view_and_return_results(blocking:Boolean):Object
+		private function add_two_handlers_and_add_and_remove_view_and_return_results(interests1:uint, interests2:uint, blocking1:Boolean, blocking2:Boolean):Object
 		{
 			const view:Sprite = new Sprite();
 			var firstHandlerAddedCalled:Boolean;
 			var firstHandlerRemovedCalled:Boolean;
-			var handler1:ViewHandlerSupport = new ViewHandlerSupport(1, blocking,
+			var handler1:ViewHandlerSupport = new ViewHandlerSupport(interests1, blocking2,
 				function onAdded(view:DisplayObject, info:IViewClassInfo):void
 				{
 					firstHandlerAddedCalled = true;
@@ -128,7 +142,7 @@ package org.robotlegs.v2.view.impl
 				});
 			var secondHandlerAddedCalled:Boolean;
 			var secondHandlerRemovedCalled:Boolean;
-			var handler2:ViewHandlerSupport = new ViewHandlerSupport(1, blocking,
+			var handler2:ViewHandlerSupport = new ViewHandlerSupport(interests2, blocking2,
 				function onAdded(view:DisplayObject, info:IViewClassInfo):void
 				{
 					secondHandlerAddedCalled = true;
