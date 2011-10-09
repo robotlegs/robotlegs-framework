@@ -27,3 +27,5 @@ user.properties
 *.iml
 *.ipr
 *.iws
+
+desktop.ini
