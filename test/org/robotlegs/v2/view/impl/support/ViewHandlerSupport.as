@@ -73,11 +73,12 @@ package org.robotlegs.v2.view.impl.support
 
 		public function ViewHandlerSupport(taskID:uint, blocked:Boolean, addedHandler:Function, removedHandler:Function = null)
 		{
-			_taskID = this['TASK_' + taskID];
+
+			_taskID = taskID && this['TASK_' + taskID];
 
 			if (blocked)
 			{
-				_taskID = _taskID | this['BLOCK_' + taskID];
+				_taskID &&= _taskID | this['BLOCK_' + taskID];
 			}
 
 			_blocked = blocked;

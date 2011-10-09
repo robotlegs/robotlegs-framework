@@ -11,7 +11,6 @@ package org.robotlegs.v2.view.impl
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
 	import flash.utils.Dictionary;
-
 	import org.as3commons.logging.api.ILogger;
 	import org.as3commons.logging.api.getLogger;
 	import org.robotlegs.v2.view.api.IContainerBinding;
@@ -22,17 +21,17 @@ package org.robotlegs.v2.view.impl
 	{
 
 		/*============================================================================*/
-		/* Protected Static Properties                                                */
+		/* Private Static Properties                                                  */
 		/*============================================================================*/
 
-		protected static const logger:ILogger = getLogger(StageWatcher);
+		private static const logger:ILogger = getLogger(StageWatcher);
 
 
 		/*============================================================================*/
-		/* Protected Properties                                                       */
+		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		protected const _bindingsByContainer:Dictionary = new Dictionary(false);
+		private const _bindingsByContainer:Dictionary = new Dictionary(false);
 
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -40,6 +39,7 @@ package org.robotlegs.v2.view.impl
 
 		public function StageWatcher()
 		{
+			// This page intentionally left blank
 		}
 
 
@@ -49,6 +49,9 @@ package org.robotlegs.v2.view.impl
 
 		public function addHandler(handler:IViewHandler, container:DisplayObjectContainer):void
 		{
+			if (handler.interests == 0)
+				throw new ArgumentError('A view handler must be interested in something.');
+
 			const binding:IContainerBinding = _bindingsByContainer[container] ||= createBindingFor(container);
 			binding.addHandler(handler);
 		}
@@ -66,15 +69,17 @@ package org.robotlegs.v2.view.impl
 		}
 
 		/*============================================================================*/
-		/* Protected Functions                                                        */
+		/* Private Functions                                                          */
 		/*============================================================================*/
 
-		protected function addRootBinding(binding:IContainerBinding):void
+		private function addRootBinding(binding:IContainerBinding):void
 		{
 			binding.container.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage, true);
+			// todo: refactor: don't add a listener for REMOVED_FROM_STAGE, add target listener directly to handled views
+			binding.container.addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage, true);
 		}
 
-		protected function createBindingFor(container:DisplayObjectContainer):IContainerBinding
+		private function createBindingFor(container:DisplayObjectContainer):IContainerBinding
 		{
 			const binding:IContainerBinding = new ContainerBinding(container);
 			binding.parent = findParentBindingFor(container);
@@ -107,7 +112,7 @@ package org.robotlegs.v2.view.impl
 			return binding;
 		}
 
-		protected function findParentBindingFor(target:DisplayObject):IContainerBinding
+		private function findParentBindingFor(target:DisplayObject):IContainerBinding
 		{
 			var parent:DisplayObjectContainer = target.parent;
 			while (parent)
@@ -122,7 +127,7 @@ package org.robotlegs.v2.view.impl
 			return null;
 		}
 
-		protected function onAddedToStage(event:Event):void
+		private function onAddedToStage(event:Event):void
 		{
 			const target:DisplayObject = event.target as DisplayObject;
 
@@ -143,7 +148,28 @@ package org.robotlegs.v2.view.impl
 			}
 		}
 
-		protected function removeBinding(binding:IContainerBinding):void
+		private function onRemovedFromStage(event:Event):void
+		{
+			const target:DisplayObject = event.target as DisplayObject;
+
+			var handler:IViewHandler;
+			var handlers:Vector.<IViewHandler>;
+			var binding:IContainerBinding = findParentBindingFor(target);
+			while (binding)
+			{
+				handlers = binding.handlers;
+				var totalHandlers:int = handlers.length;
+				for (var i:int = 0; i < totalHandlers; i++)
+				{
+					handler = handlers[i];
+					handler.handleViewRemoved(target);
+				}
+
+				binding = binding.parent;
+			}
+		}
+
+		private function removeBinding(binding:IContainerBinding):void
 		{
 			delete _bindingsByContainer[binding.container];
 
@@ -166,9 +192,11 @@ package org.robotlegs.v2.view.impl
 			}
 		}
 
-		protected function removeRootBinding(binding:IContainerBinding):void
+		private function removeRootBinding(binding:IContainerBinding):void
 		{
 			binding.container.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage, true);
+			// TODO: refactor - see note in addRootBinding
+			binding.container.removeEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage, true);
 		}
 	}
 }
