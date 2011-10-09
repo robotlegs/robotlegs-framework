@@ -24,8 +24,6 @@ package org.robotlegs.v2.view.impl
 		/* Private Static Properties                                                  */
 		/*============================================================================*/
 
-		private static const BLOCKING_MASK:uint = uint(parseInt('10101010101010101010101010101010', 2));
-
 		private static const logger:ILogger = getLogger(StageWatcher);
 
 
@@ -146,7 +144,7 @@ package org.robotlegs.v2.view.impl
 				{
 					handler = handlers[i];
 
-					if (!((combinedResponse & BLOCKING_MASK) ^ (handler.interests << 1)))
+					if (!((combinedResponse & 0xAAAAAAAA) ^ (handler.interests << 1)))
 						continue;
 
 					handlerResponse = handler.handleViewAdded(target, null);

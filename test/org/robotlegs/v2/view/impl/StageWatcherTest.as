@@ -55,12 +55,11 @@ package org.robotlegs.v2.view.impl
 		public function bitmasking_should_work_as_expected():void
 		{
 			var combinedResponse:uint = 0;
-			const BLOCKING_MASK:uint = uint(parseInt('10101010101010101010101010101010', 2));
-			const interests:uint = uint(parseInt('00000000000000000000000000000001', 2));
-			const response:uint = uint(parseInt('00000000000000000000000000000011', 2));
-			const skipFirst:Boolean = !((combinedResponse & BLOCKING_MASK) ^ (interests << 1));
-			combinedResponse |= response;
-			const skipSecond:Boolean = !((combinedResponse & BLOCKING_MASK) ^ (interests << 1));
+			const interests:uint = uint(parseInt('0001', 2));
+			const blockingResponse:uint = uint(parseInt('0011', 2));
+			const skipFirst:Boolean = !((combinedResponse & 0xAAAAAAAA) ^ (interests << 1));
+			combinedResponse |= blockingResponse;
+			const skipSecond:Boolean = !((combinedResponse & 0xAAAAAAAA) ^ (interests << 1));
 			assertThat(skipFirst, isFalse());
 			assertThat(skipSecond, isTrue());
 		}
