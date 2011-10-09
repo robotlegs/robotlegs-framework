@@ -174,15 +174,15 @@ package org.robotlegs.mvcs
 		 */
 		public function set contextView(value:DisplayObjectContainer):void
 		{
+			if (value == _contextView)
+				return;
+			
 			if (_contextView)
 				throw new ContextError(ContextError.E_CONTEXT_VIEW_OVR);
 			
-			if (value)
-			{
-				_contextView = value;
-				mapInjections();
-				checkAutoStartup();
-			}
+			_contextView = value;
+			mapInjections();
+			checkAutoStartup();
 		}
 		
 		//---------------------------------------------------------------------
