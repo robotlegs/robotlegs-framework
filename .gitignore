@@ -12,6 +12,7 @@ obj/*
 .FlexUnitSettings
 .project
 .sourceMate
+src/FlexUnitApplication.mxml
 
 .idea
 *.iml
