@@ -13,6 +13,7 @@ package org.robotlegs.v2.view.impl
 	import mx.core.UIComponent;
 	import org.flexunit.assertThat;
 	import org.fluint.uiImpersonation.UIImpersonator;
+	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.isFalse;
 	import org.hamcrest.object.isTrue;
 	import org.robotlegs.v2.view.api.IViewClassInfo;
@@ -42,16 +43,38 @@ package org.robotlegs.v2.view.impl
 		{
 			const responses:Array =
 				add_handlers_and_add_and_remove_view_and_return_results([
-				new HandlerConfig(1, false)
+				new HandlerConfig(0x01, 1, false)
 				]);
-			const addedCalled:Boolean = HandlerResult(responses[0]).addedCalled;
+			const addedCalled:Boolean = HandlerResult(responses[0]).addedCallCount > 0;
 			assertThat(addedCalled, isTrue());
+		}
+
+		[Test]
+		public function adding_handler_twice_should_not_cause_handler_to_be_called_twice():void
+		{
+			const view:Sprite = new Sprite();
+			var addedCallCount:int;
+			var removedCalledCount:int;
+			const handler:ViewHandlerSupport = new ViewHandlerSupport(1, 1, false,
+				function onAdded(view:DisplayObject, info:IViewClassInfo, response:uint):void
+				{
+					addedCallCount++;
+				},
+				function onRemoved(view:DisplayObject):void
+				{
+					removedCalledCount++;
+				});
+			watcher.addHandler(handler, container);
+			watcher.addHandler(handler, container);
+			container.addChild(view);
+			container.removeChild(view);
+			assertThat(addedCallCount, equalTo(1));
 		}
 
 		[Test(expects='ArgumentError')]
 		public function adding_handler_with_no_interests_should_throw_an_error():void
 		{
-			var handler:ViewHandlerSupport = new ViewHandlerSupport(0, false, null, null);
+			var handler:ViewHandlerSupport = new ViewHandlerSupport(0, 0, false, null, null);
 			watcher.addHandler(handler, container);
 		}
 
@@ -66,42 +89,85 @@ package org.robotlegs.v2.view.impl
 			const skipSecond:Boolean = !((combinedResponse & 0xAAAAAAAA) ^ (interests << 1));
 			assertThat(skipFirst, isFalse());
 			assertThat(skipSecond, isTrue());
+			// shift interest to form blocking interest			
+			assertThat(0x000001 << 1, equalTo(0x000002));
+			assertThat(0x000004 << 1, equalTo(0x000008));
 		}
 
 		[Test]
-		public function nearest_blocking_handler_should_block_second_handler_when_interests_are_the_same():void
+		public function first_blocking_handler_should_block_second_handler_when_interests_are_the_same():void
 		{
 			const responses:Array =
 				add_handlers_and_add_and_remove_view_and_return_results([
-				new HandlerConfig(1, true),
-				new HandlerConfig(1, true)
+				new HandlerConfig(1, 1, true),
+				new HandlerConfig(1, 1, true)
 				]);
-			const secondHandlerAddedCalled:Boolean = HandlerResult(responses[1]).addedCalled;
+			const secondHandlerAddedCalled:Boolean = HandlerResult(responses[1]).addedCallCount > 0;
 			assertThat(secondHandlerAddedCalled, isFalse());
 		}
 
 		[Test]
-		public function nearest_blocking_handler_should_not_block_second_handler_when_interests_are_different():void
+		public function first_blocking_handler_should_not_block_second_handler_when_interests_are_different():void
 		{
 			const responses:Array =
 				add_handlers_and_add_and_remove_view_and_return_results([
-				new HandlerConfig(1, true),
-				new HandlerConfig(4, true)
+				new HandlerConfig(1, 1, true),
+				new HandlerConfig(4, 4, true)
 				]);
-			const secondHandlerAddedCalled:Boolean = HandlerResult(responses[1]).addedCalled;
+			const secondHandlerAddedCalled:Boolean = HandlerResult(responses[1]).addedCallCount > 0;
 			assertThat(secondHandlerAddedCalled, isTrue());
 		}
 
 		[Test]
-		public function nearest_nonBlocking_handler_should_not_block_second_handler_when_interests_are_the_same():void
+		public function first_nonBlocking_handler_should_not_block_second_handler_when_interests_are_the_same():void
 		{
 			const responses:Array =
 				add_handlers_and_add_and_remove_view_and_return_results([
-				new HandlerConfig(1, false),
-				new HandlerConfig(1, false)
+				new HandlerConfig(1, 1, false),
+				new HandlerConfig(1, 1, false)
 				]);
-			const secondHandlerAddedCalled:Boolean = HandlerResult(responses[1]).addedCalled;
+			const secondHandlerAddedCalled:Boolean = HandlerResult(responses[1]).addedCallCount > 0;
 			assertThat(secondHandlerAddedCalled, isTrue());
+		}
+
+		[Test]
+		public function removeHandler_should_not_run_if_handler_didnt_handle_view():void
+		{
+			const view:Sprite = new Sprite();
+			var removedCalled:Boolean;
+			const handler:ViewHandlerSupport = new ViewHandlerSupport(1, 0, false,
+				function onAdded(view:DisplayObject, info:IViewClassInfo, response:uint):void
+				{
+				},
+				function onRemoved(view:DisplayObject):void
+				{
+					removedCalled = true;
+				});
+			watcher.addHandler(handler, container);
+			container.addChild(view);
+			container.removeChild(view);
+			assertThat(removedCalled, isFalse());
+
+		}
+
+		[Test]
+		public function removeHandler_should_only_run_if_handler_handled_view():void
+		{
+			const view:Sprite = new Sprite();
+			var removedCalled:Boolean;
+			const handler:ViewHandlerSupport = new ViewHandlerSupport(1, 1, false,
+				function onAdded(view:DisplayObject, info:IViewClassInfo, response:uint):void
+				{
+				},
+				function onRemoved(view:DisplayObject):void
+				{
+					removedCalled = true;
+				});
+			watcher.addHandler(handler, container);
+			container.addChild(view);
+			container.removeChild(view);
+			assertThat(removedCalled, isTrue());
+
 		}
 
 		[Test]
@@ -109,9 +175,9 @@ package org.robotlegs.v2.view.impl
 		{
 			const responses:Array =
 				add_handlers_and_add_and_remove_view_and_return_results([
-				new HandlerConfig(1, false)
+				new HandlerConfig(1, 1, false)
 				]);
-			const removedCalled:Boolean = HandlerResult(responses[0]).removedCalled;
+			const removedCalled:Boolean = HandlerResult(responses[0]).removedCallCount > 0;
 			assertThat(removedCalled, isTrue());
 		}
 
@@ -149,15 +215,18 @@ package org.robotlegs.v2.view.impl
 			handlerConfigs.forEach(function(config:HandlerConfig, index:int, ... rest):void
 			{
 				var result:HandlerResult = results[index];
-				var handler:ViewHandlerSupport = new ViewHandlerSupport(config.interests, config.blocking,
+				var handler:ViewHandlerSupport = new ViewHandlerSupport(
+					config.interests,
+					config.interestsToHandle,
+					config.blocking,
 					function onAdded(view:DisplayObject, info:IViewClassInfo, response:uint):void
 					{
-						result.addedCalled = true;
+						result.addedCallCount++;
 						result.response = response;
 					},
 					function onRemoved(view:DisplayObject):void
 					{
-						result.removedCalled = true;
+						result.removedCallCount++;
 					});
 				watcher.addHandler(handler, container);
 			}, this);
@@ -181,13 +250,16 @@ class HandlerConfig
 
 	public var interests:uint;
 
+	public var interestsToHandle:uint;
+
 	/*============================================================================*/
 	/* Constructor                                                                */
 	/*============================================================================*/
 
-	public function HandlerConfig(interests:uint, blocking:Boolean)
+	public function HandlerConfig(interests:uint, interestsToHandle:uint, blocking:Boolean)
 	{
 		this.interests = interests;
+		this.interestsToHandle = interestsToHandle;
 		this.blocking = blocking;
 	}
 }
@@ -199,9 +271,9 @@ class HandlerResult
 	/* Public Properties                                                          */
 	/*============================================================================*/
 
-	public var addedCalled:Boolean;
+	public var addedCallCount:uint;
 
-	public var removedCalled:Boolean;
+	public var removedCallCount:uint;
 
 	public var response:uint;
 }

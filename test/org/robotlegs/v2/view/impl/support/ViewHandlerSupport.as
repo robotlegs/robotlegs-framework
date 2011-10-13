@@ -15,6 +15,29 @@ package org.robotlegs.v2.view.impl.support
 	{
 
 		/*============================================================================*/
+		/* Public Static Properties                                                   */
+		/*============================================================================*/
+
+		public static const INTEREST_0:uint = 0x000000; // illegal
+
+		public static const INTEREST_1:uint = 0x000001;
+
+		public static const INTEREST_2:uint = 0x000004;
+
+		public static const INTEREST_3:uint = 0x000010;
+
+		public static const INTEREST_4:uint = 0x000040;
+
+		public static const INTEREST_5:uint = 0x000100;
+
+		public static const INTEREST_6:uint = 0x000400;
+
+		public static const INTEREST_7:uint = 0x001000;
+
+		public static const INTEREST_8:uint = 0x004000;
+
+
+		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
@@ -29,64 +52,28 @@ package org.robotlegs.v2.view.impl.support
 		/* Protected Properties                                                       */
 		/*============================================================================*/
 
-		protected const BLOCK_0:uint = 0x000000;
-
-		protected const BLOCK_1:uint = 0x000002;
-
-		protected const BLOCK_2:uint = 0x000008;
-
-		protected const BLOCK_3:uint = 0x000020;
-
-		protected const BLOCK_4:uint = 0x000080;
-
-		protected const BLOCK_5:uint = 0x000200;
-
-		protected const BLOCK_6:uint = 0x000800;
-
-		protected const BLOCK_7:uint = 0x002000;
-
-		protected const BLOCK_8:uint = 0x008000;
-
-
-		protected const TASK_0:uint = 0x000000;
-
-		protected const TASK_1:uint = 0x000001;
-
-		protected const TASK_2:uint = 0x000004;
-
-		protected const TASK_3:uint = 0x000010;
-
-		protected const TASK_4:uint = 0x000040;
-
-		protected const TASK_5:uint = 0x000100;
-
-		protected const TASK_6:uint = 0x000400;
-
-		protected const TASK_7:uint = 0x001000;
-
-		protected const TASK_8:uint = 0x004000;
-
-
 		protected var _addedHandler:Function;
 
-		protected var _removedHandler:Function;
+		protected var _blocking:Boolean;
 
-		protected var _response:uint;
+		protected var _interestsToActuallyHandle:uint;
+
+		protected var _removedHandler:Function;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function ViewHandlerSupport(taskID:uint, blocking:Boolean, addedHandler:Function, removedHandler:Function = null)
+		public function ViewHandlerSupport(
+			interests:uint,
+			interestsToActuallyHandle:uint,
+			blocking:Boolean,
+			addedHandler:Function,
+			removedHandler:Function = null)
 		{
-			_interests = this['TASK_' + taskID];
-			_response = _interests;
-
-			if (blocking)
-			{
-				_response = _interests | this['BLOCK_' + taskID];
-			}
-
+			_interests = interests;
+			_interestsToActuallyHandle = interestsToActuallyHandle;
+			_blocking = blocking;
 			_addedHandler = addedHandler;
 			_removedHandler = removedHandler;
 		}
@@ -98,8 +85,14 @@ package org.robotlegs.v2.view.impl.support
 
 		public function handleViewAdded(view:DisplayObject, info:IViewClassInfo):uint
 		{
-			_addedHandler(view, info, _response);
-			return _response;
+			var response:uint = _interestsToActuallyHandle;
+
+			if (_blocking)
+				response |= _interestsToActuallyHandle << 1;
+
+			_addedHandler(view, info, response);
+
+			return response;
 		}
 
 		public function handleViewRemoved(view:DisplayObject):void

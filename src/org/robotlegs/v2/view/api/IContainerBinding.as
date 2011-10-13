@@ -21,8 +21,6 @@ package org.robotlegs.v2.view.api
 
 		function addHandler(handler:IViewHandler):void;
 
-		function hasHandlers():Boolean;
-
 		function removeHandler(handler:IViewHandler):void;
 	}
 }

@@ -33,6 +33,8 @@ package org.robotlegs.v2.view.impl
 
 		private const _bindingsByContainer:Dictionary = new Dictionary(false);
 
+		private const _removeHandlersByTarget:Dictionary = new Dictionary(true);
+
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
@@ -64,7 +66,8 @@ package org.robotlegs.v2.view.impl
 
 			binding.removeHandler(handler);
 
-			if (!binding.hasHandlers())
+			// No point in a binding with no handlers!
+			if (binding.handlers.length == 0)
 				removeBinding(binding);
 		}
 
@@ -74,9 +77,8 @@ package org.robotlegs.v2.view.impl
 
 		private function addRootBinding(binding:IContainerBinding):void
 		{
+			// The magical, but extremely expensive, capture-phase ADDED_TO_STAGE listener
 			binding.container.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage, true);
-			// todo: refactor: don't add a listener for REMOVED_FROM_STAGE, add target listener directly to handled views
-			binding.container.addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage, true);
 		}
 
 		private function createBindingFor(container:DisplayObjectContainer):IContainerBinding
@@ -112,6 +114,19 @@ package org.robotlegs.v2.view.impl
 			return binding;
 		}
 
+		private function ensureRemoveHandler(target:DisplayObject, handler:IViewHandler):void
+		{
+			var removeHandlers:Vector.<IViewHandler> = _removeHandlersByTarget[target];
+			if (!removeHandlers)
+			{
+				removeHandlers = new Vector.<IViewHandler>;
+				_removeHandlersByTarget[target] = removeHandlers;
+				// Just a normal, target-phase REMOVED_FROM_STAGE listener
+				target.addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
+			}
+			removeHandlers.push(handler);
+		}
+
 		private function findParentBindingFor(target:DisplayObject):IContainerBinding
 		{
 			var parent:DisplayObjectContainer = target.parent;
@@ -144,6 +159,10 @@ package org.robotlegs.v2.view.impl
 				{
 					handler = handlers[i];
 
+					// Have our interests been blocked by a previous handler?
+					// note: this leads to an interesting thought:
+					// Should handlers really be able to have multiple interests (as currently implemented)?
+					// How does blocking work then?
 					if (!((combinedResponse & 0xAAAAAAAA) ^ (handler.interests << 1)))
 						continue;
 
@@ -152,7 +171,7 @@ package org.robotlegs.v2.view.impl
 
 					if (handlerResponse)
 					{
-						// todo: add removed listener
+						ensureRemoveHandler(target, handler);
 					}
 				}
 
@@ -162,35 +181,32 @@ package org.robotlegs.v2.view.impl
 
 		private function onRemovedFromStage(event:Event):void
 		{
+			// This listener only fires for targets that got picked up by handlers
 			const target:DisplayObject = event.target as DisplayObject;
+			target.removeEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
 
 			var handler:IViewHandler;
-			var handlers:Vector.<IViewHandler>;
-			var binding:IContainerBinding = findParentBindingFor(target);
-			while (binding)
+			const handlers:Vector.<IViewHandler> = _removeHandlersByTarget[target];
+			const totalHandlers:int = handlers.length;
+			for (var i:int = 0; i < totalHandlers; i++)
 			{
-				handlers = binding.handlers;
-				var totalHandlers:int = handlers.length;
-				for (var i:int = 0; i < totalHandlers; i++)
-				{
-					handler = handlers[i];
-					handler.handleViewRemoved(target);
-				}
-
-				binding = binding.parent;
+				handler = handlers[i];
+				handler.handleViewRemoved(target);
 			}
+			delete _removeHandlersByTarget[target];
 		}
 
 		private function removeBinding(binding:IContainerBinding):void
 		{
 			delete _bindingsByContainer[binding.container];
 
-			// If the old binding doesn't have a parent it was a Root
 			if (!binding.parent)
 			{
+				// This binding didn't have a parent, so it was a Root
 				removeRootBinding(binding);
 			}
 
+			// Re-parent the bindings
 			for each (var childBinding:IContainerBinding in _bindingsByContainer)
 			{
 				if (childBinding.parent == binding)
@@ -198,6 +214,8 @@ package org.robotlegs.v2.view.impl
 					childBinding.parent = binding.parent;
 					if (!childBinding.parent)
 					{
+						// This binding used to have a parent,
+						// but no longer does, so it is now a Root
 						addRootBinding(childBinding);
 					}
 				}
@@ -207,8 +225,6 @@ package org.robotlegs.v2.view.impl
 		private function removeRootBinding(binding:IContainerBinding):void
 		{
 			binding.container.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage, true);
-			// TODO: refactor - see note in addRootBinding
-			binding.container.removeEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage, true);
 		}
 	}
 }

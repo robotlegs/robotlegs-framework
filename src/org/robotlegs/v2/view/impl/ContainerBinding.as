@@ -64,11 +64,6 @@ package org.robotlegs.v2.view.impl
 				_handlers.push(handler);
 		}
 
-		public function hasHandlers():Boolean
-		{
-			return _handlers.length > 0;
-		}
-
 		public function removeHandler(handler:IViewHandler):void
 		{
 			const index:int = _handlers.indexOf(handler);
