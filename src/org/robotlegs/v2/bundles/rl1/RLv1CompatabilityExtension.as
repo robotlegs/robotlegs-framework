@@ -23,7 +23,7 @@ package org.robotlegs.v2.bundles.rl1
 	import org.robotlegs.v2.core.api.IContextExtension;
 	import org.swiftsuspenders.Injector;
 
-	public class RLv1Extension implements IContextExtension
+	public class RLv1CompatabilityExtension implements IContextExtension
 	{
 
 		/*============================================================================*/

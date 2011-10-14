@@ -9,7 +9,6 @@ package org.robotlegs.v2.core.api
 {
 	import flash.display.DisplayObjectContainer;
 	import flash.events.IEventDispatcher;
-
 	import org.swiftsuspenders.Injector;
 
 	[Event(name="contextBuildComplete", type="org.robotlegs.v2.core.api.ContextBuilderEvent")]
@@ -19,7 +18,7 @@ package org.robotlegs.v2.core.api
 
 		function withBundle(bundle:IContextBuilderBundle):IContextBuilder;
 
-		function withConfig(configClass:Class):IContextBuilder;
+		function withConfig(config:IContextConfig):IContextBuilder;
 
 		function withContextView(value:DisplayObjectContainer):IContextBuilder;
 

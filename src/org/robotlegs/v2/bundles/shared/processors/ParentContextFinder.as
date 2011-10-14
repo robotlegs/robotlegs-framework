@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.processors
+package org.robotlegs.v2.bundles.shared.processors
 {
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;

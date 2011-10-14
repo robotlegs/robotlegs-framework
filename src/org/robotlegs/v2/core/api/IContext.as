@@ -10,7 +10,6 @@ package org.robotlegs.v2.core.api
 	import flash.display.DisplayObjectContainer;
 	import flash.events.IEventDispatcher;
 	import flash.system.ApplicationDomain;
-
 	import org.swiftsuspenders.Injector;
 
 	public interface IContext
@@ -40,5 +39,7 @@ package org.robotlegs.v2.core.api
 		function installExtension(extension:IContextExtension):void;
 
 		function uninstallExtension(extension:IContextExtension):void;
+
+		function withConfig(config:IContextConfig):void;
 	}
 }

@@ -5,45 +5,50 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.utilities
+package org.robotlegs.v2.bundles.shared.configs
 {
 	import flash.display.DisplayObjectContainer;
-	import flash.events.Event;
-
+	import org.as3commons.logging.api.ILogger;
+	import org.as3commons.logging.api.getLogger;
 	import org.robotlegs.v2.core.api.IContext;
+	import org.robotlegs.v2.core.api.IContextConfig;
+	import org.robotlegs.v2.view.api.IViewManager;
 
-	public class AutoDestroyUtility
+	public class ContextViewWatcherConfig implements IContextConfig
 	{
+
+		/*============================================================================*/
+		/* Private Static Properties                                                  */
+		/*============================================================================*/
+
+		private static const logger:ILogger = getLogger(ContextViewWatcherConfig);
+
 
 		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
 		[Inject]
-		public var context:IContext;
+		public var contextView:DisplayObjectContainer;
 
 		[Inject]
-		public var contextView:DisplayObjectContainer;
+		public var viewManager:IViewManager;
 
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		[PostConstruct]
-		public function init():void
+		public function configure(context:IContext):void
 		{
-			contextView.addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
-		}
-
-		/*============================================================================*/
-		/* Private Functions                                                          */
-		/*============================================================================*/
-
-		private function onRemovedFromStage(event:Event):void
-		{
-			contextView.removeEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
-			context.destroy();
+			if (contextView)
+			{
+				viewManager.addContainer(contextView);
+			}
+			else
+			{
+				logger.warn('a ContextViewWatcherConfig was installed into {0}, but the contextView is null. Consider removing this config.', [context]);
+			}
 		}
 	}
 }

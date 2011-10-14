@@ -12,10 +12,10 @@ package org.robotlegs.v2.core.impl
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
 	import flash.system.ApplicationDomain;
-
 	import org.as3commons.logging.api.ILogger;
 	import org.as3commons.logging.api.getLogger;
 	import org.robotlegs.v2.core.api.IContext;
+	import org.robotlegs.v2.core.api.IContextConfig;
 	import org.robotlegs.v2.core.api.IContextExtension;
 	import org.swiftsuspenders.Injector;
 
@@ -119,6 +119,8 @@ package org.robotlegs.v2.core.impl
 
 		private const _id:String = 'Context' + counter++;
 
+		private const configs:Vector.<IContextConfig> = new Vector.<IContextConfig>;
+
 		private const extensions:Vector.<IContextExtension> = new Vector.<IContextExtension>;
 
 		private const logger:ILogger = getLogger(_id);
@@ -157,6 +159,7 @@ package org.robotlegs.v2.core.impl
 			addContextToContextViewRegistry();
 			installExtensions();
 			initializeExtensions();
+			initializeConfigs();
 			logger.info('context initialization complete');
 		}
 
@@ -189,6 +192,12 @@ package org.robotlegs.v2.core.impl
 				extensions.splice(index, 1);
 				extension.uninstall(this);
 			}
+		}
+
+		public function withConfig(config:IContextConfig):void
+		{
+			_initialized && throwContextLockedError();
+			configs.push(config);
 		}
 
 		/*============================================================================*/
@@ -227,6 +236,16 @@ package org.robotlegs.v2.core.impl
 			_injector ||= parent && parent.injector ?
 				parent.injector.createChildInjector(_applicationDomain) :
 				new Injector();
+		}
+
+		private function initializeConfigs():void
+		{
+			logger.info('initializing configs');
+			configs.forEach(function(config:IContextConfig, ... rest):void
+			{
+				injector.injectInto(config);
+				config.configure(this);
+			}, this);
 		}
 
 		private function initializeExtensions():void

@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.utilities
+package org.robotlegs.v2.bundles.shared.utilities
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;

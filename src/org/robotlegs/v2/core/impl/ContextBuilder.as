@@ -11,13 +11,13 @@ package org.robotlegs.v2.core.impl
 	import flash.errors.IllegalOperationError;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
-
 	import org.as3commons.logging.api.ILogger;
 	import org.as3commons.logging.api.getLogger;
 	import org.robotlegs.v2.core.api.ContextBuilderEvent;
 	import org.robotlegs.v2.core.api.IContext;
 	import org.robotlegs.v2.core.api.IContextBuilder;
 	import org.robotlegs.v2.core.api.IContextBuilderBundle;
+	import org.robotlegs.v2.core.api.IContextConfig;
 	import org.robotlegs.v2.core.api.IContextExtension;
 	import org.robotlegs.v2.core.api.IContextProcessor;
 	import org.swiftsuspenders.Injector;
@@ -40,8 +40,6 @@ package org.robotlegs.v2.core.impl
 		protected const _id:String = 'ContextBuilder' + counter++;
 
 		protected var buildLocked:Boolean;
-
-		protected const configClasses:Vector.<Class> = new Vector.<Class>;
 
 		protected const context:IContext = new Context();
 
@@ -85,11 +83,11 @@ package org.robotlegs.v2.core.impl
 			return this;
 		}
 
-		public function withConfig(configClass:Class):IContextBuilder
+		public function withConfig(config:IContextConfig):IContextBuilder
 		{
-			logger.info('adding config: {0}', [configClass]);
+			logger.info('adding config: {0}', [config]);
 			buildLocked && throwBuildLockedError();
-			configClasses.push(configClass);
+			context.withConfig(config);
 			return this;
 		}
 
@@ -137,24 +135,11 @@ package org.robotlegs.v2.core.impl
 		/* Protected Functions                                                        */
 		/*============================================================================*/
 
-
-
-		protected function createConfigs():void
-		{
-			logger.info('creating configs');
-			configClasses.forEach(function(configClass:Class, ... rest):void
-			{
-				context.injector.getInstance(configClass);
-			}, this);
-		}
-
 		protected function finishBuild():void
 		{
 			context.initialize();
-			createConfigs();
 			dispatchEvent(new ContextBuilderEvent(ContextBuilderEvent.CONTEXT_BUILD_COMPLETE, this, context));
 		}
-
 
 		protected function processorCallback(error:Object = null):void
 		{
