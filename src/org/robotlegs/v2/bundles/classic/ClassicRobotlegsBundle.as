@@ -7,12 +7,12 @@
 
 package org.robotlegs.v2.bundles.classic
 {
-	import org.robotlegs.v2.bundles.shared.configs.AutoDestroyConfig;
 	import org.robotlegs.v2.bundles.shared.configs.ContextViewWatcherConfig;
 	import org.robotlegs.v2.bundles.shared.configs.SimpleTraceLoggingConfig;
 	import org.robotlegs.v2.bundles.shared.utilities.LoggingEventDispatcher;
 	import org.robotlegs.v2.core.api.IContextBuilder;
 	import org.robotlegs.v2.core.api.IContextBuilderBundle;
+	import org.robotlegs.v2.extensions.autoDestroy.AutoDestroyExtension;
 	import org.robotlegs.v2.extensions.stageWatcher.StageWatcherExtension;
 	import org.robotlegs.v2.extensions.viewManager.ViewManagerExtension;
 
@@ -40,7 +40,7 @@ package org.robotlegs.v2.bundles.classic
 				.withExtension(new StageWatcherExtension())
 				.withConfig(new ContextViewWatcherConfig());
 
-			builder.withConfig(new AutoDestroyConfig());
+			builder.withExtension(new AutoDestroyExtension());
 		}
 	}
 }
