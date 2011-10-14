@@ -36,8 +36,8 @@ package org.robotlegs.v2.bundles.classic
 			// Install the ViewManager and StageWatcher extensions
 			// and add the contextView to the ViewManager
 			builder
-				.withExtension(new StageWatcherExtension())
 				.withExtension(new ViewManagerExtension())
+				.withExtension(new StageWatcherExtension())
 				.withConfig(new ContextViewWatcherConfig());
 
 			builder.withConfig(new AutoDestroyConfig());

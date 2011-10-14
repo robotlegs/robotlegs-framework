@@ -293,13 +293,12 @@ package org.robotlegs.v2.core.impl
 		private function uninstallExtensions():void
 		{
 			logger.info('uninstalling extensions');
-
-			extensions.forEach(function(extension:IContextExtension, ... rest):void
+			// uninstall in reverse order
+			var extension:IContextExtension;
+			while (extension = extensions.pop())
 			{
 				extension.uninstall(this);
-			}, this);
-
-			extensions.length = 0;
+			}
 		}
 	}
 }
