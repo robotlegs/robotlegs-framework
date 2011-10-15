@@ -9,6 +9,7 @@ package org.robotlegs.v2.bundles.classic
 {
 	import org.robotlegs.v2.bundles.shared.configs.ContextViewWatcherConfig;
 	import org.robotlegs.v2.bundles.shared.configs.SimpleTraceLoggingConfig;
+	import org.robotlegs.v2.bundles.shared.processors.ParentContextFinder;
 	import org.robotlegs.v2.bundles.shared.utilities.LoggingEventDispatcher;
 	import org.robotlegs.v2.core.api.IContextBuilder;
 	import org.robotlegs.v2.core.api.IContextBuilderBundle;
@@ -40,6 +41,10 @@ package org.robotlegs.v2.bundles.classic
 				.withExtension(new StageWatcherExtension())
 				.withConfig(new ContextViewWatcherConfig());
 
+			// Determine context hierarchy by way of contextView
+			builder.withProcessor(new ParentContextFinder());
+
+			// Destroy the context when the contextView leaves the stage
 			builder.withExtension(new AutoDestroyExtension());
 		}
 	}
