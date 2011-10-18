@@ -5,24 +5,35 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.bundles.shared.configs
+package org.robotlegs.v2.bundles.shared.extensions
 {
+	import org.as3commons.logging.api.ILogger;
 	import org.as3commons.logging.api.LOGGER_FACTORY;
+	import org.as3commons.logging.api.getLogger;
 	import org.as3commons.logging.setup.SimpleTargetSetup;
 	import org.as3commons.logging.setup.target.TraceTarget;
 	import org.robotlegs.v2.core.api.IContext;
-	import org.robotlegs.v2.core.api.IContextConfig;
+	import org.robotlegs.v2.core.api.IContextExtension;
 
-	public class SimpleTraceLoggingConfig implements IContextConfig
+	public class SimpleLoggingExtension implements IContextExtension
 	{
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function configure(context:IContext):void
+		public function initialize(context:IContext):void
+		{
+		}
+
+		public function install(context:IContext):void
 		{
 			LOGGER_FACTORY.setup = new SimpleTargetSetup(new TraceTarget());
+			context.injector.map(ILogger).toValue(getLogger(context));
+		}
+
+		public function uninstall(context:IContext):void
+		{
 		}
 	}
 }

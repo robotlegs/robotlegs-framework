@@ -8,7 +8,7 @@
 package org.robotlegs.v2.bundles.classic
 {
 	import org.robotlegs.v2.bundles.shared.configs.ContextViewWatcherConfig;
-	import org.robotlegs.v2.bundles.shared.configs.SimpleTraceLoggingConfig;
+	import org.robotlegs.v2.bundles.shared.extensions.SimpleLoggingExtension;
 	import org.robotlegs.v2.bundles.shared.processors.ParentContextFinder;
 	import org.robotlegs.v2.bundles.shared.utilities.LoggingEventDispatcher;
 	import org.robotlegs.v2.core.api.IContextBuilder;
@@ -27,7 +27,7 @@ package org.robotlegs.v2.bundles.classic
 		public function install(builder:IContextBuilder):void
 		{
 			// Use a simple trace logger
-			builder.withConfig(new SimpleTraceLoggingConfig());
+			builder.withExtension(new SimpleLoggingExtension());
 
 			// Use a LoggingEventDispatcher
 			builder.withDispatcher(new LoggingEventDispatcher());
