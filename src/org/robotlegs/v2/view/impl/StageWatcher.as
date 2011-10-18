@@ -11,8 +11,7 @@ package org.robotlegs.v2.view.impl
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
 	import flash.utils.Dictionary;
-	import org.as3commons.logging.api.ILogger;
-	import org.as3commons.logging.api.getLogger;
+	import flash.utils.getQualifiedClassName;
 	import org.robotlegs.v2.view.api.IContainerBinding;
 	import org.robotlegs.v2.view.api.IViewHandler;
 	import org.robotlegs.v2.view.api.IViewWatcher;
@@ -21,17 +20,12 @@ package org.robotlegs.v2.view.impl
 	{
 
 		/*============================================================================*/
-		/* Private Static Properties                                                  */
-		/*============================================================================*/
-
-		private static const logger:ILogger = getLogger(StageWatcher);
-
-
-		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
 		private const _bindingsByContainer:Dictionary = new Dictionary(false);
+
+		private const _confirmedHandlersByFQCN:Dictionary = new Dictionary(false);
 
 		private const _removeHandlersByTarget:Dictionary = new Dictionary(true);
 
@@ -121,7 +115,7 @@ package org.robotlegs.v2.view.impl
 			{
 				removeHandlers = new Vector.<IViewHandler>;
 				_removeHandlersByTarget[target] = removeHandlers;
-				// Just a normal, target-phase REMOVED_FROM_STAGE listener
+				// Just a normal, target-phase REMOVED_FROM_STAGE listener per target
 				target.addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
 			}
 			removeHandlers.push(handler);
@@ -142,20 +136,22 @@ package org.robotlegs.v2.view.impl
 			return null;
 		}
 
-		private function onAddedToStage(event:Event):void
+		private function handleFreshView(
+			target:DisplayObject,
+			targetFQCN:String,
+			confirmedHandlers:Vector.<IViewHandler>):void
 		{
-			const target:DisplayObject = event.target as DisplayObject;
-
 			var handlerResponse:uint = 0;
 			var combinedResponse:uint = 0;
 			var handler:IViewHandler;
 			var handlers:Vector.<IViewHandler>;
 			var binding:IContainerBinding = findParentBindingFor(target);
+			// Walk upwards from the nearest binding
 			while (binding)
 			{
 				handlers = binding.handlers;
-				var totalHandlers:int = handlers.length;
-				for (var i:int = 0; i < totalHandlers; i++)
+				var totalHandlers:uint = handlers.length;
+				for (var i:uint = 0; i < totalHandlers; i++)
 				{
 					handler = handlers[i];
 
@@ -172,10 +168,64 @@ package org.robotlegs.v2.view.impl
 					if (handlerResponse)
 					{
 						ensureRemoveHandler(target, handler);
+						confirmedHandlers.push(handler);
 					}
 				}
 
 				binding = binding.parent;
+			}
+		}
+
+		private function handleKnownView(
+			target:DisplayObject,
+			targetFQCN:String,
+			confirmedHandlers:Vector.<IViewHandler>):void
+		{
+			var handlerResponse:uint = 0;
+			var combinedResponse:uint = 0;
+			var handler:IViewHandler;
+			const totalHandlers:uint = confirmedHandlers.length;
+			for (var i:uint = 0; i < totalHandlers; i++)
+			{
+				handler = confirmedHandlers[i];
+				if (!((combinedResponse & 0xAAAAAAAA) ^ (handler.interests << 1)))
+				{
+					trace('warning: a confirmed handler was blocked - cache purging did not take place when it should have.');
+					continue;
+				}
+
+				handlerResponse = handler.handleViewAdded(target, null);
+				combinedResponse |= handlerResponse;
+
+				if (handlerResponse)
+				{
+					ensureRemoveHandler(target, handler);
+				}
+				else
+				{
+					trace('warning: a confirmed handler did not handle a view - cache purging did not take place when it should have.');
+				}
+			}
+		}
+
+		private function onAddedToStage(event:Event):void
+		{
+			const target:DisplayObject = event.target as DisplayObject;
+			const targetFQCN:String = getQualifiedClassName(target);
+
+			// note: all vectors should actually be linked lists
+			// to prevent mid-iteration errors
+			var confirmedHandlers:Vector.<IViewHandler> = _confirmedHandlersByFQCN[targetFQCN];
+
+			if (confirmedHandlers)
+			{
+				handleKnownView(target, targetFQCN, confirmedHandlers);
+			}
+			else
+			{
+				confirmedHandlers = new Vector.<IViewHandler>;
+				_confirmedHandlersByFQCN[targetFQCN] = confirmedHandlers;
+				handleFreshView(target, targetFQCN, confirmedHandlers);
 			}
 		}
 
@@ -187,8 +237,8 @@ package org.robotlegs.v2.view.impl
 
 			var handler:IViewHandler;
 			const handlers:Vector.<IViewHandler> = _removeHandlersByTarget[target];
-			const totalHandlers:int = handlers.length;
-			for (var i:int = 0; i < totalHandlers; i++)
+			const totalHandlers:uint = handlers.length;
+			for (var i:uint = 0; i < totalHandlers; i++)
 			{
 				handler = handlers[i];
 				handler.handleViewRemoved(target);

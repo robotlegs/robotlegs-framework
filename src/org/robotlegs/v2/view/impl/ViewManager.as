@@ -31,6 +31,7 @@ package org.robotlegs.v2.view.impl
 
 		public function ViewManager()
 		{
+			// This page intentionally left blank
 		}
 
 

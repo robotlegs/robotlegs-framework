@@ -55,9 +55,6 @@ package org.robotlegs.v2.view.impl
 				function onAdded(view:DisplayObject, info:IViewClassInfo, response:uint):void
 				{
 					addedCallCount++;
-				},
-				function onRemoved(view:DisplayObject):void
-				{
 				});
 			watcher.addHandler(handler, container);
 			watcher.addHandler(handler, container);
