@@ -18,7 +18,7 @@ package org.robotlegs.v2.context.impl
 	import org.robotlegs.v2.core.impl.ContextBuilder;
 	import org.swiftsuspenders.Injector;
 
-	public class ContextBuilderTest
+	public class ContextBuilderTests
 	{
 
 		/*============================================================================*/

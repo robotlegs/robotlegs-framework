@@ -11,8 +11,8 @@ package org.robotlegs.v2.view.impl
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import mx.core.UIComponent;
-	import org.flexunit.assertThat;
 	import org.fluint.uiImpersonation.UIImpersonator;
+	import org.hamcrest.assertThat;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.isFalse;
 	import org.hamcrest.object.isTrue;
@@ -20,7 +20,7 @@ package org.robotlegs.v2.view.impl
 	import org.robotlegs.v2.view.api.IViewWatcher;
 	import org.robotlegs.v2.view.impl.support.ViewHandlerSupport;
 
-	public class StageWatcherTest
+	public class StageWatcher_BlockingTests
 	{
 
 		/*============================================================================*/
@@ -37,46 +37,6 @@ package org.robotlegs.v2.view.impl
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
-
-		[Test]
-		public function addHandler_should_run_when_view_lands_in_container():void
-		{
-			const responses:Array =
-				add_handlers_and_add_and_remove_view_and_return_results([
-				new HandlerConfig(0x01, 1, false)
-				]);
-			const addedCalled:Boolean = HandlerResult(responses[0]).addedCallCount > 0;
-			assertThat(addedCalled, isTrue());
-		}
-
-		[Test]
-		public function adding_handler_twice_should_not_cause_handler_to_be_called_twice():void
-		{
-			const view:Sprite = new Sprite();
-			var addedCallCount:int;
-			var removedCalledCount:int;
-			const handler:ViewHandlerSupport = new ViewHandlerSupport(1, 1, false,
-				function onAdded(view:DisplayObject, info:IViewClassInfo, response:uint):void
-				{
-					addedCallCount++;
-				},
-				function onRemoved(view:DisplayObject):void
-				{
-					removedCalledCount++;
-				});
-			watcher.addHandler(handler, container);
-			watcher.addHandler(handler, container);
-			container.addChild(view);
-			container.removeChild(view);
-			assertThat(addedCallCount, equalTo(1));
-		}
-
-		[Test(expects='ArgumentError')]
-		public function adding_handler_with_no_interests_should_throw_an_error():void
-		{
-			var handler:ViewHandlerSupport = new ViewHandlerSupport(0, 0, false, null, null);
-			watcher.addHandler(handler, container);
-		}
 
 		[Test]
 		public function bitmasking_should_work_as_expected():void
@@ -130,56 +90,6 @@ package org.robotlegs.v2.view.impl
 			assertThat(secondHandlerAddedCalled, isTrue());
 		}
 
-		[Test]
-		public function removeHandler_should_not_run_if_handler_didnt_handle_view():void
-		{
-			const view:Sprite = new Sprite();
-			var removedCalled:Boolean;
-			const handler:ViewHandlerSupport = new ViewHandlerSupport(1, 0, false,
-				function onAdded(view:DisplayObject, info:IViewClassInfo, response:uint):void
-				{
-				},
-				function onRemoved(view:DisplayObject):void
-				{
-					removedCalled = true;
-				});
-			watcher.addHandler(handler, container);
-			container.addChild(view);
-			container.removeChild(view);
-			assertThat(removedCalled, isFalse());
-
-		}
-
-		[Test]
-		public function removeHandler_should_only_run_if_handler_handled_view():void
-		{
-			const view:Sprite = new Sprite();
-			var removedCalled:Boolean;
-			const handler:ViewHandlerSupport = new ViewHandlerSupport(1, 1, false,
-				function onAdded(view:DisplayObject, info:IViewClassInfo, response:uint):void
-				{
-				},
-				function onRemoved(view:DisplayObject):void
-				{
-					removedCalled = true;
-				});
-			watcher.addHandler(handler, container);
-			container.addChild(view);
-			container.removeChild(view);
-			assertThat(removedCalled, isTrue());
-
-		}
-
-		[Test]
-		public function removedHandler_should_run_when_view_leaves_container():void
-		{
-			const responses:Array =
-				add_handlers_and_add_and_remove_view_and_return_results([
-				new HandlerConfig(1, 1, false)
-				]);
-			const removedCalled:Boolean = HandlerResult(responses[0]).removedCallCount > 0;
-			assertThat(removedCalled, isTrue());
-		}
 
 		[Before(ui)]
 		public function setUp():void

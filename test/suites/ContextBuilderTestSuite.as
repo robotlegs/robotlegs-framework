@@ -7,7 +7,7 @@
 
 package suites
 {
-	import org.robotlegs.v2.context.impl.ContextBuilderTest;
+	import org.robotlegs.v2.context.impl.ContextBuilderTests;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
@@ -18,6 +18,6 @@ package suites
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		public var contextBuilderTest:ContextBuilderTest;
+		public var contextBuilderTest:ContextBuilderTests;
 	}
 }
