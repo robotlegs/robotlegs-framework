@@ -12,12 +12,21 @@ package org.robotlegs.v2.view.impl
 	import flash.events.Event;
 	import flash.utils.Dictionary;
 	import flash.utils.getQualifiedClassName;
+	import org.as3commons.logging.api.ILogger;
+	import org.as3commons.logging.api.getLogger;
 	import org.robotlegs.v2.view.api.IContainerBinding;
 	import org.robotlegs.v2.view.api.IViewHandler;
 	import org.robotlegs.v2.view.api.IViewWatcher;
 
 	public class StageWatcher implements IViewWatcher
 	{
+
+		/*============================================================================*/
+		/* Private Static Properties                                                  */
+		/*============================================================================*/
+
+		private static const logger:ILogger = getLogger(StageWatcher);
+
 
 		/*============================================================================*/
 		/* Private Properties                                                         */
@@ -190,7 +199,7 @@ package org.robotlegs.v2.view.impl
 				handler = confirmedHandlers[i];
 				if (!((combinedResponse & 0xAAAAAAAA) ^ (handler.interests << 1)))
 				{
-					trace('warning: a confirmed handler was blocked - cache purging did not take place when it should have.');
+					logger.warn('a confirmed handler was blocked - cache purging did not take place when it should have');
 					continue;
 				}
 
@@ -203,7 +212,7 @@ package org.robotlegs.v2.view.impl
 				}
 				else
 				{
-					trace('warning: a confirmed handler did not handle a view - cache purging did not take place when it should have.');
+					logger.warn('a confirmed handler did not handle a view - cache purging did not take place when it should have');
 				}
 			}
 		}
