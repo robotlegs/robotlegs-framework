@@ -1,0 +1,10 @@
+package 
+{
+
+public interface ITypeY
+{
+	
+}
+
+}
+
