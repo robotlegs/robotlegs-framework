@@ -10,6 +10,7 @@ package org.robotlegs.v2.core.impl {
 	import flash.events.IEventDispatcher;
 	import asunit.errors.AssertionFailedError;
 	import flash.display.Sprite;
+	import org.robotlegs.v2.core.impl.TypeMatcherError;
 
 	public class TypeMatcherTest extends TestCase {
 		private var instance:TypeMatcher;
@@ -22,7 +23,8 @@ package org.robotlegs.v2.core.impl {
 		private const ANY_OF_2:Vector.<Class>	= new <Class>[DisplayObject, MovieClip];
 		private const NONE_OF_2:Vector.<Class> = new <Class>[ByteArray];
 
-
+		private const EMPTY_CLASS_VECTOR:Vector.<Class> = new <Class>[];
+		
 		public function TypeMatcherTest(methodName:String=null) {
 			super(methodName)
 		}
@@ -109,6 +111,17 @@ package org.robotlegs.v2.core.impl {
 			assertMatchesTypeFilter(expectedFilter, instance.typeFilter);
 		}
 		
+		public function test_throws_TypeMatcherError_if_empty_and_filter_requested():void {
+			var emptyInstance:TypeMatcher = new TypeMatcher();
+			assertThrows(TypeMatcherError, function():void{ emptyInstance.typeFilter }); 
+		}
+		
+		public function test_throws_TypeMatcherError_if_conditions_empty_and_filter_requested():void {
+			var emptyInstance:TypeMatcher = new TypeMatcher();
+			emptyInstance.allOf(EMPTY_CLASS_VECTOR.slice()).anyOf(EMPTY_CLASS_VECTOR.slice()).noneOf(EMPTY_CLASS_VECTOR.slice());
+			
+			assertThrows(TypeMatcherError, function():void{ emptyInstance.typeFilter }); 
+		}
 		
 		protected function assertMatchesTypeFilter(expected:ITypeFilter, actual:ITypeFilter):void
 		{

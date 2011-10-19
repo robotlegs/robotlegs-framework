@@ -23,6 +23,7 @@ package org.robotlegs.v2.core.impl
 		//import org.robotlegs.v2.core.api.ITypeMatcher;
 		public function get typeFilter():ITypeFilter
 		{
+			throwErrorIfEmpty();
 			return new TypeFilter(_allOfTypes, _anyOfTypes, _noneOfTypes);
 		}
 
@@ -42,6 +43,16 @@ package org.robotlegs.v2.core.impl
 		{
 			_noneOfTypes = _noneOfTypes.concat(types);
 			return this;
+		}
+		
+		protected function throwErrorIfEmpty():void
+		{
+			if( (_allOfTypes.length == 0) &&
+				(_anyOfTypes.length == 0) &&
+				(_noneOfTypes.length == 0) )
+			{
+				throw new TypeMatcherError(TypeMatcherError.EMPTY_MATCHER);
+			}
 		}
 	}
 }
