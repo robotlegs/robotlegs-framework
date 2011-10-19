@@ -64,7 +64,7 @@ package org.robotlegs.v2.core.impl
 			
 			var filter:ITypeFilter = new TypeFilter(new <Class>[], new <Class>[], new <Class>[]);
 			
-			assertTrue("Default behaviour where nothing is specified is to match", itemPassesFilter(subject, filter));
+			assertFalse("Default behaviour where nothing is specified is to not match", itemPassesFilter(subject, filter));
 		}
 		
 		
@@ -94,7 +94,7 @@ package org.robotlegs.v2.core.impl
 						
 			var anyOfTypes:Vector.<Class> = typeFilter.anyOfTypes;
 			
-			if(anyOfTypes.length == 0)
+			if(anyOfTypes.length == 0 && (allOfTypes.length > 0 || noneOfTypes.length > 0))
 			{
 				return true;
 			}
