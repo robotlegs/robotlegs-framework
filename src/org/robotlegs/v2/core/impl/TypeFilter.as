@@ -1,6 +1,8 @@
 package org.robotlegs.v2.core.impl 
 {
+	import flash.errors.IllegalOperationError;
 	import flash.utils.getQualifiedClassName;
+	
 	import org.robotlegs.v2.core.api.ITypeFilter;
 	
 	public class TypeFilter implements ITypeFilter 
@@ -13,6 +15,8 @@ package org.robotlegs.v2.core.impl
 		
 		public function TypeFilter(allOf:Vector.<Class>, anyOf:Vector.<Class>, noneOf:Vector.<Class>) 
 		{
+			if (!allOf || !anyOf || !noneOf)
+				throw ArgumentError('TypeFilter parameters can not be null');
 			_allOfTypes = allOf;
 			_anyOfTypes = anyOf;
 			_noneOfTypes = noneOf;
@@ -20,17 +24,17 @@ package org.robotlegs.v2.core.impl
 		
 		public function get allOfTypes():Vector.<Class>
 		{
-			return _allOfTypes ||= new Vector.<Class>();
+			return _allOfTypes;
 		}
 
 		public function get anyOfTypes():Vector.<Class>
 		{
-			return _anyOfTypes ||= new Vector.<Class>();
+			return _anyOfTypes;
 		}
 
 		public function get noneOfTypes():Vector.<Class>
 		{
-			return _noneOfTypes ||= new Vector.<Class>();
+			return _noneOfTypes;
 		}
 
 		public function get descriptor():String
@@ -44,7 +48,9 @@ package org.robotlegs.v2.core.impl
 			var anyOf_FCQNs:Vector.<String> = alphabetiseCaseInsensitiveFCQNs(anyOfTypes);
 			var noneOf_FQCNs:Vector.<String> = alphabetiseCaseInsensitiveFCQNs(noneOfTypes);
 			
-			return "all of: " + allOf_FCQNs.toString() + ", any of: " + anyOf_FCQNs.toString() + ", none of: " + noneOf_FQCNs.toString();
+			return "all of: " + allOf_FCQNs.toString()
+				+ ", any of: " + anyOf_FCQNs.toString()
+				+ ", none of: " + noneOf_FQCNs.toString();
 		}
 		
 		protected function alphabetiseCaseInsensitiveFCQNs(classVector:Vector.<Class>):Vector.<String>
