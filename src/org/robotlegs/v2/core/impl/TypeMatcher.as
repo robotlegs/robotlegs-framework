@@ -1,71 +1,93 @@
-package org.robotlegs.v2.core.impl 
+//------------------------------------------------------------------------------
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted you to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
+//------------------------------------------------------------------------------
+
+package org.robotlegs.v2.core.impl
 {
 	import flash.errors.IllegalOperationError;
-	
 	import org.robotlegs.v2.core.api.ITypeFilter;
 	import org.robotlegs.v2.core.api.ITypeMatcher;
-	
-	public class TypeMatcher implements ITypeMatcher 
+
+	public class TypeMatcher implements ITypeMatcher
 	{
-		protected const _allOfTypes:Vector.<Class> = new Vector.<Class>;
-		protected const _anyOfTypes:Vector.<Class> = new Vector.<Class>;
-		protected const _noneOfTypes:Vector.<Class> = new Vector.<Class>;
-		
+
+		/*============================================================================*/
+		/* Public Properties                                                          */
+		/*============================================================================*/
+
 		protected var _typeFilter:ITypeFilter;
-		
-		public function TypeMatcher()
-		{
-		}
-		
-		//---------------------------------------
-		// ITypeMatcher Implementation
-		//---------------------------------------
 
 		public function get typeFilter():ITypeFilter
 		{
+			// calling this seals the matcher
 			return _typeFilter ||= createTypeFilter();
 		}
-		
+
+		/*============================================================================*/
+		/* Protected Properties                                                       */
+		/*============================================================================*/
+
+		protected const _allOfTypes:Vector.<Class> = new Vector.<Class>;
+
+		protected const _anyOfTypes:Vector.<Class> = new Vector.<Class>;
+
+		protected const _noneOfTypes:Vector.<Class> = new Vector.<Class>;
+
+		/*============================================================================*/
+		/* Constructor                                                                */
+		/*============================================================================*/
+
+		public function TypeMatcher()
+		{
+		}
+
+
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
+
 		public function allOf(types:Vector.<Class>):ITypeMatcher
 		{
-			_typeFilter && throwSealedError();
+			_typeFilter && throwSealedMatcherError();
 			_allOfTypes = _allOfTypes.concat(types);
 			return this;
 		}
-		
+
 		public function anyOf(types:Vector.<Class>):ITypeMatcher
 		{
-			_typeFilter && throwSealedError();
+			_typeFilter && throwSealedMatcherError();
 			_anyOfTypes = _anyOfTypes.concat(types);
 			return this;
 		}
 
 		public function noneOf(types:Vector.<Class>):ITypeMatcher
 		{
-			_typeFilter && throwSealedError();
+			_typeFilter && throwSealedMatcherError();
 			_noneOfTypes = _noneOfTypes.concat(types);
 			return this;
 		}
-		
-		protected function throwSealedError():void
-		{
-			throw new IllegalOperationError('This TypeMatcher has been sealed and can no longer be configured');
-		}
-		
+
+		/*============================================================================*/
+		/* Protected Functions                                                        */
+		/*============================================================================*/
+
 		protected function createTypeFilter():ITypeFilter
 		{
-			throwErrorIfEmpty();
-			return new TypeFilter(_allOfTypes, _anyOfTypes, _noneOfTypes);
-		}
-
-		protected function throwErrorIfEmpty():void
-		{
-			if( (_allOfTypes.length == 0) &&
+			if ((_allOfTypes.length == 0) &&
 				(_anyOfTypes.length == 0) &&
-				(_noneOfTypes.length == 0) )
+				(_noneOfTypes.length == 0))
 			{
 				throw new TypeMatcherError(TypeMatcherError.EMPTY_MATCHER);
 			}
+			return new TypeFilter(_allOfTypes, _anyOfTypes, _noneOfTypes);
+		}
+
+		protected function throwSealedMatcherError():void
+		{
+			throw new IllegalOperationError('This TypeMatcher has been sealed and can no longer be configured');
 		}
 	}
 }
