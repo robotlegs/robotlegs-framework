@@ -197,6 +197,7 @@ package org.robotlegs.v2.core.impl
 		public function withConfig(config:IContextConfig):void
 		{
 			_initialized && throwContextLockedError();
+			logger.info('adding config {0}', [config]);
 			configs.push(config);
 		}
 

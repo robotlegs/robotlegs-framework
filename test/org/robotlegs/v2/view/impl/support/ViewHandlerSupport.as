@@ -65,10 +65,10 @@ package org.robotlegs.v2.view.impl.support
 		/*============================================================================*/
 
 		public function ViewHandlerSupport(
-			interests:uint,
-			interestsToActuallyHandle:uint,
-			blocking:Boolean,
-			addedHandler:Function,
+			interests:uint = 1,
+			interestsToActuallyHandle:uint = 0,
+			blocking:Boolean = false,
+			addedHandler:Function = null,
 			removedHandler:Function = null)
 		{
 			_interests = interests;
@@ -90,14 +90,14 @@ package org.robotlegs.v2.view.impl.support
 			if (_blocking)
 				response |= _interestsToActuallyHandle << 1;
 
-			_addedHandler(view, info, response);
+			_addedHandler && _addedHandler(view, info, response);
 
 			return response;
 		}
 
 		public function handleViewRemoved(view:DisplayObject):void
 		{
-			_removedHandler(view);
+			_removedHandler && _removedHandler(view);
 		}
 	}
 }
