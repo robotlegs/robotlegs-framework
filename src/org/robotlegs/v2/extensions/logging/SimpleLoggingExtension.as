@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.bundles.shared.extensions
+package org.robotlegs.v2.extensions.logging
 {
 	import org.as3commons.logging.api.ILogger;
 	import org.as3commons.logging.api.LOGGER_FACTORY;
