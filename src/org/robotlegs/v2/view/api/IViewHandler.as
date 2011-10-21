@@ -16,5 +16,7 @@ package org.robotlegs.v2.view.api
 		function handleViewAdded(view:DisplayObject, info:IViewClassInfo):uint;
 
 		function handleViewRemoved(view:DisplayObject):void;
+
+		function register(watcher:IViewWatcher):void;
 	}
 }

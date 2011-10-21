@@ -13,6 +13,8 @@ package org.robotlegs.v2.view.api
 	{
 		function addHandler(handler:IViewHandler, container:DisplayObjectContainer):void;
 
+		function invalidate(handler:IViewHandler):void;
+
 		function removeHandler(handler:IViewHandler, container:DisplayObjectContainer):void;
 	}
 }

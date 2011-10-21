@@ -37,6 +37,27 @@ package org.robotlegs.v2.view.impl
 		/*============================================================================*/
 
 		[Test]
+		public function a_handler_that_doesnt_handle_a_view_SHOULD_be_reconsulted_after_invalidation():void
+		{
+			var addedCallCount:int;
+			const handler:ViewHandlerSupport = new ViewHandlerSupport(
+				0x1,
+				0x0,
+				false,
+				function onAdded(view:DisplayObject, info:IViewClassInfo, response:uint):void
+				{
+					addedCallCount++;
+				});
+			watcher.addHandler(handler, container);
+			container.addChild(new Sprite());
+			container.addChild(new Sprite());
+			handler.invalidate();
+			container.addChild(new Sprite());
+			container.addChild(new Sprite());
+			assertThat(addedCallCount, equalTo(2));
+		}
+
+		[Test]
 		public function a_handler_that_doesnt_handle_a_view_SHOULD_be_reconsulted_if_a_new_handler_is_added():void
 		{
 			var addedCallCount:int;

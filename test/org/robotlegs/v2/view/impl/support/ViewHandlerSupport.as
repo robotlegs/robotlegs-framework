@@ -10,6 +10,7 @@ package org.robotlegs.v2.view.impl.support
 	import flash.display.DisplayObject;
 	import org.robotlegs.v2.view.api.IViewClassInfo;
 	import org.robotlegs.v2.view.api.IViewHandler;
+	import org.robotlegs.v2.view.api.IViewWatcher;
 
 	public class ViewHandlerSupport implements IViewHandler
 	{
@@ -60,6 +61,8 @@ package org.robotlegs.v2.view.impl.support
 
 		protected var _removedHandler:Function;
 
+		protected var _watcher:IViewWatcher;
+
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
@@ -98,6 +101,16 @@ package org.robotlegs.v2.view.impl.support
 		public function handleViewRemoved(view:DisplayObject):void
 		{
 			_removedHandler && _removedHandler(view);
+		}
+
+		public function invalidate():void
+		{
+			_watcher.invalidate(this);
+		}
+
+		public function register(watcher:IViewWatcher):void
+		{
+			_watcher = watcher;
 		}
 	}
 }
