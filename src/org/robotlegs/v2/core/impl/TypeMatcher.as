@@ -13,19 +13,6 @@ package org.robotlegs.v2.core.impl
 
 	public class TypeMatcher implements ITypeMatcher
 	{
-
-		/*============================================================================*/
-		/* Public Properties                                                          */
-		/*============================================================================*/
-
-		protected var _typeFilter:ITypeFilter;
-
-		public function get typeFilter():ITypeFilter
-		{
-			// calling this seals the matcher
-			return _typeFilter ||= createTypeFilter();
-		}
-
 		/*============================================================================*/
 		/* Protected Properties                                                       */
 		/*============================================================================*/
@@ -36,6 +23,8 @@ package org.robotlegs.v2.core.impl
 
 		protected var _noneOfTypes:Vector.<Class> = new Vector.<Class>;
 
+		protected var _typeFilter:ITypeFilter;
+
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
@@ -43,7 +32,6 @@ package org.robotlegs.v2.core.impl
 		public function TypeMatcher()
 		{
 		}
-
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
@@ -69,12 +57,23 @@ package org.robotlegs.v2.core.impl
 			_noneOfTypes = _noneOfTypes.concat(types);
 			return this;
 		}
-
+		
+		public function lock():void
+		{
+			createTypeFilter();
+		}
+		
+		public function createTypeFilter():ITypeFilter
+		{
+			// calling this seals the matcher
+			return _typeFilter ||= buildTypeFilter();
+		}
+		
 		/*============================================================================*/
 		/* Protected Functions                                                        */
 		/*============================================================================*/
 
-		protected function createTypeFilter():ITypeFilter
+		protected function buildTypeFilter():ITypeFilter
 		{
 			if ((_allOfTypes.length == 0) &&
 				(_anyOfTypes.length == 0) &&
