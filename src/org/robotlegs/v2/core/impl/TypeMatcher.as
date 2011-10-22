@@ -13,15 +13,16 @@ package org.robotlegs.v2.core.impl
 
 	public class TypeMatcher implements ITypeMatcher
 	{
+
 		/*============================================================================*/
 		/* Protected Properties                                                       */
 		/*============================================================================*/
 
-		protected var _allOfTypes:Vector.<Class> = new Vector.<Class>;
+		protected const _allOfTypes:Vector.<Class> = new Vector.<Class>;
 
-		protected var _anyOfTypes:Vector.<Class> = new Vector.<Class>;
+		protected const _anyOfTypes:Vector.<Class> = new Vector.<Class>;
 
-		protected var _noneOfTypes:Vector.<Class> = new Vector.<Class>;
+		protected const _noneOfTypes:Vector.<Class> = new Vector.<Class>;
 
 		protected var _typeFilter:ITypeFilter;
 
@@ -33,42 +34,52 @@ package org.robotlegs.v2.core.impl
 		{
 		}
 
+
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function allOf(types:Vector.<Class>):ITypeMatcher
+		public function allOf(... types):ITypeMatcher
 		{
 			_typeFilter && throwSealedMatcherError();
-			_allOfTypes = _allOfTypes.concat(types);
+			for each (var type:Class in types)
+			{
+				_allOfTypes.push(type);
+			}
 			return this;
 		}
 
-		public function anyOf(types:Vector.<Class>):ITypeMatcher
+		public function anyOf(... types):ITypeMatcher
 		{
 			_typeFilter && throwSealedMatcherError();
-			_anyOfTypes = _anyOfTypes.concat(types);
+			for each (var type:Class in types)
+			{
+				_anyOfTypes.push(type);
+			}
 			return this;
 		}
 
-		public function noneOf(types:Vector.<Class>):ITypeMatcher
-		{
-			_typeFilter && throwSealedMatcherError();
-			_noneOfTypes = _noneOfTypes.concat(types);
-			return this;
-		}
-		
-		public function lock():void
-		{
-			createTypeFilter();
-		}
-		
 		public function createTypeFilter():ITypeFilter
 		{
 			// calling this seals the matcher
 			return _typeFilter ||= buildTypeFilter();
 		}
-		
+
+		public function lock():void
+		{
+			createTypeFilter();
+		}
+
+		public function noneOf(... types):ITypeMatcher
+		{
+			_typeFilter && throwSealedMatcherError();
+			for each (var type:Class in types)
+			{
+				_noneOfTypes.push(type);
+			}
+			return this;
+		}
+
 		/*============================================================================*/
 		/* Protected Functions                                                        */
 		/*============================================================================*/
