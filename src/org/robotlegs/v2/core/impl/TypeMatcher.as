@@ -30,11 +30,11 @@ package org.robotlegs.v2.core.impl
 		/* Protected Properties                                                       */
 		/*============================================================================*/
 
-		protected const _allOfTypes:Vector.<Class> = new Vector.<Class>;
+		protected var _allOfTypes:Vector.<Class> = new Vector.<Class>;
 
-		protected const _anyOfTypes:Vector.<Class> = new Vector.<Class>;
+		protected var _anyOfTypes:Vector.<Class> = new Vector.<Class>;
 
-		protected const _noneOfTypes:Vector.<Class> = new Vector.<Class>;
+		protected var _noneOfTypes:Vector.<Class> = new Vector.<Class>;
 
 		/*============================================================================*/
 		/* Constructor                                                                */

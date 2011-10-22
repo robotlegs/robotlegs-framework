@@ -11,6 +11,7 @@ package org.robotlegs.v2.core.impl {
 	import asunit.errors.AssertionFailedError;
 	import flash.display.Sprite;
 	import org.robotlegs.v2.core.impl.TypeMatcherError;
+	import flash.errors.IllegalOperationError;
 
 	public class TypeMatcherTest extends TestCase {
 		private var instance:TypeMatcher;
@@ -134,6 +135,29 @@ package org.robotlegs.v2.core.impl {
 				getResult().addFailure(this, assertionFailedError);
 			}
 		}
+		
+		public function test_throws_IllegalOperationError_if_allOf_changed_after_filter_requested():void {
+			instance.anyOf(ANY_OF);
+			instance.typeFilter;
+		
+			assertThrows(IllegalOperationError, function():void { instance.allOf(ALL_OF) });
+		}
+		
+		public function test_throws_IllegalOperationError_if_anyOf_changed_after_filter_requested():void {
+			instance.noneOf(NONE_OF);
+			instance.typeFilter;
+		
+			assertThrows(IllegalOperationError, function():void { instance.anyOf(ALL_OF) });
+		}
+		
+		public function test_throws_IllegalOperationError_if_noneOf_changed_after_filter_requested():void {
+			instance.allOf(ALL_OF);
+			instance.typeFilter;
+		
+			assertThrows(IllegalOperationError, function():void { instance.noneOf(ALL_OF) });
+		}
+		
+		
 		
 	}
 }
