@@ -1,13 +1,25 @@
-package 
+//------------------------------------------------------------------------------
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
+//------------------------------------------------------------------------------
+
+package
 {
 
-public class TypeX1 implements ITypeX, IType1
-{
-	public function TypeX1()
+	public class TypeX1 implements ITypeX, IType1
 	{
-		super();
+
+		/*============================================================================*/
+		/* Constructor                                                                */
+		/*============================================================================*/
+
+		public function TypeX1()
+		{
+			super();
+		}
 	}
-}
 
 }
 

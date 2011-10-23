@@ -1,15 +1,25 @@
-package 
+//------------------------------------------------------------------------------
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
+//------------------------------------------------------------------------------
+
+package
 {
 
-public class TypeB extends Object
-{
-	
-	public function TypeB()
+	public class TypeB extends Object
 	{
-		super();
+
+		/*============================================================================*/
+		/* Constructor                                                                */
+		/*============================================================================*/
+
+		public function TypeB()
+		{
+			super();
+		}
 	}
-	
-}
 
 }
 
