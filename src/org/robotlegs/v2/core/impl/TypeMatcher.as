@@ -41,45 +41,13 @@ package org.robotlegs.v2.core.impl
 
 		public function allOf(... types):ITypeMatcher
 		{
-			if(types.length == 1)
-			{
-				if(types[0] is Array)
-				{
-					types = types[0]
-				}
-				else if(types[0] is Vector.<Class>)
-				{
-					types = createArrayFromVector(types[0]);
-				}
-			}
-			
-			_typeFilter && throwSealedMatcherError();
-			for each (var type:Class in types)
-			{
-				_allOfTypes.push(type);
-			}
+			pushAddedTypesTo(types, _allOfTypes);
 			return this;
 		}
 
 		public function anyOf(... types):ITypeMatcher
 		{
-			if(types.length == 1)
-			{
-				if(types[0] is Array)
-				{
-					types = types[0]
-				}
-				else if(types[0] is Vector.<Class>)
-				{
-					types = createArrayFromVector(types[0]);
-				}
-			}
-			
-			_typeFilter && throwSealedMatcherError();
-			for each (var type:Class in types)
-			{
-				_anyOfTypes.push(type);
-			}
+			pushAddedTypesTo(types, _anyOfTypes);
 			return this;
 		}
 
@@ -96,6 +64,16 @@ package org.robotlegs.v2.core.impl
 
 		public function noneOf(... types):ITypeMatcher
 		{
+			pushAddedTypesTo(types, _noneOfTypes);
+			return this;
+		}
+
+		/*============================================================================*/
+		/* Protected Functions                                                        */
+		/*============================================================================*/
+
+		protected function pushAddedTypesTo(types:Array, targetSet:Vector.<Class>):void
+		{
 			if(types.length == 1)
 			{
 				if(types[0] is Array)
@@ -111,14 +89,9 @@ package org.robotlegs.v2.core.impl
 			_typeFilter && throwSealedMatcherError();
 			for each (var type:Class in types)
 			{
-				_noneOfTypes.push(type);
+				targetSet.push(type);
 			}
-			return this;
 		}
-
-		/*============================================================================*/
-		/* Protected Functions                                                        */
-		/*============================================================================*/
 
 		protected function buildTypeFilter():ITypeFilter
 		{
