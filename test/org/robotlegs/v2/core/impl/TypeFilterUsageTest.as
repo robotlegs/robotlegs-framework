@@ -8,7 +8,7 @@
 package org.robotlegs.v2.core.impl
 {
 	import org.robotlegs.v2.core.api.ITypeFilter;
-	import org.robotlegs.v2.core.impl.itemPassesFilter;
+	import org.robotlegs.v2.core.impl.tddasifyoumeanit.itemPassesFilter;
 	import org.flexunit.asserts.*;
 
 	public class TypeFilterUsageTest
