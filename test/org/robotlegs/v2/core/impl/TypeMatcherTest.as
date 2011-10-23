@@ -1,28 +1,35 @@
-package org.robotlegs.v2.core.impl {
+//------------------------------------------------------------------------------
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
+//------------------------------------------------------------------------------
+
+package org.robotlegs.v2.core.impl
+{
+	import flash.display.DisplayObject;
+	import flash.display.MovieClip;
+	import flash.display.Sprite;
+	import flash.errors.IllegalOperationError;
+	import flash.events.IEventDispatcher;
+	import flash.utils.ByteArray;
+
+	import org.flexunit.asserts.*;
 
 	import org.robotlegs.v2.core.api.ITypeFilter;
-	import flash.display.DisplayObject;
-	import flash.utils.IDataInput;
-	import flash.display.MovieClip;
-	import flash.utils.ByteArray;
 	import org.robotlegs.v2.core.api.ITypeMatcher;
-	import flash.events.IEventDispatcher;
-	import flash.display.Sprite;
-	import org.robotlegs.v2.core.impl.TypeMatcherError;
-	import flash.errors.IllegalOperationError;
-	import org.flexunit.asserts.*;
 
 	public class TypeMatcherTest
 	{
 		private var instance:TypeMatcher;
 
 		private const ALL_OF:Vector.<Class> = new <Class>[uint, Number];
-		private const ANY_OF:Vector.<Class>	= new <Class>[Sprite, IEventDispatcher];
-		private const NONE_OF:Vector.<Class> = new <Class>[String, Error];
 
 		private const ALL_OF_2:Vector.<Class> = new <Class>[Object, IDataInput];
-		private const ANY_OF_2:Vector.<Class>	= new <Class>[DisplayObject, MovieClip];
-		private const NONE_OF_2:Vector.<Class> = new <Class>[ByteArray];
+
+		private const ANY_OF:Vector.<Class> = new <Class>[Sprite, IEventDispatcher];
+
+		private const ANY_OF_2:Vector.<Class> = new <Class>[DisplayObject, MovieClip];
 
 		private const EMPTY_CLASS_VECTOR:Vector.<Class> = new <Class>[];
 		
@@ -67,32 +74,34 @@ package org.robotlegs.v2.core.impl {
 		public function supplying_all_any_and_none_in_different_order_populates_them_in_typeFilter():void {
 			
 			var expectedFilter:TypeFilter = new TypeFilter(ALL_OF, ANY_OF, NONE_OF);
-			
+
 			instance.noneOf(NONE_OF).allOf(ALL_OF).anyOf(ANY_OF);
-			
+
 			assertMatchesTypeFilter(expectedFilter, instance.createTypeFilter());
 		}
-		
+
 		[Test]
 		public function supplying_multiple_all_values_includes_all_given_in_typeFilter():void {
 			var expectedFilter:TypeFilter = new TypeFilter((ALL_OF.concat(ALL_OF_2)), ANY_OF, NONE_OF);
-			
+
 			instance.allOf(ALL_OF).anyOf(ANY_OF).noneOf(NONE_OF).allOf(ALL_OF_2);
 			assertMatchesTypeFilter(expectedFilter, instance.createTypeFilter());
 		}
-		
+
 		[Test]
 		public function supplying_multiple_any_values_includes_all_given_in_typeFilter():void {
+
 			var expectedFilter:TypeFilter = new TypeFilter(ALL_OF, ANY_OF.concat(ANY_OF_2), NONE_OF);
-			
+
 			instance.allOf(ALL_OF).anyOf(ANY_OF).noneOf(NONE_OF).anyOf(ANY_OF_2);
 			assertMatchesTypeFilter(expectedFilter, instance.createTypeFilter());
 		}
 		
 		[Test]
 		public function supplying_multiple_none_values_includes_all_given_in_typeFilter():void {
+
 			var expectedFilter:TypeFilter = new TypeFilter(ALL_OF, ANY_OF, (NONE_OF.concat(NONE_OF_2)));
-			
+
 			instance.allOf(ALL_OF).anyOf(ANY_OF).noneOf(NONE_OF).noneOf(NONE_OF_2);
 			assertMatchesTypeFilter(expectedFilter, instance.createTypeFilter());
 		}
@@ -183,10 +192,10 @@ package org.robotlegs.v2.core.impl {
 			instance.noneOf(ALL_OF);
 		}
 
-		/* 
-			CUSTOM ASSERTS
-		*/
-		
+		/*============================================================================*/
+		/* Protected Functions                                                        */
+		/*============================================================================*/
+
 		protected function assertMatchesTypeFilter(expected:ITypeFilter, actual:ITypeFilter):void
 		{
 			assertEqualsVectorsIgnoringOrder(expected.allOfTypes, actual.allOfTypes);

@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 //  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
 // 
-//  NOTICE: You are permitted you to use, modify, and distribute this file 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
@@ -9,9 +9,7 @@ package org.robotlegs.v2.flex.mxml
 {
 	import flash.display.DisplayObjectContainer;
 	import flash.utils.setTimeout;
-
 	import mx.core.IMXMLObject;
-
 	import org.robotlegs.v2.core.api.IContextBuilderBundle;
 	import org.robotlegs.v2.core.impl.ContextBuilder;
 

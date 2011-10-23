@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 //  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
 // 
-//  NOTICE: You are permitted you to use, modify, and distribute this file 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
@@ -57,8 +57,17 @@ package org.robotlegs.v2.view.impl
 			if (handler.interests == 0)
 				throw new ArgumentError('A view handler must be interested in something.');
 
+			handler.register(this);
+
 			const binding:IContainerBinding = _bindingsByContainer[container] ||= createBindingFor(container);
 			binding.addHandler(handler);
+
+			purgeConfirmedHandlerCache();
+		}
+
+		public function invalidate(handler:IViewHandler):void
+		{
+			purgeConfirmedHandlerCache();
 		}
 
 		public function removeHandler(handler:IViewHandler, container:DisplayObjectContainer):void
@@ -72,6 +81,8 @@ package org.robotlegs.v2.view.impl
 			// No point in a binding with no handlers!
 			if (binding.handlers.length == 0)
 				removeBinding(binding);
+
+			purgeConfirmedHandlerCache();
 		}
 
 		/*============================================================================*/
@@ -253,6 +264,15 @@ package org.robotlegs.v2.view.impl
 				handler.handleViewRemoved(target);
 			}
 			delete _removeHandlersByTarget[target];
+		}
+
+		private function purgeConfirmedHandlerCache():void
+		{
+			logger.warn('the confirmed handler cache has been purged. This is normal, but if you see this message too often something might be wrong');
+			for (var key:Object in _confirmedHandlersByFQCN)
+			{
+				delete _confirmedHandlersByFQCN[key];
+			}
 		}
 
 		private function removeBinding(binding:IContainerBinding):void
