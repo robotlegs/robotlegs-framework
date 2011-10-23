@@ -7,11 +7,13 @@ package {
 	 */
 
 	import asunit.framework.TestSuite;
-
-	import org.robotlegs.v2.viewmanager.DocSpyTest;
-
+	import org.robotlegs.v2.context.impl.ContextBuilderASUnitTest;
+//	import org.robotlegs.v2.core.impl.TypeFilterTest;
+//	import org.robotlegs.v2.core.impl.TypeFilterUsageTest;
+//	import org.robotlegs.v2.core.impl.TypeMatcherTest;
 //	import org.robotlegs.v2.viewmanager.ContainerBindingTest;
 //	import org.robotlegs.v2.viewmanager.ContainerTreeCreeperTest;
+//	import org.robotlegs.v2.viewmanager.DocSpyTest;
 //	import org.robotlegs.v2.viewmanager.ListenerMapTest;
 //	import org.robotlegs.v2.viewmanager.listeningstrategies.AutoViewListeningStrategyTest;
 //	import org.robotlegs.v2.viewmanager.listeningstrategies.FewestEventsViewListeningStrategyTest;
@@ -21,14 +23,17 @@ package {
 //	import org.robotlegs.v2.viewmanager.listeningstrategies.StageViewListeningStrategyTest;
 //	import org.robotlegs.v2.viewmanager.ListeningStrategyFactoryTest;
 //	import org.robotlegs.v2.viewmanager.tasks.TaskTypeTest;
-//	import org.roburntlegs.experiments.ViewManagerTest;
 
 	public class AllTests extends TestSuite {
 
 		public function AllTests() {
+			addTest(new org.robotlegs.v2.context.impl.ContextBuilderASUnitTest());
+//			addTest(new org.robotlegs.v2.core.impl.TypeFilterTest());
+//			addTest(new org.robotlegs.v2.core.impl.TypeFilterUsageTest());
+//			addTest(new org.robotlegs.v2.core.impl.TypeMatcherTest());
 //			addTest(new org.robotlegs.v2.viewmanager.ContainerBindingTest());
 //			addTest(new org.robotlegs.v2.viewmanager.ContainerTreeCreeperTest());
-			addTest(new DocSpyTest());
+//			addTest(new org.robotlegs.v2.viewmanager.DocSpyTest());
 //			addTest(new org.robotlegs.v2.viewmanager.ListenerMapTest());
 //			addTest(new org.robotlegs.v2.viewmanager.listeningstrategies.AutoViewListeningStrategyTest());
 //			addTest(new org.robotlegs.v2.viewmanager.listeningstrategies.FewestEventsViewListeningStrategyTest());
@@ -38,7 +43,6 @@ package {
 //			addTest(new org.robotlegs.v2.viewmanager.listeningstrategies.StageViewListeningStrategyTest());
 //			addTest(new org.robotlegs.v2.viewmanager.ListeningStrategyFactoryTest());
 //			addTest(new org.robotlegs.v2.viewmanager.tasks.TaskTypeTest());
-//			addTest(new org.roburntlegs.experiments.ViewManagerTest());
 		}
 	}
 }

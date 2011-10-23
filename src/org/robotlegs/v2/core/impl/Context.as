@@ -234,9 +234,18 @@ package org.robotlegs.v2.core.impl
 		private function configureInjector():void
 		{
 			logger.info('configuring injector');
-			_injector ||= parent && parent.injector ?
-				parent.injector.createChildInjector(_applicationDomain) :
-				new Injector();
+			
+			_injector ||= createInjector();
+		}
+
+		private function createInjector():Injector
+		{	
+			if(parent && parent.injector)
+			{
+				logger.info('getting child injector from parent');
+				return parent.injector.createChildInjector(_applicationDomain);
+			}
+			return new Injector();
 		}
 
 		private function initializeConfigs():void

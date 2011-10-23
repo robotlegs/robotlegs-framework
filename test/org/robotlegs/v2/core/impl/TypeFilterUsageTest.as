@@ -1,18 +1,19 @@
 package org.robotlegs.v2.core.impl
 {
-	import asunit.framework.TestCase;
 	import org.robotlegs.v2.core.api.ITypeFilter;
 	import org.robotlegs.v2.core.impl.itemPassesFilter;
+	import org.flexunit.asserts.*;
 
-	public class TypeFilterUsageTest extends TestCase
+	public class TypeFilterUsageTest
 	{
 	
-		public function TypeFilterUsageTest(methodName:String=null) 
-		{
-			super(methodName)
+		[Test]
+		public function test_failure_seen():void {
+			assertTrue("Test failure", true);
 		}
-		
-		public function test_class_matched_by_all():void {
+	
+		[Test]
+		public function class_matched_by_all():void {
 			var subject:TypeA12 = new TypeA12();
 			
 			var filter:ITypeFilter = new TypeFilter(new <Class>[TypeA, IType1, IType2], new <Class>[], new <Class>[]);
@@ -20,7 +21,8 @@ package org.robotlegs.v2.core.impl
 			assertTrue("Class matched by all", itemPassesFilter(subject, filter));
 		}
 		
-		public function test_class_not_matched_by_all():void {
+		[Test]
+		public function class_not_matched_by_all():void {
 			var subject:TypeA1 = new TypeA1();
 			
 			var filter:ITypeFilter = new TypeFilter(new <Class>[TypeA, IType1, IType2], new <Class>[], new <Class>[]);
@@ -28,7 +30,8 @@ package org.robotlegs.v2.core.impl
 			assertFalse("Class not matched by all", itemPassesFilter(subject, filter));
 		}
 		
-		public function test_class_not_excluded_by_none():void {
+		[Test]
+		public function class_not_excluded_by_none():void {
 			var subject:TypeA12 = new TypeA12();
 			
 			var filter:ITypeFilter = new TypeFilter(new <Class>[], new <Class>[], new <Class>[TypeB]);
@@ -36,7 +39,8 @@ package org.robotlegs.v2.core.impl
 			assertTrue("Class not excluded by none", itemPassesFilter(subject, filter));
 		}
 		
-		public function test_class_excluded_by_none():void {
+		[Test]
+		public function class_excluded_by_none():void {
 			var subject:TypeB12 = new TypeB12();
 			
 			var filter:ITypeFilter = new TypeFilter(new <Class>[], new <Class>[], new <Class>[TypeB]);
@@ -44,7 +48,8 @@ package org.robotlegs.v2.core.impl
 			assertFalse("Class excluded by none", itemPassesFilter(subject, filter));
 		}
 		
-		public function test_class_matched_by_any():void {
+		[Test]
+		public function class_matched_by_any():void {
 			var subject:TypeB12 = new TypeB12();
 			
 			var filter:ITypeFilter = new TypeFilter(new <Class>[], new <Class>[TypeA, IType1], new <Class>[]);
@@ -52,7 +57,8 @@ package org.robotlegs.v2.core.impl
 			assertTrue("Class matched by any", itemPassesFilter(subject, filter));
 		}
 		
-		public function test_class_not_matched_by_any():void {
+		[Test]
+		public function class_not_matched_by_any():void {
 			var subject:TypeB = new TypeB();
 			
 			var filter:ITypeFilter = new TypeFilter(new <Class>[], new <Class>[TypeA, IType1], new <Class>[]);
@@ -60,16 +66,13 @@ package org.robotlegs.v2.core.impl
 			assertFalse("Class not matched by any", itemPassesFilter(subject, filter));
 		}
 		
-		public function test_default_behaviour_where_nothing_is_specified():void {
+		[Test]
+		public function default_behaviour_where_nothing_is_specified():void {
 			var subject:TypeB = new TypeB();
 			
 			var filter:ITypeFilter = new TypeFilter(new <Class>[], new <Class>[], new <Class>[]);
 			
 			assertFalse("Default behaviour where nothing is specified is to not match", itemPassesFilter(subject, filter));
 		}
-		
-		
-		
 	}
-
 }

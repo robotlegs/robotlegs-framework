@@ -1,4 +1,7 @@
 package {
+	
+	import asunit.textui.TestRunner;
+	
 	public class ViewManagerExperimentsRunner extends TestRunner {
 
 		public function ViewManagerExperimentsRunner() {

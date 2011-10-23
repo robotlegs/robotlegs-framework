@@ -32,6 +32,8 @@ project_model :model do |m|
   m.library_path          << 'lib/asx.swc'
   m.library_path          << 'lib/hamcrest.swc'
   m.library_path          << 'lib/FLoxy.swc'
+  m.library_path          << 'lib/SwiftSuspenders-v2.0.0b1.swc'
+  m.library_path          << 'lib/as3commons-logging-2.7.swc'
   # m.libraries             << :corelib 
   m.support_dir           = 'support'    
 end
@@ -40,7 +42,9 @@ desc 'Compile and debug the application'
 debug :debug
 
 desc 'Compile run the test harness'
-unit :test
+unit :test do |t|
+  
+end
 
 desc 'Compile the optimized deployment'
 deploy :deploy
