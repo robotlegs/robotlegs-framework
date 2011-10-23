@@ -13,6 +13,7 @@ package org.robotlegs.v2.core.impl
 	import flash.errors.IllegalOperationError;
 	import flash.events.IEventDispatcher;
 	import flash.utils.ByteArray;
+	import flash.utils.IDataInput;
 
 	import org.flexunit.asserts.*;
 
@@ -30,6 +31,10 @@ package org.robotlegs.v2.core.impl
 		private const ANY_OF:Vector.<Class> = new <Class>[Sprite, IEventDispatcher];
 
 		private const ANY_OF_2:Vector.<Class> = new <Class>[DisplayObject, MovieClip];
+
+		private const NONE_OF:Vector.<Class> = new <Class>[ByteArray, String];
+		
+		private const NONE_OF_2:Vector.<Class> = new <Class>[ITypeFilter, ITypeMatcher]; 
 
 		private const EMPTY_CLASS_VECTOR:Vector.<Class> = new <Class>[];
 		

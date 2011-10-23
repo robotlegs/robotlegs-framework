@@ -41,6 +41,18 @@ package org.robotlegs.v2.core.impl
 
 		public function allOf(... types):ITypeMatcher
 		{
+			if(types.length == 1)
+			{
+				if(types[0] is Array)
+				{
+					types = types[0]
+				}
+				else if(types[0] is Vector.<Class>)
+				{
+					types = createArrayFromVector(types[0]);
+				}
+			}
+			
 			_typeFilter && throwSealedMatcherError();
 			for each (var type:Class in types)
 			{
@@ -51,6 +63,18 @@ package org.robotlegs.v2.core.impl
 
 		public function anyOf(... types):ITypeMatcher
 		{
+			if(types.length == 1)
+			{
+				if(types[0] is Array)
+				{
+					types = types[0]
+				}
+				else if(types[0] is Vector.<Class>)
+				{
+					types = createArrayFromVector(types[0]);
+				}
+			}
+			
 			_typeFilter && throwSealedMatcherError();
 			for each (var type:Class in types)
 			{
@@ -72,6 +96,18 @@ package org.robotlegs.v2.core.impl
 
 		public function noneOf(... types):ITypeMatcher
 		{
+			if(types.length == 1)
+			{
+				if(types[0] is Array)
+				{
+					types = types[0]
+				}
+				else if(types[0] is Vector.<Class>)
+				{
+					types = createArrayFromVector(types[0]);
+				}
+			}
+			
 			_typeFilter && throwSealedMatcherError();
 			for each (var type:Class in types)
 			{
@@ -98,6 +134,18 @@ package org.robotlegs.v2.core.impl
 		protected function throwSealedMatcherError():void
 		{
 			throw new IllegalOperationError('This TypeMatcher has been sealed and can no longer be configured');
+		}
+		
+		protected function createArrayFromVector(typesVector:Vector.<Class>):Array
+		{
+			const returnArray:Array = [];
+			
+			for each (var type:Class in typesVector)
+			{
+				returnArray.push(type);
+			}
+			
+			return returnArray;
 		}
 	}
 }
