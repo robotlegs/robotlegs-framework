@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 //  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
 // 
-//  NOTICE: You are permitted you to use, modify, and distribute this file 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
@@ -9,7 +9,6 @@ package org.robotlegs.v2.core.impl
 {
 	import flash.display.DisplayObjectContainer;
 	import flash.utils.Dictionary;
-
 	import org.robotlegs.v2.core.api.IContext;
 	import org.robotlegs.v2.core.api.IContextViewRegistry;
 
