@@ -5,6 +5,7 @@ html-template/*
 bin/*
 doc/*
 obj/*
+report/*
 
 .actionScriptProperties
 .flexProperties
