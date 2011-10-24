@@ -7,24 +7,20 @@
 
 package suites
 {
+	import org.robotlegs.v2.utilities.hooks.HookBaseTest;
+	import org.robotlegs.v2.utilities.hooks.HookUtilityMapTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
-	public class EntireTestSuite
+	public class HooksTestSuite
 	{
 
 		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		public var contextBuilderTestSuite:ContextBuilderTestSuite;
-
-		// public var contextTestSuite:ContextTestSuite;
-
-		// public var stageWatcherTestSuite:StageWatcherTestSuite;
-
-		public var typeMatchingTestSuite:TypeMatchingTestSuite;
+		public var hookBaseTest:HookBaseTest;
 		
-		public var hooksTestSuite:HooksTestSuite;
+		public var hookUtilityMap:HookUtilityMapTest;
 	}
 }
