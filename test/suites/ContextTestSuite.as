@@ -7,7 +7,7 @@
 
 package suites
 {
-	import org.robotlegs.v2.context.impl.ContextTests;
+	import org.robotlegs.v2.core.impl.ContextTests;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]

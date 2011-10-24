@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.context.impl
+package org.robotlegs.v2.core.impl
 {
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
@@ -14,8 +14,6 @@ package org.robotlegs.v2.context.impl
 	import org.flexunit.asserts.assertEquals;
 	import org.robotlegs.v2.core.api.IContext;
 	import org.robotlegs.v2.core.api.IContextBuilder;
-	import org.robotlegs.v2.core.impl.Context;
-	import org.robotlegs.v2.core.impl.ContextBuilder;
 	import org.swiftsuspenders.Injector;
 
 	public class ContextBuilderTests

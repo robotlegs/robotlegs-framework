@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.context.impl
+package org.robotlegs.v2.core.impl
 {
 	import flash.display.DisplayObjectContainer;
 	import flash.events.EventDispatcher;
@@ -16,7 +16,6 @@ package org.robotlegs.v2.context.impl
 	import org.hamcrest.object.notNullValue;
 	import org.hamcrest.object.strictlyEqualTo;
 	import org.robotlegs.v2.core.api.IContext;
-	import org.robotlegs.v2.core.impl.Context;
 	import org.swiftsuspenders.Injector;
 
 	public class ContextTests
