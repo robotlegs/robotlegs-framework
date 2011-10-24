@@ -27,9 +27,24 @@ package org.robotlegs.v2.core.impl
 
 		private var instance:TypeFilter;
 
+		/*============================================================================*/
+		/* Test Setup and Teardown                                                    */
+		/*============================================================================*/
+
+		[Before]
+		public function setUp():void
+		{
+			instance = new TypeFilter(ALL_OF, ANY_OF, NONE_OF);
+		}
+
+		[After]
+		public function tearDown():void
+		{
+			instance = null;
+		}
 
 		/*============================================================================*/
-		/* Public Functions                                                           */
+		/* Tests                                                                      */
 		/*============================================================================*/
 
 		[Test]
@@ -85,18 +100,6 @@ package org.robotlegs.v2.core.impl
 		public function initalising_with_noneOf_null_throws_error():void
 		{
 			var nullFilter:TypeFilter = new TypeFilter(ALL_OF, ANY_OF, null);
-		}
-
-		[Before]
-		public function setUp():void
-		{
-			instance = new TypeFilter(ALL_OF, ANY_OF, NONE_OF);
-		}
-
-		[After]
-		public function tearDown():void
-		{
-			instance = null;
 		}
 
 		[Test]

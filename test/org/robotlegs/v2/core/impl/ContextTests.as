@@ -29,9 +29,27 @@ package org.robotlegs.v2.core.impl
 
 		private var contextView:DisplayObjectContainer;
 
+		/*============================================================================*/
+		/* Test Setup and Teardown                                                    */
+		/*============================================================================*/
+
+		[Before(ui)]
+		public function setUp():void
+		{
+			context = new Context();
+			contextView = new UIComponent();
+			UIImpersonator.addChild(contextView);
+		}
+
+		[After]
+		public function tearDown():void
+		{
+			context = null;
+			UIImpersonator.removeAllChildren();
+		}
 
 		/*============================================================================*/
-		/* Public Functions                                                           */
+		/* Tests                                                                      */
 		/*============================================================================*/
 
 		[Test]
@@ -98,14 +116,6 @@ package org.robotlegs.v2.core.impl
 			assertThat(context.injector, strictlyEqualTo(providedInjector));
 		}
 
-		[Before(ui)]
-		public function setUp():void
-		{
-			context = new Context();
-			contextView = new UIComponent();
-			UIImpersonator.addChild(contextView);
-		}
-
 		[Test(expects='Error')]
 		public function setting_contextView_should_throw_if_context_already_initialized():void
 		{
@@ -132,13 +142,6 @@ package org.robotlegs.v2.core.impl
 		{
 			context.initialize();
 			context.parent = new Context();
-		}
-
-		[After]
-		public function tearDown():void
-		{
-			context = null;
-			UIImpersonator.removeAllChildren();
 		}
 	}
 }

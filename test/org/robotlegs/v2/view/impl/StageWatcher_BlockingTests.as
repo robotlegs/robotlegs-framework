@@ -33,9 +33,30 @@ package org.robotlegs.v2.view.impl
 
 		protected var watcher:IViewWatcher;
 
+		/*============================================================================*/
+		/* Test Setup and Teardown                                                    */
+		/*============================================================================*/
+
+		[Before(ui)]
+		public function setUp():void
+		{
+			group = new UIComponent()
+			container = new Sprite();
+			watcher = new StageWatcher();
+
+			group.addChild(container)
+			UIImpersonator.addChild(group);
+		}
+
+		[After]
+		public function tearDown():void
+		{
+			watcher = null;
+			UIImpersonator.removeAllChildren();
+		}
 
 		/*============================================================================*/
-		/* Public Functions                                                           */
+		/* Tests                                                                      */
 		/*============================================================================*/
 
 		[Test]
@@ -90,24 +111,6 @@ package org.robotlegs.v2.view.impl
 			assertThat(secondHandlerAddedCalled, isTrue());
 		}
 
-
-		[Before(ui)]
-		public function setUp():void
-		{
-			group = new UIComponent()
-			container = new Sprite();
-			watcher = new StageWatcher();
-
-			group.addChild(container)
-			UIImpersonator.addChild(group);
-		}
-
-		[After]
-		public function tearDown():void
-		{
-			watcher = null;
-			UIImpersonator.removeAllChildren();
-		}
 
 		/*============================================================================*/
 		/* Private Functions                                                          */

@@ -41,9 +41,24 @@ package org.robotlegs.v2.core.impl
 
 		private var instance:TypeMatcher;
 
+		/*============================================================================*/
+		/* Test Setup and Teardown                                                    */
+		/*============================================================================*/
+
+		[Before]
+		public function setUp():void
+		{
+			instance = new TypeMatcher();
+		}
+
+		[After]
+		public function tearDown():void
+		{
+			instance = null;
+		}
 
 		/*============================================================================*/
-		/* Public Functions                                                           */
+		/* Tests                                                                      */
 		/*============================================================================*/
 
 		[Test]
@@ -83,12 +98,6 @@ package org.robotlegs.v2.core.impl
 
 			instance.anyOf(ANY_OF).allOf(ALL_OF);
 			assertMatchesTypeFilter(expectedFilter, instance.createTypeFilter());
-		}
-
-		[Before]
-		public function setUp():void
-		{
-			instance = new TypeMatcher();
 		}
 
 		[Test]
@@ -140,12 +149,6 @@ package org.robotlegs.v2.core.impl
 
 			instance.allOf(ALL_OF).anyOf(ANY_OF).noneOf(NONE_OF).noneOf(NONE_OF_2);
 			assertMatchesTypeFilter(expectedFilter, instance.createTypeFilter());
-		}
-
-		[After]
-		public function tearDown():void
-		{
-			instance = null;
 		}
 
 		[Test]
@@ -223,6 +226,7 @@ package org.robotlegs.v2.core.impl
 			var emptyInstance:TypeMatcher = new TypeMatcher();
 			emptyInstance.createTypeFilter();
 		}
+
 
 		/*============================================================================*/
 		/* Protected Functions                                                        */

@@ -25,9 +25,24 @@ package org.robotlegs.v2.core.impl
 
 		private var builder:IContextBuilder;
 
+		/*============================================================================*/
+		/* Test Setup and Teardown                                                    */
+		/*============================================================================*/
+
+		[Before]
+		public function setUp():void
+		{
+			builder = new ContextBuilder();
+		}
+
+		[After]
+		public function tearDown():void
+		{
+			builder = null;
+		}
 
 		/*============================================================================*/
-		/* Public Functions                                                           */
+		/* Tests                                                                      */
 		/*============================================================================*/
 
 		[Test(expects='Error')]
@@ -71,18 +86,6 @@ package org.robotlegs.v2.core.impl
 			builder.withParent(parent);
 			const context:IContext = builder.build();
 			assertEquals(parent, context.parent);
-		}
-
-		[Before]
-		public function setUp():void
-		{
-			builder = new ContextBuilder();
-		}
-
-		[After]
-		public function tearDown():void
-		{
-			builder = null;
 		}
 	}
 }
