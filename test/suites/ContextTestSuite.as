@@ -5,22 +5,19 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2
+package suites
 {
-	import suites.ContextBuilderTestSuite;
-	import suites.TypeMatchingTestSuite;
+	import org.robotlegs.v2.context.impl.ContextTests;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
-	public class Robotlegs2TestSuite
+	public class ContextTestSuite
 	{
 
 		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		public var contextBuilderTestSuite:ContextBuilderTestSuite;
-
-		public var typeMatchingTestSuite:TypeMatchingTestSuite;
+		public var contextTests:ContextTests;
 	}
 }

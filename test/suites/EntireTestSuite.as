@@ -7,17 +7,22 @@
 
 package suites
 {
-	import org.robotlegs.v2.context.impl.ContextBuilderTests;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
-	public class ContextBuilderTestSuite
+	public class EntireTestSuite
 	{
 
 		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		public var contextBuilderTests:ContextBuilderTests;
+		public var contextBuilderTestSuite:ContextBuilderTestSuite;
+
+		// public var contextTestSuite:ContextTestSuite;
+
+		// public var stageWatcherTestSuite:StageWatcherTestSuite;
+
+		public var typeMatchingTestSuite:TypeMatchingTestSuite;
 	}
 }

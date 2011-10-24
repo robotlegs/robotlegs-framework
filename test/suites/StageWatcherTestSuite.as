@@ -7,17 +7,23 @@
 
 package suites
 {
-	import org.robotlegs.v2.context.impl.ContextBuilderTests;
+	import org.robotlegs.v2.view.impl.StageWatcher_BasicTests;
+	import org.robotlegs.v2.view.impl.StageWatcher_BlockingTests;
+	import org.robotlegs.v2.view.impl.StageWatcher_OptimisationTests;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
-	public class ContextBuilderTestSuite
+	public class StageWatcherTestSuite
 	{
 
 		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		public var contextBuilderTests:ContextBuilderTests;
+		public var stageWatcherBasicTests:StageWatcher_BasicTests;
+
+		public var stageWatcherBlockingTests:StageWatcher_BlockingTests;
+
+		public var stageWatcherOptimisationTests:StageWatcher_OptimisationTests;
 	}
 }

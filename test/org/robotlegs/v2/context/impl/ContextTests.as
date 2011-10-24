@@ -139,6 +139,7 @@ package org.robotlegs.v2.context.impl
 		public function tearDown():void
 		{
 			context = null;
+			UIImpersonator.removeAllChildren();
 		}
 	}
 }

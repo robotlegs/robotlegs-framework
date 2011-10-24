@@ -18,5 +18,7 @@ src/FlexUnitApplication.mxml
 .idea
 *.iml
 
+user.properties
+
 Thumbs.db
 .DS_Store
