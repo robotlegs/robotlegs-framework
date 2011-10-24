@@ -42,7 +42,15 @@ desc 'Compile and debug the application'
 debug :debug
 
 desc 'Compile run the test harness'
-unit :test do |t|
+unit :test 
+
+desc 'Run the flexunit test harness'
+unit :flexunit do |t|
+  t.input = 'test/RobotlegsTest.mxml'
+  t.debug = true
+  t.library_path  << 'lib/flexunit-4.1.0-8-as3_4.1.0.16076.swc'
+  t.library_path  << 'lib/flexunit-cilistener-4.1.0-8-4.1.0.16076.swc'
+  t.library_path  << 'lib/fluint-extensions-4.1.0-8-4.1.0.16076.swc'
   
 end
 
