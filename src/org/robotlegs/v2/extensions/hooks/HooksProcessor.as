@@ -10,6 +10,7 @@ package org.robotlegs.v2.extensions.hooks
 	import org.swiftsuspenders.Injector;
 	import ArgumentError;
 	import flash.utils.describeType;
+	import flash.utils.Dictionary;
 	
 	public class HooksProcessor
 	{
@@ -18,7 +19,8 @@ package org.robotlegs.v2.extensions.hooks
 		/* Protected Properties                                                       */
 		/*============================================================================*/
 
-
+		protected const _verifiedHookClasses:Dictionary = new Dictionary();
+		
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
@@ -33,12 +35,10 @@ package org.robotlegs.v2.extensions.hooks
 		
 		public function runHooks(useInjector:Injector, hookClasses:Vector.<Class>):void
 		{
+			verifyHookClasses(hookClasses);
+			
 			for each (var hookClass:Class in hookClasses)
 			{
-				if(! (describeType(hookClass).factory.method.(@name == "hook").length() == 1))
-				{
-					throw new ArgumentError("No hook function found on class " + hookClass);
-				}
 				var hook:* = useInjector.getInstance(hookClass);
 				hook.hook();
 			}
@@ -48,5 +48,19 @@ package org.robotlegs.v2.extensions.hooks
 		/* Protected Functions                                                        */
 		/*============================================================================*/
 		
+		protected function verifyHookClasses(hookClasses:Vector.<Class>):void
+		{
+			for each (var hookClass:Class in hookClasses)
+			{
+				if(!_verifiedHookClasses[hookClass])
+				{
+					_verifiedHookClasses[hookClass] = (describeType(hookClass).factory.method.(@name == "hook").length() == 1);
+					if(!_verifiedHookClasses[hookClass])
+					{
+						throw new ArgumentError("No hook function found on class " + hookClass);
+					}
+				}
+			}
+		}
 	}
 }
