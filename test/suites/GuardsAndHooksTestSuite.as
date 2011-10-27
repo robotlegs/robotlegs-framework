@@ -8,7 +8,7 @@
 package suites
 {
 	import org.robotlegs.v2.extensions.hooks.HookBaseTest;
-	import org.robotlegs.v2.extensions.hooks.HookUtilityMapTest;
+	import org.robotlegs.v2.extensions.hooks.HookMapTest;
 	import org.robotlegs.v2.extensions.hooks.HooksProcessorTest;
 	import org.robotlegs.v2.extensions.guards.GuardsProcessorTest;
 
@@ -23,7 +23,7 @@ package suites
 
 		public var hookBaseTest:HookBaseTest;
 		
-		public var hookUtilityMapTest:HookUtilityMapTest;
+		public var hookUtilityMapTest:HookMapTest;
 		
 		public var hooksProcessorTest:HooksProcessorTest;
 		

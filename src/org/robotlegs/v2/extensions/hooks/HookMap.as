@@ -7,7 +7,7 @@
 
 package org.robotlegs.v2.extensions.hooks
 {
-	public class  HookUtilityMap
+	public class HookMap
 	{
 		
 		/*============================================================================*/
@@ -19,7 +19,7 @@ package org.robotlegs.v2.extensions.hooks
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function HookUtilityMap()
+		public function HookMap()
 		{
 		}
 

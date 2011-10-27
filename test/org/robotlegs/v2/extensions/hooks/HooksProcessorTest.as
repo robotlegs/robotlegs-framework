@@ -10,7 +10,6 @@ package org.robotlegs.v2.extensions.hooks
 	import org.flexunit.asserts.*;
 	import org.flexunit.asserts.assertEqualsVectorsIgnoringOrder;
 	import org.swiftsuspenders.Injector;
-	import ArgumentError;
 
 	public class HooksProcessorTest 
 	{
@@ -39,6 +38,7 @@ package org.robotlegs.v2.extensions.hooks
 		public function tearDown():void
 		{
 			instance = null;
+			injector = null;
 		}
 
 		/*============================================================================*/
