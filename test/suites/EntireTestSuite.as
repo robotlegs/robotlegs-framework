@@ -25,6 +25,6 @@ package suites
 
 		public var typeMatchingTestSuite:TypeMatchingTestSuite;
 		
-		public var hooksTestSuite:HooksTestSuite;
+		public var hooksTestSuite:GuardsAndHooksTestSuite;
 	}
 }

@@ -10,10 +10,11 @@ package suites
 	import org.robotlegs.v2.extensions.hooks.HookBaseTest;
 	import org.robotlegs.v2.extensions.hooks.HookUtilityMapTest;
 	import org.robotlegs.v2.extensions.hooks.HooksProcessorTest;
+	import org.robotlegs.v2.extensions.guards.GuardsProcessorTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
-	public class HooksTestSuite
+	public class GuardsAndHooksTestSuite
 	{
 
 		/*============================================================================*/
@@ -25,5 +26,7 @@ package suites
 		public var hookUtilityMapTest:HookUtilityMapTest;
 		
 		public var hooksProcessorTest:HooksProcessorTest;
+		
+		public var guardsProcessorTest:GuardsProcessorTest;
 	}
 }
