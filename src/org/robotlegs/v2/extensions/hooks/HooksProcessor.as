@@ -37,9 +37,11 @@ package org.robotlegs.v2.extensions.hooks
 		{
 			verifyHookClasses(hookClasses);
 			
+			var hook:*
+
 			for each (var hookClass:Class in hookClasses)
 			{
-				var hook:* = useInjector.getInstance(hookClass);
+				hook = useInjector.getInstance(hookClass);
 				hook.hook();
 			}
 		}
