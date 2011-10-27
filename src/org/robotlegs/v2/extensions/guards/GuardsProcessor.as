@@ -7,6 +7,9 @@
 
 package org.robotlegs.v2.extensions.guards
 {
+	import org.swiftsuspenders.Injector;
+	import flash.utils.describeType;
+
 	public class  GuardsProcessor
 	{
 		
@@ -27,10 +30,35 @@ package org.robotlegs.v2.extensions.guards
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-
+		public function processGuards(useInjector:Injector, guardClasses:Vector.<Class>):Boolean
+		{
+			verifyGuardClasses(guardClasses);
+			
+			var guard:*;
+			
+			for each (var guardClass:Class in guardClasses)
+			{
+				guard = useInjector.getInstance(guardClass);
+				if(! guard.approve())
+					return false;
+			}
+			
+			return true;
+		}
+		
 		/*============================================================================*/
 		/* Protected Functions                                                        */
 		/*============================================================================*/
 		
+		protected function verifyGuardClasses(guardClasses:Vector.<Class>):void
+		{
+			for each (var guardClass:Class in guardClasses)
+			{
+				if(!(describeType(guardClass).factory.method.(@name == "approve").length() == 1))
+				{
+					throw new ArgumentError("No approve function found on class " + guardClass);
+				}
+			}
+		}
 	}
 }

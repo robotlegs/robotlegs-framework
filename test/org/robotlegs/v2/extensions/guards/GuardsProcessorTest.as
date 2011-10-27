@@ -9,7 +9,6 @@ package org.robotlegs.v2.extensions.guards
 {
 	import org.flexunit.asserts.*;
 	import org.swiftsuspenders.Injector;
-	import ArgumentError;
 	import flash.utils.describeType;
 
 	public class GuardsProcessorTest 
@@ -55,31 +54,24 @@ package org.robotlegs.v2.extensions.guards
 		}
 
 		[Test]
-		public function a_guard_is_run():void
-		{
-			var happyGuard:HappyGuard = new HappyGuard();
-			assertTrue("HappyGuard returns true", happyGuard.approve());
-		}
-		
-		[Test]
 		public function processing_happy_guard_returns_true():void
 		{
 			var requiredGuards:Vector.<Class> = new <Class>[HappyGuard];
-			assertTrue("processor returned true with happy guard", processGuards(injector, requiredGuards));
+			assertTrue("processor returned true with happy guard", instance.processGuards(injector, requiredGuards));
 		}
 		
 		[Test]
 		public function processing_grumpy_guard_returns_false():void
 		{
 			var requiredGuards:Vector.<Class> = new <Class>[GrumpyGuard];
-			assertFalse("processor returned false with grumpy guard", processGuards(injector, requiredGuards));
+			assertFalse("processor returned false with grumpy guard", instance.processGuards(injector, requiredGuards));
 		}
 		
 		[Test]
 		public function processing_guards_including_a_grumpy_guard_returns_false():void
 		{
 			var requiredGuards:Vector.<Class> = new <Class>[HappyGuard, GrumpyGuard];
-			assertFalse("processor returned false with a grumpy guard in the mix", processGuards(injector, requiredGuards));
+			assertFalse("processor returned false with a grumpy guard in the mix", instance.processGuards(injector, requiredGuards));
 		}
 		
 		[Test]
@@ -87,7 +79,7 @@ package org.robotlegs.v2.extensions.guards
 		{
 			injector.map(BossDecision).toValue(new BossDecision(true));
 			var requiredGuards:Vector.<Class> = new <Class>[JustTheMiddleManGuard];
-			assertTrue("processor returned true with happy boss", processGuards(injector, requiredGuards));
+			assertTrue("processor returned true with happy boss", instance.processGuards(injector, requiredGuards));
 		}
 		
 		[Test]
@@ -95,46 +87,19 @@ package org.robotlegs.v2.extensions.guards
 		{
 			injector.map(BossDecision).toValue(new BossDecision(false));
 			var requiredGuards:Vector.<Class> = new <Class>[JustTheMiddleManGuard];
-			assertFalse("processor returned false with grumpy boss", processGuards(injector, requiredGuards));
+			assertFalse("processor returned false with grumpy boss", instance.processGuards(injector, requiredGuards));
 		}
 		
 		[Test(expects="ArgumentError")]
 		public function throws_error_if_a_non_guard_is_passed():void
 		{
 			var requiredGuards:Vector.<Class> = new <Class>[HappyGuard, NotAGuard];
-			processGuards(injector, requiredGuards);
+			instance.processGuards(injector, requiredGuards);
 		}
 
 		/*============================================================================*/
 		/* Protected Functions                                                        */
 		/*============================================================================*/
-		
-		protected function processGuards(useInjector:Injector, guardClasses:Vector.<Class>):Boolean
-		{
-			verifyGuardClasses(guardClasses);
-			
-			var guard:*;
-			
-			for each (var guardClass:Class in guardClasses)
-			{
-				guard = useInjector.getInstance(guardClass);
-				if(! guard.approve())
-					return false;
-			}
-			
-			return true;
-		}
-		
-		protected function verifyGuardClasses(guardClasses:Vector.<Class>):void
-		{
-			for each (var guardClass:Class in guardClasses)
-			{
-				if(!(describeType(guardClass).factory.method.(@name == "approve").length() == 1))
-				{
-					throw new ArgumentError("No approve function found on class " + guardClass);
-				}
-			}
-		}
 		
 	}
 }
