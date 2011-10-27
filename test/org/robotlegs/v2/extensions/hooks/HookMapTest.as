@@ -10,15 +10,10 @@ package org.robotlegs.v2.extensions.hooks
 	import org.flexunit.asserts.*;
 	import org.flexunit.asserts.assertEqualsVectorsIgnoringOrder;
 	import org.swiftsuspenders.Injector;
-	import flash.utils.Dictionary;
-	import org.robotlegs.v2.extensions.hooks.HooksProcessor;
 	import flash.display.DisplayObject;
 	import org.robotlegs.v2.core.impl.TypeMatcher;
 	import flash.display.Sprite;
 	import flash.display.MovieClip;
-	import org.robotlegs.v2.core.api.ITypeMatcher;
-	import org.robotlegs.v2.core.api.ITypeFilter;
-	import org.robotlegs.v2.core.impl.tddasifyoumeanit.itemPassesFilter;
 
 	public class HookMapTest 
 	{
@@ -29,9 +24,6 @@ package org.robotlegs.v2.extensions.hooks
 		private var instance:HookMap;
 		private var injector:Injector;
 		private const hookTracker:HookTracker = new HookTracker();
-		private var _hooksByClazz:Dictionary;
-		private var _hooksByMatcher:Dictionary;
-		private var hooksProcessor:HooksProcessor;
 
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
@@ -42,10 +34,9 @@ package org.robotlegs.v2.extensions.hooks
 		{
 			instance = new HookMap();
 			injector = new Injector();
+			instance.injector = injector;
+			instance.hooksProcessor = new HooksProcessor();
 			injector.map(HookTracker).toValue(hookTracker);
-			hooksProcessor = new HooksProcessor();
-			_hooksByClazz = new Dictionary();
-			_hooksByMatcher = new Dictionary();
 		}
 
 		[After]
@@ -72,18 +63,10 @@ package org.robotlegs.v2.extensions.hooks
 		}
 		
 		[Test]
-		public function a_hook_is_instantiated_and_run():void
-		{
-			var exampleHook:ExampleHook = new ExampleHook();
-			exampleHook.hook();
-			assertEquals("the example hook has been run", 1, exampleHook.runCount);
-		}
-		
-		[Test]
 		public function a_hook_is_run_after_mapping_with_injections():void
 		{
-			map(ExampleTarget).toHook(TrackableHook1);
-			process(new ExampleTarget());
+			instance.map(ExampleTarget).toHook(TrackableHook1);
+			instance.process(new ExampleTarget());
 			var expectedHooksConfirmed:Vector.<String> = new <String>['TrackableHook1'];
 			assertEqualsVectorsIgnoringOrder('hook ran in response to trigger class', expectedHooksConfirmed, hookTracker.hooksConfirmed);
 		}
@@ -91,8 +74,8 @@ package org.robotlegs.v2.extensions.hooks
 		[Test]
 		public function multiple_hooks_run_after_mapping():void
 		{
-			map(ExampleTarget).toHooks(TrackableHook1, TrackableHook2);
-			process(new ExampleTarget());
+			instance.map(ExampleTarget).toHooks(TrackableHook1, TrackableHook2);
+			instance.process(new ExampleTarget());
 			var expectedHooksConfirmed:Vector.<String> = new <String>['TrackableHook1', 'TrackableHook2'];
 			assertEqualsVectorsIgnoringOrder('both hooks have run in response to trigger class', expectedHooksConfirmed, hookTracker.hooksConfirmed);
 		}
@@ -100,8 +83,8 @@ package org.robotlegs.v2.extensions.hooks
 		[Test]
 		public function runs_hooks_against_matched_matcher():void
 		{
-			mapMatcher(new TypeMatcher().allOf(DisplayObject)).toHooks(TrackableHook1, TrackableHook2);
-			process(new Sprite());
+			instance.mapMatcher(new TypeMatcher().allOf(DisplayObject)).toHooks(TrackableHook1, TrackableHook2);
+			instance.process(new Sprite());
 			var expectedHooksConfirmed:Vector.<String> = new <String>['TrackableHook1', 'TrackableHook2'];
 			assertEqualsVectorsIgnoringOrder('both hooks have run in response to class matching the matcher', expectedHooksConfirmed, hookTracker.hooksConfirmed);
 		}
@@ -109,8 +92,8 @@ package org.robotlegs.v2.extensions.hooks
 		[Test]
 		public function no_hooks_run_for_unmatched_object():void
 		{
-			mapMatcher(new TypeMatcher().allOf(MovieClip)).toHooks(TrackableHook1, TrackableHook2);
-			process(new Sprite());
+			instance.mapMatcher(new TypeMatcher().allOf(MovieClip)).toHooks(TrackableHook1, TrackableHook2);
+			instance.process(new Sprite());
 			var expectedHooksConfirmed:Vector.<String> = new <String>[];
 			assertEqualsVectorsIgnoringOrder('no hooks run for unmatched object', expectedHooksConfirmed, hookTracker.hooksConfirmed);
 			
@@ -132,86 +115,6 @@ package org.robotlegs.v2.extensions.hooks
 		/* Protected Functions                                                        */
 		/*============================================================================*/
 		
-		protected function map(clazz:Class):MapBinding
-		{
-			_hooksByClazz[clazz] = new MapBinding();
-			
-			return _hooksByClazz[clazz];
-		}
-		
-		protected function mapMatcher(matcher:ITypeMatcher):MapBinding
-		{
-			const filter:ITypeFilter = matcher.createTypeFilter();
-			_hooksByMatcher[filter] = new MapBinding();
-			
-			return _hooksByMatcher[filter];
-		}
-		
-		protected function process(item:*):void
-		{
-			for (var clazz:* in _hooksByClazz)
-			{
-				if(item is (clazz as Class))
-				{
-					hooksProcessor.runHooks(injector, _hooksByClazz[clazz].hooks);
-				}
-			}
-			for (var filter:* in _hooksByMatcher)
-			{
-				if(itemPassesFilter(item, filter as ITypeFilter))
-				{
-					hooksProcessor.runHooks(injector, _hooksByMatcher[filter].hooks);
-				}
-			}
-		}
-		
-	}
-}
-
-class MapBinding
-{
-	protected var _hooks:Vector.<Class> = new Vector.<Class>();
-	
-	public function get hooks():Vector.<Class>
-	{
-		return _hooks;
-	}
-	
-	public function toHook(hookClass:Class):void
-	{
-		hooks.push(hookClass);
-	}
-	
-	public function toHooks(...hookClasses):void
-	{
-		if(hookClasses.length==1)
-		{
-			if(hookClasses[0] is Array)
-			{
-				hookClasses = hookClasses[0]
-			}
-			else if(hookClasses[0] is Vector.<Class>)
-			{
-				hookClasses = createArrayFromVector(hookClasses[0]);
-			}
-		}
-		
-		for each (var clazz:Class in hookClasses)
-		{
-			hooks.push(clazz);
-		}
-	}
-	
-	protected function createArrayFromVector(typesVector:Vector.<Class>):Array
-	{
-		const returnArray:Array = [];
-
-		for each (var type:Class in typesVector)
-		{
-			returnArray.push(type);
-		}
-
-		return returnArray;
 	}
 }
 
