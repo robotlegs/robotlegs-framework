@@ -62,32 +62,11 @@ package org.robotlegs.v2.extensions.hooks
 			assertTrue("Failing test", true);
 		}
 
-		[Test]
-		public function a_hook_is_run():void
-		{
-			var exampleHook:ExampleHook = new ExampleHook();
-			exampleHook.hook();
-			assertEquals("the example hook has been run", 1, exampleHook.runCount);
-		}
-		
-		[Test]
-		public function a_hook_is_given_injections_correctly():void
-		{
-			var exampleHook:ExampleHookWithInjection = injector.getInstance(ExampleHookWithInjection);
-			exampleHook.hook();
-			assertEquals("the example hook has been run", DOUBLED_TEXT, exampleHook.doubled);
-		}
-
-		// a number of hooks are run
 		[Test]	
 		public function a_number_of_hooks_are_run():void
 		{
 			var requiredHooks:Vector.<Class> = new <Class>[TrackableHook1, TrackableHook2];
-			for each (var hookClass:Class in requiredHooks)
-			{
-				var hook:* = injector.getInstance(hookClass);
-				hook.hook();
-			}
+			runHooks(injector, requiredHooks);
 			
 			var expectedHooksConfirmed:Vector.<String> = new <String>['TrackableHook1', 'TrackableHook2'];
 			assertEqualsVectorsIgnoringOrder('both hooks have run', expectedHooksConfirmed, hookTracker.hooksConfirmed);
@@ -97,45 +76,27 @@ package org.robotlegs.v2.extensions.hooks
 		public function a_non_hook_causes_us_to_throw_an_argument_error():void
 		{
 			var requiredHooks:Vector.<Class> = new <Class>[TrackableHook1, TrackableHook2, NonHook];
-			for each (var hookClass:Class in requiredHooks)
-			{
-				if(! (describeType(hookClass).factory.method.(@name == "hook").length() == 1))
-				{
-					throw new ArgumentError("No hook function found on class " + hookClass);
-				}
-				var hook:* = injector.getInstance(hookClass);
-				hook.hook();
-			}
+			runHooks(injector, requiredHooks);
 		}
 
 		/*============================================================================*/
 		/* Protected Functions                                                        */
 		/*============================================================================*/
 		
+		protected function runHooks(useInjector:Injector, hookClasses:Vector.<Class>):void
+		{
+			for each (var hookClass:Class in hookClasses)
+			{
+				if(! (describeType(hookClass).factory.method.(@name == "hook").length() == 1))
+				{
+					throw new ArgumentError("No hook function found on class " + hookClass);
+				}
+				var hook:* = useInjector.getInstance(hookClass);
+				hook.hook();
+			}
+		}
+		
 	}
-}
-
-class ExampleHook 
-{
-	public var runCount:uint = 0;
-	
-	public function hook():void
-	{
-		runCount++;
-	}
-}
-
-class ExampleHookWithInjection
-{
-	[Inject]
-	public var someInjectedVar:String;
-	
-	public var doubled:String;
-	
-	public function hook():void
-	{
-		doubled = someInjectedVar + someInjectedVar;
-	} 
 }
 
 class TrackableHook1
