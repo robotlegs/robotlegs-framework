@@ -7,7 +7,11 @@
 
 package org.robotlegs.v2.extensions.hooks
 {
-	public class  HooksProcessor
+	import org.swiftsuspenders.Injector;
+	import ArgumentError;
+	import flash.utils.describeType;
+	
+	public class HooksProcessor
 	{
 		
 		/*============================================================================*/
@@ -26,7 +30,19 @@ package org.robotlegs.v2.extensions.hooks
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
-
+		
+		public function runHooks(useInjector:Injector, hookClasses:Vector.<Class>):void
+		{
+			for each (var hookClass:Class in hookClasses)
+			{
+				if(! (describeType(hookClass).factory.method.(@name == "hook").length() == 1))
+				{
+					throw new ArgumentError("No hook function found on class " + hookClass);
+				}
+				var hook:* = useInjector.getInstance(hookClass);
+				hook.hook();
+			}
+		}
 
 		/*============================================================================*/
 		/* Protected Functions                                                        */

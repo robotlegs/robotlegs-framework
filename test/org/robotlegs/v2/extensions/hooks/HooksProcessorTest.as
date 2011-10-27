@@ -8,10 +8,9 @@
 package org.robotlegs.v2.extensions.hooks 
 {
 	import org.flexunit.asserts.*;
-	import org.swiftsuspenders.Injector;
 	import org.flexunit.asserts.assertEqualsVectorsIgnoringOrder;
+	import org.swiftsuspenders.Injector;
 	import ArgumentError;
-	import flash.utils.describeType;
 
 	public class HooksProcessorTest 
 	{
@@ -22,10 +21,7 @@ package org.robotlegs.v2.extensions.hooks
 		private var instance:HooksProcessor;
 		
 		private var injector:Injector;
-		
-		private const SINGLE_TEXT:String = "single_text";
-		private const DOUBLED_TEXT:String = SINGLE_TEXT+SINGLE_TEXT;
-		
+
 		private const hookTracker:HookTracker = new HookTracker();
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
@@ -36,7 +32,6 @@ package org.robotlegs.v2.extensions.hooks
 		{
 			instance = new HooksProcessor();
 			injector = new Injector();
-			injector.map(String).toValue(SINGLE_TEXT);
 			injector.map(HookTracker).toValue(hookTracker);
 		}
 
@@ -66,7 +61,7 @@ package org.robotlegs.v2.extensions.hooks
 		public function a_number_of_hooks_are_run():void
 		{
 			var requiredHooks:Vector.<Class> = new <Class>[TrackableHook1, TrackableHook2];
-			runHooks(injector, requiredHooks);
+			instance.runHooks(injector, requiredHooks);
 			
 			var expectedHooksConfirmed:Vector.<String> = new <String>['TrackableHook1', 'TrackableHook2'];
 			assertEqualsVectorsIgnoringOrder('both hooks have run', expectedHooksConfirmed, hookTracker.hooksConfirmed);
@@ -76,25 +71,12 @@ package org.robotlegs.v2.extensions.hooks
 		public function a_non_hook_causes_us_to_throw_an_argument_error():void
 		{
 			var requiredHooks:Vector.<Class> = new <Class>[TrackableHook1, TrackableHook2, NonHook];
-			runHooks(injector, requiredHooks);
+			instance.runHooks(injector, requiredHooks);
 		}
 
 		/*============================================================================*/
 		/* Protected Functions                                                        */
 		/*============================================================================*/
-		
-		protected function runHooks(useInjector:Injector, hookClasses:Vector.<Class>):void
-		{
-			for each (var hookClass:Class in hookClasses)
-			{
-				if(! (describeType(hookClass).factory.method.(@name == "hook").length() == 1))
-				{
-					throw new ArgumentError("No hook function found on class " + hookClass);
-				}
-				var hook:* = useInjector.getInstance(hookClass);
-				hook.hook();
-			}
-		}
 		
 	}
 }
