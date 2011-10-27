@@ -9,6 +9,7 @@ package org.robotlegs.v2.extensions.guards
 {
 	import org.swiftsuspenders.Injector;
 	import flash.utils.describeType;
+	import flash.utils.Dictionary;
 
 	public class  GuardsProcessor
 	{
@@ -17,6 +18,7 @@ package org.robotlegs.v2.extensions.guards
 		/* Protected Properties                                                       */
 		/*============================================================================*/
 
+		protected const _verifiedGuardClasses:Dictionary = new Dictionary();
 
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -54,9 +56,13 @@ package org.robotlegs.v2.extensions.guards
 		{
 			for each (var guardClass:Class in guardClasses)
 			{
-				if(!(describeType(guardClass).factory.method.(@name == "approve").length() == 1))
+				if(!_verifiedGuardClasses[guardClass])
 				{
-					throw new ArgumentError("No approve function found on class " + guardClass);
+					_verifiedGuardClasses[guardClass] = (describeType(guardClass).factory.method.(@name == "approve").length() == 1);
+					if(!_verifiedGuardClasses[guardClass])
+					{
+						throw new ArgumentError("No approve function found on class " + guardClass);
+					}
 				}
 			}
 		}
