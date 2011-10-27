@@ -7,8 +7,9 @@
 
 package suites
 {
-	import org.robotlegs.v2.utilities.hooks.HookBaseTest;
-	import org.robotlegs.v2.utilities.hooks.HookUtilityMapTest;
+	import org.robotlegs.v2.extensions.hooks.HookBaseTest;
+	import org.robotlegs.v2.extensions.hooks.HookUtilityMapTest;
+	import org.robotlegs.v2.extensions.hooks.HooksProcessorTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
@@ -21,6 +22,8 @@ package suites
 
 		public var hookBaseTest:HookBaseTest;
 		
-		public var hookUtilityMap:HookUtilityMapTest;
+		public var hookUtilityMapTest:HookUtilityMapTest;
+		
+		public var hooksProcessorTest:HooksProcessorTest;
 	}
 }

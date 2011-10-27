@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.utilities.hooks
+package org.robotlegs.v2.extensions.hooks
 {
 	public class  HookBase
 	{
