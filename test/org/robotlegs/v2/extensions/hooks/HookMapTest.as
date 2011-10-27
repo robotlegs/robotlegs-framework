@@ -14,6 +14,7 @@ package org.robotlegs.v2.extensions.hooks
 	import org.robotlegs.v2.core.impl.TypeMatcher;
 	import flash.display.Sprite;
 	import flash.display.MovieClip;
+	import org.robotlegs.v2.extensions.guards.GuardsProcessor;
 
 	public class HookMapTest 
 	{
@@ -36,6 +37,7 @@ package org.robotlegs.v2.extensions.hooks
 			injector = new Injector();
 			instance.injector = injector;
 			instance.hooksProcessor = new HooksProcessor();
+			instance.guardsProcessor = new GuardsProcessor();
 			injector.map(HookTracker).toValue(hookTracker);
 		}
 
@@ -99,6 +101,24 @@ package org.robotlegs.v2.extensions.hooks
 			
 		}
 		
+		[Test]
+		public function a_grumpy_guard_prevents_the_hook_from_running():void
+		{
+			instance.mapMatcher(new TypeMatcher().allOf(DisplayObject)).toHooks(TrackableHook1, TrackableHook2).withGuards(HappyGuard, GrumpyGuard);
+			instance.process(new Sprite());
+			var expectedHooksConfirmed:Vector.<String> = new <String>[];
+			assertEqualsVectorsIgnoringOrder('no hooks run when guards prevent it', expectedHooksConfirmed, hookTracker.hooksConfirmed);
+		}
+		
+		[Test]
+		public function all_happy_guards_allow_the_hook_to_run():void
+		{
+			instance.mapMatcher(new TypeMatcher().allOf(DisplayObject)).toHooks(TrackableHook1, TrackableHook2).withGuards(HappyGuard);
+			instance.process(new Sprite());
+			var expectedHooksConfirmed:Vector.<String> = new <String>['TrackableHook1', 'TrackableHook2'];
+			assertEqualsVectorsIgnoringOrder('both hooks have run when the guards approved of it', expectedHooksConfirmed, hookTracker.hooksConfirmed);
+		}
+
 		// always_returns_non_blocking_bitmask
 		
 		// returns_true_if_interested
@@ -106,27 +126,11 @@ package org.robotlegs.v2.extensions.hooks
 		// returns_false_if_not_interested
 		
 		// unmapping_the_hook_prevents_it_from_running
-		
-		// a_grumpy_guard_prevents_the_hook_from_running
-		
-		// all_happy_guards_allow_the_hook_to_run
 
 		/*============================================================================*/
 		/* Protected Functions                                                        */
 		/*============================================================================*/
 		
-	}
-}
-
-class ExampleHook 
-{
-	[Inject]
-	
-	public var runCount:uint = 0;
-	
-	public function hook():void
-	{
-		runCount++;
 	}
 }
 
@@ -166,5 +170,21 @@ class ExampleTarget
 {
 	public function ExampleTarget()
 	{
+	}
+}
+
+class HappyGuard
+{
+	public function approve():Boolean
+	{
+		return true;
+	}
+}
+
+class GrumpyGuard
+{
+	public function approve():Boolean
+	{
+		return false;
 	}
 }

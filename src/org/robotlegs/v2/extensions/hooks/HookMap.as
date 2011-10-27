@@ -12,6 +12,7 @@ package org.robotlegs.v2.extensions.hooks
 	import org.robotlegs.v2.core.api.ITypeFilter;
 	import org.robotlegs.v2.core.impl.tddasifyoumeanit.itemPassesFilter;
 	import org.swiftsuspenders.Injector;
+	import org.robotlegs.v2.extensions.guards.GuardsProcessor;
 
 	public class HookMap
 	{
@@ -24,6 +25,9 @@ package org.robotlegs.v2.extensions.hooks
 		
 		[Inject]
 		public var hooksProcessor:HooksProcessor;
+		
+		[Inject]
+		public var guardsProcessor:GuardsProcessor;
 		
 		/*============================================================================*/
 		/* Protected Properties                                                       */
@@ -62,19 +66,21 @@ package org.robotlegs.v2.extensions.hooks
 		}
 		
 		public function process(item:*):void
-		{
+		{			
 			for (var clazz:* in _hooksByClazz)
 			{
 				if(item is (clazz as Class))
 				{
-					hooksProcessor.runHooks(injector, _hooksByClazz[clazz].hooks);
+					if(!blockedByGuards(_hooksByClazz[clazz].guards) )
+						hooksProcessor.runHooks(injector, _hooksByClazz[clazz].hooks);
 				}
 			}
 			for (var filter:* in _hooksByMatcher)
 			{
 				if(itemPassesFilter(item, filter as ITypeFilter))
 				{
-					hooksProcessor.runHooks(injector, _hooksByMatcher[filter].hooks);
+					if(!blockedByGuards(_hooksByMatcher[filter].guards) )
+						hooksProcessor.runHooks(injector, _hooksByMatcher[filter].hooks);
 				}
 			}
 		}
@@ -83,40 +89,66 @@ package org.robotlegs.v2.extensions.hooks
 		/* Protected Functions                                                        */
 		/*============================================================================*/
 		
+		protected function blockedByGuards(guards:Vector.<Class>):Boolean
+		{
+			return ((guards.length > 0) 
+					&& !( guardsProcessor.processGuards(injector , guards) ) )
+		}
 	}
 }
 
 class MapBinding
 {
 	protected var _hooks:Vector.<Class> = new Vector.<Class>();
+	protected var _guards:Vector.<Class> = new Vector.<Class>();
 	
 	public function get hooks():Vector.<Class>
 	{
 		return _hooks;
 	}
 	
-	public function toHook(hookClass:Class):void
+	public function get guards():Vector.<Class>
 	{
-		hooks.push(hookClass);
+		return _guards;
 	}
 	
-	public function toHooks(...hookClasses):void
+	public function toHook(hookClass:Class):MapBinding
 	{
-		if(hookClasses.length==1)
+		hooks.push(hookClass);
+		return this;
+	}
+	
+	public function toHooks(...hookClasses):MapBinding
+	{
+		pushValuesToVector(hookClasses, _hooks);
+		
+		return this;
+	}
+	
+	public function withGuards(...guardClasses):MapBinding
+	{
+		pushValuesToVector(guardClasses, _guards);
+		
+		return this;
+	}
+	
+	protected function pushValuesToVector(values:Array, vector:Vector.<Class>):void
+	{
+		if(values.length==1)
 		{
-			if(hookClasses[0] is Array)
+			if(values[0] is Array)
 			{
-				hookClasses = hookClasses[0]
+				values = values[0]
 			}
-			else if(hookClasses[0] is Vector.<Class>)
+			else if(values[0] is Vector.<Class>)
 			{
-				hookClasses = createArrayFromVector(hookClasses[0]);
+				values = createArrayFromVector(values[0]);
 			}
 		}
 		
-		for each (var clazz:Class in hookClasses)
+		for each (var clazz:Class in values)
 		{
-			hooks.push(clazz);
+			vector.push(clazz);
 		}
 	}
 	
