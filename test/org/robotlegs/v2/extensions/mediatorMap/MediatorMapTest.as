@@ -359,7 +359,6 @@ class HookWithMediatorAndViewInjectionDrawsRectangle
 	
 	public function hook():void
 	{
-		trace("MediatorMapTest::hook()");
 		const requiredWidth:Number = mediator.rectangle.width;
 		const requiredHeight:Number = mediator.rectangle.height;
 		

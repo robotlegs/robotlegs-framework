@@ -40,22 +40,9 @@ package org.robotlegs.v2.extensions.hooks
 			return _guards;
 		}
 	
-		public function toHook(hookClass:Class):GuardsAndHooksMapBinding
-		{
-			hooks.push(hookClass);
-			return this;
-		}
-	
-		public function toHooks(...hookClasses):GuardsAndHooksMapBinding
-		{
-			pushValuesToVector(hookClasses, _hooks);
-		
-			return this;
-		}
-		
 		public function withHooks(...hookClasses):GuardsAndHooksMapBinding
 		{
-			toHooks(hookClasses);
+			pushValuesToVector(hookClasses, _hooks);
 			return this;
 		}
 		

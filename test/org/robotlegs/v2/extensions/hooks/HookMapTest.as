@@ -75,7 +75,7 @@ package org.robotlegs.v2.extensions.hooks
 		[Test]
 		public function a_hook_is_run_after_mapping_with_injections():void
 		{
-			instance.map(ExampleTarget).toHook(TrackableHook1);
+			instance.map(ExampleTarget).withHooks(TrackableHook1);
 			instance.process(new ExampleTarget());
 			var expectedHooksConfirmed:Vector.<String> = new <String>['TrackableHook1'];
 			assertEqualsVectorsIgnoringOrder('hook ran in response to trigger class', expectedHooksConfirmed, hookTracker.hooksConfirmed);
@@ -84,7 +84,7 @@ package org.robotlegs.v2.extensions.hooks
 		[Test]
 		public function multiple_hooks_run_after_mapping():void
 		{
-			instance.map(ExampleTarget).toHooks(TrackableHook1, TrackableHook2);
+			instance.map(ExampleTarget).withHooks(TrackableHook1, TrackableHook2);
 			instance.process(new ExampleTarget());
 			var expectedHooksConfirmed:Vector.<String> = new <String>['TrackableHook1', 'TrackableHook2'];
 			assertEqualsVectorsIgnoringOrder('both hooks have run in response to trigger class', expectedHooksConfirmed, hookTracker.hooksConfirmed);
@@ -93,7 +93,7 @@ package org.robotlegs.v2.extensions.hooks
 		[Test]
 		public function runs_hooks_against_matched_matcher():void
 		{
-			instance.mapMatcher(new TypeMatcher().allOf(DisplayObject)).toHooks(TrackableHook1, TrackableHook2);
+			instance.mapMatcher(new TypeMatcher().allOf(DisplayObject)).withHooks(TrackableHook1, TrackableHook2);
 			instance.process(new Sprite());
 			var expectedHooksConfirmed:Vector.<String> = new <String>['TrackableHook1', 'TrackableHook2'];
 			assertEqualsVectorsIgnoringOrder('both hooks have run in response to class matching the matcher', expectedHooksConfirmed, hookTracker.hooksConfirmed);
@@ -102,7 +102,7 @@ package org.robotlegs.v2.extensions.hooks
 		[Test]
 		public function no_hooks_run_for_unmatched_object():void
 		{
-			instance.mapMatcher(new TypeMatcher().allOf(MovieClip)).toHooks(TrackableHook1, TrackableHook2);
+			instance.mapMatcher(new TypeMatcher().allOf(MovieClip)).withHooks(TrackableHook1, TrackableHook2);
 			instance.process(new Sprite());
 			var expectedHooksConfirmed:Vector.<String> = new <String>[];
 			assertEqualsVectorsIgnoringOrder('no hooks run for unmatched object', expectedHooksConfirmed, hookTracker.hooksConfirmed);
@@ -112,7 +112,7 @@ package org.robotlegs.v2.extensions.hooks
 		[Test]
 		public function a_grumpy_guard_prevents_the_hook_from_running():void
 		{
-			instance.mapMatcher(new TypeMatcher().allOf(DisplayObject)).toHooks(TrackableHook1, TrackableHook2).withGuards(HappyGuard, GrumpyGuard);
+			instance.mapMatcher(new TypeMatcher().allOf(DisplayObject)).withHooks(TrackableHook1, TrackableHook2).withGuards(HappyGuard, GrumpyGuard);
 			instance.process(new Sprite());
 			var expectedHooksConfirmed:Vector.<String> = new <String>[];
 			assertEqualsVectorsIgnoringOrder('no hooks run when guards prevent it', expectedHooksConfirmed, hookTracker.hooksConfirmed);
@@ -121,7 +121,7 @@ package org.robotlegs.v2.extensions.hooks
 		[Test]
 		public function all_happy_guards_allow_the_hook_to_run():void
 		{
-			instance.mapMatcher(new TypeMatcher().allOf(DisplayObject)).toHooks(TrackableHook1, TrackableHook2).withGuards(HappyGuard);
+			instance.mapMatcher(new TypeMatcher().allOf(DisplayObject)).withHooks(TrackableHook1, TrackableHook2).withGuards(HappyGuard);
 			instance.process(new Sprite());
 			var expectedHooksConfirmed:Vector.<String> = new <String>['TrackableHook1', 'TrackableHook2'];
 			assertEqualsVectorsIgnoringOrder('both hooks have run when the guards approved of it', expectedHooksConfirmed, hookTracker.hooksConfirmed);
@@ -130,21 +130,21 @@ package org.robotlegs.v2.extensions.hooks
 		[Test]
 		public function returns_true_if_interested_even_if_guards_block_running():void
 		{
-			instance.mapMatcher(new TypeMatcher().allOf(DisplayObject)).toHooks(TrackableHook1, TrackableHook2).withGuards(HappyGuard, GrumpyGuard);
+			instance.mapMatcher(new TypeMatcher().allOf(DisplayObject)).withHooks(TrackableHook1, TrackableHook2).withGuards(HappyGuard, GrumpyGuard);
 			assertTrue( instance.process(new Sprite()));			
 		}
 
 		[Test]
 		public function returns_false_if_not_interested_even_if_no_guards():void
 		{
-			instance.mapMatcher(new TypeMatcher().allOf(MovieClip)).toHooks(TrackableHook1, TrackableHook2);
+			instance.mapMatcher(new TypeMatcher().allOf(MovieClip)).withHooks(TrackableHook1, TrackableHook2);
 			assertFalse(instance.process(new Sprite()));
 		}
 		
 		[Test]
 		public function a_hook_not_run_after_mapping_if_the_item_is_a_subclass():void
 		{
-			instance.map(DisplayObject).toHook(TrackableHook1);
+			instance.map(DisplayObject).withHooks(TrackableHook1);
 			instance.process(new Sprite());
 			var expectedHooksConfirmed:Vector.<String> = new <String>[];
 			assertEqualsVectorsIgnoringOrder(expectedHooksConfirmed, hookTracker.hooksConfirmed);

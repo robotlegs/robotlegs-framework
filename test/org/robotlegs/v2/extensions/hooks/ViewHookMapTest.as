@@ -86,7 +86,7 @@ package org.robotlegs.v2.extensions.hooks
 		[Test]
 		public function running_handler_with_view_that_matches_mapping_makes_hooks_run():void
 		{
-			instance.map(Sprite).toHooks(TrackableHook1, TrackableHook2);
+			instance.map(Sprite).withHooks(TrackableHook1, TrackableHook2);
 			instance.handleViewAdded(new Sprite(), null);
 
 			var expectedHooksConfirmed:Vector.<String> = new <String>['TrackableHook1', 'TrackableHook2'];
@@ -96,7 +96,7 @@ package org.robotlegs.v2.extensions.hooks
 		[Test]
 		public function running_handler_with_view_that_doesnt_match_mapping_doesnt_make_hooks_run():void
 		{
-			instance.map(MovieClip).toHooks(TrackableHook1, TrackableHook2);
+			instance.map(MovieClip).withHooks(TrackableHook1, TrackableHook2);
 			instance.handleViewAdded(new Sprite(), null);
 
 			var expectedHooksConfirmed:Vector.<String> = new <String>[];
@@ -106,7 +106,7 @@ package org.robotlegs.v2.extensions.hooks
 		[Test]
 		public function running_handler_with_view_that_matches_matcher_mapping_makes_hooks_run():void
 		{
-			instance.mapMatcher(new TypeMatcher().allOf(DisplayObject)).toHooks(TrackableHook1, TrackableHook2);
+			instance.mapMatcher(new TypeMatcher().allOf(DisplayObject)).withHooks(TrackableHook1, TrackableHook2);
 			instance.handleViewAdded(new Sprite(), null);
 
 			var expectedHooksConfirmed:Vector.<String> = new <String>['TrackableHook1', 'TrackableHook2'];
@@ -116,7 +116,7 @@ package org.robotlegs.v2.extensions.hooks
 		[Test]
 		public function running_handler_with_view_that_doesnt_match_matcher_mapping_doesnt_make_hooks_run():void
 		{
-			instance.mapMatcher(new TypeMatcher().allOf(MovieClip)).toHooks(TrackableHook1, TrackableHook2);
+			instance.mapMatcher(new TypeMatcher().allOf(MovieClip)).withHooks(TrackableHook1, TrackableHook2);
 			instance.handleViewAdded(new Sprite(), null);
 
 			var expectedHooksConfirmed:Vector.<String> = new <String>[];
@@ -126,7 +126,7 @@ package org.robotlegs.v2.extensions.hooks
 		[Test]
 		public function handleViewAdded_returns_1_if_interested():void
 		{
-			instance.mapMatcher(new TypeMatcher().allOf(DisplayObject)).toHooks(TrackableHook1, TrackableHook2);
+			instance.mapMatcher(new TypeMatcher().allOf(DisplayObject)).withHooks(TrackableHook1, TrackableHook2);
 			const returned:uint = instance.handleViewAdded(new Sprite(), null);
 			assertEquals(1, returned);
 		}
@@ -134,7 +134,7 @@ package org.robotlegs.v2.extensions.hooks
 		[Test]
 		public function handleViewAdded_returns_0_if_not_interested():void
 		{
-			instance.mapMatcher(new TypeMatcher().allOf(MovieClip)).toHooks(TrackableHook1, TrackableHook2);
+			instance.mapMatcher(new TypeMatcher().allOf(MovieClip)).withHooks(TrackableHook1, TrackableHook2);
 			const returned:uint = instance.handleViewAdded(new Sprite(), null);
 			assertEquals(0, returned);
 		}
