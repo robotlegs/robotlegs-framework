@@ -36,10 +36,25 @@ package org.robotlegs.v2.core.api
 
 		function initialize():void;
 
-		function installExtension(extension:IContextExtension):void;
+		/**
+		 * Install a runtime context extension
+		 * @param extensionClass a class that implements IContextExtension
+		 * return context
+		 */
+		function installExtension(extensionClass:Class):IContext;
 
-		function uninstallExtension(extension:IContextExtension):void;
+		/**
+		 * Uninstall a runtime context extension
+		 * @param extensionClass a class that implements IContextExtension
+		 * return context
+		 */
+		function uninstallExtension(extensionClass:Class):IContext;
 
-		function withConfig(config:IContextConfig):void;
+		/**
+		 * Application config
+		 * @param configClass a class that implements IContextConfig
+		 * return context
+		 */
+		function withConfig(configClass:Class):IContext;
 	}
 }

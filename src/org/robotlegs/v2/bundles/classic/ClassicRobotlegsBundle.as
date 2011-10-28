@@ -27,7 +27,7 @@ package org.robotlegs.v2.bundles.classic
 		public function install(builder:IContextBuilder):void
 		{
 			// Use a simple trace logger
-			builder.withExtension(new SimpleLoggingExtension());
+			builder.withExtension(SimpleLoggingExtension);
 
 			// Use a LoggingEventDispatcher
 			builder.withDispatcher(new LoggingEventDispatcher());
@@ -37,15 +37,15 @@ package org.robotlegs.v2.bundles.classic
 			// Install the ViewManager and StageWatcher extensions
 			// and add the contextView to the ViewManager
 			builder
-				.withExtension(new ViewManagerExtension())
-				.withExtension(new StageWatcherExtension())
-				.withConfig(new ContextViewWatcherConfig());
+				.withExtension(ViewManagerExtension)
+				.withExtension(StageWatcherExtension)
+				.withConfig(ContextViewWatcherConfig);
 
 			// Determine context hierarchy by way of contextView
-			builder.withProcessor(new ParentContextFinder());
+			builder.withPreProcessor(ParentContextFinder);
 
 			// Destroy the context when the contextView leaves the stage
-			builder.withExtension(new AutoDestroyExtension());
+			builder.withExtension(AutoDestroyExtension);
 		}
 	}
 }

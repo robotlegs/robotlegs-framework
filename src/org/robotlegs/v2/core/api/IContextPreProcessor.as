@@ -8,8 +8,8 @@
 package org.robotlegs.v2.core.api
 {
 
-	public interface IContextProcessor
+	public interface IContextPreProcessor
 	{
-		function process(context:IContext, callback:Function):void;
+		function preProcess(context:IContext, callback:Function):void;
 	}
 }

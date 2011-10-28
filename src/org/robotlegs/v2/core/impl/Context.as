@@ -12,6 +12,7 @@ package org.robotlegs.v2.core.impl
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
 	import flash.system.ApplicationDomain;
+	import flash.utils.Dictionary;
 	import org.as3commons.logging.api.ILogger;
 	import org.as3commons.logging.api.getLogger;
 	import org.robotlegs.v2.core.api.IContext;
@@ -119,9 +120,11 @@ package org.robotlegs.v2.core.impl
 
 		private const _id:String = 'Context' + counter++;
 
-		private const configs:Vector.<IContextConfig> = new Vector.<IContextConfig>;
+		private const configClasses:Vector.<Class> = new Vector.<Class>;
 
-		private const extensions:Vector.<IContextExtension> = new Vector.<IContextExtension>;
+		private const extensionByClass:Dictionary = new Dictionary();
+
+		private const extensionClasses:Vector.<Class> = new Vector.<Class>;
 
 		private const logger:ILogger = getLogger(_id);
 
@@ -163,18 +166,23 @@ package org.robotlegs.v2.core.impl
 			logger.info('context initialization complete');
 		}
 
-		public function installExtension(extension:IContextExtension):void
+		public function installExtension(extensionClass:Class):IContext
 		{
-			logger.info('installing extension {0}', [extension]);
+			logger.info('installing extension {0}', [extensionClass]);
 			_destroyed && throwContextDestroyedError();
-			if (extensions.indexOf(extension) != -1)
-				return;
-			extensions.push(extension);
+			if (extensionClasses.indexOf(extensionClass) != -1)
+				return this;
+
+			extensionClasses.push(extensionClass);
+
 			if (initialized)
 			{
+				const extension:IContextExtension = createExtension(extensionClass);
 				extension.install(this);
 				extension.initialize(this);
 			}
+
+			return this;
 		}
 
 		public function toString():String
@@ -182,23 +190,28 @@ package org.robotlegs.v2.core.impl
 			return _id;
 		}
 
-		public function uninstallExtension(extension:IContextExtension):void
+		public function uninstallExtension(extensionClass:Class):IContext
 		{
-			logger.info('uninstalling extension {0}', [extension]);
+			logger.info('uninstalling extension {0}', [extensionClass]);
 			_destroyed && throwContextDestroyedError();
-			const index:int = extensions.indexOf(extension);
-			if (index > -1)
-			{
-				extensions.splice(index, 1);
-				extension.uninstall(this);
-			}
+			const index:int = extensionClasses.indexOf(extensionClass);
+			if (index == -1)
+				return this;
+
+			extensionClasses.splice(index, 1);
+
+			const extension:IContextExtension = extensionByClass[extensionClass];
+			extension && extension.uninstall(this);
+
+			return this;
 		}
 
-		public function withConfig(config:IContextConfig):void
+		public function withConfig(configClass:Class):IContext
 		{
 			_initialized && throwContextLockedError();
-			logger.info('adding config {0}', [config]);
-			configs.push(config);
+			logger.info('adding config {0}', [configClass]);
+			configClasses.push(configClass);
+			return this;
 		}
 
 		/*============================================================================*/
@@ -238,6 +251,13 @@ package org.robotlegs.v2.core.impl
 			_injector ||= createInjector();
 		}
 
+		private function createExtension(extensionClass:Class):IContextExtension
+		{
+			const extension:IContextExtension = injector.getInstance(extensionClass);
+			extensionByClass[extensionClass] = extension;
+			return extension;
+		}
+
 		private function createInjector():Injector
 		{
 			if (parent && parent.injector)
@@ -251,9 +271,9 @@ package org.robotlegs.v2.core.impl
 		private function initializeConfigs():void
 		{
 			logger.info('initializing configs');
-			configs.forEach(function(config:IContextConfig, ... rest):void
+			configClasses.forEach(function(configClass:Class, ... rest):void
 			{
-				injector.injectInto(config);
+				var config:IContextConfig = injector.getInstance(configClass);
 				config.configure(this);
 			}, this);
 		}
@@ -261,8 +281,9 @@ package org.robotlegs.v2.core.impl
 		private function initializeExtensions():void
 		{
 			logger.info('initializing extensions');
-			extensions.forEach(function(extension:IContextExtension, ... rest):void
+			extensionClasses.forEach(function(extensionClass:Class, ... rest):void
 			{
+				const extension:IContextExtension = extensionByClass[extensionClass]
 				extension.initialize(this);
 			}, this);
 		}
@@ -271,8 +292,9 @@ package org.robotlegs.v2.core.impl
 		{
 			logger.info('installing extensions');
 
-			extensions.forEach(function(extension:IContextExtension, ... rest):void
+			extensionClasses.forEach(function(extensionClass:Class, ... rest):void
 			{
+				const extension:IContextExtension = createExtension(extensionClass);
 				extension.install(this);
 			}, this);
 		}
@@ -304,9 +326,10 @@ package org.robotlegs.v2.core.impl
 		{
 			logger.info('uninstalling extensions');
 			// uninstall in reverse order
-			var extension:IContextExtension;
-			while (extension = extensions.pop())
+			var extensionClass:Class;
+			while (extensionClass = extensionClasses.pop())
 			{
+				const extension:IContextExtension = extensionByClass[extensionClass];
 				extension.uninstall(this);
 			}
 		}

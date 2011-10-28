@@ -12,11 +12,11 @@ package org.robotlegs.v2.bundles.shared.processors
 	import org.as3commons.logging.api.ILogger;
 	import org.as3commons.logging.api.getLogger;
 	import org.robotlegs.v2.core.api.IContext;
-	import org.robotlegs.v2.core.api.IContextProcessor;
+	import org.robotlegs.v2.core.api.IContextPreProcessor;
 	import org.robotlegs.v2.core.api.IContextViewRegistry;
 	import org.robotlegs.v2.core.impl.ContextViewRegistry;
 
-	public class ParentContextFinder implements IContextProcessor
+	public class ParentContextFinder implements IContextPreProcessor
 	{
 
 		/*============================================================================*/
@@ -41,7 +41,7 @@ package org.robotlegs.v2.bundles.shared.processors
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function process(context:IContext, callback:Function):void
+		public function preProcess(context:IContext, callback:Function):void
 		{
 			logger.info('looking for parent of context: {0}', [context]);
 
