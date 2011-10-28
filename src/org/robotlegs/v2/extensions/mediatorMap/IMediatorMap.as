@@ -7,12 +7,9 @@
 
 package org.robotlegs.v2.extensions.mediatorMap
 {
-	import org.robotlegs.v2.view.api.IViewHandler;
-
-	public interface IMediatorMap extends IViewHandler
+	public interface IMediatorMap
 	{
-	
-		function map(mediatorClazz:Class):IMediatorMappingBinding;
+		function map(mediatorClazz:Class):IMediatorMapping;
 	
 		//function unmap(mediatorClazz:Class):
 	}

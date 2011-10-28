@@ -4,10 +4,10 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import org.swiftsuspenders.Reflector;
 	import org.robotlegs.v2.core.api.ITypeMatcher;
 	import org.robotlegs.v2.core.api.ITypeFilter;
-	import org.robotlegs.v2.extensions.hooks.GuardsAndHooksMapBinding;
-	import org.robotlegs.v2.extensions.hooks.IGuardsAndHooksMapBinding;
+	import org.robotlegs.v2.extensions.hooks.GuardsAndHooksConfig;
+	import org.robotlegs.v2.extensions.hooks.IGuardsAndHooksConfig;
 	
-	public class MediatorMappingBinding extends GuardsAndHooksMapBinding implements IMediatorMappingBinding
+	public class MediatorMapping extends GuardsAndHooksConfig implements IMediatorMapping
 	{	
 		protected var _viewFCQNMap:Dictionary;
 
@@ -21,7 +21,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 		
 		protected var _typeFilter:ITypeFilter;
 
-		public function MediatorMappingBinding(viewFCQNMap:Dictionary, typeFilterMap:Dictionary, mediatorClazz:Class, reflector:Reflector)
+		public function MediatorMapping(viewFCQNMap:Dictionary, typeFilterMap:Dictionary, mediatorClazz:Class, reflector:Reflector)
 		{
 			_viewFCQNMap = viewFCQNMap;
 			_typeFilterMap = typeFilterMap;
@@ -39,7 +39,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 			return _viewClazz;
 		}
 
-		public function toView(viewClazz:Class):IGuardsAndHooksMapBinding
+		public function toView(viewClazz:Class):IGuardsAndHooksConfig
 		{
 			const fqcn:String = _reflector.getFQCN(viewClazz);
 			_viewFCQNMap[fqcn] = this;
@@ -48,7 +48,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 			return this;
 		}
 		
-		public function toMatcher(typeMatcher:ITypeMatcher):IGuardsAndHooksMapBinding
+		public function toMatcher(typeMatcher:ITypeMatcher):IGuardsAndHooksConfig
 		{
 			_typeFilter = typeMatcher.createTypeFilter();
 			_typeFilterMap[_typeFilter] = this;

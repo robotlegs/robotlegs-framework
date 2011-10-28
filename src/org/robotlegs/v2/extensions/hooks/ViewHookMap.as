@@ -63,12 +63,12 @@ package org.robotlegs.v2.extensions.hooks
 			// TODO - what goes here?
 		}
 		
-		public function map(clazz:Class):GuardsAndHooksMapBinding
+		public function map(clazz:Class):GuardsAndHooksConfig
 		{
 			return hookMap.map(clazz);
 		}
 		
-		public function mapMatcher(matcher:ITypeMatcher):GuardsAndHooksMapBinding
+		public function mapMatcher(matcher:ITypeMatcher):GuardsAndHooksConfig
 		{
 			return hookMap.mapMatcher(matcher);
 		}

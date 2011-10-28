@@ -7,15 +7,15 @@
 
 package org.robotlegs.v2.extensions.hooks
 {
-	public interface IGuardsAndHooksMapBinding
+	public interface IGuardsAndHooksConfig
 	{
 		function get hooks():Vector.<Class>;
 	
 		function get guards():Vector.<Class>;
 		
-		function withHooks(...hookClasses):IGuardsAndHooksMapBinding;
+		function withHooks(...hookClasses):IGuardsAndHooksConfig;
 		
-		function withGuards(...guardClasses):IGuardsAndHooksMapBinding;
+		function withGuards(...guardClasses):IGuardsAndHooksConfig;
 	}
 }
 

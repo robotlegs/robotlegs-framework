@@ -56,21 +56,21 @@ package org.robotlegs.v2.extensions.hooks
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function map(clazz:Class):GuardsAndHooksMapBinding
+		public function map(clazz:Class):GuardsAndHooksConfig
 		{
 			// TODO - overwrite? warnings? allow extension? handle duplicates? hrm.
 			
 			const fqcn:String = reflector.getFQCN(clazz);
 			
-			_mappingsByFCQN[fqcn] = new GuardsAndHooksMapBinding();
+			_mappingsByFCQN[fqcn] = new GuardsAndHooksConfig();
 			
 			return _mappingsByFCQN[fqcn];
 		}
 				
-		public function mapMatcher(matcher:ITypeMatcher):GuardsAndHooksMapBinding
+		public function mapMatcher(matcher:ITypeMatcher):GuardsAndHooksConfig
 		{
 			const filter:ITypeFilter = matcher.createTypeFilter();
-			_mappingsByTypeFilter[filter] = new GuardsAndHooksMapBinding();
+			_mappingsByTypeFilter[filter] = new GuardsAndHooksConfig();
 			
 			return _mappingsByTypeFilter[filter];
 		}

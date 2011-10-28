@@ -19,7 +19,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import org.swiftsuspenders.Reflector;
 	import flash.utils.getQualifiedClassName;
 	import org.robotlegs.v2.core.impl.itemPassesFilter;
-	import org.robotlegs.v2.extensions.mediatorMap.IMediatorMappingBinding;
+	import org.robotlegs.v2.extensions.mediatorMap.IMediatorMapping;
 	
 	
 	public class  MediatorMap implements IViewHandler
@@ -107,11 +107,11 @@ package org.robotlegs.v2.extensions.mediatorMap
 	
 		}
 		
-		public function map(mediatorClazz:Class):IMediatorMappingBinding
+		public function map(mediatorClazz:Class):IMediatorMapping
 		{			
 			// TODO = fix the fatal flaw with this plan - we can only have one mapping per mediator...
 			
-			_mappingsByMediatorClazz[mediatorClazz] = new MediatorMappingBinding(_mappingsByViewFCQN, _mappingsByTypeFilter, mediatorClazz, reflector);
+			_mappingsByMediatorClazz[mediatorClazz] = new MediatorMapping(_mappingsByViewFCQN, _mappingsByTypeFilter, mediatorClazz, reflector);
 			
 			return _mappingsByMediatorClazz[mediatorClazz];
 		}
@@ -121,7 +121,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 		/* Protected Functions                                                        */
 		/*============================================================================*/
 		
-		protected function processMapping(binding:IMediatorMappingBinding):void
+		protected function processMapping(binding:IMediatorMapping):void
 		{
 			if(!blockedByGuards(binding.guards))
 			{
@@ -130,7 +130,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 			}
 		}
 
-		protected function mapViewForTypeBinding(binding:IMediatorMappingBinding, view:DisplayObject):void
+		protected function mapViewForTypeBinding(binding:IMediatorMapping, view:DisplayObject):void
 		{
 			injector.map(binding.viewClass).toValue(view);
 		}
@@ -150,7 +150,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 			}
 		}
 		
-		protected function createMediatorForBinding(binding:IMediatorMappingBinding):void
+		protected function createMediatorForBinding(binding:IMediatorMapping):void
 		{
 			const mediator:* = injector.getInstance(binding.mediatorClass);
 			injector.map(binding.mediatorClass).toValue(mediator);
