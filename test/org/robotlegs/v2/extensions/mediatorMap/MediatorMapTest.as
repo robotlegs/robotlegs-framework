@@ -90,15 +90,6 @@ package org.robotlegs.v2.extensions.mediatorMap
 		}
 		
 		[Test]
-		public function manually_instantiate_mediator():void
-		{
-			var mediator:ExampleMediator = injector.getInstance(ExampleMediator);
-			
-			var expectedNotifications:Vector.<String> = new <String>['ExampleMediator'];
-			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
-		}
-		
-		[Test]
 		public function handler_instantiates_mediator_for_view_mapped_by_type():void
 		{
 			map(ExampleMediator).toView(Sprite);
@@ -112,18 +103,18 @@ package org.robotlegs.v2.extensions.mediatorMap
 		[Test]
 		public function handler_creates_mediator_for_view_mapped_by_matcher():void
 		{
-			map(ExampleMediator).toMatcher(new TypeMatcher().allOf(DisplayObject));
+			map(ExampleDisplayObjectMediator).toMatcher(new TypeMatcher().allOf(DisplayObject));
 			
 			handleViewAdded(new Sprite());
 
-			var expectedNotifications:Vector.<String> = new <String>['ExampleMediator'];
+			var expectedNotifications:Vector.<String> = new <String>['ExampleDisplayObjectMediator'];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
 		}
 		
 		[Test]
 		public function handler_doesnt_create_mediator_for_wrong_view_mapped_by_matcher():void
 		{
-			map(ExampleMediator).toMatcher(new TypeMatcher().allOf(MovieClip));
+			map(ExampleDisplayObjectMediator).toMatcher(new TypeMatcher().allOf(MovieClip));
 			
 			handleViewAdded(new Sprite());
 
@@ -172,10 +163,30 @@ package org.robotlegs.v2.extensions.mediatorMap
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
 		}
 
+		[Test]
+		public function returns_zero_if_handler_not_interested():void
+		{
+			map(ExampleMediator).toView(Sprite).withGuards(OnlyIfViewHasChildrenGuard);
+			
+			var interest:uint = handleViewAdded(new MovieClip());
+			
+			assertEquals(0, interest);
+		}
 
-		// guards
-		// hooks
+		[Test]
+		public function returns_one_if_handler_interested():void
+		{
+			map(ExampleMediator).toView(Sprite).withGuards(OnlyIfViewHasChildrenGuard);
+			
+			var interest:uint = handleViewAdded(new Sprite());
+			
+			assertEquals(1, interest);
+		}
+		
+		
+		
 		// view mapped as all types in the type filter all / any
+		// unmapping
 		
 		[Before]
 		public function clearTDDAIYMI():void
@@ -204,27 +215,33 @@ package org.robotlegs.v2.extensions.mediatorMap
 			return _mappingsByMediatorClazz[mediatorClazz];
 		}
 		
-		protected function handleViewAdded(view:DisplayObject):void
+		protected function handleViewAdded(view:DisplayObject):uint
 		{
 			const fqcn:String = getQualifiedClassName(view);
+			var interest:uint = 0;
 			
 			if(_mappingsByViewFCQN[fqcn])
 			{
-				processMapping( _mappingsByViewFCQN[fqcn], view);
+				interest = 1;
+				mapViewForTypeBinding(_mappingsByViewFCQN[fqcn], view);
+				processMapping( _mappingsByViewFCQN[fqcn]);
 			}	
 			
 			for (var filter:* in _mappingsByTypeFilter)
 			{
 				if(itemPassesFilter(view, filter as ITypeFilter))
 				{
-					processMapping (_mappingsByTypeFilter[filter], view);
+					interest = 1;
+					mapViewForFilterBinding(filter, view);
+					processMapping (_mappingsByTypeFilter[filter]);
 				}
 			}
+			
+			return interest;
 		}
 		
-		protected function processMapping(binding:MediatorMappingBinding, view:DisplayObject):void
+		protected function processMapping(binding:MediatorMappingBinding):void
 		{
-			mapViewForBinding(binding, view);
 			if(!blockedByGuards(binding.guards))
 			{
 				createMediatorForBinding(binding);
@@ -232,9 +249,24 @@ package org.robotlegs.v2.extensions.mediatorMap
 			}
 		}
 
-		protected function mapViewForBinding(binding:MediatorMappingBinding, view:DisplayObject):void
+		protected function mapViewForTypeBinding(binding:MediatorMappingBinding, view:DisplayObject):void
 		{
 			injector.map(binding.viewClass).toValue(view);
+		}
+
+		protected function mapViewForFilterBinding(filter:ITypeFilter, view:DisplayObject):void
+		{
+			var requiredClazz:Class;
+			
+			for each (requiredClazz in filter.allOfTypes)
+			{
+				injector.map(requiredClazz).toValue(view);
+			}
+			
+			for each (requiredClazz in filter.anyOfTypes)
+			{
+				injector.map(requiredClazz).toValue(view);
+			}
 		}
 		
 		protected function createMediatorForBinding(binding:MediatorMappingBinding):void
@@ -253,16 +285,35 @@ package org.robotlegs.v2.extensions.mediatorMap
 
 import flash.geom.Rectangle;
 import flash.display.Sprite;
+import flash.display.DisplayObject;
 
 class ExampleMediator
 {
 	[Inject]
 	public var mediatorWatcher:MediatorWatcher;
 	
+	[Inject]
+	public var view:Sprite;
+	
 	[PostConstruct]
 	public function notifyWatcher():void
 	{
 		mediatorWatcher.notify('ExampleMediator');
+	}
+}
+
+class ExampleDisplayObjectMediator
+{
+	[Inject]
+	public var mediatorWatcher:MediatorWatcher;
+	
+	[Inject]
+	public var view:DisplayObject;
+	
+	[PostConstruct]
+	public function notifyWatcher():void
+	{
+		mediatorWatcher.notify('ExampleDisplayObjectMediator');
 	}
 }
 

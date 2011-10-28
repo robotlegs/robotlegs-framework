@@ -38,7 +38,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 			return _viewClazz;
 		}
 
-		public function toView(viewClazz:Class):MediatorMappingBinding
+		public function toView(viewClazz:Class):GuardsAndHooksMapBinding
 		{
 			const fqcn:String = _reflector.getFQCN(viewClazz);
 			_viewFCQNMap[fqcn] = this;
@@ -47,16 +47,10 @@ package org.robotlegs.v2.extensions.mediatorMap
 			return this;
 		}
 		
-		public function toMatcher(typeMatcher:ITypeMatcher):MediatorMappingBinding
+		public function toMatcher(typeMatcher:ITypeMatcher):GuardsAndHooksMapBinding
 		{
 			_typeFilter = typeMatcher.createTypeFilter();
 			_typeFilterMap[_typeFilter] = this;
-			return this;
-		}
-		
-		public function withHooks(...hookClasses):MediatorMappingBinding
-		{
-			toHooks(hookClasses);
 			return this;
 		}
 	}
