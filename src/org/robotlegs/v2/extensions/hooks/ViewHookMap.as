@@ -60,7 +60,7 @@ package org.robotlegs.v2.extensions.hooks
 
 		public function register(watcher:IViewWatcher):void
 		{
-	
+			// TODO - what goes here?
 		}
 		
 		public function map(clazz:Class):GuardsAndHooksMapBinding
