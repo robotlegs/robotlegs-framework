@@ -152,6 +152,8 @@ package org.robotlegs.v2.extensions.hooks
 		
 		// unmapping_the_hook_prevents_it_from_running
 
+		// overmapping behaviour
+
 		/*============================================================================*/
 		/* Protected Functions                                                        */
 		/*============================================================================*/

@@ -58,6 +58,8 @@ package org.robotlegs.v2.extensions.hooks
 
 		public function map(clazz:Class):GuardsAndHooksMapBinding
 		{
+			// TODO - overwrite? warnings? allow extension? handle duplicates? hrm.
+			
 			const fcqn:String = reflector.getFQCN(clazz);
 			
 			_mappingsByFCQN[fcqn] = new GuardsAndHooksMapBinding();
@@ -75,9 +77,6 @@ package org.robotlegs.v2.extensions.hooks
 		
 		public function process(item:*):Boolean
 		{			
-			// TODO - dammit, this is way too permissive, we don't want
-			// our subclasses getting this special treatment!
-			
 			const fcqn:String = getQualifiedClassName(item);
 			
 			var interested:Boolean = false;

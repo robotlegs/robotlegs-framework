@@ -7,27 +7,19 @@
 
 package suites
 {
-	import suites.MediatorMapTestSuite;
+	import org.robotlegs.v2.extensions.mediatorMap.MediatorMapTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
-	public class EntireTestSuite
+	public class MediatorMapTestSuite extends Object
 	{
-
+	
 		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
-
-		public var contextBuilderTestSuite:ContextBuilderTestSuite;
-
-		//public var contextTestSuite:ContextTestSuite;
-
-		//public var stageWatcherTestSuite:StageWatcherTestSuite;
-
-		public var typeMatchingTestSuite:TypeMatchingTestSuite;
+	
+		public var mediatorMapTest:MediatorMapTest;
 		
-		public var hooksTestSuite:GuardsAndHooksTestSuite;
-		
-		public var mediatorMapTestSuite:MediatorMapTestSuite;
+		//public var mediatorMapV1FunctionalityTest:MediatorMapV1Test;
 	}
 }
