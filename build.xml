@@ -101,7 +101,7 @@
     <echo>[test] Finished running Unit Tests</echo>
   </target>
 <!-- Build Documentation -->
-  <target name="asdoc">
+  <target name="asdoc" depends="test">
     <echo>[asdoc] Generating ASDOC documentation</echo>
     <tstamp>
       <format property="docgen.time" pattern="MM/dd/yyyy hh:mm aa" unit="hour"/>
@@ -116,10 +116,8 @@
       <arg line="-window-title 'Robotlegs ${robotlegs.ver.num}'"/>
       <arg line="-main-title 'Robotlegs ${robotlegs.ver.num}'"/>
       <arg line="-footer 'Robotlegs - http://www.robotlegs.org/ - Documentation generated at: ${docgen.time}'"/>
-      <arg line="-package org.robotlegs.adapters 'Adapters to bridge third-party Di/IoC and reflection libraries'"/>
-      <arg line="-package org.robotlegs.base 'Base classes used to build custom Robotlegs frameworks'"/>
-      <arg line="-package org.robotlegs.core 'The core Robotlegs Framework apparatus contracts'"/>
-      <arg line="-package org.robotlegs.mvcs 'The reference MVCS Robotlegs Framework implementation'"/>
+      <arg line="-package org.robotlegs.v2.core.api 'Core framework API'"/>
+      <arg line="-package org.robotlegs.v2.core.impl 'Core framework implementation'"/>
     </java>
     <echo>[asdoc] ASDOC documentation generated successfully</echo>
   </target>
