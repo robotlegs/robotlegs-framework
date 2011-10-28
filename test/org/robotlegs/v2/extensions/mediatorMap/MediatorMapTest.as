@@ -12,6 +12,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
 	import org.flexunit.asserts.*;
+	import org.flexunit.Assert;
 	import org.flexunit.asserts.assertEqualsVectorsIgnoringOrder;
 	import org.robotlegs.v2.core.impl.TypeMatcher;
 	import org.robotlegs.v2.extensions.guards.GuardsProcessor;
@@ -22,7 +23,10 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import org.swiftsuspenders.Reflector;
 	import org.robotlegs.v2.extensions.mediatorMap.impl.MediatorMap;
 	import org.robotlegs.v2.extensions.mediatorMap.support.DuckTypedRL1MediatorTrigger;
-
+	import org.robotlegs.v2.view.api.ViewHandlerEvent;
+	import org.flexunit.async.Async;
+	import flash.events.Event;
+	
 	public class MediatorMapTest
 	{
 
@@ -271,16 +275,37 @@ package org.robotlegs.v2.extensions.mediatorMap
 			assertFalse(instance.hasMapping(ExampleDisplayObjectMediator));
 		}
 		
+		[Test()]
+		
 		// mediator_is_kept_during_reparenting - really a job for the trigger
 		
 		// mediator_survives_after_garbage_collection - how do we test this without making our tests slow?
 		
 		// flex_view_mediator_waits_for_creation_complete - a job for the trigger
 
-		[Test]
+		[Test(async)]
 		public function test_failure_seen():void
 		{
-			assertTrue("Failing test", true);
+			assertTrue(true);
+		}
+
+		[Test(async)]
+		public function invalidate_causes_the_configuration_change_event_to_be_dispatched():void
+		{
+			instance.addEventListener( ViewHandlerEvent.CONFIGURATION_CHANGE, 
+			Async.asyncHandler(this, benignHandler, 10, null, handleEventTimeout), false, 0, true);
+			
+			instance.invalidate();
+		}
+		
+		protected function handleEventTimeout(o:Object):void
+		{
+			Assert.fail("The event never fired");
+		}
+		
+		protected function benignHandler(e:Event, o:Object):void
+		{
+			// do nothing
 		}
 	}
 }
