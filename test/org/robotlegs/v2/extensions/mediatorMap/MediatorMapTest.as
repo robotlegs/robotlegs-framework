@@ -23,6 +23,8 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import flash.display.MovieClip;
 	import flash.geom.Rectangle;
 	import org.robotlegs.v2.extensions.hooks.HooksProcessor;
+	import org.robotlegs.v2.extensions.mediatorMap.MediatorMappingBinding;
+	import org.robotlegs.v2.extensions.guards.GuardsProcessor;
 	
 
 	public class MediatorMapTest 
@@ -41,6 +43,8 @@ package org.robotlegs.v2.extensions.mediatorMap
 		
 		private var hooksProcessor:HooksProcessor;
 		
+		private var guardsProcessor:GuardsProcessor;
+		
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
 		/*============================================================================*/
@@ -54,6 +58,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 			mediatorWatcher = new MediatorWatcher();
 			injector.map(MediatorWatcher).toValue(mediatorWatcher);
 			hooksProcessor = new HooksProcessor();
+			guardsProcessor = new GuardsProcessor();
 		}
 
 		[After]
@@ -144,6 +149,30 @@ package org.robotlegs.v2.extensions.mediatorMap
 			assertEquals(expectedViewHeight, view.height);
 		}
 		
+		[Test]
+		public function no_mediator_is_created_if_guard_prevents_it():void
+		{
+			map(ExampleMediator).toView(Sprite).withGuards(OnlyIfViewHasChildrenGuard);
+			const view:Sprite = new Sprite();
+			handleViewAdded(view);
+			
+			var expectedNotifications:Vector.<String> = new <String>[];
+			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
+		}
+		
+		[Test]
+		public function mediator_is_created_if_guard_allows_it():void
+		{
+			map(ExampleMediator).toView(Sprite).withGuards(OnlyIfViewHasChildrenGuard);
+			const view:Sprite = new Sprite();
+			view.addChild(new Sprite());
+			handleViewAdded(view);
+			
+			var expectedNotifications:Vector.<String> = new <String>['ExampleMediator'];
+			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
+		}
+
+
 		// guards
 		// hooks
 		// view mapped as all types in the type filter all / any
@@ -181,25 +210,43 @@ package org.robotlegs.v2.extensions.mediatorMap
 			
 			if(_mappingsByViewFCQN[fqcn])
 			{
-				createMediatorForBinding(_mappingsByViewFCQN[fqcn], view);
-				hooksProcessor.runHooks(injector, _mappingsByViewFCQN[fqcn].hooks);
+				processMapping( _mappingsByViewFCQN[fqcn], view);
 			}	
 			
 			for (var filter:* in _mappingsByTypeFilter)
 			{
 				if(itemPassesFilter(view, filter as ITypeFilter))
 				{
-					createMediatorForBinding(_mappingsByTypeFilter[filter], view);
-					hooksProcessor.runHooks(injector, _mappingsByTypeFilter[filter].hooks);
+					processMapping (_mappingsByTypeFilter[filter], view);
 				}
 			}
 		}
 		
-		protected function createMediatorForBinding(binding:MediatorMappingBinding, view:DisplayObject):void
+		protected function processMapping(binding:MediatorMappingBinding, view:DisplayObject):void
+		{
+			mapViewForBinding(binding, view);
+			if(!blockedByGuards(binding.guards))
+			{
+				createMediatorForBinding(binding);
+				hooksProcessor.runHooks(injector, binding.hooks);
+			}
+		}
+
+		protected function mapViewForBinding(binding:MediatorMappingBinding, view:DisplayObject):void
 		{
 			injector.map(binding.viewClass).toValue(view);
+		}
+		
+		protected function createMediatorForBinding(binding:MediatorMappingBinding):void
+		{
 			const mediator:* = injector.getInstance(binding.mediatorClass);
 			injector.map(binding.mediatorClass).toValue(mediator);
+		}
+		
+		protected function blockedByGuards(guards:Vector.<Class>):Boolean
+		{
+			return ((guards.length > 0) 
+					&& !( guardsProcessor.processGuards(injector , guards) ) )
 		}
 	}
 }
@@ -223,6 +270,17 @@ class RectangleMediator
 {
 	[Inject]
 	public var rectangle:Rectangle;
+}
+
+class OnlyIfViewHasChildrenGuard
+{
+	[Inject]
+	public var view:Sprite;
+	
+	public function approve():Boolean
+	{
+		return (view.numChildren > 0);
+	}
 }
 
 class MediatorWatcher
