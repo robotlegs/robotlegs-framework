@@ -223,6 +223,17 @@ package org.robotlegs.v2.extensions.mediatorMap
 			var interest:uint = instance.handleViewAdded(new Sprite(), null);
 			assertEquals(0, interest);
 		}
+		
+		[Test]
+		public function doesnt_leave_view_and_mediator_mappings_lying_around():void
+		{
+			instance.map(ExampleMediator).toMatcher(new TypeMatcher().anyOf(MovieClip, Sprite));
+			instance.handleViewAdded(new Sprite(), null);
+			
+			assertFalse(injector.satisfies(MovieClip));
+			assertFalse(injector.satisfies(Sprite));
+			assertFalse(injector.satisfies(ExampleMediator));
+		}
 	}
 }
 

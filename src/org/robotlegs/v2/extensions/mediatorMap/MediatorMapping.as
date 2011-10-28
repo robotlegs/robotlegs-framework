@@ -78,7 +78,6 @@ package org.robotlegs.v2.extensions.mediatorMap
 		{
 			for (var filter:* in _localConfigsByFilter)
 			{
-				trace("MediatorMapping::unmapAll() " + filter.descriptor);
 				unmapTypeFilter(filter as ITypeFilter);
 			}
 		}

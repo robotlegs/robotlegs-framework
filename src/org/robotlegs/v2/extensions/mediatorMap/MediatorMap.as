@@ -81,8 +81,6 @@ package org.robotlegs.v2.extensions.mediatorMap
 			
 			for (var filter:* in _configsByTypeFilter)
 			{
-				trace("MediatorMap::handleViewAdded()", filter.descriptor);
-				
 				if(itemPassesFilter(view, filter as ITypeFilter))
 				{
 					interest = 1;
@@ -92,6 +90,8 @@ package org.robotlegs.v2.extensions.mediatorMap
 					{
 						processMapping (config);
 					}
+					
+					unmapViewForFilterBinding(filter, view);
 				}
 			}
 			
@@ -151,6 +151,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 			{
 				createMediatorForBinding(config);
 				hooksProcessor.runHooks(injector, config.hooks);
+				injector.unmap(config.mapping.mediator)
 			}
 		}
 
@@ -170,7 +171,22 @@ package org.robotlegs.v2.extensions.mediatorMap
 			}
 		}
 		
-		protected function createMediatorForBinding(config:IMediatorConfig):void
+		protected function unmapViewForFilterBinding(filter:ITypeFilter, view:DisplayObject):void
+		{
+			var requiredClazz:Class;
+			
+			for each (requiredClazz in filter.allOfTypes)
+			{
+				injector.unmap(requiredClazz);
+			}
+			
+			for each (requiredClazz in filter.anyOfTypes)
+			{
+				injector.unmap(requiredClazz);
+			}
+		}
+		
+		protected function createMediatorForBinding(config:IMediatorConfig):*
 		{
 			const mediator:* = injector.getInstance(config.mapping.mediator);
 			injector.map(config.mapping.mediator).toValue(mediator);
