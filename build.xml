@@ -58,8 +58,6 @@
       <arg value="-include-sources=${main.src.loc}/org"/>
 <!-- Include classes from SWCs in this folder, but only the ones we use. -->
       <arg value="-library-path+=${lib.loc}"/>
-<!-- Compile with the original Robotlegs v1 classes. -->
-      <arg value="-source-path+=${lib.loc}/robotlegs/"/>
 <!-- Keep the magic alive. -->
       <arg value="-keep-as3-metadata+=Inject"/>
       <arg value="-keep-as3-metadata+=PostConstruct" />
