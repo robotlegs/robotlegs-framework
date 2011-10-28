@@ -17,6 +17,7 @@ package org.robotlegs.v2.view.impl
 	import org.robotlegs.v2.view.api.IContainerBinding;
 	import org.robotlegs.v2.view.api.IViewHandler;
 	import org.robotlegs.v2.view.api.IViewWatcher;
+	import org.robotlegs.v2.view.api.ViewHandlerEvent;
 
 	public class StageWatcher implements IViewWatcher
 	{
@@ -57,15 +58,14 @@ package org.robotlegs.v2.view.impl
 			if (handler.interests == 0)
 				throw new ArgumentError('A view handler must be interested in something.');
 
-			handler.register(this);
-
 			const binding:IContainerBinding = _bindingsByContainer[container] ||= createBindingFor(container);
 			binding.addHandler(handler);
+			handler.addEventListener(ViewHandlerEvent.CONFIGURATION_CHANGE, onViewHandlerConfigurationChange);
 
-			purgeConfirmedHandlerCache();
+			invalidate();
 		}
 
-		public function invalidate(handler:IViewHandler):void
+		public function invalidate():void
 		{
 			purgeConfirmedHandlerCache();
 		}
@@ -77,12 +77,13 @@ package org.robotlegs.v2.view.impl
 				return;
 
 			binding.removeHandler(handler);
+			handler.removeEventListener(ViewHandlerEvent.CONFIGURATION_CHANGE, onViewHandlerConfigurationChange);
 
 			// No point in a binding with no handlers!
 			if (binding.handlers.length == 0)
 				removeBinding(binding);
 
-			purgeConfirmedHandlerCache();
+			invalidate();
 		}
 
 		/*============================================================================*/
@@ -264,6 +265,11 @@ package org.robotlegs.v2.view.impl
 				handler.handleViewRemoved(target);
 			}
 			delete _removeHandlersByTarget[target];
+		}
+
+		private function onViewHandlerConfigurationChange(event:ViewHandlerEvent):void
+		{
+			invalidate();
 		}
 
 		private function purgeConfirmedHandlerCache():void

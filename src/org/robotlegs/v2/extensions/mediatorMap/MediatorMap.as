@@ -8,21 +8,24 @@
 package org.robotlegs.v2.extensions.mediatorMap
 {
 	import flash.display.DisplayObject;
+	import flash.events.EventDispatcher;
 	import flash.utils.Dictionary;
+	import flash.utils.getQualifiedClassName;
+	
 	import org.robotlegs.v2.core.api.ITypeFilter;
+	import org.robotlegs.v2.core.impl.itemPassesFilter;
 	import org.robotlegs.v2.extensions.guards.GuardsProcessor;
 	import org.robotlegs.v2.extensions.hooks.HooksProcessor;
+	import org.robotlegs.v2.extensions.mediatorMap.IMediatorMapping;
 	import org.robotlegs.v2.view.api.IViewClassInfo;
 	import org.robotlegs.v2.view.api.IViewHandler;
 	import org.robotlegs.v2.view.api.IViewWatcher;
+	import org.robotlegs.v2.view.api.ViewHandlerEvent;
 	import org.swiftsuspenders.Injector;
 	import org.swiftsuspenders.Reflector;
-	import flash.utils.getQualifiedClassName;
-	import org.robotlegs.v2.core.impl.itemPassesFilter;
-	import org.robotlegs.v2.extensions.mediatorMap.IMediatorMapping;
 	
-	
-	public class  MediatorMap implements IViewHandler
+	[Event(name="configurationChange", type="org.robotlegs.v2.view.api.ViewHandlerEvent")]
+	public class  MediatorMap extends EventDispatcher implements IViewHandler
 	{
 		/*============================================================================*/
 		/* Public Properties                                                          */
@@ -101,12 +104,12 @@ package org.robotlegs.v2.extensions.mediatorMap
 		{
 	
 		}
-
-		public function register(watcher:IViewWatcher):void
-		{
-	
-		}
 		
+		public function invalidate():void
+		{
+			dispatchEvent(new ViewHandlerEvent(ViewHandlerEvent.CONFIGURATION_CHANGE));
+		}
+
 		public function map(mediatorClazz:Class):IMediatorMapping
 		{			
 			// TODO = fix the fatal flaw with this plan - we can only have one mapping per mediator...
