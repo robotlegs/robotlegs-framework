@@ -33,8 +33,8 @@ package org.robotlegs.v2.extensions.hooks
 		/* Protected Properties                                                       */
 		/*============================================================================*/
 
-		private var _hooksByClazz:Dictionary;
-		private var _hooksByMatcher:Dictionary;
+		private var _mappingsByClazz:Dictionary;
+		private var _mappingsByMatcher:Dictionary;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -42,8 +42,8 @@ package org.robotlegs.v2.extensions.hooks
 
 		public function HookMap()
 		{
-			_hooksByMatcher = new Dictionary();
-			_hooksByClazz = new Dictionary();
+			_mappingsByMatcher = new Dictionary();
+			_mappingsByClazz = new Dictionary();
 		}
 
 		/*============================================================================*/
@@ -52,17 +52,17 @@ package org.robotlegs.v2.extensions.hooks
 
 		public function map(clazz:Class):GuardsAndHooksMapBinding
 		{
-			_hooksByClazz[clazz] = new GuardsAndHooksMapBinding();
+			_mappingsByClazz[clazz] = new GuardsAndHooksMapBinding();
 			
-			return _hooksByClazz[clazz];
+			return _mappingsByClazz[clazz];
 		}
 		
 		public function mapMatcher(matcher:ITypeMatcher):GuardsAndHooksMapBinding
 		{
 			const filter:ITypeFilter = matcher.createTypeFilter();
-			_hooksByMatcher[filter] = new GuardsAndHooksMapBinding();
+			_mappingsByMatcher[filter] = new GuardsAndHooksMapBinding();
 			
-			return _hooksByMatcher[filter];
+			return _mappingsByMatcher[filter];
 		}
 		
 		public function process(item:*):Boolean
@@ -72,23 +72,23 @@ package org.robotlegs.v2.extensions.hooks
 			
 			var interested:Boolean = false;
 			
-			for (var clazz:* in _hooksByClazz)
+			for (var clazz:* in _mappingsByClazz)
 			{
 				if(item is (clazz as Class))
 				{
 					interested = true;
-					if(!blockedByGuards(_hooksByClazz[clazz].guards) )
-						hooksProcessor.runHooks(injector, _hooksByClazz[clazz].hooks);
+					if(!blockedByGuards(_mappingsByClazz[clazz].guards) )
+						hooksProcessor.runHooks(injector, _mappingsByClazz[clazz].hooks);
 				}
 			}
 			
-			for (var filter:* in _hooksByMatcher)
+			for (var filter:* in _mappingsByMatcher)
 			{
 				if(itemPassesFilter(item, filter as ITypeFilter))
 				{
 					interested = true;
-					if(!blockedByGuards(_hooksByMatcher[filter].guards) )
-						hooksProcessor.runHooks(injector, _hooksByMatcher[filter].hooks);
+					if(!blockedByGuards(_mappingsByMatcher[filter].guards) )
+						hooksProcessor.runHooks(injector, _mappingsByMatcher[filter].hooks);
 				}
 			}
 			
