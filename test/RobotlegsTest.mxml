@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application 
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	width="200"
+	height="200"
+	horizontalScrollPolicy="off"
+	verticalScrollPolicy="off"
+	creationComplete="onCreationComplete()"
+	backgroundColor="#000000"
+	>
+
+	<mx:Script>
+		<![CDATA[
+			import org.flexunit.internals.TraceListener;
+			import org.flexunit.listeners.CIListener;
+			import org.flexunit.runner.FlexUnitCore;
+			import suites.EntireTestSuite;
+
+
+			/*============================================================================*/
+			/* Private Properties                                                         */
+			/*============================================================================*/
+
+			/*embedded just for fun*/
+			[Bindable]
+			[Embed(source="../build/assets/rl_justlegs.png")]
+			private var Logo:Class;
+
+			private var core:FlexUnitCore;
+
+
+			/*============================================================================*/
+			/* Private Functions                                                          */
+			/*============================================================================*/
+
+			private function onCreationComplete():void
+			{
+				core = new FlexUnitCore();
+				core.addListener(new CIListener());
+				core.addListener(new TraceListener());
+				core.run(EntireTestSuite);
+			}
+		]]>
+	</mx:Script>
+
+	<mx:Image 
+		source="{Logo}"
+		horizontalCenter="0"
+		verticalCenter="0"
+		/>
+
+</mx:Application>

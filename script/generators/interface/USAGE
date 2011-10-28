@@ -1,0 +1,42 @@
+Description:
+    Stubs out a new ActionScript RobotLegs Command class and test case and then
+	rebuilds all test suites. Pass the fully-qualified class name, either as a
+	shell file target or a dot-delimited string.
+
+	This command uses the Sprout::Generator::NamedBase class which will search
+	for configuration parameters as follows:
+	
+	1) Command line parameters will supercede any of the following.
+	2) Search the current working directory and all parent directories 
+	   for a valid Rakefile.
+	3) If a Rakefile is not found, classes will be created directly from the 
+	   current working directory.
+	4) If a Rakefile is found, it will be loaded. If the rakefile instantiates
+       a Sprout::ProjectModel, that configuration will be used for source and test
+       paths, language preferences, and other values.
+	5) If no ProjectModel is instantiated in your Rakefile, the Rakefile itself
+       will be treated as the project root, and classes will be created from that
+       directory.
+
+	You can edit the erb templates that this command uses in a variety of ways.
+	If you would like to edit the templates for all projects on your system,
+	simply copy the directory at: File.dirname(__FILE__) into: 
+
+	#{SPROUT_HOME}/sprout/generators/
+	
+	To edit templates for a single project, copy the directory to:
+
+	#{PROJECT_HOME}/script/generators/
+	
+	Once you have the contents of this package copied, simply edit the files found
+	in the templates/ folder to your satisfaction.
+	
+Example:
+    `./script/generate rlcommand com.company.projectname.controller.MyCommand`
+
+	Will create the follow files:
+	
+	    Class:			src/com/company/projectname/controller/MyCommand.as
+	    Test Case:		test/com/company/projectname/controller/MyCommandTest.as
+
+	    Test Suites:	test/AllTests.as
