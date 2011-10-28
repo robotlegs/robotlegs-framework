@@ -7,13 +7,13 @@
 
 package org.robotlegs.v2.extensions.guards
 {
-	import org.swiftsuspenders.Injector;
-	import flash.utils.describeType;
 	import flash.utils.Dictionary;
+	import flash.utils.describeType;
+	import org.swiftsuspenders.Injector;
 
-	public class  GuardsProcessor
+	public class GuardsProcessor
 	{
-		
+
 		/*============================================================================*/
 		/* Protected Properties                                                       */
 		/*============================================================================*/
@@ -28,6 +28,7 @@ package org.robotlegs.v2.extensions.guards
 		{
 		}
 
+
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
@@ -35,31 +36,31 @@ package org.robotlegs.v2.extensions.guards
 		public function processGuards(useInjector:Injector, guardClasses:Vector.<Class>):Boolean
 		{
 			verifyGuardClasses(guardClasses);
-			
+
 			var guard:*;
-			
+
 			for each (var guardClass:Class in guardClasses)
 			{
 				guard = useInjector.getInstance(guardClass);
-				if(! guard.approve())
+				if (!guard.approve())
 					return false;
 			}
-			
+
 			return true;
 		}
-		
+
 		/*============================================================================*/
 		/* Protected Functions                                                        */
 		/*============================================================================*/
-		
+
 		protected function verifyGuardClasses(guardClasses:Vector.<Class>):void
 		{
 			for each (var guardClass:Class in guardClasses)
 			{
-				if(!_verifiedGuardClasses[guardClass])
+				if (!_verifiedGuardClasses[guardClass])
 				{
 					_verifiedGuardClasses[guardClass] = (describeType(guardClass).factory.method.(@name == "approve").length() == 1);
-					if(!_verifiedGuardClasses[guardClass])
+					if (!_verifiedGuardClasses[guardClass])
 					{
 						throw new ArgumentError("No approve function found on class " + guardClass);
 					}

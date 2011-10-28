@@ -7,9 +7,9 @@
 
 package suites
 {
+	import org.robotlegs.v2.extensions.guards.GuardsProcessorTest;
 	import org.robotlegs.v2.extensions.hooks.HookMapTest;
 	import org.robotlegs.v2.extensions.hooks.HooksProcessorTest;
-	import org.robotlegs.v2.extensions.guards.GuardsProcessorTest;
 	import org.robotlegs.v2.extensions.hooks.ViewHookMapTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
@@ -20,13 +20,13 @@ package suites
 		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
-		
-		public var hookUtilityMapTest:HookMapTest;
-		
-		public var hooksProcessorTest:HooksProcessorTest;
-		
+
 		public var guardsProcessorTest:GuardsProcessorTest;
-		
+
+		public var hookUtilityMapTest:HookMapTest;
+
+		public var hooksProcessorTest:HooksProcessorTest;
+
 		public var viewHookMap:ViewHookMapTest;
 	}
 }

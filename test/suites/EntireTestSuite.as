@@ -20,14 +20,14 @@ package suites
 
 		public var contextBuilderTestSuite:ContextBuilderTestSuite;
 
+		public var hooksTestSuite:GuardsAndHooksTestSuite;
+
+		public var mediatorMapTestSuite:MediatorMapTestSuite;
+
 		//public var contextTestSuite:ContextTestSuite;
 
 		//public var stageWatcherTestSuite:StageWatcherTestSuite;
 
 		public var typeMatchingTestSuite:TypeMatchingTestSuite;
-		
-		public var hooksTestSuite:GuardsAndHooksTestSuite;
-		
-		public var mediatorMapTestSuite:MediatorMapTestSuite;
 	}
 }

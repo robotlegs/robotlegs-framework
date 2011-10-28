@@ -9,7 +9,6 @@ package org.robotlegs.v2.extensions.hooks
 {
 	import flash.display.DisplayObject;
 	import flash.events.EventDispatcher;
-	
 	import org.robotlegs.v2.core.api.ITypeMatcher;
 	import org.robotlegs.v2.view.api.IViewClassInfo;
 	import org.robotlegs.v2.view.api.IViewHandler;
@@ -56,7 +55,7 @@ package org.robotlegs.v2.extensions.hooks
 		{
 			// do nothing
 		}
-		
+
 		public function invalidate():void
 		{
 			dispatchEvent(new ViewHandlerEvent(ViewHandlerEvent.CONFIGURATION_CHANGE));
@@ -71,6 +70,5 @@ package org.robotlegs.v2.extensions.hooks
 		{
 			return hookMap.mapMatcher(matcher);
 		}
-		
 	}
 }

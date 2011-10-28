@@ -9,9 +9,7 @@ package org.robotlegs.v2.flex.mxml
 {
 	import flash.display.DisplayObjectContainer;
 	import flash.utils.setTimeout;
-	
 	import mx.core.IMXMLObject;
-	
 	import org.robotlegs.v2.core.api.IContextBuilderBundle;
 	import org.robotlegs.v2.core.impl.ContextBuilder;
 

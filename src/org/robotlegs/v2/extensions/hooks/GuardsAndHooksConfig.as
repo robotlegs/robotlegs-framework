@@ -6,77 +6,60 @@
 //------------------------------------------------------------------------------
 
 package org.robotlegs.v2.extensions.hooks
-{	
+{
+
 	public class GuardsAndHooksConfig implements IGuardsAndHooksConfig
 	{
-		
-		/*============================================================================*/
-		/* Protected Properties                                                       */
-		/*============================================================================*/
-		
-		protected var _hooks:Vector.<Class> = new Vector.<Class>();
-		protected var _guards:Vector.<Class> = new Vector.<Class>();
-	
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
-	
-		public function GuardsAndHooksConfig()
-		{
-			
-		}
 
 		/*============================================================================*/
-		/* Public Functions                                                           */
+		/* Public Properties                                                          */
 		/*============================================================================*/
-	
-		public function get hooks():Vector.<Class>
-		{
-			return _hooks;
-		}
-	
+
+		protected var _guards:Vector.<Class> = new Vector.<Class>();
+
 		public function get guards():Vector.<Class>
 		{
 			return _guards;
 		}
-	
-		public function withHooks(...hookClasses):IGuardsAndHooksConfig
+
+		protected var _hooks:Vector.<Class> = new Vector.<Class>();
+
+		public function get hooks():Vector.<Class>
 		{
-			pushValuesToVector(hookClasses, _hooks);
-			return this;
+			return _hooks;
 		}
-		
-		public function withGuards(...guardClasses):IGuardsAndHooksConfig
+
+		/*============================================================================*/
+		/* Constructor                                                                */
+		/*============================================================================*/
+
+		public function GuardsAndHooksConfig()
+		{
+
+		}
+
+
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
+
+		public function withGuards(... guardClasses):IGuardsAndHooksConfig
 		{
 			pushValuesToVector(guardClasses, _guards);
-		
+
+			return this;
+		}
+
+		public function withHooks(... hookClasses):IGuardsAndHooksConfig
+		{
+			pushValuesToVector(hookClasses, _hooks);
 			return this;
 		}
 
 		/*============================================================================*/
 		/* Protected Functions                                                        */
 		/*============================================================================*/
-	
-		protected function pushValuesToVector(values:Array, vector:Vector.<Class>):void
-		{
-			if(values.length==1)
-			{
-				if(values[0] is Array)
-				{
-					values = values[0]
-				}
-				else if(values[0] is Vector.<Class>)
-				{
-					values = createArrayFromVector(values[0]);
-				}
-			}
-		
-			for each (var clazz:Class in values)
-			{
-				vector.push(clazz);
-			}
-		}
-	
+
 		protected function createArrayFromVector(typesVector:Vector.<Class>):Array
 		{
 			const returnArray:Array = [];
@@ -87,6 +70,26 @@ package org.robotlegs.v2.extensions.hooks
 			}
 
 			return returnArray;
+		}
+
+		protected function pushValuesToVector(values:Array, vector:Vector.<Class>):void
+		{
+			if (values.length == 1)
+			{
+				if (values[0] is Array)
+				{
+					values = values[0]
+				}
+				else if (values[0] is Vector.<Class>)
+				{
+					values = createArrayFromVector(values[0]);
+				}
+			}
+
+			for each (var clazz:Class in values)
+			{
+				vector.push(clazz);
+			}
 		}
 	}
 }

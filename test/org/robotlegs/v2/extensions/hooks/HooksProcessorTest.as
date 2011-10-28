@@ -5,25 +5,27 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.hooks 
+package org.robotlegs.v2.extensions.hooks
 {
 	import org.flexunit.asserts.*;
 	import org.flexunit.asserts.assertEqualsVectorsIgnoringOrder;
-	import org.swiftsuspenders.Injector;
 	import org.robotlegs.v2.extensions.hooks.support.*;
 	import org.robotlegs.v2.extensions.hooks.support.HookTracker;
+	import org.swiftsuspenders.Injector;
 
-	public class HooksProcessorTest 
+	public class HooksProcessorTest
 	{
+
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var instance:HooksProcessor;
-		
+		private var hookTracker:HookTracker;
+
 		private var injector:Injector;
 
-		private var hookTracker:HookTracker;
+		private var instance:HooksProcessor;
+
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
 		/*============================================================================*/
@@ -48,28 +50,6 @@ package org.robotlegs.v2.extensions.hooks
 		/* Tests                                                                      */
 		/*============================================================================*/
 
-		[Test]
-		public function can_be_instantiated():void
-		{
-			assertTrue("instance is HooksProcessor", instance is HooksProcessor);
-		}
-		
-		[Test]
-		public function test_failure_seen():void
-		{
-			assertTrue("Failing test", true);
-		}
-
-		[Test]	
-		public function a_number_of_hooks_are_run():void
-		{
-			var requiredHooks:Vector.<Class> = new <Class>[TrackableHook1, TrackableHook2];
-			instance.runHooks(injector, requiredHooks);
-			
-			var expectedHooksConfirmed:Vector.<String> = new <String>['TrackableHook1', 'TrackableHook2'];
-			assertEqualsVectorsIgnoringOrder('both hooks have run', expectedHooksConfirmed, hookTracker.hooksConfirmed);
-		}	
-		
 		[Test(expects='ArgumentError')]
 		public function a_non_hook_causes_us_to_throw_an_argument_error():void
 		{
@@ -77,9 +57,29 @@ package org.robotlegs.v2.extensions.hooks
 			instance.runHooks(injector, requiredHooks);
 		}
 
-		/*============================================================================*/
-		/* Protected Functions                                                        */
-		/*============================================================================*/
-		
+		[Test]
+		public function a_number_of_hooks_are_run():void
+		{
+			var requiredHooks:Vector.<Class> = new <Class>[TrackableHook1, TrackableHook2];
+			instance.runHooks(injector, requiredHooks);
+
+			var expectedHooksConfirmed:Vector.<String> = new <String>['TrackableHook1', 'TrackableHook2'];
+			assertEqualsVectorsIgnoringOrder('both hooks have run', expectedHooksConfirmed, hookTracker.hooksConfirmed);
+		}
+
+		[Test]
+		public function can_be_instantiated():void
+		{
+			assertTrue("instance is HooksProcessor", instance is HooksProcessor);
+		}
+
+		[Test]
+		public function test_failure_seen():void
+		{
+			assertTrue("Failing test", true);
+		}
+	/*============================================================================*/
+	/* Protected Functions                                                        */
+	/*============================================================================*/
 	}
 }

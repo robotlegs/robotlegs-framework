@@ -5,37 +5,37 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.mediatorMap 
+package org.robotlegs.v2.extensions.mediatorMap
 {
+	import flash.display.DisplayObject;
+	import flash.display.MovieClip;
+	import flash.display.Sprite;
+	import flash.geom.Rectangle;
 	import org.flexunit.asserts.*;
+	import org.flexunit.asserts.assertEqualsVectorsIgnoringOrder;
+	import org.robotlegs.v2.core.impl.TypeMatcher;
+	import org.robotlegs.v2.extensions.guards.GuardsProcessor;
+	import org.robotlegs.v2.extensions.hooks.HooksProcessor;
 	import org.robotlegs.v2.view.api.IViewHandler;
+	import org.swiftsuspenders.DescribeTypeJSONReflector;
 	import org.swiftsuspenders.Injector;
 	import org.swiftsuspenders.Reflector;
-	import org.swiftsuspenders.DescribeTypeJSONReflector;
-	import org.flexunit.asserts.assertEqualsVectorsIgnoringOrder;
-	import flash.display.DisplayObject;
-	import flash.display.Sprite;
-	import org.robotlegs.v2.core.impl.TypeMatcher;
-	import flash.display.MovieClip;
-	import flash.geom.Rectangle;
-	import org.robotlegs.v2.extensions.hooks.HooksProcessor;
-	import org.robotlegs.v2.extensions.guards.GuardsProcessor;
-	
 
-	public class MediatorMapTest 
+	public class MediatorMapTest
 	{
+
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var instance:MediatorMap;
-		
 		private var injector:Injector;
-		
-		private var reflector:Reflector;
-		
+
+		private var instance:MediatorMap;
+
 		private var mediatorWatcher:MediatorWatcher;
-		
+
+		private var reflector:Reflector;
+
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
 		/*============================================================================*/
@@ -53,7 +53,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 			instance.reflector = reflector;
 			instance.hooksProcessor = new HooksProcessor();
 			instance.guardsProcessor = new GuardsProcessor();
-			
+
 			mediatorWatcher = new MediatorWatcher();
 			injector.map(MediatorWatcher).toValue(mediatorWatcher);
 		}
@@ -69,85 +69,123 @@ package org.robotlegs.v2.extensions.mediatorMap
 		/*============================================================================*/
 
 		[Test]
-		public function can_be_instantiated():void
-		{
-			assertTrue("instance is MediatorMap", instance is MediatorMap);
-		}
-		
-		[Test]
-		public function test_failure_seen():void
-		{
-			assertTrue("Failing test", true);
-		}
-		
-		[Test]
-		public function implements_IViewHandler():void
-		{
-			assertTrue("instance is IViewHandler", instance is IViewHandler);
-		}
-		
-		[Test]
-		public function handler_instantiates_mediator_for_view_mapped_by_type():void
-		{
-			instance.map(ExampleMediator).toView(Sprite);
-			
-			instance.handleViewAdded(new Sprite(), null);
-			
-			var expectedNotifications:Vector.<String> = new <String>['ExampleMediator'];
-			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
-		}
-		
-		[Test]
-		public function handler_creates_mediator_for_view_mapped_by_matcher():void
-		{
-			instance.map(ExampleDisplayObjectMediator).toMatcher(new TypeMatcher().allOf(DisplayObject));
-			
-			instance.handleViewAdded(new Sprite(), null);
-
-			var expectedNotifications:Vector.<String> = new <String>['ExampleDisplayObjectMediator'];
-			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
-		}
-		
-		[Test]
-		public function handler_doesnt_create_mediator_for_wrong_view_mapped_by_matcher():void
-		{
-			instance.map(ExampleDisplayObjectMediator).toMatcher(new TypeMatcher().allOf(MovieClip));
-			
-			instance.handleViewAdded(new Sprite(), null);
-
-			var expectedNotifications:Vector.<String> = new <String>[];
-			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
-		}
-		
-		[Test]
 		public function a_hook_runs_and_receives_injections_of_view_and_mediator():void
 		{
 			instance.map(RectangleMediator).toView(Sprite).withHooks(HookWithMediatorAndViewInjectionDrawsRectangle);
-			
+
 			const view:Sprite = new Sprite();
-			
+
 			const expectedViewWidth:Number = 100;
 			const expectedViewHeight:Number = 200;
-			
-			injector.map(Rectangle).toValue(new Rectangle(0,0,expectedViewWidth, expectedViewHeight));
-			
+
+			injector.map(Rectangle).toValue(new Rectangle(0, 0, expectedViewWidth, expectedViewHeight));
+
 			instance.handleViewAdded(view, null);
 
 			assertEquals(expectedViewWidth, view.width);
 			assertEquals(expectedViewHeight, view.height);
 		}
-		
+
 		[Test]
-		public function no_mediator_is_created_if_guard_prevents_it():void
+		public function can_be_instantiated():void
 		{
-			instance.map(ExampleMediator).toView(Sprite).withGuards(OnlyIfViewHasChildrenGuard);
-			const view:Sprite = new Sprite();
-			instance.handleViewAdded(view, null);
-			
+			assertTrue("instance is MediatorMap", instance is MediatorMap);
+		}
+
+		[Test]
+		public function doesnt_leave_view_and_mediator_mappings_lying_around():void
+		{
+			instance.map(ExampleMediator).toMatcher(new TypeMatcher().anyOf(MovieClip, Sprite));
+			instance.handleViewAdded(new Sprite(), null);
+
+			assertFalse(injector.satisfies(MovieClip));
+			assertFalse(injector.satisfies(Sprite));
+			assertFalse(injector.satisfies(ExampleMediator));
+		}
+
+		[Test]
+		public function handler_creates_mediator_for_view_mapped_by_matcher():void
+		{
+			instance.map(ExampleDisplayObjectMediator).toMatcher(new TypeMatcher().allOf(DisplayObject));
+
+			instance.handleViewAdded(new Sprite(), null);
+
+			var expectedNotifications:Vector.<String> = new <String>['ExampleDisplayObjectMediator'];
+			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
+		}
+
+		[Test]
+		public function handler_doesnt_create_mediator_for_wrong_view_mapped_by_matcher():void
+		{
+			instance.map(ExampleDisplayObjectMediator).toMatcher(new TypeMatcher().allOf(MovieClip));
+
+			instance.handleViewAdded(new Sprite(), null);
+
 			var expectedNotifications:Vector.<String> = new <String>[];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
 		}
-		
+
+		[Test]
+		public function handler_instantiates_mediator_for_view_mapped_by_type():void
+		{
+			instance.map(ExampleMediator).toView(Sprite);
+
+			instance.handleViewAdded(new Sprite(), null);
+
+			var expectedNotifications:Vector.<String> = new <String>['ExampleMediator'];
+			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
+		}
+
+		[Test]
+		public function implements_IViewHandler():void
+		{
+			assertTrue("instance is IViewHandler", instance is IViewHandler);
+		}
+
+		[Test]
+		public function is_not_interested_if_all_mappings_unmapped_in_one_hit():void
+		{
+			instance.map(ExampleMediator).toView(Sprite);
+			instance.map(ExampleMediator).toView(MovieClip);
+			instance.unmap(ExampleMediator);
+
+			var interest:uint = instance.handleViewAdded(new Sprite(), null);
+			assertEquals(0, interest);
+		}
+
+		[Test]
+		public function is_not_interested_if_mapping_is_unmapped_for_matcher():void
+		{
+			instance.map(ExampleDisplayObjectMediator).toMatcher(new TypeMatcher().allOf(DisplayObject));
+			instance.getMapping(ExampleDisplayObjectMediator).unmap(new TypeMatcher().allOf(DisplayObject));
+
+			var interest:uint = instance.handleViewAdded(new Sprite(), null);
+			assertEquals(0, interest);
+		}
+
+		// unmapping
+
+		[Test]
+		public function is_not_interested_if_mapping_is_unmapped_for_view():void
+		{
+			instance.map(ExampleMediator).toView(Sprite);
+			instance.getMapping(ExampleMediator).unmap(new TypeMatcher().allOf(Sprite));
+
+			var interest:uint = instance.handleViewAdded(new Sprite(), null);
+			assertEquals(0, interest);
+		}
+
+		[Test]
+		public function is_still_interested_if_only_one_mapping_of_two_is_unmapped():void
+		{
+			instance.map(ExampleMediator).toView(Sprite);
+			instance.map(ExampleMediator).toView(MovieClip);
+			instance.getMapping(ExampleMediator).unmap(new TypeMatcher().allOf(MovieClip));
+
+			var interest:uint = instance.handleViewAdded(new Sprite(), null);
+			assertEquals(1, interest);
+		}
+
 		[Test]
 		public function mediator_is_created_if_guard_allows_it():void
 		{
@@ -155,100 +193,72 @@ package org.robotlegs.v2.extensions.mediatorMap
 			const view:Sprite = new Sprite();
 			view.addChild(new Sprite());
 			instance.handleViewAdded(view, null);
-			
+
 			var expectedNotifications:Vector.<String> = new <String>['ExampleMediator'];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
 		}
 
 		[Test]
-		public function returns_zero_if_handler_not_interested():void
+		public function no_mediator_is_created_if_guard_prevents_it():void
 		{
-			instance.map(ExampleMediator).toView(MovieClip).withGuards(OnlyIfViewHasChildrenGuard);
-			
-			var interest:uint = instance.handleViewAdded(new Sprite(), null);
-			
-			assertEquals(0, interest);
+			instance.map(ExampleMediator).toView(Sprite).withGuards(OnlyIfViewHasChildrenGuard);
+			const view:Sprite = new Sprite();
+			instance.handleViewAdded(view, null);
+
+			var expectedNotifications:Vector.<String> = new <String>[];
+			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
 		}
 
 		[Test]
 		public function returns_one_if_handler_interested():void
 		{
 			instance.map(ExampleMediator).toView(Sprite).withGuards(OnlyIfViewHasChildrenGuard);
-			
+
 			var interest:uint = instance.handleViewAdded(new Sprite(), null);
-			
+
 			assertEquals(1, interest);
 		}
-		
-		// unmapping
-		
+
 		[Test]
-		public function is_not_interested_if_mapping_is_unmapped_for_view():void
+		public function returns_zero_if_handler_not_interested():void
 		{
-			instance.map(ExampleMediator).toView(Sprite);
-			instance.getMapping(ExampleMediator).unmap(new TypeMatcher().allOf(Sprite));
-						
+			instance.map(ExampleMediator).toView(MovieClip).withGuards(OnlyIfViewHasChildrenGuard);
+
 			var interest:uint = instance.handleViewAdded(new Sprite(), null);
-			assertEquals(0, interest);
-		}		
-		
-		[Test]
-		public function is_not_interested_if_mapping_is_unmapped_for_matcher():void
-		{
-			instance.map(ExampleDisplayObjectMediator).toMatcher(new TypeMatcher().allOf(DisplayObject));
-			instance.getMapping(ExampleDisplayObjectMediator).unmap(new TypeMatcher().allOf(DisplayObject));
-			
-			var interest:uint = instance.handleViewAdded(new Sprite(), null);
+
 			assertEquals(0, interest);
 		}
-		
+
 		[Test]
-		public function is_still_interested_if_only_one_mapping_of_two_is_unmapped():void
+		public function test_failure_seen():void
 		{
-			instance.map(ExampleMediator).toView(Sprite);
-			instance.map(ExampleMediator).toView(MovieClip);
-			instance.getMapping(ExampleMediator).unmap(new TypeMatcher().allOf(MovieClip));
-			
-			var interest:uint = instance.handleViewAdded(new Sprite(), null);
-			assertEquals(1, interest);		
-		}
-		
-		[Test]
-		public function is_not_interested_if_all_mappings_unmapped_in_one_hit():void
-		{
-			instance.map(ExampleMediator).toView(Sprite);
-			instance.map(ExampleMediator).toView(MovieClip);
-			instance.unmap(ExampleMediator);
-			
-			var interest:uint = instance.handleViewAdded(new Sprite(), null);
-			assertEquals(0, interest);
-		}
-		
-		[Test]
-		public function doesnt_leave_view_and_mediator_mappings_lying_around():void
-		{
-			instance.map(ExampleMediator).toMatcher(new TypeMatcher().anyOf(MovieClip, Sprite));
-			instance.handleViewAdded(new Sprite(), null);
-			
-			assertFalse(injector.satisfies(MovieClip));
-			assertFalse(injector.satisfies(Sprite));
-			assertFalse(injector.satisfies(ExampleMediator));
+			assertTrue("Failing test", true);
 		}
 	}
 }
 
-import flash.geom.Rectangle;
-import flash.display.Sprite;
 import flash.display.DisplayObject;
+import flash.display.Sprite;
+import flash.geom.Rectangle;
 
 class ExampleMediator
 {
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
 	[Inject]
 	public var mediatorWatcher:MediatorWatcher;
-	
+
 	[Inject]
 	public var view:Sprite;
-	
+
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
 	[PostConstruct]
 	public function notifyWatcher():void
 	{
@@ -258,12 +268,22 @@ class ExampleMediator
 
 class ExampleDisplayObjectMediator
 {
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
 	[Inject]
 	public var mediatorWatcher:MediatorWatcher;
-	
+
 	[Inject]
 	public var view:DisplayObject;
-	
+
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
 	[PostConstruct]
 	public function notifyWatcher():void
 	{
@@ -273,15 +293,30 @@ class ExampleDisplayObjectMediator
 
 class RectangleMediator
 {
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
 	[Inject]
 	public var rectangle:Rectangle;
 }
 
 class OnlyIfViewHasChildrenGuard
 {
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
 	[Inject]
 	public var view:Sprite;
-	
+
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
 	public function approve():Boolean
 	{
 		return (view.numChildren > 0);
@@ -290,32 +325,52 @@ class OnlyIfViewHasChildrenGuard
 
 class MediatorWatcher
 {
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
 	protected const _notifications:Vector.<String> = new Vector.<String>();
-	
-	public function notify(message:String):void
-	{
-		_notifications.push(message);
-	}
-	
+
 	public function get notifications():Vector.<String>
 	{
 		return _notifications;
+	}
+
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
+	public function notify(message:String):void
+	{
+		_notifications.push(message);
 	}
 }
 
 class HookWithMediatorAndViewInjectionDrawsRectangle
 {
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
 	[Inject]
 	public var mediator:RectangleMediator;
-	
+
 	[Inject]
 	public var view:Sprite;
-	
+
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
 	public function hook():void
 	{
 		const requiredWidth:Number = mediator.rectangle.width;
 		const requiredHeight:Number = mediator.rectangle.height;
-		
-		view.graphics.drawRect(0,0, requiredWidth, requiredHeight);
+
+		view.graphics.drawRect(0, 0, requiredWidth, requiredHeight);
 	}
 }

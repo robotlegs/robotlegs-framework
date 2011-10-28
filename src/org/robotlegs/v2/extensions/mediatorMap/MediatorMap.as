@@ -11,7 +11,6 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import flash.events.EventDispatcher;
 	import flash.utils.Dictionary;
 	import flash.utils.getQualifiedClassName;
-	
 	import org.robotlegs.v2.core.api.ITypeFilter;
 	import org.robotlegs.v2.core.impl.itemPassesFilter;
 	import org.robotlegs.v2.extensions.guards.GuardsProcessor;
@@ -23,38 +22,44 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import org.robotlegs.v2.view.api.ViewHandlerEvent;
 	import org.swiftsuspenders.Injector;
 	import org.swiftsuspenders.Reflector;
-	
+
 	[Event(name="configurationChange", type="org.robotlegs.v2.view.api.ViewHandlerEvent")]
-	public class  MediatorMap extends EventDispatcher implements IViewHandler, IMediatorMap
+	public class MediatorMap extends EventDispatcher implements IViewHandler, IMediatorMap
 	{
+
 		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
 		[Inject]
-		public var injector:Injector;
-		
-		[Inject]
-		public var reflector:Reflector;
-				
+		public var guardsProcessor:GuardsProcessor;
+
 		[Inject]
 		public var hooksProcessor:HooksProcessor;
-		
+
 		[Inject]
-		public var guardsProcessor:GuardsProcessor;
-		
+		public var injector:Injector;
+
+		public function get interests():uint
+		{
+			return 0;
+		}
+
+		[Inject]
+		public var reflector:Reflector;
+
 		/*============================================================================*/
 		/* Protected Properties                                                       */
 		/*============================================================================*/
 
-		// vars not consts as some sort of shudown would likely dump the lot
-		
-		protected var _mappingsByMediatorClazz:Dictionary;
-				
 		protected var _configsByTypeFilter:Dictionary;
-		
+
 		protected var _filtersByDescription:Dictionary;
-		
+
+		// vars not consts as some sort of shudown would likely dump the lot
+
+		protected var _mappingsByMediatorClazz:Dictionary;
+
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
@@ -66,88 +71,112 @@ package org.robotlegs.v2.extensions.mediatorMap
 			_configsByTypeFilter = new Dictionary();
 		}
 
+
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function get interests():uint
+		public function getMapping(mediatorClazz:Class):IMediatorMapping
 		{
-			return 0;
+			return _mappingsByMediatorClazz[mediatorClazz];
 		}
 
 		public function handleViewAdded(view:DisplayObject, info:IViewClassInfo):uint
 		{
 			var interest:uint = 0;
-			
+
 			for (var filter:* in _configsByTypeFilter)
 			{
-				if(itemPassesFilter(view, filter as ITypeFilter))
+				if (itemPassesFilter(view, filter as ITypeFilter))
 				{
 					interest = 1;
 					mapViewForFilterBinding(filter, view);
-					
+
 					for each (var config:IMediatorConfig in _configsByTypeFilter[filter])
 					{
-						processMapping (config);
+						processMapping(config);
 					}
-					
+
 					unmapViewForFilterBinding(filter, view);
 				}
 			}
-			
+
 			return interest;
 		}
 
 		public function handleViewRemoved(view:DisplayObject):void
 		{
-	
+
 		}
-		
+
+		public function hasMapping(mediatorClazz:Class):Boolean
+		{
+			return false;
+		}
+
 		public function invalidate():void
 		{
 			dispatchEvent(new ViewHandlerEvent(ViewHandlerEvent.CONFIGURATION_CHANGE));
 		}
 
 		public function map(mediatorClazz:Class):IMediatorMapping
-		{						
-			if(!_mappingsByMediatorClazz[mediatorClazz])
+		{
+			if (!_mappingsByMediatorClazz[mediatorClazz])
 				_mappingsByMediatorClazz[mediatorClazz] = createMediatorMapping(mediatorClazz);
-						
+
 			return _mappingsByMediatorClazz[mediatorClazz];
 		}
-		
+
 		public function unmap(mediatorClazz:Class):void
 		{
-			if(_mappingsByMediatorClazz[mediatorClazz])
+			if (_mappingsByMediatorClazz[mediatorClazz])
 				_mappingsByMediatorClazz[mediatorClazz].unmapAll();
-				
+
 			delete _mappingsByMediatorClazz[mediatorClazz];
 		}
-		
-		public function hasMapping(mediatorClazz:Class):Boolean
-		{
-			return false;
-		}
-		
-		public function getMapping(mediatorClazz:Class):IMediatorMapping
-		{
-			return _mappingsByMediatorClazz[mediatorClazz];
-		}
-		
+
 		/*============================================================================*/
 		/* Protected Functions                                                        */
 		/*============================================================================*/
-				
+
+		protected function blockedByGuards(guards:Vector.<Class>):Boolean
+		{
+			return ((guards.length > 0)
+				&& !(guardsProcessor.processGuards(injector, guards)))
+		}
+
+		protected function createMediatorForBinding(config:IMediatorConfig):*
+		{
+			const mediator:* = injector.getInstance(config.mapping.mediator);
+			injector.map(config.mapping.mediator).toValue(mediator);
+		}
+
 		protected function createMediatorMapping(mediatorClazz:Class):IMediatorMapping
 		{
-			return new MediatorMapping(_configsByTypeFilter, 
-								_filtersByDescription, 
-								mediatorClazz);
-		}	
-				
+			return new MediatorMapping(_configsByTypeFilter,
+				_filtersByDescription,
+				mediatorClazz);
+		}
+
+
+		protected function mapViewForFilterBinding(filter:ITypeFilter, view:DisplayObject):void
+		{
+			var requiredClazz:Class;
+
+			for each (requiredClazz in filter.allOfTypes)
+			{
+				injector.map(requiredClazz).toValue(view);
+			}
+
+			for each (requiredClazz in filter.anyOfTypes)
+			{
+				injector.map(requiredClazz).toValue(view);
+			}
+		}
+
 		protected function processMapping(config:IMediatorConfig):void
 		{
-			if(!blockedByGuards(config.guards))
+			if (!blockedByGuards(config.guards))
 			{
 				createMediatorForBinding(config);
 				hooksProcessor.runHooks(injector, config.hooks);
@@ -155,47 +184,19 @@ package org.robotlegs.v2.extensions.mediatorMap
 			}
 		}
 
-	
-		protected function mapViewForFilterBinding(filter:ITypeFilter, view:DisplayObject):void
-		{
-			var requiredClazz:Class;
-			
-			for each (requiredClazz in filter.allOfTypes)
-			{
-				injector.map(requiredClazz).toValue(view);
-			}
-			
-			for each (requiredClazz in filter.anyOfTypes)
-			{
-				injector.map(requiredClazz).toValue(view);
-			}
-		}
-		
 		protected function unmapViewForFilterBinding(filter:ITypeFilter, view:DisplayObject):void
 		{
 			var requiredClazz:Class;
-			
+
 			for each (requiredClazz in filter.allOfTypes)
 			{
 				injector.unmap(requiredClazz);
 			}
-			
+
 			for each (requiredClazz in filter.anyOfTypes)
 			{
 				injector.unmap(requiredClazz);
 			}
-		}
-		
-		protected function createMediatorForBinding(config:IMediatorConfig):*
-		{
-			const mediator:* = injector.getInstance(config.mapping.mediator);
-			injector.map(config.mapping.mediator).toValue(mediator);
-		}
-		
-		protected function blockedByGuards(guards:Vector.<Class>):Boolean
-		{
-			return ((guards.length > 0) 
-					&& !( guardsProcessor.processGuards(injector , guards) ) )
 		}
 	}
 }

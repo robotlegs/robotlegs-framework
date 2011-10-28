@@ -7,14 +7,15 @@
 
 package org.robotlegs.v2.extensions.mediatorMap
 {
+
 	public interface IMediatorMap
 	{
-		function map(mediatorClazz:Class):IMediatorMapping;
-	
-		function unmap(mediatorClazz:Class):void;
-		
-		function hasMapping(mediatorClazz:Class):Boolean;
-		
+
 		function getMapping(mediatorClazz:Class):IMediatorMapping;
+
+		function hasMapping(mediatorClazz:Class):Boolean;
+		function map(mediatorClazz:Class):IMediatorMapping;
+
+		function unmap(mediatorClazz:Class):void;
 	}
 }

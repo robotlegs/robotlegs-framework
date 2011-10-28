@@ -13,13 +13,12 @@ package suites
 	[Suite]
 	public class MediatorMapTestSuite extends Object
 	{
-	
+
 		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
-	
+
 		public var mediatorMapTest:MediatorMapTest;
-		
 		//public var mediatorMapV1FunctionalityTest:MediatorMapV1Test;
 	}
 }
