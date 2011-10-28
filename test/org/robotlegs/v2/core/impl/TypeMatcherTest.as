@@ -17,6 +17,7 @@ package org.robotlegs.v2.core.impl
 	import org.flexunit.asserts.*;
 	import org.robotlegs.v2.core.api.ITypeFilter;
 	import org.robotlegs.v2.core.api.ITypeMatcher;
+	import org.robotlegs.v2.core.impl.support.*;
 
 	public class TypeMatcherTest
 	{

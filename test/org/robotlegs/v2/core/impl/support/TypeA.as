@@ -5,11 +5,20 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package
+package org.robotlegs.v2.core.impl.support
 {
 
-	public interface ITypeY
+	public class TypeA extends Object
 	{
+
+		/*============================================================================*/
+		/* Constructor                                                                */
+		/*============================================================================*/
+
+		public function TypeA()
+		{
+			super();
+		}
 	}
 
 }

@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package
+package org.robotlegs.v2.core.impl.support
 {
 
 	public class TypeY2 implements ITypeY, IType2

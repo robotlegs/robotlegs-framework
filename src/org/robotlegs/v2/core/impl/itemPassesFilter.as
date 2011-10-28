@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.core.impl.tddasifyoumeanit
+package org.robotlegs.v2.core.impl
 {
 	import org.robotlegs.v2.core.api.ITypeFilter;
 
@@ -57,4 +57,3 @@ package org.robotlegs.v2.core.impl.tddasifyoumeanit
 		return false;
 	}
 }
-

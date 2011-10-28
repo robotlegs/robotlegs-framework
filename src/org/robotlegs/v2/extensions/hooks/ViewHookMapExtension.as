@@ -10,6 +10,8 @@ package org.robotlegs.v2.extensions.hooks
 	import org.robotlegs.v2.core.api.IContextExtension;
 	import org.robotlegs.v2.extensions.guards.GuardsProcessor;
 	import org.robotlegs.v2.extensions.hooks.HooksProcessor;
+	import org.robotlegs.v2.core.api.IContext;
+	import org.robotlegs.v2.view.api.IViewManager;
 
 	// TODO : This is untested
 

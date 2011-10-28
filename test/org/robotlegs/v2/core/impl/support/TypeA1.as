@@ -5,17 +5,17 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package
+package org.robotlegs.v2.core.impl.support
 {
 
-	public class TypeX1 implements ITypeX, IType1
+	public class TypeA1 extends TypeA implements IType1
 	{
 
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function TypeX1()
+		public function TypeA1()
 		{
 			super();
 		}

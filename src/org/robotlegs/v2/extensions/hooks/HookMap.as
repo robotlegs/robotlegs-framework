@@ -10,7 +10,7 @@ package org.robotlegs.v2.extensions.hooks
 	import flash.utils.Dictionary;
 	import org.robotlegs.v2.core.api.ITypeMatcher;
 	import org.robotlegs.v2.core.api.ITypeFilter;
-	import org.robotlegs.v2.core.impl.tddasifyoumeanit.itemPassesFilter;
+	import org.robotlegs.v2.core.impl.itemPassesFilter;
 	import org.swiftsuspenders.Injector;
 	import org.swiftsuspenders.DescribeTypeJSONReflector;
 	import org.swiftsuspenders.Reflector;
