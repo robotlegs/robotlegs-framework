@@ -1,4 +1,4 @@
-package v2.extensions.mediatorMap
+package org.robotlegs.v2.extensions.mediatorMap
 {
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;

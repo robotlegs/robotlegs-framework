@@ -8,8 +8,10 @@
 package org.robotlegs.v2.view.api
 {
 	import flash.display.DisplayObject;
+	import flash.events.IEventDispatcher;
 
-	public interface IViewHandler
+	[Event(name="configurationChange", type="org.robotlegs.v2.view.api.ViewHandlerEvent")]
+	public interface IViewHandler extends IEventDispatcher
 	{
 		function get interests():uint;
 
@@ -17,6 +19,6 @@ package org.robotlegs.v2.view.api
 
 		function handleViewRemoved(view:DisplayObject):void;
 
-		function register(watcher:IViewWatcher):void;
+		function invalidate():void;
 	}
 }

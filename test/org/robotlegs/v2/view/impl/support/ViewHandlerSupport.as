@@ -8,11 +8,14 @@
 package org.robotlegs.v2.view.impl.support
 {
 	import flash.display.DisplayObject;
+	import flash.events.EventDispatcher;
 	import org.robotlegs.v2.view.api.IViewClassInfo;
 	import org.robotlegs.v2.view.api.IViewHandler;
 	import org.robotlegs.v2.view.api.IViewWatcher;
+	import org.robotlegs.v2.view.api.ViewHandlerEvent;
 
-	public class ViewHandlerSupport implements IViewHandler
+	[Event(name="configurationChange", type="org.robotlegs.v2.view.api.ViewHandlerEvent")]
+	public class ViewHandlerSupport extends EventDispatcher implements IViewHandler
 	{
 
 		/*============================================================================*/
@@ -105,12 +108,7 @@ package org.robotlegs.v2.view.impl.support
 
 		public function invalidate():void
 		{
-			_watcher.invalidate(this);
-		}
-
-		public function register(watcher:IViewWatcher):void
-		{
-			_watcher = watcher;
+			dispatchEvent(new ViewHandlerEvent(ViewHandlerEvent.CONFIGURATION_CHANGE));
 		}
 	}
 }
