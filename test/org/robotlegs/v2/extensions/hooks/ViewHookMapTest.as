@@ -9,6 +9,16 @@ package org.robotlegs.v2.extensions.hooks
 {
 	import org.flexunit.asserts.*;
 	import org.robotlegs.v2.view.api.IViewHandler;
+	import org.swiftsuspenders.Injector;
+	import org.robotlegs.v2.extensions.hooks.support.TrackableHook1;
+	import org.robotlegs.v2.extensions.hooks.support.TrackableHook2;
+	import org.robotlegs.v2.extensions.hooks.HooksProcessor;
+	import org.robotlegs.v2.extensions.guards.GuardsProcessor;
+	import flash.display.MovieClip;
+	import flash.display.Sprite;
+	import org.robotlegs.v2.extensions.hooks.support.HookTracker;
+	import org.robotlegs.v2.core.impl.TypeMatcher;
+	import flash.display.DisplayObject;
 
 	public class ViewHookMapTest 
 	{
@@ -17,6 +27,11 @@ package org.robotlegs.v2.extensions.hooks
 		/*============================================================================*/
 
 		private var instance:ViewHookMap;
+		
+		private var injector:Injector;
+
+		private var hookTracker:HookTracker;
+		
 
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
@@ -26,6 +41,14 @@ package org.robotlegs.v2.extensions.hooks
 		public function setUp():void
 		{
 			instance = new ViewHookMap();
+			injector = new Injector();
+			hookTracker = new HookTracker();
+			instance.hookMap = new HookMap();
+			instance.hookMap.injector = injector;
+			instance.hookMap.hooksProcessor = new HooksProcessor();
+			instance.hookMap.guardsProcessor = new GuardsProcessor();
+			
+			injector.map(HookTracker).toValue(hookTracker);
 		}
 
 		[After]
@@ -56,14 +79,45 @@ package org.robotlegs.v2.extensions.hooks
 			assertTrue("instance is IViewHandler", instance is IViewHandler);
 		}
 		
-		/*
 		[Test]
 		public function running_handler_with_view_that_matches_mapping_makes_hooks_run():void
 		{
-			assertTrue("not implemented", false);
-			
-			//instance.map()
-		}*/
+			instance.map(Sprite).toHooks(TrackableHook1, TrackableHook2);
+			instance.handleViewAdded(new Sprite(), null);
+
+			var expectedHooksConfirmed:Vector.<String> = new <String>['TrackableHook1', 'TrackableHook2'];
+			assertEqualsVectorsIgnoringOrder('both hooks have run', expectedHooksConfirmed, hookTracker.hooksConfirmed);
+		}
+		
+		[Test]
+		public function running_handler_with_view_that_doesnt_match_mapping_doesnt_make_hooks_run():void
+		{
+			instance.map(MovieClip).toHooks(TrackableHook1, TrackableHook2);
+			instance.handleViewAdded(new Sprite(), null);
+
+			var expectedHooksConfirmed:Vector.<String> = new <String>[];
+			assertEqualsVectorsIgnoringOrder(expectedHooksConfirmed, hookTracker.hooksConfirmed);
+		}
+		
+		[Test]
+		public function running_handler_with_view_that_matches_matcher_mapping_makes_hooks_run():void
+		{
+			instance.mapMatcher(new TypeMatcher().allOf(DisplayObject)).toHooks(TrackableHook1, TrackableHook2);
+			instance.handleViewAdded(new Sprite(), null);
+
+			var expectedHooksConfirmed:Vector.<String> = new <String>['TrackableHook1', 'TrackableHook2'];
+			assertEqualsVectorsIgnoringOrder(expectedHooksConfirmed, hookTracker.hooksConfirmed);
+		}
+		
+		[Test]
+		public function running_handler_with_view_that_doesnt_match_matcher_mapping_doesnt_make_hooks_run():void
+		{
+			instance.mapMatcher(new TypeMatcher().allOf(MovieClip)).toHooks(TrackableHook1, TrackableHook2);
+			instance.handleViewAdded(new Sprite(), null);
+
+			var expectedHooksConfirmed:Vector.<String> = new <String>[];
+			assertEqualsVectorsIgnoringOrder(expectedHooksConfirmed, hookTracker.hooksConfirmed);
+		}
 
 		/*============================================================================*/
 		/* Protected Functions                                                        */

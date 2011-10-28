@@ -23,7 +23,7 @@ package org.robotlegs.v2.extensions.hooks
 		
 		private var injector:Injector;
 
-		private const hookTracker:HookTracker = new HookTracker();
+		private var hookTracker:HookTracker;
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
 		/*============================================================================*/
@@ -33,6 +33,7 @@ package org.robotlegs.v2.extensions.hooks
 		{
 			instance = new HooksProcessor();
 			injector = new Injector();
+			hookTracker = new HookTracker();
 			injector.map(HookTracker).toValue(hookTracker);
 		}
 

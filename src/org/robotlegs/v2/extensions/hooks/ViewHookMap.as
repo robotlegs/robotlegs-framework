@@ -47,6 +47,7 @@ package org.robotlegs.v2.extensions.hooks
 
 		public function handleViewAdded(view:DisplayObject, info:IViewClassInfo):uint
 		{
+			hookMap.process(view);
 			return 0;
 		}
 
@@ -62,13 +63,11 @@ package org.robotlegs.v2.extensions.hooks
 		
 		public function map(clazz:Class):GuardsAndHooksMapBinding
 		{
-			return new GuardsAndHooksMapBinding();
 			return hookMap.map(clazz);
 		}
 		
 		public function mapMatcher(matcher:ITypeMatcher):GuardsAndHooksMapBinding
 		{
-			return new GuardsAndHooksMapBinding();
 			return hookMap.mapMatcher(matcher);
 		}
 
