@@ -137,10 +137,10 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			delete _mappingsByMediatorType[mediatorType];
 		}
 		
-		public function installTrigger(trigger:IMediatorTrigger):void
+		/*public function installTrigger(trigger:IMediatorTrigger):void
 		{
 			
-		}
+		}*/
 
 		/*============================================================================*/
 		/* Protected Functions                                                        */

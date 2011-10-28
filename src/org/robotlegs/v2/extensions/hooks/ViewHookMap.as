@@ -7,15 +7,17 @@
 
 package org.robotlegs.v2.extensions.hooks
 {
-	import org.robotlegs.v2.view.api.IViewClassInfo;
 	import flash.display.DisplayObject;
-	import org.robotlegs.v2.view.api.IViewWatcher;
-	import org.robotlegs.v2.view.api.IViewHandler;
+	import flash.events.EventDispatcher;
 	import org.robotlegs.v2.core.api.ITypeMatcher;
-	
-	public class ViewHookMap implements IViewHandler
+	import org.robotlegs.v2.view.api.IViewClassInfo;
+	import org.robotlegs.v2.view.api.IViewHandler;
+	import org.robotlegs.v2.view.api.ViewHandlerEvent;
+
+	[Event(name="configurationChange", type="org.robotlegs.v2.view.api.ViewHandlerEvent")]
+	public class ViewHookMap extends EventDispatcher implements IViewHandler
 	{
-		
+
 		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
@@ -23,10 +25,10 @@ package org.robotlegs.v2.extensions.hooks
 		[Inject]
 		public var hookMap:HookMap;
 
-		/*============================================================================*/
-		/* Protected Properties                                                       */
-		/*============================================================================*/
-
+		public function get interests():uint
+		{
+			return 1;
+		}
 
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -36,20 +38,16 @@ package org.robotlegs.v2.extensions.hooks
 		{
 		}
 
+
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function get interests():uint
-		{
-			return 1;
-		}
-
 		public function handleViewAdded(view:DisplayObject, info:IViewClassInfo):uint
 		{
-			if(hookMap.process(view))
+			if (hookMap.process(view))
 				return 1;
-				
+
 			return 0;
 		}
 
@@ -58,26 +56,19 @@ package org.robotlegs.v2.extensions.hooks
 			// do nothing
 		}
 
-		public function register(watcher:IViewWatcher):void
+		public function invalidate():void
 		{
-			// TODO - what goes here?
+			dispatchEvent(new ViewHandlerEvent(ViewHandlerEvent.CONFIGURATION_CHANGE));
 		}
-		
+
 		public function map(type:Class):GuardsAndHooksConfig
 		{
 			return hookMap.map(type);
 		}
-		
+
 		public function mapMatcher(matcher:ITypeMatcher):GuardsAndHooksConfig
 		{
 			return hookMap.mapMatcher(matcher);
 		}
-
-		/*============================================================================*/
-		/* Protected Functions                                                        */
-		/*============================================================================*/
-		
-		
-		
 	}
 }
