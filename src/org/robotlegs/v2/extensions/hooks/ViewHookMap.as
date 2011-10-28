@@ -47,7 +47,9 @@ package org.robotlegs.v2.extensions.hooks
 
 		public function handleViewAdded(view:DisplayObject, info:IViewClassInfo):uint
 		{
-			hookMap.process(view);
+			if(hookMap.process(view))
+				return 1;
+				
 			return 0;
 		}
 

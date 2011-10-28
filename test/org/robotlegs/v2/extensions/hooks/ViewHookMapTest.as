@@ -118,6 +118,22 @@ package org.robotlegs.v2.extensions.hooks
 			var expectedHooksConfirmed:Vector.<String> = new <String>[];
 			assertEqualsVectorsIgnoringOrder(expectedHooksConfirmed, hookTracker.hooksConfirmed);
 		}
+		
+		[Test]
+		public function handleViewAdded_returns_1_if_interested():void
+		{
+			instance.mapMatcher(new TypeMatcher().allOf(DisplayObject)).toHooks(TrackableHook1, TrackableHook2);
+			const returned:uint = instance.handleViewAdded(new Sprite(), null);
+			assertEquals(1, returned);
+		}
+		
+		[Test]
+		public function handleViewAdded_returns_0_if_not_interested():void
+		{
+			instance.mapMatcher(new TypeMatcher().allOf(MovieClip)).toHooks(TrackableHook1, TrackableHook2);
+			const returned:uint = instance.handleViewAdded(new Sprite(), null);
+			assertEquals(0, returned);
+		}
 
 		/*============================================================================*/
 		/* Protected Functions                                                        */
