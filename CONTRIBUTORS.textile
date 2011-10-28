@@ -1,3 +1,0 @@
-h2. Framework Contributors
-
-"robotlegs-framework/contributors":http://github.com/robotlegs/robotlegs-framework/contributors
