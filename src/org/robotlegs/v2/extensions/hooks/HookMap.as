@@ -12,7 +12,10 @@ package org.robotlegs.v2.extensions.hooks
 	import org.robotlegs.v2.core.api.ITypeFilter;
 	import org.robotlegs.v2.core.impl.tddasifyoumeanit.itemPassesFilter;
 	import org.swiftsuspenders.Injector;
+	import org.swiftsuspenders.DescribeTypeJSONReflector;
+	import org.swiftsuspenders.Reflector;
 	import org.robotlegs.v2.extensions.guards.GuardsProcessor;
+	import flash.utils.getQualifiedClassName;
 
 	public class HookMap
 	{
@@ -29,11 +32,14 @@ package org.robotlegs.v2.extensions.hooks
 		[Inject]
 		public var guardsProcessor:GuardsProcessor;
 		
+		[Inject]
+		public var reflector:Reflector;
+		
 		/*============================================================================*/
 		/* Protected Properties                                                       */
 		/*============================================================================*/
 
-		private var _mappingsByClazz:Dictionary;
+		private var _mappingsByFCQN:Dictionary;
 		private var _mappingsByMatcher:Dictionary;
 
 		/*============================================================================*/
@@ -43,7 +49,7 @@ package org.robotlegs.v2.extensions.hooks
 		public function HookMap()
 		{
 			_mappingsByMatcher = new Dictionary();
-			_mappingsByClazz = new Dictionary();
+			_mappingsByFCQN = new Dictionary();
 		}
 
 		/*============================================================================*/
@@ -52,11 +58,13 @@ package org.robotlegs.v2.extensions.hooks
 
 		public function map(clazz:Class):GuardsAndHooksMapBinding
 		{
-			_mappingsByClazz[clazz] = new GuardsAndHooksMapBinding();
+			const fcqn:String = reflector.getFQCN(clazz);
 			
-			return _mappingsByClazz[clazz];
+			_mappingsByFCQN[fcqn] = new GuardsAndHooksMapBinding();
+			
+			return _mappingsByFCQN[fcqn];
 		}
-		
+				
 		public function mapMatcher(matcher:ITypeMatcher):GuardsAndHooksMapBinding
 		{
 			const filter:ITypeFilter = matcher.createTypeFilter();
@@ -70,16 +78,15 @@ package org.robotlegs.v2.extensions.hooks
 			// TODO - dammit, this is way too permissive, we don't want
 			// our subclasses getting this special treatment!
 			
+			const fcqn:String = getQualifiedClassName(item);
+			
 			var interested:Boolean = false;
 			
-			for (var clazz:* in _mappingsByClazz)
+			if(_mappingsByFCQN[fcqn])
 			{
-				if(item is (clazz as Class))
-				{
-					interested = true;
-					if(!blockedByGuards(_mappingsByClazz[clazz].guards) )
-						hooksProcessor.runHooks(injector, _mappingsByClazz[clazz].hooks);
-				}
+				interested = true;
+				if(!blockedByGuards(_mappingsByFCQN[fcqn].guards) )
+					hooksProcessor.runHooks(injector, _mappingsByFCQN[fcqn].hooks);
 			}
 			
 			for (var filter:* in _mappingsByMatcher)

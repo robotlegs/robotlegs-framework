@@ -10,6 +10,9 @@ package org.robotlegs.v2.extensions.hooks
 	import org.flexunit.asserts.*;
 	import org.robotlegs.v2.view.api.IViewHandler;
 	import org.swiftsuspenders.Injector;
+	import org.swiftsuspenders.Reflector;
+	import org.swiftsuspenders.DescribeTypeJSONReflector;
+	
 	import org.robotlegs.v2.extensions.hooks.support.TrackableHook1;
 	import org.robotlegs.v2.extensions.hooks.support.TrackableHook2;
 	import org.robotlegs.v2.extensions.hooks.HooksProcessor;
@@ -45,6 +48,7 @@ package org.robotlegs.v2.extensions.hooks
 			hookTracker = new HookTracker();
 			instance.hookMap = new HookMap();
 			instance.hookMap.injector = injector;
+			instance.hookMap.reflector = new DescribeTypeJSONReflector();
 			instance.hookMap.hooksProcessor = new HooksProcessor();
 			instance.hookMap.guardsProcessor = new GuardsProcessor();
 			

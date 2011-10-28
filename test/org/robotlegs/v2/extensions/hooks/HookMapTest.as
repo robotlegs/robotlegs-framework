@@ -10,6 +10,8 @@ package org.robotlegs.v2.extensions.hooks
 	import org.flexunit.asserts.*;
 	import org.flexunit.asserts.assertEqualsVectorsIgnoringOrder;
 	import org.swiftsuspenders.Injector;
+	import org.swiftsuspenders.DescribeTypeJSONReflector;
+	import org.swiftsuspenders.Reflector;
 	import flash.display.DisplayObject;
 	import org.robotlegs.v2.core.impl.TypeMatcher;
 	import flash.display.Sprite;
@@ -18,6 +20,7 @@ package org.robotlegs.v2.extensions.hooks
 	import org.robotlegs.v2.extensions.guards.support.HappyGuard;
 	import org.robotlegs.v2.extensions.guards.support.GrumpyGuard;
 	import org.robotlegs.v2.extensions.hooks.support.*
+	import flash.utils.describeType;
 
 	public class HookMapTest 
 	{
@@ -40,6 +43,7 @@ package org.robotlegs.v2.extensions.hooks
 			injector = new Injector();
 			hookTracker = new HookTracker();
 			instance.injector = injector;
+			instance.reflector = new DescribeTypeJSONReflector();
 			instance.hooksProcessor = new HooksProcessor();
 			instance.guardsProcessor = new GuardsProcessor();
 			injector.map(HookTracker).toValue(hookTracker);
@@ -135,6 +139,15 @@ package org.robotlegs.v2.extensions.hooks
 		{
 			instance.mapMatcher(new TypeMatcher().allOf(MovieClip)).toHooks(TrackableHook1, TrackableHook2);
 			assertFalse(instance.process(new Sprite()));
+		}
+		
+		[Test]
+		public function a_hook_not_run_after_mapping_if_the_item_is_a_subclass():void
+		{
+			instance.map(DisplayObject).toHook(TrackableHook1);
+			instance.process(new Sprite());
+			var expectedHooksConfirmed:Vector.<String> = new <String>[];
+			assertEqualsVectorsIgnoringOrder(expectedHooksConfirmed, hookTracker.hooksConfirmed);
 		}
 		
 		// unmapping_the_hook_prevents_it_from_running
