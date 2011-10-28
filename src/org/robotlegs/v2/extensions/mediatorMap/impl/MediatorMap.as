@@ -60,7 +60,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 
 		// vars not consts as some sort of shudown would likely dump the lot
 
-		protected var _mappingsByMediatorClazz:Dictionary;
+		protected var _mappingsByMediatorType:Dictionary;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -68,7 +68,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 
 		public function MediatorMap()
 		{
-			_mappingsByMediatorClazz = new Dictionary();
+			_mappingsByMediatorType = new Dictionary();
 			_filtersByDescription = new Dictionary();
 			_configsByTypeFilter = new Dictionary();
 		}
@@ -78,9 +78,9 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function getMapping(mediatorClazz:Class):IMediatorMapping
+		public function getMapping(mediatorType:Class):IMediatorMapping
 		{
-			return _mappingsByMediatorClazz[mediatorClazz];
+			return _mappingsByMediatorType[mediatorType];
 		}
 
 		public function handleViewAdded(view:DisplayObject, info:IViewClassInfo):uint
@@ -111,7 +111,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 
 		}
 
-		public function hasMapping(mediatorClazz:Class):Boolean
+		public function hasMapping(mediatorType:Class):Boolean
 		{
 			return false;
 		}
@@ -121,20 +121,25 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			dispatchEvent(new ViewHandlerEvent(ViewHandlerEvent.CONFIGURATION_CHANGE));
 		}
 
-		public function map(mediatorClazz:Class):IMediatorMapping
+		public function map(mediatorType:Class):IMediatorMapping
 		{
-			if (!_mappingsByMediatorClazz[mediatorClazz])
-				_mappingsByMediatorClazz[mediatorClazz] = createMediatorMapping(mediatorClazz);
+			if (!_mappingsByMediatorType[mediatorType])
+				_mappingsByMediatorType[mediatorType] = createMediatorMapping(mediatorType);
 
-			return _mappingsByMediatorClazz[mediatorClazz];
+			return _mappingsByMediatorType[mediatorType];
 		}
 
-		public function unmap(mediatorClazz:Class):void
+		public function unmap(mediatorType:Class):void
 		{
-			if (_mappingsByMediatorClazz[mediatorClazz])
-				_mappingsByMediatorClazz[mediatorClazz].unmapAll();
+			if (_mappingsByMediatorType[mediatorType])
+				_mappingsByMediatorType[mediatorType].unmapAll();
 
-			delete _mappingsByMediatorClazz[mediatorClazz];
+			delete _mappingsByMediatorType[mediatorType];
+		}
+		
+		public function installTrigger(trigger:IMediatorTrigger):void
+		{
+			
 		}
 
 		/*============================================================================*/
@@ -153,26 +158,25 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			injector.map(config.mapping.mediator).toValue(mediator);
 		}
 
-		protected function createMediatorMapping(mediatorClazz:Class):IMediatorMapping
+		protected function createMediatorMapping(mediatorType:Class):IMediatorMapping
 		{
 			return new MediatorMapping(_configsByTypeFilter,
 				_filtersByDescription,
-				mediatorClazz);
+				mediatorType);
 		}
-
 
 		protected function mapViewForFilterBinding(filter:ITypeFilter, view:DisplayObject):void
 		{
-			var requiredClazz:Class;
+			var requiredType:Class;
 
-			for each (requiredClazz in filter.allOfTypes)
+			for each (requiredType in filter.allOfTypes)
 			{
-				injector.map(requiredClazz).toValue(view);
+				injector.map(requiredType).toValue(view);
 			}
 
-			for each (requiredClazz in filter.anyOfTypes)
+			for each (requiredType in filter.anyOfTypes)
 			{
-				injector.map(requiredClazz).toValue(view);
+				injector.map(requiredType).toValue(view);
 			}
 		}
 
@@ -188,16 +192,16 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 
 		protected function unmapViewForFilterBinding(filter:ITypeFilter, view:DisplayObject):void
 		{
-			var requiredClazz:Class;
+			var requiredType:Class;
 
-			for each (requiredClazz in filter.allOfTypes)
+			for each (requiredType in filter.allOfTypes)
 			{
-				injector.unmap(requiredClazz);
+				injector.unmap(requiredType);
 			}
 
-			for each (requiredClazz in filter.anyOfTypes)
+			for each (requiredType in filter.anyOfTypes)
 			{
-				injector.unmap(requiredClazz);
+				injector.unmap(requiredType);
 			}
 		}
 	}

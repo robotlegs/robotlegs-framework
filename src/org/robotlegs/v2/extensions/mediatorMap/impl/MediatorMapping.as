@@ -88,9 +88,9 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			return config;
 		}
 
-		public function toView(viewClazz:Class):IGuardsAndHooksConfig
+		public function toView(viewType:Class):IGuardsAndHooksConfig
 		{
-			return toMatcher(new TypeMatcher().allOf(viewClazz));
+			return toMatcher(new TypeMatcher().allOf(viewType));
 		}
 
 		public function unmap(typeMatcher:ITypeMatcher):void

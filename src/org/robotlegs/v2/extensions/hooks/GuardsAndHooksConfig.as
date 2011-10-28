@@ -86,9 +86,9 @@ package org.robotlegs.v2.extensions.hooks
 				}
 			}
 
-			for each (var clazz:Class in values)
+			for each (var type:Class in values)
 			{
-				vector.push(clazz);
+				vector.push(type);
 			}
 		}
 	}

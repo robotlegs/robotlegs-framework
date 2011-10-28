@@ -59,11 +59,11 @@ package org.robotlegs.v2.extensions.hooks
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function map(clazz:Class):GuardsAndHooksConfig
+		public function map(type:Class):GuardsAndHooksConfig
 		{
 			// TODO - overwrite? warnings? allow extension? handle duplicates? hrm.
 
-			const fqcn:String = reflector.getFQCN(clazz);
+			const fqcn:String = reflector.getFQCN(type);
 
 			_mappingsByFCQN[fqcn] = new GuardsAndHooksConfig();
 

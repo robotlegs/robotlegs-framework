@@ -11,11 +11,11 @@ package org.robotlegs.v2.extensions.mediatorMap.api
 	public interface IMediatorMap
 	{
 
-		function getMapping(mediatorClazz:Class):IMediatorMapping;
+		function getMapping(mediatorType:Class):IMediatorMapping;
 
-		function hasMapping(mediatorClazz:Class):Boolean;
-		function map(mediatorClazz:Class):IMediatorMapping;
+		function hasMapping(mediatorType:Class):Boolean;
+		function map(mediatorType:Class):IMediatorMapping;
 
-		function unmap(mediatorClazz:Class):void;
+		function unmap(mediatorType:Class):void;
 	}
 }

@@ -15,6 +15,8 @@ package org.robotlegs.mvcs
 	import org.robotlegs.base.MediatorBase;
 	import org.robotlegs.core.IEventMap;
 	import org.robotlegs.core.IMediatorMap;
+	import org.robotlegs.core.IMediator;
+	
 	
 	/**
 	 * Abstract MVCS <code>IMediator</code> implementation
