@@ -65,27 +65,34 @@ package org.robotlegs.v2.extensions.hooks
 			return _hooksByMatcher[filter];
 		}
 		
-		public function process(item:*):void
+		public function process(item:*):Boolean
 		{			
 			// TODO - dammit, this is way too permissive, we don't want
 			// our subclasses getting this special treatment!
+			
+			var interested:Boolean = false;
 			
 			for (var clazz:* in _hooksByClazz)
 			{
 				if(item is (clazz as Class))
 				{
+					interested = true;
 					if(!blockedByGuards(_hooksByClazz[clazz].guards) )
 						hooksProcessor.runHooks(injector, _hooksByClazz[clazz].hooks);
 				}
 			}
+			
 			for (var filter:* in _hooksByMatcher)
 			{
 				if(itemPassesFilter(item, filter as ITypeFilter))
 				{
+					interested = true;
 					if(!blockedByGuards(_hooksByMatcher[filter].guards) )
 						hooksProcessor.runHooks(injector, _hooksByMatcher[filter].hooks);
 				}
 			}
+			
+			return interested;
 		}
 
 		/*============================================================================*/

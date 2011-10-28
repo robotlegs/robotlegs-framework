@@ -122,12 +122,20 @@ package org.robotlegs.v2.extensions.hooks
 			var expectedHooksConfirmed:Vector.<String> = new <String>['TrackableHook1', 'TrackableHook2'];
 			assertEqualsVectorsIgnoringOrder('both hooks have run when the guards approved of it', expectedHooksConfirmed, hookTracker.hooksConfirmed);
 		}
+		
+		[Test]
+		public function returns_true_if_interested_even_if_guards_block_running():void
+		{
+			instance.mapMatcher(new TypeMatcher().allOf(DisplayObject)).toHooks(TrackableHook1, TrackableHook2).withGuards(HappyGuard, GrumpyGuard);
+			assertTrue( instance.process(new Sprite()));			
+		}
 
-		// always_returns_non_blocking_bitmask
-		
-		// returns_true_if_interested
-		
-		// returns_false_if_not_interested
+		[Test]
+		public function returns_false_if_not_interested_even_if_no_guards():void
+		{
+			instance.mapMatcher(new TypeMatcher().allOf(MovieClip)).toHooks(TrackableHook1, TrackableHook2);
+			assertFalse(instance.process(new Sprite()));
+		}
 		
 		// unmapping_the_hook_prevents_it_from_running
 
