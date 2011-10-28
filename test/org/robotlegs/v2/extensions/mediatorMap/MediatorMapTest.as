@@ -201,6 +201,28 @@ package org.robotlegs.v2.extensions.mediatorMap
 			var interest:uint = instance.handleViewAdded(new Sprite(), null);
 			assertEquals(0, interest);
 		}
+		
+		[Test]
+		public function is_still_interested_if_only_one_mapping_of_two_is_unmapped():void
+		{
+			instance.map(ExampleMediator).toView(Sprite);
+			instance.map(ExampleMediator).toView(MovieClip);
+			instance.getMapping(ExampleMediator).unmap(new TypeMatcher().allOf(MovieClip));
+			
+			var interest:uint = instance.handleViewAdded(new Sprite(), null);
+			assertEquals(1, interest);		
+		}
+		
+		[Test]
+		public function is_not_interested_if_all_mappings_unmapped_in_one_hit():void
+		{
+			instance.map(ExampleMediator).toView(Sprite);
+			instance.map(ExampleMediator).toView(MovieClip);
+			instance.unmap(ExampleMediator);
+			
+			var interest:uint = instance.handleViewAdded(new Sprite(), null);
+			assertEquals(0, interest);
+		}
 	}
 }
 

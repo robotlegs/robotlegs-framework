@@ -10,20 +10,18 @@ package org.robotlegs.v2.extensions.mediatorMap
 	
 	public class MediatorMapping extends GuardsAndHooksConfig implements IMediatorMapping
 	{	
-		protected var _configsByFilter:Dictionary;
+		protected var _configsByTypeFilter:Dictionary;
 
 		protected var _filtersByDescriptor:Dictionary;
 		
 		protected var _mediator:Class;
-						
-		protected var _typeFilter:ITypeFilter;
-		
+								
 		protected var _localConfigsByFilter:Dictionary;
 		
 
-		public function MediatorMapping(configsByFilter:Dictionary, filterDescriptorMap:Dictionary, mediator:Class)
+		public function MediatorMapping(configsByTypeFilter:Dictionary, filterDescriptorMap:Dictionary, mediator:Class)
 		{
-			_configsByFilter = configsByFilter;
+			_configsByTypeFilter = configsByTypeFilter;
 			_filtersByDescriptor = filterDescriptorMap;
 			_mediator = mediator;
 			_localConfigsByFilter = new Dictionary();
@@ -50,35 +48,50 @@ package org.robotlegs.v2.extensions.mediatorMap
 		
 		public function toMatcher(typeMatcher:ITypeMatcher):IGuardsAndHooksConfig
 		{
-			_typeFilter = typeMatcher.createTypeFilter();
+			var typeFilter:ITypeFilter = typeMatcher.createTypeFilter();
 			
-			if(_filtersByDescriptor[_typeFilter.descriptor])
+			if(_filtersByDescriptor[typeFilter.descriptor])
 			{
-				_typeFilter = _filtersByDescriptor[_typeFilter.descriptor];
+				typeFilter = _filtersByDescriptor[typeFilter.descriptor];
 			}
 			else
 			{
-				_filtersByDescriptor[_typeFilter.descriptor] = _typeFilter;
-				_configsByFilter[_typeFilter] = new Vector.<IMediatorConfig>();
+				_filtersByDescriptor[typeFilter.descriptor] = typeFilter;
+				_configsByTypeFilter[typeFilter] = new Vector.<IMediatorConfig>();
 			}
 			
 			const config:IMediatorConfig = new MediatorConfig(this);
 			
-			_configsByFilter[_typeFilter].push(config);
-			_localConfigsByFilter[_typeFilter] = config;
+			_configsByTypeFilter[typeFilter].push(config);
+			_localConfigsByFilter[typeFilter] = config;
 			return config;
 		}
 		
 		public function unmap(typeMatcher:ITypeMatcher):void
 		{
-			_typeFilter = typeMatcher.createTypeFilter();
+			const typeFilter:ITypeFilter = typeMatcher.createTypeFilter();
 			
-			if(!_configsByFilter[_typeFilter] && _filtersByDescriptor[_typeFilter.descriptor])
+			unmapTypeFilter(typeFilter);
+		}
+		
+		internal function unmapAll():void
+		{
+			for (var filter:* in _localConfigsByFilter)
 			{
-				_typeFilter = _filtersByDescriptor[_typeFilter.descriptor];
-				const config:IMediatorConfig = _localConfigsByFilter[_typeFilter];
+				trace("MediatorMapping::unmapAll() " + filter.descriptor);
+				unmapTypeFilter(filter as ITypeFilter);
+			}
+		}
+		
+		protected function unmapTypeFilter(typeFilter:ITypeFilter):void
+		{			
+			typeFilter = _filtersByDescriptor[typeFilter.descriptor];
+			
+			if(_configsByTypeFilter[typeFilter])
+			{
+				const config:IMediatorConfig = _localConfigsByFilter[typeFilter];
 				
-				const configs:Vector.<IMediatorConfig> = _configsByFilter[_typeFilter];
+				const configs:Vector.<IMediatorConfig> = _configsByTypeFilter[typeFilter];
 			
 				const index:int = configs.indexOf(config);
 				
@@ -87,12 +100,12 @@ package org.robotlegs.v2.extensions.mediatorMap
 					configs.splice(index, 1);
 					if(configs.length==0)
 					{
-						delete _configsByFilter[_typeFilter];
-						delete _filtersByDescriptor[_typeFilter.descriptor];
+						delete _configsByTypeFilter[typeFilter];
+						delete _filtersByDescriptor[typeFilter.descriptor];
 					}
 				}
 				
-				delete _localConfigsByFilter[_typeFilter];
+				delete _localConfigsByFilter[typeFilter];
 			}
 		}
 	}

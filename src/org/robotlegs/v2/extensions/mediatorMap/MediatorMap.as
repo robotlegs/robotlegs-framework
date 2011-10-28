@@ -25,7 +25,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import org.swiftsuspenders.Reflector;
 	
 	[Event(name="configurationChange", type="org.robotlegs.v2.view.api.ViewHandlerEvent")]
-	public class  MediatorMap extends EventDispatcher implements IViewHandler
+	public class  MediatorMap extends EventDispatcher implements IViewHandler, IMediatorMap
 	{
 		/*============================================================================*/
 		/* Public Properties                                                          */
@@ -81,6 +81,8 @@ package org.robotlegs.v2.extensions.mediatorMap
 			
 			for (var filter:* in _configsByTypeFilter)
 			{
+				trace("MediatorMap::handleViewAdded()", filter.descriptor);
+				
 				if(itemPassesFilter(view, filter as ITypeFilter))
 				{
 					interest = 1;
@@ -90,7 +92,6 @@ package org.robotlegs.v2.extensions.mediatorMap
 					{
 						processMapping (config);
 					}
-					
 				}
 			}
 			
@@ -113,6 +114,19 @@ package org.robotlegs.v2.extensions.mediatorMap
 				_mappingsByMediatorClazz[mediatorClazz] = createMediatorMapping(mediatorClazz);
 						
 			return _mappingsByMediatorClazz[mediatorClazz];
+		}
+		
+		public function unmap(mediatorClazz:Class):void
+		{
+			if(_mappingsByMediatorClazz[mediatorClazz])
+				_mappingsByMediatorClazz[mediatorClazz].unmapAll();
+				
+			delete _mappingsByMediatorClazz[mediatorClazz];
+		}
+		
+		public function hasMapping(mediatorClazz:Class):Boolean
+		{
+			return false;
 		}
 		
 		public function getMapping(mediatorClazz:Class):IMediatorMapping
