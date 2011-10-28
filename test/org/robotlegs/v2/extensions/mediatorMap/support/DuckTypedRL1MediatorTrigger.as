@@ -13,10 +13,15 @@ package org.robotlegs.v2.extensions.mediatorMap.support
 	public class DuckTypedRL1MediatorTrigger implements IMediatorTrigger 
 	{
 	
-		public function DuckTypedRL1MediatorTrigger()
+		protected var _strict:Boolean;
+	
+		public function DuckTypedRL1MediatorTrigger(strict:Boolean)
 		{
-
+			_strict = strict;
 		}
+	
+		// TODO - in strict mode, always run the code
+		// - in relaxed mode, defend against missing api
 	
 		public function startup(mediator:*, view:DisplayObject):void
 		{

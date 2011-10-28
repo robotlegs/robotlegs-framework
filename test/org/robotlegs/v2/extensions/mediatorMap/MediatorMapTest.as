@@ -59,7 +59,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 			instance.reflector = reflector;
 			instance.hooksProcessor = new HooksProcessor();
 			instance.guardsProcessor = new GuardsProcessor();
-			instance.loadTrigger(new DuckTypedRL1MediatorTrigger());
+			instance.loadTrigger(new DuckTypedRL1MediatorTrigger(true));
 
 			mediatorWatcher = new MediatorWatcher();
 			injector.map(MediatorWatcher).toValue(mediatorWatcher);
@@ -275,13 +275,13 @@ package org.robotlegs.v2.extensions.mediatorMap
 			assertFalse(instance.hasMapping(ExampleDisplayObjectMediator));
 		}
 		
-		[Test()]
-		
 		// mediator_is_kept_during_reparenting - really a job for the trigger
 		
-		// mediator_survives_after_garbage_collection - how do we test this without making our tests slow?
+		// mediator_survives_after_garbage_collection - how do we test this without making our tests slow? Do we need to?
 		
 		// flex_view_mediator_waits_for_creation_complete - a job for the trigger
+		
+		// multiple_triggers
 
 		[Test(async)]
 		public function test_failure_seen():void
