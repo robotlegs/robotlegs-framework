@@ -8,6 +8,7 @@
 package org.robotlegs.v2.extensions.mediatorMap.support
 {
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorTrigger;
+	import flash.display.DisplayObject;
 
 	public class DuckTypedRL1MediatorTrigger implements IMediatorTrigger 
 	{
@@ -17,14 +18,15 @@ package org.robotlegs.v2.extensions.mediatorMap.support
 
 		}
 	
-		public function startup(mediator:*):void
+		public function startup(mediator:*, view:DisplayObject):void
 		{
 			mediator.preRegister();
 		}
 
-		public function shutdown(mediator:*, callback:Function):void
+		public function shutdown(mediator:*, view:DisplayObject, callback:Function):void
 		{
-			
+			mediator.preRemove();
+			callback(mediator, view);
 		}
 
 	}

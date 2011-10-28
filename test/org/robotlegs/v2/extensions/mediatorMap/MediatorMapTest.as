@@ -233,6 +233,19 @@ package org.robotlegs.v2.extensions.mediatorMap
 		}
 
 		[Test]
+		public function runs_preRemove_on_created_mediator_when_handleViewRemoved_runs():void
+		{
+			instance.map(ExampleMediator).toView(Sprite);
+			
+			const view:Sprite = new Sprite();
+			instance.handleViewAdded(view, null);
+			instance.handleViewRemoved(view);
+			
+			var expectedNotifications:Vector.<String> = new <String>['ExampleMediator', 'ExampleMediator preRemove'];
+			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
+		}
+
+		[Test]
 		public function test_failure_seen():void
 		{
 			assertTrue("Failing test", true);
@@ -265,6 +278,11 @@ class ExampleMediator
 	public function preRegister():void
 	{
 		mediatorWatcher.notify('ExampleMediator');
+	}
+	
+	public function preRemove():void
+	{
+		mediatorWatcher.notify('ExampleMediator preRemove');
 	}
 }
 

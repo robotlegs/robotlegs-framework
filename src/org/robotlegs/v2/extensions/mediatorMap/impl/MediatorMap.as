@@ -64,6 +64,8 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		protected var _mappingsByMediatorType:Dictionary;
 		
 		protected var _trigger:IMediatorTrigger;
+		
+		protected var _liveMediatorsByView:Dictionary;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -74,6 +76,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			_mappingsByMediatorType = new Dictionary();
 			_filtersByDescription = new Dictionary();
 			_configsByTypeFilter = new Dictionary();
+			_liveMediatorsByView = new Dictionary();
 		}
 
 
@@ -99,7 +102,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 
 					for each (var config:IMediatorConfig in _configsByTypeFilter[filter])
 					{
-						processMapping(config);
+						processMapping(config, view);
 					}
 
 					unmapViewForFilterBinding(filter, view);
@@ -111,7 +114,13 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 
 		public function handleViewRemoved(view:DisplayObject):void
 		{
-
+			if(_liveMediatorsByView[view])
+			{
+				for each (var mediator:* in _liveMediatorsByView[view])
+				{
+					_trigger.shutdown(mediator, view, cleanUpMediator);
+				}
+			}
 		}
 
 		public function hasMapping(mediatorType:Class):Boolean
@@ -184,14 +193,20 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			}
 		}
 
-		protected function processMapping(config:IMediatorConfig):void
+		protected function processMapping(config:IMediatorConfig, view:DisplayObject):void
 		{
 			if (!blockedByGuards(config.guards))
 			{
 				const mediator:* = createMediatorForBinding(config);
 				hooksProcessor.runHooks(injector, config.hooks);
 				injector.unmap(config.mapping.mediator);
-				_trigger.startup(mediator);
+				
+				if(!_liveMediatorsByView[view])
+					_liveMediatorsByView[view] = [];
+
+				_liveMediatorsByView[view].push(mediator);
+				
+				_trigger.startup(mediator, view);
 			}
 		}
 
@@ -207,6 +222,15 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			for each (requiredType in filter.anyOfTypes)
 			{
 				injector.unmap(requiredType);
+			}
+		}
+		
+		protected function cleanUpMediator(mediator:*, view:DisplayObject):void
+		{
+			const index:int = _liveMediatorsByView[view].indexOf(mediator);
+			if(index > -1)
+			{
+				_liveMediatorsByView[view].splice(index, 1);
 			}
 		}
 	}
