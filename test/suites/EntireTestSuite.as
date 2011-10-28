@@ -7,8 +7,6 @@
 
 package suites
 {
-	import suites.MediatorMapTestSuite;
-
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
 	public class EntireTestSuite
@@ -23,6 +21,8 @@ package suites
 		public var hooksTestSuite:GuardsAndHooksTestSuite;
 
 		public var mediatorMapTestSuite:MediatorMapTestSuite;
+
+		public var commandMapTestSuite:CommandMapTestSuite;
 
 		//public var contextTestSuite:ContextTestSuite;
 
