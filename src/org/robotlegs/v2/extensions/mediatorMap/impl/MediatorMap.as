@@ -24,6 +24,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMap;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMapping;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorConfig;
+	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorTrigger;
 
 	[Event(name="configurationChange", type="org.robotlegs.v2.view.api.ViewHandlerEvent")]
 	public class MediatorMap extends EventDispatcher implements IViewHandler, IMediatorMap
@@ -61,6 +62,8 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		// vars not consts as some sort of shudown would likely dump the lot
 
 		protected var _mappingsByMediatorType:Dictionary;
+		
+		protected var _trigger:IMediatorTrigger;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -137,10 +140,10 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			delete _mappingsByMediatorType[mediatorType];
 		}
 		
-		/*public function installTrigger(trigger:IMediatorTrigger):void
+		public function loadTrigger(trigger:IMediatorTrigger):void
 		{
-			
-		}*/
+			_trigger = trigger;
+		}
 
 		/*============================================================================*/
 		/* Protected Functions                                                        */
@@ -156,6 +159,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		{
 			const mediator:* = injector.getInstance(config.mapping.mediator);
 			injector.map(config.mapping.mediator).toValue(mediator);
+			return mediator;
 		}
 
 		protected function createMediatorMapping(mediatorType:Class):IMediatorMapping
@@ -184,9 +188,10 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		{
 			if (!blockedByGuards(config.guards))
 			{
-				createMediatorForBinding(config);
+				const mediator:* = createMediatorForBinding(config);
 				hooksProcessor.runHooks(injector, config.hooks);
-				injector.unmap(config.mapping.mediator)
+				injector.unmap(config.mapping.mediator);
+				_trigger.startup(mediator);
 			}
 		}
 

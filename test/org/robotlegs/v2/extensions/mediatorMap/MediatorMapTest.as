@@ -21,6 +21,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import org.swiftsuspenders.Injector;
 	import org.swiftsuspenders.Reflector;
 	import org.robotlegs.v2.extensions.mediatorMap.impl.MediatorMap;
+	import org.robotlegs.v2.extensions.mediatorMap.support.DuckTypedRL1MediatorTrigger;
 
 	public class MediatorMapTest
 	{
@@ -54,6 +55,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 			instance.reflector = reflector;
 			instance.hooksProcessor = new HooksProcessor();
 			instance.guardsProcessor = new GuardsProcessor();
+			instance.loadTrigger(new DuckTypedRL1MediatorTrigger());
 
 			mediatorWatcher = new MediatorWatcher();
 			injector.map(MediatorWatcher).toValue(mediatorWatcher);
@@ -260,8 +262,7 @@ class ExampleMediator
 	/* Public Functions                                                           */
 	/*============================================================================*/
 
-	[PostConstruct]
-	public function notifyWatcher():void
+	public function preRegister():void
 	{
 		mediatorWatcher.notify('ExampleMediator');
 	}
@@ -285,8 +286,7 @@ class ExampleDisplayObjectMediator
 	/* Public Functions                                                           */
 	/*============================================================================*/
 
-	[PostConstruct]
-	public function notifyWatcher():void
+	public function preRegister():void
 	{
 		mediatorWatcher.notify('ExampleDisplayObjectMediator');
 	}
@@ -301,6 +301,11 @@ class RectangleMediator
 
 	[Inject]
 	public var rectangle:Rectangle;
+	
+	public function preRegister():void
+	{
+		
+	}
 }
 
 class OnlyIfViewHasChildrenGuard

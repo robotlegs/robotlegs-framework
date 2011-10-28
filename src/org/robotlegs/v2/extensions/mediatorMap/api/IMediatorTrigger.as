@@ -7,18 +7,10 @@
 
 package org.robotlegs.v2.extensions.mediatorMap.api
 {
-
-	public interface IMediatorMap
+	public interface IMediatorTrigger
 	{
+		function startup(mediator:*):void;
 		
-		function getMapping(mediatorType:Class):IMediatorMapping;
-
-		function hasMapping(mediatorType:Class):Boolean;
-		
-		function map(mediatorType:Class):IMediatorMapping;
-
-		function unmap(mediatorType:Class):void;
-	
-		function loadTrigger(trigger:IMediatorTrigger):void;
+		function shutdown(mediator:*, callback:Function):void;
 	}
 }
