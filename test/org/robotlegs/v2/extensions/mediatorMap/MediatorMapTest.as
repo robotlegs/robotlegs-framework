@@ -17,6 +17,12 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import flash.display.Sprite;
 	import flash.utils.Dictionary;
 	import flash.utils.getQualifiedClassName;
+	import org.robotlegs.v2.core.impl.TypeMatcher;
+	import org.robotlegs.v2.core.impl.itemPassesFilter;
+	import org.robotlegs.v2.core.api.ITypeFilter;
+	import flash.display.MovieClip;
+	import flash.geom.Rectangle;
+	import org.robotlegs.v2.extensions.hooks.HooksProcessor;
 	
 
 	public class MediatorMapTest 
@@ -33,6 +39,8 @@ package org.robotlegs.v2.extensions.mediatorMap
 		
 		private var mediatorWatcher:MediatorWatcher;
 		
+		private var hooksProcessor:HooksProcessor;
+		
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
 		/*============================================================================*/
@@ -45,6 +53,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 			reflector = new DescribeTypeJSONReflector();
 			mediatorWatcher = new MediatorWatcher();
 			injector.map(MediatorWatcher).toValue(mediatorWatcher);
+			hooksProcessor = new HooksProcessor();
 		}
 
 		[After]
@@ -84,7 +93,6 @@ package org.robotlegs.v2.extensions.mediatorMap
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
 		}
 		
-		
 		[Test]
 		public function handler_instantiates_mediator_for_view_mapped_by_type():void
 		{
@@ -96,23 +104,73 @@ package org.robotlegs.v2.extensions.mediatorMap
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
 		}
 		
-		// handler_creates_mediator_for_view_mapped_by_matcher
+		[Test]
+		public function handler_creates_mediator_for_view_mapped_by_matcher():void
+		{
+			map(ExampleMediator).toMatcher(new TypeMatcher().allOf(DisplayObject));
+			
+			handleViewAdded(new Sprite());
+
+			var expectedNotifications:Vector.<String> = new <String>['ExampleMediator'];
+			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
+		}
+		
+		[Test]
+		public function handler_doesnt_create_mediator_for_wrong_view_mapped_by_matcher():void
+		{
+			map(ExampleMediator).toMatcher(new TypeMatcher().allOf(MovieClip));
+			
+			handleViewAdded(new Sprite());
+
+			var expectedNotifications:Vector.<String> = new <String>[];
+			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
+		}
+		
+		[Test]
+		public function a_hook_runs_and_receives_injections_of_view_and_mediator():void
+		{
+			map(RectangleMediator).toView(Sprite).withHooks(HookWithMediatorAndViewInjectionDrawsRectangle);
+			
+			const view:Sprite = new Sprite();
+			
+			const expectedViewWidth:Number = 100;
+			const expectedViewHeight:Number = 200;
+			
+			injector.map(Rectangle).toValue(new Rectangle(0,0,expectedViewWidth, expectedViewHeight));
+			
+			handleViewAdded(view);
+
+			assertEquals(expectedViewWidth, view.width);
+			assertEquals(expectedViewHeight, view.height);
+		}
+		
 		// guards
 		// hooks
+		// view mapped as all types in the type filter all / any
 		
-
+		[Before]
+		public function clearTDDAIYMI():void
+		{
+			_mappingsByMediatorClazz = new Dictionary();
+			_mappingsByViewFCQN = new Dictionary();
+			_mappingsByTypeFilter = new Dictionary();
+		}
+		
 		/*============================================================================*/
 		/* Protected Functions                                                        */
 		/*============================================================================*/
 		
-		protected var _mappingsByMediatorClazz:Dictionary = new Dictionary();
+		protected var _mappingsByMediatorClazz:Dictionary;
 		
-		protected var _mappingsByViewFCQN:Dictionary = new Dictionary();
+		protected var _mappingsByViewFCQN:Dictionary;
+		
+		protected var _mappingsByTypeFilter:Dictionary;
 		
 		protected function map(mediatorClazz:Class):MediatorMappingBinding
 		{			
-			_mappingsByMediatorClazz[mediatorClazz] = new MediatorMappingBinding(_mappingsByViewFCQN, mediatorClazz, reflector);
+			// TODO = fix the fatal flaw with this plan - we can only have one mapping per mediator...
 			
+			_mappingsByMediatorClazz[mediatorClazz] = new MediatorMappingBinding(_mappingsByViewFCQN, _mappingsByTypeFilter, mediatorClazz, reflector);
 			
 			return _mappingsByMediatorClazz[mediatorClazz];
 		}
@@ -122,16 +180,32 @@ package org.robotlegs.v2.extensions.mediatorMap
 			const fqcn:String = getQualifiedClassName(view);
 			
 			if(_mappingsByViewFCQN[fqcn])
+			{
 				createMediatorForBinding(_mappingsByViewFCQN[fqcn], view);
+				hooksProcessor.runHooks(injector, _mappingsByViewFCQN[fqcn].hooks);
+			}	
+			
+			for (var filter:* in _mappingsByTypeFilter)
+			{
+				if(itemPassesFilter(view, filter as ITypeFilter))
+				{
+					createMediatorForBinding(_mappingsByTypeFilter[filter], view);
+					hooksProcessor.runHooks(injector, _mappingsByTypeFilter[filter].hooks);
+				}
+			}
 		}
 		
 		protected function createMediatorForBinding(binding:MediatorMappingBinding, view:DisplayObject):void
 		{
 			injector.map(binding.viewClass).toValue(view);
-			injector.getInstance(binding.mediatorClass);
+			const mediator:* = injector.getInstance(binding.mediatorClass);
+			injector.map(binding.mediatorClass).toValue(mediator);
 		}
 	}
 }
+
+import flash.geom.Rectangle;
+import flash.display.Sprite;
 
 class ExampleMediator
 {
@@ -143,6 +217,12 @@ class ExampleMediator
 	{
 		mediatorWatcher.notify('ExampleMediator');
 	}
+}
+
+class RectangleMediator
+{
+	[Inject]
+	public var rectangle:Rectangle;
 }
 
 class MediatorWatcher
@@ -157,5 +237,23 @@ class MediatorWatcher
 	public function get notifications():Vector.<String>
 	{
 		return _notifications;
+	}
+}
+
+class HookWithMediatorAndViewInjectionDrawsRectangle
+{
+	[Inject]
+	public var mediator:RectangleMediator;
+	
+	[Inject]
+	public var view:Sprite;
+	
+	public function hook():void
+	{
+		trace("MediatorMapTest::hook()");
+		const requiredWidth:Number = mediator.rectangle.width;
+		const requiredHeight:Number = mediator.rectangle.height;
+		
+		view.graphics.drawRect(0,0, requiredWidth, requiredHeight);
 	}
 }

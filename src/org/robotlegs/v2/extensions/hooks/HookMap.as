@@ -40,7 +40,7 @@ package org.robotlegs.v2.extensions.hooks
 		/*============================================================================*/
 
 		private var _mappingsByFCQN:Dictionary;
-		private var _mappingsByMatcher:Dictionary;
+		private var _mappingsByTypeFilter:Dictionary;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -48,7 +48,7 @@ package org.robotlegs.v2.extensions.hooks
 
 		public function HookMap()
 		{
-			_mappingsByMatcher = new Dictionary();
+			_mappingsByTypeFilter = new Dictionary();
 			_mappingsByFCQN = new Dictionary();
 		}
 
@@ -70,9 +70,9 @@ package org.robotlegs.v2.extensions.hooks
 		public function mapMatcher(matcher:ITypeMatcher):GuardsAndHooksMapBinding
 		{
 			const filter:ITypeFilter = matcher.createTypeFilter();
-			_mappingsByMatcher[filter] = new GuardsAndHooksMapBinding();
+			_mappingsByTypeFilter[filter] = new GuardsAndHooksMapBinding();
 			
-			return _mappingsByMatcher[filter];
+			return _mappingsByTypeFilter[filter];
 		}
 		
 		public function process(item:*):Boolean
@@ -88,13 +88,13 @@ package org.robotlegs.v2.extensions.hooks
 					hooksProcessor.runHooks(injector, _mappingsByFCQN[fqcn].hooks);
 			}
 			
-			for (var filter:* in _mappingsByMatcher)
+			for (var filter:* in _mappingsByTypeFilter)
 			{
 				if(itemPassesFilter(item, filter as ITypeFilter))
 				{
 					interested = true;
-					if(!blockedByGuards(_mappingsByMatcher[filter].guards) )
-						hooksProcessor.runHooks(injector, _mappingsByMatcher[filter].hooks);
+					if(!blockedByGuards(_mappingsByTypeFilter[filter].guards) )
+						hooksProcessor.runHooks(injector, _mappingsByTypeFilter[filter].hooks);
 				}
 			}
 			
