@@ -163,9 +163,9 @@ package org.robotlegs.v2.extensions.mediatorMap
 		[Test]
 		public function returns_zero_if_handler_not_interested():void
 		{
-			instance.map(ExampleMediator).toView(Sprite).withGuards(OnlyIfViewHasChildrenGuard);
+			instance.map(ExampleMediator).toView(MovieClip).withGuards(OnlyIfViewHasChildrenGuard);
 			
-			var interest:uint = instance.handleViewAdded(new MovieClip(), null);
+			var interest:uint = instance.handleViewAdded(new Sprite(), null);
 			
 			assertEquals(0, interest);
 		}
@@ -180,7 +180,27 @@ package org.robotlegs.v2.extensions.mediatorMap
 			assertEquals(1, interest);
 		}
 		
-		// unmapping		
+		// unmapping
+		
+		[Test]
+		public function is_not_interested_if_mapping_is_unmapped_for_view():void
+		{
+			instance.map(ExampleMediator).toView(Sprite);
+			instance.getMapping(ExampleMediator).unmap(new TypeMatcher().allOf(Sprite));
+						
+			var interest:uint = instance.handleViewAdded(new Sprite(), null);
+			assertEquals(0, interest);
+		}		
+		
+		[Test]
+		public function is_not_interested_if_mapping_is_unmapped_for_matcher():void
+		{
+			instance.map(ExampleDisplayObjectMediator).toMatcher(new TypeMatcher().allOf(DisplayObject));
+			instance.getMapping(ExampleDisplayObjectMediator).unmap(new TypeMatcher().allOf(DisplayObject));
+			
+			var interest:uint = instance.handleViewAdded(new Sprite(), null);
+			assertEquals(0, interest);
+		}
 	}
 }
 

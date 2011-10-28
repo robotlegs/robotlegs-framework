@@ -11,6 +11,6 @@ package org.robotlegs.v2.extensions.mediatorMap
 	{
 		function map(mediatorClazz:Class):IMediatorMapping;
 	
-		//function unmap(mediatorClazz:Class):
+		function unmap(mediatorClazz:Class):IMediatorUnmapping;
 	}
 }

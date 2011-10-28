@@ -47,10 +47,10 @@ package org.robotlegs.v2.extensions.mediatorMap
 		// vars not consts as some sort of shudown would likely dump the lot
 		
 		protected var _mappingsByMediatorClazz:Dictionary;
+				
+		protected var _configsByTypeFilter:Dictionary;
 		
-		protected var _mappingsByViewFCQN:Dictionary;
-		
-		protected var _mappingsByTypeFilter:Dictionary;
+		protected var _filtersByDescription:Dictionary;
 		
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -59,8 +59,8 @@ package org.robotlegs.v2.extensions.mediatorMap
 		public function MediatorMap()
 		{
 			_mappingsByMediatorClazz = new Dictionary();
-			_mappingsByViewFCQN = new Dictionary();
-			_mappingsByTypeFilter = new Dictionary();
+			_filtersByDescription = new Dictionary();
+			_configsByTypeFilter = new Dictionary();
 		}
 
 		/*============================================================================*/
@@ -74,23 +74,20 @@ package org.robotlegs.v2.extensions.mediatorMap
 
 		public function handleViewAdded(view:DisplayObject, info:IViewClassInfo):uint
 		{
-			const fqcn:String = getQualifiedClassName(view);
 			var interest:uint = 0;
 			
-			if(_mappingsByViewFCQN[fqcn])
-			{
-				interest = 1;
-				mapViewForTypeBinding(_mappingsByViewFCQN[fqcn], view);
-				processMapping( _mappingsByViewFCQN[fqcn]);
-			}	
-			
-			for (var filter:* in _mappingsByTypeFilter)
+			for (var filter:* in _configsByTypeFilter)
 			{
 				if(itemPassesFilter(view, filter as ITypeFilter))
 				{
 					interest = 1;
 					mapViewForFilterBinding(filter, view);
-					processMapping (_mappingsByTypeFilter[filter]);
+					
+					for each (var config:IMediatorConfig in _configsByTypeFilter[filter])
+					{
+						processMapping (config);
+					}
+					
 				}
 			}
 			
@@ -108,33 +105,39 @@ package org.robotlegs.v2.extensions.mediatorMap
 		}
 		
 		public function map(mediatorClazz:Class):IMediatorMapping
-		{			
-			// TODO = fix the fatal flaw with this plan - we can only have one mapping per mediator...
-			
-			_mappingsByMediatorClazz[mediatorClazz] = new MediatorMapping(_mappingsByViewFCQN, _mappingsByTypeFilter, mediatorClazz, reflector);
-			
+		{						
+			if(!_mappingsByMediatorClazz[mediatorClazz])
+				_mappingsByMediatorClazz[mediatorClazz] = createMediatorMapping(mediatorClazz);
+						
 			return _mappingsByMediatorClazz[mediatorClazz];
 		}
 		
-
+		public function getMapping(mediatorClazz:Class):IMediatorMapping
+		{
+			return _mappingsByMediatorClazz[mediatorClazz];
+		}
+		
 		/*============================================================================*/
 		/* Protected Functions                                                        */
 		/*============================================================================*/
-		
-		protected function processMapping(binding:IMediatorMapping):void
+				
+		protected function createMediatorMapping(mediatorClazz:Class):IMediatorMapping
 		{
-			if(!blockedByGuards(binding.guards))
+			return new MediatorMapping(_configsByTypeFilter, 
+								_filtersByDescription, 
+								mediatorClazz);
+		}	
+				
+		protected function processMapping(config:IMediatorConfig):void
+		{
+			if(!blockedByGuards(config.guards))
 			{
-				createMediatorForBinding(binding);
-				hooksProcessor.runHooks(injector, binding.hooks);
+				createMediatorForBinding(config);
+				hooksProcessor.runHooks(injector, config.hooks);
 			}
 		}
 
-		protected function mapViewForTypeBinding(binding:IMediatorMapping, view:DisplayObject):void
-		{
-			injector.map(binding.viewClass).toValue(view);
-		}
-
+	
 		protected function mapViewForFilterBinding(filter:ITypeFilter, view:DisplayObject):void
 		{
 			var requiredClazz:Class;
@@ -150,10 +153,10 @@ package org.robotlegs.v2.extensions.mediatorMap
 			}
 		}
 		
-		protected function createMediatorForBinding(binding:IMediatorMapping):void
+		protected function createMediatorForBinding(config:IMediatorConfig):void
 		{
-			const mediator:* = injector.getInstance(binding.mediatorClass);
-			injector.map(binding.mediatorClass).toValue(mediator);
+			const mediator:* = injector.getInstance(config.mapping.mediator);
+			injector.map(config.mapping.mediator).toValue(mediator);
 		}
 		
 		protected function blockedByGuards(guards:Vector.<Class>):Boolean

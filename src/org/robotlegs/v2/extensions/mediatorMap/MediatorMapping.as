@@ -6,53 +6,94 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import org.robotlegs.v2.core.api.ITypeFilter;
 	import org.robotlegs.v2.extensions.hooks.GuardsAndHooksConfig;
 	import org.robotlegs.v2.extensions.hooks.IGuardsAndHooksConfig;
+	import org.robotlegs.v2.core.impl.TypeMatcher;
 	
 	public class MediatorMapping extends GuardsAndHooksConfig implements IMediatorMapping
 	{	
-		protected var _viewFCQNMap:Dictionary;
+		protected var _configsByFilter:Dictionary;
 
-		protected var _typeFilterMap:Dictionary;
-
-		protected var _mediatorClazz:Class;
+		protected var _filtersByDescriptor:Dictionary;
 		
-		protected var _viewClazz:Class;
-		
-		protected var _reflector:Reflector;
-		
+		protected var _mediator:Class;
+						
 		protected var _typeFilter:ITypeFilter;
+		
+		protected var _localConfigsByFilter:Dictionary;
+		
 
-		public function MediatorMapping(viewFCQNMap:Dictionary, typeFilterMap:Dictionary, mediatorClazz:Class, reflector:Reflector)
+		public function MediatorMapping(configsByFilter:Dictionary, filterDescriptorMap:Dictionary, mediator:Class)
 		{
-			_viewFCQNMap = viewFCQNMap;
-			_typeFilterMap = typeFilterMap;
-			_mediatorClazz = mediatorClazz;
-			_reflector = reflector;
-		}
-
-		public function get mediatorClass():Class
-		{
-			return _mediatorClazz;
+			_configsByFilter = configsByFilter;
+			_filtersByDescriptor = filterDescriptorMap;
+			_mediator = mediator;
+			_localConfigsByFilter = new Dictionary();
 		}
 		
-		public function get viewClass():Class
-		{
-			return _viewClazz;
-		}
+		/*
+		 function toMatcher(matcher):MediatorConfig
+		 function toView(type):MediatorConfig // this is just sugar
+		 function get mediator():Class
+		 function hasConfigFor(matcher):Boolean
+		 function getConfigFor(matcher):MediatorConfig
+		 function unmap(matcher):MediatorConfig
+		*/
 
+		public function get mediator():Class
+		{
+			return _mediator;
+		}
+		
 		public function toView(viewClazz:Class):IGuardsAndHooksConfig
 		{
-			const fqcn:String = _reflector.getFQCN(viewClazz);
-			_viewFCQNMap[fqcn] = this;
-			_viewClazz = viewClazz;
-			
-			return this;
+			return toMatcher(new TypeMatcher().allOf(viewClazz));
 		}
 		
 		public function toMatcher(typeMatcher:ITypeMatcher):IGuardsAndHooksConfig
 		{
 			_typeFilter = typeMatcher.createTypeFilter();
-			_typeFilterMap[_typeFilter] = this;
-			return this;
+			
+			if(_filtersByDescriptor[_typeFilter.descriptor])
+			{
+				_typeFilter = _filtersByDescriptor[_typeFilter.descriptor];
+			}
+			else
+			{
+				_filtersByDescriptor[_typeFilter.descriptor] = _typeFilter;
+				_configsByFilter[_typeFilter] = new Vector.<IMediatorConfig>();
+			}
+			
+			const config:IMediatorConfig = new MediatorConfig(this);
+			
+			_configsByFilter[_typeFilter].push(config);
+			_localConfigsByFilter[_typeFilter] = config;
+			return config;
+		}
+		
+		public function unmap(typeMatcher:ITypeMatcher):void
+		{
+			_typeFilter = typeMatcher.createTypeFilter();
+			
+			if(!_configsByFilter[_typeFilter] && _filtersByDescriptor[_typeFilter.descriptor])
+			{
+				_typeFilter = _filtersByDescriptor[_typeFilter.descriptor];
+				const config:IMediatorConfig = _localConfigsByFilter[_typeFilter];
+				
+				const configs:Vector.<IMediatorConfig> = _configsByFilter[_typeFilter];
+			
+				const index:int = configs.indexOf(config);
+				
+				if(index > -1)
+				{
+					configs.splice(index, 1);
+					if(configs.length==0)
+					{
+						delete _configsByFilter[_typeFilter];
+						delete _filtersByDescriptor[_typeFilter.descriptor];
+					}
+				}
+				
+				delete _localConfigsByFilter[_typeFilter];
+			}
 		}
 	}
 }
