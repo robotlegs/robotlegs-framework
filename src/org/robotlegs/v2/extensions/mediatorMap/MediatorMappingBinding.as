@@ -5,8 +5,9 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import org.robotlegs.v2.core.api.ITypeMatcher;
 	import org.robotlegs.v2.core.api.ITypeFilter;
 	import org.robotlegs.v2.extensions.hooks.GuardsAndHooksMapBinding;
+	import org.robotlegs.v2.extensions.hooks.IGuardsAndHooksMapBinding;
 	
-	public class MediatorMappingBinding extends GuardsAndHooksMapBinding
+	public class MediatorMappingBinding extends GuardsAndHooksMapBinding implements IMediatorMappingBinding
 	{	
 		protected var _viewFCQNMap:Dictionary;
 
@@ -38,7 +39,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 			return _viewClazz;
 		}
 
-		public function toView(viewClazz:Class):GuardsAndHooksMapBinding
+		public function toView(viewClazz:Class):IGuardsAndHooksMapBinding
 		{
 			const fqcn:String = _reflector.getFQCN(viewClazz);
 			_viewFCQNMap[fqcn] = this;
@@ -47,7 +48,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 			return this;
 		}
 		
-		public function toMatcher(typeMatcher:ITypeMatcher):GuardsAndHooksMapBinding
+		public function toMatcher(typeMatcher:ITypeMatcher):IGuardsAndHooksMapBinding
 		{
 			_typeFilter = typeMatcher.createTypeFilter();
 			_typeFilterMap[_typeFilter] = this;

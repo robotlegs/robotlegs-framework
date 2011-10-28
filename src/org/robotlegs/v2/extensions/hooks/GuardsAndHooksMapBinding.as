@@ -7,7 +7,7 @@
 
 package org.robotlegs.v2.extensions.hooks
 {	
-	public class GuardsAndHooksMapBinding
+	public class GuardsAndHooksMapBinding implements IGuardsAndHooksMapBinding
 	{
 		
 		/*============================================================================*/
@@ -40,13 +40,13 @@ package org.robotlegs.v2.extensions.hooks
 			return _guards;
 		}
 	
-		public function withHooks(...hookClasses):GuardsAndHooksMapBinding
+		public function withHooks(...hookClasses):IGuardsAndHooksMapBinding
 		{
 			pushValuesToVector(hookClasses, _hooks);
 			return this;
 		}
 		
-		public function withGuards(...guardClasses):GuardsAndHooksMapBinding
+		public function withGuards(...guardClasses):IGuardsAndHooksMapBinding
 		{
 			pushValuesToVector(guardClasses, _guards);
 		
