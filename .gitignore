@@ -8,6 +8,7 @@
 /obj/*
 /report/*
 /dist/*
+/target
 
 .actionScriptProperties
 .flexProperties
@@ -27,3 +28,5 @@ src/FlexUnitApplication.mxml
 *.iml
 *.ipr
 *.iws
+
+target/test-classes/TestRunner.mxml
