@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.mediatorMap
+package org.robotlegs.v2.extensions.mediatorMap.impl
 {
 	import flash.utils.Dictionary;
 	import org.robotlegs.v2.core.api.ITypeFilter;
@@ -14,6 +14,8 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import org.robotlegs.v2.extensions.hooks.GuardsAndHooksConfig;
 	import org.robotlegs.v2.extensions.hooks.IGuardsAndHooksConfig;
 	import org.swiftsuspenders.Reflector;
+	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMapping;
+	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorConfig;
 
 	public class MediatorMapping extends GuardsAndHooksConfig implements IMediatorMapping
 	{

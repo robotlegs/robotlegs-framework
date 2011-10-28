@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.mediatorMap
+package org.robotlegs.v2.extensions.mediatorMap.impl
 {
 	import flash.display.DisplayObject;
 	import flash.events.EventDispatcher;
@@ -15,13 +15,15 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import org.robotlegs.v2.core.impl.itemPassesFilter;
 	import org.robotlegs.v2.extensions.guards.GuardsProcessor;
 	import org.robotlegs.v2.extensions.hooks.HooksProcessor;
-	import org.robotlegs.v2.extensions.mediatorMap.IMediatorMapping;
 	import org.robotlegs.v2.view.api.IViewClassInfo;
 	import org.robotlegs.v2.view.api.IViewHandler;
 	import org.robotlegs.v2.view.api.IViewWatcher;
 	import org.robotlegs.v2.view.api.ViewHandlerEvent;
 	import org.swiftsuspenders.Injector;
 	import org.swiftsuspenders.Reflector;
+	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMap;
+	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMapping;
+	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorConfig;
 
 	[Event(name="configurationChange", type="org.robotlegs.v2.view.api.ViewHandlerEvent")]
 	public class MediatorMap extends EventDispatcher implements IViewHandler, IMediatorMap

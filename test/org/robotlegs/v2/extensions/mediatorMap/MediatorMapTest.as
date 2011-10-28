@@ -20,6 +20,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import org.swiftsuspenders.DescribeTypeJSONReflector;
 	import org.swiftsuspenders.Injector;
 	import org.swiftsuspenders.Reflector;
+	import org.robotlegs.v2.extensions.mediatorMap.impl.MediatorMap;
 
 	public class MediatorMapTest
 	{

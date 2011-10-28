@@ -5,15 +5,19 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.mediatorMap
+package org.robotlegs.v2.extensions.mediatorMap.api
 {
 	import org.robotlegs.v2.core.api.ITypeMatcher;
+	import org.robotlegs.v2.extensions.hooks.IGuardsAndHooksConfig;
 
-	public interface IMediatorUnmapping
+	public interface IMediatorMapping extends IGuardsAndHooksConfig
 	{
+		function get mediator():Class;
 
-		function fromMatcher(typeMatcher:ITypeMatcher):void;
-		function fromView(viewClazz:Class):void;
+		function toMatcher(typeMatcher:ITypeMatcher):IGuardsAndHooksConfig;
+
+		function toView(viewClazz:Class):IGuardsAndHooksConfig;
+
+		function unmap(typeMatcher:ITypeMatcher):void;
 	}
-
 }
