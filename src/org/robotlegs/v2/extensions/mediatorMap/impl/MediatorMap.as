@@ -125,7 +125,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 
 		public function hasMapping(mediatorType:Class):Boolean
 		{
-			return false;
+			return (_mappingsByMediatorType[mediatorType] != null);
 		}
 
 		public function invalidate():void

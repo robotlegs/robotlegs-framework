@@ -244,6 +244,38 @@ package org.robotlegs.v2.extensions.mediatorMap
 			var expectedNotifications:Vector.<String> = new <String>['ExampleMediator', 'ExampleMediator preRemove'];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
 		}
+		
+		[Test]
+		public function hasMapping_returns_false_for_unmapped_mediator_class():void
+		{
+			instance.map(ExampleMediator).toView(Sprite);
+			
+			assertFalse(instance.hasMapping(ExampleDisplayObjectMediator));
+		}
+		
+		[Test]
+		public function hasMapping_returns_true_for_mapped_mediator_class():void
+		{
+			instance.map(ExampleMediator).toView(Sprite);
+			
+			assertTrue(instance.hasMapping(ExampleMediator));
+		}
+		
+		[Test]
+		public function hasMapping_returns_false_for_mapped_then_unmapped_mediator_class():void
+		{
+			instance.map(ExampleMediator).toView(Sprite);
+			instance.map(ExampleDisplayObjectMediator).toView(Sprite);
+			instance.unmap(ExampleDisplayObjectMediator);
+			
+			assertFalse(instance.hasMapping(ExampleDisplayObjectMediator));
+		}
+		
+		// mediator_is_kept_during_reparenting - really a job for the trigger
+		
+		// mediator_survives_after_garbage_collection - how do we test this without making our tests slow?
+		
+		// flex_view_mediator_waits_for_creation_complete - a job for the trigger
 
 		[Test]
 		public function test_failure_seen():void
