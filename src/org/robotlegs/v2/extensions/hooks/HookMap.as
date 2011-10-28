@@ -60,11 +60,11 @@ package org.robotlegs.v2.extensions.hooks
 		{
 			// TODO - overwrite? warnings? allow extension? handle duplicates? hrm.
 			
-			const fcqn:String = reflector.getFQCN(clazz);
+			const fqcn:String = reflector.getFQCN(clazz);
 			
-			_mappingsByFCQN[fcqn] = new GuardsAndHooksMapBinding();
+			_mappingsByFCQN[fqcn] = new GuardsAndHooksMapBinding();
 			
-			return _mappingsByFCQN[fcqn];
+			return _mappingsByFCQN[fqcn];
 		}
 				
 		public function mapMatcher(matcher:ITypeMatcher):GuardsAndHooksMapBinding
@@ -77,15 +77,15 @@ package org.robotlegs.v2.extensions.hooks
 		
 		public function process(item:*):Boolean
 		{			
-			const fcqn:String = getQualifiedClassName(item);
+			const fqcn:String = getQualifiedClassName(item);
 			
 			var interested:Boolean = false;
 			
-			if(_mappingsByFCQN[fcqn])
+			if(_mappingsByFCQN[fqcn])
 			{
 				interested = true;
-				if(!blockedByGuards(_mappingsByFCQN[fcqn].guards) )
-					hooksProcessor.runHooks(injector, _mappingsByFCQN[fcqn].hooks);
+				if(!blockedByGuards(_mappingsByFCQN[fqcn].guards) )
+					hooksProcessor.runHooks(injector, _mappingsByFCQN[fqcn].hooks);
 			}
 			
 			for (var filter:* in _mappingsByMatcher)

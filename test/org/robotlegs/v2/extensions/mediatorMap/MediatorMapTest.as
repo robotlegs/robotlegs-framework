@@ -16,6 +16,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.utils.Dictionary;
+	import flash.utils.getQualifiedClassName;
 	
 
 	public class MediatorMapTest 
@@ -83,18 +84,18 @@ package org.robotlegs.v2.extensions.mediatorMap
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
 		}
 		
-		/*
+		
 		[Test]
 		public function handler_instantiates_mediator_for_view_mapped_by_type():void
 		{
-			map(ExampleMediator).toType(Sprite);
+			map(ExampleMediator).toView(Sprite);
 			
 			handleViewAdded(new Sprite());
 			
 			var expectedNotifications:Vector.<String> = new <String>['ExampleMediator'];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
 		}
-		*/
+		
 		// handler_creates_mediator_for_view_mapped_by_matcher
 		// guards
 		// hooks
@@ -106,9 +107,11 @@ package org.robotlegs.v2.extensions.mediatorMap
 		
 		protected var _mappingsByMediatorClazz:Dictionary = new Dictionary();
 		
+		protected var _mappingsByViewFCQN:Dictionary = new Dictionary();
+		
 		protected function map(mediatorClazz:Class):MediatorMappingBinding
 		{			
-			_mappingsByMediatorClazz[mediatorClazz] = new MediatorMappingBinding();
+			_mappingsByMediatorClazz[mediatorClazz] = new MediatorMappingBinding(_mappingsByViewFCQN, mediatorClazz, reflector);
 			
 			
 			return _mappingsByMediatorClazz[mediatorClazz];
@@ -116,17 +119,17 @@ package org.robotlegs.v2.extensions.mediatorMap
 		
 		protected function handleViewAdded(view:DisplayObject):void
 		{
+			const fqcn:String = getQualifiedClassName(view);
 			
+			if(_mappingsByViewFCQN[fqcn])
+				createMediatorForBinding(_mappingsByViewFCQN[fqcn], view);
 		}
 		
-	}
-}
-
-class MediatorMappingBinding
-{	
-	public function toType(viewClazz:Class):void
-	{
-		
+		protected function createMediatorForBinding(binding:MediatorMappingBinding, view:DisplayObject):void
+		{
+			injector.map(binding.viewClass).toValue(view);
+			injector.getInstance(binding.mediatorClass);
+		}
 	}
 }
 
@@ -144,7 +147,7 @@ class ExampleMediator
 
 class MediatorWatcher
 {
-	protected var _notifications:Vector.<String> = new Vector.<String>();
+	protected const _notifications:Vector.<String> = new Vector.<String>();
 	
 	public function notify(message:String):void
 	{

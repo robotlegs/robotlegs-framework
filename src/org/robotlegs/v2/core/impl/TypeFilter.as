@@ -65,14 +65,14 @@ package org.robotlegs.v2.core.impl
 
 		protected function alphabetiseCaseInsensitiveFCQNs(classVector:Vector.<Class>):Vector.<String>
 		{
-			var fcqn:String;
+			var fqcn:String;
 			var allFCQNs:Vector.<String> = new <String>[];
 
 			var iLength:uint = classVector.length;
 			for (var i:uint = 0; i < iLength; i++)
 			{
-				fcqn = getQualifiedClassName(classVector[i]);
-				allFCQNs[allFCQNs.length] = fcqn;
+				fqcn = getQualifiedClassName(classVector[i]);
+				allFCQNs[allFCQNs.length] = fqcn;
 			}
 
 			allFCQNs.sort(stringSort);
