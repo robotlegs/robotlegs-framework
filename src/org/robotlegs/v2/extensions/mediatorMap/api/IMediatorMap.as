@@ -20,5 +20,7 @@ package org.robotlegs.v2.extensions.mediatorMap.api
 		function unmap(mediatorType:Class):void;
 	
 		function loadTrigger(trigger:IMediatorTrigger):void;
+		
+		function invalidate():void;
 	}
 }
