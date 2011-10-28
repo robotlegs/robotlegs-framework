@@ -10,6 +10,7 @@ package org.robotlegs.v2.extensions.guards
 	import org.flexunit.asserts.*;
 	import org.swiftsuspenders.Injector;
 	import flash.utils.describeType;
+	import org.robotlegs.v2.extensions.guards.support.* 
 
 	public class GuardsProcessorTest 
 	{
@@ -77,7 +78,7 @@ package org.robotlegs.v2.extensions.guards
 		[Test]
 		public function processing_guard_with_injections_returns_true_if_injected_guard_says_so():void
 		{
-			injector.map(BossDecision).toValue(new BossDecision(true));
+			injector.map(BossGuard).toValue(new BossGuard(true));
 			var requiredGuards:Vector.<Class> = new <Class>[JustTheMiddleManGuard];
 			assertTrue("processor returned true with happy boss", instance.processGuards(injector, requiredGuards));
 		}
@@ -85,7 +86,7 @@ package org.robotlegs.v2.extensions.guards
 		[Test]
 		public function processing_guard_with_injections_returns_false_if_injected_guard_says_so():void
 		{
-			injector.map(BossDecision).toValue(new BossDecision(false));
+			injector.map(BossGuard).toValue(new BossGuard(false));
 			var requiredGuards:Vector.<Class> = new <Class>[JustTheMiddleManGuard];
 			assertFalse("processor returned false with grumpy boss", instance.processGuards(injector, requiredGuards));
 		}
@@ -101,48 +102,6 @@ package org.robotlegs.v2.extensions.guards
 		/* Protected Functions                                                        */
 		/*============================================================================*/
 		
-	}
-}
-
-class HappyGuard
-{
-	public function approve():Boolean
-	{
-		return true;
-	}
-}
-
-class GrumpyGuard
-{
-	public function approve():Boolean
-	{
-		return false;
-	}
-}
-
-class JustTheMiddleManGuard
-{
-	[Inject]
-	public var bossDecision:BossDecision;
-	
-	public function approve():Boolean
-	{
-		return bossDecision.approve();
-	}
-}
-
-class BossDecision
-{
-	public function BossDecision(approve:Boolean)
-	{
-		_approve = approve;
-	}
-	
-	protected var _approve:Boolean;
-	
-	public function approve():Boolean
-	{
-		return _approve;
 	}
 }
 

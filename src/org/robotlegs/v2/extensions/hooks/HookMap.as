@@ -50,23 +50,26 @@ package org.robotlegs.v2.extensions.hooks
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function map(clazz:Class):MapBinding
+		public function map(clazz:Class):GuardsAndHooksMapBinding
 		{
-			_hooksByClazz[clazz] = new MapBinding();
+			_hooksByClazz[clazz] = new GuardsAndHooksMapBinding();
 			
 			return _hooksByClazz[clazz];
 		}
 		
-		public function mapMatcher(matcher:ITypeMatcher):MapBinding
+		public function mapMatcher(matcher:ITypeMatcher):GuardsAndHooksMapBinding
 		{
 			const filter:ITypeFilter = matcher.createTypeFilter();
-			_hooksByMatcher[filter] = new MapBinding();
+			_hooksByMatcher[filter] = new GuardsAndHooksMapBinding();
 			
 			return _hooksByMatcher[filter];
 		}
 		
 		public function process(item:*):void
 		{			
+			// TODO - dammit, this is way too permissive, we don't want
+			// our subclasses getting this special treatment!
+			
 			for (var clazz:* in _hooksByClazz)
 			{
 				if(item is (clazz as Class))
@@ -94,73 +97,5 @@ package org.robotlegs.v2.extensions.hooks
 			return ((guards.length > 0) 
 					&& !( guardsProcessor.processGuards(injector , guards) ) )
 		}
-	}
-}
-
-class MapBinding
-{
-	protected var _hooks:Vector.<Class> = new Vector.<Class>();
-	protected var _guards:Vector.<Class> = new Vector.<Class>();
-	
-	public function get hooks():Vector.<Class>
-	{
-		return _hooks;
-	}
-	
-	public function get guards():Vector.<Class>
-	{
-		return _guards;
-	}
-	
-	public function toHook(hookClass:Class):MapBinding
-	{
-		hooks.push(hookClass);
-		return this;
-	}
-	
-	public function toHooks(...hookClasses):MapBinding
-	{
-		pushValuesToVector(hookClasses, _hooks);
-		
-		return this;
-	}
-	
-	public function withGuards(...guardClasses):MapBinding
-	{
-		pushValuesToVector(guardClasses, _guards);
-		
-		return this;
-	}
-	
-	protected function pushValuesToVector(values:Array, vector:Vector.<Class>):void
-	{
-		if(values.length==1)
-		{
-			if(values[0] is Array)
-			{
-				values = values[0]
-			}
-			else if(values[0] is Vector.<Class>)
-			{
-				values = createArrayFromVector(values[0]);
-			}
-		}
-		
-		for each (var clazz:Class in values)
-		{
-			vector.push(clazz);
-		}
-	}
-	
-	protected function createArrayFromVector(typesVector:Vector.<Class>):Array
-	{
-		const returnArray:Array = [];
-
-		for each (var type:Class in typesVector)
-		{
-			returnArray.push(type);
-		}
-
-		return returnArray;
 	}
 }

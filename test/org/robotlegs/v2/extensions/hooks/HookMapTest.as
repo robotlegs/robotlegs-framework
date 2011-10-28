@@ -15,6 +15,9 @@ package org.robotlegs.v2.extensions.hooks
 	import flash.display.Sprite;
 	import flash.display.MovieClip;
 	import org.robotlegs.v2.extensions.guards.GuardsProcessor;
+	import org.robotlegs.v2.extensions.guards.support.HappyGuard;
+	import org.robotlegs.v2.extensions.guards.support.GrumpyGuard;
+	import org.robotlegs.v2.extensions.hooks.support.*
 
 	public class HookMapTest 
 	{
@@ -134,57 +137,9 @@ package org.robotlegs.v2.extensions.hooks
 	}
 }
 
-class TrackableHook1
-{
-	[Inject]
-	public var hookTracker:HookTracker;
-	
-	public function hook():void
-	{
-		hookTracker.confirm("TrackableHook1");
-	}
-}
-
-class TrackableHook2
-{
-	[Inject]
-	public var hookTracker:HookTracker;
-	
-	public function hook():void
-	{
-		hookTracker.confirm("TrackableHook2");
-	}
-}
-
-class HookTracker
-{
-	public var hooksConfirmed:Vector.<String> = new Vector.<String>();
-	
-	public function confirm(hookName:String):void
-	{
-		hooksConfirmed.push(hookName);
-	}
-}
-
 class ExampleTarget
 {
 	public function ExampleTarget()
 	{
-	}
-}
-
-class HappyGuard
-{
-	public function approve():Boolean
-	{
-		return true;
-	}
-}
-
-class GrumpyGuard
-{
-	public function approve():Boolean
-	{
-		return false;
 	}
 }

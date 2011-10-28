@@ -8,22 +8,16 @@
 package org.robotlegs.v2.extensions.hooks 
 {
 	import org.flexunit.asserts.*;
-	import org.flexunit.asserts.assertEqualsVectorsIgnoringOrder;
-	import org.swiftsuspenders.Injector;
-	import org.robotlegs.v2.extensions.hooks.support.*;
-	import org.robotlegs.v2.extensions.hooks.support.HookTracker;
+	import org.robotlegs.v2.view.api.IViewHandler;
 
-	public class HooksProcessorTest 
+	public class ViewHookMapTest 
 	{
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var instance:HooksProcessor;
-		
-		private var injector:Injector;
+		private var instance:ViewHookMap;
 
-		private const hookTracker:HookTracker = new HookTracker();
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
 		/*============================================================================*/
@@ -31,16 +25,13 @@ package org.robotlegs.v2.extensions.hooks
 		[Before]
 		public function setUp():void
 		{
-			instance = new HooksProcessor();
-			injector = new Injector();
-			injector.map(HookTracker).toValue(hookTracker);
+			instance = new ViewHookMap();
 		}
 
 		[After]
 		public function tearDown():void
 		{
 			instance = null;
-			injector = null;
 		}
 
 		/*============================================================================*/
@@ -50,7 +41,7 @@ package org.robotlegs.v2.extensions.hooks
 		[Test]
 		public function can_be_instantiated():void
 		{
-			assertTrue("instance is HooksProcessor", instance is HooksProcessor);
+			assertTrue("instance is ViewHookMap", instance is ViewHookMap);
 		}
 		
 		[Test]
@@ -58,23 +49,21 @@ package org.robotlegs.v2.extensions.hooks
 		{
 			assertTrue("Failing test", true);
 		}
-
-		[Test]	
-		public function a_number_of_hooks_are_run():void
-		{
-			var requiredHooks:Vector.<Class> = new <Class>[TrackableHook1, TrackableHook2];
-			instance.runHooks(injector, requiredHooks);
-			
-			var expectedHooksConfirmed:Vector.<String> = new <String>['TrackableHook1', 'TrackableHook2'];
-			assertEqualsVectorsIgnoringOrder('both hooks have run', expectedHooksConfirmed, hookTracker.hooksConfirmed);
-		}	
 		
-		[Test(expects='ArgumentError')]
-		public function a_non_hook_causes_us_to_throw_an_argument_error():void
+		[Test]
+		public function implements_IViewHandler():void
 		{
-			var requiredHooks:Vector.<Class> = new <Class>[TrackableHook1, TrackableHook2, NonHook];
-			instance.runHooks(injector, requiredHooks);
+			assertTrue("instance is IViewHandler", instance is IViewHandler);
 		}
+		
+		/*
+		[Test]
+		public function running_handler_with_view_that_matches_mapping_makes_hooks_run():void
+		{
+			assertTrue("not implemented", false);
+			
+			//instance.map()
+		}*/
 
 		/*============================================================================*/
 		/* Protected Functions                                                        */

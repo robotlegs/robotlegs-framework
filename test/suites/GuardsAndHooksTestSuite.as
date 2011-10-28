@@ -10,6 +10,7 @@ package suites
 	import org.robotlegs.v2.extensions.hooks.HookMapTest;
 	import org.robotlegs.v2.extensions.hooks.HooksProcessorTest;
 	import org.robotlegs.v2.extensions.guards.GuardsProcessorTest;
+	import org.robotlegs.v2.extensions.hooks.ViewHookMapTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
@@ -25,5 +26,7 @@ package suites
 		public var hooksProcessorTest:HooksProcessorTest;
 		
 		public var guardsProcessorTest:GuardsProcessorTest;
+		
+		public var viewHookMap:ViewHookMapTest;
 	}
 }
