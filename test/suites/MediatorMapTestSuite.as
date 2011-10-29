@@ -10,6 +10,8 @@ package suites
 	import org.robotlegs.v2.extensions.mediatorMap.MediatorMapTest;
 	import org.robotlegs.v2.utilities.mediatorTriggers.DuckTypedMediatorTriggerTest;
 	import org.robotlegs.v2.utilities.mediatorTriggers.RL2MediatorTriggerTest;
+	import org.robotlegs.v2.utilities.mediatorTriggers.RL1MediatorTriggerTest;
+	import org.robotlegs.v2.extensions.mediatorMap.MediatorMapRemovalAndReparentingTests;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
@@ -26,6 +28,12 @@ package suites
 		
 		public var rl2MediatorTriggerTest:RL2MediatorTriggerTest;
 		
+		public var rl1MediatorTriggerTest:RL1MediatorTriggerTest;
+		
+		public var mediatorReparentingTests:MediatorMapRemovalAndReparentingTests;
+
+		// Don't uncomment this - the test is only in the code base for
+		// reference while we match behaviour.
 		//public var mediatorMapV1FunctionalityTest:MediatorMapV1Test;
 	}
 }

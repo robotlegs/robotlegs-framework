@@ -7,30 +7,18 @@
 
 package org.robotlegs.v2.utilities.mediatorTriggers
 {
-	public class  RL1MediatorTrigger
+	import org.robotlegs.core.IMediator;
+	
+	public class RL1MediatorTrigger extends RLMediatorTriggerBase
 	{
 		
-		/*============================================================================*/
-		/* Protected Properties                                                       */
-		/*============================================================================*/
-
-
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function RL1MediatorTrigger()
+		public function RL1MediatorTrigger(strict:Boolean)
 		{
+			super(strict, IMediator);
 		}
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
-
-
-		/*============================================================================*/
-		/* Protected Functions                                                        */
-		/*============================================================================*/
-		
 	}
 }

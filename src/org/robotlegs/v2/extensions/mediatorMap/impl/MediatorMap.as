@@ -25,6 +25,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMapping;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorConfig;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorTrigger;
+	import flash.events.Event;
 
 	[Event(name="configurationChange", type="org.robotlegs.v2.view.api.ViewHandlerEvent")]
 	public class MediatorMap extends EventDispatcher implements IViewHandler, IMediatorMap
@@ -63,6 +64,8 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 
 		protected const _liveMediatorsByView:Dictionary = new Dictionary();
 		
+		protected const _viewsInRemovalPhase:Dictionary = new Dictionary();
+		
 		protected var _trigger:IMediatorTrigger;
 
 		/*============================================================================*/
@@ -93,6 +96,14 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 				if (itemPassesFilter(view, filter as ITypeFilter))
 				{
 					interest = 1;
+
+					if(_liveMediatorsByView[view] && _viewsInRemovalPhase[view])
+					{
+						view.removeEventListener(Event.ENTER_FRAME, onEnterFrameActionShutdown);
+						delete _viewsInRemovalPhase[view];
+						return interest;
+					}
+
 					mapViewForFilterBinding(filter, view);
 
 					for each (var config:IMediatorConfig in _configsByTypeFilter[filter])
@@ -111,13 +122,18 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		{
 			if(_liveMediatorsByView[view])
 			{
-				for each (var mediator:* in _liveMediatorsByView[view])
+				if(!view.parent)
 				{
-					_trigger.shutdown(mediator, view, cleanUpMediator);
+					actionRemoval(view);
+				}
+				else
+				{
+					_viewsInRemovalPhase[view] = view;
+					view.addEventListener(Event.ENTER_FRAME, onEnterFrameActionShutdown);
 				}
 			}
 		}
-
+		
 		public function hasMapping(mediatorType:Class):Boolean
 		{
 			return (_mappingsByMediatorType[mediatorType] != null);
@@ -152,6 +168,22 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		/*============================================================================*/
 		/* Protected Functions                                                        */
 		/*============================================================================*/
+
+		protected function onEnterFrameActionShutdown(e:Event):void
+		{
+			e.target.removeEventListener(Event.ENTER_FRAME, onEnterFrameActionShutdown);
+			const view:DisplayObject = e.target as DisplayObject;
+			actionRemoval(view);
+			delete _viewsInRemovalPhase[view];
+		}
+
+		protected function actionRemoval(view:DisplayObject):void
+		{
+			for each (var mediator:* in _liveMediatorsByView[view])
+			{
+				_trigger.shutdown(mediator, view, cleanUpMediator);
+			}
+		}
 
 		protected function blockedByGuards(guards:Vector.<Class>):Boolean
 		{
@@ -222,6 +254,11 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		
 		protected function cleanUpMediator(mediator:*, view:DisplayObject):void
 		{
+			if(!_viewsInRemovalPhase[view])
+			{
+				return;
+			}
+			
 			const index:int = _liveMediatorsByView[view].indexOf(mediator);
 			if(index > -1)
 			{

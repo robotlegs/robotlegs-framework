@@ -106,32 +106,6 @@ package org.robotlegs.v2.extensions.mediatorMap
 		/* Tests                                                                      */
 		/*============================================================================*/
 
-		[Test]
-		public function autoRegister():void
-		{
-			mediatorMap.mapView(ViewComponent, ViewMediator, null, true, true);
-			var viewComponent:ViewComponent = new ViewComponent();
-			contextView.addChild(viewComponent);
-			Assert.assertTrue('Mediator should have been created for View Component', mediatorMap.hasMediatorForView(viewComponent));
-		}
-
-		[Test]
-		public function autoRegisterUnregisterRegister():void
-		{
-			var viewComponent:ViewComponent = new ViewComponent();
-
-			mediatorMap.mapView(ViewComponent, ViewMediator, null, true, true);
-			mediatorMap.unmapView(ViewComponent);
-			contextView.addChild(viewComponent);
-			Assert.assertFalse('Mediator should NOT have been created for View Component', mediatorMap.hasMediatorForView(viewComponent));
-			contextView.removeChild(viewComponent);
-
-			mediatorMap.mapView(ViewComponent, ViewMediator, null, true, true);
-			contextView.addChild(viewComponent);
-			Assert.assertTrue('Mediator should have been created for View Component', mediatorMap.hasMediatorForView(viewComponent));
-		}
-
-
 
 		[Test]
 		public function contextViewMediatorIsCreatedWhenMapped():void
@@ -147,42 +121,6 @@ package org.robotlegs.v2.extensions.mediatorMap
 			Assert.assertFalse('Mediator should NOT have been created for contextView', mediatorMap.hasMediatorForView(contextView));
 		}
 
-		[Test(async, timeout='500')]
-		public function mediatorIsKeptDuringReparenting():void
-		{
-			var viewComponent:ViewComponent = new ViewComponent();
-			var mediator:IMediator;
-
-			mediatorMap.mapView(ViewComponent, ViewMediator, null, false, true);
-			contextView.addChild(viewComponent);
-			mediator = mediatorMap.createMediator(viewComponent);
-			Assert.assertNotNull('Mediator should have been created', mediator);
-			Assert.assertTrue('Mediator should have been created', mediatorMap.hasMediator(mediator));
-			Assert.assertTrue('Mediator should have been created for View Component', mediatorMap.hasMediatorForView(viewComponent));
-			var container:UIComponent = new UIComponent();
-			contextView.addChild(container);
-			container.addChild(viewComponent);
-
-			Async.handleEvent(this, contextView, Event.ENTER_FRAME, delayFurther, 500, {dispatcher: contextView, method: verifyMediatorSurvival, view: viewComponent, mediator: mediator});
-		}
-
-
-		[Test]
-		public function mediatorIsMappedAddedAndRemoved():void
-		{
-			var viewComponent:ViewComponent = new ViewComponent();
-			var mediator:IMediator;
-
-			mediatorMap.mapView(ViewComponent, ViewMediator, null, false, false);
-			contextView.addChild(viewComponent);
-			mediator = mediatorMap.createMediator(viewComponent);
-			Assert.assertNotNull('Mediator should have been created', mediator);
-			Assert.assertTrue('Mediator should have been created', mediatorMap.hasMediator(mediator));
-			Assert.assertTrue('Mediator should have been created for View Component', mediatorMap.hasMediatorForView(viewComponent));
-			mediatorMap.removeMediator(mediator);
-			Assert.assertFalse("Mediator Should Not Exist", mediatorMap.hasMediator(mediator));
-			Assert.assertFalse("View Mediator Should Not Exist", mediatorMap.hasMediatorForView(viewComponent));
-		}
 
 		[Test]
 		public function mediatorIsMappedAddedAndRemovedByView():void
@@ -218,20 +156,6 @@ package org.robotlegs.v2.extensions.mediatorMap
 			Assert.assertFalse("View Mediator should not exist", mediatorMap.hasMediatorForView(nonViewComponent));
 		}
 
-
-		[Test]
-		public function mediatorIsMappedAndCreatedForView():void
-		{
-			mediatorMap.mapView(ViewComponent, ViewMediator, null, false, false);
-			var viewComponent:ViewComponent = new ViewComponent();
-			contextView.addChild(viewComponent);
-			var mediator:IMediator = mediatorMap.createMediator(viewComponent);
-			var hasMapping:Boolean = mediatorMap.hasMapping(ViewComponent);
-			Assert.assertNotNull('Mediator should have been created ', mediator);
-			Assert.assertTrue('Mediator should have been created for View Component', mediatorMap.hasMediatorForView(viewComponent));
-			Assert.assertTrue('View mapping should exist for View Component', hasMapping);
-		}
-
 		[Test]
 		public function mediatorIsMappedAndCreatedWithInjectedNonView():void
 		{
@@ -258,82 +182,6 @@ package org.robotlegs.v2.extensions.mediatorMap
 			Assert.assertTrue('Mediator should have been created for View Component', mediatorMap.hasMediatorForView(nonViewComponent));
 			Assert.assertNotNull('View Component should have been injected into Mediator', exactMediator.nonView);
 			Assert.assertTrue('View Component injected should match the desired class type', exactMediator.nonView is NonViewComponent);
-		}
-
-		[Test]
-		public function mediatorIsMappedAndCreatedWithInjectViewAsArrayOfRelatedClass():void
-		{
-			mediatorMap.mapView(ViewComponentAdvanced, ViewMediatorAdvanced, [ViewComponent, ViewComponentAdvanced], false, false);
-			var viewComponentAdvanced:ViewComponentAdvanced = new ViewComponentAdvanced();
-			contextView.addChild(viewComponentAdvanced);
-			var mediator:IMediator = mediatorMap.createMediator(viewComponentAdvanced);
-			var exactMediator:ViewMediatorAdvanced = mediator as ViewMediatorAdvanced;
-			Assert.assertNotNull('Mediator should have been created', mediator);
-			Assert.assertTrue('Mediator should have been created of the exact desired class', mediator is ViewMediatorAdvanced);
-			Assert.assertTrue('Mediator should have been created for View Component', mediatorMap.hasMediatorForView(viewComponentAdvanced));
-			Assert.assertNotNull('First Class in the "injectViewAs" array should have been injected into Mediator', exactMediator.view);
-			Assert.assertNotNull('Second Class in the "injectViewAs" array should have been injected into Mediator', exactMediator.viewAdvanced);
-			Assert.assertTrue('First Class injected via the "injectViewAs" array should match the desired class type', exactMediator.view is ViewComponent);
-			Assert.assertTrue('Second Class injected via the "injectViewAs" array should match the desired class type', exactMediator.viewAdvanced is ViewComponentAdvanced);
-		}
-
-		[Test]
-		public function mediatorIsMappedAndCreatedWithInjectViewAsArrayOfSameClass():void
-		{
-			mediatorMap.mapView(ViewComponent, ViewMediator, [ViewComponent], false, false);
-			var viewComponent:ViewComponent = new ViewComponent();
-			contextView.addChild(viewComponent);
-			var mediator:IMediator = mediatorMap.createMediator(viewComponent);
-			var exactMediator:ViewMediator = mediator as ViewMediator;
-			Assert.assertNotNull('Mediator should have been created', mediator);
-			Assert.assertTrue('Mediator should have been created of the exact desired class', mediator is ViewMediator);
-			Assert.assertTrue('Mediator should have been created for View Component', mediatorMap.hasMediatorForView(viewComponent));
-			Assert.assertNotNull('View Component should have been injected into Mediator', exactMediator.view);
-			Assert.assertTrue('View Component injected should match the desired class type', exactMediator.view is ViewComponent);
-		}
-
-		[Test]
-		public function mediatorIsMappedAndCreatedWithInjectViewAsClass():void
-		{
-			mediatorMap.mapView(ViewComponent, ViewMediator, ViewComponent, false, false);
-			var viewComponent:ViewComponent = new ViewComponent();
-			contextView.addChild(viewComponent);
-			var mediator:IMediator = mediatorMap.createMediator(viewComponent);
-			var exactMediator:ViewMediator = mediator as ViewMediator;
-			Assert.assertNotNull('Mediator should have been created', mediator);
-			Assert.assertTrue('Mediator should have been created of the exact desired class', mediator is ViewMediator);
-			Assert.assertTrue('Mediator should have been created for View Component', mediatorMap.hasMediatorForView(viewComponent));
-			Assert.assertNotNull('View Component should have been injected into Mediator', exactMediator.view);
-			Assert.assertTrue('View Component injected should match the desired class type', exactMediator.view is ViewComponent);
-		}
-
-		[Test(async, timeout='1200')]
-		public function mediatorIsNoLongerMappedOnInjector():void
-		{
-			mediatorMap.mapView(ViewComponent, ViewMediator, null, false, true);
-			var viewComponent:ViewComponent = new ViewComponent();
-			contextView.addChild(viewComponent);
-			var mediator:IMediator = mediatorMap.createMediator(viewComponent);
-
-			Assert.assertFalse('Mediator mapping should not have been created on the injector', injector.hasMapping(ViewMediator));
-
-		}
-
-		[Test(async, timeout='500')]
-		public function mediatorIsRemovedWithView():void
-		{
-			var viewComponent:ViewComponent = new ViewComponent();
-			var mediator:IMediator;
-
-			mediatorMap.mapView(ViewComponent, ViewMediator, null, false, true);
-			contextView.addChild(viewComponent);
-			mediator = mediatorMap.createMediator(viewComponent);
-			Assert.assertNotNull('Mediator should have been created', mediator);
-			Assert.assertTrue('Mediator should have been created', mediatorMap.hasMediator(mediator));
-			Assert.assertTrue('Mediator should have been created for View Component', mediatorMap.hasMediatorForView(viewComponent));
-
-			contextView.removeChild(viewComponent);
-			Async.handleEvent(this, contextView, Event.ENTER_FRAME, delayFurther, 500, {dispatcher: contextView, method: verifyMediatorRemoval, view: viewComponent, mediator: mediator});
 		}
 
 		[Test]

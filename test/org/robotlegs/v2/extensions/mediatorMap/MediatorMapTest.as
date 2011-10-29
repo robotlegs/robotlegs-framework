@@ -275,7 +275,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 			assertFalse(instance.hasMapping(ExampleDisplayObjectMediator));
 		}
 		
-		// mediator_is_kept_during_reparenting - really a job for the trigger
+		// mediator_is_kept_during_reparenting - really a job for the trigger?
 		
 		// mediator_survives_after_garbage_collection - how do we test this without making our tests slow? Do we need to?
 		
