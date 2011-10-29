@@ -55,7 +55,7 @@
 <!-- Build our SWC with a versioned name. -->
       <arg value="-output=${bin.loc}/${project.name.versioned}.swc"/>
 <!-- We want all the org package classes in the SWC being built. -->
-      <arg value="-include-sources=${main.src.loc}/org"/>
+      <arg value="-include-sources+=${main.src.loc}/org"/>
 <!-- Include classes from SWCs in this folder, but only the ones we use. -->
       <arg value="-library-path+=${lib.loc}"/>
 <!-- Keep the magic alive. -->
@@ -66,7 +66,13 @@
       <arg value="-static-link-runtime-shared-libraries=true"/>
       <arg value="-verbose-stacktraces=true"/>
       <arg value="-headless-server=true"/>
-      <arg line="-include-file=metadata.xml,'${main.src.loc}'/metadata.xml" />
+<!-- Include manifests and such -->
+      <arg line="-include-file+=metadata.xml,'${main.src.loc}'/metadata.xml" />
+      <arg line="-include-file+=manifest.xml,'${main.src.loc}'/manifest.xml" />
+      <arg line="-include-file+=design.xml,'${main.src.loc}'/design.xml" />
+      <arg line="-source-path+='./','${main.src.loc}'"/>
+      <arg line="-namespace+=http://ns.robotlegs.org/flex/rl2,'${main.src.loc}'/manifest.xml" />
+      <arg line="-include-namespaces+=http://ns.robotlegs.org/flex/rl2" />
     </java>
     <echo>[compile] Release SWC ${project.name.versioned}.swc created successfully</echo>
   </target>
