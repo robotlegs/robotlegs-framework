@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <!--
+        JIRA Ticket for Sonatype to allow Robotlegs to be hosted/deployed: https://issues.sonatype.org/browse/OSSRH-288
+
+        Currently, Robotlegs can't be promoted to the "central" maven repository because this POM contains a
+        <repositories> element which is not allowed when having an artifact promoted
+        (see: http://nexus.sonatype.org/oss-repository-hosting.html). The <repositories> is required because the
+        swiftsuspenders project isn't available in a maven repository at this time.
+    -->
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.robotlegs</groupId>
+    <artifactId>robotlegs-framework</artifactId>
+    <version>2.0.0-b1</version>
+	<packaging>swc</packaging>
+    <name>Robotlegs Framework</name>
+    <description>Robotlegs is a pure AS3 micro-architecture (framework) with a light footprint and limited scope. Simply put, Robotlegs is there to help you wire your objects together. It provides the glue that your application needs to easily function in a decoupled way. Through the use of automated metadata based dependency injection Robotlegs removes boilerplate code in an application. By promoting loose coupling and avoiding the use of Singletons and statics in the framework Robotlegs can help you write code that is highly testable.</description>
+    <url>http://www.robotlegs.org</url>
+    <licenses>
+        <license>
+            <name>Robotlegs Custom License</name>
+            <url>http://github.com/robotlegs/robotlegs-framework/blob/master/LICENSE</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>darscan</id>
+            <name>Shaun Smith</name>
+            <email></email>
+            <roles>
+                <role>Founder</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>joelhooks</id>
+            <name>Joel Hooks</name>
+            <email>joelhooks@gmail.com</email>
+            <url>http://joelhooks.com/</url>
+        </developer>
+    </developers>
+    <contributors>
+        <contributor>
+            <name>Craig Wickesser</name>
+            <email>codecraig@gmail.com</email>
+            <url>http://digitalchickenscratch.com/</url>
+        </contributor>
+		<contributor>
+			<name>Justin J. Moses</name>
+			<url>http://about.me/justinj</url>
+			<roles>
+				<role>Maven contributor</role>
+			</roles>
+		</contributor>
+    </contributors>
+
+    <scm>
+        <url>http://github.com/robotlegs/robotlegs-framework/tree/version2</url>
+        <connection>git://github.com/robotlegs/robotlegs-framework.git</connection>
+    </scm>
+
+    <repositories>
+        <repository>
+            <id>Sonatype Flex Group</id>
+            <url>http://repository.sonatype.org/content/groups/flexgroup/</url>
+        </repository>
+    </repositories>
+
+	<pluginRepositories>
+        <pluginRepository>
+            <id>Sonatype Flex Group</id>
+            <url>http://repository.sonatype.org/content/groups/flexgroup/</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+
+    <properties>
+		
+        <flexmojos.version>4.0-RC2</flexmojos.version>
+
+        <maven.version>3.0.3</maven.version>
+
+        <flex.sdk.version>4.5.1.21328</flex.sdk.version>
+		
+        <flexunit.version>4.0-rc-1</flexunit.version>
+
+        <swiftsuspenders.version>2.0.0-b1</swiftsuspenders.version>
+		<as3commons.version>2.7</as3commons.version>
+    </properties>
+
+    <prerequisites>
+        <maven>${maven.version}</maven>
+    </prerequisites>
+
+	<distributionManagement>
+        <!--
+            Configure your settings.xml to provide a username/password for the sonatype site
+            http://nexus.sonatype.org/oss-repository-hosting.html
+        -->
+		<repository>
+			<id>sonatype-staging</id>
+			<url>http://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+		</repository>
+        <snapshotRepository>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+	</distributionManagement>
+
+    <build>
+        <sourceDirectory>src</sourceDirectory>
+
+        <testSourceDirectory>test</testSourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.sonatype.flexmojos</groupId>
+                <artifactId>flexmojos-maven-plugin</artifactId>
+                <version>${flexmojos.version}</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <skipTests>true</skipTests>
+                        
+						<keepAs3Metadatas>
+                            <keepAs3Metadata>Inject</keepAs3Metadata>
+                            <keepAs3Metadata>PostConstruct</keepAs3Metadata>
+                        </keepAs3Metadatas>
+                        
+						<includeTestFiles>
+                            <includeTestFile>*Test.as</includeTestFile>
+	                        <includeTestFile>*Tests.as</includeTestFile>
+                        </includeTestFiles>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.adobe.flex</groupId>
+                            <artifactId>compiler</artifactId>
+                            <version>${flex.sdk.version}</version>
+                            <type>pom</type>
+                        </dependency>
+                    </dependencies>
+            </plugin>
+<!--
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.0-alpha-1</version>
+                <executions>
+                  <execution>
+                    <phase>initialize</phase>
+                    <goals>
+                      <goal>read-project-properties</goal>
+                    </goals>
+                    <configuration>
+                      <files>
+                        <file>${basedir}/build.properties</file>
+                      </files>
+                    </configuration>
+                  </execution>
+                </executions>
+            </plugin>
+-->
+        </plugins>
+    </build>
+
+    <dependencies>
+	<!--
+        <dependency>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>properties-maven-plugin</artifactId>
+            <version>1.0-alpha-1</version>
+        </dependency>
+-->
+		<dependency>
+			<groupId>com.adobe.flex.framework</groupId>
+			<artifactId>flex-framework</artifactId>
+			<version>${flex.sdk.version}</version>
+			<type>pom</type>
+		</dependency>
+		
+		<!--- Swift Suspenders -->
+		<dependency>
+			<groupId>org.swiftsuspenders</groupId>
+			<artifactId>swiftsuspenders</artifactId>
+			<version>${swiftsuspenders.version}</version>
+			<type>swc</type>
+		</dependency>
+		
+		<!-- AS3 Commons Logging -->
+		<dependency>
+			<groupId>org.as3commons</groupId>
+	    	<artifactId>as3commons-logging</artifactId>
+	    	<type>swc</type>
+	    	<version>${as3commons.version}</version>
+		</dependency>
+		
+		
+        <!-- TEST Dependencies -->
+        <dependency>
+            <groupId>com.adobe.flexunit</groupId>
+            <artifactId>flexunit</artifactId>
+            <version>${flexunit.version}</version>
+            <type>swc</type>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+</project>
