@@ -7,26 +7,50 @@
 
 package org.robotlegs.v2.utilities.mediatorTriggers
 {
-	public class  RL2MediatorTrigger
+	import flash.display.DisplayObject;
+	import org.robotlegs.v2.extensions.mediatorMap.api.IMediator;
+	
+	public class RL2MediatorTrigger
 	{
 		
 		/*============================================================================*/
 		/* Protected Properties                                                       */
 		/*============================================================================*/
-
+		
+		protected var _strict:Boolean;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function RL2MediatorTrigger()
+		public function RL2MediatorTrigger(strict:Boolean)
 		{
+			_strict = strict;
 		}
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		public function startup(mediator:*, view:DisplayObject):void
+		{
+			if(_strict || (mediator is IMediator))
+			{
+				mediator.setViewComponent(view);
+				mediator.preRegister();
+			}
+			
+		}
+
+		public function shutdown(mediator:*, view:DisplayObject, callback:Function):void
+		{
+			if(_strict || (mediator is IMediator))
+			{
+				mediator.preRemove();
+			}
+			
+			callback(mediator, view);
+		}
 
 		/*============================================================================*/
 		/* Protected Functions                                                        */

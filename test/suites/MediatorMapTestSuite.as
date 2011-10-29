@@ -9,6 +9,7 @@ package suites
 {
 	import org.robotlegs.v2.extensions.mediatorMap.MediatorMapTest;
 	import org.robotlegs.v2.utilities.mediatorTriggers.DuckTypedMediatorTriggerTest;
+	import org.robotlegs.v2.utilities.mediatorTriggers.RL2MediatorTriggerTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
@@ -22,6 +23,8 @@ package suites
 		public var mediatorMapTest:MediatorMapTest;
 		
 		public var duckTypedMediatorTriggerTest:DuckTypedMediatorTriggerTest;
+		
+		public var rl2MediatorTriggerTest:RL2MediatorTriggerTest;
 		
 		//public var mediatorMapV1FunctionalityTest:MediatorMapV1Test;
 	}

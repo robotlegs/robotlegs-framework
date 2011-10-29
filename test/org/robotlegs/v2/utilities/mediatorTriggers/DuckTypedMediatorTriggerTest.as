@@ -94,14 +94,12 @@ package org.robotlegs.v2.utilities.mediatorTriggers
 		[Test(expects="ReferenceError")]
 		public function startup_throws_error_in_strict_mode_with_notAMediator():void
 		{
-			const view:Sprite = new Sprite();
 			strictInstance.startup(notAMediator, VIEW);
 		}
 		
 		[Test]
 		public function startup_doesnt_error_in_not_strict_mode_with_notAMediator():void
 		{
-			const view:Sprite = new Sprite();
 			notStrictInstance.startup(notAMediator, VIEW);
 		}
 		

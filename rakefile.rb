@@ -27,9 +27,8 @@ project_model :model do |m|
   m.compiler_gem_name     = 'sprout-flex4sdk-tool'
   m.compiler_gem_version  = '>= 4.0.0'
   # m.source_path           << "#{m.lib_dir}/somelib"
-  # m.library_path          << 'lib/asx.swc'
   m.library_path          << 'lib/hamcrest-as3-flex-1.1.3.swc'
-  # m.library_path          << 'lib/FLoxy.swc'
+  m.library_path          << 'lib/robotlegs-framework-v1.5.2.swc'
   m.library_path          << 'lib/SwiftSuspenders-v2.0.0b1.swc'
   m.library_path          << 'lib/as3commons-logging-2.7.swc'
   m.library_path          << 'lib/mockolate-0.12.1-flex.swc'
