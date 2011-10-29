@@ -7,14 +7,8 @@
 
 package org.robotlegs.v2.extensions.utils
 {
-	import flash.utils.describeType;
-
-	/*============================================================================*/
-	/* Public Functions                                                           */
-	/*============================================================================*/
-
 	public function objectHasMethod(object:*, methodName:String):Boolean
 	{
-		return (describeType(object).method.(@name == methodName).length() == 1);
+		return object && object.hasOwnProperty(methodName) && object[methodName] is Function;
 	}
 }

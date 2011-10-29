@@ -56,13 +56,13 @@ package org.robotlegs.v2.extensions.hooks
 		{
 			for each (var hookClass:Class in hookClasses)
 			{
-				if (!_verifiedHookClasses[hookClass])
+				if (_verifiedHookClasses[hookClass] == undefined)
 				{
 					_verifiedHookClasses[hookClass] = (classHasMethod(hookClass, 'hook'));
-					if (!_verifiedHookClasses[hookClass])
-					{
-						throw new ArgumentError("No hook function found on class " + hookClass);
-					}
+				}
+				if (!_verifiedHookClasses[hookClass])
+				{
+					throw new ArgumentError("No hook function found on class " + hookClass);
 				}
 			}
 		}

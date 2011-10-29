@@ -11,7 +11,7 @@ package org.robotlegs.v2.extensions.guards
 	import flash.utils.describeType;
 	import org.swiftsuspenders.Injector;
 	import org.robotlegs.v2.extensions.utils.classHasMethod;
-
+	
 	public class GuardsProcessor
 	{
 
@@ -37,16 +37,16 @@ package org.robotlegs.v2.extensions.guards
 		public function processGuards(useInjector:Injector, guardClasses:Vector.<Class>):Boolean
 		{
 			verifyGuardClasses(guardClasses);
-
+			
 			var guard:*;
-
+			
 			for each (var guardClass:Class in guardClasses)
 			{
 				guard = useInjector.getInstance(guardClass);
 				if (!guard.approve())
 					return false;
 			}
-
+			
 			return true;
 		}
 
@@ -58,13 +58,13 @@ package org.robotlegs.v2.extensions.guards
 		{
 			for each (var guardClass:Class in guardClasses)
 			{
-				if (!_verifiedGuardClasses[guardClass])
+				if (_verifiedGuardClasses[guardClass] == undefined)
 				{
 					_verifiedGuardClasses[guardClass] = (classHasMethod(guardClass, 'approve'));
-					if (!_verifiedGuardClasses[guardClass])
-					{
-						throw new ArgumentError("No approve function found on class " + guardClass);
-					}
+				}
+				if (!_verifiedGuardClasses[guardClass])
+				{
+					throw new ArgumentError("No approve function found on class " + guardClass);
 				}
 			}
 		}
