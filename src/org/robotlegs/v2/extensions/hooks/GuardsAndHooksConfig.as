@@ -60,35 +60,22 @@ package org.robotlegs.v2.extensions.hooks
 		/* Protected Functions                                                        */
 		/*============================================================================*/
 
-		protected function createArrayFromVector(typesVector:Vector.<Class>):Array
-		{
-			const returnArray:Array = [];
-
-			for each (var type:Class in typesVector)
-			{
-				returnArray.push(type);
-			}
-
-			return returnArray;
-		}
-
 		protected function pushValuesToVector(values:Array, vector:Vector.<Class>):void
 		{
-			if (values.length == 1)
+			if (values.length == 1
+				&& (values[0] is Array || values[0] is Vector.<Class>))
 			{
-				if (values[0] is Array)
+				for each (var type:Class in values[0])
 				{
-					values = values[0]
-				}
-				else if (values[0] is Vector.<Class>)
-				{
-					values = createArrayFromVector(values[0]);
+					vector.push(type);
 				}
 			}
-
-			for each (var type:Class in values)
+			else
 			{
-				vector.push(type);
+				for each (type in values)
+				{
+					vector.push(type);
+				}
 			}
 		}
 	}
