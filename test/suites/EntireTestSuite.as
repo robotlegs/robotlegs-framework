@@ -24,9 +24,9 @@ package suites
 
 		public var commandMapTestSuite:CommandMapTestSuite;
 
-		//public var contextTestSuite:ContextTestSuite;
+		public var contextTestSuite:ContextTestSuite;
 
-		//public var stageWatcherTestSuite:StageWatcherTestSuite;
+		public var stageWatcherTestSuite:StageWatcherTestSuite;
 
 		public var typeMatchingTestSuite:TypeMatchingTestSuite;
 	}
