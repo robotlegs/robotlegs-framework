@@ -27,9 +27,9 @@ project_model :model do |m|
   m.compiler_gem_name     = 'sprout-flex4sdk-tool'
   m.compiler_gem_version  = '>= 4.0.0'
   # m.source_path           << "#{m.lib_dir}/somelib"
-  m.library_path          << 'lib/asx.swc'
-  m.library_path          << 'lib/hamcrest-as3-only-1.1.3.swc'
-  m.library_path          << 'lib/FLoxy.swc'
+  # m.library_path          << 'lib/asx.swc'
+  m.library_path          << 'lib/hamcrest-as3-flex-1.1.3.swc'
+  # m.library_path          << 'lib/FLoxy.swc'
   m.library_path          << 'lib/SwiftSuspenders-v2.0.0b1.swc'
   m.library_path          << 'lib/as3commons-logging-2.7.swc'
   m.library_path          << 'lib/mockolate-0.12.1-flex.swc'
@@ -44,7 +44,7 @@ desc 'Compile run the test harness'
 unit :test do |t|
   t.input = 'test/RobotlegsTest.mxml'
   t.debug = true
-  t.library_path  << 'lib/flexunit-4.1.0-8-as3_4.1.0.16076.swc'
+  t.library_path  << 'lib/flexunit-4.1.0-8-flex_4.1.0.16076.swc'
   t.library_path  << 'lib/flexunit-cilistener-4.1.0-8-4.1.0.16076.swc'
   t.library_path  << 'lib/fluint-extensions-4.1.0-8-4.1.0.16076.swc'
 end
