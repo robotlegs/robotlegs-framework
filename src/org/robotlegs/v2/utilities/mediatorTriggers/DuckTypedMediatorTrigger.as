@@ -10,6 +10,7 @@ package org.robotlegs.v2.utilities.mediatorTriggers
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorTrigger;
 	import flash.display.DisplayObject;
 	import flash.utils.describeType;
+	import org.robotlegs.v2.extensions.utils.objectHasMethod;
 	
 	public class DuckTypedMediatorTrigger implements IMediatorTrigger
 	{
@@ -42,11 +43,11 @@ package org.robotlegs.v2.utilities.mediatorTriggers
 				return;
 			}
 
-			if(describeType(mediator).method.(@name == "setViewComponent").length() == 1)
+			if(objectHasMethod(mediator, 'setViewComponent'))
 			{
 				mediator.setViewComponent(view);
 			}
-			if(describeType(mediator).method.(@name == "preRegister").length() == 1)
+			if(objectHasMethod(mediator, 'preRegister'))
 			{
 				mediator.preRegister();
 			}
@@ -58,7 +59,7 @@ package org.robotlegs.v2.utilities.mediatorTriggers
 			{
 				mediator.preRemove();
 			}
-			else if(describeType(mediator).method.(@name == "preRemove").length() == 1)
+			else if(objectHasMethod(mediator, 'preRemove'))
 			{
 				mediator.preRemove();
 			}

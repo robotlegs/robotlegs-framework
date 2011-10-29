@@ -11,6 +11,7 @@ package org.robotlegs.v2.extensions.hooks
 	import flash.utils.describeType;
 	import ArgumentError;
 	import org.swiftsuspenders.Injector;
+	import org.robotlegs.v2.extensions.utils.classHasMethod;
 
 	public class HooksProcessor
 	{
@@ -57,7 +58,7 @@ package org.robotlegs.v2.extensions.hooks
 			{
 				if (!_verifiedHookClasses[hookClass])
 				{
-					_verifiedHookClasses[hookClass] = (describeType(hookClass).factory.method.(@name == "hook").length() == 1);
+					_verifiedHookClasses[hookClass] = (classHasMethod(hookClass, 'hook'));
 					if (!_verifiedHookClasses[hookClass])
 					{
 						throw new ArgumentError("No hook function found on class " + hookClass);

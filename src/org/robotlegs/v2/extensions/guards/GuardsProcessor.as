@@ -10,6 +10,7 @@ package org.robotlegs.v2.extensions.guards
 	import flash.utils.Dictionary;
 	import flash.utils.describeType;
 	import org.swiftsuspenders.Injector;
+	import org.robotlegs.v2.extensions.utils.classHasMethod;
 
 	public class GuardsProcessor
 	{
@@ -59,7 +60,7 @@ package org.robotlegs.v2.extensions.guards
 			{
 				if (!_verifiedGuardClasses[guardClass])
 				{
-					_verifiedGuardClasses[guardClass] = (describeType(guardClass).factory.method.(@name == "approve").length() == 1);
+					_verifiedGuardClasses[guardClass] = (classHasMethod(guardClass, 'approve'));
 					if (!_verifiedGuardClasses[guardClass])
 					{
 						throw new ArgumentError("No approve function found on class " + guardClass);
