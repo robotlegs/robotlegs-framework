@@ -57,6 +57,44 @@ package org.robotlegs.v2.core.impl
 			_anyOfTypes = anyOf;
 			_noneOfTypes = noneOf;
 		}
+		
+		public function matches(item:*):Boolean
+		{
+			var i:uint = _allOfTypes.length;
+			while (i--)
+			{
+				if (!(item is _allOfTypes[i]))
+				{
+					return false;
+				}
+			}
+
+			i = _noneOfTypes.length;
+			while (i--)
+			{
+				if (item is _noneOfTypes[i])
+				{
+					return false;
+				}
+			}
+
+			if (_anyOfTypes.length == 0 && (_allOfTypes.length > 0 || _noneOfTypes.length > 0))
+			{
+				return true;
+			}
+
+			i = _anyOfTypes.length;
+			while (i--)
+			{
+				if (item is _anyOfTypes[i])
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+
 
 
 		/*============================================================================*/

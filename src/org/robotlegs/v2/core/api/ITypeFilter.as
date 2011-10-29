@@ -10,6 +10,8 @@ package org.robotlegs.v2.core.api
 
 	public interface ITypeFilter
 	{
+		function matches(item:*):Boolean;
+		
 		function get allOfTypes():Vector.<Class>;
 
 		function get anyOfTypes():Vector.<Class>;
