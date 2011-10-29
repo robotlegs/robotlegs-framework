@@ -89,6 +89,8 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 
 		public function handleViewAdded(view:DisplayObject, info:IViewClassInfo):uint
 		{
+			// TODO = check _liveMediatorsByView for this view, exit / error if it would overwrite
+			
 			var interest:uint = 0;
 
 			for (var filter:* in _configsByTypeFilter)
@@ -163,6 +165,16 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		public function loadTrigger(trigger:IMediatorTrigger):void
 		{
 			_trigger = trigger;
+		}
+		
+		public function mediate(view:DisplayObject):Boolean
+		{
+			return (handleViewAdded(view, null) > 0);
+		}
+		
+		public function unmediate(view:DisplayObject):void
+		{
+			handleViewRemoved(view);
 		}
 
 		/*============================================================================*/

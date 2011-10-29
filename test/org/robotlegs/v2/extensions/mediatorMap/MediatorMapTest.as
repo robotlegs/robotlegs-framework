@@ -170,8 +170,6 @@ package org.robotlegs.v2.extensions.mediatorMap
 			assertEquals(0, interest);
 		}
 
-		// unmapping
-
 		[Test]
 		public function is_not_interested_if_mapping_is_unmapped_for_view():void
 		{
@@ -275,14 +273,6 @@ package org.robotlegs.v2.extensions.mediatorMap
 			assertFalse(instance.hasMapping(ExampleDisplayObjectMediator));
 		}
 		
-		// mediator_is_kept_during_reparenting - really a job for the trigger?
-		
-		// mediator_survives_after_garbage_collection - how do we test this without making our tests slow? Do we need to?
-		
-		// flex_view_mediator_waits_for_creation_complete - a job for the trigger
-		
-		// multiple_triggers
-
 		[Test(async)]
 		public function test_failure_seen():void
 		{
@@ -296,6 +286,58 @@ package org.robotlegs.v2.extensions.mediatorMap
 			Async.asyncHandler(this, benignHandler, 10, null, handleEventTimeout), false, 0, true);
 			
 			instance.invalidate();
+		}
+		
+		[Test]
+		public function create_mediator_instantiates_mediator_for_view_when_mapped():void
+		{
+			instance.map(ExampleMediator).toView(Sprite);
+
+			instance.mediate(new Sprite());
+
+			var expectedNotifications:Vector.<String> = new <String>['ExampleMediator'];
+			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
+		}
+		
+		[Test]
+		public function mediate_instantiates_mediator_for_view_when_matched_to_mapping():void
+		{
+			instance.map(ExampleMediator).toView(Sprite);
+
+			instance.mediate(new Sprite());
+
+			var expectedNotifications:Vector.<String> = new <String>['ExampleMediator'];
+			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
+		}
+		
+		[Test]
+		public function mediate_returns_true_for_view_when_matched_to_mapping():void
+		{
+			instance.map(ExampleMediator).toView(Sprite);
+
+			assertTrue(instance.mediate(new Sprite()));
+		}
+
+		[Test]
+		public function mediate_returns_false_for_view_when_not_matched_to_mapping():void
+		{
+			instance.map(ExampleMediator).toView(MovieClip);
+
+			assertFalse(instance.mediate(new Sprite()));
+		}
+		
+		[Test]
+		public function unmediate_cleans_up_mediators():void
+		{
+			instance.map(ExampleMediator).toView(Sprite);
+
+			const view:Sprite = new Sprite();
+
+			instance.mediate(view);
+			instance.unmediate(view);
+
+			var expectedNotifications:Vector.<String> = new <String>['ExampleMediator', 'ExampleMediator preRemove'];
+			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
 		}
 		
 		protected function handleEventTimeout(o:Object):void

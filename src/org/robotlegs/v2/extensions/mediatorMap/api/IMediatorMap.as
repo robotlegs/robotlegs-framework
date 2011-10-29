@@ -7,6 +7,7 @@
 
 package org.robotlegs.v2.extensions.mediatorMap.api
 {
+import flash.display.DisplayObject;
 
 	public interface IMediatorMap
 	{
@@ -22,5 +23,9 @@ package org.robotlegs.v2.extensions.mediatorMap.api
 		function loadTrigger(trigger:IMediatorTrigger):void;
 		
 		function invalidate():void;
+		
+		function mediate(object:DisplayObject):Boolean;
+		
+		function unmediate(object:DisplayObject):void;
 	}
 }
