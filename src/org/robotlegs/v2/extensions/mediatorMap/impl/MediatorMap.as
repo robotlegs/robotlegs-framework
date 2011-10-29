@@ -55,17 +55,15 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		/* Protected Properties                                                       */
 		/*============================================================================*/
 
-		protected var _configsByTypeFilter:Dictionary;
+		protected const _configsByTypeFilter:Dictionary = new Dictionary();
 
-		protected var _filtersByDescription:Dictionary;
+		protected const _filtersByDescription:Dictionary = new Dictionary();
 
-		// vars not consts as some sort of shudown would likely dump the lot
+		protected const _mappingsByMediatorType:Dictionary = new Dictionary();
 
-		protected var _mappingsByMediatorType:Dictionary;
+		protected const _liveMediatorsByView:Dictionary = new Dictionary();
 		
 		protected var _trigger:IMediatorTrigger;
-		
-		protected var _liveMediatorsByView:Dictionary;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -73,10 +71,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 
 		public function MediatorMap()
 		{
-			_mappingsByMediatorType = new Dictionary();
-			_filtersByDescription = new Dictionary();
-			_configsByTypeFilter = new Dictionary();
-			_liveMediatorsByView = new Dictionary();
+
 		}
 
 
