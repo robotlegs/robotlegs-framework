@@ -1,10 +1,7 @@
 require "fileutils"
 require "buildr/as3" # needs buildr-as3 v0.2.23.pre
 
-# To install:
-# [RVM users: gem install rjb -v 1.3.3 --platform ruby]
-# gem install buildr
-# gem install buildr-as3 --pre
+# Installation: https://github.com/devboy/buildr_as3/wiki/Installation
 
 repositories.remote << "http://artifacts.devboy.org" << "http://repo2.maven.org/maven2"
 
@@ -19,13 +16,14 @@ define "robotlegs-framework", :layout => layout do
   project.group = "org.robotlegs"  
   project.version = props["robotlegs.ver.num"]  
   
-  swifts = _(:build, :libs, "SwiftSuspenders-#{props["swift.suspenders.version"]}.swc")
+  swifts = _(:lib, "SwiftSuspenders-#{props["swift.suspenders.version"]}.swc")
+  libs = _(:lib)
   args = ["-include-file=metadata.xml,#{_(:source,:main,:as3,"metadata.xml")}"]
-  compile.using( :compc, :flexsdk => flexsdk, :other => args ).with( swifts )
+  compile.using( :compc, :flexsdk => flexsdk, :other => args ).with( swifts, libs )
   
   testrunner = _(:source, :test, :as3, "RobotlegsTest.mxml")
   flexunitswcs = Buildr::AS3::Test::FlexUnit4.swcs
-  test.using(:flexunit4 => true).compile.using(
+  test.using(:flexunit4 => true, :haltonFailure => true).compile.using(
     :main => testrunner,
     :other => []
   ).with( flexunitswcs )
@@ -39,14 +37,14 @@ define "robotlegs-framework", :layout => layout do
     
     # create the README file
     filter.from(_(:build,:templates)).into( _(:target) ).
-      using( :ant,  "date" => Time.now.localtime.strftime("%d-%m-%Y"),
-                    "rlversion" => props["robotlegs.ver.num"],
-                    "releasename" => props["project.name.versioned"],
-                    "ssversion" => props["swift.suspenders.version"],
-                    "sslink" => props["swift.suspenders.link"],
-                    "rlprojectlink" => props["robotlegs.project.link"],
+      using( :ant,  "date"              => Time.now.localtime.strftime("%d-%m-%Y"),
+                    "rlversion"         => props["robotlegs.ver.num"],
+                    "releasename"       => props["project.name.versioned"],
+                    "ssversion"         => props["swift.suspenders.version"],
+                    "sslink"            => props["swift.suspenders.link"],
+                    "rlprojectlink"     => props["robotlegs.project.link"],
                     "bestpracticeslink" => props["robotlegs.best.practices.link"],
-                    "faqlink" => props["robotlegs.faq.link"] ).run
+                    "faqlink"           => props["robotlegs.faq.link"] ).run
     
     FileUtils.move _(:target,"README.tmpl"), _(:target,"README")
     
@@ -79,13 +77,13 @@ def doc_args
     "-lenient=true", 
     "-footer", "Robotlegs - http://www.robotlegs.org/ - Documentation generated at: #{Time.now.localtime.strftime("%d-%m-%Y")}",
     "-package", "org.robotlegs.v2.core.api", "Core framework API",
-    "-package", "package org.robotlegs.v2.core.impl", "Core framework implementation" ]
+    "-package", "org.robotlegs.v2.core.impl", "Core framework implementation" ]
 end
 
 def flexsdk
   @flexsdk ||= begin
     # should be using the flex sdk version from user.properties (if it exists) or environment
-    flexsdk = FlexSDK.new("4.5.1.21328")
+    flexsdk = FlexSDK.new("4.1.0.16076")
     flexsdk.default_options << "-keep-as3-metadata+=Inject" << "-keep-as3-metadata+=PostConstruct"
     flexsdk
   end

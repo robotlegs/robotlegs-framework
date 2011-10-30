@@ -7,6 +7,8 @@
 /doc/*
 /obj/*
 /report/*
+/reports/*
+/target/*
 /dist/*
 
 .actionScriptProperties
