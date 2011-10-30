@@ -9,7 +9,6 @@ package org.robotlegs.v2.core.impl
 {
 	import org.flexunit.asserts.*;
 	import org.robotlegs.v2.core.api.ITypeFilter;
-	import org.robotlegs.v2.core.impl.itemPassesFilter;
 	import org.robotlegs.v2.core.impl.support.*;
 
 	public class TypeFilterUsageTest
@@ -22,7 +21,7 @@ package org.robotlegs.v2.core.impl
 
 			var filter:ITypeFilter = new TypeFilter(new <Class>[], new <Class>[], new <Class>[TypeB]);
 
-			assertFalse("Class excluded by none", itemPassesFilter(subject, filter));
+			assertFalse("Class excluded by none", filter.matches(subject));
 		}
 
 		[Test]
@@ -32,7 +31,7 @@ package org.robotlegs.v2.core.impl
 
 			var filter:ITypeFilter = new TypeFilter(new <Class>[TypeA, IType1, IType2], new <Class>[], new <Class>[]);
 
-			assertTrue("Class matched by all", itemPassesFilter(subject, filter));
+			assertTrue("Class matched by all", filter.matches(subject));
 		}
 
 		[Test]
@@ -42,7 +41,7 @@ package org.robotlegs.v2.core.impl
 
 			var filter:ITypeFilter = new TypeFilter(new <Class>[], new <Class>[TypeA, IType1], new <Class>[]);
 
-			assertTrue("Class matched by any", itemPassesFilter(subject, filter));
+			assertTrue("Class matched by any", filter.matches(subject));
 		}
 
 		[Test]
@@ -52,7 +51,7 @@ package org.robotlegs.v2.core.impl
 
 			var filter:ITypeFilter = new TypeFilter(new <Class>[], new <Class>[], new <Class>[TypeB]);
 
-			assertTrue("Class not excluded by none", itemPassesFilter(subject, filter));
+			assertTrue("Class not excluded by none", filter.matches(subject));
 		}
 
 		[Test]
@@ -62,7 +61,7 @@ package org.robotlegs.v2.core.impl
 
 			var filter:ITypeFilter = new TypeFilter(new <Class>[TypeA, IType1, IType2], new <Class>[], new <Class>[]);
 
-			assertFalse("Class not matched by all", itemPassesFilter(subject, filter));
+			assertFalse("Class not matched by all", filter.matches(subject));
 		}
 
 		[Test]
@@ -72,7 +71,7 @@ package org.robotlegs.v2.core.impl
 
 			var filter:ITypeFilter = new TypeFilter(new <Class>[], new <Class>[TypeA, IType1], new <Class>[]);
 
-			assertFalse("Class not matched by any", itemPassesFilter(subject, filter));
+			assertFalse("Class not matched by any", filter.matches(subject));
 		}
 
 		[Test]
@@ -82,7 +81,7 @@ package org.robotlegs.v2.core.impl
 
 			var filter:ITypeFilter = new TypeFilter(new <Class>[], new <Class>[], new <Class>[]);
 
-			assertFalse("Default behaviour where nothing is specified is to not match", itemPassesFilter(subject, filter));
+			assertFalse("Default behaviour where nothing is specified is to not match", filter.matches(subject));
 		}
 
 		[Test]

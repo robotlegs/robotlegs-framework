@@ -13,7 +13,6 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 	import flash.utils.Dictionary;
 	import flash.utils.getQualifiedClassName;
 	import org.robotlegs.v2.core.api.ITypeFilter;
-	import org.robotlegs.v2.core.impl.itemPassesFilter;
 	import org.robotlegs.v2.extensions.guards.GuardsProcessor;
 	import org.robotlegs.v2.extensions.hooks.HooksProcessor;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorConfig;
@@ -79,7 +78,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 
 			for (var filter:* in _configsByTypeFilter)
 			{
-				if (itemPassesFilter(view, filter as ITypeFilter))
+				if ((filter as ITypeFilter).matches(view))
 				{
 					interest = 1;
 

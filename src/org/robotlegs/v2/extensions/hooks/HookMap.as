@@ -11,7 +11,6 @@ package org.robotlegs.v2.extensions.hooks
 	import flash.utils.getQualifiedClassName;
 	import org.robotlegs.v2.core.api.ITypeFilter;
 	import org.robotlegs.v2.core.api.ITypeMatcher;
-	import org.robotlegs.v2.core.impl.itemPassesFilter;
 	import org.robotlegs.v2.extensions.guards.GuardsProcessor;
 	import org.swiftsuspenders.DescribeTypeJSONReflector;
 	import org.swiftsuspenders.Injector;
@@ -74,9 +73,10 @@ package org.robotlegs.v2.extensions.hooks
 					hooksProcessor.runHooks(injector, _mappingsByFCQN[fqcn].hooks);
 			}
 
+			// filter:* - ew!
 			for (var filter:* in _mappingsByTypeFilter)
 			{
-				if (itemPassesFilter(item, filter as ITypeFilter))
+				if ((filter as ITypeFilter).matches(item))
 				{
 					interested = true;
 					if (!blockedByGuards(_mappingsByTypeFilter[filter].guards))
