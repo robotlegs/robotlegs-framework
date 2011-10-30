@@ -82,8 +82,3 @@ def flexsdk
     flexsdk
   end
 end
-
-def layout
-  @layout ||= begin
-  end
-end
