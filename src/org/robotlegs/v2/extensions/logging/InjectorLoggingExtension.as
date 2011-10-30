@@ -18,16 +18,7 @@ package org.robotlegs.v2.extensions.logging
 	public class InjectorLoggingExtension implements IContextExtension
 	{
 
-		/*============================================================================*/
-		/* Private Static Properties                                                  */
-		/*============================================================================*/
-
 		private static const logger:ILogger = getLogger(InjectorLoggingExtension);
-
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
 
 		public function initialize(context:IContext):void
 		{
@@ -56,10 +47,6 @@ package org.robotlegs.v2.extensions.logging
 			injector.removeEventListener(MappingEvent.PRE_MAPPING_CHANGE, onMappingEvent);
 			injector.removeEventListener(MappingEvent.PRE_MAPPING_CREATE, onMappingEvent);
 		}
-
-		/*============================================================================*/
-		/* Private Functions                                                          */
-		/*============================================================================*/
 
 		private function onInjectionEvent(event:InjectionEvent):void
 		{

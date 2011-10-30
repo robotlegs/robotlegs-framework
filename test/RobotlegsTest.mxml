@@ -16,22 +16,12 @@
 			import org.flexunit.runner.FlexUnitCore;
 			import suites.EntireTestSuite;
 
-
-			/*============================================================================*/
-			/* Private Properties                                                         */
-			/*============================================================================*/
-
 			/*embedded just for fun*/
 			[Bindable]
 			[Embed(source="../build/assets/rl_justlegs.png")]
 			private var Logo:Class;
 
 			private var core:FlexUnitCore;
-
-
-			/*============================================================================*/
-			/* Private Functions                                                          */
-			/*============================================================================*/
 
 			private function onCreationComplete():void
 			{

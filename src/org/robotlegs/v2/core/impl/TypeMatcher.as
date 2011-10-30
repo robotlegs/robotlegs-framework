@@ -10,13 +10,10 @@ package org.robotlegs.v2.core.impl
 	import flash.errors.IllegalOperationError;
 	import org.robotlegs.v2.core.api.ITypeFilter;
 	import org.robotlegs.v2.core.api.ITypeMatcher;
+	import org.robotlegs.v2.core.utilities.pushValuesToClassVector;
 
 	public class TypeMatcher implements ITypeMatcher
 	{
-
-		/*============================================================================*/
-		/* Protected Properties                                                       */
-		/*============================================================================*/
 
 		protected const _allOfTypes:Vector.<Class> = new Vector.<Class>;
 
@@ -26,18 +23,9 @@ package org.robotlegs.v2.core.impl
 
 		protected var _typeFilter:ITypeFilter;
 
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
-
 		public function TypeMatcher()
 		{
 		}
-
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
 
 		public function allOf(... types):ITypeMatcher
 		{
@@ -68,10 +56,6 @@ package org.robotlegs.v2.core.impl
 			return this;
 		}
 
-		/*============================================================================*/
-		/* Protected Functions                                                        */
-		/*============================================================================*/
-
 		protected function buildTypeFilter():ITypeFilter
 		{
 			if ((_allOfTypes.length == 0) &&
@@ -83,37 +67,11 @@ package org.robotlegs.v2.core.impl
 			return new TypeFilter(_allOfTypes, _anyOfTypes, _noneOfTypes);
 		}
 
-		protected function createArrayFromVector(typesVector:Vector.<Class>):Array
-		{
-			const returnArray:Array = [];
-
-			for each (var type:Class in typesVector)
-			{
-				returnArray.push(type);
-			}
-
-			return returnArray;
-		}
-
 		protected function pushAddedTypesTo(types:Array, targetSet:Vector.<Class>):void
 		{
-			if (types.length == 1)
-			{
-				if (types[0] is Array)
-				{
-					types = types[0]
-				}
-				else if (types[0] is Vector.<Class>)
-				{
-					types = createArrayFromVector(types[0]);
-				}
-			}
-
 			_typeFilter && throwSealedMatcherError();
-			for each (var type:Class in types)
-			{
-				targetSet.push(type);
-			}
+
+			pushValuesToClassVector(types, targetSet);
 		}
 
 		protected function throwSealedMatcherError():void

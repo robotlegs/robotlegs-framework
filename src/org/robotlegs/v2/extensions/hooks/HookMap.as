@@ -20,10 +20,6 @@ package org.robotlegs.v2.extensions.hooks
 	public class HookMap
 	{
 
-		/*============================================================================*/
-		/* Public Properties                                                          */
-		/*============================================================================*/
-
 		[Inject]
 		public var guardsProcessor:GuardsProcessor;
 
@@ -36,28 +32,15 @@ package org.robotlegs.v2.extensions.hooks
 		[Inject]
 		public var reflector:Reflector;
 
-		/*============================================================================*/
-		/* Private Properties                                                         */
-		/*============================================================================*/
-
 		private var _mappingsByFCQN:Dictionary;
 
 		private var _mappingsByTypeFilter:Dictionary;
-
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
 
 		public function HookMap()
 		{
 			_mappingsByTypeFilter = new Dictionary();
 			_mappingsByFCQN = new Dictionary();
 		}
-
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
 
 		public function map(type:Class):GuardsAndHooksConfig
 		{
@@ -103,10 +86,6 @@ package org.robotlegs.v2.extensions.hooks
 
 			return interested;
 		}
-
-		/*============================================================================*/
-		/* Protected Functions                                                        */
-		/*============================================================================*/
 
 		protected function blockedByGuards(guards:Vector.<Class>):Boolean
 		{

@@ -11,24 +11,14 @@ package org.robotlegs.v2.extensions.hooks.support
 	public class TrackableHook2
 	{
 
-		/*============================================================================*/
-		/* Public Properties                                                          */
-		/*============================================================================*/
-
 		[Inject]
 		public var hookTracker:HookTracker;
-
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
 
 		public function hook():void
 		{
 			hookTracker.confirm("TrackableHook2");
 		}
 	}
-
 
 }
 

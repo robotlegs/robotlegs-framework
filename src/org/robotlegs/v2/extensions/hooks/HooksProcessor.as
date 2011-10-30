@@ -10,29 +10,17 @@ package org.robotlegs.v2.extensions.hooks
 	import flash.utils.Dictionary;
 	import flash.utils.describeType;
 	import ArgumentError;
+	import org.robotlegs.v2.core.utilities.classHasMethod;
 	import org.swiftsuspenders.Injector;
 
 	public class HooksProcessor
 	{
 
-		/*============================================================================*/
-		/* Protected Properties                                                       */
-		/*============================================================================*/
-
 		protected const _verifiedHookClasses:Dictionary = new Dictionary();
-
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
 
 		public function HooksProcessor()
 		{
 		}
-
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
 
 		public function runHooks(useInjector:Injector, hookClasses:Vector.<Class>):void
 		{
@@ -47,21 +35,17 @@ package org.robotlegs.v2.extensions.hooks
 			}
 		}
 
-		/*============================================================================*/
-		/* Protected Functions                                                        */
-		/*============================================================================*/
-
 		protected function verifyHookClasses(hookClasses:Vector.<Class>):void
 		{
 			for each (var hookClass:Class in hookClasses)
 			{
+				if (_verifiedHookClasses[hookClass] == undefined)
+				{
+					_verifiedHookClasses[hookClass] = (classHasMethod(hookClass, 'hook'));
+				}
 				if (!_verifiedHookClasses[hookClass])
 				{
-					_verifiedHookClasses[hookClass] = (describeType(hookClass).factory.method.(@name == "hook").length() == 1);
-					if (!_verifiedHookClasses[hookClass])
-					{
-						throw new ArgumentError("No hook function found on class " + hookClass);
-					}
+					throw new ArgumentError("No hook function found on class " + hookClass);
 				}
 			}
 		}

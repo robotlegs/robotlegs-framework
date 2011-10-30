@@ -19,27 +19,13 @@ package org.robotlegs.v2.bundles.shared.processors
 	public class ParentContextFinder implements IContextPreProcessor
 	{
 
-		/*============================================================================*/
-		/* Protected Static Properties                                                */
-		/*============================================================================*/
-
 		protected static const logger:ILogger = getLogger(ParentContextFinder);
-
-
-		/*============================================================================*/
-		/* Protected Properties                                                       */
-		/*============================================================================*/
 
 		protected var callback:Function;
 
 		protected var context:IContext;
 
 		protected var contextView:DisplayObjectContainer;
-
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
 
 		public function preProcess(context:IContext, callback:Function):void
 		{
@@ -80,10 +66,6 @@ package org.robotlegs.v2.bundles.shared.processors
 			logger.info('not yet on stage, waiting for ADDED_TO_STAGE...');
 			contextView.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
-
-		/*============================================================================*/
-		/* Protected Functions                                                        */
-		/*============================================================================*/
 
 		protected function findParentContext():IContext
 		{

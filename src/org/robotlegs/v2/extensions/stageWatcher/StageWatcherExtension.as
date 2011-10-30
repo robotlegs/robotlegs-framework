@@ -15,16 +15,7 @@ package org.robotlegs.v2.extensions.stageWatcher
 	public class StageWatcherExtension implements IContextExtension
 	{
 
-		/*============================================================================*/
-		/* Private Static Properties                                                  */
-		/*============================================================================*/
-
 		private static const stageWatcher:StageWatcher = new StageWatcher();
-
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
 
 		public function initialize(context:IContext):void
 		{

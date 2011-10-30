@@ -8,7 +8,7 @@ sprout 'as3'
 ############################################
 # Configure your Project Model
 project_model :model do |m|
-  m.project_name            = 'ViewManagerExperiments'
+  m.project_name            = 'Robotlegs2'
   m.language                = 'as3'
   m.background_color        = '#FFFFFF'
   m.width                   = 970
@@ -27,12 +27,11 @@ project_model :model do |m|
   m.compiler_gem_name     = 'sprout-flex4sdk-tool'
   m.compiler_gem_version  = '>= 4.0.0'
   # m.source_path           << "#{m.lib_dir}/somelib"
-  m.source_path           << "#{m.lib_dir}/mockolate"  
-  m.library_path          << 'lib/asx.swc'
-  m.library_path          << 'lib/hamcrest-as3-only-1.1.3.swc'
-  m.library_path          << 'lib/FLoxy.swc'
+  m.library_path          << 'lib/hamcrest-as3-flex-1.1.3.swc'
+  m.library_path          << 'lib/robotlegs-framework-v1.5.2.swc'
   m.library_path          << 'lib/SwiftSuspenders-v2.0.0b1.swc'
   m.library_path          << 'lib/as3commons-logging-2.7.swc'
+  m.library_path          << 'lib/mockolate-0.12.1-flex.swc'
   # m.libraries             << :corelib 
   m.support_dir           = 'support'    
 end
@@ -41,16 +40,12 @@ desc 'Compile and debug the application'
 debug :debug
 
 desc 'Compile run the test harness'
-unit :test 
-
-desc 'Run the flexunit test harness'
-unit :flexunit do |t|
+unit :test do |t|
   t.input = 'test/RobotlegsTest.mxml'
   t.debug = true
-  t.library_path  << 'lib/flexunit-4.1.0-8-as3_4.1.0.16076.swc'
+  t.library_path  << 'lib/flexunit-4.1.0-8-flex_4.1.0.16076.swc'
   t.library_path  << 'lib/flexunit-cilistener-4.1.0-8-4.1.0.16076.swc'
   t.library_path  << 'lib/fluint-extensions-4.1.0-8-4.1.0.16076.swc'
-  
 end
 
 desc 'Compile the optimized deployment'
@@ -66,4 +61,4 @@ desc 'Compile and run the test harness for CI'
 ci :cruise
 
 # set up the default rake task
-task :default => :debug
+task :default => :test

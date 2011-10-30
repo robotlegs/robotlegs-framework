@@ -23,19 +23,11 @@ package org.robotlegs.v2.view.impl
 	public class StageWatcher_BlockingTests
 	{
 
-		/*============================================================================*/
-		/* Protected Properties                                                       */
-		/*============================================================================*/
-
 		protected var container:DisplayObjectContainer;
 
 		protected var group:UIComponent;
 
 		protected var watcher:IViewWatcher;
-
-		/*============================================================================*/
-		/* Test Setup and Teardown                                                    */
-		/*============================================================================*/
 
 		[Before(ui)]
 		public function setUp():void
@@ -54,10 +46,6 @@ package org.robotlegs.v2.view.impl
 			watcher = null;
 			UIImpersonator.removeAllChildren();
 		}
-
-		/*============================================================================*/
-		/* Tests                                                                      */
-		/*============================================================================*/
 
 		[Test]
 		public function bitmasking_should_work_as_expected():void
@@ -111,11 +99,6 @@ package org.robotlegs.v2.view.impl
 			assertThat(secondHandlerAddedCalled, isTrue());
 		}
 
-
-		/*============================================================================*/
-		/* Private Functions                                                          */
-		/*============================================================================*/
-
 		private function add_handlers_and_add_and_remove_view_and_return_results(handlerConfigs:Array):Array
 		{
 			const view:Sprite = new Sprite();
@@ -155,19 +138,11 @@ package org.robotlegs.v2.view.impl
 class HandlerConfig
 {
 
-	/*============================================================================*/
-	/* Public Properties                                                          */
-	/*============================================================================*/
-
 	public var blocking:Boolean;
 
 	public var interests:uint;
 
 	public var interestsToHandle:uint;
-
-	/*============================================================================*/
-	/* Constructor                                                                */
-	/*============================================================================*/
 
 	public function HandlerConfig(interests:uint, interestsToHandle:uint, blocking:Boolean)
 	{
@@ -179,10 +154,6 @@ class HandlerConfig
 
 class HandlerResult
 {
-
-	/*============================================================================*/
-	/* Public Properties                                                          */
-	/*============================================================================*/
 
 	public var addedCallCount:uint;
 

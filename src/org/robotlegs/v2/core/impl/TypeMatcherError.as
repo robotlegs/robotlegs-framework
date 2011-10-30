@@ -11,15 +11,7 @@ package org.robotlegs.v2.core.impl
 	public class TypeMatcherError extends Error
 	{
 
-		/*============================================================================*/
-		/* Public Static Properties                                                   */
-		/*============================================================================*/
-
 		public static const EMPTY_MATCHER:String = "An empty matcher will create a filter which matches nothing. You should specify at least one condition for the filter.";
-
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
 
 		public function TypeMatcherError(message:String)
 		{

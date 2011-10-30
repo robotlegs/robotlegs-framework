@@ -9,29 +9,17 @@ package org.robotlegs.v2.extensions.guards
 {
 	import flash.utils.Dictionary;
 	import flash.utils.describeType;
+	import org.robotlegs.v2.core.utilities.classHasMethod;
 	import org.swiftsuspenders.Injector;
 
 	public class GuardsProcessor
 	{
 
-		/*============================================================================*/
-		/* Protected Properties                                                       */
-		/*============================================================================*/
-
 		protected const _verifiedGuardClasses:Dictionary = new Dictionary();
-
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
 
 		public function GuardsProcessor()
 		{
 		}
-
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
 
 		public function processGuards(useInjector:Injector, guardClasses:Vector.<Class>):Boolean
 		{
@@ -49,21 +37,17 @@ package org.robotlegs.v2.extensions.guards
 			return true;
 		}
 
-		/*============================================================================*/
-		/* Protected Functions                                                        */
-		/*============================================================================*/
-
 		protected function verifyGuardClasses(guardClasses:Vector.<Class>):void
 		{
 			for each (var guardClass:Class in guardClasses)
 			{
+				if (_verifiedGuardClasses[guardClass] == undefined)
+				{
+					_verifiedGuardClasses[guardClass] = (classHasMethod(guardClass, 'approve'));
+				}
 				if (!_verifiedGuardClasses[guardClass])
 				{
-					_verifiedGuardClasses[guardClass] = (describeType(guardClass).factory.method.(@name == "approve").length() == 1);
-					if (!_verifiedGuardClasses[guardClass])
-					{
-						throw new ArgumentError("No approve function found on class " + guardClass);
-					}
+					throw new ArgumentError("No approve function found on class " + guardClass);
 				}
 			}
 		}

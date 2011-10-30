@@ -15,10 +15,6 @@ package org.robotlegs.v2.core.impl
 	public class TypeFilterUsageTest
 	{
 
-		/*============================================================================*/
-		/* Tests                                                                      */
-		/*============================================================================*/
-
 		[Test]
 		public function class_excluded_by_none():void
 		{

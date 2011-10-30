@@ -23,16 +23,7 @@ package org.robotlegs.v2.core.impl
 	public class Context implements IContext
 	{
 
-		/*============================================================================*/
-		/* Private Static Properties                                                  */
-		/*============================================================================*/
-
 		private static var counter:int;
-
-
-		/*============================================================================*/
-		/* Public Properties                                                          */
-		/*============================================================================*/
 
 		private var _applicationDomain:ApplicationDomain;
 
@@ -40,7 +31,6 @@ package org.robotlegs.v2.core.impl
 		{
 			return _applicationDomain;
 		}
-
 
 		private var _contextView:DisplayObjectContainer;
 
@@ -84,7 +74,6 @@ package org.robotlegs.v2.core.impl
 			return _initialized;
 		}
 
-
 		private var _injector:Injector;
 
 		public function get injector():Injector
@@ -98,7 +87,6 @@ package org.robotlegs.v2.core.impl
 			_injector = value;
 			logger.info('injector externally set to {0}', [value]);
 		}
-
 
 		private var _parent:IContext;
 
@@ -114,10 +102,6 @@ package org.robotlegs.v2.core.impl
 			logger.info('parent context externally set to {0}', [value]);
 		}
 
-		/*============================================================================*/
-		/* Private Properties                                                         */
-		/*============================================================================*/
-
 		private const _id:String = 'Context' + counter++;
 
 		private const configClasses:Vector.<Class> = new Vector.<Class>;
@@ -128,19 +112,10 @@ package org.robotlegs.v2.core.impl
 
 		private const logger:ILogger = getLogger(_id);
 
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
-
 		public function Context()
 		{
 			// This page intentionally left blank
 		}
-
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
 
 		public function destroy():void
 		{
@@ -213,10 +188,6 @@ package org.robotlegs.v2.core.impl
 			configClasses.push(configClass);
 			return this;
 		}
-
-		/*============================================================================*/
-		/* Private Functions                                                          */
-		/*============================================================================*/
 
 		private function addContextToContextViewRegistry():void
 		{

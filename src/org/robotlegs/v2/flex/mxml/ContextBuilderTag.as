@@ -17,10 +17,6 @@ package org.robotlegs.v2.flex.mxml
 	public class ContextBuilderTag extends ContextBuilder implements IMXMLObject
 	{
 
-		/*============================================================================*/
-		/* Public Properties                                                          */
-		/*============================================================================*/
-
 		protected var _configs:Vector.<IContextBuilderBundle> = new Vector.<IContextBuilderBundle>;
 
 		public function get configs():Vector.<IContextBuilderBundle>
@@ -40,16 +36,7 @@ package org.robotlegs.v2.flex.mxml
 			_contextView = value;
 		}
 
-		/*============================================================================*/
-		/* Protected Properties                                                       */
-		/*============================================================================*/
-
 		protected var _documentView:DisplayObjectContainer;
-
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
 
 		public function initialized(document:Object, id:String):void
 		{
@@ -57,10 +44,6 @@ package org.robotlegs.v2.flex.mxml
 			// if the contextView is bound it will only be set a frame later
 			setTimeout(configureBuilder, 1);
 		}
-
-		/*============================================================================*/
-		/* Protected Functions                                                        */
-		/*============================================================================*/
 
 		protected function configureBuilder():void
 		{

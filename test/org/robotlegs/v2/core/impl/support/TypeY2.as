@@ -11,10 +11,6 @@ package org.robotlegs.v2.core.impl.support
 	public class TypeY2 implements ITypeY, IType2
 	{
 
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
-
 		public function TypeY2()
 		{
 			super();

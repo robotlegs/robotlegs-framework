@@ -14,20 +14,12 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 	public class MediatorConfig extends GuardsAndHooksConfig implements IMediatorConfig
 	{
 
-		/*============================================================================*/
-		/* Public Properties                                                          */
-		/*============================================================================*/
-
 		protected var _mapping:IMediatorMapping;
 
 		public function get mapping():IMediatorMapping
 		{
 			return _mapping;
 		}
-
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
 
 		public function MediatorConfig(mapping:IMediatorMapping)
 		{

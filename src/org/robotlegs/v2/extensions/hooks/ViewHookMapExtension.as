@@ -17,10 +17,6 @@ package org.robotlegs.v2.extensions.hooks
 	public class ViewHookMapExtension implements IContextExtension
 	{
 
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
-
 		public function initialize(context:IContext):void
 		{
 			const viewHookMap:ViewHookMap = context.injector.getInstance(ViewHookMap);

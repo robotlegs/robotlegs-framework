@@ -15,29 +15,16 @@ package org.robotlegs.v2.view.impl
 	public class ViewManager implements IViewManager
 	{
 
-		/*============================================================================*/
-		/* Private Properties                                                         */
-		/*============================================================================*/
-
 		private const _containers:Vector.<DisplayObjectContainer> = new Vector.<DisplayObjectContainer>;
 
 		private const _handlers:Vector.<IViewHandler> = new Vector.<IViewHandler>;
 
 		private const _watchers:Vector.<IViewWatcher> = new Vector.<IViewWatcher>;
 
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
-
 		public function ViewManager()
 		{
 			// This page intentionally left blank
 		}
-
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
 
 		public function addContainer(container:DisplayObjectContainer):void
 		{

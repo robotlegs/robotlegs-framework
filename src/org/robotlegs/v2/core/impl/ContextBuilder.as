@@ -24,16 +24,7 @@ package org.robotlegs.v2.core.impl
 	public class ContextBuilder extends EventDispatcher implements IContextBuilder
 	{
 
-		/*============================================================================*/
-		/* Protected Static Properties                                                */
-		/*============================================================================*/
-
 		protected static var counter:int;
-
-
-		/*============================================================================*/
-		/* Protected Properties                                                       */
-		/*============================================================================*/
 
 		protected const _id:String = 'ContextBuilder' + counter++;
 
@@ -45,19 +36,10 @@ package org.robotlegs.v2.core.impl
 
 		protected const preProcessorClasses:Vector.<Class> = new Vector.<Class>;
 
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
-
 		public function ContextBuilder()
 		{
 			// -- hello, welcome to Robotlegs -- //
 		}
-
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
 
 		public function build():IContext
 		{
@@ -130,10 +112,6 @@ package org.robotlegs.v2.core.impl
 				preProcessorClasses.push(preProcessorClass);
 			return this;
 		}
-
-		/*============================================================================*/
-		/* Protected Functions                                                        */
-		/*============================================================================*/
 
 		protected function finishBuild():void
 		{

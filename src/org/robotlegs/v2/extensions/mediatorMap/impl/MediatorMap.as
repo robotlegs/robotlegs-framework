@@ -8,6 +8,7 @@
 package org.robotlegs.v2.extensions.mediatorMap.impl
 {
 	import flash.display.DisplayObject;
+	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.utils.Dictionary;
 	import flash.utils.getQualifiedClassName;
@@ -15,23 +16,21 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 	import org.robotlegs.v2.core.impl.itemPassesFilter;
 	import org.robotlegs.v2.extensions.guards.GuardsProcessor;
 	import org.robotlegs.v2.extensions.hooks.HooksProcessor;
+	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorConfig;
+	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMap;
+	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMapping;
+	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorTrigger;
+	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorUnmapping;
 	import org.robotlegs.v2.view.api.IViewClassInfo;
 	import org.robotlegs.v2.view.api.IViewHandler;
 	import org.robotlegs.v2.view.api.IViewWatcher;
 	import org.robotlegs.v2.view.api.ViewHandlerEvent;
 	import org.swiftsuspenders.Injector;
 	import org.swiftsuspenders.Reflector;
-	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMap;
-	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMapping;
-	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorConfig;
 
 	[Event(name="configurationChange", type="org.robotlegs.v2.view.api.ViewHandlerEvent")]
 	public class MediatorMap extends EventDispatcher implements IViewHandler, IMediatorMap
 	{
-
-		/*============================================================================*/
-		/* Public Properties                                                          */
-		/*============================================================================*/
 
 		[Inject]
 		public var guardsProcessor:GuardsProcessor;
@@ -50,33 +49,22 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		[Inject]
 		public var reflector:Reflector;
 
-		/*============================================================================*/
-		/* Protected Properties                                                       */
-		/*============================================================================*/
+		protected const _configsByTypeFilter:Dictionary = new Dictionary();
 
-		protected var _configsByTypeFilter:Dictionary;
+		protected const _filtersByDescription:Dictionary = new Dictionary();
 
-		protected var _filtersByDescription:Dictionary;
+		protected const _liveMediatorsByView:Dictionary = new Dictionary();
 
-		// vars not consts as some sort of shudown would likely dump the lot
+		protected const _mappingsByMediatorType:Dictionary = new Dictionary();
 
-		protected var _mappingsByMediatorType:Dictionary;
+		protected var _trigger:IMediatorTrigger;
 
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
+		protected const _viewsInRemovalPhase:Dictionary = new Dictionary();
 
 		public function MediatorMap()
 		{
-			_mappingsByMediatorType = new Dictionary();
-			_filtersByDescription = new Dictionary();
-			_configsByTypeFilter = new Dictionary();
+
 		}
-
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
 
 		public function getMapping(mediatorType:Class):IMediatorMapping
 		{
@@ -85,6 +73,8 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 
 		public function handleViewAdded(view:DisplayObject, info:IViewClassInfo):uint
 		{
+			// TODO = check _liveMediatorsByView for this view, exit / error if it would overwrite
+
 			var interest:uint = 0;
 
 			for (var filter:* in _configsByTypeFilter)
@@ -92,11 +82,19 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 				if (itemPassesFilter(view, filter as ITypeFilter))
 				{
 					interest = 1;
+
+					if (_liveMediatorsByView[view] && _viewsInRemovalPhase[view])
+					{
+						view.removeEventListener(Event.ENTER_FRAME, onEnterFrameActionShutdown);
+						delete _viewsInRemovalPhase[view];
+						return interest;
+					}
+
 					mapViewForFilterBinding(filter, view);
 
 					for each (var config:IMediatorConfig in _configsByTypeFilter[filter])
 					{
-						processMapping(config);
+						processMapping(config, view);
 					}
 
 					unmapViewForFilterBinding(filter, view);
@@ -108,12 +106,23 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 
 		public function handleViewRemoved(view:DisplayObject):void
 		{
-
+			if (_liveMediatorsByView[view])
+			{
+				if (!view.parent)
+				{
+					actionRemoval(view);
+				}
+				else
+				{
+					_viewsInRemovalPhase[view] = view;
+					view.addEventListener(Event.ENTER_FRAME, onEnterFrameActionShutdown);
+				}
+			}
 		}
 
 		public function hasMapping(mediatorType:Class):Boolean
 		{
-			return false;
+			return (_mappingsByMediatorType[mediatorType] && _mappingsByMediatorType[mediatorType].hasConfigs);
 		}
 
 		public function invalidate():void
@@ -129,22 +138,41 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			return _mappingsByMediatorType[mediatorType];
 		}
 
-		public function unmap(mediatorType:Class):void
+		public function unmap(mediatorType:Class):IMediatorUnmapping
 		{
-			if (_mappingsByMediatorType[mediatorType])
-				_mappingsByMediatorType[mediatorType].unmapAll();
-
-			delete _mappingsByMediatorType[mediatorType];
+			return _mappingsByMediatorType[mediatorType];
 		}
-		
-		/*public function installTrigger(trigger:IMediatorTrigger):void
-		{
-			
-		}*/
 
-		/*============================================================================*/
-		/* Protected Functions                                                        */
-		/*============================================================================*/
+		public function loadTrigger(trigger:IMediatorTrigger):void
+		{
+			_trigger = trigger;
+		}
+
+		public function mediate(view:DisplayObject):Boolean
+		{
+			return (handleViewAdded(view, null) > 0);
+		}
+
+		public function unmediate(view:DisplayObject):void
+		{
+			handleViewRemoved(view);
+		}
+
+		protected function onEnterFrameActionShutdown(e:Event):void
+		{
+			e.target.removeEventListener(Event.ENTER_FRAME, onEnterFrameActionShutdown);
+			const view:DisplayObject = e.target as DisplayObject;
+			actionRemoval(view);
+			delete _viewsInRemovalPhase[view];
+		}
+
+		protected function actionRemoval(view:DisplayObject):void
+		{
+			for each (var mediator:* in _liveMediatorsByView[view])
+			{
+				_trigger.shutdown(mediator, view, cleanUpMediator);
+			}
+		}
 
 		protected function blockedByGuards(guards:Vector.<Class>):Boolean
 		{
@@ -156,13 +184,15 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		{
 			const mediator:* = injector.getInstance(config.mapping.mediator);
 			injector.map(config.mapping.mediator).toValue(mediator);
+			return mediator;
 		}
 
 		protected function createMediatorMapping(mediatorType:Class):IMediatorMapping
 		{
 			return new MediatorMapping(_configsByTypeFilter,
 				_filtersByDescription,
-				mediatorType);
+				mediatorType,
+				cleanUpMapping);
 		}
 
 		protected function mapViewForFilterBinding(filter:ITypeFilter, view:DisplayObject):void
@@ -180,13 +210,20 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			}
 		}
 
-		protected function processMapping(config:IMediatorConfig):void
+		protected function processMapping(config:IMediatorConfig, view:DisplayObject):void
 		{
 			if (!blockedByGuards(config.guards))
 			{
-				createMediatorForBinding(config);
+				const mediator:* = createMediatorForBinding(config);
 				hooksProcessor.runHooks(injector, config.hooks);
-				injector.unmap(config.mapping.mediator)
+				injector.unmap(config.mapping.mediator);
+
+				if (!_liveMediatorsByView[view])
+					_liveMediatorsByView[view] = [];
+
+				_liveMediatorsByView[view].push(mediator);
+
+				_trigger.startup(mediator, view);
 			}
 		}
 
@@ -203,6 +240,26 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			{
 				injector.unmap(requiredType);
 			}
+		}
+
+		protected function cleanUpMediator(mediator:*, view:DisplayObject):void
+		{
+			if (!_viewsInRemovalPhase[view])
+			{
+				return;
+			}
+
+			const index:int = _liveMediatorsByView[view].indexOf(mediator);
+			if (index > -1)
+			{
+				_liveMediatorsByView[view].splice(index, 1);
+			}
+		}
+
+		protected function cleanUpMapping(mediatorType:Class):void
+		{
+			trace("MediatorMap::cleanUpMapping()", mediatorType);
+			delete _mappingsByMediatorType[mediatorType];
 		}
 	}
 }

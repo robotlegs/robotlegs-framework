@@ -18,23 +18,9 @@ package org.robotlegs.v2.extensions.autoDestroy
 	public class AutoDestroyExtension implements IContextExtension
 	{
 
-		/*============================================================================*/
-		/* Private Static Properties                                                  */
-		/*============================================================================*/
-
 		private static const logger:ILogger = getLogger(AutoDestroyExtension);
 
-
-		/*============================================================================*/
-		/* Private Properties                                                         */
-		/*============================================================================*/
-
 		private const contextsByContextView:Dictionary = new Dictionary();
-
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
 
 		public function initialize(context:IContext):void
 		{
@@ -65,10 +51,6 @@ package org.robotlegs.v2.extensions.autoDestroy
 				delete contextsByContextView[contextView];
 			}
 		}
-
-		/*============================================================================*/
-		/* Private Functions                                                          */
-		/*============================================================================*/
 
 		private function onRemovedFromStage(event:Event):void
 		{

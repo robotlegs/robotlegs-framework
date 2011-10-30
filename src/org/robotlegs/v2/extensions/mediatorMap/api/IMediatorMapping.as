@@ -17,7 +17,5 @@ package org.robotlegs.v2.extensions.mediatorMap.api
 		function toMatcher(typeMatcher:ITypeMatcher):IGuardsAndHooksConfig;
 
 		function toView(viewType:Class):IGuardsAndHooksConfig;
-
-		function unmap(typeMatcher:ITypeMatcher):void;
 	}
 }

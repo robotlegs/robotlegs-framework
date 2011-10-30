@@ -11,10 +11,6 @@ package org.robotlegs.v2.core.impl.support
 	public class TypeB12 extends TypeB implements IType1, IType2
 	{
 
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
-
 		public function TypeB12()
 		{
 			super();

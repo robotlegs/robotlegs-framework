@@ -22,10 +22,6 @@ package org.robotlegs.v2.core.impl
 	public class TypeMatcherTest
 	{
 
-		/*============================================================================*/
-		/* Private Properties                                                         */
-		/*============================================================================*/
-
 		private const ALL_OF:Vector.<Class> = new <Class>[uint, Number];
 
 		private const ALL_OF_2:Vector.<Class> = new <Class>[Object, IDataInput];
@@ -42,10 +38,6 @@ package org.robotlegs.v2.core.impl
 
 		private var instance:TypeMatcher;
 
-		/*============================================================================*/
-		/* Test Setup and Teardown                                                    */
-		/*============================================================================*/
-
 		[Before]
 		public function setUp():void
 		{
@@ -57,10 +49,6 @@ package org.robotlegs.v2.core.impl
 		{
 			instance = null;
 		}
-
-		/*============================================================================*/
-		/* Tests                                                                      */
-		/*============================================================================*/
 
 		[Test]
 		public function can_be_instantiated():void
@@ -227,11 +215,6 @@ package org.robotlegs.v2.core.impl
 			var emptyInstance:TypeMatcher = new TypeMatcher();
 			emptyInstance.createTypeFilter();
 		}
-
-
-		/*============================================================================*/
-		/* Protected Functions                                                        */
-		/*============================================================================*/
 
 		protected function assertMatchesTypeFilter(expected:ITypeFilter, actual:ITypeFilter):void
 		{

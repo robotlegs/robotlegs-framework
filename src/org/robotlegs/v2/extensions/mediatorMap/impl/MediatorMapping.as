@@ -13,59 +13,47 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 	import org.robotlegs.v2.core.impl.TypeMatcher;
 	import org.robotlegs.v2.extensions.hooks.GuardsAndHooksConfig;
 	import org.robotlegs.v2.extensions.hooks.IGuardsAndHooksConfig;
-	import org.swiftsuspenders.Reflector;
-	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMapping;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorConfig;
+	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMapping;
+	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorUnmapping;
+	import org.swiftsuspenders.Reflector;
 
-	public class MediatorMapping extends GuardsAndHooksConfig implements IMediatorMapping
+	public class MediatorMapping extends GuardsAndHooksConfig implements IMediatorMapping, IMediatorUnmapping
 	{
 
-		/*============================================================================*/
-		/* Public Properties                                                          */
-		/*============================================================================*/
-
 		protected var _mediator:Class;
-
-		/*
-		 function toMatcher(matcher):MediatorConfig
-		 function toView(type):MediatorConfig // this is just sugar
-		 function get mediator():Class
-		 function hasConfigFor(matcher):Boolean
-		 function getConfigFor(matcher):MediatorConfig
-		 function unmap(matcher):MediatorConfig
-		*/
 
 		public function get mediator():Class
 		{
 			return _mediator;
 		}
 
-		/*============================================================================*/
-		/* Protected Properties                                                       */
-		/*============================================================================*/
+		protected var _callbackForDeletion:Function;
 
 		protected var _configsByTypeFilter:Dictionary;
 
 		protected var _filtersByDescriptor:Dictionary;
 
-		protected var _localConfigsByFilter:Dictionary;
+		protected const _localConfigsByFilter:Dictionary = new Dictionary();
 
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
+		internal function get hasConfigs():Boolean
+		{
+			for each (var item:Object in _localConfigsByFilter)
+			{
+				return true;
+			}
 
-		public function MediatorMapping(configsByTypeFilter:Dictionary, filterDescriptorMap:Dictionary, mediator:Class)
+			return false;
+		}
+
+		public function MediatorMapping(configsByTypeFilter:Dictionary, filterDescriptorMap:Dictionary,
+			mediator:Class, callbackForDeletion:Function)
 		{
 			_configsByTypeFilter = configsByTypeFilter;
 			_filtersByDescriptor = filterDescriptorMap;
 			_mediator = mediator;
-			_localConfigsByFilter = new Dictionary();
+			_callbackForDeletion = callbackForDeletion;
 		}
-
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
 
 		public function toMatcher(typeMatcher:ITypeMatcher):IGuardsAndHooksConfig
 		{
@@ -93,16 +81,25 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			return toMatcher(new TypeMatcher().allOf(viewType));
 		}
 
-		public function unmap(typeMatcher:ITypeMatcher):void
+		public function fromMatcher(typeMatcher:ITypeMatcher):void
 		{
 			const typeFilter:ITypeFilter = typeMatcher.createTypeFilter();
 
 			unmapTypeFilter(typeFilter);
 		}
 
-		/*============================================================================*/
-		/* Protected Functions                                                        */
-		/*============================================================================*/
+		public function fromView(viewType:Class):void
+		{
+			fromMatcher(new TypeMatcher().allOf(viewType));
+		}
+
+		public function fromAll():void
+		{
+			for (var filter:* in _localConfigsByFilter)
+			{
+				unmapTypeFilter(filter as ITypeFilter);
+			}
+		}
 
 		protected function unmapTypeFilter(typeFilter:ITypeFilter):void
 		{
@@ -128,17 +125,10 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 
 				delete _localConfigsByFilter[typeFilter];
 			}
-		}
 
-		/*============================================================================*/
-		/* Internal Functions                                                         */
-		/*============================================================================*/
-
-		internal function unmapAll():void
-		{
-			for (var filter:* in _localConfigsByFilter)
+			if (!hasConfigs)
 			{
-				unmapTypeFilter(filter as ITypeFilter);
+				_callbackForDeletion(_mediator);
 			}
 		}
 	}
