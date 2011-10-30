@@ -77,19 +77,22 @@
     </pluginRepositories>
 
 
-    <properties>
+	<properties>
+		<maven.version>3.0.3</maven.version>
 		
-        <flexmojos.version>4.0-RC2</flexmojos.version>
-
-        <maven.version>3.0.3</maven.version>
-
-        <flex.sdk.version>4.5.1.21328</flex.sdk.version>
+		<flexmojos.version>4.0-RC2</flexmojos.version>
 		
-        <flexunit.version>4.0-rc-1</flexunit.version>
-
-        <swiftsuspenders.version>2.0.0-b1</swiftsuspenders.version>
+		<!-- The Flex SDK to compile against -->
+		<flex.sdk.version>4.5.1.21328</flex.sdk.version>
+		<swiftsuspenders.version>2.0.0-b1</swiftsuspenders.version>
 		<as3commons.version>2.7</as3commons.version>
-    </properties>
+		<robotlegs1.version>1.5.2</robotlegs1.version>
+		
+		<!-- Unit testing frameworks and dependencies -->
+		<flexunit.version>4.1.0-8</flexunit.version>
+		<hamcrest.version>1.1.3</hamcrest.version>
+		<mockolate.version>0.12.1</mockolate.version>
+	</properties>
 
     <prerequisites>
         <maven>${maven.version}</maven>
@@ -123,14 +126,14 @@
 				<version>${flexmojos.version}</version>
 				<extensions>true</extensions>
 				<configuration>
-					<skipTests>true</skipTests>
-
 					<keepAs3Metadatas>
 						<keepAs3Metadata>Inject</keepAs3Metadata>
 						<keepAs3Metadata>PostConstruct</keepAs3Metadata>
 					</keepAs3Metadatas>
 					<includeFiles>
 						<include>${project.build.sourceDirectory}/metadata.xml</include>
+						<include>${project.build.sourceDirectory}/manifest.xml</include>
+						<include>${project.build.sourceDirectory}/design.xml</include>
 					</includeFiles>
 					<dumpConfigAttach>true</dumpConfigAttach>
 					<verboseStacktraces>true</verboseStacktraces>
@@ -138,8 +141,7 @@
 						<warn-no-constructor>false</warn-no-constructor>
 					</compilerWarnings>
 					<includeTestFiles>
-						<includeTestFile>*Test.as</includeTestFile>
-						<includeTestFile>*Tests.as</includeTestFile>
+						<includeTestFile>suites/EntireTestSuite.as</includeTestFile>
 					</includeTestFiles>
 					<includeSources>
 					  <includeSource>${project.build.sourceDirectory}</includeSource>
@@ -210,15 +212,44 @@
 			<scope>merged</scope>
 		</dependency>
 		
+		<!-- Robotlegs 1 dependency -->
+		<dependency>
+			<groupId>org.robotlegs</groupId>
+			<artifactId>robotlegs-framework</artifactId>
+			<version>${robotlegs1.version}</version>
+			<type>swc</type>
+			<scope>merged</scope>
+		</dependency>
 		
+		<!-- ======================== -->
 		<!-- TEST Dependencies -->
 		<dependency>
 			<groupId>com.adobe.flexunit</groupId>
 			<artifactId>flexunit</artifactId>
 			<version>${flexunit.version}</version>
 			<type>swc</type>
+			<classifier>flex</classifier>
 			<scope>test</scope>
 		</dependency>
-
+		
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-as3</artifactId>
+			<version>${hamcrest.version}</version>
+			<type>swc</type>
+			<classifier>flex</classifier>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>mockolate</groupId>
+			<artifactId>mockolate</artifactId>
+			<version>${mockolate.version}</version>
+			<type>swc</type>
+			<classifier>flex</classifier>
+			<scope>test</scope>
+		</dependency>
+		<!-- ======================== -->
+		
     </dependencies>
 </project>
