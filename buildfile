@@ -8,7 +8,6 @@ layout[:source, :test, :as3] = "test"
 define "robotlegs-framework", :layout => layout do
 
   props = Hash.from_java_properties( File.binread( _("build.properties") ) )
-  puts props
 
   project.group = "org.robotlegs"  
   project.version = props["robotlegs.ver.num"]  
