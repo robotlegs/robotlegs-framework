@@ -13,10 +13,6 @@ package org.robotlegs.v2.view.impl
 	public class ViewClassInfo implements IViewClassInfo
 	{
 
-		/*============================================================================*/
-		/* Public Properties                                                          */
-		/*============================================================================*/
-
 		public function get applicationDomain():ApplicationDomain
 		{
 			return _domain;
@@ -42,15 +38,7 @@ package org.robotlegs.v2.view.impl
 			return null;
 		}
 
-		/*============================================================================*/
-		/* Private Properties                                                         */
-		/*============================================================================*/
-
 		private var _domain:ApplicationDomain;
-
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
 
 		public function ViewClassInfo(type:Class, fqcn:String, domain:ApplicationDomain)
 		{
@@ -58,11 +46,6 @@ package org.robotlegs.v2.view.impl
 			_fqcn = fqcn;
 			_domain = domain;
 		}
-
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
 
 		public function isType(type:Class):Boolean
 		{

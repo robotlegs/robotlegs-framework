@@ -12,25 +12,12 @@ package org.robotlegs.v2.view.api
 	public class ViewHandlerEvent extends Event
 	{
 
-		/*============================================================================*/
-		/* Public Static Properties                                                   */
-		/*============================================================================*/
-
 		public static const CONFIGURATION_CHANGE:String = 'configurationChange';
-
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
 
 		public function ViewHandlerEvent(type:String)
 		{
 			super(type);
 		}
-
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
 
 		override public function clone():Event
 		{

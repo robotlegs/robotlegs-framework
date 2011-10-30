@@ -21,19 +21,11 @@ package org.robotlegs.v2.view.impl
 	public class StageWatcher_OptimisationTests
 	{
 
-		/*============================================================================*/
-		/* Protected Properties                                                       */
-		/*============================================================================*/
-
 		protected var container:DisplayObjectContainer;
 
 		protected var group:UIComponent;
 
 		protected var watcher:IViewWatcher;
-
-		/*============================================================================*/
-		/* Test Setup and Teardown                                                    */
-		/*============================================================================*/
 
 		[Before(ui)]
 		public function setUp():void
@@ -52,10 +44,6 @@ package org.robotlegs.v2.view.impl
 			watcher = null;
 			UIImpersonator.removeAllChildren();
 		}
-
-		/*============================================================================*/
-		/* Tests                                                                      */
-		/*============================================================================*/
 
 		[Test]
 		public function a_handler_that_doesnt_handle_a_view_SHOULD_be_reconsulted_after_invalidation():void

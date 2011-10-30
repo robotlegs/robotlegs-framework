@@ -18,10 +18,6 @@ package org.robotlegs.v2.extensions.hooks
 	public class ViewHookMap extends EventDispatcher implements IViewHandler
 	{
 
-		/*============================================================================*/
-		/* Public Properties                                                          */
-		/*============================================================================*/
-
 		[Inject]
 		public var hookMap:HookMap;
 
@@ -30,18 +26,9 @@ package org.robotlegs.v2.extensions.hooks
 			return 1;
 		}
 
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
-
 		public function ViewHookMap()
 		{
 		}
-
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
 
 		public function handleViewAdded(view:DisplayObject, info:IViewClassInfo):uint
 		{

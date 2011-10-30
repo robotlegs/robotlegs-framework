@@ -11,26 +11,27 @@ package org.robotlegs.v2.extensions.mediatorMap.impl.support
 
 	public class TrackingMediator extends Mediator
 	{
-		protected var _mediatorWatcher:MediatorWatcher;
-	
+
 		public static const ON_REGISTER:String = "TrackingMediator onRegister";
+
 		public static const ON_REMOVE:String = "TrackingMediator onRemove";
-	
+
+		protected var _mediatorWatcher:MediatorWatcher;
+
 		public function TrackingMediator(mediatorWatcher:MediatorWatcher)
 		{
 			_mediatorWatcher = mediatorWatcher;
 		}
-		
+
 		override protected function onRegister():void
 		{
 			_mediatorWatcher.notify(ON_REGISTER);
 		}
-		
+
 		override protected function onRemove():void
 		{
 			_mediatorWatcher.notify(ON_REMOVE);
 		}
-		
 	}
 
 }

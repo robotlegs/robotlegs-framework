@@ -8,13 +8,9 @@
 package org.robotlegs.v2.utilities.mediatorTriggers
 {
 	import org.robotlegs.core.IMediator;
-	
+
 	public class RL1MediatorTrigger extends RLMediatorTriggerBase
 	{
-		
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
 
 		public function RL1MediatorTrigger(strict:Boolean)
 		{

@@ -18,10 +18,6 @@ package org.robotlegs.v2.view.impl.support
 	public class ViewHandlerSupport extends EventDispatcher implements IViewHandler
 	{
 
-		/*============================================================================*/
-		/* Public Static Properties                                                   */
-		/*============================================================================*/
-
 		public static const INTEREST_0:uint = 0x000000; // illegal
 
 		public static const INTEREST_1:uint = 0x000001;
@@ -40,21 +36,12 @@ package org.robotlegs.v2.view.impl.support
 
 		public static const INTEREST_8:uint = 0x004000;
 
-
-		/*============================================================================*/
-		/* Public Properties                                                          */
-		/*============================================================================*/
-
 		protected var _interests:uint;
 
 		public function get interests():uint
 		{
 			return _interests;
 		}
-
-		/*============================================================================*/
-		/* Protected Properties                                                       */
-		/*============================================================================*/
 
 		protected var _addedHandler:Function;
 
@@ -65,10 +52,6 @@ package org.robotlegs.v2.view.impl.support
 		protected var _removedHandler:Function;
 
 		protected var _watcher:IViewWatcher;
-
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
 
 		public function ViewHandlerSupport(
 			interests:uint = 1,
@@ -83,11 +66,6 @@ package org.robotlegs.v2.view.impl.support
 			_addedHandler = addedHandler;
 			_removedHandler = removedHandler;
 		}
-
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
 
 		public function handleViewAdded(view:DisplayObject, info:IViewClassInfo):uint
 		{

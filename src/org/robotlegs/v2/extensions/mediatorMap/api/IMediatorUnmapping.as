@@ -17,7 +17,7 @@ package org.robotlegs.v2.extensions.mediatorMap.api
 		function fromMatcher(typeMatcher:ITypeMatcher):void;
 
 		function fromView(viewType:Class):void;
-		
+
 		function fromAll():void;
 	}
 }

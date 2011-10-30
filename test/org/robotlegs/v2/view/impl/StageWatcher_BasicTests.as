@@ -23,19 +23,11 @@ package org.robotlegs.v2.view.impl
 	public class StageWatcher_BasicTests
 	{
 
-		/*============================================================================*/
-		/* Protected Properties                                                       */
-		/*============================================================================*/
-
 		protected var container:DisplayObjectContainer;
 
 		protected var group:UIComponent;
 
 		protected var watcher:IViewWatcher;
-
-		/*============================================================================*/
-		/* Test Setup and Teardown                                                    */
-		/*============================================================================*/
 
 		[Before(ui)]
 		public function setUp():void
@@ -54,10 +46,6 @@ package org.robotlegs.v2.view.impl
 			watcher = null;
 			UIImpersonator.removeAllChildren();
 		}
-
-		/*============================================================================*/
-		/* Tests                                                                      */
-		/*============================================================================*/
 
 		[Test]
 		public function addHandler_should_run_when_view_lands_in_container():void
@@ -107,11 +95,6 @@ package org.robotlegs.v2.view.impl
 			assertThat(removedHandlerRan, isTrue());
 		}
 
-
-		/*============================================================================*/
-		/* Private Functions                                                          */
-		/*============================================================================*/
-
 		private function add_and_remove_view_and_return_result(interests:uint,
 			interestsToActuallyHandle:uint = 0,
 			blocking:Boolean = false):HandlerResult
@@ -142,16 +125,10 @@ package org.robotlegs.v2.view.impl
 class HandlerResult
 {
 
-	/*============================================================================*/
-	/* Public Properties                                                          */
-	/*============================================================================*/
-
 	public var addedCallCount:uint;
 
 	public var removedCallCount:uint;
 
 	public var response:uint;
 }
-
-
 

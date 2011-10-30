@@ -22,16 +22,7 @@ package org.robotlegs.v2.view.impl
 	public class StageWatcher implements IViewWatcher
 	{
 
-		/*============================================================================*/
-		/* Private Static Properties                                                  */
-		/*============================================================================*/
-
 		private static const logger:ILogger = getLogger(StageWatcher);
-
-
-		/*============================================================================*/
-		/* Private Properties                                                         */
-		/*============================================================================*/
 
 		private const _bindingsByContainer:Dictionary = new Dictionary(false);
 
@@ -39,19 +30,10 @@ package org.robotlegs.v2.view.impl
 
 		private const _removeHandlersByTarget:Dictionary = new Dictionary(true);
 
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
-
 		public function StageWatcher()
 		{
 			// This page intentionally left blank
 		}
-
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
 
 		public function addHandler(handler:IViewHandler, container:DisplayObjectContainer):void
 		{
@@ -85,10 +67,6 @@ package org.robotlegs.v2.view.impl
 
 			invalidate();
 		}
-
-		/*============================================================================*/
-		/* Private Functions                                                          */
-		/*============================================================================*/
 
 		private function addRootBinding(binding:IContainerBinding):void
 		{

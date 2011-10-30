@@ -14,19 +14,19 @@ package org.robotlegs.v2.extensions.mediatorMap.api
 		 * Should be invoked by the <code>IMediatorMap</code> during <code>IMediator</code> registration
 		 */
 		function preRegister():void;
-		
+
 		/**
 		 * Invoked when the <code>IMediator</code> has been removed by the <code>IMediatorMap</code>
 		 */
 		function preRemove():void;
-		
+
 		/**
 		 * The <code>IMediator</code>'s view component
 		 *
 		 * @return The view component
 		 */
 		function getViewComponent():Object;
-		
+
 		/**
 		 * The <code>IMediator</code>'s view component
 		 *

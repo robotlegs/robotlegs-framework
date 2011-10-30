@@ -20,10 +20,6 @@ package org.robotlegs.v2.bundles.classic
 	public class ClassicRobotlegsBundle implements IContextBuilderBundle
 	{
 
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
-
 		public function install(builder:IContextBuilder):void
 		{
 			// Use a simple trace logger

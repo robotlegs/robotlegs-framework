@@ -16,10 +16,6 @@ package suites
 	public class TypeMatchingTestSuite
 	{
 
-		/*============================================================================*/
-		/* Public Properties                                                          */
-		/*============================================================================*/
-
 		public var typeFilterTest:TypeFilterTest;
 
 		public var typeFilterUsageTest:TypeFilterUsageTest;

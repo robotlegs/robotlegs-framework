@@ -34,16 +34,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 	public class MediatorMapV1Test
 	{
 
-		/*============================================================================*/
-		/* Public Static Properties                                                   */
-		/*============================================================================*/
-
 		public static const TEST_EVENT:String = 'testEvent';
-
-
-		/*============================================================================*/
-		/* Protected Properties                                                       */
-		/*============================================================================*/
 
 		protected var commandExecuted:Boolean;
 
@@ -59,11 +50,6 @@ package org.robotlegs.v2.extensions.mediatorMap
 
 		protected var reflector:IReflector;
 
-
-		/*============================================================================*/
-		/* Public Static Functions                                                    */
-		/*============================================================================*/
-
 		[AfterClass]
 		public static function runAfterEntireSuite():void
 		{
@@ -73,10 +59,6 @@ package org.robotlegs.v2.extensions.mediatorMap
 		public static function runBeforeEntireSuite():void
 		{
 		}
-
-		/*============================================================================*/
-		/* Test Setup and Teardown                                                    */
-		/*============================================================================*/
 
 		[After(ui)]
 		public function runAfterEachTest():void
@@ -102,11 +84,6 @@ package org.robotlegs.v2.extensions.mediatorMap
 			UIImpersonator.addChild(contextView);
 		}
 
-		/*============================================================================*/
-		/* Tests                                                                      */
-		/*============================================================================*/
-
-
 		[Test]
 		public function contextViewMediatorIsCreatedWhenMapped():void
 		{
@@ -120,7 +97,6 @@ package org.robotlegs.v2.extensions.mediatorMap
 			mediatorMap.mapView(TestContextView, TestContextViewMediator, null, false);
 			Assert.assertFalse('Mediator should NOT have been created for contextView', mediatorMap.hasMediatorForView(contextView));
 		}
-
 
 		[Test]
 		public function mediatorIsMappedAddedAndRemovedByView():void
@@ -196,11 +172,6 @@ package org.robotlegs.v2.extensions.mediatorMap
 			Assert.assertFalse('Mediator should NOT have been created for View Component', hasMediator);
 			Assert.assertFalse('View mapping should NOT exist for View Component', hasMapping);
 		}
-
-
-		/*============================================================================*/
-		/* Private Functions                                                          */
-		/*============================================================================*/
 
 		private function delayFurther(event:Event, data:Object):void
 		{

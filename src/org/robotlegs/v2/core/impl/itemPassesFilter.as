@@ -9,11 +9,6 @@ package org.robotlegs.v2.core.impl
 {
 	import org.robotlegs.v2.core.api.ITypeFilter;
 
-
-	/*============================================================================*/
-	/* Public Functions                                                           */
-	/*============================================================================*/
-
 	public function itemPassesFilter(item:*, typeFilter:ITypeFilter):Boolean
 	{
 		return typeFilter.matches(item);

@@ -10,30 +10,17 @@ package org.robotlegs.v2.extensions.hooks
 	import flash.utils.Dictionary;
 	import flash.utils.describeType;
 	import ArgumentError;
-	import org.swiftsuspenders.Injector;
 	import org.robotlegs.v2.extensions.utils.classHasMethod;
+	import org.swiftsuspenders.Injector;
 
 	public class HooksProcessor
 	{
 
-		/*============================================================================*/
-		/* Protected Properties                                                       */
-		/*============================================================================*/
-
 		protected const _verifiedHookClasses:Dictionary = new Dictionary();
-
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
 
 		public function HooksProcessor()
 		{
 		}
-
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
 
 		public function runHooks(useInjector:Injector, hookClasses:Vector.<Class>):void
 		{
@@ -47,10 +34,6 @@ package org.robotlegs.v2.extensions.hooks
 				hook.hook();
 			}
 		}
-
-		/*============================================================================*/
-		/* Protected Functions                                                        */
-		/*============================================================================*/
 
 		protected function verifyHookClasses(hookClasses:Vector.<Class>):void
 		{

@@ -9,10 +9,6 @@ package org.robotlegs.v2.extensions.utils
 {
 	import flash.utils.describeType;
 
-	/*============================================================================*/
-	/* Public Functions                                                           */
-	/*============================================================================*/
-
 	public function classHasMethod(type:Class, methodName:String):Boolean
 	{
 		return (describeType(type).factory.method.(@name == methodName).length() == 1);

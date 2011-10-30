@@ -8,27 +8,15 @@
 package org.robotlegs.v2.extensions.mediatorMap.impl
 {
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediator;
-	
+
 	public class Mediator implements IMediator
 	{
-		
-		/*============================================================================*/
-		/* Protected Properties                                                       */
-		/*============================================================================*/
-		
-		protected var _viewComponent:Object;
 
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
+		protected var _viewComponent:Object;
 
 		public function Mediator()
 		{
 		}
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
 
 		public function preRegister():void
 		{
@@ -50,18 +38,14 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			_viewComponent = viewComponent;
 		}
 
-		/*============================================================================*/
-		/* Protected Functions                                                        */
-		/*============================================================================*/
-		
 		protected function onRegister():void
 		{
-			
+
 		}
-		
+
 		protected function onRemove():void
 		{
-			
+
 		}
 	}
 }

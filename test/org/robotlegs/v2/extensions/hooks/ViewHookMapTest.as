@@ -25,19 +25,11 @@ package org.robotlegs.v2.extensions.hooks
 	public class ViewHookMapTest
 	{
 
-		/*============================================================================*/
-		/* Private Properties                                                         */
-		/*============================================================================*/
-
 		private var hookTracker:HookTracker;
 
 		private var injector:Injector;
 
 		private var instance:ViewHookMap;
-
-		/*============================================================================*/
-		/* Test Setup and Teardown                                                    */
-		/*============================================================================*/
 
 		[Before]
 		public function setUp():void
@@ -59,10 +51,6 @@ package org.robotlegs.v2.extensions.hooks
 		{
 			instance = null;
 		}
-
-		/*============================================================================*/
-		/* Tests                                                                      */
-		/*============================================================================*/
 
 		[Test]
 		public function can_be_instantiated():void
@@ -137,8 +125,5 @@ package org.robotlegs.v2.extensions.hooks
 		{
 			assertTrue("Failing test", true);
 		}
-	/*============================================================================*/
-	/* Protected Functions                                                        */
-	/*============================================================================*/
 	}
 }

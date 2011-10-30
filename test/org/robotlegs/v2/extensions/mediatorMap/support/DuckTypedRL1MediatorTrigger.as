@@ -7,22 +7,22 @@
 
 package org.robotlegs.v2.extensions.mediatorMap.support
 {
-	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorTrigger;
 	import flash.display.DisplayObject;
+	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorTrigger;
 
-	public class DuckTypedRL1MediatorTrigger implements IMediatorTrigger 
+	public class DuckTypedRL1MediatorTrigger implements IMediatorTrigger
 	{
-	
+
 		protected var _strict:Boolean;
-	
+
 		public function DuckTypedRL1MediatorTrigger(strict:Boolean)
 		{
 			_strict = strict;
 		}
-	
+
 		// TODO - in strict mode, always run the code
 		// - in relaxed mode, defend against missing api
-	
+
 		public function startup(mediator:*, view:DisplayObject):void
 		{
 			mediator.preRegister();
@@ -33,6 +33,5 @@ package org.robotlegs.v2.extensions.mediatorMap.support
 			mediator.preRemove();
 			callback(mediator, view);
 		}
-
 	}
 }

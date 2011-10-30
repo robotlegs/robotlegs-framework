@@ -7,47 +7,35 @@
 
 package org.robotlegs.v2.utilities.mediatorTriggers
 {
-	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorTrigger;
 	import flash.display.DisplayObject;
 	import flash.utils.describeType;
+	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorTrigger;
 	import org.robotlegs.v2.extensions.utils.objectHasMethod;
-	
+
 	public class DuckTypedMediatorTrigger implements IMediatorTrigger
 	{
-		
-		/*============================================================================*/
-		/* Protected Properties                                                       */
-		/*============================================================================*/
-		
-		protected var _strict:Boolean;
 
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
+		protected var _strict:Boolean;
 
 		public function DuckTypedMediatorTrigger(strict:Boolean)
 		{
 			_strict = strict;
 		}
 
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
-
 		public function startup(mediator:*, view:DisplayObject):void
 		{
-			if(_strict)
+			if (_strict)
 			{
 				mediator.setViewComponent(view);
 				mediator.preRegister();
 				return;
 			}
 
-			if(objectHasMethod(mediator, 'setViewComponent'))
+			if (objectHasMethod(mediator, 'setViewComponent'))
 			{
 				mediator.setViewComponent(view);
 			}
-			if(objectHasMethod(mediator, 'preRegister'))
+			if (objectHasMethod(mediator, 'preRegister'))
 			{
 				mediator.preRegister();
 			}
@@ -55,20 +43,15 @@ package org.robotlegs.v2.utilities.mediatorTriggers
 
 		public function shutdown(mediator:*, view:DisplayObject, callback:Function):void
 		{
-			if(_strict)
+			if (_strict)
 			{
 				mediator.preRemove();
 			}
-			else if(objectHasMethod(mediator, 'preRemove'))
+			else if (objectHasMethod(mediator, 'preRemove'))
 			{
 				mediator.preRemove();
 			}
 			callback(mediator, view);
 		}
-
-		/*============================================================================*/
-		/* Protected Functions                                                        */
-		/*============================================================================*/
-		
 	}
 }

@@ -14,10 +14,6 @@ package org.robotlegs.v2.view.impl
 	public class ContainerBinding implements IContainerBinding
 	{
 
-		/*============================================================================*/
-		/* Public Properties                                                          */
-		/*============================================================================*/
-
 		protected var _container:DisplayObjectContainer;
 
 		public function get container():DisplayObjectContainer
@@ -44,19 +40,10 @@ package org.robotlegs.v2.view.impl
 			_parent = value;
 		}
 
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
-
 		public function ContainerBinding(container:DisplayObjectContainer)
 		{
 			_container = container;
 		}
-
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
 
 		public function addHandler(handler:IViewHandler):void
 		{

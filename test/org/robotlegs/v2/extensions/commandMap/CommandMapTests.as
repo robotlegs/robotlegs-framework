@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
 package org.robotlegs.v2.extensions.commandMap
@@ -19,17 +19,9 @@ package org.robotlegs.v2.extensions.commandMap
 	public class CommandMapTests
 	{
 
-		/*============================================================================*/
-		/* Private Properties                                                         */
-		/*============================================================================*/
-
-		private var injector:Injector;
-
 		private var commandMap:ICommandMap;
 
-		/*============================================================================*/
-		/* Test Setup and Teardown                                                    */
-		/*============================================================================*/
+		private var injector:Injector;
 
 		[Before]
 		public function setUp():void
@@ -45,16 +37,13 @@ package org.robotlegs.v2.extensions.commandMap
 			commandMap = null;
 		}
 
-		/*============================================================================*/
-		/* Tests                                                                      */
-		/*============================================================================*/
-
 		[Test]
 		public function mapCreatesMapping():void
 		{
-			const mapping : ICommandMapping = commandMap.map(TestCommand);
+			const mapping:ICommandMapping = commandMap.map(TestCommand);
 			assertThat(mapping, notNullValue());
 		}
+
 		[Test]
 		public function mapStoresMapping():void
 		{
@@ -62,6 +51,7 @@ package org.robotlegs.v2.extensions.commandMap
 			commandMap.map(TestCommand);
 			assertThat(commandMap.hasMapping(TestCommand), isTrue());
 		}
+
 		[Test]
 		public function unmapRemovesMapping():void
 		{
@@ -77,6 +67,6 @@ class TestCommand
 {
 	public function execute():void
 	{
-		
+
 	}
 }

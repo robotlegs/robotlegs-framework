@@ -9,50 +9,33 @@ package org.robotlegs.v2.extensions.guards
 {
 	import flash.utils.Dictionary;
 	import flash.utils.describeType;
-	import org.swiftsuspenders.Injector;
 	import org.robotlegs.v2.extensions.utils.classHasMethod;
-	
+	import org.swiftsuspenders.Injector;
+
 	public class GuardsProcessor
 	{
 
-		/*============================================================================*/
-		/* Protected Properties                                                       */
-		/*============================================================================*/
-
 		protected const _verifiedGuardClasses:Dictionary = new Dictionary();
-
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
 
 		public function GuardsProcessor()
 		{
 		}
 
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
-
 		public function processGuards(useInjector:Injector, guardClasses:Vector.<Class>):Boolean
 		{
 			verifyGuardClasses(guardClasses);
-			
+
 			var guard:*;
-			
+
 			for each (var guardClass:Class in guardClasses)
 			{
 				guard = useInjector.getInstance(guardClass);
 				if (!guard.approve())
 					return false;
 			}
-			
+
 			return true;
 		}
-
-		/*============================================================================*/
-		/* Protected Functions                                                        */
-		/*============================================================================*/
 
 		protected function verifyGuardClasses(guardClasses:Vector.<Class>):void
 		{

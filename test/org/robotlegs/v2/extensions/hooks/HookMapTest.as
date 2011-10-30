@@ -25,19 +25,11 @@ package org.robotlegs.v2.extensions.hooks
 	public class HookMapTest
 	{
 
-		/*============================================================================*/
-		/* Private Properties                                                         */
-		/*============================================================================*/
-
 		private var hookTracker:HookTracker;
 
 		private var injector:Injector;
 
 		private var instance:HookMap;
-
-		/*============================================================================*/
-		/* Test Setup and Teardown                                                    */
-		/*============================================================================*/
 
 		[Before]
 		public function setUp():void
@@ -58,10 +50,6 @@ package org.robotlegs.v2.extensions.hooks
 			instance = null;
 			injector = null;
 		}
-
-		/*============================================================================*/
-		/* Tests                                                                      */
-		/*============================================================================*/
 
 		[Test]
 		public function a_grumpy_guard_prevents_the_hook_from_running():void
@@ -154,18 +142,11 @@ package org.robotlegs.v2.extensions.hooks
 		}
 		// unmapping_the_hook_prevents_it_from_running
 		// overmapping behaviour
-	/*============================================================================*/
-	/* Protected Functions                                                        */
-	/*============================================================================*/
 	}
 }
 
 class ExampleTarget
 {
-
-	/*============================================================================*/
-	/* Constructor                                                                */
-	/*============================================================================*/
 
 	public function ExampleTarget()
 	{

@@ -14,10 +14,6 @@ package suites
 	public class ContextBuilderTestSuite
 	{
 
-		/*============================================================================*/
-		/* Public Properties                                                          */
-		/*============================================================================*/
-
 		public var contextBuilderTests:ContextBuilderTests;
 	}
 }

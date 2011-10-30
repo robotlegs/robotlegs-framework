@@ -9,21 +9,13 @@ package org.robotlegs.v2.utilities.mediatorTriggers
 {
 	import flash.display.DisplayObject;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorTrigger;
-	
+
 	public class RLMediatorTriggerBase implements IMediatorTrigger
 	{
-		
-		/*============================================================================*/
-		/* Protected Properties                                                       */
-		/*============================================================================*/
-		
-		protected var _strict:Boolean;
-		
+
 		protected var _mediatorType:Class;
-		
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
+
+		protected var _strict:Boolean;
 
 		public function RLMediatorTriggerBase(strict:Boolean, mediatorType:Class)
 		{
@@ -31,13 +23,9 @@ package org.robotlegs.v2.utilities.mediatorTriggers
 			_mediatorType = mediatorType;
 		}
 
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
-
 		public function startup(mediator:*, view:DisplayObject):void
 		{
-			if(_strict || (mediator is _mediatorType))
+			if (_strict || (mediator is _mediatorType))
 			{
 				mediator.setViewComponent(view);
 				mediator.preRegister();
@@ -46,11 +34,11 @@ package org.robotlegs.v2.utilities.mediatorTriggers
 
 		public function shutdown(mediator:*, view:DisplayObject, callback:Function):void
 		{
-			if(_strict || (mediator is _mediatorType))
+			if (_strict || (mediator is _mediatorType))
 			{
 				mediator.preRemove();
 			}
-			
+
 			callback(mediator, view);
 		}
 	}

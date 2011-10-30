@@ -12,16 +12,7 @@ package org.robotlegs.v2.core.api
 	public class ContextBuilderEvent extends Event
 	{
 
-		/*============================================================================*/
-		/* Public Static Properties                                                   */
-		/*============================================================================*/
-
 		public static const CONTEXT_BUILD_COMPLETE:String = 'contextBuildComplete';
-
-
-		/*============================================================================*/
-		/* Public Properties                                                          */
-		/*============================================================================*/
 
 		private var _builder:IContextBuilder;
 
@@ -37,21 +28,12 @@ package org.robotlegs.v2.core.api
 			return _context;
 		}
 
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
-
 		public function ContextBuilderEvent(type:String, builder:IContextBuilder, context:IContext)
 		{
 			super(type);
 			_builder = builder;
 			_context = context;
 		}
-
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
 
 		override public function clone():Event
 		{

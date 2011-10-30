@@ -11,10 +11,6 @@ package org.robotlegs.v2.core.impl.support
 	public class TypeB extends Object
 	{
 
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
-
 		public function TypeB()
 		{
 			super();

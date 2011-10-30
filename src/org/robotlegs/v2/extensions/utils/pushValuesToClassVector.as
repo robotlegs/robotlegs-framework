@@ -8,10 +8,6 @@
 package org.robotlegs.v2.extensions.utils
 {
 
-	/*============================================================================*/
-	/* Public Functions                                                           */
-	/*============================================================================*/
-
 	public function pushValuesToClassVector(values:Array, vector:Vector.<Class>):void
 	{
 		if (values.length == 1

@@ -16,19 +16,11 @@ package org.robotlegs.v2.extensions.hooks
 	public class HooksProcessorTest
 	{
 
-		/*============================================================================*/
-		/* Private Properties                                                         */
-		/*============================================================================*/
-
 		private var hookTracker:HookTracker;
 
 		private var injector:Injector;
 
 		private var instance:HooksProcessor;
-
-		/*============================================================================*/
-		/* Test Setup and Teardown                                                    */
-		/*============================================================================*/
 
 		[Before]
 		public function setUp():void
@@ -45,10 +37,6 @@ package org.robotlegs.v2.extensions.hooks
 			instance = null;
 			injector = null;
 		}
-
-		/*============================================================================*/
-		/* Tests                                                                      */
-		/*============================================================================*/
 
 		[Test(expects='ArgumentError')]
 		public function a_non_hook_causes_us_to_throw_an_argument_error():void
@@ -78,8 +66,5 @@ package org.robotlegs.v2.extensions.hooks
 		{
 			assertTrue("Failing test", true);
 		}
-	/*============================================================================*/
-	/* Protected Functions                                                        */
-	/*============================================================================*/
 	}
 }

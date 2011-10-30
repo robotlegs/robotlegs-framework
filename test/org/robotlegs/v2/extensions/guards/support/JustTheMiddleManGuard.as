@@ -11,17 +11,8 @@ package org.robotlegs.v2.extensions.guards.support
 	public class JustTheMiddleManGuard
 	{
 
-		/*============================================================================*/
-		/* Public Properties                                                          */
-		/*============================================================================*/
-
 		[Inject]
 		public var bossDecision:BossGuard;
-
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
 
 		public function approve():Boolean
 		{

@@ -15,10 +15,6 @@ package org.robotlegs.v2.core.impl
 	public class TypeMatcher implements ITypeMatcher
 	{
 
-		/*============================================================================*/
-		/* Protected Properties                                                       */
-		/*============================================================================*/
-
 		protected const _allOfTypes:Vector.<Class> = new Vector.<Class>;
 
 		protected const _anyOfTypes:Vector.<Class> = new Vector.<Class>;
@@ -27,18 +23,9 @@ package org.robotlegs.v2.core.impl
 
 		protected var _typeFilter:ITypeFilter;
 
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
-
 		public function TypeMatcher()
 		{
 		}
-
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
 
 		public function allOf(... types):ITypeMatcher
 		{
@@ -68,10 +55,6 @@ package org.robotlegs.v2.core.impl
 			pushAddedTypesTo(types, _noneOfTypes);
 			return this;
 		}
-
-		/*============================================================================*/
-		/* Protected Functions                                                        */
-		/*============================================================================*/
 
 		protected function buildTypeFilter():ITypeFilter
 		{

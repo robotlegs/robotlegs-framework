@@ -15,25 +15,12 @@ package org.robotlegs.v2.bundles.shared.utilities
 	public class LoggingEventDispatcher extends EventDispatcher
 	{
 
-		/*============================================================================*/
-		/* Protected Static Properties                                                */
-		/*============================================================================*/
-
 		protected static const logger:ILogger = getLogger(LoggingEventDispatcher);
-
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
 
 		public function LoggingEventDispatcher()
 		{
 			super();
 		}
-
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
 
 		override public function addEventListener(type:String, listener:Function, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = false):void
 		{

@@ -15,10 +15,6 @@ package org.robotlegs.v2.extensions.viewManager
 	public class ViewManagerExtension implements IContextExtension
 	{
 
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
-
 		public function initialize(context:IContext):void
 		{
 			context.injector.getInstance(IViewManager);

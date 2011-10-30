@@ -15,17 +15,9 @@ package org.robotlegs.v2.extensions.guards
 	public class GuardsProcessorTest
 	{
 
-		/*============================================================================*/
-		/* Private Properties                                                         */
-		/*============================================================================*/
-
 		private var injector:Injector;
 
 		private var instance:GuardsProcessor;
-
-		/*============================================================================*/
-		/* Test Setup and Teardown                                                    */
-		/*============================================================================*/
 
 		[Before]
 		public function setUp():void
@@ -39,10 +31,6 @@ package org.robotlegs.v2.extensions.guards
 		{
 			instance = null;
 		}
-
-		/*============================================================================*/
-		/* Tests                                                                      */
-		/*============================================================================*/
 
 		[Test]
 		public function can_be_instantiated():void
@@ -99,18 +87,11 @@ package org.robotlegs.v2.extensions.guards
 			var requiredGuards:Vector.<Class> = new <Class>[HappyGuard, NotAGuard];
 			instance.processGuards(injector, requiredGuards);
 		}
-	/*============================================================================*/
-	/* Protected Functions                                                        */
-	/*============================================================================*/
 	}
 }
 
 class NotAGuard
 {
-
-	/*============================================================================*/
-	/* Public Functions                                                           */
-	/*============================================================================*/
 
 	public function iDontApprove():Boolean
 	{

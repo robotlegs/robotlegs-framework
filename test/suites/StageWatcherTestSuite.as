@@ -16,10 +16,6 @@ package suites
 	public class StageWatcherTestSuite
 	{
 
-		/*============================================================================*/
-		/* Public Properties                                                          */
-		/*============================================================================*/
-
 		public var stageWatcherBasicTests:StageWatcher_BasicTests;
 
 		public var stageWatcherBlockingTests:StageWatcher_BlockingTests;

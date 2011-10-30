@@ -21,17 +21,9 @@ package org.robotlegs.v2.core.impl
 	public class ContextTests
 	{
 
-		/*============================================================================*/
-		/* Private Properties                                                         */
-		/*============================================================================*/
-
 		private var context:IContext;
 
 		private var contextView:DisplayObjectContainer;
-
-		/*============================================================================*/
-		/* Test Setup and Teardown                                                    */
-		/*============================================================================*/
 
 		[Before(ui)]
 		public function setUp():void
@@ -47,10 +39,6 @@ package org.robotlegs.v2.core.impl
 			context = null;
 			UIImpersonator.removeAllChildren();
 		}
-
-		/*============================================================================*/
-		/* Tests                                                                      */
-		/*============================================================================*/
 
 		[Test]
 		public function a_default_dispatcher_should_be_used_if_none_provided():void
