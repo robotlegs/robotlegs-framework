@@ -9,7 +9,7 @@ package org.robotlegs.v2.extensions.guards
 {
 	import flash.utils.Dictionary;
 	import flash.utils.describeType;
-	import org.robotlegs.v2.extensions.utils.classHasMethod;
+	import org.robotlegs.v2.core.utilities.classHasMethod;
 	import org.swiftsuspenders.Injector;
 
 	public class GuardsProcessor

@@ -7,7 +7,7 @@
 
 package org.robotlegs.v2.extensions.hooks
 {
-	import org.robotlegs.v2.extensions.utils.pushValuesToClassVector;
+	import org.robotlegs.v2.core.utilities.pushValuesToClassVector;
 
 	public class GuardsAndHooksConfig implements IGuardsAndHooksConfig
 	{

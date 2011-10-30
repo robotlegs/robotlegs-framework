@@ -10,7 +10,7 @@ package org.robotlegs.v2.extensions.hooks
 	import flash.utils.Dictionary;
 	import flash.utils.describeType;
 	import ArgumentError;
-	import org.robotlegs.v2.extensions.utils.classHasMethod;
+	import org.robotlegs.v2.core.utilities.classHasMethod;
 	import org.swiftsuspenders.Injector;
 
 	public class HooksProcessor

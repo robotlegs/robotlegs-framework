@@ -10,7 +10,7 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 	import flash.display.DisplayObject;
 	import flash.utils.describeType;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorTrigger;
-	import org.robotlegs.v2.extensions.utils.objectHasMethod;
+	import org.robotlegs.v2.core.utilities.objectHasMethod;
 
 	public class DuckTypedMediatorTrigger implements IMediatorTrigger
 	{

@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.utils
+package org.robotlegs.v2.core.utilities
 {
 
 	public function pushValuesToClassVector(values:Array, vector:Vector.<Class>):void

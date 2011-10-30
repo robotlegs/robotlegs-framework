@@ -5,12 +5,10 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.utils
+package org.robotlegs.v2.core.utilities
 {
-	import flash.utils.describeType;
-
-	public function classHasMethod(type:Class, methodName:String):Boolean
+	public function objectHasMethod(object:*, methodName:String):Boolean
 	{
-		return (describeType(type).factory.method.(@name == methodName).length() == 1);
+		return object && object.hasOwnProperty(methodName) && object[methodName] is Function;
 	}
 }

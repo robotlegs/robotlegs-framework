@@ -10,7 +10,7 @@ package org.robotlegs.v2.core.impl
 	import flash.errors.IllegalOperationError;
 	import org.robotlegs.v2.core.api.ITypeFilter;
 	import org.robotlegs.v2.core.api.ITypeMatcher;
-	import org.robotlegs.v2.extensions.utils.pushValuesToClassVector;
+	import org.robotlegs.v2.core.utilities.pushValuesToClassVector;
 
 	public class TypeMatcher implements ITypeMatcher
 	{
