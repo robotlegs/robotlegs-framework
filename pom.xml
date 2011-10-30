@@ -9,13 +9,14 @@
         swiftsuspenders project isn't available in a maven repository at this time.
     -->
 
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>org.robotlegs</groupId>
-    <artifactId>robotlegs-framework</artifactId>
-    <version>2.0.0-b1</version>
+   <modelVersion>4.0.0</modelVersion>
+	<groupId>org.robotlegs</groupId>
+	<artifactId>robotlegs-framework</artifactId>
+	<version>2.0.0-b1</version>
 	<packaging>swc</packaging>
-    <name>Robotlegs Framework</name>
-    <description>Robotlegs is a pure AS3 micro-architecture (framework) with a light footprint and limited scope. Simply put, Robotlegs is there to help you wire your objects together. It provides the glue that your application needs to easily function in a decoupled way. Through the use of automated metadata based dependency injection Robotlegs removes boilerplate code in an application. By promoting loose coupling and avoiding the use of Singletons and statics in the framework Robotlegs can help you write code that is highly testable.</description>
+	<name>Robotlegs Framework</name>
+	<description>
+		Robotlegs is a pure AS3 micro-architecture (framework) with a light footprint and limited scope. Simply put, Robotlegs is there to help you wire 		your objects together. It provides the glue that your application needs to easily function in a decoupled way. Through the use of automated metadata based dependency injection Robotlegs removes boilerplate code in an application. By promoting loose coupling and avoiding the use of Singletons and statics in the framework Robotlegs can help you write code that is highly testable.</description>
     <url>http://www.robotlegs.org</url>
     <licenses>
         <license>
@@ -110,38 +111,46 @@
         </snapshotRepository>
 	</distributionManagement>
 
-    <build>
-        <sourceDirectory>src</sourceDirectory>
 
-        <testSourceDirectory>test</testSourceDirectory>
-        <plugins>
-            <plugin>
-                <groupId>org.sonatype.flexmojos</groupId>
-                <artifactId>flexmojos-maven-plugin</artifactId>
-                <version>${flexmojos.version}</version>
-                    <extensions>true</extensions>
-                    <configuration>
-                        <skipTests>true</skipTests>
-                        
-						<keepAs3Metadatas>
-                            <keepAs3Metadata>Inject</keepAs3Metadata>
-                            <keepAs3Metadata>PostConstruct</keepAs3Metadata>
-                        </keepAs3Metadatas>
-                        
-						<includeTestFiles>
-                            <includeTestFile>*Test.as</includeTestFile>
-	                        <includeTestFile>*Tests.as</includeTestFile>
-                        </includeTestFiles>
-                    </configuration>
-                    <dependencies>
-                        <dependency>
-                            <groupId>com.adobe.flex</groupId>
-                            <artifactId>compiler</artifactId>
-                            <version>${flex.sdk.version}</version>
-                            <type>pom</type>
-                        </dependency>
-                    </dependencies>
-            </plugin>
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+
+		<testSourceDirectory>test</testSourceDirectory>
+		<plugins>
+			<plugin>
+				<groupId>org.sonatype.flexmojos</groupId>
+				<artifactId>flexmojos-maven-plugin</artifactId>
+				<version>${flexmojos.version}</version>
+				<extensions>true</extensions>
+				<configuration>
+					<skipTests>true</skipTests>
+
+					<keepAs3Metadatas>
+						<keepAs3Metadata>Inject</keepAs3Metadata>
+						<keepAs3Metadata>PostConstruct</keepAs3Metadata>
+					</keepAs3Metadatas>
+					<includeFiles>
+						<include>${project.build.sourceDirectory}/metadata.xml</include>
+					</includeFiles>
+					<dumpConfigAttach>true</dumpConfigAttach>
+					<verboseStacktraces>true</verboseStacktraces>
+					<includeTestFiles>
+						<includeTestFile>*Test.as</includeTestFile>
+						<includeTestFile>*Tests.as</includeTestFile>
+					</includeTestFiles>
+					<includeSources>
+					  <includeSource>${project.build.sourceDirectory}</includeSource>
+					</includeSources>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>com.adobe.flex</groupId>
+						<artifactId>compiler</artifactId>
+						<version>${flex.sdk.version}</version>
+						<type>pom</type>
+					</dependency>
+				</dependencies>
+			</plugin>
 <!--
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -162,8 +171,8 @@
                 </executions>
             </plugin>
 -->
-        </plugins>
-    </build>
+	</plugins>
+	</build>
 
     <dependencies>
 	<!--
@@ -186,6 +195,7 @@
 			<artifactId>swiftsuspenders</artifactId>
 			<version>${swiftsuspenders.version}</version>
 			<type>swc</type>
+			<scope>merged</scope>
 		</dependency>
 		
 		<!-- AS3 Commons Logging -->
@@ -194,17 +204,18 @@
 	    	<artifactId>as3commons-logging</artifactId>
 	    	<type>swc</type>
 	    	<version>${as3commons.version}</version>
+			<scope>merged</scope>
 		</dependency>
 		
 		
-        <!-- TEST Dependencies -->
-        <dependency>
-            <groupId>com.adobe.flexunit</groupId>
-            <artifactId>flexunit</artifactId>
-            <version>${flexunit.version}</version>
-            <type>swc</type>
-            <scope>test</scope>
-        </dependency>
+		<!-- TEST Dependencies -->
+		<dependency>
+			<groupId>com.adobe.flexunit</groupId>
+			<artifactId>flexunit</artifactId>
+			<version>${flexunit.version}</version>
+			<type>swc</type>
+			<scope>test</scope>
+		</dependency>
 
     </dependencies>
 </project>
