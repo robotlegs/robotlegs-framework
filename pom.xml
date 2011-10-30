@@ -134,6 +134,9 @@
 					</includeFiles>
 					<dumpConfigAttach>true</dumpConfigAttach>
 					<verboseStacktraces>true</verboseStacktraces>
+					<compilerWarnings>
+						<warn-no-constructor>false</warn-no-constructor>
+					</compilerWarnings>
 					<includeTestFiles>
 						<includeTestFile>*Test.as</includeTestFile>
 						<includeTestFile>*Tests.as</includeTestFile>
