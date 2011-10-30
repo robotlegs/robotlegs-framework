@@ -1,6 +1,8 @@
 require "fileutils"
 require "buildr/as3" #needs buildr-as3 v0.2.23.pre
 
+repositories.remote << "http://artifacts.devboy.org" << "http://repo2.maven.org/maven2"
+
 layout = Layout::Default.new
 layout[:source, :main, :as3] = "src"
 layout[:source, :test, :as3] = "test"
