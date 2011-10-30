@@ -5,30 +5,31 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package suites
+package org.robotlegs.v2.extensions.mediatorMap.impl.support
 {
-	[RunWith("org.flexunit.runners.Suite")]
-	[Suite]
-	public class EntireTestSuite
+	
+	public class MediatorWatcher
 	{
 
 		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		public var contextBuilderTestSuite:ContextBuilderTestSuite;
+		protected const _notifications:Vector.<String> = new Vector.<String>();
 
-		public var hooksTestSuite:GuardsAndHooksTestSuite;
-		
-		public var mediatorMapTestSuite:MediatorMapTestSuite;
-		
-		public var commandMapTestSuite:CommandMapTestSuite;
+		public function get notifications():Vector.<String>
+		{
+			return _notifications;
+		}
 
-		public var contextTestSuite:ContextTestSuite;
 
-		public var stageWatcherTestSuite:StageWatcherTestSuite;
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
 
-		public var typeMatchingTestSuite:TypeMatchingTestSuite;
-		
-	}
+		public function notify(message:String):void
+		{
+			_notifications.push(message);
+		}
+	}	
 }

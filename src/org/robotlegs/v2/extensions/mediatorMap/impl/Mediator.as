@@ -7,13 +7,16 @@
 
 package org.robotlegs.v2.extensions.mediatorMap.impl
 {
-	public class Mediator
+	import org.robotlegs.v2.extensions.mediatorMap.api.IMediator;
+	
+	public class Mediator implements IMediator
 	{
 		
 		/*============================================================================*/
 		/* Protected Properties                                                       */
 		/*============================================================================*/
-
+		
+		protected var _viewComponent:Object;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -27,10 +30,38 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		public function preRegister():void
+		{
+			onRegister();
+		}
+
+		public function preRemove():void
+		{
+			onRemove();
+		}
+
+		public function getViewComponent():Object
+		{
+			return _viewComponent;
+		}
+
+		public function setViewComponent(viewComponent:Object):void
+		{
+			_viewComponent = viewComponent;
+		}
 
 		/*============================================================================*/
 		/* Protected Functions                                                        */
 		/*============================================================================*/
 		
+		protected function onRegister():void
+		{
+			
+		}
+		
+		protected function onRemove():void
+		{
+			
+		}
 	}
 }

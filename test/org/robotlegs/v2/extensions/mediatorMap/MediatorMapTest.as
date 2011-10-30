@@ -23,6 +23,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import org.swiftsuspenders.Reflector;
 	import org.robotlegs.v2.extensions.mediatorMap.impl.MediatorMap;
 	import org.robotlegs.v2.extensions.mediatorMap.support.DuckTypedRL1MediatorTrigger;
+	import org.robotlegs.v2.extensions.mediatorMap.impl.support.MediatorWatcher;
 	import org.robotlegs.v2.view.api.ViewHandlerEvent;
 	import org.flexunit.async.Async;
 	import flash.events.Event;
@@ -355,6 +356,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 import flash.display.DisplayObject;
 import flash.display.Sprite;
 import flash.geom.Rectangle;
+import org.robotlegs.v2.extensions.mediatorMap.impl.support.MediatorWatcher;
 
 class ExampleMediator
 {
@@ -443,31 +445,6 @@ class OnlyIfViewHasChildrenGuard
 	public function approve():Boolean
 	{
 		return (view.numChildren > 0);
-	}
-}
-
-class MediatorWatcher
-{
-
-	/*============================================================================*/
-	/* Public Properties                                                          */
-	/*============================================================================*/
-
-	protected const _notifications:Vector.<String> = new Vector.<String>();
-
-	public function get notifications():Vector.<String>
-	{
-		return _notifications;
-	}
-
-
-	/*============================================================================*/
-	/* Public Functions                                                           */
-	/*============================================================================*/
-
-	public function notify(message:String):void
-	{
-		_notifications.push(message);
 	}
 }
 

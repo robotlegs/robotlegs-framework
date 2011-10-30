@@ -16,23 +16,9 @@ package org.robotlegs.v2.extensions.mediatorMap.api
 		function preRegister():void;
 		
 		/**
-		 * Should be invoked by the <code>IMediator</code> itself when it is ready to be interacted with
-		 *
-		 * <p>Override and place your initialization code here</p>
-		 */
-		function onRegister():void;
-		
-		/**
 		 * Invoked when the <code>IMediator</code> has been removed by the <code>IMediatorMap</code>
 		 */
 		function preRemove():void;
-		
-		/**
-		 * Should be invoked by the <code>IMediator</code> itself when it is ready to for cleanup
-		 *
-		 * <p>Override and place your cleanup code here</p>
-		 */
-		function onRemove():void;
 		
 		/**
 		 * The <code>IMediator</code>'s view component

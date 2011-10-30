@@ -12,6 +12,7 @@ package suites
 	import org.robotlegs.v2.utilities.mediatorTriggers.RL2MediatorTriggerTest;
 	import org.robotlegs.v2.utilities.mediatorTriggers.RL1MediatorTriggerTest;
 	import org.robotlegs.v2.extensions.mediatorMap.MediatorMapRemovalAndReparentingTests;
+	import org.robotlegs.v2.extensions.mediatorMap.impl.MediatorTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
@@ -31,6 +32,8 @@ package suites
 		public var rl1MediatorTriggerTest:RL1MediatorTriggerTest;
 		
 		public var mediatorReparentingTests:MediatorMapRemovalAndReparentingTests;
+				
+		public var mediatorTest:MediatorTest;
 
 		// Don't uncomment this - the test is only in the code base for
 		// reference while we match behaviour.

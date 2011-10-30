@@ -13,21 +13,15 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import mockolate.received;
 	import mockolate.runner.MockolateRule; 
 	import mockolate.runner.MockolateRunner; 
-	import org.flexunit.Assert;
 	import org.flexunit.asserts.*;
 	import org.hamcrest.assertThat;
 	import org.robotlegs.v2.extensions.guards.GuardsProcessor;
 	import org.robotlegs.v2.extensions.hooks.HooksProcessor;
-	import org.robotlegs.v2.extensions.mediatorMap.api.IMediator;
 	import org.robotlegs.v2.extensions.mediatorMap.impl.MediatorMap;
-	import org.robotlegs.v2.extensions.mediatorMap.support.DuckTypedRL1MediatorTrigger;
 	import org.robotlegs.v2.utilities.mediatorTriggers.RLMediatorTriggerBase;
 	import org.swiftsuspenders.DescribeTypeJSONReflector;
 	import org.swiftsuspenders.Injector;
 	import org.swiftsuspenders.Reflector;
-	import org.robotlegs.mvcs.Mediator;
-	import flash.events.IEventDispatcher;
-	import flash.events.EventDispatcher;
 	import org.robotlegs.v2.utilities.mediatorTriggers.support.RL2Mediator;
 
 	// required
