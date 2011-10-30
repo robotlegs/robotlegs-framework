@@ -155,7 +155,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 		{
 			instance.map(ExampleMediator).toView(Sprite);
 			instance.map(ExampleMediator).toView(MovieClip);
-			instance.unmap(ExampleMediator);
+			instance.unmap(ExampleMediator).fromAll();
 
 			var interest:uint = instance.handleViewAdded(new Sprite(), null);
 			assertEquals(0, interest);
@@ -165,17 +165,27 @@ package org.robotlegs.v2.extensions.mediatorMap
 		public function is_not_interested_if_mapping_is_unmapped_for_matcher():void
 		{
 			instance.map(ExampleDisplayObjectMediator).toMatcher(new TypeMatcher().allOf(DisplayObject));
-			instance.getMapping(ExampleDisplayObjectMediator).unmap(new TypeMatcher().allOf(DisplayObject));
+			instance.unmap(ExampleDisplayObjectMediator).fromMatcher(new TypeMatcher().allOf(DisplayObject));
 
 			var interest:uint = instance.handleViewAdded(new Sprite(), null);
 			assertEquals(0, interest);
 		}
 
 		[Test]
-		public function is_not_interested_if_mapping_is_unmapped_for_view():void
+		public function is_not_interested_if_mapping_is_unmapped_for_view_by_fromMatcher():void
 		{
 			instance.map(ExampleMediator).toView(Sprite);
-			instance.getMapping(ExampleMediator).unmap(new TypeMatcher().allOf(Sprite));
+			instance.unmap(ExampleMediator).fromMatcher(new TypeMatcher().allOf(Sprite));
+
+			var interest:uint = instance.handleViewAdded(new Sprite(), null);
+			assertEquals(0, interest);
+		}
+		
+		[Test]
+		public function is_not_interested_if_mapping_is_unmapped_for_view_by_fromView():void
+		{
+			instance.map(ExampleMediator).toView(Sprite);
+			instance.unmap(ExampleMediator).fromView(Sprite);
 
 			var interest:uint = instance.handleViewAdded(new Sprite(), null);
 			assertEquals(0, interest);
@@ -186,7 +196,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 		{
 			instance.map(ExampleMediator).toView(Sprite);
 			instance.map(ExampleMediator).toView(MovieClip);
-			instance.getMapping(ExampleMediator).unmap(new TypeMatcher().allOf(MovieClip));
+			instance.unmap(ExampleMediator).fromMatcher(new TypeMatcher().allOf(MovieClip));
 
 			var interest:uint = instance.handleViewAdded(new Sprite(), null);
 			assertEquals(1, interest);
@@ -265,11 +275,21 @@ package org.robotlegs.v2.extensions.mediatorMap
 		}
 		
 		[Test]
-		public function hasMapping_returns_false_for_mapped_then_unmapped_mediator_class():void
+		public function hasMapping_returns_false_for_mapped_then_unmapped_mediator_class_by_fromAll():void
 		{
 			instance.map(ExampleMediator).toView(Sprite);
 			instance.map(ExampleDisplayObjectMediator).toView(Sprite);
-			instance.unmap(ExampleDisplayObjectMediator);
+			instance.unmap(ExampleDisplayObjectMediator).fromAll();
+			
+			assertFalse(instance.hasMapping(ExampleDisplayObjectMediator));
+		}
+		
+		[Test]
+		public function hasMapping_returns_false_for_mapped_then_unmapped_mediator_class_by_fromView():void
+		{
+			instance.map(ExampleMediator).toView(Sprite);
+			instance.map(ExampleDisplayObjectMediator).toView(Sprite);
+			instance.unmap(ExampleDisplayObjectMediator).fromView(Sprite);
 			
 			assertFalse(instance.hasMapping(ExampleDisplayObjectMediator));
 		}
@@ -360,21 +380,11 @@ import org.robotlegs.v2.extensions.mediatorMap.impl.support.MediatorWatcher;
 
 class ExampleMediator
 {
-
-	/*============================================================================*/
-	/* Public Properties                                                          */
-	/*============================================================================*/
-
 	[Inject]
 	public var mediatorWatcher:MediatorWatcher;
 
 	[Inject]
 	public var view:Sprite;
-
-
-	/*============================================================================*/
-	/* Public Functions                                                           */
-	/*============================================================================*/
 
 	public function preRegister():void
 	{
@@ -389,21 +399,11 @@ class ExampleMediator
 
 class ExampleDisplayObjectMediator
 {
-
-	/*============================================================================*/
-	/* Public Properties                                                          */
-	/*============================================================================*/
-
 	[Inject]
 	public var mediatorWatcher:MediatorWatcher;
 
 	[Inject]
 	public var view:DisplayObject;
-
-
-	/*============================================================================*/
-	/* Public Functions                                                           */
-	/*============================================================================*/
 
 	public function preRegister():void
 	{
@@ -413,11 +413,6 @@ class ExampleDisplayObjectMediator
 
 class RectangleMediator
 {
-
-	/*============================================================================*/
-	/* Public Properties                                                          */
-	/*============================================================================*/
-
 	[Inject]
 	public var rectangle:Rectangle;
 	
@@ -429,18 +424,8 @@ class RectangleMediator
 
 class OnlyIfViewHasChildrenGuard
 {
-
-	/*============================================================================*/
-	/* Public Properties                                                          */
-	/*============================================================================*/
-
 	[Inject]
 	public var view:Sprite;
-
-
-	/*============================================================================*/
-	/* Public Functions                                                           */
-	/*============================================================================*/
 
 	public function approve():Boolean
 	{
@@ -450,21 +435,11 @@ class OnlyIfViewHasChildrenGuard
 
 class HookWithMediatorAndViewInjectionDrawsRectangle
 {
-
-	/*============================================================================*/
-	/* Public Properties                                                          */
-	/*============================================================================*/
-
 	[Inject]
 	public var mediator:RectangleMediator;
 
 	[Inject]
 	public var view:Sprite;
-
-
-	/*============================================================================*/
-	/* Public Functions                                                           */
-	/*============================================================================*/
 
 	public function hook():void
 	{

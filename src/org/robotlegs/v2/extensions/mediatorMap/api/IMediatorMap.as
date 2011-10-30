@@ -18,7 +18,7 @@ import flash.display.DisplayObject;
 		
 		function map(mediatorType:Class):IMediatorMapping;
 
-		function unmap(mediatorType:Class):void;
+		function unmap(mediatorType:Class):IMediatorUnmapping;
 	
 		function loadTrigger(trigger:IMediatorTrigger):void;
 		

@@ -10,12 +10,14 @@ package org.robotlegs.v2.extensions.mediatorMap.api
 	import org.robotlegs.v2.core.api.ITypeMatcher;
 	import org.robotlegs.v2.extensions.hooks.IGuardsAndHooksConfig;
 
-	public interface IMediatorMapping extends IGuardsAndHooksConfig
+	public interface IMediatorUnmapping
 	{
 		function get mediator():Class;
 
-		function toMatcher(typeMatcher:ITypeMatcher):IGuardsAndHooksConfig;
+		function fromMatcher(typeMatcher:ITypeMatcher):void;
 
-		function toView(viewType:Class):IGuardsAndHooksConfig;
+		function fromView(viewType:Class):void;
+		
+		function fromAll():void;
 	}
 }

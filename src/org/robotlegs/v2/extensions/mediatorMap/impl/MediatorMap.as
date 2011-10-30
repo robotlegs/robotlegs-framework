@@ -26,6 +26,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorConfig;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorTrigger;
 	import flash.events.Event;
+	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorUnmapping;
 
 	[Event(name="configurationChange", type="org.robotlegs.v2.view.api.ViewHandlerEvent")]
 	public class MediatorMap extends EventDispatcher implements IViewHandler, IMediatorMap
@@ -138,7 +139,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		
 		public function hasMapping(mediatorType:Class):Boolean
 		{
-			return (_mappingsByMediatorType[mediatorType] != null);
+			return (_mappingsByMediatorType[mediatorType] && _mappingsByMediatorType[mediatorType].hasConfigs);
 		}
 
 		public function invalidate():void
@@ -154,12 +155,9 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			return _mappingsByMediatorType[mediatorType];
 		}
 
-		public function unmap(mediatorType:Class):void
+		public function unmap(mediatorType:Class):IMediatorUnmapping
 		{
-			if (_mappingsByMediatorType[mediatorType])
-				_mappingsByMediatorType[mediatorType].unmapAll();
-
-			delete _mappingsByMediatorType[mediatorType];
+			return _mappingsByMediatorType[mediatorType];
 		}
 		
 		public function loadTrigger(trigger:IMediatorTrigger):void
@@ -214,7 +212,8 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		{
 			return new MediatorMapping(_configsByTypeFilter,
 				_filtersByDescription,
-				mediatorType);
+				mediatorType,
+				cleanUpMapping);
 		}
 
 		protected function mapViewForFilterBinding(filter:ITypeFilter, view:DisplayObject):void
@@ -276,6 +275,12 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			{
 				_liveMediatorsByView[view].splice(index, 1);
 			}
+		}
+		
+		protected function cleanUpMapping(mediatorType:Class):void
+		{
+			trace("MediatorMap::cleanUpMapping()", mediatorType);
+			delete _mappingsByMediatorType[mediatorType];
 		}
 	}
 }
