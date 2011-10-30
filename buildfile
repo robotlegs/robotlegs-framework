@@ -2,8 +2,11 @@ require "fileutils"
 require "buildr/as3" # needs buildr-as3 v0.2.23.pre
 
 # To install:
+# [RVM users: gem install rjb -v 1.3.3 --platform ruby]
 # gem install buildr
 # gem install buildr-as3 --pre
+
+repositories.remote << "http://artifacts.devboy.org" << "http://repo2.maven.org/maven2"
 
 layout = Layout::Default.new
 layout[:source, :main, :as3] = "src"
