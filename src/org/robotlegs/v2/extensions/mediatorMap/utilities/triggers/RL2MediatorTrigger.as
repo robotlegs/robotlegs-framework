@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.utilities.mediatorTriggers
+package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 {
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediator;
 

@@ -10,9 +10,9 @@ package suites
 	import org.robotlegs.v2.extensions.mediatorMap.MediatorMapRemovalAndReparentingTests;
 	import org.robotlegs.v2.extensions.mediatorMap.MediatorMapTest;
 	import org.robotlegs.v2.extensions.mediatorMap.impl.MediatorTest;
-	import org.robotlegs.v2.utilities.mediatorTriggers.DuckTypedMediatorTriggerTest;
-	import org.robotlegs.v2.utilities.mediatorTriggers.RL1MediatorTriggerTest;
-	import org.robotlegs.v2.utilities.mediatorTriggers.RL2MediatorTriggerTest;
+	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.DuckTypedMediatorTriggerTest;
+	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.RL1MediatorTriggerTest;
+	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.RL2MediatorTriggerTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]

@@ -18,8 +18,8 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import org.robotlegs.v2.extensions.guards.GuardsProcessor;
 	import org.robotlegs.v2.extensions.hooks.HooksProcessor;
 	import org.robotlegs.v2.extensions.mediatorMap.impl.MediatorMap;
-	import org.robotlegs.v2.utilities.mediatorTriggers.RLMediatorTriggerBase;
-	import org.robotlegs.v2.utilities.mediatorTriggers.support.RL2Mediator;
+	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.RLMediatorTriggerBase;
+	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.support.RL2Mediator;
 	import org.swiftsuspenders.DescribeTypeJSONReflector;
 	import org.swiftsuspenders.Injector;
 	import org.swiftsuspenders.Reflector;

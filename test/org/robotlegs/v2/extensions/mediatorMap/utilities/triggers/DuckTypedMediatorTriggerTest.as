@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.utilities.mediatorTriggers
+package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 {
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
@@ -16,6 +16,7 @@ package org.robotlegs.v2.utilities.mediatorTriggers
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.strictlyEqualTo;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediator;
+
 	// required
 	MockolateRunner;
 

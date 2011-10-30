@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.utilities.mediatorTriggers.support
+package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.support
 {
 
 	public class RL1Mediator implements IMediator

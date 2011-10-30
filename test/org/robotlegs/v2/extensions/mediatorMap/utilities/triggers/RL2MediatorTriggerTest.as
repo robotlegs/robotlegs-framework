@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.utilities.mediatorTriggers
+package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 {
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
@@ -17,38 +17,39 @@ package org.robotlegs.v2.utilities.mediatorTriggers
 	import org.hamcrest.object.strictlyEqualTo;
 	import org.robotlegs.core.IMediator;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediator;
+
 	// required
 	MockolateRunner;
 
 	[RunWith("mockolate.runner.MockolateRunner")]
-	public class RL1MediatorTriggerTest
+	public class RL2MediatorTriggerTest
 	{
 
 		[Rule]
 		public var mocks:MockolateRule = new MockolateRule();
 
 		[Mock]
-		public var not_a_RL1_mediator:org.robotlegs.v2.extensions.mediatorMap.api.IMediator;
+		public var not_a_RL2_mediator:org.robotlegs.core.IMediator;
 
 		[Mock]
 		public var not_a_mediator:Object;
 
 		[Mock]
-		public var rl1Mediator:org.robotlegs.core.IMediator;
+		public var rl2Mediator:org.robotlegs.v2.extensions.mediatorMap.api.IMediator;
 
 		private const VIEW:DisplayObject = new Sprite();
 
 		private var _callbackRun:Function;
 
-		private var notStrictInstance:RL1MediatorTrigger;
+		private var notStrictInstance:RL2MediatorTrigger;
 
-		private var strictInstance:RL1MediatorTrigger;
+		private var strictInstance:RL2MediatorTrigger;
 
 		[Before]
 		public function setUp():void
 		{
-			strictInstance = new RL1MediatorTrigger(true);
-			notStrictInstance = new RL1MediatorTrigger(false);
+			strictInstance = new RL2MediatorTrigger(true);
+			notStrictInstance = new RL2MediatorTrigger(false);
 		}
 
 		[After]
@@ -61,49 +62,49 @@ package org.robotlegs.v2.utilities.mediatorTriggers
 		[Test]
 		public function can_be_instantiated():void
 		{
-			assertTrue("strictInstance is RL1MediatorTrigger", strictInstance is RL1MediatorTrigger);
+			assertTrue("strictInstance is RL2MediatorTrigger", strictInstance is RL2MediatorTrigger);
 		}
 
 		[Test]
 		public function shutdown_calls_callback_in_nonStrictMode_with_mediator():void
 		{
-			notStrictInstance.shutdown(rl1Mediator, VIEW, expectantCallbackForRL1Mediator);
-			assertEquals(expectantCallbackForRL1Mediator, _callbackRun);
+			notStrictInstance.shutdown(rl2Mediator, VIEW, expectantCallbackForRL2Mediator);
+			assertEquals(expectantCallbackForRL2Mediator, _callbackRun);
 		}
 
 		[Test]
 		public function shutdown_calls_callback_in_strictMode_with_mediator():void
 		{
-			strictInstance.shutdown(rl1Mediator, VIEW, expectantCallbackForRL1Mediator);
-			assertEquals(expectantCallbackForRL1Mediator, _callbackRun);
+			strictInstance.shutdown(rl2Mediator, VIEW, expectantCallbackForRL2Mediator);
+			assertEquals(expectantCallbackForRL2Mediator, _callbackRun);
 		}
 
 		[Test]
 		public function shutdown_calls_preRemove_on_mediator_in_not_strict_mode():void
 		{
-			notStrictInstance.shutdown(rl1Mediator, VIEW, benignCallback);
-			assertThat(rl1Mediator, received().method('preRemove'));
+			notStrictInstance.shutdown(rl2Mediator, VIEW, benignCallback);
+			assertThat(rl2Mediator, received().method('preRemove'));
 		}
 
 		[Test]
 		public function shutdown_calls_preRemove_on_mediator_in_strict_mode():void
 		{
-			strictInstance.shutdown(rl1Mediator, VIEW, benignCallback);
-			assertThat(rl1Mediator, received().method('preRemove'));
+			strictInstance.shutdown(rl2Mediator, VIEW, benignCallback);
+			assertThat(rl2Mediator, received().method('preRemove'));
 		}
 
 		[Test]
-		public function shutdown_calls_preRemove_on_notARL1mediator_in_strict_mode():void
+		public function shutdown_calls_preRemove_on_notARL2mediator_in_strict_mode():void
 		{
-			strictInstance.shutdown(not_a_RL1_mediator, VIEW, benignCallback);
-			assertThat(not_a_RL1_mediator, received().method('preRemove'));
+			strictInstance.shutdown(not_a_RL2_mediator, VIEW, benignCallback);
+			assertThat(not_a_RL2_mediator, received().method('preRemove'));
 		}
 
 		[Test]
-		public function shutdown_does_not_call_preRemove_on_notARL1mediator_in_not_strict_mode():void
+		public function shutdown_does_not_call_preRemove_on_notARL2mediator_in_not_strict_mode():void
 		{
-			notStrictInstance.shutdown(not_a_RL1_mediator, VIEW, benignCallback);
-			assertThat(not_a_RL1_mediator, received().method('preRemove').never());
+			notStrictInstance.shutdown(not_a_RL2_mediator, VIEW, benignCallback);
+			assertThat(not_a_RL2_mediator, received().method('preRemove').never());
 		}
 
 		[Test]
@@ -113,10 +114,10 @@ package org.robotlegs.v2.utilities.mediatorTriggers
 		}
 
 		[Test]
-		public function shutdown_still_calls_callback_in_nonStrictMode_with_not_a_RL1_mediator():void
+		public function shutdown_still_calls_callback_in_nonStrictMode_with_not_a_RL2_mediator():void
 		{
-			notStrictInstance.shutdown(not_a_RL1_mediator, VIEW, callbackFor_not_a_RL1_mediator);
-			assertEquals(callbackFor_not_a_RL1_mediator, _callbackRun);
+			notStrictInstance.shutdown(not_a_RL2_mediator, VIEW, callbackFor_not_a_RL2_mediator);
+			assertEquals(callbackFor_not_a_RL2_mediator, _callbackRun);
 		}
 
 		[Test(expects="ReferenceError")]
@@ -128,43 +129,43 @@ package org.robotlegs.v2.utilities.mediatorTriggers
 		[Test]
 		public function startup_calls_preRegister_on_mediator_in_not_strict_mode():void
 		{
-			notStrictInstance.startup(rl1Mediator, VIEW);
-			assertThat(rl1Mediator, received().method('preRegister'));
+			notStrictInstance.startup(rl2Mediator, VIEW);
+			assertThat(rl2Mediator, received().method('preRegister'));
 		}
 
 		[Test]
 		public function startup_calls_preRegister_on_mediator_in_strict_mode():void
 		{
-			strictInstance.startup(rl1Mediator, VIEW);
-			assertThat(rl1Mediator, received().method('preRegister'));
+			strictInstance.startup(rl2Mediator, VIEW);
+			assertThat(rl2Mediator, received().method('preRegister'));
 		}
 
 		[Test]
 		public function startup_calls_setViewComponent_on_mediator_in_not_strict_mode():void
 		{
-			notStrictInstance.startup(rl1Mediator, VIEW);
-			assertThat(rl1Mediator, received().method('setViewComponent').args(strictlyEqualTo(VIEW)));
+			notStrictInstance.startup(rl2Mediator, VIEW);
+			assertThat(rl2Mediator, received().method('setViewComponent').args(strictlyEqualTo(VIEW)));
 		}
 
 		[Test]
 		public function startup_calls_setViewComponent_on_mediator_in_strict_mode():void
 		{
-			strictInstance.startup(rl1Mediator, VIEW);
-			assertThat(rl1Mediator, received().method('setViewComponent').args(strictlyEqualTo(VIEW)));
+			strictInstance.startup(rl2Mediator, VIEW);
+			assertThat(rl2Mediator, received().method('setViewComponent').args(strictlyEqualTo(VIEW)));
 		}
 
 		[Test]
-		public function startup_does_NOT_call_preRegister_on_notARL1mediator_in_not_strict_mode():void
+		public function startup_does_NOT_call_preRegister_on_notARL2mediator_in_not_strict_mode():void
 		{
-			notStrictInstance.startup(not_a_RL1_mediator, VIEW);
-			assertThat(not_a_RL1_mediator, received().method('preRegister').never());
+			notStrictInstance.startup(not_a_RL2_mediator, VIEW);
+			assertThat(not_a_RL2_mediator, received().method('preRegister').never());
 		}
 
 		[Test]
-		public function startup_does_NOT_call_setViewComponent_on_notARL1mediator_in_not_strict_mode():void
+		public function startup_does_NOT_call_setViewComponent_on_notARL2mediator_in_not_strict_mode():void
 		{
-			notStrictInstance.startup(not_a_RL1_mediator, VIEW);
-			assertThat(not_a_RL1_mediator, received().method('setViewComponent').never());
+			notStrictInstance.startup(not_a_RL2_mediator, VIEW);
+			assertThat(not_a_RL2_mediator, received().method('setViewComponent').never());
 		}
 
 		[Test]
@@ -190,18 +191,18 @@ package org.robotlegs.v2.utilities.mediatorTriggers
 			// do nothing
 		}
 
-		protected function expectantCallbackForRL1Mediator(mediator:*, view:DisplayObject):void
+		protected function expectantCallbackForRL2Mediator(mediator:*, view:DisplayObject):void
 		{
 			assertEquals(VIEW, view);
-			assertEquals(rl1Mediator, mediator);
-			_callbackRun = expectantCallbackForRL1Mediator;
+			assertEquals(rl2Mediator, mediator);
+			_callbackRun = expectantCallbackForRL2Mediator;
 		}
 
-		protected function callbackFor_not_a_RL1_mediator(mediator:*, view:DisplayObject):void
+		protected function callbackFor_not_a_RL2_mediator(mediator:*, view:DisplayObject):void
 		{
 			assertEquals(VIEW, view);
-			assertEquals(not_a_RL1_mediator, mediator);
-			_callbackRun = callbackFor_not_a_RL1_mediator;
+			assertEquals(not_a_RL2_mediator, mediator);
+			_callbackRun = callbackFor_not_a_RL2_mediator;
 		}
 	}
 }
