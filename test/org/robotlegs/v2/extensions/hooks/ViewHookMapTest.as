@@ -17,7 +17,7 @@ package org.robotlegs.v2.extensions.hooks
 	import org.robotlegs.v2.extensions.hooks.support.HookTracker;
 	import org.robotlegs.v2.extensions.hooks.support.TrackableHook1;
 	import org.robotlegs.v2.extensions.hooks.support.TrackableHook2;
-	import org.robotlegs.v2.view.api.IViewHandler;
+	import org.robotlegs.v2.extensions.displayList.api.IViewHandler;
 	import org.swiftsuspenders.DescribeTypeJSONReflector;
 	import org.swiftsuspenders.Injector;
 	import org.swiftsuspenders.Reflector;

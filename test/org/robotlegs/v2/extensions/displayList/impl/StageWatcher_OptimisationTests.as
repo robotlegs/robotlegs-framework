@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.view.impl
+package org.robotlegs.v2.extensions.displayList.impl
 {
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
@@ -14,9 +14,9 @@ package org.robotlegs.v2.view.impl
 	import org.fluint.uiImpersonation.UIImpersonator;
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.equalTo;
-	import org.robotlegs.v2.view.api.IViewClassInfo;
-	import org.robotlegs.v2.view.api.IViewWatcher;
-	import org.robotlegs.v2.view.impl.support.ViewHandlerSupport;
+	import org.robotlegs.v2.extensions.displayList.api.IViewClassInfo;
+	import org.robotlegs.v2.extensions.displayList.api.IViewWatcher;
+	import org.robotlegs.v2.extensions.displayList.impl.support.ViewHandlerSupport;
 
 	public class StageWatcher_OptimisationTests
 	{

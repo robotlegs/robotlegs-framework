@@ -10,11 +10,11 @@ package org.robotlegs.v2.extensions.hooks
 	import flash.display.DisplayObject;
 	import flash.events.EventDispatcher;
 	import org.robotlegs.v2.core.api.ITypeMatcher;
-	import org.robotlegs.v2.view.api.IViewClassInfo;
-	import org.robotlegs.v2.view.api.IViewHandler;
-	import org.robotlegs.v2.view.api.ViewHandlerEvent;
+	import org.robotlegs.v2.extensions.displayList.api.IViewClassInfo;
+	import org.robotlegs.v2.extensions.displayList.api.IViewHandler;
+	import org.robotlegs.v2.extensions.displayList.api.ViewHandlerEvent;
 
-	[Event(name="configurationChange", type="org.robotlegs.v2.view.api.ViewHandlerEvent")]
+	[Event(name="configurationChange", type="org.robotlegs.v2.extensions.displayList.api.ViewHandlerEvent")]
 	public class ViewHookMap extends EventDispatcher implements IViewHandler
 	{
 

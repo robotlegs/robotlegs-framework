@@ -5,22 +5,22 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.view.api
+package org.robotlegs.v2.extensions.displayList.api
 {
 	import flash.display.DisplayObjectContainer;
 
-	public interface IViewManager
+	public interface IContainerBinding
 	{
-		function addContainer(container:DisplayObjectContainer):void;
+		function get container():DisplayObjectContainer;
+
+		function get handlers():Vector.<IViewHandler>;
+
+		function get parent():IContainerBinding;
+
+		function set parent(value:IContainerBinding):void;
 
 		function addHandler(handler:IViewHandler):void;
 
-		function addWatcher(watcher:IViewWatcher):void;
-
-		function removeContainer(container:DisplayObjectContainer):void;
-
 		function removeHandler(handler:IViewHandler):void;
-
-		function removeWatcher(watcher:IViewWatcher):void;
 	}
 }

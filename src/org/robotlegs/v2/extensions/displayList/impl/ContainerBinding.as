@@ -5,11 +5,11 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.view.impl
+package org.robotlegs.v2.extensions.displayList.impl
 {
 	import flash.display.DisplayObjectContainer;
-	import org.robotlegs.v2.view.api.IContainerBinding;
-	import org.robotlegs.v2.view.api.IViewHandler;
+	import org.robotlegs.v2.extensions.displayList.api.IContainerBinding;
+	import org.robotlegs.v2.extensions.displayList.api.IViewHandler;
 
 	public class ContainerBinding implements IContainerBinding
 	{

@@ -5,12 +5,12 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.view.api
+package org.robotlegs.v2.extensions.displayList.api
 {
 	import flash.display.DisplayObject;
 	import flash.events.IEventDispatcher;
 
-	[Event(name="configurationChange", type="org.robotlegs.v2.view.api.ViewHandlerEvent")]
+	[Event(name="configurationChange", type="org.robotlegs.v2.extensions.displayList.api.ViewHandlerEvent")]
 	public interface IViewHandler extends IEventDispatcher
 	{
 		function get interests():uint;

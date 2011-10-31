@@ -9,8 +9,8 @@ package org.robotlegs.v2.extensions.viewManager
 {
 	import org.robotlegs.v2.core.api.IContext;
 	import org.robotlegs.v2.core.api.IContextExtension;
-	import org.robotlegs.v2.view.api.IViewManager;
-	import org.robotlegs.v2.view.impl.ViewManager;
+	import org.robotlegs.v2.extensions.displayList.api.IViewManager;
+	import org.robotlegs.v2.extensions.displayList.impl.ViewManager;
 
 	public class ViewManagerExtension implements IContextExtension
 	{

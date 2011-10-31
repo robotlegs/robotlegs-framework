@@ -5,16 +5,23 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.view.api
+package org.robotlegs.v2.extensions.displayList.api
 {
-	import flash.display.DisplayObjectContainer;
+	import flash.events.Event;
 
-	public interface IViewWatcher
+	public class ViewHandlerEvent extends Event
 	{
-		function addHandler(handler:IViewHandler, container:DisplayObjectContainer):void;
 
-		function invalidate():void;
+		public static const CONFIGURATION_CHANGE:String = 'configurationChange';
 
-		function removeHandler(handler:IViewHandler, container:DisplayObjectContainer):void;
+		public function ViewHandlerEvent(type:String)
+		{
+			super(type);
+		}
+
+		override public function clone():Event
+		{
+			return new ViewHandlerEvent(type);
+		}
 	}
 }

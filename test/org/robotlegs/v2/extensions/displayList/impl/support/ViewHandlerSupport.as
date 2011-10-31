@@ -5,16 +5,16 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.view.impl.support
+package org.robotlegs.v2.extensions.displayList.impl.support
 {
 	import flash.display.DisplayObject;
 	import flash.events.EventDispatcher;
-	import org.robotlegs.v2.view.api.IViewClassInfo;
-	import org.robotlegs.v2.view.api.IViewHandler;
-	import org.robotlegs.v2.view.api.IViewWatcher;
-	import org.robotlegs.v2.view.api.ViewHandlerEvent;
+	import org.robotlegs.v2.extensions.displayList.api.IViewClassInfo;
+	import org.robotlegs.v2.extensions.displayList.api.IViewHandler;
+	import org.robotlegs.v2.extensions.displayList.api.IViewWatcher;
+	import org.robotlegs.v2.extensions.displayList.api.ViewHandlerEvent;
 
-	[Event(name="configurationChange", type="org.robotlegs.v2.view.api.ViewHandlerEvent")]
+	[Event(name="configurationChange", type="org.robotlegs.v2.extensions.displayList.api.ViewHandlerEvent")]
 	public class ViewHandlerSupport extends EventDispatcher implements IViewHandler
 	{
 

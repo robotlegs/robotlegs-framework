@@ -7,9 +7,9 @@
 
 package suites
 {
-	import org.robotlegs.v2.view.impl.StageWatcher_BasicTests;
-	import org.robotlegs.v2.view.impl.StageWatcher_BlockingTests;
-	import org.robotlegs.v2.view.impl.StageWatcher_OptimisationTests;
+	import org.robotlegs.v2.extensions.displayList.impl.StageWatcher_BasicTests;
+	import org.robotlegs.v2.extensions.displayList.impl.StageWatcher_BlockingTests;
+	import org.robotlegs.v2.extensions.displayList.impl.StageWatcher_OptimisationTests;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]

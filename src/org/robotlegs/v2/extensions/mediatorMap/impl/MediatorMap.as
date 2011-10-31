@@ -20,14 +20,14 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMapping;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorTrigger;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorUnmapping;
-	import org.robotlegs.v2.view.api.IViewClassInfo;
-	import org.robotlegs.v2.view.api.IViewHandler;
-	import org.robotlegs.v2.view.api.IViewWatcher;
-	import org.robotlegs.v2.view.api.ViewHandlerEvent;
+	import org.robotlegs.v2.extensions.displayList.api.IViewClassInfo;
+	import org.robotlegs.v2.extensions.displayList.api.IViewHandler;
+	import org.robotlegs.v2.extensions.displayList.api.IViewWatcher;
+	import org.robotlegs.v2.extensions.displayList.api.ViewHandlerEvent;
 	import org.swiftsuspenders.Injector;
 	import org.swiftsuspenders.Reflector;
 
-	[Event(name="configurationChange", type="org.robotlegs.v2.view.api.ViewHandlerEvent")]
+	[Event(name="configurationChange", type="org.robotlegs.v2.extensions.displayList.api.ViewHandlerEvent")]
 	public class MediatorMap extends EventDispatcher implements IViewHandler, IMediatorMap
 	{
 

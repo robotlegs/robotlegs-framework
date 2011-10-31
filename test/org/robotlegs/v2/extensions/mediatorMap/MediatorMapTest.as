@@ -22,8 +22,8 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import org.robotlegs.v2.extensions.mediatorMap.impl.MediatorMap;
 	import org.robotlegs.v2.extensions.mediatorMap.impl.support.MediatorWatcher;
 	import org.robotlegs.v2.extensions.mediatorMap.support.DuckTypedRL1MediatorTrigger;
-	import org.robotlegs.v2.view.api.IViewHandler;
-	import org.robotlegs.v2.view.api.ViewHandlerEvent;
+	import org.robotlegs.v2.extensions.displayList.api.IViewHandler;
+	import org.robotlegs.v2.extensions.displayList.api.ViewHandlerEvent;
 	import org.swiftsuspenders.DescribeTypeJSONReflector;
 	import org.swiftsuspenders.Injector;
 	import org.swiftsuspenders.Reflector;

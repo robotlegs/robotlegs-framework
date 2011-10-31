@@ -9,8 +9,8 @@ package org.robotlegs.v2.extensions.stageWatcher
 {
 	import org.robotlegs.v2.core.api.IContext;
 	import org.robotlegs.v2.core.api.IContextExtension;
-	import org.robotlegs.v2.view.api.IViewManager;
-	import org.robotlegs.v2.view.impl.StageWatcher;
+	import org.robotlegs.v2.extensions.displayList.api.IViewManager;
+	import org.robotlegs.v2.extensions.displayList.impl.StageWatcher;
 
 	public class StageWatcherExtension implements IContextExtension
 	{
