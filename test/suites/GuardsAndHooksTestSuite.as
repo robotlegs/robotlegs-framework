@@ -17,10 +17,6 @@ package suites
 	public class GuardsAndHooksTestSuite
 	{
 
-		/*============================================================================*/
-		/* Public Properties                                                          */
-		/*============================================================================*/
-
 		public var guardsProcessorTest:GuardsProcessorTest;
 
 		public var hookUtilityMapTest:HookMapTest;

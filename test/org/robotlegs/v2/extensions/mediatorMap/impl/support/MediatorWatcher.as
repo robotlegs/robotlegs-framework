@@ -7,13 +7,9 @@
 
 package org.robotlegs.v2.extensions.mediatorMap.impl.support
 {
-	
+
 	public class MediatorWatcher
 	{
-
-		/*============================================================================*/
-		/* Public Properties                                                          */
-		/*============================================================================*/
 
 		protected const _notifications:Vector.<String> = new Vector.<String>();
 
@@ -22,14 +18,9 @@ package org.robotlegs.v2.extensions.mediatorMap.impl.support
 			return _notifications;
 		}
 
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
-
 		public function notify(message:String):void
 		{
 			_notifications.push(message);
 		}
-	}	
+	}
 }

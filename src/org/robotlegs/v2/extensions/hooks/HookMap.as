@@ -11,7 +11,6 @@ package org.robotlegs.v2.extensions.hooks
 	import flash.utils.getQualifiedClassName;
 	import org.robotlegs.v2.core.api.ITypeFilter;
 	import org.robotlegs.v2.core.api.ITypeMatcher;
-	import org.robotlegs.v2.core.impl.itemPassesFilter;
 	import org.robotlegs.v2.extensions.guards.GuardsProcessor;
 	import org.swiftsuspenders.DescribeTypeJSONReflector;
 	import org.swiftsuspenders.Injector;
@@ -19,10 +18,6 @@ package org.robotlegs.v2.extensions.hooks
 
 	public class HookMap
 	{
-
-		/*============================================================================*/
-		/* Public Properties                                                          */
-		/*============================================================================*/
 
 		[Inject]
 		public var guardsProcessor:GuardsProcessor;
@@ -36,28 +31,15 @@ package org.robotlegs.v2.extensions.hooks
 		[Inject]
 		public var reflector:Reflector;
 
-		/*============================================================================*/
-		/* Private Properties                                                         */
-		/*============================================================================*/
-
 		private var _mappingsByFCQN:Dictionary;
 
 		private var _mappingsByTypeFilter:Dictionary;
-
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
 
 		public function HookMap()
 		{
 			_mappingsByTypeFilter = new Dictionary();
 			_mappingsByFCQN = new Dictionary();
 		}
-
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
 
 		public function map(type:Class):GuardsAndHooksConfig
 		{
@@ -91,9 +73,10 @@ package org.robotlegs.v2.extensions.hooks
 					hooksProcessor.runHooks(injector, _mappingsByFCQN[fqcn].hooks);
 			}
 
+			// filter:* - ew!
 			for (var filter:* in _mappingsByTypeFilter)
 			{
-				if (itemPassesFilter(item, filter as ITypeFilter))
+				if ((filter as ITypeFilter).matches(item))
 				{
 					interested = true;
 					if (!blockedByGuards(_mappingsByTypeFilter[filter].guards))
@@ -103,10 +86,6 @@ package org.robotlegs.v2.extensions.hooks
 
 			return interested;
 		}
-
-		/*============================================================================*/
-		/* Protected Functions                                                        */
-		/*============================================================================*/
 
 		protected function blockedByGuards(guards:Vector.<Class>):Boolean
 		{

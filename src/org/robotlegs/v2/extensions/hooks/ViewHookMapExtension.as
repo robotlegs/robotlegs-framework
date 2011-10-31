@@ -11,15 +11,11 @@ package org.robotlegs.v2.extensions.hooks
 	import org.robotlegs.v2.core.api.IContextExtension;
 	import org.robotlegs.v2.extensions.guards.GuardsProcessor;
 	import org.robotlegs.v2.extensions.hooks.HooksProcessor;
-	import org.robotlegs.v2.view.api.IViewManager;
+	import org.robotlegs.v2.extensions.viewManager.api.IViewManager;
 
 	// TODO : This is untested
 	public class ViewHookMapExtension implements IContextExtension
 	{
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
 
 		public function initialize(context:IContext):void
 		{

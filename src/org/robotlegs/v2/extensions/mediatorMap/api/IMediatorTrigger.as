@@ -8,11 +8,11 @@
 package org.robotlegs.v2.extensions.mediatorMap.api
 {
 	import flash.display.DisplayObject;
-	
+
 	public interface IMediatorTrigger
 	{
 		function startup(mediator:*, view:DisplayObject):void;
-		
+
 		function shutdown(mediator:*, view:DisplayObject, callback:Function):void;
 	}
 }

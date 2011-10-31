@@ -13,10 +13,6 @@ package org.robotlegs.v2.core.impl
 	public class ContextViewRegistryTests
 	{
 
-		/*============================================================================*/
-		/* Test Setup and Teardown                                                    */
-		/*============================================================================*/
-
 		[Before]
 		public function setUp():void
 		{
@@ -26,10 +22,6 @@ package org.robotlegs.v2.core.impl
 		public function tearDown():void
 		{
 		}
-
-		/*============================================================================*/
-		/* Tests                                                                      */
-		/*============================================================================*/
 
 		[Test]
 		public function dummy():void

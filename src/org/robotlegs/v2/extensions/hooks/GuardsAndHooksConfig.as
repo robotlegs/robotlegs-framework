@@ -7,14 +7,10 @@
 
 package org.robotlegs.v2.extensions.hooks
 {
-	import org.robotlegs.v2.extensions.utils.pushValuesToClassVector;
+	import org.robotlegs.v2.core.utilities.pushValuesToClassVector;
 
 	public class GuardsAndHooksConfig implements IGuardsAndHooksConfig
 	{
-
-		/*============================================================================*/
-		/* Public Properties                                                          */
-		/*============================================================================*/
 
 		protected var _guards:Vector.<Class> = new Vector.<Class>();
 
@@ -30,19 +26,10 @@ package org.robotlegs.v2.extensions.hooks
 			return _hooks;
 		}
 
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
-
 		public function GuardsAndHooksConfig()
 		{
 
 		}
-
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
 
 		public function withGuards(... guardClasses):IGuardsAndHooksConfig
 		{
@@ -55,6 +42,5 @@ package org.robotlegs.v2.extensions.hooks
 			pushValuesToClassVector(hookClasses, _hooks);
 			return this;
 		}
-
 	}
 }

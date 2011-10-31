@@ -11,10 +11,6 @@ package org.robotlegs.v2.extensions.guards.support
 	public class GrumpyGuard
 	{
 
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
-
 		public function approve():Boolean
 		{
 			return false;

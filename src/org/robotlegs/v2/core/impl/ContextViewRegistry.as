@@ -15,33 +15,14 @@ package org.robotlegs.v2.core.impl
 	public class ContextViewRegistry implements IContextViewRegistry
 	{
 
-		/*============================================================================*/
-		/* Protected Static Properties                                                */
-		/*============================================================================*/
-
 		protected static var _global:IContextViewRegistry;
 
-
-		/*============================================================================*/
-		/* Protected Properties                                                       */
-		/*============================================================================*/
-
 		protected const contextsByView:Dictionary = new Dictionary(true);
-
-
-		/*============================================================================*/
-		/* Public Static Functions                                                    */
-		/*============================================================================*/
 
 		public static function getSingleton():IContextViewRegistry
 		{
 			return _global ||= new ContextViewRegistry();
 		}
-
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
 
 		public function addContext(context:IContext):void
 		{

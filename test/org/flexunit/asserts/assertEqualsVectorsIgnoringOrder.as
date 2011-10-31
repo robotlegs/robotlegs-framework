@@ -10,11 +10,6 @@ package org.flexunit.asserts
 	import flash.errors.IllegalOperationError;
 	import org.flexunit.Assert;
 
-
-	/*============================================================================*/
-	/* Public Functions                                                           */
-	/*============================================================================*/
-
 	/**
 	 * Custom assert for FlexUnit for comparing vectors
 	 *

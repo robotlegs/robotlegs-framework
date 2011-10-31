@@ -16,10 +16,6 @@ package org.robotlegs.v2.core.impl
 	public class TypeFilterTest
 	{
 
-		/*============================================================================*/
-		/* Private Properties                                                         */
-		/*============================================================================*/
-
 		private const ALL_OF:Vector.<Class> = new <Class>[uint, Number];
 
 		private const ANY_OF:Vector.<Class> = new <Class>[Sprite, IEventDispatcher];
@@ -27,10 +23,6 @@ package org.robotlegs.v2.core.impl
 		private const NONE_OF:Vector.<Class> = new <Class>[String, Error];
 
 		private var instance:TypeFilter;
-
-		/*============================================================================*/
-		/* Test Setup and Teardown                                                    */
-		/*============================================================================*/
 
 		[Before]
 		public function setUp():void
@@ -43,10 +35,6 @@ package org.robotlegs.v2.core.impl
 		{
 			instance = null;
 		}
-
-		/*============================================================================*/
-		/* Tests                                                                      */
-		/*============================================================================*/
 
 		[Test]
 		public function can_be_instantiated():void

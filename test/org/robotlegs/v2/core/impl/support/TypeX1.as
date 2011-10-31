@@ -11,10 +11,6 @@ package org.robotlegs.v2.core.impl.support
 	public class TypeX1 implements ITypeX, IType1
 	{
 
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
-
 		public function TypeX1()
 		{
 			super();

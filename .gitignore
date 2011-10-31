@@ -7,7 +7,10 @@
 /doc/*
 /obj/*
 /report/*
+/reports/*
+/target/*
 /dist/*
+/target
 /lib/asunit3/*
 
 .actionScriptProperties
@@ -28,3 +31,5 @@ src/FlexUnitApplication.mxml
 *.iml
 *.ipr
 *.iws
+
+target/test-classes/TestRunner.mxml

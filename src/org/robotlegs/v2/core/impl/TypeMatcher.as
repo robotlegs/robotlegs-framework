@@ -10,14 +10,10 @@ package org.robotlegs.v2.core.impl
 	import flash.errors.IllegalOperationError;
 	import org.robotlegs.v2.core.api.ITypeFilter;
 	import org.robotlegs.v2.core.api.ITypeMatcher;
-	import org.robotlegs.v2.extensions.utils.pushValuesToClassVector;
+	import org.robotlegs.v2.core.utilities.pushValuesToClassVector;
 
 	public class TypeMatcher implements ITypeMatcher
 	{
-
-		/*============================================================================*/
-		/* Protected Properties                                                       */
-		/*============================================================================*/
 
 		protected const _allOfTypes:Vector.<Class> = new Vector.<Class>;
 
@@ -27,18 +23,9 @@ package org.robotlegs.v2.core.impl
 
 		protected var _typeFilter:ITypeFilter;
 
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
-
 		public function TypeMatcher()
 		{
 		}
-
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
 
 		public function allOf(... types):ITypeMatcher
 		{
@@ -68,10 +55,6 @@ package org.robotlegs.v2.core.impl
 			pushAddedTypesTo(types, _noneOfTypes);
 			return this;
 		}
-
-		/*============================================================================*/
-		/* Protected Functions                                                        */
-		/*============================================================================*/
 
 		protected function buildTypeFilter():ITypeFilter
 		{

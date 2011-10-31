@@ -12,26 +12,13 @@ package org.robotlegs.v2.core.impl.support
 	public class TreeSpriteSupport extends Sprite
 	{
 
-		/*============================================================================*/
-		/* Public Properties                                                          */
-		/*============================================================================*/
-
 		// Testable constants
 		public const children:Vector.<TreeSpriteSupport> = new Vector.<TreeSpriteSupport>();
-
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
 
 		public function TreeSpriteSupport(tree_depth:uint, tree_width:uint)
 		{
 			populate(tree_depth, tree_width);
 		}
-
-
-		/*============================================================================*/
-		/* Protected Functions                                                        */
-		/*============================================================================*/
 
 		protected function populate(tree_depth:uint, tree_width:uint):void
 		{

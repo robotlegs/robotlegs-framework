@@ -18,10 +18,6 @@ package org.robotlegs.v2.extensions.logging
 	public class SimpleLoggingExtension implements IContextExtension
 	{
 
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
-
 		public function initialize(context:IContext):void
 		{
 		}

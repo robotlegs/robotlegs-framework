@@ -11,15 +11,7 @@ package <%= package_name %>
 
 	public class <%= test_case_name %> 
 	{
-		/*============================================================================*/
-		/* Private Properties                                                         */
-		/*============================================================================*/
-
 		private var instance:<%= class_name %>;
-
-		/*============================================================================*/
-		/* Test Setup and Teardown                                                    */
-		/*============================================================================*/
 
 		[Before]
 		public function setUp():void
@@ -33,25 +25,17 @@ package <%= package_name %>
 			instance = null;
 		}
 
-		/*============================================================================*/
-		/* Tests                                                                      */
-		/*============================================================================*/
-
 		[Test]
 		public function can_be_instantiated():void
 		{
 			assertTrue("instance is <%= class_name %>", instance is <%= class_name %>);
 		}
-		
+
 		[Test]
 		public function test_failure_seen():void
 		{
 			assertTrue("Failing test", false);
 		}
 
-		/*============================================================================*/
-		/* Protected Functions                                                        */
-		/*============================================================================*/
-		
 	}
 }

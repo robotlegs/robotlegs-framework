@@ -13,10 +13,6 @@ package org.robotlegs.v2.core.impl
 	public class TypeFilter implements ITypeFilter
 	{
 
-		/*============================================================================*/
-		/* Public Properties                                                          */
-		/*============================================================================*/
-
 		protected var _allOfTypes:Vector.<Class>;
 
 		public function get allOfTypes():Vector.<Class>
@@ -45,10 +41,6 @@ package org.robotlegs.v2.core.impl
 			return _noneOfTypes;
 		}
 
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
-
 		public function TypeFilter(allOf:Vector.<Class>, anyOf:Vector.<Class>, noneOf:Vector.<Class>)
 		{
 			if (!allOf || !anyOf || !noneOf)
@@ -57,7 +49,7 @@ package org.robotlegs.v2.core.impl
 			_anyOfTypes = anyOf;
 			_noneOfTypes = noneOf;
 		}
-		
+
 		public function matches(item:*):Boolean
 		{
 			var i:uint = _allOfTypes.length;
@@ -94,12 +86,6 @@ package org.robotlegs.v2.core.impl
 
 			return false;
 		}
-
-
-
-		/*============================================================================*/
-		/* Protected Functions                                                        */
-		/*============================================================================*/
 
 		protected function alphabetiseCaseInsensitiveFCQNs(classVector:Vector.<Class>):Vector.<String>
 		{

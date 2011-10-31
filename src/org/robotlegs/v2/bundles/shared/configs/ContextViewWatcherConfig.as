@@ -12,32 +12,18 @@ package org.robotlegs.v2.bundles.shared.configs
 	import org.as3commons.logging.api.getLogger;
 	import org.robotlegs.v2.core.api.IContext;
 	import org.robotlegs.v2.core.api.IContextConfig;
-	import org.robotlegs.v2.view.api.IViewManager;
+	import org.robotlegs.v2.extensions.viewManager.api.IViewManager;
 
 	public class ContextViewWatcherConfig implements IContextConfig
 	{
 
-		/*============================================================================*/
-		/* Private Static Properties                                                  */
-		/*============================================================================*/
-
 		private static const logger:ILogger = getLogger(ContextViewWatcherConfig);
-
-
-		/*============================================================================*/
-		/* Public Properties                                                          */
-		/*============================================================================*/
 
 		[Inject]
 		public var contextView:DisplayObjectContainer;
 
 		[Inject]
 		public var viewManager:IViewManager;
-
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
 
 		public function configure(context:IContext):void
 		{

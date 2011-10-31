@@ -7,25 +7,25 @@
 
 package org.robotlegs.v2.extensions.mediatorMap.api
 {
-import flash.display.DisplayObject;
+	import flash.display.DisplayObject;
 
 	public interface IMediatorMap
 	{
-		
+
 		function getMapping(mediatorType:Class):IMediatorMapping;
 
 		function hasMapping(mediatorType:Class):Boolean;
-		
+
 		function map(mediatorType:Class):IMediatorMapping;
 
 		function unmap(mediatorType:Class):IMediatorUnmapping;
-	
+
 		function loadTrigger(trigger:IMediatorTrigger):void;
-		
+
 		function invalidate():void;
-		
+
 		function mediate(object:DisplayObject):Boolean;
-		
+
 		function unmediate(object:DisplayObject):void;
 	}
 }

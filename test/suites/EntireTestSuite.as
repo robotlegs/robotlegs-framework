@@ -7,28 +7,24 @@
 
 package suites
 {
+
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
 	public class EntireTestSuite
 	{
 
-		/*============================================================================*/
-		/* Public Properties                                                          */
-		/*============================================================================*/
+		public var commandMapTestSuite:CommandMapTestSuite;
 
 		public var contextBuilderTestSuite:ContextBuilderTestSuite;
 
-		public var hooksTestSuite:GuardsAndHooksTestSuite;
-		
-		public var mediatorMapTestSuite:MediatorMapTestSuite;
-		
-		public var commandMapTestSuite:CommandMapTestSuite;
-
 		public var contextTestSuite:ContextTestSuite;
+
+		public var hooksTestSuite:GuardsAndHooksTestSuite;
+
+		public var mediatorMapTestSuite:MediatorMapTestSuite;
 
 		public var stageWatcherTestSuite:StageWatcherTestSuite;
 
 		public var typeMatchingTestSuite:TypeMatchingTestSuite;
-		
 	}
 }
