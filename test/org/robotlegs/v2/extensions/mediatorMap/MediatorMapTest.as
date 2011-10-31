@@ -22,8 +22,8 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import org.robotlegs.v2.extensions.mediatorMap.impl.MediatorMap;
 	import org.robotlegs.v2.extensions.mediatorMap.impl.support.MediatorWatcher;
 	import org.robotlegs.v2.extensions.mediatorMap.support.DuckTypedRL1MediatorTrigger;
-	import org.robotlegs.v2.view.api.IViewHandler;
-	import org.robotlegs.v2.view.api.ViewHandlerEvent;
+	import org.robotlegs.v2.extensions.viewManager.api.IViewHandler;
+	import org.robotlegs.v2.extensions.viewManager.api.ViewHandlerEvent;
 	import org.swiftsuspenders.DescribeTypeJSONReflector;
 	import org.swiftsuspenders.Injector;
 	import org.swiftsuspenders.Reflector;
@@ -76,7 +76,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 
 			injector.map(Rectangle).toValue(new Rectangle(0, 0, expectedViewWidth, expectedViewHeight));
 
-			instance.handleViewAdded(view, null);
+			instance.processView(view, null);
 
 			assertEquals(expectedViewWidth, view.width);
 			assertEquals(expectedViewHeight, view.height);
@@ -103,7 +103,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 		public function doesnt_leave_view_and_mediator_mappings_lying_around():void
 		{
 			instance.map(ExampleMediator).toMatcher(new TypeMatcher().anyOf(MovieClip, Sprite));
-			instance.handleViewAdded(new Sprite(), null);
+			instance.processView(new Sprite(), null);
 
 			assertFalse(injector.satisfies(MovieClip));
 			assertFalse(injector.satisfies(Sprite));
@@ -115,7 +115,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 		{
 			instance.map(ExampleDisplayObjectMediator).toMatcher(new TypeMatcher().allOf(DisplayObject));
 
-			instance.handleViewAdded(new Sprite(), null);
+			instance.processView(new Sprite(), null);
 
 			var expectedNotifications:Vector.<String> = new <String>['ExampleDisplayObjectMediator'];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
@@ -126,7 +126,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 		{
 			instance.map(ExampleDisplayObjectMediator).toMatcher(new TypeMatcher().allOf(MovieClip));
 
-			instance.handleViewAdded(new Sprite(), null);
+			instance.processView(new Sprite(), null);
 
 			var expectedNotifications:Vector.<String> = new <String>[];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
@@ -137,7 +137,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 		{
 			instance.map(ExampleMediator).toView(Sprite);
 
-			instance.handleViewAdded(new Sprite(), null);
+			instance.processView(new Sprite(), null);
 
 			var expectedNotifications:Vector.<String> = new <String>['ExampleMediator'];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
@@ -188,7 +188,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 		[Test(async)]
 		public function invalidate_causes_the_configuration_change_event_to_be_dispatched():void
 		{
-			instance.addEventListener(ViewHandlerEvent.CONFIGURATION_CHANGE,
+			instance.addEventListener(ViewHandlerEvent.HANDLER_CONFIGURATION_CHANGE,
 				Async.asyncHandler(this, benignHandler, 10, null, handleEventTimeout), false, 0, true);
 
 			instance.invalidate();
@@ -201,7 +201,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 			instance.map(ExampleMediator).toView(MovieClip);
 			instance.unmap(ExampleMediator).fromAll();
 
-			var interest:uint = instance.handleViewAdded(new Sprite(), null);
+			var interest:uint = instance.processView(new Sprite(), null);
 			assertEquals(0, interest);
 		}
 
@@ -211,7 +211,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 			instance.map(ExampleDisplayObjectMediator).toMatcher(new TypeMatcher().allOf(DisplayObject));
 			instance.unmap(ExampleDisplayObjectMediator).fromMatcher(new TypeMatcher().allOf(DisplayObject));
 
-			var interest:uint = instance.handleViewAdded(new Sprite(), null);
+			var interest:uint = instance.processView(new Sprite(), null);
 			assertEquals(0, interest);
 		}
 
@@ -221,7 +221,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 			instance.map(ExampleMediator).toView(Sprite);
 			instance.unmap(ExampleMediator).fromMatcher(new TypeMatcher().allOf(Sprite));
 
-			var interest:uint = instance.handleViewAdded(new Sprite(), null);
+			var interest:uint = instance.processView(new Sprite(), null);
 			assertEquals(0, interest);
 		}
 
@@ -231,7 +231,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 			instance.map(ExampleMediator).toView(Sprite);
 			instance.unmap(ExampleMediator).fromView(Sprite);
 
-			var interest:uint = instance.handleViewAdded(new Sprite(), null);
+			var interest:uint = instance.processView(new Sprite(), null);
 			assertEquals(0, interest);
 		}
 
@@ -242,7 +242,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 			instance.map(ExampleMediator).toView(MovieClip);
 			instance.unmap(ExampleMediator).fromMatcher(new TypeMatcher().allOf(MovieClip));
 
-			var interest:uint = instance.handleViewAdded(new Sprite(), null);
+			var interest:uint = instance.processView(new Sprite(), null);
 			assertEquals(1, interest);
 		}
 
@@ -279,7 +279,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 			instance.map(ExampleMediator).toView(Sprite).withGuards(OnlyIfViewHasChildrenGuard);
 			const view:Sprite = new Sprite();
 			view.addChild(new Sprite());
-			instance.handleViewAdded(view, null);
+			instance.processView(view, null);
 
 			var expectedNotifications:Vector.<String> = new <String>['ExampleMediator'];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
@@ -290,7 +290,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 		{
 			instance.map(ExampleMediator).toView(Sprite).withGuards(OnlyIfViewHasChildrenGuard);
 			const view:Sprite = new Sprite();
-			instance.handleViewAdded(view, null);
+			instance.processView(view, null);
 
 			var expectedNotifications:Vector.<String> = new <String>[];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
@@ -301,7 +301,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 		{
 			instance.map(ExampleMediator).toView(Sprite).withGuards(OnlyIfViewHasChildrenGuard);
 
-			var interest:uint = instance.handleViewAdded(new Sprite(), null);
+			var interest:uint = instance.processView(new Sprite(), null);
 
 			assertEquals(1, interest);
 		}
@@ -311,7 +311,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 		{
 			instance.map(ExampleMediator).toView(MovieClip).withGuards(OnlyIfViewHasChildrenGuard);
 
-			var interest:uint = instance.handleViewAdded(new Sprite(), null);
+			var interest:uint = instance.processView(new Sprite(), null);
 
 			assertEquals(0, interest);
 		}
@@ -322,8 +322,8 @@ package org.robotlegs.v2.extensions.mediatorMap
 			instance.map(ExampleMediator).toView(Sprite);
 
 			const view:Sprite = new Sprite();
-			instance.handleViewAdded(view, null);
-			instance.handleViewRemoved(view);
+			instance.processView(view, null);
+			instance.releaseView(view);
 
 			var expectedNotifications:Vector.<String> = new <String>['ExampleMediator', 'ExampleMediator preRemove'];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);

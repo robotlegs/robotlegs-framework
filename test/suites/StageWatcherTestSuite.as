@@ -7,9 +7,10 @@
 
 package suites
 {
-	import org.robotlegs.v2.view.impl.StageWatcher_BasicTests;
-	import org.robotlegs.v2.view.impl.StageWatcher_BlockingTests;
-	import org.robotlegs.v2.view.impl.StageWatcher_OptimisationTests;
+	import org.robotlegs.v2.extensions.viewManager.impl.StageWatcher_BasicTests;
+	import org.robotlegs.v2.extensions.viewManager.impl.StageWatcher_BlockingTests;
+	import org.robotlegs.v2.extensions.viewManager.impl.StageWatcher_OptimisationTests;
+	import org.robotlegs.v2.extensions.viewManager.impl.StageWatcher_TimingTests;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
@@ -21,5 +22,7 @@ package suites
 		public var stageWatcherBlockingTests:StageWatcher_BlockingTests;
 
 		public var stageWatcherOptimisationTests:StageWatcher_OptimisationTests;
+
+		public var stageWatcherTimingTests:StageWatcher_TimingTests;
 	}
 }

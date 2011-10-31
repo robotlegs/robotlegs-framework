@@ -11,8 +11,10 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.utils.Dictionary;
-	import flash.utils.getQualifiedClassName;
 	import org.robotlegs.v2.core.api.ITypeFilter;
+	import org.robotlegs.v2.extensions.viewManager.api.IViewClassInfo;
+	import org.robotlegs.v2.extensions.viewManager.api.IViewHandler;
+	import org.robotlegs.v2.extensions.viewManager.api.ViewHandlerEvent;
 	import org.robotlegs.v2.extensions.guards.GuardsProcessor;
 	import org.robotlegs.v2.extensions.hooks.HooksProcessor;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorConfig;
@@ -20,14 +22,10 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMapping;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorTrigger;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorUnmapping;
-	import org.robotlegs.v2.view.api.IViewClassInfo;
-	import org.robotlegs.v2.view.api.IViewHandler;
-	import org.robotlegs.v2.view.api.IViewWatcher;
-	import org.robotlegs.v2.view.api.ViewHandlerEvent;
 	import org.swiftsuspenders.Injector;
 	import org.swiftsuspenders.Reflector;
 
-	[Event(name="configurationChange", type="org.robotlegs.v2.view.api.ViewHandlerEvent")]
+	[Event(name="configurationChange", type="org.robotlegs.v2.extensions.viewManager.api.ViewHandlerEvent")]
 	public class MediatorMap extends EventDispatcher implements IViewHandler, IMediatorMap
 	{
 
@@ -70,7 +68,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			return _mappingsByMediatorType[mediatorType];
 		}
 
-		public function handleViewAdded(view:DisplayObject, info:IViewClassInfo):uint
+		public function processView(view:DisplayObject, info:IViewClassInfo):uint
 		{
 			// TODO = check _liveMediatorsByView for this view, exit / error if it would overwrite
 
@@ -103,7 +101,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			return interest;
 		}
 
-		public function handleViewRemoved(view:DisplayObject):void
+		public function releaseView(view:DisplayObject):void
 		{
 			if (_liveMediatorsByView[view])
 			{
@@ -126,7 +124,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 
 		public function invalidate():void
 		{
-			dispatchEvent(new ViewHandlerEvent(ViewHandlerEvent.CONFIGURATION_CHANGE));
+			dispatchEvent(new ViewHandlerEvent(ViewHandlerEvent.HANDLER_CONFIGURATION_CHANGE));
 		}
 
 		public function map(mediatorType:Class):IMediatorMapping
@@ -149,12 +147,12 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 
 		public function mediate(view:DisplayObject):Boolean
 		{
-			return (handleViewAdded(view, null) > 0);
+			return (processView(view, null) > 0);
 		}
 
 		public function unmediate(view:DisplayObject):void
 		{
-			handleViewRemoved(view);
+			releaseView(view);
 		}
 
 		protected function onEnterFrameActionShutdown(e:Event):void

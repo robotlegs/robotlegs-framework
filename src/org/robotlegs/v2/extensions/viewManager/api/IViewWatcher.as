@@ -5,20 +5,18 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.view.api
+package org.robotlegs.v2.extensions.viewManager.api
 {
 	import flash.display.DisplayObject;
-	import flash.events.IEventDispatcher;
 
-	[Event(name="configurationChange", type="org.robotlegs.v2.view.api.ViewHandlerEvent")]
-	public interface IViewHandler extends IEventDispatcher
+	public interface IViewWatcher
 	{
-		function get interests():uint;
+		function configure(viewProcessor:IViewProcessor):void;
 
-		function handleViewAdded(view:DisplayObject, info:IViewClassInfo):uint;
+		function onViewProcessed(view:DisplayObject):void;
 
-		function handleViewRemoved(view:DisplayObject):void;
+		function onViewReleased(view:DisplayObject):void;
 
-		function invalidate():void;
+		function destroy():void;
 	}
 }

@@ -10,6 +10,8 @@
 /reports/*
 /target/*
 /dist/*
+/target
+/lib/asunit3/*
 
 .actionScriptProperties
 .flexProperties
@@ -29,3 +31,5 @@ src/FlexUnitApplication.mxml
 *.iml
 *.ipr
 *.iws
+
+target/test-classes/TestRunner.mxml

@@ -5,10 +5,10 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.view.impl
+package org.robotlegs.v2.extensions.viewManager.impl
 {
 	import flash.system.ApplicationDomain;
-	import org.robotlegs.v2.view.api.IViewClassInfo;
+	import org.robotlegs.v2.extensions.viewManager.api.IViewClassInfo;
 
 	public class ViewClassInfo implements IViewClassInfo
 	{

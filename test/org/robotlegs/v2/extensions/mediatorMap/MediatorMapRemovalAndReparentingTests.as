@@ -83,8 +83,8 @@ package org.robotlegs.v2.extensions.mediatorMap
 		public function handleViewRemoved_shutdown_is_not_run_immediately_if_view_parent_not_null():void
 		{
 			container1.addChild(view);
-			instance.handleViewAdded(view, null);
-			instance.handleViewRemoved(view);
+			instance.processView(view, null);
+			instance.releaseView(view);
 			assertThat(trigger, received().method('shutdown').never());
 		}
 
@@ -92,8 +92,8 @@ package org.robotlegs.v2.extensions.mediatorMap
 		public function handleViewRemoved_shutdown_is_run_after_EnterFrame():void
 		{
 			container1.addChild(view);
-			instance.handleViewAdded(view, null);
-			instance.handleViewRemoved(view);
+			instance.processView(view, null);
+			instance.releaseView(view);
 			view.dispatchEvent(new Event(Event.ENTER_FRAME));
 			assertThat(trigger, received().method('shutdown'));
 		}
@@ -101,8 +101,8 @@ package org.robotlegs.v2.extensions.mediatorMap
 		[Test]
 		public function handleViewRemoved_shutdown_is_run_immediately_if_view_parent_is_null():void
 		{
-			instance.handleViewAdded(view, null);
-			instance.handleViewRemoved(view);
+			instance.processView(view, null);
+			instance.releaseView(view);
 			assertThat(trigger, received().method('shutdown'));
 		}
 
@@ -110,8 +110,8 @@ package org.robotlegs.v2.extensions.mediatorMap
 		public function handleViewRemoved_shutdown_only_runs_once_for_multiple_ENTER_FRAMEs():void
 		{
 			container1.addChild(view);
-			instance.handleViewAdded(view, null);
-			instance.handleViewRemoved(view);
+			instance.processView(view, null);
+			instance.releaseView(view);
 			view.dispatchEvent(new Event(Event.ENTER_FRAME));
 			view.dispatchEvent(new Event(Event.ENTER_FRAME));
 			view.dispatchEvent(new Event(Event.ENTER_FRAME));
@@ -122,9 +122,9 @@ package org.robotlegs.v2.extensions.mediatorMap
 		public function shutdown_doesnt_run_if_handleViewAdded_runs_with_same_view_before_enterFrame():void
 		{
 			container1.addChild(view);
-			instance.handleViewAdded(view, null);
-			instance.handleViewRemoved(view);
-			instance.handleViewAdded(view, null);
+			instance.processView(view, null);
+			instance.releaseView(view);
+			instance.processView(view, null);
 			view.dispatchEvent(new Event(Event.ENTER_FRAME));
 			assertThat(trigger, received().method('shutdown').never());
 		}
@@ -133,10 +133,10 @@ package org.robotlegs.v2.extensions.mediatorMap
 		public function startup_does_run_if_handleViewAdded_runs_with_a_view_after_it_has_been_removed_and_EnterFrame_ran():void
 		{
 			container1.addChild(view);
-			instance.handleViewAdded(view, null);
-			instance.handleViewRemoved(view);
+			instance.processView(view, null);
+			instance.releaseView(view);
 			view.dispatchEvent(new Event(Event.ENTER_FRAME));
-			instance.handleViewAdded(view, null);
+			instance.processView(view, null);
 			assertThat(trigger, received().method('startup').twice());
 		}
 
@@ -144,9 +144,9 @@ package org.robotlegs.v2.extensions.mediatorMap
 		public function startup_doesnt_run_again_if_handleViewAdded_runs_with_a_view_marked_for_removal():void
 		{
 			container1.addChild(view);
-			instance.handleViewAdded(view, null);
-			instance.handleViewRemoved(view);
-			instance.handleViewAdded(view, null);
+			instance.processView(view, null);
+			instance.releaseView(view);
+			instance.processView(view, null);
 			assertThat(trigger, received().method('startup').once());
 		}
 
