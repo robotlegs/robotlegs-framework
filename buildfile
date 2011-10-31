@@ -5,12 +5,15 @@ require "buildr/as3" # needs buildr-as3 v0.2.25.pre
 # Then you can run buildr isolated: bundle exec buildr [tasks] ...
 
 repositories.remote << "http://artifacts.devboy.org" << "http://repo2.maven.org/maven2"
+repositories.release_to[:url] = 'http://snapshot.artifacts.devboy.org/'
+repositories.release_to[:username] = ENV["ruser"]
+repositories.release_to[:password] = ENV["rpass"]
 
 layout = Layout::Default.new
 layout[:source, :main, :as3] = "src"
 layout[:source, :test, :as3] = "test"
 
-THIS_VERSION = "2.0.0b1"
+THIS_VERSION = "2.0.0b1-SNAPSHOT"
 
 define "robotlegs-framework", :layout => layout do
   
