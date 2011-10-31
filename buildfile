@@ -21,12 +21,11 @@ define "robotlegs-framework", :layout => layout do
   args = ["-include-file=metadata.xml,#{_(:source,:main,:as3,"metadata.xml")}"]
   compile.using( :compc, :flexsdk => flexsdk, :other => args ).with( swifts, libs )
   
+  headless = Buildr.environment == "test"
   testrunner = _(:source, :test, :as3, "RobotlegsTest.mxml")
   flexunitswcs = Buildr::AS3::Test::FlexUnit4.swcs
-  test.using(:flexunit4 => true, :haltonFailure => true).compile.using(
-    :main => testrunner,
-    :other => []
-  ).with( flexunitswcs )
+  test.using(:flexunit4 => true, :headless => headless)
+  test.compile.using( :main => testrunner, :other => [] ).with( flexunitswcs )
   
   doc_title = "Robotlegs #{ props["robotlegs.ver.num"] }"
   doc.using :maintitle => doc_title,
@@ -56,9 +55,11 @@ define "robotlegs-framework", :layout => layout do
     swc_zip.invoke 
     
     rl_zip = zip( _(:target, "#{project.name}-#{project.version}.zip") )
+    rl_zip.include(_(:src))
+    rl_zip.include(_(:LICENCE))
     rl_zip.include(_(:target,:README))
+    rl_zip.include(_("CHANGELOG.textile"), :as => "CHANGELOG")
     rl_zip.include(_(:target, "tmpswc.swc"), :as => "bin/#{project.name}-#{project.version}.swc")
-    rl_zip.include(_())
     rl_zip.path('docs').include(_(:target,:doc), :as => "docs").exclude(_(:target,:doc,:tempdita))
     rl_zip.path('lib').include( swifts )
     rl_zip.invoke
@@ -79,6 +80,7 @@ def doc_args
     "-package", "org.robotlegs.v2.core.api", "Core framework API",
     "-package", "org.robotlegs.v2.core.impl", "Core framework implementation" ]
 end
+
 
 def flexsdk
   @flexsdk ||= begin
