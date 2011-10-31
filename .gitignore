@@ -8,6 +8,7 @@
 /obj/*
 /report/*
 /dist/*
+/lib/asunit3/*
 
 .actionScriptProperties
 .flexProperties
