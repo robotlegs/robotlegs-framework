@@ -17,22 +17,27 @@ define "robotlegs-framework", :layout => layout do
   project.group = "org.robotlegs"  
   project.version = props["robotlegs.ver.num"]  
   
-  swifts = _(:lib, "SwiftSuspenders-#{props["swift.suspenders.version"]}.swc")
+  # swifts = _(:lib, "SwiftSuspenders-#{props["swift.suspenders.version"]}.swc")
   libs = _(:lib)
-  args = ["-include-file=metadata.xml,#{_(:source,:main,:as3,"metadata.xml")}"]
-  compile.using( :compc, :flexsdk => flexsdk, :args => args ).with( swifts, libs )
-  
+  args = [
+    "-include-file+=metadata.xml,#{_(:src,"metadata.xml")}",
+    "-include-file+=manifest.xml,#{_(:src,"manifest.xml")}",
+    "-include-file+=design.xml,#{_(:src,"design.xml")}",
+    "-namespace+=http://ns.robotlegs.org/flex/rl2,#{_(:src,"manifest.xml")}",
+    "-include-namespaces+=http://ns.robotlegs.org/flex/rl2"
+  ]
+  compile.using( :compc, :flexsdk => flexsdk, :args => args ).with( libs )
+
+  headless = Buildr.environment == "test"
   testrunner = _(:source, :test, :as3, "RobotlegsTest.mxml")
   flexunitswcs = Buildr::AS3::Test::FlexUnit4.swcs
-  test.using(:flexunit4 => true, :haltonFailure => true).compile.using(
-    :main => testrunner,
-    :args => []
-  ).with( flexunitswcs )
-  
+  test.using(:flexunit4 => true, :headless => headless)
+  test.compile.using( :main => testrunner, :args => [] ).with( flexunitswcs )
+
   doc_title = "Robotlegs #{ props["robotlegs.ver.num"] }"
-  doc.using :maintitle => doc_title,
+  doc.using :maintitle   => doc_title,
             :windowtitle => doc_title, 
-            :args => doc_args
+            :args        => doc_args
   
   task :package => :doc do
     
@@ -57,11 +62,13 @@ define "robotlegs-framework", :layout => layout do
     swc_zip.invoke 
     
     rl_zip = zip( _(:target, "#{project.name}-#{project.version}.zip") )
+    rl_zip.include(_(:src))
+    rl_zip.include(_(:LICENSE))
     rl_zip.include(_(:target,:README))
+    rl_zip.include(_("CHANGELOG.textile"), :as => "CHANGELOG")
     rl_zip.include(_(:target, "tmpswc.swc"), :as => "bin/#{project.name}-#{project.version}.swc")
-    rl_zip.include(_())
     rl_zip.path('docs').include(_(:target,:doc), :as => "docs").exclude(_(:target,:doc,:tempdita))
-    rl_zip.path('lib').include( swifts )
+    rl_zip.path('lib').include( libs )
     rl_zip.invoke
     
     FileUtils.rm_r _(:target, "tmpswc.swc")
@@ -80,6 +87,7 @@ def doc_args
     "-package", "org.robotlegs.v2.core.api", "Core framework API",
     "-package", "org.robotlegs.v2.core.impl", "Core framework implementation" ]
 end
+
 
 def flexsdk
   @flexsdk ||= begin
