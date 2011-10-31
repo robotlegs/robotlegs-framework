@@ -11,11 +11,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 	
 	public class Mediator implements IMediator
 	{
-		
-		/*============================================================================*/
-		/* Protected Properties                                                       */
-		/*============================================================================*/
-		
+
 		protected var _viewComponent:Object;
 
 		/*============================================================================*/
