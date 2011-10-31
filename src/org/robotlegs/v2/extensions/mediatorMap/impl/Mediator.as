@@ -8,11 +8,19 @@
 package org.robotlegs.v2.extensions.mediatorMap.impl
 {
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediator;
+	import org.robotlegs.core.IEventMap;
+	import flash.events.Event;
+	import flash.events.IEventDispatcher;
 
 	public class Mediator implements IMediator
 	{
-
+		[Inject]
+		public var eventMap:IEventMap;
+		
 		protected var _viewComponent:Object;
+		
+		protected var _waitEventString:String;
+		protected var _waitEventClass:Class = Event;
 
 		public function Mediator()
 		{
@@ -20,7 +28,14 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 
 		public function preRegister():void
 		{
-			onRegister();
+			if(_waitEventString)
+			{
+				eventMap.mapListener(IEventDispatcher(_viewComponent), _waitEventString, runOnRegister, _waitEventClass);
+			}
+			else
+			{
+				onRegister();
+			}
 		}
 
 		public function preRemove():void
@@ -46,6 +61,17 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		protected function onRemove():void
 		{
 
+		}
+		
+		protected function waitForEvent(eventString:String, eventClass:Class):void
+		{
+			_waitEventString = eventString;
+			_waitEventClass = eventClass;
+		}
+		
+		protected function runOnRegister(e:Event):void
+		{
+			onRegister();
 		}
 	}
 }

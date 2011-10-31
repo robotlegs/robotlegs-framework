@@ -12,6 +12,10 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediator;
 	import org.robotlegs.v2.extensions.mediatorMap.impl.support.MediatorWatcher;
 	import org.robotlegs.v2.extensions.mediatorMap.impl.support.TrackingMediator;
+	import org.robotlegs.v2.extensions.mediatorMap.impl.support.TrackingMediatorWaitsForGiven;
+	import flash.events.Event;
+	import org.robotlegs.base.EventMap;
+	import flash.events.EventDispatcher;
 
 	public class MediatorTest
 	{
@@ -59,7 +63,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		}
 
 		[Test]
-		public function preRegister_runs_onRegister_immediately_for_nonFlex():void
+		public function preRegister_runs_onRegister_immediately_for_item_without_wait_event():void
 		{
 			trackingMediator.setViewComponent(new Sprite());
 			trackingMediator.preRegister();
@@ -68,11 +72,45 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		}
 
 		[Test]
-		public function preRemove_runs_onRemove_immediately_for_nonFlex():void
+		public function preRemove_runs_onRemove_immediately():void
 		{
 			trackingMediator.setViewComponent(new Sprite());
 			trackingMediator.preRemove();
 			var expectedNotifications:Vector.<String> = new <String>[TrackingMediator.ON_REMOVE];
+			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
+		}
+		
+		[Test]
+		public function preRegister_runs_onRegister_after_required_event():void
+		{
+			var trackingMediatorWaiting:TrackingMediatorWaitsForGiven;
+			trackingMediatorWaiting = new TrackingMediatorWaitsForGiven(mediatorWatcher, Event.COMPLETE, Event);
+			
+			var view:Sprite = new Sprite();
+			
+			trackingMediatorWaiting.eventMap = new EventMap(new EventDispatcher());
+			trackingMediatorWaiting.setViewComponent(view);
+			trackingMediatorWaiting.preRegister();
+			
+			view.dispatchEvent(new Event(Event.COMPLETE));
+						
+			var expectedNotifications:Vector.<String> = new <String>[TrackingMediatorWaitsForGiven.ON_REGISTER];
+			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
+		}
+		
+		[Test]
+		public function preRegister_does_NOT_run_onRegister_before_required_event():void
+		{
+			var trackingMediatorWaiting:TrackingMediatorWaitsForGiven;
+			trackingMediatorWaiting = new TrackingMediatorWaitsForGiven(mediatorWatcher, Event.COMPLETE, Event);
+			
+			var view:Sprite = new Sprite();
+
+			trackingMediatorWaiting.eventMap = new EventMap(new EventDispatcher());
+			trackingMediatorWaiting.setViewComponent(view);
+			trackingMediatorWaiting.preRegister();
+									
+			var expectedNotifications:Vector.<String> = new <String>[];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
 		}
 
@@ -82,7 +120,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			assertTrue("Failing test", true);
 		}
 		// mediator pauses event map on view removed and resumes again on view added
-		// flex workarounds for creation complete etc
 		// sugar methods for add / remove view listener and context listener
+		// don't run the onRegister if 'removed'
 	}
 }
