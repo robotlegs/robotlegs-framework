@@ -119,6 +119,11 @@
 		<sourceDirectory>src</sourceDirectory>
 
 		<testSourceDirectory>test</testSourceDirectory>
+		
+		<resources>
+			<resource><directory>src</directory></resource>	
+		</resources>
+		
 		<plugins>
 			<plugin>
 				<groupId>org.sonatype.flexmojos</groupId>
@@ -131,9 +136,9 @@
 						<keepAs3Metadata>PostConstruct</keepAs3Metadata>
 					</keepAs3Metadatas>
 					<includeFiles>
-						<include>${project.build.sourceDirectory}/metadata.xml</include>
-						<include>${project.build.sourceDirectory}/manifest.xml</include>
-						<include>${project.build.sourceDirectory}/design.xml</include>
+						<include>metadata.xml</include>
+						<include>manifest.xml</include>
+						<include>design.xml</include>
 					</includeFiles>
 					<dumpConfigAttach>true</dumpConfigAttach>
 					<verboseStacktraces>true</verboseStacktraces>
