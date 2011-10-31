@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                      http://maven.apache.org/xsd/settings-1.0.0.xsd">
+	
+	<profiles>
+		<profile>
+			<id>flexgroup-on-sonatype</id>
+			<repositories>
+				<repository>
+					<id>Sonatype Flex Group</id>
+					<url>http://repository.sonatype.org/content/groups/flexgroup/</url>
+				</repository>
+			</repositories>
+			<pluginRepositories>
+				<pluginRepository>
+					<id>Sonatype Flex Group</id>
+					<url>http://repository.sonatype.org/content/groups/flexgroup/</url>
+				</pluginRepository>
+			</pluginRepositories>
+		</profile>
+	</profiles>
+	
+	<!-- NOTE: this will deactivate any "activeByDefault" profiles in the project POM -->
+	<activeProfiles>
+	    <activeProfile>flexgroup-on-sonatype</activeProfile>
+	  </activeProfiles>
+</settings>

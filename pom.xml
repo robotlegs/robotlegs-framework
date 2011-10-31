@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <!--
         JIRA Ticket for Sonatype to allow Robotlegs to be hosted/deployed: https://issues.sonatype.org/browse/OSSRH-288
 
@@ -9,45 +11,57 @@
         swiftsuspenders project isn't available in a maven repository at this time.
     -->
 
-   <modelVersion>4.0.0</modelVersion>
+	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.robotlegs</groupId>
 	<artifactId>robotlegs-framework</artifactId>
+	
 	<version>2.0.0-b1</version>
+	
 	<packaging>swc</packaging>
+	
 	<name>Robotlegs Framework</name>
 	<description>
-		Robotlegs is a pure AS3 micro-architecture (framework) with a light footprint and limited scope. Simply put, Robotlegs is there to help you wire 		your objects together. It provides the glue that your application needs to easily function in a decoupled way. Through the use of automated metadata based dependency injection Robotlegs removes boilerplate code in an application. By promoting loose coupling and avoiding the use of Singletons and statics in the framework Robotlegs can help you write code that is highly testable.</description>
-    <url>http://www.robotlegs.org</url>
-    <licenses>
-        <license>
-            <name>Robotlegs Custom License</name>
-            <url>http://github.com/robotlegs/robotlegs-framework/blob/master/LICENSE</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
+		Robotlegs is a pure AS3 micro-architecture (framework) with a light footprint and limited scope. Simply put, Robotlegs is there to help you wire 		your objects together. It provides the glue that your application needs to easily function in a decoupled way. Through the use of automated metadata based dependency injection Robotlegs removes boilerplate code in an application. By promoting loose coupling and avoiding the use of Singletons and statics in the framework Robotlegs can help you write code that is highly testable.
+	</description>
+	<url>http://www.robotlegs.org</url>
+	<licenses>
+		<license>
+			<name>Robotlegs Custom License</name>
+			<url>http://github.com/robotlegs/robotlegs-framework/blob/master/LICENSE</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 
-    <developers>
-        <developer>
-            <id>darscan</id>
-            <name>Shaun Smith</name>
-            <email></email>
-            <roles>
-                <role>Founder</role>
-            </roles>
-        </developer>
-        <developer>
-            <id>joelhooks</id>
-            <name>Joel Hooks</name>
-            <email>joelhooks@gmail.com</email>
-            <url>http://joelhooks.com/</url>
-        </developer>
-    </developers>
-    <contributors>
-        <contributor>
-            <name>Craig Wickesser</name>
-            <email>codecraig@gmail.com</email>
-            <url>http://digitalchickenscratch.com/</url>
-        </contributor>
+	<developers>
+		<developer>
+			<id>darscan</id>
+			<name>Shaun Smith</name>
+			<email></email>
+			<roles>
+				<role>Founder</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>joelhooks</id>
+			<name>Joel Hooks</name>
+			<email>joelhooks@gmail.com</email>
+			<url>http://joelhooks.com/</url>
+		</developer>
+		<developer>
+			<id>stray</id>
+			<name>Stray</name>
+			<url>http://www.xxcoder.net/</url>
+		</developer>
+	</developers>
+	<contributors>
+		<contributor>
+			<name>Craig Wickesser</name>
+			<email>codecraig@gmail.com</email>
+			<url>http://digitalchickenscratch.com/</url>
+			<roles>
+				<role>Maven contributor</role>
+			</roles>
+		</contributor>
 		<contributor>
 			<name>Justin J. Moses</name>
 			<url>http://about.me/justinj</url>
@@ -55,27 +69,12 @@
 				<role>Maven contributor</role>
 			</roles>
 		</contributor>
-    </contributors>
+	</contributors>
 
-    <scm>
-        <url>http://github.com/robotlegs/robotlegs-framework/tree/version2</url>
-        <connection>git://github.com/robotlegs/robotlegs-framework.git</connection>
-    </scm>
-
-    <repositories>
-        <repository>
-            <id>Sonatype Flex Group</id>
-            <url>http://repository.sonatype.org/content/groups/flexgroup/</url>
-        </repository>
-    </repositories>
-
-	<pluginRepositories>
-        <pluginRepository>
-            <id>Sonatype Flex Group</id>
-            <url>http://repository.sonatype.org/content/groups/flexgroup/</url>
-        </pluginRepository>
-    </pluginRepositories>
-
+	<scm>
+		<url>http://github.com/robotlegs/robotlegs-framework/tree/version2</url>
+		<connection>git://github.com/robotlegs/robotlegs-framework.git</connection>
+	</scm>
 
 	<properties>
 		<maven.version>3.0.3</maven.version>
@@ -148,9 +147,6 @@
 					<includeTestFiles>
 						<includeTestFile>suites/EntireTestSuite.as</includeTestFile>
 					</includeTestFiles>
-					<includeSources>
-					  <includeSource>${project.build.sourceDirectory}</includeSource>
-					</includeSources>
 				</configuration>
 				<dependencies>
 					<dependency>
@@ -161,37 +157,10 @@
 					</dependency>
 				</dependencies>
 			</plugin>
-<!--
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>properties-maven-plugin</artifactId>
-                <version>1.0-alpha-1</version>
-                <executions>
-                  <execution>
-                    <phase>initialize</phase>
-                    <goals>
-                      <goal>read-project-properties</goal>
-                    </goals>
-                    <configuration>
-                      <files>
-                        <file>${basedir}/build.properties</file>
-                      </files>
-                    </configuration>
-                  </execution>
-                </executions>
-            </plugin>
--->
 	</plugins>
 	</build>
 
-    <dependencies>
-	<!--
-        <dependency>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>properties-maven-plugin</artifactId>
-            <version>1.0-alpha-1</version>
-        </dependency>
--->
+	<dependencies>
 		<dependency>
 			<groupId>com.adobe.flex.framework</groupId>
 			<artifactId>flex-framework</artifactId>
