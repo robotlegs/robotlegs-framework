@@ -142,8 +142,7 @@
 	</build>
 
 	<dependencies>
-		<!-- Note: while this includes the entire flex framework for compilation, the default for SWCs is external linkage, so nothing from the  
-		 Flex framework will be added to the final output. --->
+		<!-- Note: while this includes the entire flex framework for compilation, the default for SWCs is external linkage, so nothing from the Flex framework will be added to the final output. -->
 		<dependency>
 			<groupId>com.adobe.flex.framework</groupId>
 			<artifactId>flex-framework</artifactId>
