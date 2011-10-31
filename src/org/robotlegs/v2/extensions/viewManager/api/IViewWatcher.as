@@ -5,17 +5,19 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.displayList.api
+package org.robotlegs.v2.extensions.viewManager.api
 {
-	import flash.system.ApplicationDomain;
+	import flash.display.DisplayObject;
+	import org.robotlegs.v2.extensions.viewManager.impl.ViewProcessor;
 
-	public interface IViewClassInfo
+	public interface IViewWatcher
 	{
-		function get applicationDomain():ApplicationDomain;
-		function get fqcn():String;
-		function get type():Class;
-		function get typeNames():Vector.<String>;
+		function configure(viewProcessor:ViewProcessor):void;
 
-		function isType(type:Class):Boolean;
+		function onViewProcessed(view:DisplayObject):void;
+
+		function onViewReleased(view:DisplayObject):void;
+
+		function destroy():void;
 	}
 }

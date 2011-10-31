@@ -5,23 +5,17 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.displayList.api
+package org.robotlegs.v2.extensions.viewManager.api
 {
-	import flash.events.Event;
+	import flash.system.ApplicationDomain;
 
-	public class ViewHandlerEvent extends Event
+	public interface IViewClassInfo
 	{
+		function get applicationDomain():ApplicationDomain;
+		function get fqcn():String;
+		function get type():Class;
+		function get typeNames():Vector.<String>;
 
-		public static const CONFIGURATION_CHANGE:String = 'configurationChange';
-
-		public function ViewHandlerEvent(type:String)
-		{
-			super(type);
-		}
-
-		override public function clone():Event
-		{
-			return new ViewHandlerEvent(type);
-		}
+		function isType(type:Class):Boolean;
 	}
 }

@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.displayList.impl
+package org.robotlegs.v2.extensions.viewManager.impl
 {
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
@@ -14,9 +14,10 @@ package org.robotlegs.v2.extensions.displayList.impl
 	import org.fluint.uiImpersonation.UIImpersonator;
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.equalTo;
-	import org.robotlegs.v2.extensions.displayList.api.IViewClassInfo;
-	import org.robotlegs.v2.extensions.displayList.api.IViewWatcher;
-	import org.robotlegs.v2.extensions.displayList.impl.support.ViewHandlerSupport;
+	import org.robotlegs.v2.extensions.viewManager.api.IViewClassInfo;
+	import org.robotlegs.v2.extensions.viewManager.api.IViewWatcher;
+	import org.robotlegs.v2.extensions.viewManager.impl.support.ViewHandlerSupport;
+	import org.robotlegs.v2.extensions.viewManager.utilities.watchers.AutoStageWatcher;
 
 	public class StageWatcher_OptimisationTests
 	{
@@ -25,14 +26,18 @@ package org.robotlegs.v2.extensions.displayList.impl
 
 		protected var group:UIComponent;
 
-		protected var watcher:IViewWatcher;
+		protected var viewProcessor:ViewProcessor;
+
+		protected var viewWatcher:IViewWatcher;
 
 		[Before(ui)]
 		public function setUp():void
 		{
 			group = new UIComponent()
 			container = new Sprite();
-			watcher = new StageWatcher();
+			viewProcessor = new ViewProcessor();
+			viewWatcher = new AutoStageWatcher(viewProcessor.containerRegistry);
+			viewWatcher.configure(viewProcessor);
 
 			group.addChild(container)
 			UIImpersonator.addChild(group);
@@ -41,12 +46,12 @@ package org.robotlegs.v2.extensions.displayList.impl
 		[After]
 		public function tearDown():void
 		{
-			watcher = null;
+			viewWatcher.destroy();
 			UIImpersonator.removeAllChildren();
 		}
 
 		[Test]
-		public function a_handler_that_doesnt_handle_a_view_SHOULD_be_reconsulted_after_invalidation():void
+		public function a_handler_that_doesnt_handle_a_view_SHOULD_be_reconsulted_after_processor_invalidation():void
 		{
 			var addedCallCount:int;
 			const handler:ViewHandlerSupport = new ViewHandlerSupport(
@@ -57,7 +62,28 @@ package org.robotlegs.v2.extensions.displayList.impl
 				{
 					addedCallCount++;
 				});
-			watcher.addHandler(handler, container);
+			viewProcessor.addHandler(handler, container);
+			container.addChild(new Sprite());
+			container.addChild(new Sprite());
+			handler.invalidate();
+			container.addChild(new Sprite());
+			container.addChild(new Sprite());
+			assertThat(addedCallCount, equalTo(2));
+		}
+
+		[Test]
+		public function a_handler_that_doesnt_handle_a_view_SHOULD_be_reconsulted_after_watcher_invalidation():void
+		{
+			var addedCallCount:int;
+			const handler:ViewHandlerSupport = new ViewHandlerSupport(
+				0x1,
+				0x0,
+				false,
+				function onAdded(view:DisplayObject, info:IViewClassInfo, response:uint):void
+				{
+					addedCallCount++;
+				});
+			viewProcessor.addHandler(handler, container);
 			container.addChild(new Sprite());
 			container.addChild(new Sprite());
 			handler.invalidate();
@@ -78,10 +104,10 @@ package org.robotlegs.v2.extensions.displayList.impl
 				{
 					addedCallCount++;
 				});
-			watcher.addHandler(handler, container);
+			viewProcessor.addHandler(handler, container);
 			container.addChild(new Sprite());
 			container.addChild(new Sprite());
-			watcher.addHandler(new ViewHandlerSupport(0x1), container);
+			viewProcessor.addHandler(new ViewHandlerSupport(0x1), container);
 			container.addChild(new Sprite());
 			container.addChild(new Sprite());
 			assertThat(addedCallCount, equalTo(2));
@@ -99,7 +125,7 @@ package org.robotlegs.v2.extensions.displayList.impl
 				{
 					addedCallCount++;
 				});
-			watcher.addHandler(handler, container);
+			viewProcessor.addHandler(handler, container);
 			container.addChild(new Sprite());
 			container.addChild(new Sprite());
 			container.addChild(new Sprite());

@@ -17,7 +17,7 @@ package org.robotlegs.v2.extensions.hooks
 	import org.robotlegs.v2.extensions.hooks.support.HookTracker;
 	import org.robotlegs.v2.extensions.hooks.support.TrackableHook1;
 	import org.robotlegs.v2.extensions.hooks.support.TrackableHook2;
-	import org.robotlegs.v2.extensions.displayList.api.IViewHandler;
+	import org.robotlegs.v2.extensions.viewManager.api.IViewHandler;
 	import org.swiftsuspenders.DescribeTypeJSONReflector;
 	import org.swiftsuspenders.Injector;
 	import org.swiftsuspenders.Reflector;
@@ -62,7 +62,7 @@ package org.robotlegs.v2.extensions.hooks
 		public function handleViewAdded_returns_0_if_not_interested():void
 		{
 			instance.mapMatcher(new TypeMatcher().allOf(MovieClip)).withHooks(TrackableHook1, TrackableHook2);
-			const returned:uint = instance.handleViewAdded(new Sprite(), null);
+			const returned:uint = instance.processView(new Sprite(), null);
 			assertEquals(0, returned);
 		}
 
@@ -70,7 +70,7 @@ package org.robotlegs.v2.extensions.hooks
 		public function handleViewAdded_returns_1_if_interested():void
 		{
 			instance.mapMatcher(new TypeMatcher().allOf(DisplayObject)).withHooks(TrackableHook1, TrackableHook2);
-			const returned:uint = instance.handleViewAdded(new Sprite(), null);
+			const returned:uint = instance.processView(new Sprite(), null);
 			assertEquals(1, returned);
 		}
 
@@ -84,7 +84,7 @@ package org.robotlegs.v2.extensions.hooks
 		public function running_handler_with_view_that_doesnt_match_mapping_doesnt_make_hooks_run():void
 		{
 			instance.map(MovieClip).withHooks(TrackableHook1, TrackableHook2);
-			instance.handleViewAdded(new Sprite(), null);
+			instance.processView(new Sprite(), null);
 
 			var expectedHooksConfirmed:Vector.<String> = new <String>[];
 			assertEqualsVectorsIgnoringOrder(expectedHooksConfirmed, hookTracker.hooksConfirmed);
@@ -94,7 +94,7 @@ package org.robotlegs.v2.extensions.hooks
 		public function running_handler_with_view_that_doesnt_match_matcher_mapping_doesnt_make_hooks_run():void
 		{
 			instance.mapMatcher(new TypeMatcher().allOf(MovieClip)).withHooks(TrackableHook1, TrackableHook2);
-			instance.handleViewAdded(new Sprite(), null);
+			instance.processView(new Sprite(), null);
 
 			var expectedHooksConfirmed:Vector.<String> = new <String>[];
 			assertEqualsVectorsIgnoringOrder(expectedHooksConfirmed, hookTracker.hooksConfirmed);
@@ -104,7 +104,7 @@ package org.robotlegs.v2.extensions.hooks
 		public function running_handler_with_view_that_matches_mapping_makes_hooks_run():void
 		{
 			instance.map(Sprite).withHooks(TrackableHook1, TrackableHook2);
-			instance.handleViewAdded(new Sprite(), null);
+			instance.processView(new Sprite(), null);
 
 			var expectedHooksConfirmed:Vector.<String> = new <String>['TrackableHook1', 'TrackableHook2'];
 			assertEqualsVectorsIgnoringOrder('both hooks have run', expectedHooksConfirmed, hookTracker.hooksConfirmed);
@@ -114,7 +114,7 @@ package org.robotlegs.v2.extensions.hooks
 		public function running_handler_with_view_that_matches_matcher_mapping_makes_hooks_run():void
 		{
 			instance.mapMatcher(new TypeMatcher().allOf(DisplayObject)).withHooks(TrackableHook1, TrackableHook2);
-			instance.handleViewAdded(new Sprite(), null);
+			instance.processView(new Sprite(), null);
 
 			var expectedHooksConfirmed:Vector.<String> = new <String>['TrackableHook1', 'TrackableHook2'];
 			assertEqualsVectorsIgnoringOrder(expectedHooksConfirmed, hookTracker.hooksConfirmed);

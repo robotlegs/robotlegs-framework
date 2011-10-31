@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.displayList.api
+package org.robotlegs.v2.extensions.viewManager.api
 {
 	import flash.display.DisplayObjectContainer;
 
@@ -15,12 +15,10 @@ package org.robotlegs.v2.extensions.displayList.api
 
 		function addHandler(handler:IViewHandler):void;
 
-		function addWatcher(watcher:IViewWatcher):void;
-
 		function removeContainer(container:DisplayObjectContainer):void;
 
 		function removeHandler(handler:IViewHandler):void;
 
-		function removeWatcher(watcher:IViewWatcher):void;
+		function removeAll():void;
 	}
 }

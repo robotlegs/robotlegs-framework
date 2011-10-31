@@ -5,13 +5,12 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.displayList.impl
+package org.robotlegs.v2.extensions.viewManager.impl
 {
 	import flash.display.DisplayObjectContainer;
-	import org.robotlegs.v2.extensions.displayList.api.IContainerBinding;
-	import org.robotlegs.v2.extensions.displayList.api.IViewHandler;
+	import org.robotlegs.v2.extensions.viewManager.api.IViewHandler;
 
-	public class ContainerBinding implements IContainerBinding
+	public class ContainerBinding
 	{
 
 		protected var _container:DisplayObjectContainer;
@@ -28,14 +27,14 @@ package org.robotlegs.v2.extensions.displayList.impl
 			return _handlers;
 		}
 
-		protected var _parent:IContainerBinding;
+		protected var _parent:ContainerBinding;
 
-		public function get parent():IContainerBinding
+		public function get parent():ContainerBinding
 		{
 			return _parent;
 		}
 
-		public function set parent(value:IContainerBinding):void
+		public function set parent(value:ContainerBinding):void
 		{
 			_parent = value;
 		}
@@ -47,6 +46,8 @@ package org.robotlegs.v2.extensions.displayList.impl
 
 		public function addHandler(handler:IViewHandler):void
 		{
+			if (!handler.interests)
+				throw new ArgumentError("A handler must be interested in something");
 			if (_handlers.indexOf(handler) == -1)
 				_handlers.push(handler);
 		}

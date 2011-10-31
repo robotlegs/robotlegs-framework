@@ -13,7 +13,7 @@ package org.robotlegs.v2.bundles.classic
 	import org.robotlegs.v2.core.api.IContextBuilder;
 	import org.robotlegs.v2.core.api.IContextBuilderBundle;
 	import org.robotlegs.v2.extensions.autoDestroy.AutoDestroyExtension;
-	import org.robotlegs.v2.extensions.displayList.DisplayListExtension;
+	import org.robotlegs.v2.extensions.viewManager.ViewManagerExtension;
 	import org.robotlegs.v2.extensions.logging.SimpleLoggingExtension;
 
 	public class ClassicRobotlegsBundle implements IContextBuilderBundle
@@ -33,7 +33,7 @@ package org.robotlegs.v2.bundles.classic
 			// Install the DisplayList extension
 			// and add the contextView to the ViewManager
 			builder
-				.withExtension(DisplayListExtension)
+				.withExtension(ViewManagerExtension)
 				.withConfig(ContextViewWatcherConfig);
 
 			// Destroy the context when the contextView leaves the stage

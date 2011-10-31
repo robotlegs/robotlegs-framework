@@ -5,16 +5,15 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.displayList.impl.support
+package org.robotlegs.v2.extensions.viewManager.impl.support
 {
 	import flash.display.DisplayObject;
 	import flash.events.EventDispatcher;
-	import org.robotlegs.v2.extensions.displayList.api.IViewClassInfo;
-	import org.robotlegs.v2.extensions.displayList.api.IViewHandler;
-	import org.robotlegs.v2.extensions.displayList.api.IViewWatcher;
-	import org.robotlegs.v2.extensions.displayList.api.ViewHandlerEvent;
+	import org.robotlegs.v2.extensions.viewManager.api.IViewClassInfo;
+	import org.robotlegs.v2.extensions.viewManager.api.IViewHandler;
+	import org.robotlegs.v2.extensions.viewManager.api.ViewHandlerEvent;
 
-	[Event(name="configurationChange", type="org.robotlegs.v2.extensions.displayList.api.ViewHandlerEvent")]
+	[Event(name="configurationChange", type="org.robotlegs.v2.extensions.viewManager.api.ViewHandlerEvent")]
 	public class ViewHandlerSupport extends EventDispatcher implements IViewHandler
 	{
 
@@ -51,8 +50,6 @@ package org.robotlegs.v2.extensions.displayList.impl.support
 
 		protected var _removedHandler:Function;
 
-		protected var _watcher:IViewWatcher;
-
 		public function ViewHandlerSupport(
 			interests:uint = 1,
 			interestsToActuallyHandle:uint = 0,
@@ -67,7 +64,7 @@ package org.robotlegs.v2.extensions.displayList.impl.support
 			_removedHandler = removedHandler;
 		}
 
-		public function handleViewAdded(view:DisplayObject, info:IViewClassInfo):uint
+		public function processView(view:DisplayObject, info:IViewClassInfo):uint
 		{
 			var response:uint = _interestsToActuallyHandle;
 
@@ -79,14 +76,14 @@ package org.robotlegs.v2.extensions.displayList.impl.support
 			return response;
 		}
 
-		public function handleViewRemoved(view:DisplayObject):void
+		public function releaseView(view:DisplayObject):void
 		{
 			_removedHandler && _removedHandler(view);
 		}
 
 		public function invalidate():void
 		{
-			dispatchEvent(new ViewHandlerEvent(ViewHandlerEvent.CONFIGURATION_CHANGE));
+			dispatchEvent(new ViewHandlerEvent(ViewHandlerEvent.HANDLER_CONFIGURATION_CHANGE));
 		}
 	}
 }

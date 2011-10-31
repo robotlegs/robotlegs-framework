@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.displayList.impl
+package org.robotlegs.v2.extensions.viewManager.impl
 {
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
@@ -16,9 +16,10 @@ package org.robotlegs.v2.extensions.displayList.impl
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.isFalse;
 	import org.hamcrest.object.isTrue;
-	import org.robotlegs.v2.extensions.displayList.api.IViewClassInfo;
-	import org.robotlegs.v2.extensions.displayList.api.IViewWatcher;
-	import org.robotlegs.v2.extensions.displayList.impl.support.ViewHandlerSupport;
+	import org.robotlegs.v2.extensions.viewManager.api.IViewClassInfo;
+	import org.robotlegs.v2.extensions.viewManager.api.IViewWatcher;
+	import org.robotlegs.v2.extensions.viewManager.impl.support.ViewHandlerSupport;
+	import org.robotlegs.v2.extensions.viewManager.utilities.watchers.AutoStageWatcher;
 
 	public class StageWatcher_BasicTests
 	{
@@ -27,14 +28,18 @@ package org.robotlegs.v2.extensions.displayList.impl
 
 		protected var group:UIComponent;
 
-		protected var watcher:IViewWatcher;
+		protected var viewProcessor:ViewProcessor;
+
+		protected var viewWatcher:IViewWatcher;
 
 		[Before(ui)]
 		public function setUp():void
 		{
 			group = new UIComponent()
 			container = new Sprite();
-			watcher = new StageWatcher();
+			viewProcessor = new ViewProcessor();
+			viewWatcher = new AutoStageWatcher(viewProcessor.containerRegistry);
+			viewWatcher.configure(viewProcessor);
 
 			group.addChild(container)
 			UIImpersonator.addChild(group);
@@ -43,7 +48,7 @@ package org.robotlegs.v2.extensions.displayList.impl
 		[After]
 		public function tearDown():void
 		{
-			watcher = null;
+			viewWatcher.destroy();
 			UIImpersonator.removeAllChildren();
 		}
 
@@ -65,8 +70,8 @@ package org.robotlegs.v2.extensions.displayList.impl
 				{
 					addedCallCount++;
 				});
-			watcher.addHandler(handler, container);
-			watcher.addHandler(handler, container);
+			viewProcessor.addHandler(handler, container);
+			viewProcessor.addHandler(handler, container);
 			container.addChild(view);
 			container.removeChild(view);
 			assertThat(addedCallCount, equalTo(1));
@@ -76,7 +81,7 @@ package org.robotlegs.v2.extensions.displayList.impl
 		public function adding_handler_with_no_interests_should_throw_an_error():void
 		{
 			var handler:ViewHandlerSupport = new ViewHandlerSupport(0, 0, false, null, null);
-			watcher.addHandler(handler, container);
+			viewProcessor.addHandler(handler, container);
 		}
 
 		[Test]
@@ -114,7 +119,7 @@ package org.robotlegs.v2.extensions.displayList.impl
 				{
 					result.removedCallCount++;
 				});
-			watcher.addHandler(handler, container);
+			viewProcessor.addHandler(handler, container);
 			container.addChild(target);
 			container.removeChild(target);
 			return result;
