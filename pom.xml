@@ -2,14 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <!--
-        JIRA Ticket for Sonatype to allow Robotlegs to be hosted/deployed: https://issues.sonatype.org/browse/OSSRH-288
-
-        Currently, Robotlegs can't be promoted to the "central" maven repository because this POM contains a
-        <repositories> element which is not allowed when having an artifact promoted
-        (see: http://nexus.sonatype.org/oss-repository-hosting.html). The <repositories> is required because the
-        swiftsuspenders project isn't available in a maven repository at this time.
-    -->
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.robotlegs</groupId>
@@ -93,32 +85,21 @@
 		<mockolate.version>0.12.1</mockolate.version>
 	</properties>
 
-    <prerequisites>
-        <maven>${maven.version}</maven>
-    </prerequisites>
-
 	<distributionManagement>
-        <!--
-            Configure your settings.xml to provide a username/password for the sonatype site
-            http://nexus.sonatype.org/oss-repository-hosting.html
-        -->
 		<repository>
 			<id>sonatype-staging</id>
 			<url>http://oss.sonatype.org/service/local/staging/deploy/maven2</url>
 		</repository>
-        <snapshotRepository>
-            <id>sonatype-nexus-snapshots</id>
-            <name>Sonatype Nexus Snapshots</name>
-            <url>http://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
+		<snapshotRepository>
+			<id>sonatype-nexus-snapshots</id>
+			<name>Sonatype Nexus Snapshots</name>
+			<url>http://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
 	</distributionManagement>
-
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>
-
 		<testSourceDirectory>test</testSourceDirectory>
-		
 		<resources>
 			<resource><directory>src</directory></resource>	
 		</resources>
@@ -161,6 +142,8 @@
 	</build>
 
 	<dependencies>
+		<!-- Note: while this includes the entire flex framework for compilation, the default for SWCs is external linkage, so nothing from the  
+		 Flex framework will be added to the final output. --->
 		<dependency>
 			<groupId>com.adobe.flex.framework</groupId>
 			<artifactId>flex-framework</artifactId>
@@ -168,7 +151,7 @@
 			<type>pom</type>
 		</dependency>
 		
-		<!--- Swift Suspenders -->
+		<!--- Swift Suspenders. The used definitions will be merged in. -->
 		<dependency>
 			<groupId>org.swiftsuspenders</groupId>
 			<artifactId>swiftsuspenders</artifactId>
@@ -177,7 +160,7 @@
 			<scope>merged</scope>
 		</dependency>
 		
-		<!-- AS3 Commons Logging -->
+		<!-- AS3 Commons Logging. The used definitions will be merged in. -->
 		<dependency>
 			<groupId>org.as3commons</groupId>
 	    	<artifactId>as3commons-logging</artifactId>
@@ -186,7 +169,7 @@
 			<scope>merged</scope>
 		</dependency>
 		
-		<!-- Robotlegs 1 dependency -->
+		<!-- Robotlegs 1 dependency. The used definitions will be merged in. -->
 		<dependency>
 			<groupId>org.robotlegs</groupId>
 			<artifactId>robotlegs-framework</artifactId>
@@ -196,7 +179,7 @@
 		</dependency>
 		
 		<!-- ======================== -->
-		<!-- TEST Dependencies -->
+		<!-- TEST Dependencies. (Only compiled in the unit test runner) -->
 		<dependency>
 			<groupId>com.adobe.flexunit</groupId>
 			<artifactId>flexunit</artifactId>
