@@ -1,7 +1,8 @@
 require "fileutils"
-require "buildr/as3" # needs buildr-as3 v0.2.23.pre
+require "buildr/as3" # needs buildr-as3 v0.2.24.pre
 
-# Installation: https://github.com/devboy/buildr_as3/wiki/Installation
+# You can use bundler to install the correct buildr gem: bundle install
+# Then you can run buildr isolated: bundle exec buildr [tasks] ...
 
 repositories.remote << "http://artifacts.devboy.org" << "http://repo2.maven.org/maven2"
 
@@ -19,13 +20,13 @@ define "robotlegs-framework", :layout => layout do
   swifts = _(:lib, "SwiftSuspenders-#{props["swift.suspenders.version"]}.swc")
   libs = _(:lib)
   args = ["-include-file=metadata.xml,#{_(:source,:main,:as3,"metadata.xml")}"]
-  compile.using( :compc, :flexsdk => flexsdk, :other => args ).with( swifts, libs )
+  compile.using( :compc, :flexsdk => flexsdk, :args => args ).with( swifts, libs )
   
   testrunner = _(:source, :test, :as3, "RobotlegsTest.mxml")
   flexunitswcs = Buildr::AS3::Test::FlexUnit4.swcs
   test.using(:flexunit4 => true, :haltonFailure => true).compile.using(
     :main => testrunner,
-    :other => []
+    :args => []
   ).with( flexunitswcs )
   
   doc_title = "Robotlegs #{ props["robotlegs.ver.num"] }"
