@@ -8,9 +8,10 @@
 package org.robotlegs.v2.extensions.viewManager.impl
 {
 	import flash.display.DisplayObjectContainer;
+	import org.robotlegs.v2.extensions.viewManager.api.IContainerBinding;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewHandler;
 
-	public class ContainerBinding
+	public class ContainerBinding implements IContainerBinding
 	{
 
 		protected var _container:DisplayObjectContainer;
@@ -27,14 +28,14 @@ package org.robotlegs.v2.extensions.viewManager.impl
 			return _handlers;
 		}
 
-		protected var _parent:ContainerBinding;
+		protected var _parent:IContainerBinding;
 
-		public function get parent():ContainerBinding
+		public function get parent():IContainerBinding
 		{
 			return _parent;
 		}
 
-		public function set parent(value:ContainerBinding):void
+		public function set parent(value:IContainerBinding):void
 		{
 			_parent = value;
 		}

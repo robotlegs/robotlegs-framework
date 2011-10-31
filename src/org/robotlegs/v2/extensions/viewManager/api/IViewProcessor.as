@@ -8,15 +8,16 @@
 package org.robotlegs.v2.extensions.viewManager.api
 {
 	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
 
-	public interface IViewWatcher
+	public interface IViewProcessor
 	{
-		function configure(viewProcessor:IViewProcessor):void;
+		function addHandler(handler:IViewHandler, container:DisplayObjectContainer):void;
 
-		function onViewProcessed(view:DisplayObject):void;
+		function removeHandler(handler:IViewHandler, container:DisplayObjectContainer):void;
 
-		function onViewReleased(view:DisplayObject):void;
+		function processView(view:DisplayObject, watcher:IViewWatcher):void;
 
-		function destroy():void;
+		function releaseView(view:DisplayObject):void;
 	}
 }

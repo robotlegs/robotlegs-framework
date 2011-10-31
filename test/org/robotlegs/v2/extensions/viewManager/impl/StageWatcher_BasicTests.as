@@ -16,7 +16,9 @@ package org.robotlegs.v2.extensions.viewManager.impl
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.isFalse;
 	import org.hamcrest.object.isTrue;
+	import org.robotlegs.v2.extensions.viewManager.api.IContainerRegistry;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewClassInfo;
+	import org.robotlegs.v2.extensions.viewManager.api.IViewProcessor;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewWatcher;
 	import org.robotlegs.v2.extensions.viewManager.impl.support.ViewHandlerSupport;
 	import org.robotlegs.v2.extensions.viewManager.utilities.watchers.AutoStageWatcher;
@@ -26,9 +28,11 @@ package org.robotlegs.v2.extensions.viewManager.impl
 
 		protected var container:DisplayObjectContainer;
 
+		protected var containerRegistry:IContainerRegistry;
+
 		protected var group:UIComponent;
 
-		protected var viewProcessor:ViewProcessor;
+		protected var viewProcessor:IViewProcessor;
 
 		protected var viewWatcher:IViewWatcher;
 
@@ -37,8 +41,9 @@ package org.robotlegs.v2.extensions.viewManager.impl
 		{
 			group = new UIComponent()
 			container = new Sprite();
-			viewProcessor = new ViewProcessor();
-			viewWatcher = new AutoStageWatcher(viewProcessor.containerRegistry);
+			containerRegistry = new ContainerRegistry();
+			viewProcessor = new ViewProcessor(containerRegistry);
+			viewWatcher = new AutoStageWatcher(containerRegistry);
 			viewWatcher.configure(viewProcessor);
 
 			group.addChild(container)

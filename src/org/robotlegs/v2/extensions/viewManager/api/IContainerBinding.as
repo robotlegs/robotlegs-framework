@@ -7,16 +7,20 @@
 
 package org.robotlegs.v2.extensions.viewManager.api
 {
-	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
 
-	public interface IViewWatcher
+	public interface IContainerBinding
 	{
-		function configure(viewProcessor:IViewProcessor):void;
+		function get container():DisplayObjectContainer;
 
-		function onViewProcessed(view:DisplayObject):void;
+		function get handlers():Vector.<IViewHandler>;
 
-		function onViewReleased(view:DisplayObject):void;
+		function get parent():IContainerBinding;
 
-		function destroy():void;
+		function set parent(value:IContainerBinding):void;
+
+		function addHandler(handler:IViewHandler):void;
+
+		function removeHandler(handler:IViewHandler):void;
 	}
 }

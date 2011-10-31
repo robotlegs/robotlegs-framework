@@ -10,31 +10,31 @@ package org.robotlegs.v2.extensions.viewManager.utilities.watchers
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
+	import org.robotlegs.v2.extensions.viewManager.api.ContainerExistenceEvent;
+	import org.robotlegs.v2.extensions.viewManager.api.IContainerBinding;
+	import org.robotlegs.v2.extensions.viewManager.api.IContainerRegistry;
+	import org.robotlegs.v2.extensions.viewManager.api.IViewProcessor;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewWatcher;
-	import org.robotlegs.v2.extensions.viewManager.impl.ContainerBinding;
-	import org.robotlegs.v2.extensions.viewManager.impl.ContainerExistenceEvent;
-	import org.robotlegs.v2.extensions.viewManager.impl.ContainerRegistry;
-	import org.robotlegs.v2.extensions.viewManager.impl.ViewProcessor;
 
 	public class ConfigureViewWatcher implements IViewWatcher
 	{
-		private var _containerRegistry:ContainerRegistry;
+		private var _containerRegistry:IContainerRegistry;
 
-		private var _viewProcessor:ViewProcessor;
+		private var _viewProcessor:IViewProcessor;
 
-		public function ConfigureViewWatcher(containerRegistry:ContainerRegistry)
+		public function ConfigureViewWatcher(containerRegistry:IContainerRegistry)
 		{
 			_containerRegistry = containerRegistry;
 		}
 
-		public function configure(viewProcessor:ViewProcessor):void
+		public function configure(viewProcessor:IViewProcessor):void
 		{
 			_viewProcessor = viewProcessor;
 			// We care about all containers (not just roots)
 			_containerRegistry.addEventListener(ContainerExistenceEvent.CONTAINER_ADD, onBindingRegister);
 			_containerRegistry.addEventListener(ContainerExistenceEvent.CONTAINER_REMOVE, onBindingUnregister);
 			// We might have arrived late on the scene
-			_containerRegistry.bindings.forEach(function(binding:ContainerBinding, ... rest):void
+			_containerRegistry.bindings.forEach(function(binding:IContainerBinding, ... rest):void
 			{
 				addContainerListeners(binding.container);
 			}, this);
@@ -46,7 +46,7 @@ package org.robotlegs.v2.extensions.viewManager.utilities.watchers
 			_containerRegistry.removeEventListener(ContainerExistenceEvent.CONTAINER_ADD, onBindingRegister);
 			_containerRegistry.removeEventListener(ContainerExistenceEvent.CONTAINER_REMOVE, onBindingUnregister);
 			// We must say goodbye properly
-			_containerRegistry.bindings.forEach(function(binding:ContainerBinding, ... rest):void
+			_containerRegistry.bindings.forEach(function(binding:IContainerBinding, ... rest):void
 			{
 				removeContainerListeners(binding.container);
 			}, this);

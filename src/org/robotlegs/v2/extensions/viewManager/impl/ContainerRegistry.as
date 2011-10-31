@@ -13,54 +13,57 @@ package org.robotlegs.v2.extensions.viewManager.impl
 	import flash.utils.Dictionary;
 	import org.as3commons.logging.api.ILogger;
 	import org.as3commons.logging.api.getLogger;
+	import org.robotlegs.v2.extensions.viewManager.api.ContainerExistenceEvent;
+	import org.robotlegs.v2.extensions.viewManager.api.IContainerBinding;
+	import org.robotlegs.v2.extensions.viewManager.api.IContainerRegistry;
 
-	[Event(name="containerAdd", type="org.robotlegs.v2.extensions.viewManager.impl.ContainerExistenceEvent")]
-	[Event(name="containerRemove", type="org.robotlegs.v2.extensions.viewManager.impl.ContainerExistenceEvent")]
-	[Event(name="rootContainerAdd", type="org.robotlegs.v2.extensions.viewManager.impl.ContainerExistenceEvent")]
-	[Event(name="rootContainerRemove", type="org.robotlegs.v2.extensions.viewManager.impl.ContainerExistenceEvent")]
-	public class ContainerRegistry extends EventDispatcher
+	[Event(name="containerAdd", type="org.robotlegs.v2.extensions.viewManager.api.ContainerExistenceEvent")]
+	[Event(name="containerRemove", type="org.robotlegs.v2.extensions.viewManager.api.ContainerExistenceEvent")]
+	[Event(name="rootContainerAdd", type="org.robotlegs.v2.extensions.viewManager.api.ContainerExistenceEvent")]
+	[Event(name="rootContainerRemove", type="org.robotlegs.v2.extensions.viewManager.api.ContainerExistenceEvent")]
+	public class ContainerRegistry extends EventDispatcher implements IContainerRegistry
 	{
 		private static const logger:ILogger = getLogger(ContainerRegistry);
 
-		private const _bindings:Vector.<ContainerBinding> = new Vector.<ContainerBinding>;
+		private const _bindings:Vector.<IContainerBinding> = new Vector.<IContainerBinding>;
 
-		public function get bindings():Vector.<ContainerBinding>
+		public function get bindings():Vector.<IContainerBinding>
 		{
 			return _bindings;
 		}
 
-		private const _rootBindings:Vector.<ContainerBinding> = new Vector.<ContainerBinding>;
+		private const _rootBindings:Vector.<IContainerBinding> = new Vector.<IContainerBinding>;
 
-		public function get rootBindings():Vector.<ContainerBinding>
+		public function get rootBindings():Vector.<IContainerBinding>
 		{
 			return _rootBindings;
 		}
 
 		private const _bindingByContainer:Dictionary = new Dictionary(false);
 
-		public function getBinding(container:DisplayObjectContainer):ContainerBinding
+		public function getBinding(container:DisplayObjectContainer):IContainerBinding
 		{
 			return _bindingByContainer[container];
 		}
 
-		public function registerContainer(container:DisplayObjectContainer):ContainerBinding
+		public function registerContainer(container:DisplayObjectContainer):IContainerBinding
 		{
 			return _bindingByContainer[container] ||= createBinding(container);
 		}
 
-		public function unregisterContainer(container:DisplayObjectContainer):ContainerBinding
+		public function unregisterContainer(container:DisplayObjectContainer):IContainerBinding
 		{
-			const binding:ContainerBinding = _bindingByContainer[container];
+			const binding:IContainerBinding = _bindingByContainer[container];
 			binding && removeBinding(binding);
 			return binding;
 		}
 
-		public function findParentBinding(target:DisplayObject):ContainerBinding
+		public function findParentBinding(target:DisplayObject):IContainerBinding
 		{
 			var parent:DisplayObjectContainer = target.parent;
 			while (parent)
 			{
-				var binding:ContainerBinding = _bindingByContainer[parent];
+				var binding:IContainerBinding = _bindingByContainer[parent];
 				if (binding)
 				{
 					return binding;
@@ -70,11 +73,11 @@ package org.robotlegs.v2.extensions.viewManager.impl
 			return null;
 		}
 
-		private function createBinding(container:DisplayObjectContainer):ContainerBinding
+		private function createBinding(container:DisplayObjectContainer):IContainerBinding
 		{
 			logger.info('container binding created');
 
-			const binding:ContainerBinding = new ContainerBinding(container);
+			const binding:IContainerBinding = new ContainerBinding(container);
 			_bindings.push(binding);
 
 			// If the new binding doesn't have a parent it is a Root
@@ -87,7 +90,7 @@ package org.robotlegs.v2.extensions.viewManager.impl
 			// Reparent any bindings which are contained within the new binding AND
 			// A. Don't have a parent, OR
 			// B. Have a parent that is not contained within the new binding
-			for each (var childBinding:ContainerBinding in _bindingByContainer)
+			for each (var childBinding:IContainerBinding in _bindingByContainer)
 			{
 				if (container.contains(childBinding.container))
 				{
@@ -107,7 +110,7 @@ package org.robotlegs.v2.extensions.viewManager.impl
 			return binding;
 		}
 
-		private function removeBinding(binding:ContainerBinding):void
+		private function removeBinding(binding:IContainerBinding):void
 		{
 			logger.info('container binding removed');
 
@@ -123,7 +126,7 @@ package org.robotlegs.v2.extensions.viewManager.impl
 			}
 
 			// Re-parent the bindings
-			for each (var childBinding:ContainerBinding in _bindingByContainer)
+			for each (var childBinding:IContainerBinding in _bindingByContainer)
 			{
 				if (childBinding.parent == binding)
 				{
@@ -140,14 +143,14 @@ package org.robotlegs.v2.extensions.viewManager.impl
 			dispatchEvent(new ContainerExistenceEvent(ContainerExistenceEvent.CONTAINER_REMOVE, binding.container));
 		}
 
-		private function addRootBinding(binding:ContainerBinding):void
+		private function addRootBinding(binding:IContainerBinding):void
 		{
 			logger.info('root container binding added');
 			_rootBindings.push(binding);
 			dispatchEvent(new ContainerExistenceEvent(ContainerExistenceEvent.ROOT_CONTAINER_ADD, binding.container));
 		}
 
-		private function removeRootBinding(binding:ContainerBinding):void
+		private function removeRootBinding(binding:IContainerBinding):void
 		{
 			logger.info('root container binding removed');
 			const index:int = _rootBindings.indexOf(binding);

@@ -9,8 +9,9 @@ package org.robotlegs.v2.extensions.viewManager
 {
 	import org.robotlegs.v2.core.api.IContext;
 	import org.robotlegs.v2.core.api.IContextExtension;
+	import org.robotlegs.v2.extensions.viewManager.api.IContainerRegistry;
+	import org.robotlegs.v2.extensions.viewManager.api.IViewProcessor;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewWatcher;
-	import org.robotlegs.v2.extensions.viewManager.impl.ViewProcessor;
 	import org.robotlegs.v2.extensions.viewManager.utilities.watchers.AutoStageWatcher;
 
 	public class AutoStageWatcherExtension implements IContextExtension
@@ -22,10 +23,11 @@ package org.robotlegs.v2.extensions.viewManager
 
 		public function initialize(context:IContext):void
 		{
-			const viewProcessor:ViewProcessor = context.injector.getInstance(ViewProcessor);
 			if (viewWatcher == null)
 			{
-				viewWatcher = new AutoStageWatcher(viewProcessor.containerRegistry);
+				const containerRegistry:IContainerRegistry = context.injector.getInstance(IContainerRegistry);
+				const viewProcessor:IViewProcessor = context.injector.getInstance(IViewProcessor);
+				viewWatcher = new AutoStageWatcher(containerRegistry);
 				viewWatcher.configure(viewProcessor);
 			}
 		}

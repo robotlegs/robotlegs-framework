@@ -9,38 +9,32 @@ package org.robotlegs.v2.extensions.viewManager.impl
 {
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
-	import flash.events.EventDispatcher;
 	import flash.utils.Dictionary;
 	import flash.utils.getQualifiedClassName;
-	
 	import org.as3commons.logging.api.ILogger;
 	import org.as3commons.logging.api.getLogger;
+	import org.robotlegs.v2.extensions.viewManager.api.IContainerBinding;
+	import org.robotlegs.v2.extensions.viewManager.api.IContainerRegistry;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewHandler;
+	import org.robotlegs.v2.extensions.viewManager.api.IViewProcessor;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewWatcher;
 	import org.robotlegs.v2.extensions.viewManager.api.ViewHandlerEvent;
 
-	public class ViewProcessor extends EventDispatcher
+	public class ViewProcessor implements IViewProcessor
 	{
-
 		private static const logger:ILogger = getLogger(ViewProcessor);
 
 		private const _activeWatcherByView:Dictionary = new Dictionary(true);
 
 		private const _confirmedHandlersByFQCN:Dictionary = new Dictionary(false);
 
-		private var _containerRegistry:ContainerRegistry = new ContainerRegistry();
+		private var _containerRegistry:IContainerRegistry = new ContainerRegistry();
 
 		private const _removeHandlersByView:Dictionary = new Dictionary(true);
 
-		[Deprecated]
-		public function get containerRegistry():ContainerRegistry
+		public function ViewProcessor(containerRegistry:IContainerRegistry)
 		{
-			return _containerRegistry;
-		}
-		
-		public function ViewProcessor(containerRegistry:ContainerRegistry = null)
-		{
-			_containerRegistry = containerRegistry || new ContainerRegistry();
+			_containerRegistry = containerRegistry;
 			// note: all vectors should probably be linked lists
 			// to prevent mid-iteration errors
 		}
@@ -54,7 +48,7 @@ package org.robotlegs.v2.extensions.viewManager.impl
 
 		public function removeHandler(handler:IViewHandler, container:DisplayObjectContainer):void
 		{
-			const binding:ContainerBinding = _containerRegistry.getBinding(container);
+			const binding:IContainerBinding = _containerRegistry.getBinding(container);
 			if (binding)
 			{
 				binding.removeHandler(handler);
@@ -125,7 +119,7 @@ package org.robotlegs.v2.extensions.viewManager.impl
 			var combinedResponse:uint = 0;
 			var handler:IViewHandler;
 			var handlers:Vector.<IViewHandler>;
-			var binding:ContainerBinding = _containerRegistry.findParentBinding(view);
+			var binding:IContainerBinding = _containerRegistry.findParentBinding(view);
 			// Walk upwards from the nearest binding
 			while (binding)
 			{

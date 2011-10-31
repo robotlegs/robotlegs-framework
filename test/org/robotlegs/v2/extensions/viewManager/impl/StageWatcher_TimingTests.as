@@ -14,7 +14,9 @@ package org.robotlegs.v2.extensions.viewManager.impl
 	import org.flexunit.assertThat;
 	import org.fluint.uiImpersonation.UIImpersonator;
 	import org.hamcrest.object.equalTo;
+	import org.robotlegs.v2.extensions.viewManager.api.IContainerRegistry;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewClassInfo;
+	import org.robotlegs.v2.extensions.viewManager.api.IViewProcessor;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewWatcher;
 	import org.robotlegs.v2.extensions.viewManager.impl.support.ViewHandlerSupport;
 	import org.robotlegs.v2.extensions.viewManager.utilities.watchers.AutoStageWatcher;
@@ -23,16 +25,19 @@ package org.robotlegs.v2.extensions.viewManager.impl
 	{
 		protected var container:DisplayObjectContainer;
 
+		protected var containerRegistry:IContainerRegistry;
+
 		protected var group:UIComponent;
 
-		protected var viewProcessor:ViewProcessor;
+		protected var viewProcessor:IViewProcessor;
 
 		[Before(ui)]
 		public function setUp():void
 		{
 			group = new UIComponent()
 			container = new Sprite();
-			viewProcessor = new ViewProcessor();
+			containerRegistry = new ContainerRegistry();
+			viewProcessor = new ViewProcessor(containerRegistry);
 			group.addChild(container)
 			UIImpersonator.addChild(group);
 		}
@@ -55,7 +60,7 @@ package org.robotlegs.v2.extensions.viewManager.impl
 					addedCallCount++;
 				});
 			viewProcessor.addHandler(handler, container);
-			var viewWatcher:IViewWatcher = new AutoStageWatcher(viewProcessor.containerRegistry);
+			var viewWatcher:IViewWatcher = new AutoStageWatcher(containerRegistry);
 			viewWatcher.configure(viewProcessor);
 			container.addChild(view);
 			container.removeChild(view);
