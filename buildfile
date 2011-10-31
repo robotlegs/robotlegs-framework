@@ -1,5 +1,5 @@
 require "fileutils"
-require "buildr/as3" # needs buildr-as3 v0.2.24.pre
+require "buildr/as3" # needs buildr-as3 v0.2.25.pre
 
 # You can use bundler to install the correct buildr gem: bundle install
 # Then you can run buildr isolated: bundle exec buildr [tasks] ...
@@ -10,74 +10,77 @@ layout = Layout::Default.new
 layout[:source, :main, :as3] = "src"
 layout[:source, :test, :as3] = "test"
 
+THIS_VERSION = "2.0.0b1"
+
 define "robotlegs-framework", :layout => layout do
   
-  props = Hash.from_java_properties( File.binread( _("build.properties") ) )
-  
   project.group = "org.robotlegs"  
-  project.version = props["robotlegs.ver.num"]  
+  project.version = THIS_VERSION 
   
-  # swifts = _(:lib, "SwiftSuspenders-#{props["swift.suspenders.version"]}.swc")
-  libs = _(:lib)
   args = [
-    "-include-file+=metadata.xml,#{_(:src,"metadata.xml")}",
-    "-include-file+=manifest.xml,#{_(:src,"manifest.xml")}",
-    "-include-file+=design.xml,#{_(:src,"design.xml")}",
     "-namespace+=http://ns.robotlegs.org/flex/rl2,#{_(:src,"manifest.xml")}",
     "-include-namespaces+=http://ns.robotlegs.org/flex/rl2"
   ]
-  compile.using( :compc, :flexsdk => flexsdk, :args => args ).with( libs )
+
+  compile.using( :compc, :flexsdk => flexsdk, :args => args ).
+    with( _(:lib,"as3commons-logging-2.7.swc"), 
+          _(:lib,"SwiftSuspenders-v2.0.0b1.swc"),
+          _(:lib,"robotlegs-framework-v1.5.2.swc") )
 
   headless = Buildr.environment == "test"
   testrunner = _(:source, :test, :as3, "RobotlegsTest.mxml")
-  flexunitswcs = Buildr::AS3::Test::FlexUnit4.swcs
-  test.using(:flexunit4 => true, :headless => headless)
-  test.compile.using( :main => testrunner, :args => [] ).with( flexunitswcs )
+  test.using(:flexunit4 => true, :headless => headless, :antjar => _(:lib, "flexUnitTasks-4.1.0-8.jar"))
+  test.compile.using( :main => testrunner, :args => [] ).with( _(:lib) )
 
-  doc_title = "Robotlegs #{ props["robotlegs.ver.num"] }"
+  doc_title = "Robotlegs v#{THIS_VERSION}"
   doc.using :maintitle   => doc_title,
             :windowtitle => doc_title, 
             :args        => doc_args
+    
+  task package => doc
+
+  package(:swc).
+    include( _(:src,"*.xml") ).
+    path('docs').
+       include( _(:target,:doc,:tempdita,'packages.dita*') ).
+       include( _(:target,:doc,:tempdita,'org.*') )
+
   
-  task :package => :doc do
+end
+
+desc "Creates a zip archive containing a swc, sources, libraries and documentation."
+task :archive => "robotlegs-framework:doc" do
     
-    # create the README file
-    filter.from(_(:build,:templates)).into( _(:target) ).
+    rl = project( "robotlegs-framework" )
+    rl_swc = artifacts( rl ).first 
+    rl_vname = File.basename( rl_swc.to_s, ".swc" )
+    rl_zip = rl._(:target, "#{rl_vname}.zip")
+
+    filter.from(rl._(:build,:templates)).into( rl._(:target) ).
       using( :ant,  "date"              => Time.now.localtime.strftime("%d-%m-%Y"),
-                    "rlversion"         => props["robotlegs.ver.num"],
-                    "releasename"       => props["project.name.versioned"],
-                    "ssversion"         => props["swift.suspenders.version"],
-                    "sslink"            => props["swift.suspenders.link"],
-                    "rlprojectlink"     => props["robotlegs.project.link"],
-                    "bestpracticeslink" => props["robotlegs.best.practices.link"],
-                    "faqlink"           => props["robotlegs.faq.link"] ).run
+                    "rlversion"         => THIS_VERSION,
+                    "releasename"       => File.basename( rl_swc.to_s, "swc" ),
+                    "ssversion"         => THIS_VERSION,
+                    "sslink"            => "http://github.com/tschneidereit/SwiftSuspenders",
+                    "rlprojectlink"     => "http://github.com/robotlegs/robotlegs-framework",
+                    "bestpracticeslink" => "http://github.com/robotlegs/robotlegs-framework/wiki/Best-Practices",
+                    "faqlink"           => "http://knowledge.robotlegs.com" ).run
     
-    FileUtils.move _(:target,"README.tmpl"), _(:target,"README")
+    FileUtils.move rl._(:target,"README.tmpl"), rl._(:target,"README") 
     
-    swc_zip = zip( _(:target, "tmpswc.swc") )
-    swc_zip.merge _(:target, "#{project.name}-#{project.version}.swc")
-    swc_zip.path('docs').
-      include( _(:target,:doc,:tempdita,'packages.dita*')).
-      include( _(:target,:doc,:tempdita,'org.*'))
-    swc_zip.invoke 
-    
-    rl_zip = zip( _(:target, "#{project.name}-#{project.version}.zip") )
-    rl_zip.include(_(:src))
-    rl_zip.include(_(:LICENSE))
-    rl_zip.include(_(:target,:README))
-    rl_zip.include(_("CHANGELOG.textile"), :as => "CHANGELOG")
-    rl_zip.include(_(:target, "tmpswc.swc"), :as => "bin/#{project.name}-#{project.version}.swc")
-    rl_zip.path('docs').include(_(:target,:doc), :as => "docs").exclude(_(:target,:doc,:tempdita))
-    rl_zip.path('lib').include( libs )
+    puts "Packaging archive in #{rl_zip}"
+
+    rl_zip = zip( rl_zip )
+    rl_zip.include(rl._(:src))
+    rl_zip.include(rl._(:LICENSE))
+    rl_zip.include(rl._(:target,:README))
+    rl_zip.include(rl._("CHANGELOG.textile"), :as => "CHANGELOG")
+    rl_zip.path('bin').include( rl_swc )
+    rl_zip.path('docs').include( rl._(:target,:doc), :as => "docs" ).exclude( rl._(:target,:doc,:tempdita) )
+    rl_zip.include( rl._(:lib) )
     rl_zip.invoke
     
-    FileUtils.rm_r _(:target, "tmpswc.swc")
-    FileUtils.rm_r _(:target, "README")
-    
-  end
-  
-  package :swc
-  
+    FileUtils.rm_r rl._(:target, "README")
 end
 
 def doc_args
