@@ -12,6 +12,7 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 	import mockolate.received;
 	import mockolate.runner.MockolateRule;
 	import mockolate.runner.MockolateRunner;
+	import mockolate.stub;
 	import org.flexunit.asserts.*;
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.strictlyEqualTo;
@@ -51,6 +52,7 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 		public function setUp():void
 		{
 			strictInstance = new RL2MediatorTrigger(true);
+			UI_COMPONENT.initialized = false;
 		}
 
 		[After]
@@ -85,6 +87,17 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 		}
 		
 		[Test]
+		public function startup_does_NOT_call_initialize_after_MovieClip_dispatches_complete_if_shutdown_has_run_between():void
+		{
+			strictInstance.addStartupStrategy(WaitForCompleteStrategy, new TypeMatcher().allOf(MovieClip));
+			strictInstance.startup(rl2Mediator, MOVIE_CLIP);
+			strictInstance.shutdown(rl2Mediator, MOVIE_CLIP, benignCallback);
+			stub(rl2Mediator).getter("destroyed").returns(true);
+			MOVIE_CLIP.dispatchEvent(new Event(Event.COMPLETE));
+			assertThat(rl2Mediator, received().method('initialize').never());
+		}
+		
+		[Test]
 		public function startup_doesnt_call_initialize_immediately_on_unready_UIComponent_when_matched_to_waitForCreationComplete_strategy():void
 		{
 			strictInstance.addStartupStrategy(WaitForCreationCompleteStrategy, new TypeMatcher().allOf(UIComponent));
@@ -108,12 +121,28 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 			UI_COMPONENT.initialized = true;
 			strictInstance.startup(rl2Mediator, UI_COMPONENT);
 			assertThat(rl2Mediator, received().method('initialize').once());
+		}
+		
+		[Test]
+		public function startup_does_not_call_initialize_after_creationComplete_if_UIComponent_destroyed_is_true():void
+		{
+			strictInstance.addStartupStrategy(WaitForCreationCompleteStrategy, new TypeMatcher().allOf(UIComponent));
+			strictInstance.startup(rl2Mediator, UI_COMPONENT);
+			strictInstance.shutdown(rl2Mediator, UI_COMPONENT, benignCallback);
+			stub(rl2Mediator).getter("destroyed").returns(true);
+			assertThat(rl2Mediator, received().method('initialize').never());
 		}	
 
 		[Test]
 		public function test_failure_seen():void
 		{
 			assertTrue("Failing test", true);
+		}
+		
+		
+		protected function benignCallback(mediator:*, view:DisplayObject):void
+		{
+			// do nothing
 		}
 	}
 }

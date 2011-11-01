@@ -30,5 +30,20 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.support
 		{
 			
 		}
+		
+		protected var _destroyed:Boolean;
+
+		public function get destroyed():Boolean
+		{
+			return _destroyed;
+		}
+
+		public function set destroyed(value:Boolean):void
+		{
+			if (value !== _destroyed)
+			{
+				_destroyed = value;
+			}
+		}
 	}
 }

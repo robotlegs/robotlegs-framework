@@ -29,7 +29,12 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.strategies
 		{
 			const view:EventDispatcher = e.target as EventDispatcher;
 			view.removeEventListener(Event.COMPLETE, completeStartup);
-			_callbacksByView[view](_mediatorsByView[view]);
+
+			if(!_mediatorsByView[view].destroyed)
+			{
+				_callbacksByView[view](_mediatorsByView[view]);
+			}
+
 			delete _callbacksByView[view];
 			delete _mediatorsByView[view];
 		}

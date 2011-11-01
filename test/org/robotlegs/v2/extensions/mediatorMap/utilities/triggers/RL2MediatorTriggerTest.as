@@ -15,6 +15,7 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 	import org.flexunit.asserts.*;
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.strictlyEqualTo;
+	import org.hamcrest.object.equalTo;
 	import org.robotlegs.core.IMediator;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediator;
 	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.support.DuckTypedRL2Mediator;
@@ -180,7 +181,21 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 		{
 			strictInstance.startup(not_a_mediator, VIEW);
 		}
-
+		
+		[Test]
+		public function startup_sets_destroyed_to_false_on_mediator():void
+		{
+			strictInstance.startup(rl2Mediator, VIEW);
+			assertThat(rl2Mediator, received().setter("destroyed").args(equalTo(false)));
+		}
+		
+		[Test]
+		public function shutdown_sets_destroyed_to_true_on_mediator():void
+		{
+			strictInstance.shutdown(rl2Mediator, VIEW, benignCallback);
+			assertThat(rl2Mediator, received().setter("destroyed").args(equalTo(true)));
+		}
+		
 		[Test]
 		public function test_failure_seen():void
 		{

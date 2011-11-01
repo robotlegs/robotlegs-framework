@@ -33,6 +33,7 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 		{
 			if (_strict || (mediator is IMediator))
 			{
+				mediator.destroyed = false;
 				mediator.setViewComponent(view);
 				startupWithStrategy(mediator, view);
 			}
@@ -43,6 +44,7 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 			if (_strict || (mediator is IMediator))
 			{
 				mediator.destroy();
+				mediator.destroyed = true;
 			}
 			callback(mediator, view);
 		}
