@@ -24,6 +24,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorUnmapping;
 	import org.swiftsuspenders.Injector;
 	import org.swiftsuspenders.Reflector;
+	import flash.errors.IllegalOperationError;
 
 	[Event(name="configurationChange", type="org.robotlegs.v2.extensions.viewManager.api.ViewHandlerEvent")]
 	public class MediatorMap extends EventDispatcher implements IViewHandler, IMediatorMap
@@ -142,6 +143,10 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 
 		public function loadTrigger(trigger:IMediatorTrigger):void
 		{
+			if(_trigger)
+			{
+				throw new IllegalOperationError("The trigger has already been set to " + _trigger + " and can only be set once.");
+			}
 			_trigger = trigger;
 		}
 

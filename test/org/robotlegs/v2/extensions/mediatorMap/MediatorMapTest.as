@@ -29,6 +29,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import org.swiftsuspenders.Reflector;
 	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.RL2MediatorTrigger;
 	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.DuckTypedMediatorTrigger;
+	import flash.errors.IllegalOperationError;
 
 	public class MediatorMapTest
 	{
@@ -349,6 +350,12 @@ package org.robotlegs.v2.extensions.mediatorMap
 
 			var expectedNotifications:Vector.<String> = new <String>['ExampleMediator', 'ExampleMediator destroy'];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
+		}
+		
+		[Test(expects="flash.errors.IllegalOperationError")]
+		public function loadTrigger_can_only_be_run_once():void
+		{
+			instance.loadTrigger(new RL2MediatorTrigger(true));
 		}
 
 		protected function handleEventTimeout(o:Object):void
