@@ -14,7 +14,7 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.strategies
 	import org.robotlegs.v2.core.api.ITypeMatcher;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorStartupStrategy;
 
-	public class WaitForComplete implements IMediatorStartupStrategy
+	public class WaitForCompleteStrategy implements IMediatorStartupStrategy
 	{
 		public function startup(mediator:*, view:DisplayObject, callback:Function):void
 		{
