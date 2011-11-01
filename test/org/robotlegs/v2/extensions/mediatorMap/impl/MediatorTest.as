@@ -63,7 +63,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		}
 
 		[Test]
-		public function preRegister_runs_onRegister_immediately_for_item_without_wait_event():void
+		public function preRegister_runs_onRegister_immediately():void
 		{
 			trackingMediator.setViewComponent(new Sprite());
 			trackingMediator.preRegister();
@@ -80,40 +80,6 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
 		}
 		
-		[Test]
-		public function preRegister_runs_onRegister_after_required_event():void
-		{
-			var trackingMediatorWaiting:TrackingMediatorWaitsForGiven;
-			trackingMediatorWaiting = new TrackingMediatorWaitsForGiven(mediatorWatcher, Event.COMPLETE, Event);
-			
-			var view:Sprite = new Sprite();
-			
-			trackingMediatorWaiting.eventMap = new EventMap(new EventDispatcher());
-			trackingMediatorWaiting.setViewComponent(view);
-			trackingMediatorWaiting.preRegister();
-			
-			view.dispatchEvent(new Event(Event.COMPLETE));
-						
-			var expectedNotifications:Vector.<String> = new <String>[TrackingMediatorWaitsForGiven.ON_REGISTER];
-			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
-		}
-		
-		[Test]
-		public function preRegister_does_NOT_run_onRegister_before_required_event():void
-		{
-			var trackingMediatorWaiting:TrackingMediatorWaitsForGiven;
-			trackingMediatorWaiting = new TrackingMediatorWaitsForGiven(mediatorWatcher, Event.COMPLETE, Event);
-			
-			var view:Sprite = new Sprite();
-
-			trackingMediatorWaiting.eventMap = new EventMap(new EventDispatcher());
-			trackingMediatorWaiting.setViewComponent(view);
-			trackingMediatorWaiting.preRegister();
-									
-			var expectedNotifications:Vector.<String> = new <String>[];
-			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
-		}
-
 		[Test]
 		public function test_failure_seen():void
 		{

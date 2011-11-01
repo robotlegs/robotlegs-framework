@@ -19,23 +19,13 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		
 		protected var _viewComponent:Object;
 		
-		protected var _waitEventString:String;
-		protected var _waitEventClass:Class = Event;
-
 		public function Mediator()
 		{
 		}
 
 		public function preRegister():void
 		{
-			if(_waitEventString)
-			{
-				eventMap.mapListener(IEventDispatcher(_viewComponent), _waitEventString, runOnRegister, _waitEventClass);
-			}
-			else
-			{
-				onRegister();
-			}
+			onRegister();
 		}
 
 		public function preRemove():void
@@ -61,17 +51,6 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		protected function onRemove():void
 		{
 
-		}
-		
-		protected function waitForEvent(eventString:String, eventClass:Class):void
-		{
-			_waitEventString = eventString;
-			_waitEventClass = eventClass;
-		}
-		
-		protected function runOnRegister(e:Event):void
-		{
-			onRegister();
 		}
 	}
 }
