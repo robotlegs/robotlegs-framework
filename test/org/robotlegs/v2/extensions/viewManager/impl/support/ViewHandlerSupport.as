@@ -85,5 +85,9 @@ package org.robotlegs.v2.extensions.viewManager.impl.support
 		{
 			dispatchEvent(new ViewHandlerEvent(ViewHandlerEvent.HANDLER_CONFIGURATION_CHANGE));
 		}
+
+		public function destroy():void
+		{
+		}
 	}
 }

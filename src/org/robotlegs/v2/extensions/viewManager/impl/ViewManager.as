@@ -78,7 +78,7 @@ package org.robotlegs.v2.extensions.viewManager.impl
 			}
 		}
 
-		public function removeAll():void
+		public function destroy():void
 		{
 			for each (var handler:IViewHandler in _handlers)
 			{

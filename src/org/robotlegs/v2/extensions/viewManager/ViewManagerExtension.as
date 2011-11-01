@@ -9,19 +9,17 @@ package org.robotlegs.v2.extensions.viewManager
 {
 	import org.robotlegs.v2.core.api.IContext;
 	import org.robotlegs.v2.core.api.IContextExtension;
-	import org.robotlegs.v2.extensions.viewManager.api.IContainerRegistry;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewManager;
-	import org.robotlegs.v2.extensions.viewManager.api.IViewProcessor;
 	import org.robotlegs.v2.extensions.viewManager.impl.ContainerRegistry;
 	import org.robotlegs.v2.extensions.viewManager.impl.ViewManager;
 	import org.robotlegs.v2.extensions.viewManager.impl.ViewProcessor;
 
 	public class ViewManagerExtension implements IContextExtension
 	{
-		private static var containerRegistry:IContainerRegistry;
+		private static var containerRegistry:ContainerRegistry;
 
 		// Really? Yes, there can be only one.
-		private static var viewProcessor:IViewProcessor;
+		private static var viewProcessor:ViewProcessor;
 
 		public function initialize(context:IContext):void
 		{
@@ -32,11 +30,11 @@ package org.robotlegs.v2.extensions.viewManager
 		{
 			// Just one Container Registry
 			containerRegistry ||= new ContainerRegistry();
-			context.injector.map(IContainerRegistry).toValue(containerRegistry);
+			context.injector.map(ContainerRegistry).toValue(containerRegistry);
 
 			// And just one View Processor
 			viewProcessor ||= new ViewProcessor(containerRegistry);
-			context.injector.map(IViewProcessor).toValue(viewProcessor);
+			context.injector.map(ViewProcessor).toValue(viewProcessor);
 
 			// But you get your own View Manager
 			context.injector.map(IViewManager).toSingleton(ViewManager);
@@ -45,10 +43,10 @@ package org.robotlegs.v2.extensions.viewManager
 		public function uninstall(context:IContext):void
 		{
 			const viewManager:IViewManager = context.injector.getInstance(IViewManager);
-			viewManager.removeAll();
+			viewManager.destroy();
 			context.injector.unmap(IViewManager);
-			context.injector.unmap(IViewProcessor);
-			context.injector.unmap(IContainerRegistry);
+			context.injector.unmap(ViewProcessor);
+			context.injector.unmap(ContainerRegistry);
 		}
 	}
 }

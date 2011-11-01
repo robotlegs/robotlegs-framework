@@ -13,26 +13,23 @@ package org.robotlegs.v2.extensions.viewManager.impl
 	import flash.utils.getQualifiedClassName;
 	import org.as3commons.logging.api.ILogger;
 	import org.as3commons.logging.api.getLogger;
-	import org.robotlegs.v2.extensions.viewManager.api.IContainerBinding;
-	import org.robotlegs.v2.extensions.viewManager.api.IContainerRegistry;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewHandler;
-	import org.robotlegs.v2.extensions.viewManager.api.IViewProcessor;
-	import org.robotlegs.v2.extensions.viewManager.api.IViewWatcher;
+	import org.robotlegs.v2.extensions.viewManager.api.IViewListener;
 	import org.robotlegs.v2.extensions.viewManager.api.ViewHandlerEvent;
 
-	public class ViewProcessor implements IViewProcessor
+	public class ViewProcessor
 	{
 		private static const logger:ILogger = getLogger(ViewProcessor);
 
-		private const _activeWatcherByView:Dictionary = new Dictionary(true);
+		private const _activeListenerByView:Dictionary = new Dictionary(true);
 
 		private const _confirmedHandlersByFQCN:Dictionary = new Dictionary(false);
 
-		private var _containerRegistry:IContainerRegistry = new ContainerRegistry();
+		private var _containerRegistry:ContainerRegistry = new ContainerRegistry();
 
 		private const _removeHandlersByView:Dictionary = new Dictionary(true);
 
-		public function ViewProcessor(containerRegistry:IContainerRegistry)
+		public function ViewProcessor(containerRegistry:ContainerRegistry)
 		{
 			_containerRegistry = containerRegistry;
 			// note: all vectors should probably be linked lists
@@ -48,7 +45,7 @@ package org.robotlegs.v2.extensions.viewManager.impl
 
 		public function removeHandler(handler:IViewHandler, container:DisplayObjectContainer):void
 		{
-			const binding:IContainerBinding = _containerRegistry.getBinding(container);
+			const binding:ContainerBinding = _containerRegistry.getBinding(container);
 			if (binding)
 			{
 				binding.removeHandler(handler);
@@ -59,12 +56,12 @@ package org.robotlegs.v2.extensions.viewManager.impl
 			}
 		}
 
-		public function processView(view:DisplayObject, watcher:IViewWatcher):void
+		public function processView(view:DisplayObject, listener:IViewListener):void
 		{
-			// multiple watchers might report this view
+			// multiple listeners might report this view
 			// but only the first one that is handled should be responsible for it
-			// so bail out if we already have a watcher that reported a valid view
-			if (_activeWatcherByView[view])
+			// so bail out if we already have a listener that reported a valid view
+			if (_activeListenerByView[view])
 				return;
 
 			const viewFQCN:String = getQualifiedClassName(view);
@@ -85,9 +82,9 @@ package org.robotlegs.v2.extensions.viewManager.impl
 			// report any matches
 			if (response)
 			{
-				// only the watcher that gave us this view should wire up removal listeners
-				_activeWatcherByView[view] = watcher;
-				watcher.onViewProcessed(view);
+				// only the listener that gave us this view should wire up removal listeners
+				_activeListenerByView[view] = listener;
+				listener.onViewProcessed(view);
 			}
 		}
 
@@ -102,12 +99,16 @@ package org.robotlegs.v2.extensions.viewManager.impl
 				handler.releaseView(view);
 			}
 			delete _removeHandlersByView[view];
-			const activeWatcher:IViewWatcher = _activeWatcherByView[view];
-			if (activeWatcher)
+			const activeListener:IViewListener = _activeListenerByView[view];
+			if (activeListener)
 			{
-				activeWatcher.onViewReleased(view);
-				delete _activeWatcherByView[view];
+				activeListener.onViewReleased(view);
+				delete _activeListenerByView[view];
 			}
+		}
+
+		public function destroy():void
+		{
 		}
 
 		private function processFreshView(
@@ -119,7 +120,7 @@ package org.robotlegs.v2.extensions.viewManager.impl
 			var combinedResponse:uint = 0;
 			var handler:IViewHandler;
 			var handlers:Vector.<IViewHandler>;
-			var binding:IContainerBinding = _containerRegistry.findParentBinding(view);
+			var binding:ContainerBinding = _containerRegistry.findParentBinding(view);
 			// Walk upwards from the nearest binding
 			while (binding)
 			{

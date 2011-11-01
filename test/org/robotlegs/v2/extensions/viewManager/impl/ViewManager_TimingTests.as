@@ -14,22 +14,20 @@ package org.robotlegs.v2.extensions.viewManager.impl
 	import org.flexunit.assertThat;
 	import org.fluint.uiImpersonation.UIImpersonator;
 	import org.hamcrest.object.equalTo;
-	import org.robotlegs.v2.extensions.viewManager.api.IContainerRegistry;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewClassInfo;
-	import org.robotlegs.v2.extensions.viewManager.api.IViewProcessor;
-	import org.robotlegs.v2.extensions.viewManager.api.IViewWatcher;
+	import org.robotlegs.v2.extensions.viewManager.api.IViewListener;
 	import org.robotlegs.v2.extensions.viewManager.impl.support.ViewHandlerSupport;
-	import org.robotlegs.v2.extensions.viewManager.utilities.watchers.AutoStageWatcher;
+	import org.robotlegs.v2.extensions.viewManager.integration.listeners.AutoStageListener;
 
-	public class StageWatcher_TimingTests
+	public class ViewManager_TimingTests
 	{
 		protected var container:DisplayObjectContainer;
 
-		protected var containerRegistry:IContainerRegistry;
+		protected var containerRegistry:ContainerRegistry;
 
 		protected var group:UIComponent;
 
-		protected var viewProcessor:IViewProcessor;
+		protected var viewProcessor:ViewProcessor;
 
 		[Before(ui)]
 		public function setUp():void
@@ -60,8 +58,7 @@ package org.robotlegs.v2.extensions.viewManager.impl
 					addedCallCount++;
 				});
 			viewProcessor.addHandler(handler, container);
-			var viewWatcher:IViewWatcher = new AutoStageWatcher(containerRegistry);
-			viewWatcher.configure(viewProcessor);
+			var viewWatcher:IViewListener = new AutoStageListener(viewProcessor, containerRegistry);
 			container.addChild(view);
 			container.removeChild(view);
 			assertThat(addedCallCount, equalTo(1));

@@ -7,7 +7,7 @@
 
 package org.robotlegs.v2.bundles.classic
 {
-	import org.robotlegs.v2.bundles.shared.configs.ContextViewWatcherConfig;
+	import org.robotlegs.v2.bundles.shared.configs.ContextViewListenerConfig;
 	import org.robotlegs.v2.bundles.shared.processors.ParentContextFinder;
 	import org.robotlegs.v2.bundles.shared.utilities.LoggingEventDispatcher;
 	import org.robotlegs.v2.core.api.IContextBuilder;
@@ -34,7 +34,7 @@ package org.robotlegs.v2.bundles.classic
 			// and add the contextView to the ViewManager
 			builder
 				.withExtension(ViewManagerExtension)
-				.withConfig(ContextViewWatcherConfig);
+				.withConfig(ContextViewListenerConfig);
 
 			// Destroy the context when the contextView leaves the stage
 			builder.withExtension(AutoDestroyExtension);
