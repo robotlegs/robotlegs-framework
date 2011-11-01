@@ -31,7 +31,7 @@ project_model :model do |m|
   m.library_path          << 'lib/robotlegs-framework-v1.5.2.swc'
   m.library_path          << 'lib/SwiftSuspenders-v2.0.0b1.swc'
   m.library_path          << 'lib/as3commons-logging-2.7.swc'
-  m.library_path          << 'lib/mockolate-0.12.1-flex.swc'
+  m.library_path          << 'lib/mockolate-0.12.2-flex.swc'
   # m.libraries             << :corelib 
   m.support_dir           = 'support'    
 end

@@ -19,18 +19,19 @@ package suites
 	public class MediatorMapTestSuite extends Object
 	{
 
-		/*public var duckTypedMediatorTriggerTest:DuckTypedMediatorTriggerTest;
+		public var duckTypedMediatorTriggerTest:DuckTypedMediatorTriggerTest;
 
-				public var mediatorMapTest:MediatorMapTest;
+		public var mediatorMapTest:MediatorMapTest;
 
-				public var mediatorReparentingTests:MediatorMapRemovalAndReparentingTests;*/
+		public var mediatorReparentingTests:MediatorMapRemovalAndReparentingTests;
 		
 		public var mediatorTest:MediatorTest;
 
-		/*public var rl1MediatorTriggerTest:RL1MediatorTriggerTest;
+		public var rl1MediatorTriggerTest:RL1MediatorTriggerTest;
 
-				public var rl2MediatorTriggerTest:RL2MediatorTriggerTest;
-				*/// Don't uncomment this - the test is only in the code base for
+		public var rl2MediatorTriggerTest:RL2MediatorTriggerTest;
+		
+		/// Don't uncomment this - the test is only in the code base for
 		// reference while we match behaviour.
 		//public var mediatorMapV1FunctionalityTest:MediatorMapV1Test;
 	}
