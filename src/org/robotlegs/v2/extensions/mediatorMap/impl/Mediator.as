@@ -18,18 +18,18 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		public var eventMap:IEventMap;
 		
 		protected var _viewComponent:Object;
-		protected var _removed:Boolean;
+		protected var _destroyed:Boolean;
 		
 		public function Mediator()
 		{
 		}
 
-		public function preRegister():void
+		public function initialize():void
 		{
 			onRegister();
 		}
 
-		public function preRemove():void
+		public function destroy():void
 		{
 			onRemove();
 		}
@@ -54,14 +54,14 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 
 		}
 		
-		public function get removed():Boolean
+		public function get destroyed():Boolean
 		{
-			return _removed;
+			return _destroyed;
 		}
 		
-		public function set removed(value:Boolean):void
+		public function set destroyed(value:Boolean):void
 		{
-			_removed = value;
+			_destroyed = value;
 		}
 	}
 }

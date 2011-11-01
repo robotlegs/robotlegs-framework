@@ -63,42 +63,42 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		}
 
 		[Test]
-		public function preRegister_runs_onRegister_immediately():void
+		public function initialize_runs_onRegister_immediately():void
 		{
 			trackingMediator.setViewComponent(new Sprite());
-			trackingMediator.preRegister();
+			trackingMediator.initialize();
 			var expectedNotifications:Vector.<String> = new <String>[TrackingMediator.ON_REGISTER];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
 		}
 
 		[Test]
-		public function preRemove_runs_onRemove_immediately():void
+		public function destroy_runs_onRemove_immediately():void
 		{
 			trackingMediator.setViewComponent(new Sprite());
-			trackingMediator.preRemove();
+			trackingMediator.destroy();
 			var expectedNotifications:Vector.<String> = new <String>[TrackingMediator.ON_REMOVE];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
 		}
 		
 		[Test]
-		public function removed_defaults_to_false():void
+		public function destroyed_defaults_to_false():void
 		{
-			assertFalse(instance.removed);
+			assertFalse(instance.destroyed);
 		}
 		
 		[Test]
-		public function get_set_removed_to_true():void 
+		public function get_set_destroyed_to_true():void 
 		{
-			instance.removed =  true;
-			assertTrue(instance.removed);
+			instance.destroyed =  true;
+			assertTrue(instance.destroyed);
 		}
 
 		[Test]
-		public function get_set_removed_to_false():void 
+		public function get_set_destroyed_to_false():void 
 		{
-			instance.removed = true;
-			instance.removed =  false;
-			assertFalse(instance.removed);
+			instance.destroyed = true;
+			instance.destroyed =  false;
+			assertFalse(instance.destroyed);
 		}
 		
 		[Test]

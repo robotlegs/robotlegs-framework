@@ -17,6 +17,7 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 	import org.hamcrest.object.strictlyEqualTo;
 	import org.robotlegs.core.IMediator;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediator;
+	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.support.DuckTypedRL2Mediator;
 
 	// required
 	MockolateRunner;
@@ -29,7 +30,7 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 		public var mocks:MockolateRule = new MockolateRule();
 
 		[Mock]
-		public var not_a_RL2_mediator:org.robotlegs.core.IMediator;
+		public var not_a_RL2_mediator:DuckTypedRL2Mediator;
 
 		[Mock]
 		public var not_a_mediator:Object;
@@ -80,31 +81,31 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 		}
 
 		[Test]
-		public function shutdown_calls_preRemove_on_mediator_in_not_strict_mode():void
+		public function shutdown_calls_destroy_on_mediator_in_not_strict_mode():void
 		{
 			notStrictInstance.shutdown(rl2Mediator, VIEW, benignCallback);
-			assertThat(rl2Mediator, received().method('preRemove'));
+			assertThat(rl2Mediator, received().method('destroy'));
 		}
 
 		[Test]
-		public function shutdown_calls_preRemove_on_mediator_in_strict_mode():void
+		public function shutdown_calls_destroy_on_mediator_in_strict_mode():void
 		{
 			strictInstance.shutdown(rl2Mediator, VIEW, benignCallback);
-			assertThat(rl2Mediator, received().method('preRemove'));
+			assertThat(rl2Mediator, received().method('destroy'));
 		}
 
 		[Test]
-		public function shutdown_calls_preRemove_on_notARL2mediator_in_strict_mode():void
+		public function shutdown_calls_destroy_on_notARL2mediator_in_strict_mode():void
 		{
 			strictInstance.shutdown(not_a_RL2_mediator, VIEW, benignCallback);
-			assertThat(not_a_RL2_mediator, received().method('preRemove'));
+			assertThat(not_a_RL2_mediator, received().method('destroy'));
 		}
 
 		[Test]
-		public function shutdown_does_not_call_preRemove_on_notARL2mediator_in_not_strict_mode():void
+		public function shutdown_does_not_call_destroy_on_notARL2mediator_in_not_strict_mode():void
 		{
 			notStrictInstance.shutdown(not_a_RL2_mediator, VIEW, benignCallback);
-			assertThat(not_a_RL2_mediator, received().method('preRemove').never());
+			assertThat(not_a_RL2_mediator, received().method('destroy').never());
 		}
 
 		[Test]
@@ -127,17 +128,17 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 		}
 
 		[Test]
-		public function startup_calls_preRegister_on_mediator_in_not_strict_mode():void
+		public function startup_calls_initialize_on_mediator_in_not_strict_mode():void
 		{
 			notStrictInstance.startup(rl2Mediator, VIEW);
-			assertThat(rl2Mediator, received().method('preRegister'));
+			assertThat(rl2Mediator, received().method('initialize'));
 		}
 
 		[Test]
-		public function startup_calls_preRegister_on_mediator_in_strict_mode():void
+		public function startup_calls_initialize_on_mediator_in_strict_mode():void
 		{
 			strictInstance.startup(rl2Mediator, VIEW);
-			assertThat(rl2Mediator, received().method('preRegister'));
+			assertThat(rl2Mediator, received().method('initialize'));
 		}
 
 		[Test]
@@ -155,10 +156,10 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 		}
 
 		[Test]
-		public function startup_does_NOT_call_preRegister_on_notARL2mediator_in_not_strict_mode():void
+		public function startup_does_NOT_call_initialize_on_notARL2mediator_in_not_strict_mode():void
 		{
 			notStrictInstance.startup(not_a_RL2_mediator, VIEW);
-			assertThat(not_a_RL2_mediator, received().method('preRegister').never());
+			assertThat(not_a_RL2_mediator, received().method('initialize').never());
 		}
 
 		[Test]

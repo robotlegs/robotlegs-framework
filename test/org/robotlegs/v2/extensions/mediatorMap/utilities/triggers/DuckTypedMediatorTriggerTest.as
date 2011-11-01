@@ -16,6 +16,7 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.strictlyEqualTo;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediator;
+	import flash.errors.IllegalOperationError;
 
 	// required
 	MockolateRunner;
@@ -83,17 +84,17 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 		}
 
 		[Test]
-		public function shutdown_calls_preRemove_on_mediator_in_not_strict_mode():void
+		public function shutdown_calls_destroy_on_mediator_in_not_strict_mode():void
 		{
 			notStrictInstance.shutdown(rl2Mediator, VIEW, benignCallback);
-			assertThat(rl2Mediator, received().method('preRemove'));
+			assertThat(rl2Mediator, received().method('destroy'));
 		}
 
 		[Test]
-		public function shutdown_calls_preRemove_on_mediator_in_strict_mode():void
+		public function shutdown_calls_destroy_on_mediator_in_strict_mode():void
 		{
 			strictInstance.shutdown(rl2Mediator, VIEW, benignCallback);
-			assertThat(rl2Mediator, received().method('preRemove'));
+			assertThat(rl2Mediator, received().method('destroy'));
 		}
 
 		[Test]
@@ -102,24 +103,24 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 			notStrictInstance.shutdown(notAMediator, VIEW, benignCallback);
 		}
 
-		[Test(expects="ReferenceError")]
+		[Test(expects="flash.errors.IllegalOperationError")]
 		public function shutdown_throws_error_in_strict_mode_with_notAMediator():void
 		{
 			strictInstance.shutdown(notAMediator, VIEW, benignCallback);
 		}
 
 		[Test]
-		public function startup_calls_preRegister_on_mediator_in_not_strict_mode():void
+		public function startup_calls_initialize_on_mediator_in_not_strict_mode():void
 		{
 			notStrictInstance.startup(rl2Mediator, VIEW);
-			assertThat(rl2Mediator, received().method('preRegister'));
+			assertThat(rl2Mediator, received().method('initialize'));
 		}
 
 		[Test]
-		public function startup_calls_preRegister_on_mediator_in_strict_mode():void
+		public function startup_calls_initialize_on_mediator_in_strict_mode():void
 		{
 			strictInstance.startup(rl2Mediator, VIEW);
-			assertThat(rl2Mediator, received().method('preRegister'));
+			assertThat(rl2Mediator, received().method('initialize'));
 		}
 
 		[Test]

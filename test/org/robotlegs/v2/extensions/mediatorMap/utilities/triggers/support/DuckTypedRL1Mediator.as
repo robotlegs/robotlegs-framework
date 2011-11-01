@@ -7,11 +7,28 @@
 
 package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.support
 {
-	import org.robotlegs.v2.extensions.mediatorMap.impl.Mediator;
 
-	public class RL2Mediator extends Mediator
+	public class DuckTypedRL1Mediator
 	{
-
+	
+		public function DuckTypedRL1Mediator()
+		{
+			super();
+		}
+		
+		public function preRegister():void
+		{
+			
+		}
+		
+		public function preRemove():void
+		{
+			
+		}
+		
+		public function setViewComponent(value:Object):void
+		{
+			
+		}
 	}
-
 }

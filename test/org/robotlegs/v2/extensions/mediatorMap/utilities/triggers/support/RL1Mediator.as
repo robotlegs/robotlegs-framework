@@ -8,13 +8,11 @@
 package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.support
 {
 
-	public class RL1Mediator // implements IMediator
+	import org.robotlegs.mvcs.Mediator;
+
+	public class RL1Mediator extends Mediator
 	{
 
-		public function RL1Mediator()
-		{
-			super();
-		}
 	}
 
 }
