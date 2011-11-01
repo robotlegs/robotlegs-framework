@@ -12,11 +12,19 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorTrigger;
 	import org.robotlegs.v2.core.utilities.objectHasMethod;
 	import flash.errors.IllegalOperationError;
+	import org.robotlegs.v2.core.api.ITypeMatcher;
+	import flash.utils.Dictionary;
+	import org.robotlegs.v2.extensions.mediatorMap.utilities.strategies.NoWaitStrategy;
+	import org.robotlegs.v2.core.api.ITypeFilter;
+	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorStartupStrategy;
 
 	public class DuckTypedMediatorTrigger implements IMediatorTrigger
 	{
-
 		protected var _strict:Boolean;
+
+		protected const _strategiesByFilter:Dictionary = new Dictionary();
+				
+		protected var _defaultStrategy:IMediatorStartupStrategy = new NoWaitStrategy();
 
 		public function DuckTypedMediatorTrigger(strict:Boolean)
 		{
@@ -27,11 +35,21 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 		{
 			if (_strict)
 			{
+				throwErrorIfUnimplemented(mediator, ['preRegister', 'initialize'])
+			}
+
+			if (_strict)
+			{
 				mediator.setViewComponent(view);
 			}
 			else if (objectHasMethod(mediator, 'setViewComponent'))
 			{
 				mediator.setViewComponent(view);
+			}
+			
+			if(mediator.hasOwnProperty('destroyed'))
+			{
+				mediator.destroyed = false;
 			}
 			
 			if (objectHasMethod(mediator, 'preRegister'))
@@ -40,16 +58,18 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 			}
 			else if (objectHasMethod(mediator, 'initialize'))
 			{
-				mediator.initialize();
+				startupWithStrategy(mediator, view);
 			}
-			else if(_strict)
-			{
-				throwError("startup", mediator,  ['preRegister', 'initialize']);
-			}
+			
 		}
 
 		public function shutdown(mediator:*, view:DisplayObject, callback:Function):void
 		{
+			if(_strict)
+			{
+				throwErrorIfUnimplemented(mediator, ['preRemove', 'destroy']);
+			}
+			
 			if (objectHasMethod(mediator, 'preRemove'))
 			{
 				mediator.preRemove();
@@ -58,16 +78,50 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 			{
 				mediator.destroy();
 			}
-			else if(_strict)
+			
+			if(mediator.hasOwnProperty('destroyed'))
 			{
-				throwError("shutdown", mediator, ['preRemove', 'destroy']);
+				mediator.destroyed = true;
 			}
+			
 			callback(mediator, view);
 		}
 		
-		protected function throwError(operationName:String, mediator:Object, methods:Array):void
+		public function addStartupStrategy(strategy:Class, matcher:ITypeMatcher):void
 		{
-			throw new IllegalOperationError("Attempted " + operationName + " on " + mediator + " but no expected methods ( " +  methods +  " ) were found.");
+			_strategiesByFilter[matcher.createTypeFilter()] = new strategy();
+		}
+		
+		protected function throwErrorIfUnimplemented(mediator:Object, methods:Array):void
+		{
+			for each (var methodName:String in methods)
+			{
+				if(objectHasMethod(mediator, methodName))
+				{
+					return;
+				}
+			}
+			
+			throw new IllegalOperationError("None of the selection of expected methods ( " +  methods +  " ) were found on " + mediator);
+		}
+		
+		protected function startupWithStrategy(mediator:*, view:DisplayObject):void
+		{
+			for (var filter:* in _strategiesByFilter)
+			{
+				if((filter as ITypeFilter).matches(view))
+				{
+					_strategiesByFilter[filter].startup(mediator, view, startupCallback);
+					return;
+				}
+			}
+			
+			_defaultStrategy.startup(mediator, view, startupCallback);
+		}
+		
+		protected function startupCallback(mediator:*):void
+		{
+			mediator.initialize();
 		}
 	}
 }

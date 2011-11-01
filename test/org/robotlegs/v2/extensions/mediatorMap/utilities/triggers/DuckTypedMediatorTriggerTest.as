@@ -143,7 +143,7 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 			notStrictInstance.startup(notAMediator, VIEW);
 		}
 
-		[Test(expects="ReferenceError")]
+		[Test(expects="flash.errors.IllegalOperationError")]
 		public function startup_throws_error_in_strict_mode_with_notAMediator():void
 		{
 			strictInstance.startup(notAMediator, VIEW);

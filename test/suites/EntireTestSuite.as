@@ -7,6 +7,7 @@
 
 package suites
 {
+import suites.UtilityPackageFunctionsSuite;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
@@ -20,10 +21,12 @@ package suites
 		public var contextTestSuite:ContextTestSuite;
 
 		public var hooksTestSuite:GuardsAndHooksTestSuite;
-
+	
 		public var mediatorMapTestSuite:MediatorMapTestSuite;
 
 		public var typeMatchingTestSuite:TypeMatchingTestSuite;
+
+		public var utilityPackageTestSuite:UtilityPackageFunctionsSuite;
 
 		public var viewManagerTestSuite:ViewManagerTestSuite;
 	}

@@ -14,25 +14,33 @@ package suites
 	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.RL1MediatorTriggerTest;
 	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.RL2MediatorTriggerTest;
 	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.RL2MediatorTrigger_strategiesTest;
+	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.DuckTypedMediatorTrigger_strategiesTest;
+	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.RL1AndRL2MediatorTriggerTest;
+	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.RL1AndRL2MediatorTrigger_strategiesTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
 	public class MediatorMapTestSuite extends Object
 	{
-
-		public var duckTypedMediatorTriggerTest:DuckTypedMediatorTriggerTest;
-
 		public var mediatorMapTest:MediatorMapTest;
 
 		public var mediatorReparentingTests:MediatorMapRemovalAndReparentingTests;
 		
 		public var mediatorTest:MediatorTest;
 
+		public var duckTypedMediatorTriggerTest:DuckTypedMediatorTriggerTest;
+
 		public var rl1MediatorTriggerTest:RL1MediatorTriggerTest;
 
 		public var rl2MediatorTriggerTest:RL2MediatorTriggerTest;
+
+		public var rl1AndRL2MediatorTriggerTest:RL1AndRL2MediatorTriggerTest;
 		
 		public var rl2MediatorTrigger_strategiesTest:RL2MediatorTrigger_strategiesTest;
+		
+		public var duckTypedMediatorTrigger_strategiesTest:DuckTypedMediatorTrigger_strategiesTest;
+		
+		public var rl1AndRL2MediatorTrigger_strategiesTest:RL1AndRL2MediatorTrigger_strategiesTest;
 		
 		/// Don't uncomment this - the test is only in the code base for
 		// reference while we match behaviour.
