@@ -10,6 +10,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
+	import flash.errors.IllegalOperationError;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
 	import org.flexunit.Assert;
@@ -22,14 +23,11 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import org.robotlegs.v2.extensions.mediatorMap.impl.MediatorMap;
 	import org.robotlegs.v2.extensions.mediatorMap.impl.support.MediatorWatcher;
 	import org.robotlegs.v2.extensions.mediatorMap.support.DuckTypedRL1MediatorTrigger;
+	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.DuckTypedMediatorTrigger;
+	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.RL2MediatorTrigger;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewHandler;
 	import org.robotlegs.v2.extensions.viewManager.api.ViewHandlerEvent;
-	import org.swiftsuspenders.DescribeTypeJSONReflector;
 	import org.swiftsuspenders.Injector;
-	import org.swiftsuspenders.Reflector;
-	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.RL2MediatorTrigger;
-	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.DuckTypedMediatorTrigger;
-	import flash.errors.IllegalOperationError;
 
 	public class MediatorMapTest
 	{
@@ -40,19 +38,15 @@ package org.robotlegs.v2.extensions.mediatorMap
 
 		private var mediatorWatcher:MediatorWatcher;
 
-		private var reflector:Reflector;
-
 		[Before]
 		public function setUp():void
 		{
 			injector = new Injector();
-			reflector = new DescribeTypeJSONReflector();
 
 			instance = new MediatorMap();
 			instance.hooksProcessor = new HooksProcessor();
 			instance.guardsProcessor = new GuardsProcessor();
 			instance.injector = injector;
-			instance.reflector = reflector;
 			instance.hooksProcessor = new HooksProcessor();
 			instance.guardsProcessor = new GuardsProcessor();
 			instance.loadTrigger(new DuckTypedMediatorTrigger(false));

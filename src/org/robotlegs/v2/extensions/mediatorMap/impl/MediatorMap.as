@@ -41,11 +41,8 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 
 		public function get interests():uint
 		{
-			return 0;
+			return 2;
 		}
-
-		[Inject]
-		public var reflector:Reflector;
 
 		protected const _configsByTypeFilter:Dictionary = new Dictionary();
 
@@ -76,7 +73,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			var interest:uint = 0;
 
 			for (var filter:* in _configsByTypeFilter)
-			{
+			{				
 				if ((filter as ITypeFilter).matches(view))
 				{
 					interest = 1;

@@ -22,12 +22,13 @@ import suites.UtilityPackageFunctionsSuite;
 
 		public var hooksTestSuite:GuardsAndHooksTestSuite;
 	
-		public var mediatorMapTestSuite:MediatorMapTestSuite;
-
 		public var typeMatchingTestSuite:TypeMatchingTestSuite;
 
 		public var utilityPackageTestSuite:UtilityPackageFunctionsSuite;
 
 		public var viewManagerTestSuite:ViewManagerTestSuite;
+
+		public var mediatorMapTestSuite:MediatorMapTestSuite;
+
 	}
 }

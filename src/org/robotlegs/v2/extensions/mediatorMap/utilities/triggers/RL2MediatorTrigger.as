@@ -30,7 +30,7 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 		}
 
 		public function startup(mediator:*, view:DisplayObject):void
-		{
+		{			
 			if (_strict || (mediator is IMediator))
 			{
 				mediator.destroyed = false;
