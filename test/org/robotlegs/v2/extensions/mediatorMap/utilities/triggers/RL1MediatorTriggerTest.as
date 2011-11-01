@@ -16,8 +16,7 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.strictlyEqualTo;
 	import org.robotlegs.core.IMediator;
-	import org.robotlegs.v2.extensions.mediatorMap.api.IMediator;
-	import flash.errors.IllegalOperationError;
+	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.support.DuckTypedRL1Mediator;
 
 	// required
 	MockolateRunner;
@@ -30,7 +29,7 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 		public var mocks:MockolateRule = new MockolateRule();
 
 		[Mock]
-		public var not_a_RL1_mediator:org.robotlegs.v2.extensions.mediatorMap.api.IMediator;
+		public var not_a_RL1_mediator:DuckTypedRL1Mediator;
 
 		[Mock]
 		public var not_a_mediator:Object;

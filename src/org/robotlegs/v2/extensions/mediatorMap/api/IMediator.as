@@ -13,12 +13,12 @@ package org.robotlegs.v2.extensions.mediatorMap.api
 		/**
 		 * Should be invoked by the <code>IMediatorMap</code> during <code>IMediator</code> registration
 		 */
-		function preRegister():void;
+		function initialize():void;
 
 		/**
 		 * Invoked when the <code>IMediator</code> has been removed by the <code>IMediatorMap</code>
 		 */
-		function preRemove():void;
+		function destroy():void;
 
 		/**
 		 * The <code>IMediator</code>'s view component
@@ -34,9 +34,9 @@ package org.robotlegs.v2.extensions.mediatorMap.api
 		 */
 		function setViewComponent(viewComponent:Object):void;
 		
-		function get removed():Boolean;
+		function get destroyed():Boolean;
 		
-		function set removed(value:Boolean):void;
+		function set destroyed(value:Boolean):void;
 	}
 }
 

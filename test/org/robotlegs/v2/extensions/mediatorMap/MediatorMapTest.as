@@ -27,6 +27,8 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import org.swiftsuspenders.DescribeTypeJSONReflector;
 	import org.swiftsuspenders.Injector;
 	import org.swiftsuspenders.Reflector;
+	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.RL2MediatorTrigger;
+	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.DuckTypedMediatorTrigger;
 
 	public class MediatorMapTest
 	{
@@ -52,7 +54,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 			instance.reflector = reflector;
 			instance.hooksProcessor = new HooksProcessor();
 			instance.guardsProcessor = new GuardsProcessor();
-			instance.loadTrigger(new DuckTypedRL1MediatorTrigger(true));
+			instance.loadTrigger(new DuckTypedMediatorTrigger(false));
 
 			mediatorWatcher = new MediatorWatcher();
 			injector.map(MediatorWatcher).toValue(mediatorWatcher);
@@ -317,7 +319,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 		}
 
 		[Test]
-		public function runs_preRemove_on_created_mediator_when_handleViewRemoved_runs():void
+		public function runs_destroy_on_created_mediator_when_handleViewRemoved_runs():void
 		{
 			instance.map(ExampleMediator).toView(Sprite);
 
@@ -325,7 +327,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 			instance.processView(view, null);
 			instance.releaseView(view);
 
-			var expectedNotifications:Vector.<String> = new <String>['ExampleMediator', 'ExampleMediator preRemove'];
+			var expectedNotifications:Vector.<String> = new <String>['ExampleMediator', 'ExampleMediator destroy'];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
 		}
 
@@ -345,7 +347,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 			instance.mediate(view);
 			instance.unmediate(view);
 
-			var expectedNotifications:Vector.<String> = new <String>['ExampleMediator', 'ExampleMediator preRemove'];
+			var expectedNotifications:Vector.<String> = new <String>['ExampleMediator', 'ExampleMediator destroy'];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
 		}
 
@@ -375,14 +377,14 @@ class ExampleMediator
 	[Inject]
 	public var view:Sprite;
 
-	public function preRegister():void
+	public function initialize():void
 	{
 		mediatorWatcher.notify('ExampleMediator');
 	}
 
-	public function preRemove():void
+	public function destroy():void
 	{
-		mediatorWatcher.notify('ExampleMediator preRemove');
+		mediatorWatcher.notify('ExampleMediator destroy');
 	}
 }
 
@@ -395,7 +397,7 @@ class ExampleDisplayObjectMediator
 	[Inject]
 	public var view:DisplayObject;
 
-	public function preRegister():void
+	public function initialize():void
 	{
 		mediatorWatcher.notify('ExampleDisplayObjectMediator');
 	}
@@ -407,7 +409,7 @@ class RectangleMediator
 	[Inject]
 	public var rectangle:Rectangle;
 
-	public function preRegister():void
+	public function initialize():void
 	{
 
 	}

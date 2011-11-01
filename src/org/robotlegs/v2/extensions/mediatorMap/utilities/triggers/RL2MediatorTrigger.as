@@ -22,10 +22,11 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 
 		public function startup(mediator:*, view:DisplayObject):void
 		{
+			trace("RL2MediatorTrigger::startup()");
 			if (_strict || (mediator is IMediator))
 			{
 				mediator.setViewComponent(view);
-				mediator.preRegister();
+				mediator.initialize();
 			}
 		}
 
@@ -33,7 +34,7 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 		{
 			if (_strict || (mediator is IMediator))
 			{
-				mediator.preRemove();
+				mediator.destroy();
 			}
 
 			callback(mediator, view);

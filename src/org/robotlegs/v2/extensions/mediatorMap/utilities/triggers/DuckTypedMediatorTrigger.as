@@ -11,6 +11,7 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 	import flash.utils.describeType;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorTrigger;
 	import org.robotlegs.v2.core.utilities.objectHasMethod;
+	import flash.errors.IllegalOperationError;
 
 	public class DuckTypedMediatorTrigger implements IMediatorTrigger
 	{
@@ -27,31 +28,46 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 			if (_strict)
 			{
 				mediator.setViewComponent(view);
-				mediator.preRegister();
-				return;
 			}
-
-			if (objectHasMethod(mediator, 'setViewComponent'))
+			else if (objectHasMethod(mediator, 'setViewComponent'))
 			{
 				mediator.setViewComponent(view);
 			}
+			
 			if (objectHasMethod(mediator, 'preRegister'))
 			{
 				mediator.preRegister();
+			}
+			else if (objectHasMethod(mediator, 'initialize'))
+			{
+				mediator.initialize();
+			}
+			else if(_strict)
+			{
+				throwError("startup", mediator,  ['preRegister', 'initialize']);
 			}
 		}
 
 		public function shutdown(mediator:*, view:DisplayObject, callback:Function):void
 		{
-			if (_strict)
+			if (objectHasMethod(mediator, 'preRemove'))
 			{
 				mediator.preRemove();
 			}
-			else if (objectHasMethod(mediator, 'preRemove'))
+			else if(objectHasMethod(mediator, 'destroy'))
 			{
-				mediator.preRemove();
+				mediator.destroy();
+			}
+			else if(_strict)
+			{
+				throwError("shutdown", mediator, ['preRemove', 'destroy']);
 			}
 			callback(mediator, view);
+		}
+		
+		protected function throwError(operationName:String, mediator:Object, methods:Array):void
+		{
+			throw new IllegalOperationError("Attempted " + operationName + " on " + mediator + " but no expected methods ( " +  methods +  " ) were found.");
 		}
 	}
 }
