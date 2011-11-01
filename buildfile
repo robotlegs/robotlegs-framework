@@ -30,7 +30,6 @@ define "robotlegs-framework", :layout => layout do
           _(:lib,"SwiftSuspenders-v2.0.0b1.swc"),
           _(:lib,"robotlegs-framework-v1.5.2.swc") )
 
-  # headless = Buildr.environment == "test"
   testrunner = _(:source, :test, :as3, "RobotlegsTest.mxml")
   test.using(:flexunit4 => true, :headless => false, :antjar => _(:lib, "flexUnitTasks-4.1.0-8.jar"))
   test.compile.using( :main => testrunner, :args => [] ).with( _(:lib) )
