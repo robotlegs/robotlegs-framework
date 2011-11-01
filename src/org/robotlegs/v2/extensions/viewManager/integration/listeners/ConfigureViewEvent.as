@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.viewManager.utilities.watchers
+package org.robotlegs.v2.extensions.viewManager.integration.listeners
 {
 	import flash.display.DisplayObject;
 	import flash.events.Event;

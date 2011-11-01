@@ -19,6 +19,7 @@ package org.robotlegs.v2.extensions.viewManager.api
 
 		function releaseView(view:DisplayObject):void;
 
-		function invalidate():void;
+		// can we replace this with [preDestroy] ?
+		function destroy():void;
 	}
 }

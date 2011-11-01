@@ -9,26 +9,25 @@ package org.robotlegs.v2.extensions.viewManager
 {
 	import org.robotlegs.v2.core.api.IContext;
 	import org.robotlegs.v2.core.api.IContextExtension;
-	import org.robotlegs.v2.extensions.viewManager.api.IContainerRegistry;
-	import org.robotlegs.v2.extensions.viewManager.api.IViewProcessor;
-	import org.robotlegs.v2.extensions.viewManager.api.IViewWatcher;
-	import org.robotlegs.v2.extensions.viewManager.utilities.watchers.ConfigureViewWatcher;
+	import org.robotlegs.v2.extensions.viewManager.api.IViewListener;
+	import org.robotlegs.v2.extensions.viewManager.impl.ContainerRegistry;
+	import org.robotlegs.v2.extensions.viewManager.impl.ViewProcessor;
+	import org.robotlegs.v2.extensions.viewManager.integration.listeners.AutoStageListener;
 
-	public class ConfigureViewWatcherExtension implements IContextExtension
+	public class AutoStageListenerExtension implements IContextExtension
 	{
 		private static var installCount:uint;
 
 		// Really? Yes, there can be only one.
-		private static var viewWatcher:IViewWatcher;
+		private static var viewListener:IViewListener;
 
 		public function initialize(context:IContext):void
 		{
-			if (viewWatcher == null)
+			if (viewListener == null)
 			{
-				const containerRegistry:IContainerRegistry = context.injector.getInstance(IContainerRegistry);
-				const viewProcessor:IViewProcessor = context.injector.getInstance(IViewProcessor);
-				viewWatcher = new ConfigureViewWatcher(containerRegistry);
-				viewWatcher.configure(viewProcessor);
+				const containerRegistry:ContainerRegistry = context.injector.getInstance(ContainerRegistry);
+				const viewProcessor:ViewProcessor = context.injector.getInstance(ViewProcessor);
+				viewListener = new AutoStageListener(viewProcessor, containerRegistry);
 			}
 		}
 
@@ -42,8 +41,8 @@ package org.robotlegs.v2.extensions.viewManager
 			installCount--;
 			if (installCount == 0)
 			{
-				viewWatcher.destroy();
-				viewWatcher = null;
+				viewListener.destroy();
+				viewListener = null;
 			}
 		}
 	}

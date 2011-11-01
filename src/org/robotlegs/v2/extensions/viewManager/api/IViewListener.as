@@ -9,14 +9,13 @@ package org.robotlegs.v2.extensions.viewManager.api
 {
 	import flash.display.DisplayObject;
 
-	public interface IViewWatcher
+	public interface IViewListener
 	{
-		function configure(viewProcessor:IViewProcessor):void;
-
 		function onViewProcessed(view:DisplayObject):void;
 
 		function onViewReleased(view:DisplayObject):void;
 
+		// can we replace this with [preDestroy] ?
 		function destroy():void;
 	}
 }

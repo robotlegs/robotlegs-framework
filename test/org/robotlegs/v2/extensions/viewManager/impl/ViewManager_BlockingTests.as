@@ -16,25 +16,23 @@ package org.robotlegs.v2.extensions.viewManager.impl
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.isFalse;
 	import org.hamcrest.object.isTrue;
-	import org.robotlegs.v2.extensions.viewManager.api.IContainerRegistry;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewClassInfo;
-	import org.robotlegs.v2.extensions.viewManager.api.IViewProcessor;
-	import org.robotlegs.v2.extensions.viewManager.api.IViewWatcher;
+	import org.robotlegs.v2.extensions.viewManager.api.IViewListener;
 	import org.robotlegs.v2.extensions.viewManager.impl.support.ViewHandlerSupport;
-	import org.robotlegs.v2.extensions.viewManager.utilities.watchers.AutoStageWatcher;
+	import org.robotlegs.v2.extensions.viewManager.integration.listeners.AutoStageListener;
 
-	public class StageWatcher_BlockingTests
+	public class ViewManager_BlockingTests
 	{
 
 		protected var container:DisplayObjectContainer;
 
-		protected var containerRegistry:IContainerRegistry;
+		protected var containerRegistry:ContainerRegistry;
 
 		protected var group:UIComponent;
 
-		protected var viewProcessor:IViewProcessor;
+		protected var viewListener:IViewListener;
 
-		protected var viewWatcher:IViewWatcher;
+		protected var viewProcessor:ViewProcessor;
 
 		[Before(ui)]
 		public function setUp():void
@@ -43,8 +41,7 @@ package org.robotlegs.v2.extensions.viewManager.impl
 			container = new Sprite();
 			containerRegistry = new ContainerRegistry();
 			viewProcessor = new ViewProcessor(containerRegistry);
-			viewWatcher = new AutoStageWatcher(containerRegistry);
-			viewWatcher.configure(viewProcessor);
+			viewListener = new AutoStageListener(viewProcessor, containerRegistry);
 
 			group.addChild(container)
 			UIImpersonator.addChild(group);
@@ -53,7 +50,7 @@ package org.robotlegs.v2.extensions.viewManager.impl
 		[After]
 		public function tearDown():void
 		{
-			viewWatcher.destroy();
+			viewListener.destroy();
 			UIImpersonator.removeAllChildren();
 		}
 

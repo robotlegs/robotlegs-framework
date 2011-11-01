@@ -57,5 +57,9 @@ package org.robotlegs.v2.extensions.hooks
 		{
 			return hookMap.mapMatcher(matcher);
 		}
+		
+		public function destroy():void
+		{
+		}
 	}
 }

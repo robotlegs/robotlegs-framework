@@ -14,10 +14,10 @@ package org.robotlegs.v2.bundles.shared.configs
 	import org.robotlegs.v2.core.api.IContextConfig;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewManager;
 
-	public class ContextViewWatcherConfig implements IContextConfig
+	public class ContextViewListenerConfig implements IContextConfig
 	{
 
-		private static const logger:ILogger = getLogger(ContextViewWatcherConfig);
+		private static const logger:ILogger = getLogger(ContextViewListenerConfig);
 
 		[Inject]
 		public var contextView:DisplayObjectContainer;
@@ -33,7 +33,7 @@ package org.robotlegs.v2.bundles.shared.configs
 			}
 			else
 			{
-				logger.warn('a ContextViewWatcherConfig was installed into {0}, but the contextView is null. Consider removing this config.', [context]);
+				logger.warn('a ContextViewListenerConfig was installed into {0}, but the contextView is null. Consider removing this config.', [context]);
 			}
 		}
 	}

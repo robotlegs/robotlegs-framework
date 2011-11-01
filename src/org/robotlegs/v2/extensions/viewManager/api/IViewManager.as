@@ -13,12 +13,13 @@ package org.robotlegs.v2.extensions.viewManager.api
 	{
 		function addContainer(container:DisplayObjectContainer):void;
 
-		function addHandler(handler:IViewHandler):void;
-
 		function removeContainer(container:DisplayObjectContainer):void;
+
+		function addHandler(handler:IViewHandler):void;
 
 		function removeHandler(handler:IViewHandler):void;
 
-		function removeAll():void;
+		// can we replace this with [preDestroy] ?
+		function destroy():void;
 	}
 }

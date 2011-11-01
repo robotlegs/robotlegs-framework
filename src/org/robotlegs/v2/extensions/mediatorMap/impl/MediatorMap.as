@@ -155,6 +155,10 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			releaseView(view);
 		}
 
+		public function destroy():void
+		{
+		}
+		
 		protected function onEnterFrameActionShutdown(e:Event):void
 		{
 			e.target.removeEventListener(Event.ENTER_FRAME, onEnterFrameActionShutdown);

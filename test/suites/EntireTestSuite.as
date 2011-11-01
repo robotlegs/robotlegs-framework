@@ -23,8 +23,8 @@ package suites
 
 		public var mediatorMapTestSuite:MediatorMapTestSuite;
 
-		public var stageWatcherTestSuite:StageWatcherTestSuite;
-
 		public var typeMatchingTestSuite:TypeMatchingTestSuite;
+
+		public var viewManagerTestSuite:ViewManagerTestSuite;
 	}
 }
