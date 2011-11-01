@@ -7,18 +7,31 @@
 
 package org.robotlegs.v2.extensions.mediatorMap.utilities.strategies
 {
-	import org.robotlegs.v2.extensions.mediatorMap.api.IMediator;
 	import flash.display.DisplayObject;
-	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorTrigger;
-	import flash.utils.Dictionary;
-	import org.robotlegs.v2.core.api.ITypeMatcher;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorStartupStrategy;
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
+	import flash.utils.Dictionary;
 
 	public class WaitForCompleteStrategy implements IMediatorStartupStrategy
 	{
+		protected const _callbacksByView:Dictionary = new Dictionary();
+		protected const _mediatorsByView:Dictionary = new Dictionary();
+
 		public function startup(mediator:*, view:DisplayObject, callback:Function):void
 		{
-			//callback(mediator);
+			_callbacksByView[view] = callback;
+			_mediatorsByView[view] = mediator;
+			view.addEventListener(Event.COMPLETE, completeStartup);
+		}
+
+		protected function completeStartup(e:Event):void
+		{
+			const view:EventDispatcher = e.target as EventDispatcher;
+			view.removeEventListener(Event.COMPLETE, completeStartup);
+			_callbacksByView[view](_mediatorsByView[view]);
+			delete _callbacksByView[view];
+			delete _mediatorsByView[view];
 		}
 	}
 }

@@ -49,7 +49,7 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 		
 		public function addStartupStrategy(strategy:Class, matcher:ITypeMatcher):void
 		{
-
+			_strategiesByFilter[matcher.createTypeFilter()] = new strategy();
 		}
 		
 		protected function startupWithStrategy(mediator:*, view:DisplayObject):void

@@ -13,12 +13,37 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.strategies
 	import flash.utils.Dictionary;
 	import org.robotlegs.v2.core.api.ITypeMatcher;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorStartupStrategy;
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
 
 	public class WaitForCreationCompleteStrategy implements IMediatorStartupStrategy
 	{
+		protected const _callbacksByView:Dictionary = new Dictionary();
+		protected const _mediatorsByView:Dictionary = new Dictionary();
+		
+		// avoids the flex framework being required
+		protected static const CREATION_COMPLETE:String = 'creationComplete';
+
 		public function startup(mediator:*, view:DisplayObject, callback:Function):void
 		{
-			//callback(mediator);
+			if(view['initialized'])
+			{
+				callback(mediator);
+				return;
+			}
+			
+			_callbacksByView[view] = callback;
+			_mediatorsByView[view] = mediator;
+			view.addEventListener(CREATION_COMPLETE, completeStartup);
+		}
+
+		protected function completeStartup(e:Event):void
+		{
+			const view:EventDispatcher = e.target as EventDispatcher;
+			view.removeEventListener(CREATION_COMPLETE, completeStartup);
+			_callbacksByView[view](_mediatorsByView[view]);
+			delete _callbacksByView[view];
+			delete _mediatorsByView[view];
 		}
 	}
 }
