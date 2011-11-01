@@ -18,11 +18,15 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import org.robotlegs.v2.extensions.guards.GuardsProcessor;
 	import org.robotlegs.v2.extensions.hooks.HooksProcessor;
 	import org.robotlegs.v2.extensions.mediatorMap.impl.MediatorMap;
-	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.RLMediatorTriggerBase;
 	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.support.RL2Mediator;
 	import org.swiftsuspenders.DescribeTypeJSONReflector;
 	import org.swiftsuspenders.Injector;
 	import org.swiftsuspenders.Reflector;
+	import flash.events.EventDispatcher;
+	import org.robotlegs.core.IEventMap;
+	import org.robotlegs.base.EventMap;
+	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.RL1MediatorTrigger;
+	
 	// required
 	MockolateRunner;
 
@@ -36,7 +40,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 		/* Public Properties                                                         */
 
 		[Mock]
-		public var trigger:RLMediatorTriggerBase;
+		public var trigger:RL1MediatorTrigger;
 
 		private var _callbackRun:Function;
 
@@ -59,6 +63,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 
 			injector = new Injector();
 			reflector = new DescribeTypeJSONReflector();
+			injector.map(IEventMap).toValue(new EventMap(new EventDispatcher()));
 
 			instance = new MediatorMap();
 			instance.hooksProcessor = new HooksProcessor();

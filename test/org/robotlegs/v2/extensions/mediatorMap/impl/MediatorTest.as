@@ -81,6 +81,27 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		}
 		
 		[Test]
+		public function removed_defaults_to_false():void
+		{
+			assertFalse(instance.removed);
+		}
+		
+		[Test]
+		public function get_set_removed_to_true():void 
+		{
+			instance.removed =  true;
+			assertTrue(instance.removed);
+		}
+
+		[Test]
+		public function get_set_removed_to_false():void 
+		{
+			instance.removed = true;
+			instance.removed =  false;
+			assertFalse(instance.removed);
+		}
+		
+		[Test]
 		public function test_failure_seen():void
 		{
 			assertTrue("Failing test", true);

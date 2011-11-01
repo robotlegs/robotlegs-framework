@@ -17,6 +17,7 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 	import org.hamcrest.object.strictlyEqualTo;
 	import org.robotlegs.core.IMediator;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediator;
+	import flash.errors.IllegalOperationError;
 
 	// required
 	MockolateRunner;
@@ -179,7 +180,7 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 		{
 			strictInstance.startup(not_a_mediator, VIEW);
 		}
-
+		
 		[Test]
 		public function test_failure_seen():void
 		{

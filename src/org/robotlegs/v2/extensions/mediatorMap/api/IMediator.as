@@ -33,6 +33,10 @@ package org.robotlegs.v2.extensions.mediatorMap.api
 		 * @param The view component
 		 */
 		function setViewComponent(viewComponent:Object):void;
+		
+		function get removed():Boolean;
+		
+		function set removed(value:Boolean):void;
 	}
 }
 

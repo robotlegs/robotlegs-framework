@@ -18,6 +18,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		public var eventMap:IEventMap;
 		
 		protected var _viewComponent:Object;
+		protected var _removed:Boolean;
 		
 		public function Mediator()
 		{
@@ -51,6 +52,16 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		protected function onRemove():void
 		{
 
+		}
+		
+		public function get removed():Boolean
+		{
+			return _removed;
+		}
+		
+		public function set removed(value:Boolean):void
+		{
+			_removed = value;
 		}
 	}
 }
