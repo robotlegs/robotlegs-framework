@@ -7,10 +7,10 @@
 
 package suites
 {
-	import org.robotlegs.v2.extensions.guards.GuardsProcessorTest;
-	import org.robotlegs.v2.extensions.hooks.HookMapTest;
-	import org.robotlegs.v2.extensions.hooks.HooksProcessorTest;
-	import org.robotlegs.v2.extensions.hooks.ViewHookMapTest;
+	import org.robotlegs.v2.extensions.guardsAndHooks.impl.GuardsProcessorTest;
+	import org.robotlegs.v2.extensions.guardsAndHooks.impl.HookMapTest;
+	import org.robotlegs.v2.extensions.guardsAndHooks.impl.HooksProcessorTest;
+	import org.robotlegs.v2.extensions.guardsAndHooks.ViewHookMapTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]

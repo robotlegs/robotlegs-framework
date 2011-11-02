@@ -5,13 +5,13 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.hooks
+package org.robotlegs.v2.extensions.guardsAndHooks.impl
 {
 	import flash.utils.Dictionary;
 	import flash.utils.getQualifiedClassName;
 	import org.robotlegs.v2.core.api.ITypeFilter;
 	import org.robotlegs.v2.core.api.ITypeMatcher;
-	import org.robotlegs.v2.extensions.guards.GuardsProcessor;
+	import org.robotlegs.v2.extensions.guardsAndHooks.impl.GuardsProcessor;
 	import org.swiftsuspenders.DescribeTypeJSONReflector;
 	import org.swiftsuspenders.Injector;
 	import org.swiftsuspenders.Reflector;

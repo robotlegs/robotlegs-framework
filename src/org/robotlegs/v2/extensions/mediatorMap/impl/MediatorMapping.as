@@ -11,8 +11,8 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 	import org.robotlegs.v2.core.api.ITypeFilter;
 	import org.robotlegs.v2.core.api.ITypeMatcher;
 	import org.robotlegs.v2.core.impl.TypeMatcher;
-	import org.robotlegs.v2.extensions.hooks.GuardsAndHooksConfig;
-	import org.robotlegs.v2.extensions.hooks.IGuardsAndHooksConfig;
+	import org.robotlegs.v2.extensions.guardsAndHooks.impl.GuardsAndHooksConfig;
+	import org.robotlegs.v2.extensions.guardsAndHooks.api.IGuardsAndHooksConfig;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorConfig;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMapping;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorUnmapping;

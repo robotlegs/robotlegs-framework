@@ -5,18 +5,20 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.hooks
+package org.robotlegs.v2.extensions.guardsAndHooks.support
 {
 
-	public interface IGuardsAndHooksConfig
+	public class TrackableHook1
 	{
 
-		function get guards():Vector.<Class>;
-		function get hooks():Vector.<Class>;
+		[Inject]
+		public var hookTracker:HookTracker;
 
-		function withGuards(... guardClasses):IGuardsAndHooksConfig;
-
-		function withHooks(... hookClasses):IGuardsAndHooksConfig;
+		public function hook():void
+		{
+			hookTracker.confirm("TrackableHook1");
+		}
 	}
+
 }
 

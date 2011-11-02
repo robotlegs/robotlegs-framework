@@ -5,9 +5,10 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.hooks
+package org.robotlegs.v2.extensions.guardsAndHooks.impl
 {
 	import org.robotlegs.v2.core.utilities.pushValuesToClassVector;
+	import org.robotlegs.v2.extensions.guardsAndHooks.api.IGuardsAndHooksConfig;
 
 	public class GuardsAndHooksConfig implements IGuardsAndHooksConfig
 	{
@@ -24,11 +25,6 @@ package org.robotlegs.v2.extensions.hooks
 		public function get hooks():Vector.<Class>
 		{
 			return _hooks;
-		}
-
-		public function GuardsAndHooksConfig()
-		{
-
 		}
 
 		public function withGuards(... guardClasses):IGuardsAndHooksConfig

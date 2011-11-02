@@ -8,7 +8,7 @@
 package org.robotlegs.v2.extensions.mediatorMap.api
 {
 	import org.robotlegs.v2.core.api.ITypeMatcher;
-	import org.robotlegs.v2.extensions.hooks.IGuardsAndHooksConfig;
+	import org.robotlegs.v2.extensions.guardsAndHooks.api.IGuardsAndHooksConfig;
 
 	public interface IMediatorMapping extends IGuardsAndHooksConfig
 	{

@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.hooks
+package org.robotlegs.v2.extensions.guardsAndHooks.impl
 {
 	import flash.utils.Dictionary;
 	import flash.utils.describeType;

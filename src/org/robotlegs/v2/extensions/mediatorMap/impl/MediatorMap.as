@@ -15,8 +15,8 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 	import org.robotlegs.v2.extensions.viewManager.api.IViewClassInfo;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewHandler;
 	import org.robotlegs.v2.extensions.viewManager.api.ViewHandlerEvent;
-	import org.robotlegs.v2.extensions.guards.GuardsProcessor;
-	import org.robotlegs.v2.extensions.hooks.HooksProcessor;
+	import org.robotlegs.v2.extensions.guardsAndHooks.impl.GuardsProcessor;
+	import org.robotlegs.v2.extensions.guardsAndHooks.impl.HooksProcessor;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorConfig;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMap;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMapping;

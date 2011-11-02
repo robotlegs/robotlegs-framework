@@ -5,13 +5,14 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.hooks
+package org.robotlegs.v2.extensions.guardsAndHooks
 {
 	import org.robotlegs.v2.core.api.IContext;
 	import org.robotlegs.v2.core.api.IContextExtension;
-	import org.robotlegs.v2.extensions.guards.GuardsProcessor;
-	import org.robotlegs.v2.extensions.hooks.HooksProcessor;
+	import org.robotlegs.v2.extensions.guardsAndHooks.impl.GuardsProcessor;
+	import org.robotlegs.v2.extensions.guardsAndHooks.impl.HooksProcessor;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewManager;
+	import org.robotlegs.v2.extensions.guardsAndHooks.impl.HookMap;
 
 	// TODO : This is untested
 	public class ViewHookMapExtension implements IContextExtension

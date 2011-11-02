@@ -15,8 +15,8 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import mockolate.runner.MockolateRunner;
 	import org.flexunit.asserts.*;
 	import org.hamcrest.assertThat;
-	import org.robotlegs.v2.extensions.guards.GuardsProcessor;
-	import org.robotlegs.v2.extensions.hooks.HooksProcessor;
+	import org.robotlegs.v2.extensions.guardsAndHooks.impl.GuardsProcessor;
+	import org.robotlegs.v2.extensions.guardsAndHooks.impl.HooksProcessor;
 	import org.robotlegs.v2.extensions.mediatorMap.impl.MediatorMap;
 	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.support.RL2Mediator;
 	import org.swiftsuspenders.Injector;

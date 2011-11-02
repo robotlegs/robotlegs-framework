@@ -5,12 +5,12 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.hooks
+package org.robotlegs.v2.extensions.guardsAndHooks.impl
 {
 	import org.flexunit.asserts.*;
 	import org.flexunit.asserts.assertEqualsVectorsIgnoringOrder;
-	import org.robotlegs.v2.extensions.hooks.support.*;
-	import org.robotlegs.v2.extensions.hooks.support.HookTracker;
+	import org.robotlegs.v2.extensions.guardsAndHooks.support.*;
+	import org.robotlegs.v2.extensions.guardsAndHooks.support.HookTracker;
 	import org.swiftsuspenders.Injector;
 
 	public class HooksProcessorTest

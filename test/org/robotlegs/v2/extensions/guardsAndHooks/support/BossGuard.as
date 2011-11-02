@@ -5,15 +5,22 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.guards.support
+package org.robotlegs.v2.extensions.guardsAndHooks.support
 {
 
-	public class GrumpyGuard
+	public class BossGuard
 	{
+
+		protected var _approve:Boolean;
+
+		public function BossGuard(approve:Boolean)
+		{
+			_approve = approve;
+		}
 
 		public function approve():Boolean
 		{
-			return false;
+			return _approve;
 		}
 	}
 

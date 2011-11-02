@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.guards
+package org.robotlegs.v2.extensions.guardsAndHooks.impl
 {
 	import flash.utils.Dictionary;
 	import flash.utils.describeType;
@@ -16,10 +16,6 @@ package org.robotlegs.v2.extensions.guards
 	{
 
 		protected const _verifiedGuardClasses:Dictionary = new Dictionary();
-
-		public function GuardsProcessor()
-		{
-		}
 
 		public function processGuards(useInjector:Injector, guardClasses:Vector.<Class>):Boolean
 		{

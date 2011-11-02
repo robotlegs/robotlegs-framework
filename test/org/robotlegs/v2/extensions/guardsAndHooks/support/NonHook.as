@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.hooks.support
+package org.robotlegs.v2.extensions.guardsAndHooks.support
 {
 
 	public class NonHook

@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.hooks
+package org.robotlegs.v2.extensions.guardsAndHooks.impl
 {
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
@@ -14,10 +14,10 @@ package org.robotlegs.v2.extensions.hooks
 	import org.flexunit.asserts.*;
 	import org.flexunit.asserts.assertEqualsVectorsIgnoringOrder;
 	import org.robotlegs.v2.core.impl.TypeMatcher;
-	import org.robotlegs.v2.extensions.guards.GuardsProcessor;
-	import org.robotlegs.v2.extensions.guards.support.GrumpyGuard;
-	import org.robotlegs.v2.extensions.guards.support.HappyGuard;
-	import org.robotlegs.v2.extensions.hooks.support.*
+	import org.robotlegs.v2.extensions.guardsAndHooks.impl.GuardsProcessor;
+	import org.robotlegs.v2.extensions.guardsAndHooks.support.GrumpyGuard;
+	import org.robotlegs.v2.extensions.guardsAndHooks.support.HappyGuard;
+	import org.robotlegs.v2.extensions.guardsAndHooks.support.*
 	import org.swiftsuspenders.DescribeTypeJSONReflector;
 	import org.swiftsuspenders.Injector;
 	import org.swiftsuspenders.Reflector;

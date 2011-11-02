@@ -5,23 +5,17 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.hooks.support
+package org.robotlegs.v2.extensions.guardsAndHooks.support
 {
 
-	public class HookTracker
+	public class GrumpyGuard
 	{
 
-		public var hooksConfirmed:Vector.<String> = new Vector.<String>();
-
-		public function HookTracker()
+		public function approve():Boolean
 		{
-
-		}
-
-		public function confirm(hookName:String):void
-		{
-			hooksConfirmed.push(hookName);
+			return false;
 		}
 	}
 
 }
+

@@ -5,24 +5,23 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.guards.support
+package org.robotlegs.v2.extensions.guardsAndHooks.support
 {
 
-	public class BossGuard
+	public class HookTracker
 	{
 
-		protected var _approve:Boolean;
+		public var hooksConfirmed:Vector.<String> = new Vector.<String>();
 
-		public function BossGuard(approve:Boolean)
+		public function HookTracker()
 		{
-			_approve = approve;
+
 		}
 
-		public function approve():Boolean
+		public function confirm(hookName:String):void
 		{
-			return _approve;
+			hooksConfirmed.push(hookName);
 		}
 	}
 
 }
-

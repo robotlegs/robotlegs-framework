@@ -18,8 +18,8 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import org.flexunit.asserts.assertEqualsVectorsIgnoringOrder;
 	import org.flexunit.async.Async;
 	import org.robotlegs.v2.core.impl.TypeMatcher;
-	import org.robotlegs.v2.extensions.guards.GuardsProcessor;
-	import org.robotlegs.v2.extensions.hooks.HooksProcessor;
+	import org.robotlegs.v2.extensions.guardsAndHooks.impl.GuardsProcessor;
+	import org.robotlegs.v2.extensions.guardsAndHooks.impl.HooksProcessor;
 	import org.robotlegs.v2.extensions.mediatorMap.impl.MediatorMap;
 	import org.robotlegs.v2.extensions.mediatorMap.impl.support.MediatorWatcher;
 	import org.robotlegs.v2.extensions.mediatorMap.support.DuckTypedRL1MediatorTrigger;

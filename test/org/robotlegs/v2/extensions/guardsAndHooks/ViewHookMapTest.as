@@ -5,22 +5,23 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.hooks
+package org.robotlegs.v2.extensions.guardsAndHooks
 {
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import org.flexunit.asserts.*;
 	import org.robotlegs.v2.core.impl.TypeMatcher;
-	import org.robotlegs.v2.extensions.guards.GuardsProcessor;
-	import org.robotlegs.v2.extensions.hooks.HooksProcessor;
-	import org.robotlegs.v2.extensions.hooks.support.HookTracker;
-	import org.robotlegs.v2.extensions.hooks.support.TrackableHook1;
-	import org.robotlegs.v2.extensions.hooks.support.TrackableHook2;
+	import org.robotlegs.v2.extensions.guardsAndHooks.impl.GuardsProcessor;
+	import org.robotlegs.v2.extensions.guardsAndHooks.impl.HooksProcessor;
+	import org.robotlegs.v2.extensions.guardsAndHooks.support.HookTracker;
+	import org.robotlegs.v2.extensions.guardsAndHooks.support.TrackableHook1;
+	import org.robotlegs.v2.extensions.guardsAndHooks.support.TrackableHook2;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewHandler;
 	import org.swiftsuspenders.DescribeTypeJSONReflector;
 	import org.swiftsuspenders.Injector;
 	import org.swiftsuspenders.Reflector;
+	import org.robotlegs.v2.extensions.guardsAndHooks.impl.HookMap;
 
 	public class ViewHookMapTest
 	{

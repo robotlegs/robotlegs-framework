@@ -5,20 +5,18 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.guards.support
+package org.robotlegs.v2.extensions.guardsAndHooks.api
 {
 
-	public class JustTheMiddleManGuard
+	public interface IGuardsAndHooksConfig
 	{
 
-		[Inject]
-		public var bossDecision:BossGuard;
+		function get guards():Vector.<Class>;
+		function get hooks():Vector.<Class>;
 
-		public function approve():Boolean
-		{
-			return bossDecision.approve();
-		}
+		function withGuards(... guardClasses):IGuardsAndHooksConfig;
+
+		function withHooks(... hookClasses):IGuardsAndHooksConfig;
 	}
-
 }
 

@@ -5,11 +5,11 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.guards
+package org.robotlegs.v2.extensions.guardsAndHooks.impl
 {
 	import flash.utils.describeType;
 	import org.flexunit.asserts.*;
-	import org.robotlegs.v2.extensions.guards.support.*
+	import org.robotlegs.v2.extensions.guardsAndHooks.support.*
 	import org.swiftsuspenders.Injector;
 
 	public class GuardsProcessorTest

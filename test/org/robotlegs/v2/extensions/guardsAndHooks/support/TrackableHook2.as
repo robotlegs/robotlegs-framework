@@ -5,15 +5,18 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.guards.support
+package org.robotlegs.v2.extensions.guardsAndHooks.support
 {
 
-	public class HappyGuard
+	public class TrackableHook2
 	{
 
-		public function approve():Boolean
+		[Inject]
+		public var hookTracker:HookTracker;
+
+		public function hook():void
 		{
-			return true;
+			hookTracker.confirm("TrackableHook2");
 		}
 	}
 
