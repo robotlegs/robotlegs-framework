@@ -16,12 +16,16 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import flash.events.Event;
 	import org.robotlegs.v2.extensions.mediatorMap.impl.support.MediatorWatcher;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediator;
+	import org.robotlegs.core.IMediator;
+	import org.robotlegs.v2.extensions.mediatorMap.support.MicroAppWithMixedMediators;
 
 	public class MediatorMapExtensionTest 
 	{
 		private var instance:MediatorMapExtension;
 		
 		private var microApp:MicroAppWithMediator;
+		
+		private var microAppWithMixedMediators:MicroAppWithMixedMediators;
 		
 		private var mediatorWatcher:MediatorWatcher;
 		
@@ -67,7 +71,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 			
 			const reportedMediators:Array = mediatorWatcher.trackedMediators;
 			
-			const reportedMediator:IMediator = reportedMediators[0];
+			const reportedMediator:org.robotlegs.v2.extensions.mediatorMap.api.IMediator = reportedMediators[0];
 			
 			assertEquals(view, reportedMediator.getViewComponent());
 		}
@@ -76,6 +80,31 @@ package org.robotlegs.v2.extensions.mediatorMap
 		{
 			microApp.addChild(view);
 		}
-
+		
+		[Test(async,ui)]
+		public function two_mediators_can_live_along_side_each_other_happily():void
+		{
+			microAppWithMixedMediators = new MicroAppWithMixedMediators();
+			var group:UIComponent = new UIComponent();
+			group.addChild(microAppWithMixedMediators);
+			UIImpersonator.addChild(group);
+			
+			microAppWithMixedMediators.buildContext(buildCompleteHandlerForMixedMediators, mediatorWatcher);
+			
+			const reportedMediators:Array = mediatorWatcher.trackedMediators;
+			
+			assertEquals(2, reportedMediators.length)
+			
+			assertEquals(view, reportedMediators[0].getViewComponent());
+			assertEquals(view, reportedMediators[1].getViewComponent());
+			
+			assertTrue(reportedMediators[0] is org.robotlegs.v2.extensions.mediatorMap.api.IMediator);
+			assertTrue(reportedMediators[1] is org.robotlegs.core.IMediator);
+		}
+		
+		protected function buildCompleteHandlerForMixedMediators(e:Event):void
+		{
+			microAppWithMixedMediators.addChild(view);
+		}
 	}
 }
