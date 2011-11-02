@@ -8,24 +8,24 @@
 package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 {
 	import flash.display.DisplayObject;
+	import flash.display.MovieClip;
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import mockolate.received;
 	import mockolate.runner.MockolateRule;
 	import mockolate.runner.MockolateRunner;
 	import mockolate.stub;
+	import mx.core.UIComponent;
 	import org.flexunit.asserts.*;
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.strictlyEqualTo;
 	import org.robotlegs.core.IMediator;
-	import org.robotlegs.v2.extensions.mediatorMap.api.IMediator;
-	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.support.DuckTypedRL2Mediator;
-	import mx.core.UIComponent;
-	import org.robotlegs.v2.extensions.mediatorMap.utilities.strategies.NoWaitStrategy;
 	import org.robotlegs.v2.core.impl.TypeMatcher;
+	import org.robotlegs.v2.extensions.mediatorMap.api.IMediator;
+	import org.robotlegs.v2.extensions.mediatorMap.utilities.strategies.NoWaitStrategy;
 	import org.robotlegs.v2.extensions.mediatorMap.utilities.strategies.WaitForCompleteStrategy;
-	import flash.events.Event;
-	import flash.display.MovieClip;
 	import org.robotlegs.v2.extensions.mediatorMap.utilities.strategies.WaitForCreationCompleteStrategy;
+	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.support.DuckTypedRL2Mediator;
 	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.support.RL1Mediator;
 
 	// required

@@ -8,17 +8,33 @@
 package org.robotlegs.v2.extensions.mediatorMap.impl
 {
 	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
+	import mockolate.received;
+	import mockolate.runner.MockolateRule;
+	import mockolate.runner.MockolateRunner;
+	import mockolate.stub;
+	import mx.core.UIComponent;
 	import org.flexunit.asserts.*;
+	import org.hamcrest.assertThat;
+	import org.hamcrest.object.strictlyEqualTo;
+	import org.robotlegs.base.EventMap;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediator;
 	import org.robotlegs.v2.extensions.mediatorMap.impl.support.MediatorWatcher;
 	import org.robotlegs.v2.extensions.mediatorMap.impl.support.TrackingMediator;
 	import org.robotlegs.v2.extensions.mediatorMap.impl.support.TrackingMediatorWaitsForGiven;
-	import flash.events.Event;
-	import org.robotlegs.base.EventMap;
-	import flash.events.EventDispatcher;
+	
+	// required
+	MockolateRunner;
 
+	[RunWith("mockolate.runner.MockolateRunner")]
 	public class MediatorTest
 	{
+		[Rule]
+		public var mocks:MockolateRule = new MockolateRule();
+
+		[Mock]
+		public var eventMap:IEventMap:org.robotlegs.core.IEventMap;
 
 		private var instance:Mediator;
 
@@ -30,6 +46,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		public function setUp():void
 		{
 			instance = new Mediator();
+			instance.eventMap = eventMap;
 			mediatorWatcher = new MediatorWatcher();
 			trackingMediator = new TrackingMediator(mediatorWatcher);
 		}
@@ -63,24 +80,6 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		}
 
 		[Test]
-		public function initialize_runs_onRegister_immediately():void
-		{
-			trackingMediator.setViewComponent(new Sprite());
-			trackingMediator.initialize();
-			var expectedNotifications:Vector.<String> = new <String>[TrackingMediator.ON_REGISTER];
-			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
-		}
-
-		[Test]
-		public function destroy_runs_onRemove_immediately():void
-		{
-			trackingMediator.setViewComponent(new Sprite());
-			trackingMediator.destroy();
-			var expectedNotifications:Vector.<String> = new <String>[TrackingMediator.ON_REMOVE];
-			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
-		}
-		
-		[Test]
 		public function destroyed_defaults_to_false():void
 		{
 			assertFalse(instance.destroyed);
@@ -106,6 +105,13 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		{
 			assertTrue("Failing test", true);
 		}
+		
+		[Test]
+		public function mediator_pauses_eventMap_on_view_removed():void
+		{
+			
+		}
+		
 		// mediator pauses event map on view removed and resumes again on view added
 		// sugar methods for add / remove view listener and context listener
 		// don't run the onRegister if 'removed'

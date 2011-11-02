@@ -26,12 +26,10 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 
 		public function initialize():void
 		{
-			onRegister();
 		}
 
 		public function destroy():void
 		{
-			onRemove();
 		}
 
 		public function getViewComponent():Object
@@ -44,16 +42,6 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			_viewComponent = viewComponent;
 		}
 
-		protected function onRegister():void
-		{
-
-		}
-
-		protected function onRemove():void
-		{
-
-		}
-		
 		public function get destroyed():Boolean
 		{
 			return _destroyed;
