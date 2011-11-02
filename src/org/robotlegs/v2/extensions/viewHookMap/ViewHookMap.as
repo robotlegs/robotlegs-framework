@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.guardsAndHooks
+package org.robotlegs.v2.extensions.viewHookMap
 {
 	import flash.display.DisplayObject;
 	import flash.events.EventDispatcher;
@@ -14,7 +14,6 @@ package org.robotlegs.v2.extensions.guardsAndHooks
 	import org.robotlegs.v2.extensions.viewManager.api.IViewHandler;
 	import org.robotlegs.v2.extensions.viewManager.api.ViewHandlerEvent;
 	import org.robotlegs.v2.extensions.guardsAndHooks.impl.GuardsAndHooksConfig;
-	import org.robotlegs.v2.extensions.guardsAndHooks.impl.HookMap;
 
 	[Event(name="configurationChange", type="org.robotlegs.v2.extensions.viewManager.api.ViewHandlerEvent")]
 	public class ViewHookMap extends EventDispatcher implements IViewHandler

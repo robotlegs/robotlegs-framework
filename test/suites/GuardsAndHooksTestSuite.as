@@ -8,9 +8,9 @@
 package suites
 {
 	import org.robotlegs.v2.extensions.guardsAndHooks.impl.GuardsProcessorTest;
-	import org.robotlegs.v2.extensions.guardsAndHooks.impl.HookMapTest;
 	import org.robotlegs.v2.extensions.guardsAndHooks.impl.HooksProcessorTest;
-	import org.robotlegs.v2.extensions.guardsAndHooks.ViewHookMapTest;
+	import org.robotlegs.v2.extensions.viewHookMap.HookMapTest;
+	import org.robotlegs.v2.extensions.viewHookMap.ViewHookMapTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]

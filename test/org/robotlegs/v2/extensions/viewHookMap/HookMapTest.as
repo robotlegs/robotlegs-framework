@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.guardsAndHooks.impl
+package org.robotlegs.v2.extensions.viewHookMap
 {
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
@@ -21,6 +21,7 @@ package org.robotlegs.v2.extensions.guardsAndHooks.impl
 	import org.swiftsuspenders.DescribeTypeJSONReflector;
 	import org.swiftsuspenders.Injector;
 	import org.swiftsuspenders.Reflector;
+	import org.robotlegs.v2.extensions.guardsAndHooks.impl.HooksProcessor;
 
 	public class HookMapTest
 	{
