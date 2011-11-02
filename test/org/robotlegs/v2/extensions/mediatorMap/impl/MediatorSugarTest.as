@@ -21,6 +21,8 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 	import flash.events.IEventDispatcher;
 	import org.robotlegs.v2.extensions.eventMap.impl.support.CustomEvent;
 	import flash.display.DisplayObject;
+	import flash.events.Event;
+	import org.flexunit.async.Async;
 	
 	// required
 	MockolateRunner;
@@ -109,5 +111,16 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 													strictlyEqualTo(EVENT_CLASS)));
 		}
 		
+		[Test(async, timeout="50")]
+		public function dispatch_dispatchesEvent_on_the_eventDisaptcher():void
+		{
+			Async.handleEvent(this, eventDispatcher, Event.COMPLETE, benignHandler);
+			instance.try_dispatch(new Event(Event.COMPLETE));
+		}
+		
+		protected function benignHandler(e:Event, o:Object):void
+		{
+			
+		}
 	}
 }

@@ -101,5 +101,10 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		{
 			eventMap.unmapListener(_eventDispatcher, eventString, callback, eventClass);
 		}
+		
+		protected function dispatch(e:Event):void
+		{
+			eventDispatcher.dispatchEvent(e);
+		}
 	}
 }

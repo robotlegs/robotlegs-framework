@@ -8,6 +8,7 @@
 package org.robotlegs.v2.extensions.mediatorMap.impl.support
 {
 	import org.robotlegs.v2.extensions.mediatorMap.impl.Mediator;
+	import flash.events.Event;
 
 	public class SugaryMediator extends Mediator
 	{
@@ -37,6 +38,11 @@ package org.robotlegs.v2.extensions.mediatorMap.impl.support
 		public function try_removeContextListener(eventString:String, callback:Function, eventClass:Class):void
 		{
 			removeContextListener(eventString, callback, eventClass);
+		}
+		
+		public function try_dispatch(e:Event):void
+		{
+			dispatch(e);
 		}
 		
 	}
