@@ -12,12 +12,12 @@ package org.robotlegs.v2.extensions.mediatorMap.support
 	import org.swiftsuspenders.Injector;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMap;
 	import flash.display.MovieClip;
-	import org.robotlegs.v2.extensions.mediatorMap.support.TracingMediator;
 	import org.robotlegs.v2.core.api.ContextBuilderEvent;
 	import org.robotlegs.v2.extensions.mediatorMap.impl.support.MediatorWatcher;
-	import org.robotlegs.v2.extensions.mediatorMap.bundles.RL2MediatorsMediatorMapBundle;
+	import org.robotlegs.v2.extensions.mediatorMap.bundles.RL1MediatorsMediatorMapBundle;
+	import org.robotlegs.v2.extensions.mediatorMap.support.TracingV1Mediator;
 
-	public class MicroAppWithMediator extends Sprite
+	public class MicroAppWithV1Mediators extends Sprite
 	{
 	
 		protected var _mediatorWatcher:MediatorWatcher;
@@ -36,14 +36,14 @@ package org.robotlegs.v2.extensions.mediatorMap.support
 			contextBuilder.withContextView(this)
 									.withDispatcher(this)
 									.withInjector(new Injector())
-									.withBundle(RL2MediatorsMediatorMapBundle)
+									.withBundle(RL1MediatorsMediatorMapBundle)
 									.build();
 		}	
 
 		protected function addMappings(e:ContextBuilderEvent):void
 		{
 			const mediatorMap:IMediatorMap = e.context.injector.getInstance(IMediatorMap);
-			mediatorMap.map(TracingMediator).toView(MovieClip);
+			mediatorMap.map(TracingV1Mediator).toView(MovieClip);
 			
 			e.context.injector.map(MediatorWatcher).toValue(_mediatorWatcher);
 		}

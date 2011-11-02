@@ -23,10 +23,6 @@ package org.robotlegs.v2.extensions.mediatorMap.support
 	
 		protected var _mediatorWatcher:MediatorWatcher;
 	
-		public function MicroAppWithMixedMediators()
-		{
-		}
-	
 		public function buildContext(completeHandler:Function, mediatorWatcher:MediatorWatcher):void
 		{
 			_mediatorWatcher = mediatorWatcher;

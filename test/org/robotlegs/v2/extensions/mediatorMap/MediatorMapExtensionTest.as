@@ -18,6 +18,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediator;
 	import org.robotlegs.core.IMediator;
 	import org.robotlegs.v2.extensions.mediatorMap.support.MicroAppWithMixedMediators;
+	import org.robotlegs.v2.extensions.mediatorMap.support.MicroAppWithV1Mediators;
 
 	public class MediatorMapExtensionTest 
 	{
@@ -26,6 +27,8 @@ package org.robotlegs.v2.extensions.mediatorMap
 		private var microApp:MicroAppWithMediator;
 		
 		private var microAppWithMixedMediators:MicroAppWithMixedMediators;
+		
+		private var microAppWithV1Mediators:MicroAppWithV1Mediators;
 		
 		private var mediatorWatcher:MediatorWatcher;
 		
@@ -45,6 +48,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 			instance = null;
 			mediatorWatcher = null;
 			view = null;
+			UIImpersonator.removeAllChildren();
 		}
 
 		[Test]
@@ -105,6 +109,28 @@ package org.robotlegs.v2.extensions.mediatorMap
 		protected function buildCompleteHandlerForMixedMediators(e:Event):void
 		{
 			microAppWithMixedMediators.addChild(view);
+		}
+		
+		[Test(async,ui)]
+		public function micro_app_with_v1_mediator_notifies_mediator_watcher():void
+		{
+			microAppWithV1Mediators = new MicroAppWithV1Mediators();
+			var group:UIComponent = new UIComponent();
+			group.addChild(microAppWithV1Mediators);
+			UIImpersonator.addChild(group);
+			
+			microAppWithV1Mediators.buildContext(buildCompleteHandlerForV1Mediators, mediatorWatcher);
+			
+			const reportedMediators:Array = mediatorWatcher.trackedMediators;
+			
+			const reportedMediator:org.robotlegs.core.IMediator = reportedMediators[0];
+			
+			assertEquals(view, reportedMediator.getViewComponent());
+		}
+		
+		protected function buildCompleteHandlerForV1Mediators(e:Event):void
+		{
+			microAppWithV1Mediators.addChild(view);
 		}
 	}
 }
