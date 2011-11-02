@@ -17,6 +17,7 @@ package org.robotlegs.v2.extensions.viewHookMap
 	import org.swiftsuspenders.Reflector;
 	import org.robotlegs.v2.extensions.guardsAndHooks.impl.GuardsAndHooksConfig;
 	import org.robotlegs.v2.extensions.guardsAndHooks.impl.HooksProcessor;
+	import org.robotlegs.v2.extensions.guardsAndHooks.api.IGuardsAndHooksConfig;
 
 	public class HookMap
 	{
@@ -43,7 +44,7 @@ package org.robotlegs.v2.extensions.viewHookMap
 			_mappingsByFCQN = new Dictionary();
 		}
 
-		public function map(type:Class):GuardsAndHooksConfig
+		public function map(type:Class):IGuardsAndHooksConfig
 		{
 			// TODO - overwrite? warnings? allow extension? handle duplicates? hrm.
 
@@ -54,7 +55,7 @@ package org.robotlegs.v2.extensions.viewHookMap
 			return _mappingsByFCQN[fqcn];
 		}
 
-		public function mapMatcher(matcher:ITypeMatcher):GuardsAndHooksConfig
+		public function mapMatcher(matcher:ITypeMatcher):IGuardsAndHooksConfig
 		{
 			const filter:ITypeFilter = matcher.createTypeFilter();
 			_mappingsByTypeFilter[filter] = new GuardsAndHooksConfig();

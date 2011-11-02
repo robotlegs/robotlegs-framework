@@ -14,6 +14,7 @@ package org.robotlegs.v2.extensions.viewHookMap
 	import org.robotlegs.v2.extensions.viewManager.api.IViewHandler;
 	import org.robotlegs.v2.extensions.viewManager.api.ViewHandlerEvent;
 	import org.robotlegs.v2.extensions.guardsAndHooks.impl.GuardsAndHooksConfig;
+	import org.robotlegs.v2.extensions.guardsAndHooks.api.IGuardsAndHooksConfig;
 
 	[Event(name="configurationChange", type="org.robotlegs.v2.extensions.viewManager.api.ViewHandlerEvent")]
 	public class ViewHookMap extends EventDispatcher implements IViewHandler
@@ -49,12 +50,12 @@ package org.robotlegs.v2.extensions.viewHookMap
 			dispatchEvent(new ViewHandlerEvent(ViewHandlerEvent.HANDLER_CONFIGURATION_CHANGE));
 		}
 
-		public function map(type:Class):GuardsAndHooksConfig
+		public function map(type:Class):IGuardsAndHooksConfig
 		{
 			return hookMap.map(type);
 		}
 
-		public function mapMatcher(matcher:ITypeMatcher):GuardsAndHooksConfig
+		public function mapMatcher(matcher:ITypeMatcher):IGuardsAndHooksConfig
 		{
 			return hookMap.mapMatcher(matcher);
 		}

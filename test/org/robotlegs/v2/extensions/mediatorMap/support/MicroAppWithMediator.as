@@ -10,16 +10,12 @@ package org.robotlegs.v2.extensions.mediatorMap.support
 	import org.robotlegs.v2.core.impl.ContextBuilder;
 	import flash.display.Sprite;
 	import org.swiftsuspenders.Injector;
-	import org.robotlegs.v2.extensions.mediatorMap.MediatorMapExtension;
-	import org.robotlegs.v2.extensions.viewManager.ViewManagerExtension;
-	import org.robotlegs.v2.bundles.shared.configs.ContextViewListenerConfig;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMap;
 	import flash.display.MovieClip;
 	import org.robotlegs.v2.extensions.mediatorMap.support.TracingMediator;
 	import org.robotlegs.v2.core.api.ContextBuilderEvent;
-	import org.robotlegs.v2.extensions.viewManager.AutoStageListenerExtension;
 	import org.robotlegs.v2.extensions.mediatorMap.impl.support.MediatorWatcher;
-	import org.robotlegs.v2.extensions.mediatorMap.configs.RL2MediatorsStrictConfig;
+	import org.robotlegs.v2.extensions.mediatorMap.bundles.RL2MediatorsMediatorMapBundle;
 
 	public class MicroAppWithMediator extends Sprite
 	{
@@ -44,11 +40,7 @@ package org.robotlegs.v2.extensions.mediatorMap.support
 			contextBuilder.withContextView(this)
 									.withDispatcher(this)
 									.withInjector(new Injector())
-									.withExtension(ViewManagerExtension)
-									.withExtension(AutoStageListenerExtension)
-									.withExtension(MediatorMapExtension)
-									.withConfig(RL2MediatorsStrictConfig)
-									.withConfig(ContextViewListenerConfig)
+									.withBundle(RL2MediatorsMediatorMapBundle)
 									.build();
 		}	
 
