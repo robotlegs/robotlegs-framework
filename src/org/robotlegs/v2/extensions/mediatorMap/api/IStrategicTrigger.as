@@ -5,15 +5,14 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.mediatorMap.configs
+package org.robotlegs.v2.extensions.mediatorMap.api
 {
-		
-	public class RL2MediatorsStrictConfig extends RL2MediatorsConfig
+	import org.robotlegs.v2.core.api.ITypeMatcher;
+
+	public interface IStrategicTrigger 
 	{
-		
-		public function RL2MediatorsStrictConfig()
-		{
-			super(true);
-		}
+	
+		function addStartupStrategy(strategy:Class, matcher:ITypeMatcher):void
+
 	}
 }

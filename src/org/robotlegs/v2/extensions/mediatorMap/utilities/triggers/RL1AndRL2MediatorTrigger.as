@@ -13,7 +13,7 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 	import org.robotlegs.core.IMediator;
 	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.RL2MediatorTrigger;
 	
-	public class RL1AndRL2MediatorTrigger extends RL2MediatorTrigger
+	public class RL1AndRL2MediatorTrigger extends RL2MediatorTrigger 
 	{
 
 		protected const RL1MediatorType:Class = org.robotlegs.core.IMediator;

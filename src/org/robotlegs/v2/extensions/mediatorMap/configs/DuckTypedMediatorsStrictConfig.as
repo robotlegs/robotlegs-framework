@@ -7,13 +7,14 @@
 
 package org.robotlegs.v2.extensions.mediatorMap.configs
 {
-		
-	public class RL2MediatorsStrictConfig extends RL2MediatorsConfig
+
+	public class DuckTypedMediatorsStrictConfig extends DuckTypedMediatorsConfig
 	{
-		
-		public function RL2MediatorsStrictConfig()
+	
+		public function DuckTypedMediatorsStrictConfig()
 		{
 			super(true);
 		}
+	
 	}
 }

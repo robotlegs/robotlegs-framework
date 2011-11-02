@@ -8,12 +8,13 @@
 package org.robotlegs.v2.extensions.mediatorMap.configs
 {
 		
-	public class RL2MediatorsStrictConfig extends RL2MediatorsConfig
+	public class RL1AndRL2MediatorsStrictConfig extends RL1AndRL2MediatorsConfig
 	{
 		
-		public function RL2MediatorsStrictConfig()
+		public function RL1AndRL2MediatorsStrictConfig()
 		{
 			super(true);
 		}
+		
 	}
 }

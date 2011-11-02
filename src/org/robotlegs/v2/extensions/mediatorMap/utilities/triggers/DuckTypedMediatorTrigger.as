@@ -17,21 +17,18 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 	import org.robotlegs.v2.extensions.mediatorMap.utilities.strategies.NoWaitStrategy;
 	import org.robotlegs.v2.core.api.ITypeFilter;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorStartupStrategy;
+	import org.robotlegs.v2.extensions.mediatorMap.api.IStrategicTrigger;
 
-	public class DuckTypedMediatorTrigger implements IMediatorTrigger
+	public class DuckTypedMediatorTrigger extends StrategicTriggerBase
 	{
 		protected var _strict:Boolean;
-
-		protected const _strategiesByFilter:Dictionary = new Dictionary();
-				
-		protected var _defaultStrategy:IMediatorStartupStrategy = new NoWaitStrategy();
 
 		public function DuckTypedMediatorTrigger(strict:Boolean)
 		{
 			_strict = strict;
 		}
 
-		public function startup(mediator:*, view:DisplayObject):void
+		override public function startup(mediator:*, view:DisplayObject):void
 		{
 			if (_strict)
 			{
@@ -63,7 +60,7 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 			
 		}
 
-		public function shutdown(mediator:*, view:DisplayObject, callback:Function):void
+		override public function shutdown(mediator:*, view:DisplayObject, callback:Function):void
 		{
 			if(_strict)
 			{
@@ -87,11 +84,6 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 			callback(mediator, view);
 		}
 		
-		public function addStartupStrategy(strategy:Class, matcher:ITypeMatcher):void
-		{
-			_strategiesByFilter[matcher.createTypeFilter()] = new strategy();
-		}
-		
 		protected function throwErrorIfUnimplemented(mediator:Object, methods:Array):void
 		{
 			for each (var methodName:String in methods)
@@ -105,21 +97,7 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 			throw new IllegalOperationError("None of the selection of expected methods ( " +  methods +  " ) were found on " + mediator);
 		}
 		
-		protected function startupWithStrategy(mediator:*, view:DisplayObject):void
-		{
-			for (var filter:* in _strategiesByFilter)
-			{
-				if((filter as ITypeFilter).matches(view))
-				{
-					_strategiesByFilter[filter].startup(mediator, view, startupCallback);
-					return;
-				}
-			}
-			
-			_defaultStrategy.startup(mediator, view, startupCallback);
-		}
-		
-		protected function startupCallback(mediator:*):void
+		override protected function startupCallback(mediator:*):void
 		{
 			mediator.initialize();
 		}
