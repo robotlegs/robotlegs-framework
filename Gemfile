@@ -5,4 +5,4 @@ if `uname`.strip == 'Darwin' and ENV["rvm_ruby_string"] != 'system'
 end
 
 gem "rjb", "1.3.3"
-gem "buildr-as3", "0.2.25.pre"
+gem "buildr-as3", "0.2.28.pre"

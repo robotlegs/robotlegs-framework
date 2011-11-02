@@ -1,5 +1,5 @@
 require "fileutils"
-require "buildr/as3" # needs buildr-as3 v0.2.25.pre
+require "buildr/as3" # needs buildr-as3 v0.2.28.pre
 
 # You can use bundler to install the correct buildr gem: bundle install
 # Then you can run buildr isolated: bundle exec buildr [tasks] ...
@@ -31,8 +31,12 @@ define "robotlegs-framework", :layout => layout do
           _(:lib,"robotlegs-framework-v1.5.2.swc") )
 
   testrunner = _(:source, :test, :as3, "RobotlegsTest.mxml")
-  test.using(:flexunit4 => true, :headless => false, :antjar => _(:lib, "flexUnitTasks-4.1.0-8.jar"))
-  test.compile.using( :main => testrunner, :args => [] ).with( _(:lib) )
+  test.using(:flexunit4 => true, :headless => false, :version => "4.1.0-8")
+  
+  test.compile.using( :main => testrunner, :args => [] ).
+    with( FlexUnit4.swcs("4.1.0-8", "4.1.0.16076", :flex),
+          _(:lib,"mockolate-0.12.2-flex.swc"),
+          _(:lib,"hamcrest-as3-flex-1.1.3.swc") )
 
   doc_title = "Robotlegs v#{THIS_VERSION}"
   doc.using :maintitle   => doc_title,
