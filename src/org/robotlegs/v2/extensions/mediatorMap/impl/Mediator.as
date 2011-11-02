@@ -19,6 +19,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		
 		protected var _viewComponent:Object;
 		protected var _destroyed:Boolean;
+		protected var _eventDispatcher:IEventDispatcher;
 		
 		public function Mediator()
 		{
@@ -31,6 +32,23 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		public function destroy():void
 		{
 		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function get eventDispatcher():IEventDispatcher
+		{
+			return _eventDispatcher;
+		}
+		
+		[Inject]
+		/**
+		 * @private
+		 */
+		public function set eventDispatcher(value:IEventDispatcher):void
+		{
+			_eventDispatcher = value;
+		}
 
 		public function getViewComponent():Object
 		{
@@ -40,6 +58,8 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		public function setViewComponent(viewComponent:Object):void
 		{
 			_viewComponent = viewComponent;
+			_viewComponent.addEventListener(Event.REMOVED_FROM_STAGE, suspendEventMap);
+			_viewComponent.addEventListener(Event.ADDED_TO_STAGE, resumeEventMap);
 		}
 
 		public function get destroyed():Boolean
@@ -50,6 +70,36 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		public function set destroyed(value:Boolean):void
 		{
 			_destroyed = value;
+		}
+		
+		protected function suspendEventMap(e:Event):void
+		{
+			eventMap.suspend();
+		}
+		
+		protected function resumeEventMap(e:Event):void
+		{
+			eventMap.resume();
+		}
+		
+		protected function addViewListener(eventString:String, callback:Function, eventClass:Class):void
+		{
+			eventMap.mapListener(IEventDispatcher(_viewComponent), eventString, callback, eventClass);
+		}
+		
+		protected function addContextListener(eventString:String, callback:Function, eventClass:Class):void
+		{
+			eventMap.mapListener(_eventDispatcher, eventString, callback, eventClass);
+		}
+		
+		protected function removeViewListener(eventString:String, callback:Function, eventClass:Class):void
+		{
+			eventMap.unmapListener(IEventDispatcher(_viewComponent), eventString, callback, eventClass);
+		}
+		
+		protected function removeContextListener(eventString:String, callback:Function, eventClass:Class):void
+		{
+			eventMap.unmapListener(_eventDispatcher, eventString, callback, eventClass);
 		}
 	}
 }

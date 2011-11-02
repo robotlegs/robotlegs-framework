@@ -24,6 +24,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.RL1MediatorTrigger;
 	import org.robotlegs.v2.extensions.eventMap.impl.EventMap;
 	import org.robotlegs.v2.extensions.eventMap.api.IEventMap;
+	import flash.events.IEventDispatcher;
 	
 	// required
 	MockolateRunner;
@@ -57,8 +58,11 @@ package org.robotlegs.v2.extensions.mediatorMap
 			view = new Sprite();
 			_callbackRun = null;
 
+			const eventDispatcher:IEventDispatcher = new EventDispatcher();
+
 			injector = new Injector();
-			injector.map(IEventMap).toValue(new EventMap(new EventDispatcher()));
+			injector.map(IEventMap).toValue(new EventMap(eventDispatcher));
+			injector.map(IEventDispatcher).toValue(eventDispatcher);
 
 			instance = new MediatorMap();
 			instance.hooksProcessor = new HooksProcessor();

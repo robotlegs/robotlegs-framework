@@ -24,6 +24,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 	import org.robotlegs.v2.extensions.mediatorMap.impl.support.TrackingMediator;
 	import org.robotlegs.v2.extensions.mediatorMap.impl.support.TrackingMediatorWaitsForGiven;
 	import org.robotlegs.v2.extensions.eventMap.api.IEventMap;
+	import flash.display.DisplayObject;
 	
 	// required
 	MockolateRunner;
@@ -42,7 +43,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		private var mediatorWatcher:MediatorWatcher;
 
 		private var trackingMediator:TrackingMediator;
-
+		
 		[Before]
 		public function setUp():void
 		{
@@ -108,13 +109,26 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		}
 		
 		[Test]
-		public function mediator_pauses_eventMap_on_view_removed():void
+		public function mediator_suspends_eventMap_on_view_removed():void
 		{
+			const view:DisplayObject = new Sprite();
 			
+			instance.setViewComponent(view);
+			
+			view.dispatchEvent(new Event(Event.REMOVED_FROM_STAGE));
+			assertThat(eventMap, received().method('suspend').once());
 		}
 		
-		// mediator pauses event map on view removed and resumes again on view added
-		// sugar methods for add / remove view listener and context listener
-		// don't run the onRegister if 'removed'
+		[Test]
+		public function mediator_resumes_eventMap_on_view_removed():void
+		{
+			const view:DisplayObject = new Sprite();
+			
+			instance.setViewComponent(view);
+			
+			view.dispatchEvent(new Event(Event.REMOVED_FROM_STAGE));
+			view.dispatchEvent(new Event(Event.ADDED_TO_STAGE));
+			assertThat(eventMap, received().method('resume').once());
+		}
 	}
 }
