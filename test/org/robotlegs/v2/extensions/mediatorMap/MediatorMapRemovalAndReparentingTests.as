@@ -21,9 +21,9 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.support.RL2Mediator;
 	import org.swiftsuspenders.Injector;
 	import flash.events.EventDispatcher;
-	import org.robotlegs.core.IEventMap;
-	import org.robotlegs.base.EventMap;
 	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.RL1MediatorTrigger;
+	import org.robotlegs.v2.extensions.eventMap.impl.EventMap;
+	import org.robotlegs.v2.extensions.eventMap.api.IEventMap;
 	
 	// required
 	MockolateRunner;

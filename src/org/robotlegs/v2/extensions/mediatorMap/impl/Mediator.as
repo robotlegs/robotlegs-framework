@@ -8,9 +8,9 @@
 package org.robotlegs.v2.extensions.mediatorMap.impl
 {
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediator;
-	import org.robotlegs.core.IEventMap;
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
+	import org.robotlegs.v2.extensions.eventMap.api.IEventMap;
 
 	public class Mediator implements IMediator
 	{

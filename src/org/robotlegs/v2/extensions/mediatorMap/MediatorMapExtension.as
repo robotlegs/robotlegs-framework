@@ -12,12 +12,12 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import org.robotlegs.v2.extensions.mediatorMap.impl.MediatorMap;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMap;
 	
-	import org.robotlegs.core.IEventMap;
-	import org.robotlegs.base.EventMap;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewManager;
 	import org.robotlegs.v2.extensions.guardsAndHooks.impl.GuardsProcessor;
 	import org.robotlegs.v2.extensions.guardsAndHooks.impl.HooksProcessor;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewHandler;
+	import org.robotlegs.v2.extensions.eventMap.api.IEventMap;
+	import org.robotlegs.v2.extensions.eventMap.impl.EventMap;
 	
 	public class MediatorMapExtension implements IContextExtension
 	{

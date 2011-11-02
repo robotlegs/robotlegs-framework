@@ -23,6 +23,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 	import org.robotlegs.v2.extensions.mediatorMap.impl.support.MediatorWatcher;
 	import org.robotlegs.v2.extensions.mediatorMap.impl.support.TrackingMediator;
 	import org.robotlegs.v2.extensions.mediatorMap.impl.support.TrackingMediatorWaitsForGiven;
+	import org.robotlegs.v2.extensions.eventMap.api.IEventMap;
 	
 	// required
 	MockolateRunner;
@@ -34,7 +35,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		public var mocks:MockolateRule = new MockolateRule();
 
 		[Mock]
-		public var eventMap:IEventMap:org.robotlegs.core.IEventMap;
+		public var eventMap:IEventMap;
 
 		private var instance:Mediator;
 
