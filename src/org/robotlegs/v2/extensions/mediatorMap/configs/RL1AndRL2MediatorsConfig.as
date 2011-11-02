@@ -36,6 +36,8 @@ package org.robotlegs.v2.extensions.mediatorMap.configs
 
 		public function configure(context:IContext):void
 		{
+			// TODO - not sure these should be done in a config?
+			
 			context.injector.map(org.robotlegs.core.IEventMap)
 							.toType(org.robotlegs.base.EventMap);
 							

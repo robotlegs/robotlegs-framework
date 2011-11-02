@@ -11,8 +11,9 @@ package org.robotlegs.v2.extensions.guardsAndHooks.impl
 	import flash.utils.describeType;
 	import org.robotlegs.v2.core.utilities.classHasMethod;
 	import org.swiftsuspenders.Injector;
+	import org.robotlegs.v2.extensions.guardsAndHooks.api.IGuardsProcessor;
 
-	public class GuardsProcessor
+	public class GuardsProcessor implements IGuardsProcessor
 	{
 
 		protected const _verifiedGuardClasses:Dictionary = new Dictionary();
