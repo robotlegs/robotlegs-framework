@@ -17,6 +17,8 @@ package org.robotlegs.v2.extensions.mediatorMap.configs
 	import org.robotlegs.v2.extensions.mediatorMap.utilities.strategies.NoWaitStrategy;
 	import org.robotlegs.v2.extensions.mediatorMap.utilities.strategies.WaitForCreationCompleteStrategy;
 	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.RL1MediatorTrigger;
+	import org.robotlegs.core.IEventMap;
+	import org.robotlegs.base.EventMap;
 		
 	public class RL1MediatorsConfig implements IContextConfig
 	{
@@ -29,6 +31,7 @@ package org.robotlegs.v2.extensions.mediatorMap.configs
 
 		public function configure(context:IContext):void
 		{
+			context.injector.map(IEventMap).toType(EventMap);
 			const mediatorMap:IMediatorMap = context.injector.getInstance(IMediatorMap);
 			const trigger:RL1MediatorTrigger = new RL1MediatorTrigger(_strict);
 			

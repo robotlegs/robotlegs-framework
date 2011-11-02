@@ -12,6 +12,10 @@ package org.robotlegs.v2.extensions.mediatorMap.configs
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMap;
 	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.RL1AndRL2MediatorTrigger;
 	import org.robotlegs.v2.extensions.mediatorMap.configs.addUIComponentStrategiesIfFlex;
+	import org.robotlegs.core.IEventMap;
+	import org.robotlegs.base.EventMap;
+	import org.robotlegs.v2.extensions.eventMap.api.IEventMap;
+	import org.robotlegs.v2.extensions.eventMap.impl.EventMap;
 		
 	public class RL1AndRL2MediatorsConfig implements IContextConfig
 	{
@@ -24,6 +28,9 @@ package org.robotlegs.v2.extensions.mediatorMap.configs
 
 		public function configure(context:IContext):void
 		{
+			context.injector.map(org.robotlegs.core.IEventMap).toType(org.robotlegs.base.EventMap);
+			context.injector.map(IEventMap).toType(EventMap);
+			
 			const mediatorMap:IMediatorMap = context.injector.getInstance(IMediatorMap);
 			const trigger:RL1AndRL2MediatorTrigger = new RL1AndRL2MediatorTrigger(_strict);
 			
