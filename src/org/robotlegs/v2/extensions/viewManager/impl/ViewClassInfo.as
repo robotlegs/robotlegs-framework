@@ -12,6 +12,7 @@ package org.robotlegs.v2.extensions.viewManager.impl
 
 	public class ViewClassInfo implements IViewClassInfo
 	{
+		private var _domain:ApplicationDomain;
 
 		public function get applicationDomain():ApplicationDomain
 		{
@@ -37,8 +38,6 @@ package org.robotlegs.v2.extensions.viewManager.impl
 			// todo: lazy, cached list of type names
 			return null;
 		}
-
-		private var _domain:ApplicationDomain;
 
 		public function ViewClassInfo(type:Class, fqcn:String, domain:ApplicationDomain)
 		{
