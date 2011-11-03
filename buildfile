@@ -1,5 +1,5 @@
 require "fileutils"
-require "buildr/as3" # needs buildr-as3 v0.2.28.pre
+require "buildr/as3" # needs buildr-as3 v0.2.29.pre
 
 # You can use bundler to install the correct buildr gem: bundle install
 # Then you can run buildr isolated: bundle exec buildr [tasks] ...
