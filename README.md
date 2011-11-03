@@ -46,3 +46,37 @@ If you've got an existing RL1 extension or utility, get in touch and we'll put y
 ## Get involved in the conversation
 
 We have spent a lot of time experimenting and following a few different paths to explore what Robotlegs 2 should be. We are by no means 100% certain of the current api or implementation - and we'd definitely like your input. Commit comments are particularly useful, and we'll also come up with a plan for enabling focussed discussion on each of the important topics.
+
+---
+
+## Building and Running the Tests on OS X
+
+- Install XCode 3 or 4
+- check RubyGems version
+	
+	$ gem -v
+	1.8.1
+	
+- update RubyGems if version is less than 1.3.6
+
+	$ sudo gem update --system
+	
+- install Bundler
+
+	$ sudo gem install bundler
+	
+- run Bundler to install dependencies
+
+	$ bundle install
+	
+- run Buildr to build RobotLegs & run Tests
+
+	$ bundle exec buildr test
+	
+- open test report
+
+	$ open reports/flexunit4/html/index.html
+	
+[Example output of this process](https://gist.github.com/1336238)
+
+
