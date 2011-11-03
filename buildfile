@@ -1,5 +1,5 @@
 require "fileutils"
-require "buildr/as3" # needs buildr-as3 v0.2.29.pre
+require "buildr/as3" # needs buildr-as3 v0.2.30.pre
 
 # You can use bundler to install the correct buildr gem: bundle install
 # Then you can run buildr isolated: bundle exec buildr [tasks] ...
@@ -34,7 +34,7 @@ define "robotlegs-framework", :layout => layout do
   test.using(:flexunit4 => true, :headless => false, :version => "4.1.0-8")
   
   test.compile.using( :main => testrunner, :args => [] ).
-    with( Buildr::AS3::Test::FlexUnit4.swcs("4.1.0-8", "4.1.0.16076", :flex),
+    with( FlexUnit4.swcs("4.1.0-8", "4.1.0.16076", :flex),
           _(:lib,"mockolate-0.12.2-flex.swc"),
           _(:lib,"hamcrest-as3-flex-1.1.3.swc") )
 
