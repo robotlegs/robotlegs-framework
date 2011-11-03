@@ -38,6 +38,9 @@ package org.robotlegs.v2.extensions.eventMap.impl
 		 */
 		protected const _suspendedListeners:Vector.<EventMapConfig> = new Vector.<EventMapConfig>();
 		
+		/**
+		 * @private
+		 */
 		protected var _suspended:Boolean = false;
 		
 		//---------------------------------------------------------------------
@@ -112,10 +115,19 @@ package org.robotlegs.v2.extensions.eventMap.impl
 				}
 			}
 			
-			var callback:Function = function(event:Event):void
+			var callback:Function;
+			
+			if(eventClass != Event)
+			{
+			 	callback = function(event:Event):void
 				{
 					routeEventToListener(event, listener, eventClass);
 				};
+			}
+			else
+			{
+				callback = listener;
+			}
 				
 			eventConfig = new EventMapConfig( 	dispatcher,
 											eventString,
@@ -190,6 +202,9 @@ package org.robotlegs.v2.extensions.eventMap.impl
 		
 		public function suspend():void
 		{
+			if(_suspended)
+				return;
+				
 			_suspended = true;
 			
 			var eventConfig:EventMapConfig;
@@ -204,6 +219,9 @@ package org.robotlegs.v2.extensions.eventMap.impl
 		
 		public function resume():void
 		{
+			if(!_suspended)
+				return;
+			
 			_suspended = false;
 			
 			var eventConfig:EventMapConfig;

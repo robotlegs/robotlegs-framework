@@ -104,7 +104,8 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		
 		protected function dispatch(e:Event):void
 		{
-			eventDispatcher.dispatchEvent(e);
+			if(eventDispatcher.hasEventListener(e.type))
+				eventDispatcher.dispatchEvent(e);
 		}
 	}
 }
