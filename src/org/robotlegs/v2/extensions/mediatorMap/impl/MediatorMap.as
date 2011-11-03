@@ -24,6 +24,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 	import flash.errors.IllegalOperationError;
 	import org.robotlegs.v2.extensions.guardsAndHooks.api.IHooksProcessor;
 	import org.robotlegs.v2.extensions.guardsAndHooks.api.IGuardsProcessor;
+	import org.robotlegs.v2.extensions.viewManager.api.ViewInterests;
 
 	[Event(name="configurationChange", type="org.robotlegs.v2.extensions.viewManager.api.ViewHandlerEvent")]
 	public class MediatorMap extends EventDispatcher implements IViewHandler, IMediatorMap
@@ -40,7 +41,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 
 		public function get interests():uint
 		{
-			return 2;
+			return ViewInterests.MEDIATION;
 		}
 
 		protected const _configsByTypeFilter:Dictionary = new Dictionary();
