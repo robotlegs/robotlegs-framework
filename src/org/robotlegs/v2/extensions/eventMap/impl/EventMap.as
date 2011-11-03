@@ -26,11 +26,6 @@ package org.robotlegs.v2.extensions.eventMap.impl
 		/**
 		 * @private
 		 */
-		protected var _dispatcherListeningEnabled:Boolean = true;
-		
-		/**
-		 * @private
-		 */
 		protected const _listeners:Vector.<EventMapConfig> = new Vector.<EventMapConfig>();
 		
 		/**
@@ -62,22 +57,6 @@ package org.robotlegs.v2.extensions.eventMap.impl
 		//---------------------------------------------------------------------
 		
 		/**
-		 * @return Is shared dispatcher listening allowed?
-		 */
-		public function get dispatcherListeningEnabled():Boolean
-		{
-			return _dispatcherListeningEnabled;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set dispatcherListeningEnabled(value:Boolean):void
-		{
-			_dispatcherListeningEnabled = value;
-		}
-		
-		/**
 		 * The same as calling <code>addEventListener</code> directly on the <code>IEventDispatcher</code>,
 		 * but keeps a list of listeners for easy (usually automatic) removal.
 		 *
@@ -91,10 +70,6 @@ package org.robotlegs.v2.extensions.eventMap.impl
 		 */
 		public function mapListener(dispatcher:IEventDispatcher, eventString:String, listener:Function, eventClass:Class = null, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = true):void
 		{
-			if (dispatcherListeningEnabled == false && dispatcher == _eventDispatcher)
-			{
-				throw new ContextError(ContextError.E_EVENTMAP_NOSNOOPING);
-			}
 			eventClass ||= Event;
 			
 			const currentListeners:Vector.<EventMapConfig> = _suspended ? _suspendedListeners : _listeners;
