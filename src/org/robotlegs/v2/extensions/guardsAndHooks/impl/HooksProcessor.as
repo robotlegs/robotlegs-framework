@@ -26,7 +26,7 @@ package org.robotlegs.v2.extensions.guardsAndHooks.impl
 		{
 			verifyHookClasses(hookClasses);
 
-			var hook:*
+			var hook:*;
 
 			for each (var hookClass:Class in hookClasses)
 			{

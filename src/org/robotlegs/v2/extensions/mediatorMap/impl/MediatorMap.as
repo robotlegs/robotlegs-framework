@@ -68,7 +68,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		public function processView(view:DisplayObject, info:IViewClassInfo):uint
 		{
 			// TODO = check _liveMediatorsByView for this view, exit / error if it would overwrite
-
+			// TODO - probably refactor to a linked list for iteration
 			var interest:uint = 0;
 
 			for (var filter:* in _configsByTypeFilter)
@@ -260,7 +260,6 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 
 		protected function cleanUpMapping(mediatorType:Class):void
 		{
-			trace("MediatorMap::cleanUpMapping()", mediatorType);
 			delete _mappingsByMediatorType[mediatorType];
 		}
 	}

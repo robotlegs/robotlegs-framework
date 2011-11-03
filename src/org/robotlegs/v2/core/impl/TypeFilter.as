@@ -90,9 +90,9 @@ package org.robotlegs.v2.core.impl
 		protected function alphabetiseCaseInsensitiveFCQNs(classVector:Vector.<Class>):Vector.<String>
 		{
 			var fqcn:String;
-			var allFCQNs:Vector.<String> = new <String>[];
+			const allFCQNs:Vector.<String> = new <String>[];
 
-			var iLength:uint = classVector.length;
+			const iLength:uint = classVector.length;
 			for (var i:uint = 0; i < iLength; i++)
 			{
 				fqcn = getQualifiedClassName(classVector[i]);

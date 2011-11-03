@@ -13,14 +13,14 @@ package org.robotlegs.v2.extensions.guardsAndHooks.impl
 	public class GuardsAndHooksConfig implements IGuardsAndHooksConfig
 	{
 
-		protected var _guards:Vector.<Class> = new Vector.<Class>();
+		protected const _guards:Vector.<Class> = new Vector.<Class>();
 
 		public function get guards():Vector.<Class>
 		{
 			return _guards;
 		}
 
-		protected var _hooks:Vector.<Class> = new Vector.<Class>();
+		protected const _hooks:Vector.<Class> = new Vector.<Class>();
 
 		public function get hooks():Vector.<Class>
 		{
