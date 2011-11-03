@@ -138,4 +138,3 @@ class HandlerResult
 
 	public var response:uint;
 }
-

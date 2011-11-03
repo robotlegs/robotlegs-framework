@@ -12,6 +12,7 @@ package suites
 	import org.robotlegs.v2.extensions.viewManager.impl.ViewManager_OptimisationTests;
 	import org.robotlegs.v2.extensions.viewManager.impl.ViewManager_TimingTests;
 	import org.robotlegs.v2.extensions.viewManager.impl.ContainerBindingTest;
+	import org.robotlegs.v2.extensions.viewManager.impl.ContainerRegistryTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
@@ -27,5 +28,7 @@ package suites
 		public var viewManagerTimingTests:ViewManager_TimingTests;
 		
 		public var containerBindingTest:ContainerBindingTest;
+		
+		public var containerRegistryTest:ContainerRegistryTest;
 	}
 }

@@ -7,15 +7,10 @@
 
 package org.robotlegs.v2.extensions.viewManager.impl
 {
-	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
-	import mx.core.UIComponent;
 	import org.flexunit.assertThat;
-	import org.fluint.uiImpersonation.UIImpersonator;
 	import org.hamcrest.object.equalTo;
-	import org.hamcrest.object.isFalse;
-	import org.hamcrest.object.isTrue;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewHandler;
 	import org.robotlegs.v2.extensions.viewManager.impl.support.ViewHandlerSupport;
 	import org.flexunit.asserts.assertEqualsVectorsIgnoringOrder;
