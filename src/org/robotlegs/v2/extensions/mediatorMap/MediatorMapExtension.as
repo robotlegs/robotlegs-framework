@@ -15,6 +15,8 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import org.robotlegs.v2.extensions.guardsAndHooks.impl.GuardsProcessor;
 	import org.robotlegs.v2.extensions.guardsAndHooks.impl.HooksProcessor;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewHandler;
+	import org.robotlegs.v2.extensions.guardsAndHooks.api.IHooksProcessor;
+	import org.robotlegs.v2.extensions.guardsAndHooks.api.IGuardsProcessor;
 	
 	public class MediatorMapExtension implements IContextExtension
 	{
@@ -29,8 +31,8 @@ package org.robotlegs.v2.extensions.mediatorMap
 		public function install(context:IContext):void
 		{	
 			context.injector.map(IMediatorMap).toSingleton(MediatorMap);
-			context.injector.map(GuardsProcessor).asSingleton();
-			context.injector.map(HooksProcessor).asSingleton();
+			context.injector.map(IGuardsProcessor).toSingleton(GuardsProcessor);
+			context.injector.map(IHooksProcessor).toSingleton(HooksProcessor);
 		}
 
 		public function uninstall(context:IContext):void

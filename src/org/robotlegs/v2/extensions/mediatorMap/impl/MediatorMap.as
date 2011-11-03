@@ -15,26 +15,25 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 	import org.robotlegs.v2.extensions.viewManager.api.IViewClassInfo;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewHandler;
 	import org.robotlegs.v2.extensions.viewManager.api.ViewHandlerEvent;
-	import org.robotlegs.v2.extensions.guardsAndHooks.impl.GuardsProcessor;
-	import org.robotlegs.v2.extensions.guardsAndHooks.impl.HooksProcessor;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorConfig;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMap;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMapping;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorTrigger;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorUnmapping;
 	import org.swiftsuspenders.Injector;
-	import org.swiftsuspenders.Reflector;
 	import flash.errors.IllegalOperationError;
+	import org.robotlegs.v2.extensions.guardsAndHooks.api.IHooksProcessor;
+	import org.robotlegs.v2.extensions.guardsAndHooks.api.IGuardsProcessor;
 
 	[Event(name="configurationChange", type="org.robotlegs.v2.extensions.viewManager.api.ViewHandlerEvent")]
 	public class MediatorMap extends EventDispatcher implements IViewHandler, IMediatorMap
 	{
 
 		[Inject]
-		public var guardsProcessor:GuardsProcessor;
+		public var guardsProcessor:IGuardsProcessor;
 
 		[Inject]
-		public var hooksProcessor:HooksProcessor;
+		public var hooksProcessor:IHooksProcessor;
 
 		[Inject]
 		public var injector:Injector;

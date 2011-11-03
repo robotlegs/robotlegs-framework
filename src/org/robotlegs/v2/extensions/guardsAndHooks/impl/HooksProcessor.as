@@ -9,11 +9,11 @@ package org.robotlegs.v2.extensions.guardsAndHooks.impl
 {
 	import flash.utils.Dictionary;
 	import flash.utils.describeType;
-	import ArgumentError;
 	import org.robotlegs.v2.core.utilities.classHasMethod;
 	import org.swiftsuspenders.Injector;
+	import org.robotlegs.v2.extensions.guardsAndHooks.api.IHooksProcessor;
 
-	public class HooksProcessor
+	public class HooksProcessor implements IHooksProcessor
 	{
 
 		protected const _verifiedHookClasses:Dictionary = new Dictionary();

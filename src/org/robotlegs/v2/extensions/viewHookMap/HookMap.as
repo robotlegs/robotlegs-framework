@@ -11,22 +11,21 @@ package org.robotlegs.v2.extensions.viewHookMap
 	import flash.utils.getQualifiedClassName;
 	import org.robotlegs.v2.core.api.ITypeFilter;
 	import org.robotlegs.v2.core.api.ITypeMatcher;
-	import org.robotlegs.v2.extensions.guardsAndHooks.impl.GuardsProcessor;
-	import org.swiftsuspenders.DescribeTypeJSONReflector;
 	import org.swiftsuspenders.Injector;
 	import org.swiftsuspenders.Reflector;
 	import org.robotlegs.v2.extensions.guardsAndHooks.impl.GuardsAndHooksConfig;
-	import org.robotlegs.v2.extensions.guardsAndHooks.impl.HooksProcessor;
 	import org.robotlegs.v2.extensions.guardsAndHooks.api.IGuardsAndHooksConfig;
+	import org.robotlegs.v2.extensions.guardsAndHooks.api.IHooksProcessor;
+	import org.robotlegs.v2.extensions.guardsAndHooks.api.IGuardsProcessor;
 
 	public class HookMap
 	{
 
 		[Inject]
-		public var guardsProcessor:GuardsProcessor;
+		public var guardsProcessor:IGuardsProcessor;
 
 		[Inject]
-		public var hooksProcessor:HooksProcessor;
+		public var hooksProcessor:IHooksProcessor;
 
 		[Inject]
 		public var injector:Injector;
