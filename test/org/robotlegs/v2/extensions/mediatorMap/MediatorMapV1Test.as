@@ -85,37 +85,6 @@ package org.robotlegs.v2.extensions.mediatorMap
 		}
 
 		[Test]
-		public function contextViewMediatorIsCreatedWhenMapped():void
-		{
-			mediatorMap.mapView(TestContextView, TestContextViewMediator);
-			Assert.assertTrue('Mediator should have been created for contextView', mediatorMap.hasMediatorForView(contextView));
-		}
-
-		[Test]
-		public function contextViewMediatorIsNotCreatedWhenMappedAndAutoCreateIsFalse():void
-		{
-			mediatorMap.mapView(TestContextView, TestContextViewMediator, null, false);
-			Assert.assertFalse('Mediator should NOT have been created for contextView', mediatorMap.hasMediatorForView(contextView));
-		}
-
-		[Test]
-		public function mediatorIsMappedAddedAndRemovedByView():void
-		{
-			var viewComponent:ViewComponent = new ViewComponent();
-			var mediator:IMediator;
-
-			mediatorMap.mapView(ViewComponent, ViewMediator, null, false, false);
-			contextView.addChild(viewComponent);
-			mediator = mediatorMap.createMediator(viewComponent);
-			Assert.assertNotNull('Mediator should have been created', mediator);
-			Assert.assertTrue('Mediator should have been created', mediatorMap.hasMediator(mediator));
-			Assert.assertTrue('Mediator should have been created for View Component', mediatorMap.hasMediatorForView(viewComponent));
-			mediatorMap.removeMediatorByView(viewComponent);
-			Assert.assertFalse("Mediator should not exist", mediatorMap.hasMediator(mediator));
-			Assert.assertFalse("View Mediator should not exist", mediatorMap.hasMediatorForView(viewComponent));
-		}
-
-		[Test]
 		public function mediatorIsMappedAndCreatedAndRemovedWithInjectedNonView():void
 		{
 			mediatorMap.mapView(NonViewComponent, NonViewMediator, null, false, true);
