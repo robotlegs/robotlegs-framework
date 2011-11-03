@@ -27,10 +27,6 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 	import flash.display.MovieClip;
 	import org.robotlegs.v2.extensions.mediatorMap.utilities.strategies.WaitForCreationCompleteStrategy;
 
-	// required
-	MockolateRunner;
-
-	[RunWith("mockolate.runner.MockolateRunner")]
 	public class RL2MediatorTrigger_strategiesTest
 	{
 

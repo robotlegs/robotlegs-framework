@@ -18,10 +18,6 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediator;
 	import flash.errors.IllegalOperationError;
 
-	// required
-	MockolateRunner;
-
-	[RunWith("mockolate.runner.MockolateRunner")]
 	public class DuckTypedMediatorTriggerTest
 	{
 

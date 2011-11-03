@@ -26,10 +26,6 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 	import org.robotlegs.v2.extensions.eventMap.api.IEventMap;
 	import flash.display.DisplayObject;
 	
-	// required
-	MockolateRunner;
-
-	[RunWith("mockolate.runner.MockolateRunner")]
 	public class MediatorTest
 	{
 		[Rule]

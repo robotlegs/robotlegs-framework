@@ -24,10 +24,6 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 	import flash.events.Event;
 	import org.flexunit.async.Async;
 	
-	// required
-	MockolateRunner;
-
-	[RunWith("mockolate.runner.MockolateRunner")]
 	public class MediatorSugarTest
 	{
 		[Rule]

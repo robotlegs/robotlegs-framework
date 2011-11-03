@@ -12,7 +12,6 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import flash.events.Event;
 	import mockolate.received;
 	import mockolate.runner.MockolateRule;
-	import mockolate.runner.MockolateRunner;
 	import org.flexunit.asserts.*;
 	import org.hamcrest.assertThat;
 	import org.robotlegs.v2.extensions.guardsAndHooks.impl.GuardsProcessor;
@@ -26,10 +25,6 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import org.robotlegs.v2.extensions.eventMap.api.IEventMap;
 	import flash.events.IEventDispatcher;
 	
-	// required
-	MockolateRunner;
-
-	[RunWith("mockolate.runner.MockolateRunner")]
 	public class MediatorMapRemovalAndReparentingTests
 	{
 

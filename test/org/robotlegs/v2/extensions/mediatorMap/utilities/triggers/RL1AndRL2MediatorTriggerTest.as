@@ -20,10 +20,6 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.support.DuckTypedRL1Mediator;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediator;
 
-	// required
-	MockolateRunner;
-
-	[RunWith("mockolate.runner.MockolateRunner")]
 	public class RL1AndRL2MediatorTriggerTest
 	{
 
