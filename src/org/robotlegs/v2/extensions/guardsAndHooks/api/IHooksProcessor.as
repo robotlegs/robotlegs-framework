@@ -12,6 +12,6 @@ package org.robotlegs.v2.extensions.guardsAndHooks.api
 	public interface IHooksProcessor
 	{
 		
-		function runHooks(useInjector:Injector, guardClasses:Vector.<Class>):void;
+		function runHooks(useInjector:Injector, hookClasses:Vector.<Class>):void;
 	}
 }

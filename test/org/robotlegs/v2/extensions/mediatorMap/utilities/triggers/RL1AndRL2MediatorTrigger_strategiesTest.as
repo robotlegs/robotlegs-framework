@@ -28,10 +28,6 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.triggers
 	import org.robotlegs.v2.extensions.mediatorMap.utilities.strategies.WaitForCreationCompleteStrategy;
 	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.RL1AndRL2MediatorTrigger;
 
-	// required
-	MockolateRunner;
-
-	[RunWith("mockolate.runner.MockolateRunner")]
 	public class RL1AndRL2MediatorTrigger_strategiesTest
 	{
 
