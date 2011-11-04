@@ -26,10 +26,10 @@ import suites.UtilityPackageFunctionsSuite;
 
 		public var utilityPackageTestSuite:UtilityPackageFunctionsSuite;
 
-		public var viewManagerTestSuite:ViewManagerTestSuite;
-
 		public var mediatorMapTestSuite:MediatorMapTestSuite;
 		
+		public var viewManagerTestSuite:ViewManagerTestSuite;
+
 		public var eventMapTestSuite:EventMapTestSuite;
 	}
 }

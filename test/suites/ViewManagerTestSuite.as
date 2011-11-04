@@ -33,5 +33,7 @@ package suites
 		public var containerRegistryTest:ContainerRegistryTest;
 		
 		public var viewClassInfoTest:ViewClassInfoTest;
+		
+		public var viewInterestsTest:ViewInterestsTest;
 	}
 }
