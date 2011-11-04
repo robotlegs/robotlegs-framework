@@ -14,6 +14,7 @@ package suites
 	import org.robotlegs.v2.extensions.viewManager.impl.ContainerBindingTest;
 	import org.robotlegs.v2.extensions.viewManager.impl.ContainerRegistryTest;
 	import org.robotlegs.v2.extensions.viewManager.impl.ViewClassInfoTest;
+	import org.robotlegs.v2.extensions.viewManager.api.ViewInterestsTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
