@@ -7,11 +7,7 @@
 
 package org.robotlegs.v2.extensions.mediatorMap.utilities.strategies
 {
-	import org.robotlegs.v2.extensions.mediatorMap.api.IMediator;
 	import flash.display.DisplayObject;
-	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorTrigger;
-	import flash.utils.Dictionary;
-	import org.robotlegs.v2.core.api.ITypeMatcher;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorStartupStrategy;
 
 	public class NoWaitStrategy implements IMediatorStartupStrategy

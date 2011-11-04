@@ -15,8 +15,8 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.strategies
 
 	public class WaitForCompleteStrategy implements IMediatorStartupStrategy
 	{
-		protected const _callbacksByView:Dictionary = new Dictionary();
-		protected const _mediatorsByView:Dictionary = new Dictionary();
+		private const _callbacksByView:Dictionary = new Dictionary();
+		private const _mediatorsByView:Dictionary = new Dictionary();
 
 		public function startup(mediator:*, view:DisplayObject, callback:Function):void
 		{
@@ -25,7 +25,7 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.strategies
 			view.addEventListener(Event.COMPLETE, completeStartup);
 		}
 
-		protected function completeStartup(e:Event):void
+		private function completeStartup(e:Event):void
 		{
 			const view:EventDispatcher = e.target as EventDispatcher;
 			view.removeEventListener(Event.COMPLETE, completeStartup);

@@ -89,7 +89,7 @@ package org.robotlegs.v2.extensions.viewHookMap
 			return interested;
 		}
 
-		protected function blockedByGuards(guards:Vector.<Class>):Boolean
+		private function blockedByGuards(guards:Vector.<Class>):Boolean
 		{
 			return ((guards.length > 0)
 				&& !(guardsProcessor.processGuards(injector, guards)))

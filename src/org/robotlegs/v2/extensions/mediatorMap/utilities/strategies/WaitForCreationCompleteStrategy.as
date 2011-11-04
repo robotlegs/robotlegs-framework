@@ -18,11 +18,11 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.strategies
 
 	public class WaitForCreationCompleteStrategy implements IMediatorStartupStrategy
 	{
-		protected const _callbacksByView:Dictionary = new Dictionary();
-		protected const _mediatorsByView:Dictionary = new Dictionary();
+		private const _callbacksByView:Dictionary = new Dictionary();
+		private const _mediatorsByView:Dictionary = new Dictionary();
 		
 		// avoids the flex framework being required
-		protected static const CREATION_COMPLETE:String = 'creationComplete';
+		private static const CREATION_COMPLETE:String = 'creationComplete';
 
 		public function startup(mediator:*, view:DisplayObject, callback:Function):void
 		{
@@ -37,7 +37,7 @@ package org.robotlegs.v2.extensions.mediatorMap.utilities.strategies
 			view.addEventListener(CREATION_COMPLETE, completeStartup);
 		}
 
-		protected function completeStartup(e:Event):void
+		private function completeStartup(e:Event):void
 		{
 			const view:EventDispatcher = e.target as EventDispatcher;
 			view.removeEventListener(CREATION_COMPLETE, completeStartup);
