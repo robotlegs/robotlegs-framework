@@ -82,24 +82,24 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			eventMap.resume();
 		}
 		
-		protected function addViewListener(eventString:String, callback:Function, eventClass:Class):void
+		protected function addViewListener(eventString:String, listener:Function, eventClass:Class):void
 		{
-			eventMap.mapListener(IEventDispatcher(_viewComponent), eventString, callback, eventClass);
+			eventMap.mapListener(IEventDispatcher(_viewComponent), eventString, listener, eventClass);
 		}
 		
-		protected function addContextListener(eventString:String, callback:Function, eventClass:Class):void
+		protected function addContextListener(eventString:String, listener:Function, eventClass:Class):void
 		{
-			eventMap.mapListener(_eventDispatcher, eventString, callback, eventClass);
+			eventMap.mapListener(_eventDispatcher, eventString, listener, eventClass);
 		}
 		
-		protected function removeViewListener(eventString:String, callback:Function, eventClass:Class):void
+		protected function removeViewListener(eventString:String, listener:Function, eventClass:Class):void
 		{
-			eventMap.unmapListener(IEventDispatcher(_viewComponent), eventString, callback, eventClass);
+			eventMap.unmapListener(IEventDispatcher(_viewComponent), eventString, listener, eventClass);
 		}
 		
-		protected function removeContextListener(eventString:String, callback:Function, eventClass:Class):void
+		protected function removeContextListener(eventString:String, listener:Function, eventClass:Class):void
 		{
-			eventMap.unmapListener(_eventDispatcher, eventString, callback, eventClass);
+			eventMap.unmapListener(_eventDispatcher, eventString, listener, eventClass);
 		}
 		
 		protected function dispatch(e:Event):void
