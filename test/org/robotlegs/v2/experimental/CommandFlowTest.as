@@ -108,9 +108,20 @@ package org.robotlegs.v2.experimental
 			assertThat(commandTracker.commandsReceived, array([SimpleCommand, AnotherCommand]));
 		}
 		
+		[Test]
+		public function mapping_two_commands_to_same_event_separately_and_both_fire():void
+		{
+			after(Event.COMPLETE).execute(SimpleCommand);
+			after(Event.COMPLETE).execute(AnotherCommand);
+			
+			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
+			const expectedCommands:Array = [SimpleCommand, AnotherCommand];
+			assertThat(commandTracker.commandsReceived, array(expectedCommands));
+		}
+		
 		protected function after(eventString:String):CommandConfig
 		{
-			configsByEventString[eventString] = new CommandConfig();
+			configsByEventString[eventString] ||= new CommandConfig();
 			eventDispatcher.addEventListener(eventString, fireCommandsForEventString);
 			return configsByEventString[eventString];
 		}
