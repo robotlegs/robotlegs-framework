@@ -22,6 +22,7 @@ package org.robotlegs.v2.experimental
 		private var eventDispatcher:EventDispatcher;
 		private var commandTracker:CommandTracker;
 		private var injector:Injector;
+		private var commands:Vector.<Class>;
 
 		[Before]
 		public function setUp():void
@@ -31,6 +32,8 @@ package org.robotlegs.v2.experimental
 			commandTracker = new CommandTracker();
 			injector = new Injector();
 			injector.map(CommandTracker).toValue(commandTracker);
+			
+			commands = new <Class>[];
 		}
 
 		[After]
@@ -40,6 +43,7 @@ package org.robotlegs.v2.experimental
 			eventDispatcher = null;
 			commandTracker = null;
 			injector = null;
+			commands = null;
 		}
 
 		[Test]
@@ -65,52 +69,34 @@ package org.robotlegs.v2.experimental
 		*/
 		
 		[Test]
-		public function one_event_triggers_one_command():void
-		{
-			eventDispatcher.addEventListener(Event.COMPLETE, fireCommand);
-			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
-			const expectedCommands:Array = [SimpleCommand];
-			assertEqualsArraysIgnoringOrder(commandTracker.commandsReceived, expectedCommands);
-		}
-		
-		protected function fireCommand(e:Event):void
-		{
-			const command:SimpleCommand = new SimpleCommand();
-			command.commandTracker = commandTracker;
-			command.execute();
-		}
-		
-		[Test]
 		public function one_event_triggers_one_command_with_injection():void
 		{
+			commands.push(SimpleCommand);
 			eventDispatcher.addEventListener(Event.COMPLETE, fireCommandUsingInjection);
 			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
 			const expectedCommands:Array = [SimpleCommand];
 			assertEqualsArraysIgnoringOrder(commandTracker.commandsReceived, expectedCommands);
 		}
 
-		protected function fireCommandUsingInjection(e:Event):void
-		{
-			const command:SimpleCommand = injector.getInstance(SimpleCommand);
-			command.execute();
-		}
-		
 		[Test]
 		public function one_event_triggers_two_commands_in_order():void
 		{
-			eventDispatcher.addEventListener(Event.COMPLETE, fireCommandsInOrder);
+			commands.push(SimpleCommand);
+			commands.push(AnotherCommand);
+			eventDispatcher.addEventListener(Event.COMPLETE, fireCommandUsingInjection);
 			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
 			const expectedCommands:Array = [SimpleCommand, AnotherCommand];
 			assertThat(commandTracker.commandsReceived, array(expectedCommands));
 		}
 		
-		protected function fireCommandsInOrder(e:Event):void
+		protected function fireCommandUsingInjection(e:Event):void
 		{
-			var command:Object = injector.getInstance(SimpleCommand);
-			command.execute();
-			command = injector.getInstance(AnotherCommand);
-			command.execute();
-		}
+			for each (var commandClass:Class in commands)
+			{
+				const command:Object = injector.getInstance(commandClass);
+				command.execute();
+			}
+		}		
 
 	}
 }
