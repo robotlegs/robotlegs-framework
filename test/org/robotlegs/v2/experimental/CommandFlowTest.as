@@ -14,6 +14,8 @@ package org.robotlegs.v2.experimental
 	import org.flexunit.asserts.assertEqualsArraysIgnoringOrder;
 	import flash.events.Event;
 	import org.swiftsuspenders.Injector;
+	import flash.utils.Dictionary;
+	import org.robotlegs.v2.core.utilities.pushValuesToClassVector;
 	
 
 	public class CommandFlowTest 
@@ -23,6 +25,8 @@ package org.robotlegs.v2.experimental
 		private var commandTracker:CommandTracker;
 		private var injector:Injector;
 		private var commands:Vector.<Class>;
+
+		private var configsByEventString:Dictionary;
 
 		[Before]
 		public function setUp():void
@@ -34,6 +38,8 @@ package org.robotlegs.v2.experimental
 			injector.map(CommandTracker).toValue(commandTracker);
 			
 			commands = new <Class>[];
+			
+			configsByEventString = new Dictionary();
 		}
 
 		[After]
@@ -44,6 +50,7 @@ package org.robotlegs.v2.experimental
 			commandTracker = null;
 			injector = null;
 			commands = null;
+			configsByEventString = null;
 		}
 
 		[Test]
@@ -60,7 +67,7 @@ package org.robotlegs.v2.experimental
 		
 		/* API SKETCH:
 		
-		afterAll / afterAny
+		after / afterAll / afterAny
 		execute
 		executeAll
 		withGuards
@@ -71,8 +78,8 @@ package org.robotlegs.v2.experimental
 		[Test]
 		public function one_event_triggers_one_command_with_injection():void
 		{
-			commands.push(SimpleCommand);
-			eventDispatcher.addEventListener(Event.COMPLETE, fireCommandUsingInjection);
+			after(Event.COMPLETE).execute(SimpleCommand);
+			
 			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
 			const expectedCommands:Array = [SimpleCommand];
 			assertEqualsArraysIgnoringOrder(commandTracker.commandsReceived, expectedCommands);
@@ -81,25 +88,46 @@ package org.robotlegs.v2.experimental
 		[Test]
 		public function one_event_triggers_two_commands_in_order():void
 		{
-			commands.push(SimpleCommand);
-			commands.push(AnotherCommand);
-			eventDispatcher.addEventListener(Event.COMPLETE, fireCommandUsingInjection);
+			after(Event.COMPLETE).executeAll(SimpleCommand, AnotherCommand);
+			
 			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
 			const expectedCommands:Array = [SimpleCommand, AnotherCommand];
 			assertThat(commandTracker.commandsReceived, array(expectedCommands));
 		}
 		
-		protected function fireCommandUsingInjection(e:Event):void
+		[Test]
+		public function two_different_events_trigger_different_commands():void
 		{
-			for each (var commandClass:Class in commands)
+			after(Event.COMPLETE).execute(SimpleCommand);
+			after(Event.CHANGE).execute(AnotherCommand);
+			
+			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
+			assertThat(commandTracker.commandsReceived, array([SimpleCommand]));
+			
+			eventDispatcher.dispatchEvent(new Event(Event.CHANGE));
+			assertThat(commandTracker.commandsReceived, array([SimpleCommand, AnotherCommand]));
+		}
+		
+		protected function after(eventString:String):CommandConfig
+		{
+			configsByEventString[eventString] = new CommandConfig();
+			eventDispatcher.addEventListener(eventString, fireCommandsForEventString);
+			return configsByEventString[eventString];
+		}
+		
+		protected function fireCommandsForEventString(e:Event):void
+		{
+			const commandClassesForEvent:Vector.<Class> = configsByEventString[e.type].commandClasses;
+			for each (var commandClass:Class in commandClassesForEvent)
 			{
 				const command:Object = injector.getInstance(commandClass);
 				command.execute();
 			}
-		}		
-
+		}
 	}
 }
+
+import org.robotlegs.v2.core.utilities.pushValuesToClassVector;
 
 class CommandTracker
 {
@@ -135,5 +163,25 @@ class AnotherCommand
 	public function execute():void
 	{
 		commandTracker.notify(AnotherCommand);
+	}
+}
+
+class CommandConfig
+{
+	private const _commandClasses:Vector.<Class> = new <Class>[];
+	
+	public function get commandClasses():Vector.<Class>
+	{
+		return _commandClasses;
+	}
+	
+	public function execute(commandClass:Class):void
+	{
+		_commandClasses.push(commandClass);
+	}
+	
+	public function executeAll(...commandClassList):void
+	{
+		pushValuesToClassVector(commandClassList, _commandClasses);
 	}
 }
