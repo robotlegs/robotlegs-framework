@@ -7,28 +7,48 @@
 
 package org.robotlegs.v2.extensions.commandMap.impl
 {
+	import flash.events.IEventDispatcher;
 	import flash.utils.Dictionary;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandMap;
-	import org.robotlegs.v2.extensions.commandMap.api.ICommandMapping;
+	import org.robotlegs.v2.extensions.commandMap.api.ICommandMapper;
+	import org.robotlegs.v2.extensions.commandMap.api.ICommandUnmapper;
+	import org.swiftsuspenders.Injector;
 
 	public class CommandMap implements ICommandMap
 	{
 
 		private const _mappings:Dictionary = new Dictionary();
 
-		public function map(commandType:Class):ICommandMapping
+		private var _injector:Injector;
+
+		private var _dispatcher:IEventDispatcher;
+
+		public function CommandMap(injector:Injector, dispatcher:IEventDispatcher):void
 		{
-			return _mappings[commandType] ||= new CommandMapping(commandType);
+			_injector = injector.createChildInjector();
+			_dispatcher = dispatcher;
 		}
 
-		public function unmap(commandType:Class):void
+		public function map(commandClass:Class):ICommandMapper
 		{
-			delete _mappings[commandType];
+			return _mappings[commandClass] ||= createMapping(commandClass);
 		}
 
-		public function hasMapping(commandType:Class):Boolean
+		public function unmap(commandClass:Class):ICommandUnmapper
 		{
-			return _mappings[commandType];
+			return _mappings[commandClass];
+		}
+
+		public function hasMapping(commandClass:Class):Boolean
+		{
+			// not too happy about this
+			const config:CommandMapping = _mappings[commandClass];
+			return config && config.numTriggers() > 0;
+		}
+
+		private function createMapping(commandClass:Class):ICommandMapper
+		{
+			return new CommandMapping(_injector, _dispatcher, commandClass);
 		}
 	}
 }

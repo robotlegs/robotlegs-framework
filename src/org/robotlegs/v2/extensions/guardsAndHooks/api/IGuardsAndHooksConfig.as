@@ -12,6 +12,7 @@ package org.robotlegs.v2.extensions.guardsAndHooks.api
 	{
 
 		function get guards():Vector.<Class>;
+
 		function get hooks():Vector.<Class>;
 
 		function withGuards(... guardClasses):IGuardsAndHooksConfig;

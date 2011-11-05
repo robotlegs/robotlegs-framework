@@ -8,12 +8,12 @@
 package org.robotlegs.v2.extensions.commandMap.api
 {
 
-	public interface ICommandMap
+	public interface ICommandUnmapper
 	{
-		function map(commandClass:Class):ICommandMapper;
+		function fromEvent(type:String, eventClass:Class = null):ICommandUnmapper;
 
-		function unmap(commandClass:Class):ICommandUnmapper;
-		
-		function hasMapping(commandClass:Class):Boolean;
+		function fromTrigger(trigger:ICommandTrigger):ICommandUnmapper;
+
+		function fromAll():void;
 	}
 }

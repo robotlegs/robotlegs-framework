@@ -5,15 +5,13 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.commandMap.api
+package org.robotlegs.v2.extensions.commandMap.support
 {
 
-	public interface ICommandMap
+	public class NullCommand
 	{
-		function map(commandClass:Class):ICommandMapper;
-
-		function unmap(commandClass:Class):ICommandUnmapper;
-		
-		function hasMapping(commandClass:Class):Boolean;
+		public function execute():void
+		{
+		}
 	}
 }
