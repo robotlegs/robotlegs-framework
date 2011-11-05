@@ -7,13 +7,15 @@
 
 package suites
 {
-	import org.robotlegs.v2.extensions.commandMap.CommandMapTests;
+	import org.robotlegs.v2.extensions.commandMap.impl.CommandMapTests;
+	import org.robotlegs.v2.extensions.commandMap.impl.EventCommandTriggerTests;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
 	public class CommandMapTestSuite
 	{
-
 		public var commandMapTests:CommandMapTests;
+
+		public var eventCommandTriggerTests:EventCommandTriggerTests;
 	}
 }

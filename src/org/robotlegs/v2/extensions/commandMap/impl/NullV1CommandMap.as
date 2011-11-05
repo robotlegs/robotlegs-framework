@@ -9,6 +9,7 @@ package org.robotlegs.v2.extensions.commandMap.impl
 {
 	import org.robotlegs.core.ICommandMap;
 
+	[Deprecated(message="This should not be needed. We can sort this out.")]
 	public class NullV1CommandMap implements ICommandMap
 	{
 		protected static const UNSUPPORTED_V1_FEATURE:String = "While version 1 Robotlegs Commands are supported in the version 2 CommandMap, the version 1 ICommandMap injected in to them is a null implementation and cannot be used. If you need to use a mediator map in your mediator, inject the version 2 ICommandMap.";

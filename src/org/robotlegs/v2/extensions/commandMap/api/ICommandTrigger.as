@@ -10,6 +10,8 @@ package org.robotlegs.v2.extensions.commandMap.api
 
 	public interface ICommandTrigger
 	{
-		function register(mapping:ICommandMapping):ICommandTrigger;
+		function register(mapping:ICommandMapping):void;
+
+		function unregister():void;
 	}
 }

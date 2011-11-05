@@ -11,6 +11,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 	import org.robotlegs.core.IMediator;
 	import flash.display.DisplayObjectContainer;
 
+	[Deprecated(message="This should not be needed. We can make v1 work with v2")]
 	public class NullV1MediatorMap implements IMediatorMap
 	{
 		protected static const UNSUPPORTED_V1_FEATURE:String = "While version 1 Robotlegs Mediators are supported in the version 2 MediatorMap, the version 1 IMediatorMap injected in to them is a null implementation and cannot be used. If you need to use a mediator map in your mediator, inject the version 2 IMediatorMap.";
