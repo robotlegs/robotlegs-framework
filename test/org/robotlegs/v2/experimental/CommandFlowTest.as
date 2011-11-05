@@ -8,15 +8,20 @@
 package org.robotlegs.v2.experimental 
 {
 	import org.flexunit.asserts.*;
+	import org.flexunit.assertThat;
+	import org.hamcrest.collection.array;
 	import flash.events.EventDispatcher;
 	import org.flexunit.asserts.assertEqualsArraysIgnoringOrder;
 	import flash.events.Event;
+	import org.swiftsuspenders.Injector;
+	
 
 	public class CommandFlowTest 
 	{
 		private var instance:CommandFlow;
 		private var eventDispatcher:EventDispatcher;
 		private var commandTracker:CommandTracker;
+		private var injector:Injector;
 
 		[Before]
 		public function setUp():void
@@ -24,6 +29,8 @@ package org.robotlegs.v2.experimental
 			instance = new CommandFlow();
 			eventDispatcher = new EventDispatcher();
 			commandTracker = new CommandTracker();
+			injector = new Injector();
+			injector.map(CommandTracker).toValue(commandTracker);
 		}
 
 		[After]
@@ -32,6 +39,7 @@ package org.robotlegs.v2.experimental
 			instance = null;
 			eventDispatcher = null;
 			commandTracker = null;
+			injector = null;
 		}
 
 		[Test]
@@ -71,6 +79,38 @@ package org.robotlegs.v2.experimental
 			command.commandTracker = commandTracker;
 			command.execute();
 		}
+		
+		[Test]
+		public function one_event_triggers_one_command_with_injection():void
+		{
+			eventDispatcher.addEventListener(Event.COMPLETE, fireCommandUsingInjection);
+			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
+			const expectedCommands:Array = [SimpleCommand];
+			assertEqualsArraysIgnoringOrder(commandTracker.commandsReceived, expectedCommands);
+		}
+
+		protected function fireCommandUsingInjection(e:Event):void
+		{
+			const command:SimpleCommand = injector.getInstance(SimpleCommand);
+			command.execute();
+		}
+		
+		[Test]
+		public function one_event_triggers_two_commands_in_order():void
+		{
+			eventDispatcher.addEventListener(Event.COMPLETE, fireCommandsInOrder);
+			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
+			const expectedCommands:Array = [SimpleCommand, AnotherCommand];
+			assertThat(commandTracker.commandsReceived, array(expectedCommands));
+		}
+		
+		protected function fireCommandsInOrder(e:Event):void
+		{
+			var command:Object = injector.getInstance(SimpleCommand);
+			command.execute();
+			command = injector.getInstance(AnotherCommand);
+			command.execute();
+		}
 
 	}
 }
@@ -92,10 +132,22 @@ class CommandTracker
 
 class SimpleCommand
 {
+	[Inject]
 	public var commandTracker:CommandTracker;
 	
 	public function execute():void
 	{
 		commandTracker.notify(SimpleCommand);
+	}
+}
+
+class AnotherCommand
+{
+	[Inject]
+	public var commandTracker:CommandTracker;
+	
+	public function execute():void
+	{
+		commandTracker.notify(AnotherCommand);
 	}
 }
