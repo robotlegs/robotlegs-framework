@@ -7,12 +7,17 @@
 
 package org.robotlegs.v2.experimental
 {
-	import org.robotlegs.v2.extensions.guardsAndHooks.api.IGuardsAndHooksConfig;
-	
-	public interface ICommandFlowConfig
+
+	public interface ICommandFlowMapping
 	{
-		function execute(commandClass:Class):IGuardsAndHooksConfig;
+	
+		function after(eventString:String):ICommandFlowConfig;
 		
-		function executeAll(...commandClassesList):IGuardsAndHooksConfig;
+		function afterAll(...eventStrings):ICommandFlowConfig;
+		
+		function afterAny(...eventStrings):ICommandFlowConfig;
+	
 	}
+
 }
+

@@ -16,6 +16,7 @@ package org.robotlegs.v2.experimental
 	import org.swiftsuspenders.Injector;
 	import flash.utils.Dictionary;
 	import org.robotlegs.v2.core.utilities.pushValuesToClassVector;
+	import org.robotlegs.v2.experimental.CommandFlowStart;
 	
 
 	public class CommandFlowTest 
@@ -36,6 +37,9 @@ package org.robotlegs.v2.experimental
 			commandTracker = new CommandTracker();
 			injector = new Injector();
 			injector.map(CommandTracker).toValue(commandTracker);
+			
+			instance.eventDispatcher = eventDispatcher;
+			instance.injector = injector;
 			
 			commands = new <Class>[];
 			
@@ -76,19 +80,20 @@ package org.robotlegs.v2.experimental
 		*/
 		
 		[Test]
-		public function one_event_triggers_one_command_with_injection():void
+		public function one_event_triggers_one_command_with_injection_from_START():void
 		{
-			after(Event.COMPLETE).execute(SimpleCommand);
+			instance.from(CommandFlowStart).after(Event.COMPLETE).execute(SimpleCommand);
 			
 			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
 			const expectedCommands:Array = [SimpleCommand];
 			assertEqualsArraysIgnoringOrder(commandTracker.commandsReceived, expectedCommands);
 		}
 
+
 		[Test]
-		public function one_event_triggers_two_commands_in_order():void
+		public function one_event_triggers_two_commands_in_order_from_START():void
 		{
-			after(Event.COMPLETE).executeAll(SimpleCommand, AnotherCommand);
+			instance.from(CommandFlowStart).after(Event.COMPLETE).executeAll(SimpleCommand, AnotherCommand);
 			
 			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
 			const expectedCommands:Array = [SimpleCommand, AnotherCommand];
@@ -96,10 +101,10 @@ package org.robotlegs.v2.experimental
 		}
 		
 		[Test]
-		public function two_different_events_trigger_different_commands():void
+		public function two_different_events_trigger_different_commands_from_START():void
 		{
-			after(Event.COMPLETE).execute(SimpleCommand);
-			after(Event.CHANGE).execute(AnotherCommand);
+			instance.from(CommandFlowStart).after(Event.COMPLETE).execute(SimpleCommand);
+			instance.from(CommandFlowStart).after(Event.CHANGE).execute(AnotherCommand);
 			
 			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
 			assertThat(commandTracker.commandsReceived, array([SimpleCommand]));
@@ -109,10 +114,10 @@ package org.robotlegs.v2.experimental
 		}
 		
 		[Test]
-		public function mapping_two_commands_to_same_event_separately_and_both_fire():void
+		public function mapping_two_commands_to_same_event_separately_and_both_fire_from_START():void
 		{
-			after(Event.COMPLETE).execute(SimpleCommand);
-			after(Event.COMPLETE).execute(AnotherCommand);
+			instance.from(CommandFlowStart).after(Event.COMPLETE).execute(SimpleCommand);
+			instance.from(CommandFlowStart).after(Event.COMPLETE).execute(AnotherCommand);
 			
 			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
 			const expectedCommands:Array = [SimpleCommand, AnotherCommand];
@@ -120,9 +125,9 @@ package org.robotlegs.v2.experimental
 		}
 		
 		[Test]
-		public function afterAny_either_event_triggers_command():void
+		public function afterAny_either_event_triggers_command_from_START():void
 		{
-			afterAny(Event.COMPLETE, Event.CHANGE).execute(SimpleCommand);
+			instance.from(CommandFlowStart).afterAny(Event.COMPLETE, Event.CHANGE).execute(SimpleCommand);
 			
 			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
 			assertThat(commandTracker.commandsReceived, array([SimpleCommand]));
@@ -133,36 +138,36 @@ package org.robotlegs.v2.experimental
 			assertThat(commandTracker.commandsReceived, array([SimpleCommand]));
 		}
 		
-		/*
+
 		[Test]
-		public function afterAll_one_event_does_NOT_trigger_command():void
+		public function afterAll_one_event_does_NOT_trigger_command_from_START():void
 		{
-			afterAll(Event.COMPLETE, Event.CHANGE).execute(SimpleCommand);
+			instance.from(CommandFlowStart).afterAll(Event.COMPLETE, Event.CHANGE).execute(SimpleCommand);
 			
 			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
 			assertThat(commandTracker.commandsReceived, array([]));
 		}
 
 		[Test]
-		public function afterAll_other_event_does_NOT_trigger_command():void
+		public function afterAll_other_event_does_NOT_trigger_command_from_START():void
 		{
-			afterAll(Event.COMPLETE, Event.CHANGE).execute(SimpleCommand);
+			instance.from(CommandFlowStart).afterAll(Event.COMPLETE, Event.CHANGE).execute(SimpleCommand);
 			
 			eventDispatcher.dispatchEvent(new Event(Event.CHANGE));
 			assertThat(commandTracker.commandsReceived, array([]));
 		}
 
 		[Test]
-		public function afterAll_both_events_trigger_command():void
+		public function afterAll_both_events_trigger_command_from_START():void
 		{
-			afterAll(Event.COMPLETE, Event.CHANGE).execute(SimpleCommand);
+			instance.from(CommandFlowStart).afterAll(Event.COMPLETE, Event.CHANGE).execute(SimpleCommand);
 			
 			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
 			eventDispatcher.dispatchEvent(new Event(Event.CHANGE));
 
 			assertThat(commandTracker.commandsReceived, array([SimpleCommand]));
 		}
-		*/
+		
 		
 		protected function after(eventString:String):CommandConfig
 		{

@@ -7,12 +7,15 @@
 
 package org.robotlegs.v2.experimental
 {
-	import org.robotlegs.v2.extensions.guardsAndHooks.api.IGuardsAndHooksConfig;
-	
-	public interface ICommandFlowConfig
+
+	public class CommandFlowStart
 	{
-		function execute(commandClass:Class):IGuardsAndHooksConfig;
-		
-		function executeAll(...commandClassesList):IGuardsAndHooksConfig;
+	
+		public function CommandFlowStart()
+		{
+			super();
+		}
+	
 	}
+
 }

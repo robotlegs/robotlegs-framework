@@ -14,7 +14,7 @@ package org.robotlegs.v2.experimental
 	import org.robotlegs.v2.extensions.guardsAndHooks.impl.GuardsAndHooksConfig;
 	import org.robotlegs.v2.core.utilities.pushValuesToClassVector;
 
-	public class CommandFlowRule extends GuardsAndHooksConfig implements ICommandFlowRule, ICommandFlowConfig
+	public class CommandFlowRule extends GuardsAndHooksConfig implements ICommandFlowRule, ICommandFlowConfig, IGuardsAndHooksConfig
 	{
 		protected const _commandClasses:Vector.<Class> = new Vector.<Class>();
 	
