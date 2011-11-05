@@ -5,18 +5,17 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package suites
+package org.robotlegs.v2.experimental
 {
-	import org.robotlegs.v2.experimental.CommandFlowTest;
-	import org.robotlegs.v2.experimental.CommandFlowRuleTest;
+	import org.robotlegs.v2.extensions.guardsAndHooks.api.IGuardsAndHooksConfig;
+	import flash.events.Event;
 
-	[RunWith("org.flexunit.runners.Suite")]
-	[Suite]
-	public class CommandFlowTestSuite
-	{
-
-		public var commandFlowTests:CommandFlowTest;
+	public interface ICommandFlowRule
+	{		
+		function applyEvent(event:Event):Boolean;
 		
-		public var commandFlowRuleTest:CommandFlowRuleTest;
+		function get commandClasses():Vector.<Class>;
+		
+		function get receivedEvents():Vector.<Event>;
 	}
 }

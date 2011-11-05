@@ -119,11 +119,78 @@ package org.robotlegs.v2.experimental
 			assertThat(commandTracker.commandsReceived, array(expectedCommands));
 		}
 		
+		[Test]
+		public function afterAny_either_event_triggers_command():void
+		{
+			afterAny(Event.COMPLETE, Event.CHANGE).execute(SimpleCommand);
+			
+			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
+			assertThat(commandTracker.commandsReceived, array([SimpleCommand]));
+			
+			commandTracker.reset();
+			
+			eventDispatcher.dispatchEvent(new Event(Event.CHANGE));
+			assertThat(commandTracker.commandsReceived, array([SimpleCommand]));
+		}
+		
+		/*
+		[Test]
+		public function afterAll_one_event_does_NOT_trigger_command():void
+		{
+			afterAll(Event.COMPLETE, Event.CHANGE).execute(SimpleCommand);
+			
+			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
+			assertThat(commandTracker.commandsReceived, array([]));
+		}
+
+		[Test]
+		public function afterAll_other_event_does_NOT_trigger_command():void
+		{
+			afterAll(Event.COMPLETE, Event.CHANGE).execute(SimpleCommand);
+			
+			eventDispatcher.dispatchEvent(new Event(Event.CHANGE));
+			assertThat(commandTracker.commandsReceived, array([]));
+		}
+
+		[Test]
+		public function afterAll_both_events_trigger_command():void
+		{
+			afterAll(Event.COMPLETE, Event.CHANGE).execute(SimpleCommand);
+			
+			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
+			eventDispatcher.dispatchEvent(new Event(Event.CHANGE));
+
+			assertThat(commandTracker.commandsReceived, array([SimpleCommand]));
+		}
+		*/
+		
 		protected function after(eventString:String):CommandConfig
 		{
 			configsByEventString[eventString] ||= new CommandConfig();
 			eventDispatcher.addEventListener(eventString, fireCommandsForEventString);
 			return configsByEventString[eventString];
+		}
+		
+		protected function afterAny(...eventStrings):CommandConfig
+		{
+			var config:CommandConfig;
+			
+			for each (var eventString:String in eventStrings)
+			{
+				if( (!config) && configsByEventString[eventString])
+				{
+					config = configsByEventString[eventString];
+				}
+				if(!config)
+				{
+					config = new CommandConfig();
+				}
+
+				configsByEventString[eventString] = config;
+				eventDispatcher.addEventListener(eventString, fireCommandsForEventString);
+			}
+			
+			return config;
 		}
 		
 		protected function fireCommandsForEventString(e:Event):void
@@ -139,6 +206,7 @@ package org.robotlegs.v2.experimental
 }
 
 import org.robotlegs.v2.core.utilities.pushValuesToClassVector;
+import flash.utils.Dictionary;
 
 class CommandTracker
 {
@@ -152,6 +220,11 @@ class CommandTracker
 	public function notify(command:Object):void
 	{
 		_commandsReceived.push(command);
+	}
+	
+	public function reset():void
+	{
+		_commandsReceived = [];
 	}
 }
 

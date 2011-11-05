@@ -7,12 +7,27 @@
 
 package org.robotlegs.v2.experimental
 {
-	public class  CommandFlow
-	{
-		
-		public function CommandFlow()
-		{
-		}
+	import flash.events.Event;
 
+	public class CommandFlowRequireOnlyRule extends CommandFlowRule
+	{
+		private var _requiredEvent:String;
+	
+		public function CommandFlowRequireOnlyRule(eventString:String)
+		{
+			_requiredEvent = eventString;
+		}
+		
+		override public function applyEvent(event:Event):Boolean
+		{
+			if(_requiredEvent == event.type)
+			{
+				_receivedEvents.push(event);
+				return true;
+			}
+			return false;
+		}
+	
 	}
+
 }
