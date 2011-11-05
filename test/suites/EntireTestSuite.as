@@ -31,5 +31,7 @@ import suites.UtilityPackageFunctionsSuite;
 		public var viewManagerTestSuite:ViewManagerTestSuite;
 
 		public var eventMapTestSuite:EventMapTestSuite;
+		
+		public var commandFlowTestSuite:CommandFlowTestSuite;
 	}
 }
