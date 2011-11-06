@@ -7,8 +7,9 @@
 
 package org.robotlegs.v2.extensions.commandMap.api
 {
+	import org.robotlegs.v2.extensions.guardsAndHooks.api.IGuardsAndHooksConfig;
 
-	public interface ICommandMapper
+	public interface ICommandMapper extends IGuardsAndHooksConfig
 	{
 		function toEvent(type:String, eventClass:Class = null, oneshot:Boolean = false):ICommandMapper;
 

@@ -8,15 +8,18 @@
 package org.robotlegs.v2.extensions.commandMap.support
 {
 
-	public class CallbackCommand
+	public class SelfReportingCallbackHook
 	{
 
-		[Inject(name="executeCallback")]
+		[Inject]
+		public var command:SelfReportingCallbackCommand;
+
+		[Inject(name="hookCallback")]
 		public var callback:Function;
 
-		public function execute():void
+		public function hook():void
 		{
-			callback();
+			callback(this);
 		}
 	}
 }

@@ -14,9 +14,10 @@ package org.robotlegs.v2.extensions.commandMap.impl
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandMapping;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandTrigger;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandUnmapper;
+	import org.robotlegs.v2.extensions.guardsAndHooks.impl.GuardsAndHooksConfig;
 	import org.swiftsuspenders.Injector;
 
-	public class CommandMapping implements ICommandMapping, ICommandMapper, ICommandUnmapper
+	public class CommandMapping extends GuardsAndHooksConfig implements ICommandMapping, ICommandMapper, ICommandUnmapper
 	{
 
 		private var _commandClass:Class;
@@ -43,9 +44,8 @@ package org.robotlegs.v2.extensions.commandMap.impl
 
 		public function toEvent(type:String, eventClass:Class = null, oneshot:Boolean = false):ICommandMapper
 		{
-			eventClass ||= Event;
 			const trigger:ICommandTrigger = new EventCommandTrigger(_injector, _dispatcher, type, eventClass, oneshot);
-			eventTriggers[eventClass + type] = trigger;
+			eventTriggers[type + eventClass] = trigger;
 			toTrigger(trigger);
 			return this;
 		}
@@ -64,8 +64,7 @@ package org.robotlegs.v2.extensions.commandMap.impl
 
 		public function fromEvent(type:String, eventClass:Class = null):ICommandUnmapper
 		{
-			eventClass ||= Event;
-			const trigger:ICommandTrigger = eventTriggers[eventClass + type];
+			const trigger:ICommandTrigger = eventTriggers[type + eventClass];
 			fromTrigger(trigger);
 			return this;
 		}

@@ -7,14 +7,11 @@
 
 package org.robotlegs.v2.extensions.commandMap.impl
 {
-	import flash.events.EventDispatcher;
-	
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.isFalse;
 	import org.hamcrest.object.isTrue;
 	import org.hamcrest.object.notNullValue;
-	import org.robotlegs.v2.extensions.commandMap.api.ICommandMap;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandMapper;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandMapping;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandTrigger;
@@ -22,30 +19,20 @@ package org.robotlegs.v2.extensions.commandMap.impl
 	import org.robotlegs.v2.extensions.commandMap.support.NullCommand;
 	import org.robotlegs.v2.extensions.commandMap.support.NullCommandTrigger;
 	import org.robotlegs.v2.extensions.commandMap.support.SupportEvent;
-	import org.swiftsuspenders.Injector;
 
-	public class CommandMapTests
+	public class CommandMapTests extends AbstractCommandMapTests
 	{
-		private var commandMap:ICommandMap;
-
-		private var injector:Injector;
-
-		private var dispatcher:EventDispatcher;
 
 		[Before]
-		public function setUp():void
+		override public function setUp():void
 		{
-			injector = new Injector();
-			dispatcher = new EventDispatcher()
-			commandMap = new CommandMap(injector, dispatcher);
+			super.setUp();
 		}
-
+		
 		[After]
-		public function tearDown():void
+		override public function tearDown():void
 		{
-			injector = null;
-			dispatcher = null;
-			commandMap = null;
+			super.tearDown();
 		}
 
 		[Test]

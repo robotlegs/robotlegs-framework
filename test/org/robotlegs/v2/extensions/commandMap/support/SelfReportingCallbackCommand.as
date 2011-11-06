@@ -7,16 +7,20 @@
 
 package org.robotlegs.v2.extensions.commandMap.support
 {
+	import flash.events.Event;
 
-	public class CallbackCommand
+	public class SelfReportingCallbackCommand
 	{
+
+		[Inject]
+		public var event:Event;
 
 		[Inject(name="executeCallback")]
 		public var callback:Function;
 
 		public function execute():void
 		{
-			callback();
+			callback(this);
 		}
 	}
 }

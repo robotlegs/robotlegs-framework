@@ -12,6 +12,10 @@ package org.robotlegs.v2.extensions.commandMap.impl
 	import flash.utils.describeType;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandMapping;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandTrigger;
+	import org.robotlegs.v2.extensions.guardsAndHooks.api.IGuardsProcessor;
+	import org.robotlegs.v2.extensions.guardsAndHooks.api.IHooksProcessor;
+	import org.robotlegs.v2.extensions.guardsAndHooks.impl.GuardsProcessor;
+	import org.robotlegs.v2.extensions.guardsAndHooks.impl.HooksProcessor;
 	import org.swiftsuspenders.Injector;
 
 	public class EventCommandTrigger implements ICommandTrigger
@@ -28,7 +32,9 @@ package org.robotlegs.v2.extensions.commandMap.impl
 
 		private var _mapping:ICommandMapping;
 
-		private var _listening:Boolean;
+		private const guardsProcessor:IGuardsProcessor = new GuardsProcessor();
+
+		private const hooksProcessor:IHooksProcessor = new HooksProcessor();
 
 		public function EventCommandTrigger(
 			injector:Injector,
@@ -64,28 +70,62 @@ package org.robotlegs.v2.extensions.commandMap.impl
 
 		private function addListener():void
 		{
-			_listening = true;
 			_dispatcher.addEventListener(_type, handleEvent);
 		}
 
 		private function removeListener():void
 		{
-			_listening = false;
 			_dispatcher.removeEventListener(_type, handleEvent);
 		}
 
 		private function handleEvent(event:Event):void
 		{
-			if (_eventClass != Event && _eventClass != event["constructor"])
+			// check strongly-typed event (if specified)
+			if (_eventClass && _eventClass != Event && _eventClass != event["constructor"])
 				return;
 
-			_injector.map(_eventClass).toValue(event);
-			_injector.getInstance(_mapping.commandClass).execute();
-			_injector.unmap(_eventClass);
+			// map the event for injection
+			_injector.map(Event).toValue(event);
 
-			// question: should we unmap().fromAll()?
-			if (_oneshot)
-				_mapping.unmap().fromTrigger(this);
+			// map the strongly typed event for injection
+			if (_eventClass && _eventClass != Event)
+				_injector.map(_eventClass).toValue(event);
+
+			// execute the command if allowed
+			if (allowedByGuards())
+			{
+				_injector.map(_mapping.commandClass).asSingleton();
+				runHooks();
+				executeCommand();
+				_injector.unmap(_mapping.commandClass);
+			}
+
+			// unmap the event
+			_injector.unmap(Event);
+
+			// unmap the strongly-typed event
+			if (_eventClass && _eventClass != Event)
+				_injector.unmap(_eventClass);
+		}
+
+		private function allowedByGuards():Boolean
+		{
+			return _mapping.guards.length == 0
+				|| guardsProcessor.processGuards(_injector, _mapping.guards);
+		}
+
+		private function runHooks():void
+		{
+			if (_mapping.hooks.length > 0)
+				hooksProcessor.runHooks(_injector, _mapping.hooks);
+		}
+
+		private function executeCommand():void
+		{
+			_injector.getInstance(_mapping.commandClass).execute();
+
+			// question - should this be fromAll()?
+			_oneshot && _mapping.unmap().fromTrigger(this);
 		}
 	}
 }
