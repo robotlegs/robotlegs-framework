@@ -37,10 +37,12 @@ package org.robotlegs.v2.experimental
 		
 		public function after(eventString:String):ICommandFlowConfig
 		{
-			trace("CommandFlowMapping::after()", eventString);
 			_eventStrings.push(eventString);
 			_rule = new CommandFlowRequireOnlyRule(eventString);
-			activate();
+			if((_from.length == 1) && (_from[0] == CommandFlowStart))
+			{
+				activate();
+			}
 			return _rule;
 		}
 
@@ -48,7 +50,10 @@ package org.robotlegs.v2.experimental
 		{
 			pushValuesToStringVector(eventStrings, _eventStrings);
 			_rule = new CommandFlowRequireAllRule(_eventStrings);
-			activate();
+			if((_from.length == 1) && (_from[0] == CommandFlowStart))
+			{
+				activate();
+			}
 			return _rule;
 		}
 
@@ -56,7 +61,10 @@ package org.robotlegs.v2.experimental
 		{
 			pushValuesToStringVector(eventStrings, _eventStrings);
 			_rule = new CommandFlowRequireAnyRule(_eventStrings);
-			activate();
+			if((_from.length == 1) && (_from[0] == CommandFlowStart))
+			{
+				activate();
+			}
 			return _rule;
 		}
 		
@@ -67,10 +75,8 @@ package org.robotlegs.v2.experimental
 		
 		internal function activate():void
 		{
-			trace("CommandFlowMapping::activate()");
 			for each (var eventString:String in _eventStrings)
 			{
-				trace("CommandFlowMapping::activate()", eventString);
 				_eventDispatcher.addEventListener(eventString, supplyEventToRule);
 			}
 		}
@@ -87,6 +93,7 @@ package org.robotlegs.v2.experimental
 		{
 			if(_rule.applyEvent(event))
 			{
+				deactivate();
 				_executionCallback(_rule);
 			}
 		}

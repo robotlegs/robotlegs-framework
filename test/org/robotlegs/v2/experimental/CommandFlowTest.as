@@ -125,15 +125,19 @@ package org.robotlegs.v2.experimental
 		}
 		
 		[Test]
-		public function afterAny_either_event_triggers_command_from_START():void
+		public function afterAny_either_event_triggers_command_from_START_1():void
 		{
 			instance.from(CommandFlowStart).afterAny(Event.COMPLETE, Event.CHANGE).execute(SimpleCommand);
 			
 			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
 			assertThat(commandTracker.commandsReceived, array([SimpleCommand]));
-			
-			commandTracker.reset();
-			
+		}
+		
+		[Test]
+		public function afterAny_either_event_triggers_command_from_START_2():void
+		{	
+			instance.from(CommandFlowStart).afterAny(Event.COMPLETE, Event.CHANGE).execute(SimpleCommand);
+		
 			eventDispatcher.dispatchEvent(new Event(Event.CHANGE));
 			assertThat(commandTracker.commandsReceived, array([SimpleCommand]));
 		}

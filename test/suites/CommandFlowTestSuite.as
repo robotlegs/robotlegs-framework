@@ -9,6 +9,8 @@ package suites
 {
 	import org.robotlegs.v2.experimental.CommandFlowTest;
 	import org.robotlegs.v2.experimental.CommandFlowRuleTest;
+	import org.robotlegs.v2.experimental.CommandFlow_sequenceTest;
+	import org.robotlegs.v2.experimental.CommandFlowMappingTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
@@ -18,5 +20,9 @@ package suites
 		public var commandFlowTests:CommandFlowTest;
 		
 		public var commandFlowRuleTest:CommandFlowRuleTest;
+		
+		public var commandFlow_sequenceTest:CommandFlow_sequenceTest;
+		
+		public var commandFlowMappingTest:CommandFlowMappingTest;
 	}
 }

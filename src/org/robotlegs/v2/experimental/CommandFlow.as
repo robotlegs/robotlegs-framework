@@ -29,7 +29,6 @@ package org.robotlegs.v2.experimental
 		
 		public function from(commandClass:Class):ICommandFlowMapping
 		{
-			trace("CommandFlow::from()", commandClass);
 			_mappingsFrom[commandClass] = new CommandFlowMapping(new <Class>[commandClass], eventDispatcher, executionCallback);
 			
 			return _mappingsFrom[commandClass];
@@ -42,6 +41,10 @@ package org.robotlegs.v2.experimental
 			{
 				const command:Object = injector.getInstance(commandClass);
 				command.execute();
+				if(_mappingsFrom[commandClass])
+				{
+					_mappingsFrom[commandClass].activate();
+				}
 			}
 		}
 
