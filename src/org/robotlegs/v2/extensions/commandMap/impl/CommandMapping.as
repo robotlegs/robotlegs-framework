@@ -10,6 +10,7 @@ package org.robotlegs.v2.extensions.commandMap.impl
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	import flash.utils.Dictionary;
+	import org.robotlegs.v2.extensions.commandMap.api.ICommandMap;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandMapper;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandMapping;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandTrigger;
@@ -35,10 +36,17 @@ package org.robotlegs.v2.extensions.commandMap.impl
 
 		private var _dispatcher:IEventDispatcher;
 
-		public function CommandMapping(injector:Injector, dispatcher:IEventDispatcher, commandClass:Class)
+		private var _commandMap:ICommandMap;
+
+		public function CommandMapping(
+			injector:Injector,
+			dispatcher:IEventDispatcher,
+			commandMap:ICommandMap,
+			commandClass:Class)
 		{
 			_injector = injector;
 			_dispatcher = dispatcher;
+			_commandMap = commandMap;
 			_commandClass = commandClass;
 		}
 
@@ -74,17 +82,18 @@ package org.robotlegs.v2.extensions.commandMap.impl
 			const index:int = triggers.indexOf(trigger);
 			trigger.unregister();
 			triggers.splice(index, 1);
-			// todo: destroy
+			if (triggers.length == 0)
+				_commandMap.unmapAll(commandClass);
 			return this;
 		}
 
 		public function fromAll():void
 		{
-			for each (var trigger:ICommandTrigger in triggers)
+			const triggersToRemove:Vector.<ICommandTrigger> = triggers.slice();
+			for each (var trigger:ICommandTrigger in triggersToRemove)
 			{
-				trigger.unregister();
+				fromTrigger(trigger);
 			}
-			triggers.length = 0;
 		}
 
 		public function numTriggers():uint

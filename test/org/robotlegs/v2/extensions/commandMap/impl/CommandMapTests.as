@@ -68,6 +68,15 @@ package org.robotlegs.v2.extensions.commandMap.impl
 		}
 
 		[Test]
+		public function unmapAll_removes_mapping():void
+		{
+			const trigger:ICommandTrigger = new NullCommandTrigger();
+			commandMap.map(NullCommand).toTrigger(trigger);
+			commandMap.unmapAll(NullCommand);
+			assertThat(commandMap.hasMapping(NullCommand), isFalse());
+		}
+		
+		[Test]
 		public function unmap_event_removes_mapping():void
 		{
 			commandMap.map(NullCommand).toEvent(SupportEvent.TYPE1);
@@ -104,7 +113,7 @@ package org.robotlegs.v2.extensions.commandMap.impl
 		}
 
 		[Test]
-		public function map_trigger_is_registered():void
+		public function mapped_trigger_is_registered():void
 		{
 			var registerCallCount:int;
 			const trigger:ICommandTrigger = new CallbackCommandTrigger(
@@ -128,6 +137,21 @@ package org.robotlegs.v2.extensions.commandMap.impl
 				});
 			commandMap.map(NullCommand).toTrigger(trigger);
 			commandMap.unmap(NullCommand).fromTrigger(trigger);
+			assertThat(unregisterCallCount, equalTo(1));
+		}
+
+		[Test]
+		public function unmapAll_causes_triggers_to_be_unregistered():void
+		{
+			var unregisterCallCount:int;
+			const trigger:ICommandTrigger = new CallbackCommandTrigger(
+				null,
+				function():void
+				{
+					unregisterCallCount++;
+				});
+			commandMap.map(NullCommand).toTrigger(trigger);
+			commandMap.unmapAll(NullCommand);
 			assertThat(unregisterCallCount, equalTo(1));
 		}
 

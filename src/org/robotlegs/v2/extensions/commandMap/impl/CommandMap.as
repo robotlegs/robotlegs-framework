@@ -11,6 +11,7 @@ package org.robotlegs.v2.extensions.commandMap.impl
 	import flash.utils.Dictionary;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandMap;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandMapper;
+	import org.robotlegs.v2.extensions.commandMap.api.ICommandMapping;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandUnmapper;
 	import org.swiftsuspenders.Injector;
 
@@ -39,16 +40,24 @@ package org.robotlegs.v2.extensions.commandMap.impl
 			return _mappings[commandClass];
 		}
 
+		public function unmapAll(commandClass:Class):void
+		{
+			const mapping:ICommandMapping = _mappings[commandClass];
+			if (mapping)
+			{
+				delete _mappings[commandClass];
+				mapping.unmap().fromAll();
+			}
+		}
+
 		public function hasMapping(commandClass:Class):Boolean
 		{
-			// not too happy about this
-			const config:CommandMapping = _mappings[commandClass];
-			return config && config.numTriggers() > 0;
+			return _mappings[commandClass];
 		}
 
 		private function createMapping(commandClass:Class):ICommandMapper
 		{
-			return new CommandMapping(_injector, _dispatcher, commandClass);
+			return new CommandMapping(_injector, _dispatcher, this, commandClass);
 		}
 	}
 }

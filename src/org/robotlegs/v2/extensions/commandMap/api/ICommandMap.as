@@ -13,7 +13,9 @@ package org.robotlegs.v2.extensions.commandMap.api
 		function map(commandClass:Class):ICommandMapper;
 
 		function unmap(commandClass:Class):ICommandUnmapper;
-		
+
+		function unmapAll(commandClass:Class):void;
+
 		function hasMapping(commandClass:Class):Boolean;
 	}
 }
