@@ -15,6 +15,7 @@ package org.robotlegs.v2.bundles.classic
 	import org.robotlegs.v2.extensions.autoDestroy.AutoDestroyExtension;
 	import org.robotlegs.v2.extensions.commandMap.CommandMapExtension;
 	import org.robotlegs.v2.extensions.logging.SimpleLoggingExtension;
+	import org.robotlegs.v2.extensions.mediatorMap.MediatorMapExtension;
 	import org.robotlegs.v2.extensions.viewManager.ViewManagerExtension;
 
 	public class ClassicRobotlegsBundle implements IContextBuilderBundle
@@ -39,6 +40,9 @@ package org.robotlegs.v2.bundles.classic
 			builder
 				.withExtension(ViewManagerExtension)
 				.withConfig(ContextViewListenerConfig);
+
+			// Install the MediatorMap extension
+			builder.withExtension(MediatorMapExtension);
 
 			// Destroy the context when the contextView leaves the stage
 			builder.withExtension(AutoDestroyExtension);
