@@ -20,12 +20,11 @@ package org.robotlegs.v2.extensions.logging
 
 		private static const logger:ILogger = getLogger(InjectorLoggingExtension);
 
-		public function initialize(context:IContext):void
-		{
-		}
-
+		private var context:IContext;
+		
 		public function install(context:IContext):void
 		{
+			this.context = context;
 			const injector:Injector = context.injector;
 			injector.addEventListener(InjectionEvent.POST_CONSTRUCT, onInjectionEvent);
 			injector.addEventListener(InjectionEvent.POST_INSTANTIATE, onInjectionEvent);
@@ -36,7 +35,11 @@ package org.robotlegs.v2.extensions.logging
 			injector.addEventListener(MappingEvent.PRE_MAPPING_CREATE, onMappingEvent);
 		}
 
-		public function uninstall(context:IContext):void
+		public function initialize():void
+		{
+		}
+
+		public function uninstall():void
 		{
 			const injector:Injector = context.injector;
 			injector.removeEventListener(InjectionEvent.POST_CONSTRUCT, onInjectionEvent);

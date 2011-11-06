@@ -17,19 +17,22 @@ package org.robotlegs.v2.extensions.logging
 
 	public class SimpleLoggingExtension implements IContextExtension
 	{
-
-		public function initialize(context:IContext):void
-		{
-		}
+		private var context:IContext;
 
 		public function install(context:IContext):void
 		{
+			this.context = context;
 			LOGGER_FACTORY.setup = new SimpleTargetSetup(new TraceTarget());
 			context.injector.map(ILogger).toValue(getLogger(context));
 		}
 
-		public function uninstall(context:IContext):void
+		public function initialize():void
 		{
+		}
+
+		public function uninstall():void
+		{
+			context.injector.unmap(ILogger);
 		}
 	}
 }

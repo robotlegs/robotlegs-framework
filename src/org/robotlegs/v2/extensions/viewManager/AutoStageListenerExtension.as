@@ -20,8 +20,16 @@ package org.robotlegs.v2.extensions.viewManager
 
 		// Really? Yes, there can be only one.
 		private static var viewListener:IViewListener;
+		
+		private var context:IContext;
 
-		public function initialize(context:IContext):void
+		public function install(context:IContext):void
+		{
+			this.context = context;
+			installCount++;
+		}
+
+		public function initialize():void
 		{
 			if (viewListener == null)
 			{
@@ -31,12 +39,7 @@ package org.robotlegs.v2.extensions.viewManager
 			}
 		}
 
-		public function install(context:IContext):void
-		{
-			installCount++;
-		}
-
-		public function uninstall(context:IContext):void
+		public function uninstall():void
 		{
 			installCount--;
 			if (installCount == 0)

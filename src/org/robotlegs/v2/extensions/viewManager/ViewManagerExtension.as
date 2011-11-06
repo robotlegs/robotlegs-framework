@@ -16,18 +16,20 @@ package org.robotlegs.v2.extensions.viewManager
 
 	public class ViewManagerExtension implements IContextExtension
 	{
+		// Really? Yes, there can be only one.
 		private static var containerRegistry:ContainerRegistry;
 
 		// Really? Yes, there can be only one.
 		private static var viewProcessor:ViewProcessor;
-
-		public function initialize(context:IContext):void
-		{
-			context.injector.getInstance(IViewManager);
-		}
+		
+		private var context:IContext;
+		
+		private var viewManager:IViewManager;
 
 		public function install(context:IContext):void
 		{
+			this.context = context;
+			
 			// Just one Container Registry
 			containerRegistry ||= new ContainerRegistry();
 			context.injector.map(ContainerRegistry).toValue(containerRegistry);
@@ -40,9 +42,13 @@ package org.robotlegs.v2.extensions.viewManager
 			context.injector.map(IViewManager).toSingleton(ViewManager);
 		}
 
-		public function uninstall(context:IContext):void
+		public function initialize():void
 		{
-			const viewManager:IViewManager = context.injector.getInstance(IViewManager);
+			viewManager = context.injector.getInstance(IViewManager);
+		}
+
+		public function uninstall():void
+		{
 			viewManager.destroy();
 			context.injector.unmap(IViewManager);
 			context.injector.unmap(ViewProcessor);

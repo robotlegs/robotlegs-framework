@@ -12,31 +12,37 @@ package org.robotlegs.v2.extensions.viewHookMap
 	import org.robotlegs.v2.extensions.guardsAndHooks.impl.GuardsProcessor;
 	import org.robotlegs.v2.extensions.guardsAndHooks.impl.HooksProcessor;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewManager;
-	import org.robotlegs.v2.extensions.viewHookMap.HookMap;
 
 	// TODO : This is untested
 	public class ViewHookMapExtension implements IContextExtension
 	{
+		private var context:IContext;
 
-		public function initialize(context:IContext):void
-		{
-			const viewHookMap:ViewHookMap = context.injector.getInstance(ViewHookMap);
-			const viewManager:IViewManager = context.injector.getInstance(IViewManager);
-			viewManager.addHandler(viewHookMap);
-		}
+		private var viewHookMap:ViewHookMap;
+
+		private var viewManager:IViewManager;
 
 		public function install(context:IContext):void
 		{
-			// TODO - make these soft mappings
+			// TODO - these should be installed via their own extension
 			context.injector.map(HooksProcessor).asSingleton();
 			context.injector.map(GuardsProcessor).asSingleton();
 			context.injector.map(HookMap);
+
 			context.injector.map(ViewHookMap).asSingleton();
 		}
 
-		public function uninstall(context:IContext):void
+		public function initialize():void
 		{
-			// TODO - unmappings
+			viewHookMap = context.injector.getInstance(ViewHookMap);
+			viewManager = context.injector.getInstance(IViewManager);
+			viewManager.addHandler(viewHookMap);
+		}
+
+		public function uninstall():void
+		{
+			viewManager.removeHandler(viewHookMap);
+			context.injector.unmap(ViewHookMap)
 		}
 	}
 }

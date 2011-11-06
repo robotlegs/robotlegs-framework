@@ -154,7 +154,7 @@ package org.robotlegs.v2.core.impl
 			{
 				const extension:IContextExtension = createExtension(extensionClass);
 				extension.install(this);
-				extension.initialize(this);
+				extension.initialize();
 			}
 
 			return this;
@@ -176,7 +176,7 @@ package org.robotlegs.v2.core.impl
 			extensionClasses.splice(index, 1);
 
 			const extension:IContextExtension = extensionByClass[extensionClass];
-			extension && extension.uninstall(this);
+			extension && extension.uninstall();
 
 			return this;
 		}
@@ -255,7 +255,7 @@ package org.robotlegs.v2.core.impl
 			extensionClasses.forEach(function(extensionClass:Class, ... rest):void
 			{
 				const extension:IContextExtension = extensionByClass[extensionClass]
-				extension.initialize(this);
+				extension.initialize();
 			}, this);
 		}
 
@@ -301,7 +301,7 @@ package org.robotlegs.v2.core.impl
 			while (extensionClass = extensionClasses.pop())
 			{
 				const extension:IContextExtension = extensionByClass[extensionClass];
-				extension.uninstall(this);
+				extension.uninstall();
 			}
 		}
 	}

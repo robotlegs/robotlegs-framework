@@ -14,17 +14,20 @@ package org.robotlegs.v2.extensions.commandMap
 
 	public class CommandMapExtension implements IContextExtension
 	{
-		public function initialize(context:IContext):void
+		private var context:IContext;
+
+		public function install(context:IContext):void
+		{
+			this.context = context;
+			context.injector.map(ICommandMap).toSingleton(CommandMap);
+		}
+
+		public function initialize():void
 		{
 			context.injector.getInstance(ICommandMap);
 		}
 
-		public function install(context:IContext):void
-		{
-			context.injector.map(ICommandMap).toSingleton(CommandMap);
-		}
-
-		public function uninstall(context:IContext):void
+		public function uninstall():void
 		{
 			context.injector.unmap(ICommandMap);
 		}
