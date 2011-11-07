@@ -11,11 +11,14 @@ package org.robotlegs.v2.experimental
 	import flash.utils.Dictionary;
 	import org.swiftsuspenders.Injector;
 	import org.robotlegs.v2.experimental.CommandFlowStart;
+	import org.robotlegs.v2.core.utilities.pushValuesToClassVector;
 	
 	public class CommandFlow
 	{
 		
 		private const _mappingsFrom:Dictionary = new Dictionary();
+		
+		private const _executedCommands:Dictionary = new Dictionary();
 		
 		[Inject]
 		public var eventDispatcher:IEventDispatcher;
@@ -29,9 +32,25 @@ package org.robotlegs.v2.experimental
 		
 		public function from(commandClass:Class):ICommandFlowMapping
 		{
-			_mappingsFrom[commandClass] = new CommandFlowMapping(new <Class>[commandClass], eventDispatcher, executionCallback);
+			const mapping:CommandFlowMapping = new CommandFlowMapping(new <Class>[commandClass], eventDispatcher, executionCallback);
+
+			addMappingTo(mapping, commandClass);
+			return mapping;
+		}
+		
+		public function fromAll(...commandClasses):ICommandFlowMapping
+		{
+			const commandVector:Vector.<Class> = new Vector.<Class>();
+			pushValuesToClassVector(commandClasses, commandVector);
 			
-			return _mappingsFrom[commandClass];
+			const mapping:CommandFlowMapping = new CommandFlowMapping(commandVector, eventDispatcher, executionCallback);
+			
+			for each (var commandClass:Class in commandVector)
+			{
+				addMappingTo(mapping, commandClass);
+			}
+			
+			return mapping;
 		}
 		
 		protected function executionCallback(commandFlowRule:ICommandFlowRule):void
@@ -41,11 +60,49 @@ package org.robotlegs.v2.experimental
 			{
 				const command:Object = injector.getInstance(commandClass);
 				command.execute();
+				_executedCommands[commandClass] = commandClass;
+				
 				if(_mappingsFrom[commandClass])
 				{
-					_mappingsFrom[commandClass].activate();
+					checkIfMappingsShouldBeActive(_mappingsFrom[commandClass]);
 				}
 			}
+		}
+
+		protected function checkIfMappingsShouldBeActive(mappings:Vector.<CommandFlowMapping>):void
+		{
+			var requiredFromCommands:Vector.<Class>;
+			var readyToActivate:Boolean;
+			
+			for each (var mapping:CommandFlowMapping in mappings)
+			{
+				readyToActivate = true;
+				requiredFromCommands = mapping.from;
+				for each (var commandClass:Class in requiredFromCommands)
+				{
+					if(!_executedCommands[commandClass])
+						readyToActivate = false;
+				}
+				if(readyToActivate)
+				{
+					mapping.activate();
+				}
+			}
+		}
+		
+		private function addMappingTo(mapping:CommandFlowMapping, commandClass:Class):void
+		{
+			var mappings:Vector.<CommandFlowMapping>;
+			if(_mappingsFrom[commandClass])
+			{
+				mappings = _mappingsFrom[commandClass];
+			}
+			else
+			{
+				mappings = new Vector.<CommandFlowMapping>();
+				_mappingsFrom[commandClass] = mappings;
+			}
+			mappings.push(mapping);
 		}
 
 	}

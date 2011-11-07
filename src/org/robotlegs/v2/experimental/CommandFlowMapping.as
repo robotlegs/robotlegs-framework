@@ -39,7 +39,7 @@ package org.robotlegs.v2.experimental
 		{
 			_eventStrings.push(eventString);
 			_rule = new CommandFlowRequireOnlyRule(eventString);
-			if((_from.length == 1) && (_from[0] == CommandFlowStart))
+			if(applyAtStart)
 			{
 				activate();
 			}
@@ -50,7 +50,7 @@ package org.robotlegs.v2.experimental
 		{
 			pushValuesToStringVector(eventStrings, _eventStrings);
 			_rule = new CommandFlowRequireAllRule(_eventStrings);
-			if((_from.length == 1) && (_from[0] == CommandFlowStart))
+			if(applyAtStart)
 			{
 				activate();
 			}
@@ -61,7 +61,7 @@ package org.robotlegs.v2.experimental
 		{
 			pushValuesToStringVector(eventStrings, _eventStrings);
 			_rule = new CommandFlowRequireAnyRule(_eventStrings);
-			if((_from.length == 1) && (_from[0] == CommandFlowStart))
+			if(applyAtStart)
 			{
 				activate();
 			}
@@ -115,6 +115,11 @@ package org.robotlegs.v2.experimental
 					vector.push(type);
 				}
 			}
+		}
+		
+		private function get applyAtStart():Boolean
+		{
+			return ((_from.length == 1) && (_from[0] == CommandFlowStart));
 		}
 	}
 }

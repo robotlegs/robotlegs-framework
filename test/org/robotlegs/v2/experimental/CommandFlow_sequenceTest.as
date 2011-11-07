@@ -103,7 +103,75 @@ package org.robotlegs.v2.experimental
 			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
 			eventDispatcher.dispatchEvent(new Event(Event.CHANGE));
 			assertThat(commandTracker.commandsReceived, array(CommandA, CommandB));
+		}
+		
+		[Test]
+		public function one_step_requires_two_previous_steps_in_any_order_doesnt_fire_after_one():void
+		{
+			instance.from(CommandFlowStart).after(Event.COMPLETE).execute(CommandA);
+			instance.from(CommandFlowStart).after(Event.CHANGE).execute(CommandB);
+			instance.fromAll(CommandA, CommandB).after(Event.CANCEL).execute(CommandC);
+			
+			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
+			eventDispatcher.dispatchEvent(new Event(Event.CANCEL));
+			
+			assertThat(commandTracker.commandsReceived, array(CommandA));
 		} 
+		
+		[Test]
+		public function one_step_requires_two_previous_steps_in_any_order_doesnt_fire_after_one_B():void
+		{
+			instance.from(CommandFlowStart).after(Event.COMPLETE).execute(CommandA);
+			instance.from(CommandFlowStart).after(Event.CHANGE).execute(CommandB);
+			instance.fromAll(CommandA, CommandB).after(Event.CANCEL).execute(CommandC);
+			
+			eventDispatcher.dispatchEvent(new Event(Event.CHANGE));
+			eventDispatcher.dispatchEvent(new Event(Event.CANCEL));
+			
+			assertThat(commandTracker.commandsReceived, array(CommandB));
+		}
+		
+		[Test]
+		public function one_step_requires_two_previous_steps_in_any_order_fires_after_both():void
+		{
+			instance.from(CommandFlowStart).after(Event.COMPLETE).execute(CommandA);
+			instance.from(CommandFlowStart).after(Event.CHANGE).execute(CommandB);
+			instance.fromAll(CommandA, CommandB).after(Event.CANCEL).execute(CommandC);
+			
+			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
+			eventDispatcher.dispatchEvent(new Event(Event.CHANGE));
+			eventDispatcher.dispatchEvent(new Event(Event.CANCEL));
+			
+			assertThat(commandTracker.commandsReceived, array(CommandA, CommandB, CommandC));
+		}
+		
+		[Test]
+		public function one_step_requires_two_previous_steps_in_any_order_fires_after_both_in_other_order():void
+		{
+			instance.from(CommandFlowStart).after(Event.COMPLETE).execute(CommandA);
+			instance.from(CommandFlowStart).after(Event.CHANGE).execute(CommandB);
+			instance.fromAll(CommandA, CommandB).after(Event.CANCEL).execute(CommandC);
+			
+			eventDispatcher.dispatchEvent(new Event(Event.CHANGE));
+			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
+			eventDispatcher.dispatchEvent(new Event(Event.CANCEL));
+			
+			assertThat(commandTracker.commandsReceived, array(CommandB, CommandA, CommandC));
+		}
+		
+		[Test]
+		public function multiple_mappings_from_same_command_all_fire():void
+		{
+			instance.from(CommandFlowStart).after(Event.COMPLETE).execute(CommandA);
+			instance.from(CommandA).after(Event.CHANGE).execute(CommandB);
+			instance.from(CommandA).after(Event.CANCEL).execute(CommandC);
+			
+			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
+			eventDispatcher.dispatchEvent(new Event(Event.CHANGE));
+			eventDispatcher.dispatchEvent(new Event(Event.CANCEL));
+
+			assertThat(commandTracker.commandsReceived, array(CommandA, CommandB, CommandC));
+		}
 
 	}
 }
@@ -150,5 +218,16 @@ class CommandB
 	public function execute():void
 	{
 		commandTracker.notify(CommandB);
+	}
+}
+
+class CommandC
+{
+	[Inject]
+	public var commandTracker:CommandTracker;
+	
+	public function execute():void
+	{
+		commandTracker.notify(CommandC);
 	}
 }
