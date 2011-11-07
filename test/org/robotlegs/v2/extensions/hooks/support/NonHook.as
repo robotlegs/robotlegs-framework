@@ -5,18 +5,18 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.guardsAndHooks.support
+package org.robotlegs.v2.extensions.hooks.support
 {
 
-	public class JustTheMiddleManGuard
+	public class NonHook
 	{
 
 		[Inject]
-		public var bossDecision:BossGuard;
+		public var hookTracker:HookTracker;
 
-		public function approve():Boolean
+		public function noHooksHere():void
 		{
-			return bossDecision.approve();
+			hookTracker.confirm("NonHook");
 		}
 	}
 

@@ -8,9 +8,10 @@
 package org.robotlegs.v2.extensions.guardsAndHooks.impl
 {
 	import org.flexunit.asserts.*;
-	import org.flexunit.asserts.assertEqualsVectorsIgnoringOrder;
-	import org.robotlegs.v2.extensions.guardsAndHooks.support.*;
-	import org.robotlegs.v2.extensions.guardsAndHooks.support.HookTracker;
+	import org.robotlegs.v2.extensions.hooks.support.HookTracker;
+	import org.robotlegs.v2.extensions.hooks.support.NonHook;
+	import org.robotlegs.v2.extensions.hooks.support.TrackableHook1;
+	import org.robotlegs.v2.extensions.hooks.support.TrackableHook2;
 	import org.swiftsuspenders.Injector;
 
 	public class HooksProcessorTest

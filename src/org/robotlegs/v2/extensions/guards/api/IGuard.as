@@ -5,23 +5,11 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.guardsAndHooks.support
+package org.robotlegs.v2.extensions.guards.api
 {
 
-	public class HookTracker
+	public interface IGuard
 	{
-
-		public var hooksConfirmed:Vector.<String> = new Vector.<String>();
-
-		public function HookTracker()
-		{
-
-		}
-
-		public function confirm(hookName:String):void
-		{
-			hooksConfirmed.push(hookName);
-		}
+		function approve():Boolean;
 	}
-
 }

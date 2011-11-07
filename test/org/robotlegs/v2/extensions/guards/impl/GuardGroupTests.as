@@ -5,90 +5,88 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.guardsAndHooks.impl
+package org.robotlegs.v2.extensions.guards.impl
 {
-	import org.flexunit.asserts.*;
+	import org.hamcrest.assertThat;
+	import org.hamcrest.object.instanceOf;
+	import org.hamcrest.object.isFalse;
+	import org.hamcrest.object.isTrue;
+	import org.robotlegs.v2.extensions.guards.api.IGuardGroup;
 	import org.robotlegs.v2.extensions.guards.support.BossGuard;
 	import org.robotlegs.v2.extensions.guards.support.GrumpyGuard;
 	import org.robotlegs.v2.extensions.guards.support.HappyGuard;
 	import org.robotlegs.v2.extensions.guards.support.JustTheMiddleManGuard;
-	import org.robotlegs.v2.extensions.guardsAndHooks.support.*;
 	import org.swiftsuspenders.Injector;
 
-	public class GuardsProcessorTest
+	public class GuardGroupTests
 	{
 
 		private var injector:Injector;
 
-		private var instance:GuardsProcessor;
+		private var guards:IGuardGroup;
 
 		[Before]
 		public function setUp():void
 		{
-			instance = new GuardsProcessor();
 			injector = new Injector();
+			guards = new GuardGroup(injector);
 		}
 
 		[After]
 		public function tearDown():void
 		{
-			instance = null;
+			guards = null;
+			injector = null;
 		}
 
 		[Test]
 		public function can_be_instantiated():void
 		{
-			assertTrue("instance is GuardsProcessor", instance is GuardsProcessor);
+			assertThat(guards, instanceOf(IGuardGroup));
 		}
 
 		[Test]
 		public function processing_grumpy_guard_returns_false():void
 		{
-			var requiredGuards:Vector.<Class> = new <Class>[GrumpyGuard];
-			assertFalse("processor returned false with grumpy guard", instance.processGuards(injector, requiredGuards));
+			guards.add(GrumpyGuard);
+			assertThat(guards.approve(), isFalse());
 		}
 
 		[Test]
 		public function processing_guard_with_injections_returns_false_if_injected_guard_says_so():void
 		{
 			injector.map(BossGuard).toValue(new BossGuard(false));
-			var requiredGuards:Vector.<Class> = new <Class>[JustTheMiddleManGuard];
-			assertFalse("processor returned false with grumpy boss", instance.processGuards(injector, requiredGuards));
+			guards.add(JustTheMiddleManGuard);
+			assertThat(guards.approve(), isFalse());
 		}
 
 		[Test]
 		public function processing_guard_with_injections_returns_true_if_injected_guard_says_so():void
 		{
 			injector.map(BossGuard).toValue(new BossGuard(true));
-			var requiredGuards:Vector.<Class> = new <Class>[JustTheMiddleManGuard];
-			assertTrue("processor returned true with happy boss", instance.processGuards(injector, requiredGuards));
+			guards.add(JustTheMiddleManGuard);
+			assertThat(guards.approve(), isTrue());
 		}
 
 		[Test]
 		public function processing_guards_including_a_grumpy_guard_returns_false():void
 		{
-			var requiredGuards:Vector.<Class> = new <Class>[HappyGuard, GrumpyGuard];
-			assertFalse("processor returned false with a grumpy guard in the mix", instance.processGuards(injector, requiredGuards));
+			guards.add(HappyGuard, GrumpyGuard);
+			assertThat(guards.approve(), isFalse());
 		}
 
 		[Test]
 		public function processing_happy_guard_returns_true():void
 		{
-			var requiredGuards:Vector.<Class> = new <Class>[HappyGuard];
-			assertTrue("processor returned true with happy guard", instance.processGuards(injector, requiredGuards));
-		}
-
-		[Test]
-		public function test_failure_seen():void
-		{
-			assertTrue("Failing test", true);
+			guards.add(HappyGuard);
+			assertThat(guards.approve(), isTrue());
 		}
 
 		[Test(expects="ArgumentError")]
 		public function throws_error_if_a_non_guard_is_passed():void
 		{
-			var requiredGuards:Vector.<Class> = new <Class>[HappyGuard, NotAGuard];
-			instance.processGuards(injector, requiredGuards);
+			guards.add(HappyGuard, NotAGuard);
+			guards.approve();
 		}
 	}
 }

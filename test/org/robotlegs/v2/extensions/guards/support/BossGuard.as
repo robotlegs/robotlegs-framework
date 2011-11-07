@@ -5,18 +5,22 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.guardsAndHooks.support
+package org.robotlegs.v2.extensions.guards.support
 {
 
-	public class NonHook
+	public class BossGuard
 	{
 
-		[Inject]
-		public var hookTracker:HookTracker;
+		protected var _approve:Boolean;
 
-		public function noHooksHere():void
+		public function BossGuard(approve:Boolean)
 		{
-			hookTracker.confirm("NonHook");
+			_approve = approve;
+		}
+
+		public function approve():Boolean
+		{
+			return _approve;
 		}
 	}
 

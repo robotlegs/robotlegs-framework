@@ -20,7 +20,7 @@ import suites.UtilityPackageFunctionsSuite;
 
 		public var contextTestSuite:ContextTestSuite;
 
-		public var hooksTestSuite:GuardsAndHooksTestSuite;
+		public var guards_AND_hooksTestSuite:GuardsAndHooksTestSuite;
 	
 		public var typeMatchingTestSuite:TypeMatchingTestSuite;
 
@@ -33,5 +33,9 @@ import suites.UtilityPackageFunctionsSuite;
 		public var eventMapTestSuite:EventMapTestSuite;
 		
 		public var commandFlowTestSuite:CommandFlowTestSuite;
+		
+		public var guardsTestSuite:GuardsTestSuite;
+		
+		public var hooksTestSuite:HooksTestSuite;
 	}
 }

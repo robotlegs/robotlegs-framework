@@ -14,8 +14,8 @@ package org.robotlegs.v2.extensions.commandMap.impl
 	import org.robotlegs.v2.extensions.commandMap.support.NullCommand;
 	import org.robotlegs.v2.extensions.commandMap.support.SelfReportingCallbackGuard;
 	import org.robotlegs.v2.extensions.commandMap.support.SupportEvent;
-	import org.robotlegs.v2.extensions.guardsAndHooks.support.GrumpyGuard;
-	import org.robotlegs.v2.extensions.guardsAndHooks.support.HappyGuard;
+	import org.robotlegs.v2.extensions.guards.support.GrumpyGuard;
+	import org.robotlegs.v2.extensions.guards.support.HappyGuard;
 
 	public class EventCommandTrigger_GuardTests extends AbstractCommandMapTests
 	{

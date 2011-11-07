@@ -14,9 +14,9 @@ package org.robotlegs.v2.extensions.viewHookMap
 	import org.robotlegs.v2.core.impl.TypeMatcher;
 	import org.robotlegs.v2.extensions.guardsAndHooks.impl.GuardsProcessor;
 	import org.robotlegs.v2.extensions.guardsAndHooks.impl.HooksProcessor;
-	import org.robotlegs.v2.extensions.guardsAndHooks.support.HookTracker;
-	import org.robotlegs.v2.extensions.guardsAndHooks.support.TrackableHook1;
-	import org.robotlegs.v2.extensions.guardsAndHooks.support.TrackableHook2;
+	import org.robotlegs.v2.extensions.hooks.support.HookTracker;
+	import org.robotlegs.v2.extensions.hooks.support.TrackableHook1;
+	import org.robotlegs.v2.extensions.hooks.support.TrackableHook2;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewHandler;
 	import org.swiftsuspenders.DescribeTypeJSONReflector;
 	import org.swiftsuspenders.Injector;
