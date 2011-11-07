@@ -32,7 +32,7 @@ package org.robotlegs.v2.experimental
 		
 		public function from(commandClass:Class):ICommandFlowMapping
 		{
-			const mapping:CommandFlowMapping = new CommandFlowMapping(new <Class>[commandClass], eventDispatcher, executionCallback);
+			const mapping:CommandFlowMapping = new CommandFlowMapping(new <Class>[commandClass], eventDispatcher, executionCallback, false);
 
 			addMappingTo(mapping, commandClass);
 			return mapping;
@@ -40,10 +40,20 @@ package org.robotlegs.v2.experimental
 		
 		public function fromAll(...commandClasses):ICommandFlowMapping
 		{
+			return fromMultipleCommands(true, commandClasses);
+		}
+		
+		public function fromAny(...commandClasses):ICommandFlowMapping
+		{
+			return fromMultipleCommands(false, commandClasses);
+		}
+		
+		private function fromMultipleCommands(requireFromAll:Boolean, ...commandClasses):ICommandFlowMapping
+		{
 			const commandVector:Vector.<Class> = new Vector.<Class>();
 			pushValuesToClassVector(commandClasses, commandVector);
 			
-			const mapping:CommandFlowMapping = new CommandFlowMapping(commandVector, eventDispatcher, executionCallback);
+			const mapping:CommandFlowMapping = new CommandFlowMapping(commandVector, eventDispatcher, executionCallback, requireFromAll);
 			
 			for each (var commandClass:Class in commandVector)
 			{
@@ -53,7 +63,7 @@ package org.robotlegs.v2.experimental
 			return mapping;
 		}
 		
-		protected function executionCallback(commandFlowRule:ICommandFlowRule):void
+		private function executionCallback(commandFlowRule:ICommandFlowRule):void
 		{
 			const commandClasses:Vector.<Class> = commandFlowRule.commandClasses;
 			for each (var commandClass:Class in commandClasses)
@@ -69,7 +79,7 @@ package org.robotlegs.v2.experimental
 			}
 		}
 
-		protected function checkIfMappingsShouldBeActive(mappings:Vector.<CommandFlowMapping>):void
+		private function checkIfMappingsShouldBeActive(mappings:Vector.<CommandFlowMapping>):void
 		{
 			var requiredFromCommands:Vector.<Class>;
 			var readyToActivate:Boolean;
@@ -80,8 +90,14 @@ package org.robotlegs.v2.experimental
 				requiredFromCommands = mapping.from;
 				for each (var commandClass:Class in requiredFromCommands)
 				{
-					if(!_executedCommands[commandClass])
+					if((!mapping.requireAllFrom) && _executedCommands[commandClass])
+						break;
+					
+					if(mapping.requireAllFrom && (!_executedCommands[commandClass]))
+					{
 						readyToActivate = false;
+						break;
+					}
 				}
 				if(readyToActivate)
 				{

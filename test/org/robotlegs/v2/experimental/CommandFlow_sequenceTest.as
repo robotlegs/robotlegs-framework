@@ -172,6 +172,32 @@ package org.robotlegs.v2.experimental
 
 			assertThat(commandTracker.commandsReceived, array(CommandA, CommandB, CommandC));
 		}
+		
+		[Test]
+		public function one_step_requires_either_of_two_previous_steps_1():void
+		{
+			instance.from(CommandFlowStart).after(Event.COMPLETE).execute(CommandA);
+			instance.from(CommandFlowStart).after(Event.CHANGE).execute(CommandB);
+			instance.fromAny(CommandA, CommandB).after(Event.CANCEL).execute(CommandC);
+			
+			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
+			eventDispatcher.dispatchEvent(new Event(Event.CANCEL));
+			
+			assertThat(commandTracker.commandsReceived, array(CommandA, CommandC));
+		}
+		
+		[Test]
+		public function one_step_requires_either_of_two_previous_steps_2():void
+		{
+			instance.from(CommandFlowStart).after(Event.COMPLETE).execute(CommandA);
+			instance.from(CommandFlowStart).after(Event.CHANGE).execute(CommandB);
+			instance.fromAny(CommandA, CommandB).after(Event.CANCEL).execute(CommandC);
+			
+			eventDispatcher.dispatchEvent(new Event(Event.CHANGE));
+			eventDispatcher.dispatchEvent(new Event(Event.CANCEL));
+			
+			assertThat(commandTracker.commandsReceived, array(CommandB, CommandC));
+		}
 
 	}
 }

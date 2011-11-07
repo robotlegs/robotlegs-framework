@@ -27,12 +27,15 @@ package org.robotlegs.v2.experimental
 		private var _rule:CommandFlowRule;
 		
 		private var _executionCallback:Function;
+		
+		private var _requireAllFrom:Boolean;
 
-		public function CommandFlowMapping(from:Vector.<Class>, eventDispatcher:IEventDispatcher, executionCallback:Function)
+		public function CommandFlowMapping(from:Vector.<Class>, eventDispatcher:IEventDispatcher, executionCallback:Function, requireAllFrom:Boolean)
 		{
 			_from = from;
 			_eventDispatcher = eventDispatcher;
 			_executionCallback = executionCallback;
+			_requireAllFrom = requireAllFrom;
 		}
 		
 		public function after(eventString:String):ICommandFlowConfig
@@ -72,6 +75,11 @@ package org.robotlegs.v2.experimental
 		{
 			return _from;
 		}	
+		
+		internal function get requireAllFrom():Boolean
+		{
+			return _requireAllFrom;
+		}
 		
 		internal function activate():void
 		{

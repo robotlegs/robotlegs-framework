@@ -25,7 +25,7 @@ package org.robotlegs.v2.experimental
 		public function setUp():void
 		{
 			eventDispatcher = new EventDispatcher();
-			instance = new CommandFlowMapping(FROM, eventDispatcher, callback);
+			instance = new CommandFlowMapping(FROM, eventDispatcher, callback, true);
 		}
 
 		[After]
