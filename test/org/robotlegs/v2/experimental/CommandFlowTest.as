@@ -171,46 +171,6 @@ package org.robotlegs.v2.experimental
 
 			assertThat(commandTracker.commandsReceived, array([SimpleCommand]));
 		}
-		
-		
-		protected function after(eventString:String):CommandConfig
-		{
-			configsByEventString[eventString] ||= new CommandConfig();
-			eventDispatcher.addEventListener(eventString, fireCommandsForEventString);
-			return configsByEventString[eventString];
-		}
-		
-		protected function afterAny(...eventStrings):CommandConfig
-		{
-			var config:CommandConfig;
-			
-			for each (var eventString:String in eventStrings)
-			{
-				if( (!config) && configsByEventString[eventString])
-				{
-					config = configsByEventString[eventString];
-				}
-				if(!config)
-				{
-					config = new CommandConfig();
-				}
-
-				configsByEventString[eventString] = config;
-				eventDispatcher.addEventListener(eventString, fireCommandsForEventString);
-			}
-			
-			return config;
-		}
-		
-		protected function fireCommandsForEventString(e:Event):void
-		{
-			const commandClassesForEvent:Vector.<Class> = configsByEventString[e.type].commandClasses;
-			for each (var commandClass:Class in commandClassesForEvent)
-			{
-				const command:Object = injector.getInstance(commandClass);
-				command.execute();
-			}
-		}
 	}
 }
 
