@@ -7,6 +7,7 @@
 
 package org.robotlegs.v2.extensions.commandMap.impl
 {
+	import flash.errors.IllegalOperationError;
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	import flash.utils.describeType;
@@ -52,6 +53,7 @@ package org.robotlegs.v2.extensions.commandMap.impl
 
 		public function register(mapping:ICommandMapping):void
 		{
+			_mapping && throwAlreadyRegistered();
 			_mapping = mapping;
 			verifyCommandClass();
 			addListener();
@@ -59,7 +61,9 @@ package org.robotlegs.v2.extensions.commandMap.impl
 
 		public function unregister():void
 		{
+			_mapping || throwNotRegistered();
 			removeListener();
+			_mapping = null;
 		}
 
 		private function verifyCommandClass():void
@@ -95,8 +99,8 @@ package org.robotlegs.v2.extensions.commandMap.impl
 			if (allowedByGuards())
 			{
 				_injector.map(_mapping.commandClass).asSingleton();
-				runHooks();
-				executeCommand();
+				_mapping.hooks.length > 0 && hooksProcessor.runHooks(_injector, _mapping.hooks);
+				_injector.getInstance(_mapping.commandClass).execute();
 				_injector.unmap(_mapping.commandClass);
 			}
 
@@ -106,6 +110,9 @@ package org.robotlegs.v2.extensions.commandMap.impl
 			// unmap the strongly-typed event
 			if (_eventClass && _eventClass != Event)
 				_injector.unmap(_eventClass);
+
+			// question - should this be fromAll()?
+			_oneshot && _mapping.unmap().fromTrigger(this);
 		}
 
 		private function allowedByGuards():Boolean
@@ -114,18 +121,14 @@ package org.robotlegs.v2.extensions.commandMap.impl
 				|| guardsProcessor.processGuards(_injector, _mapping.guards);
 		}
 
-		private function runHooks():void
+		private function throwAlreadyRegistered():void
 		{
-			if (_mapping.hooks.length > 0)
-				hooksProcessor.runHooks(_injector, _mapping.hooks);
+			throw new IllegalOperationError("trigger has already been registered");
 		}
 
-		private function executeCommand():void
+		private function throwNotRegistered():void
 		{
-			_injector.getInstance(_mapping.commandClass).execute();
-
-			// question - should this be fromAll()?
-			_oneshot && _mapping.unmap().fromTrigger(this);
+			throw new IllegalOperationError("trigger has not been registered");
 		}
 	}
 }

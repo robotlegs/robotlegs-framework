@@ -10,7 +10,10 @@ package org.robotlegs.v2.extensions.commandMap.impl
 	import flash.events.Event;
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.equalTo;
+	import org.robotlegs.v2.extensions.commandMap.api.ICommandMapping;
+	import org.robotlegs.v2.extensions.commandMap.api.ICommandTrigger;
 	import org.robotlegs.v2.extensions.commandMap.support.CallbackCommand;
+	import org.robotlegs.v2.extensions.commandMap.support.NullCommand;
 	import org.robotlegs.v2.extensions.commandMap.support.SelfReportingCallbackCommand;
 	import org.robotlegs.v2.extensions.commandMap.support.SupportEvent;
 
@@ -22,7 +25,7 @@ package org.robotlegs.v2.extensions.commandMap.impl
 		{
 			super.setUp();
 		}
-		
+
 		[After]
 		override public function tearDown():void
 		{
@@ -123,6 +126,22 @@ package org.robotlegs.v2.extensions.commandMap.impl
 			commandMap.unmap(CallbackCommand).fromEvent(SupportEvent.TYPE1, SupportEvent);
 			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
 			assertThat(executeCount, equalTo(0));
+		}
+
+		[Test(expects="Error")]
+		public function double_registration_should_throw():void
+		{
+			const mapping:ICommandMapping = new CommandMapping(injector, dispatcher, commandMap, NullCommand);
+			const trigger:ICommandTrigger = new EventCommandTrigger(injector, dispatcher, "any", Event, false);
+			trigger.register(mapping);
+			trigger.register(mapping);
+		}
+
+		[Test(expects="Error")]
+		public function nonRegistered_trigger_should_throw_when_unregistered():void
+		{
+			const trigger:ICommandTrigger = new EventCommandTrigger(injector, dispatcher, "any", Event, false);
+			trigger.unregister();
 		}
 
 		private function commandExecutionCount(totalEvents:int = 1, oneshot:Boolean = false):uint
