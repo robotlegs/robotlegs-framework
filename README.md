@@ -1,3 +1,7 @@
+# WARNING
+
+Robotlegs 2 is under active development. Newcomers are encouraged to download the stable Robotlegs v1 release from: http://www.robotlegs.org/
+
 # Welcome to Robotlegs 2!
 
 This code is still a work in progress from two angles:
