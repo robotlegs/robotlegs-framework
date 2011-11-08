@@ -9,6 +9,7 @@ package org.robotlegs.v2.extensions.guardsAndHooks.api
 {
 	import org.swiftsuspenders.Injector;
 
+	[Deprecated(message="we shouldn't expose things like vectors")]
 	public interface IHooksProcessor
 	{
 		

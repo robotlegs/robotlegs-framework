@@ -13,6 +13,7 @@ package org.robotlegs.v2.extensions.guardsAndHooks.impl
 	import org.swiftsuspenders.Injector;
 	import org.robotlegs.v2.extensions.guardsAndHooks.api.IGuardsProcessor;
 
+	[Deprecated(message="an object with no internal state doesn't deserve to be an object")]
 	public class GuardsProcessor implements IGuardsProcessor
 	{
 

@@ -10,6 +10,7 @@ package org.robotlegs.v2.extensions.guardsAndHooks.impl
 	import org.robotlegs.v2.core.utilities.pushValuesToClassVector;
 	import org.robotlegs.v2.extensions.guardsAndHooks.api.IGuardsAndHooksConfig;
 
+	[Deprecated(message="any class, method or property with the word AND in it is banned :)")]
 	public class GuardsAndHooksConfig implements IGuardsAndHooksConfig
 	{
 

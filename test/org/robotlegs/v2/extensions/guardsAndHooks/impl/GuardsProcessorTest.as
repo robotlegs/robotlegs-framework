@@ -15,6 +15,7 @@ package org.robotlegs.v2.extensions.guardsAndHooks.impl
 	import org.robotlegs.v2.extensions.guardsAndHooks.support.*;
 	import org.swiftsuspenders.Injector;
 
+	[Deprecated(replacement="org.robotlegs.v2.extensions.guards.impl.GuardGroupTests")]
 	public class GuardsProcessorTest
 	{
 

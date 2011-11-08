@@ -12,6 +12,7 @@ package suites
 	import org.robotlegs.v2.extensions.viewHookMap.HookMapTest;
 	import org.robotlegs.v2.extensions.viewHookMap.ViewHookMapTest;
 
+	[Deprecated(message="any class, method or property with the word AND in it is banned :)")]
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
 	public class GuardsAndHooksTestSuite

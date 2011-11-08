@@ -14,6 +14,7 @@ package org.robotlegs.v2.extensions.guardsAndHooks.impl
 	import org.robotlegs.v2.extensions.hooks.support.TrackableHook2;
 	import org.swiftsuspenders.Injector;
 
+	[Deprecated(replacement="org.robotlegs.v2.extensions.hooks.impl.HookGroupTests")]
 	public class HooksProcessorTest
 	{
 
