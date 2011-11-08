@@ -116,19 +116,13 @@ package org.robotlegs.v2.extensions.commandMap.impl
 
 		public function withGuards(... guardClasses):ICommandMapper
 		{
-			for each (var guardClass:* in guardClasses)
-			{
-				_guards.add(guardClass);
-			}
+			_guards.add.apply(null, guardClasses)
 			return this;
 		}
 
 		public function withHooks(... hookClasses):ICommandMapper
 		{
-			for each (var hookClass:* in hookClasses)
-			{
-				_hooks.add(hookClass);
-			}
+			_hooks.add.apply(null, hookClasses)
 			return this;
 		}
 	}
