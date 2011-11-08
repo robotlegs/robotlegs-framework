@@ -12,7 +12,6 @@ package org.robotlegs.v2.extensions.guardsAndHooks.impl
 	import org.robotlegs.v2.extensions.guards.support.GrumpyGuard;
 	import org.robotlegs.v2.extensions.guards.support.HappyGuard;
 	import org.robotlegs.v2.extensions.guards.support.JustTheMiddleManGuard;
-	import org.robotlegs.v2.extensions.guardsAndHooks.support.*;
 	import org.swiftsuspenders.Injector;
 
 	[Deprecated(replacement="org.robotlegs.v2.extensions.guards.impl.GuardGroupTests")]
