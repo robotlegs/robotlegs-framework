@@ -10,6 +10,7 @@ package org.robotlegs.v2.extensions.hooks.impl
 	import flash.utils.Dictionary;
 	import org.robotlegs.v2.core.utilities.classHasMethod;
 	import org.robotlegs.v2.core.utilities.pushValuesToClassVector;
+	import org.robotlegs.v2.core.utilities.removeValuesFromClassVector;
 	import org.robotlegs.v2.extensions.hooks.api.IHookGroup;
 	import org.swiftsuspenders.Injector;
 
@@ -29,12 +30,16 @@ package org.robotlegs.v2.extensions.hooks.impl
 		public function add(... hookClasses):void
 		{
 			pushValuesToClassVector(hookClasses, _hookClasses);
+			verifyHookClasses();
+		}
+
+		public function remove(... hookClasses):void
+		{
+			removeValuesFromClassVector(hookClasses, _hookClasses);
 		}
 
 		public function hook():void
 		{
-			verifyHookClasses();
-
 			for each (var hookClass:Class in _hookClasses)
 			{
 				var hook:* = _injector.getInstance(hookClass);

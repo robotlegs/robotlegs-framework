@@ -10,6 +10,7 @@ package org.robotlegs.v2.extensions.guards.impl
 	import flash.utils.Dictionary;
 	import org.robotlegs.v2.core.utilities.classHasMethod;
 	import org.robotlegs.v2.core.utilities.pushValuesToClassVector;
+	import org.robotlegs.v2.core.utilities.removeValuesFromClassVector;
 	import org.robotlegs.v2.extensions.guards.api.IGuardGroup;
 	import org.swiftsuspenders.Injector;
 
@@ -29,11 +30,16 @@ package org.robotlegs.v2.extensions.guards.impl
 		public function add(... guardClasses):void
 		{
 			pushValuesToClassVector(guardClasses, _guardClasses);
+			verifyGuardClasses(_guardClasses);
+		}
+
+		public function remove(... guardClasses):void
+		{
+			removeValuesFromClassVector(guardClasses, _guardClasses);
 		}
 
 		public function approve():Boolean
 		{
-			verifyGuardClasses(_guardClasses);
 			for each (var guardClass:Class in _guardClasses)
 			{
 				var guard:* = _injector.getInstance(guardClass);

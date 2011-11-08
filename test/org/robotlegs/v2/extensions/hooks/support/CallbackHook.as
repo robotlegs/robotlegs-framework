@@ -5,15 +5,18 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.guards.api
+package org.robotlegs.v2.extensions.hooks.support
 {
 
-	public interface IGuardGroup
+	public class CallbackHook
 	{
-		function add(... guardClasses):void;
-		
-		function remove(... guardClasses):void;
 
-		function approve():Boolean;
+		[Inject(name="hookCallback")]
+		public var callback:Function;
+
+		public function hook():void
+		{
+			callback();
+		}
 	}
 }

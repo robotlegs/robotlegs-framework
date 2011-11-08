@@ -8,11 +8,13 @@
 package org.robotlegs.v2.extensions.guards.impl
 {
 	import org.hamcrest.assertThat;
+	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.instanceOf;
 	import org.hamcrest.object.isFalse;
 	import org.hamcrest.object.isTrue;
 	import org.robotlegs.v2.extensions.guards.api.IGuardGroup;
 	import org.robotlegs.v2.extensions.guards.support.BossGuard;
+	import org.robotlegs.v2.extensions.guards.support.CallbackGuard;
 	import org.robotlegs.v2.extensions.guards.support.GrumpyGuard;
 	import org.robotlegs.v2.extensions.guards.support.HappyGuard;
 	import org.robotlegs.v2.extensions.guards.support.JustTheMiddleManGuard;
@@ -86,7 +88,21 @@ package org.robotlegs.v2.extensions.guards.impl
 		public function throws_error_if_a_non_guard_is_passed():void
 		{
 			guards.add(HappyGuard, NotAGuard);
+		}
+
+		[Test]
+		public function removed_guard_should_not_run():void
+		{
+			var approveCallCount:uint;
+			injector.map(Function, "approveCallback").toValue(function():Boolean
+			{
+				approveCallCount++
+				return true;
+			});
+			guards.add(HappyGuard, CallbackGuard);
+			guards.remove(CallbackGuard);
 			guards.approve();
+			assertThat(approveCallCount, equalTo(0));
 		}
 	}
 }

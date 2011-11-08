@@ -9,12 +9,15 @@ package org.robotlegs.v2.extensions.hooks.impl
 {
 	import org.flexunit.asserts.assertEqualsVectorsIgnoringOrder;
 	import org.hamcrest.assertThat;
+	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.instanceOf;
+	import org.robotlegs.v2.extensions.hooks.api.IHookGroup;
+	import org.robotlegs.v2.extensions.hooks.support.CallbackHook;
 	import org.robotlegs.v2.extensions.hooks.support.HookTracker;
 	import org.robotlegs.v2.extensions.hooks.support.NonHook;
+	import org.robotlegs.v2.extensions.hooks.support.NullHook;
 	import org.robotlegs.v2.extensions.hooks.support.TrackableHook1;
 	import org.robotlegs.v2.extensions.hooks.support.TrackableHook2;
-	import org.robotlegs.v2.extensions.hooks.api.IHookGroup;
 	import org.swiftsuspenders.Injector;
 
 	public class HookGroupTests
@@ -52,7 +55,6 @@ package org.robotlegs.v2.extensions.hooks.impl
 		public function a_non_hook_causes_us_to_throw_an_argument_error():void
 		{
 			hooks.add(TrackableHook1, TrackableHook2, NonHook);
-			hooks.hook();
 		}
 
 		[Test]
@@ -63,5 +65,20 @@ package org.robotlegs.v2.extensions.hooks.impl
 			const expectedHooksConfirmed:Vector.<String> = new <String>['TrackableHook1', 'TrackableHook2'];
 			assertEqualsVectorsIgnoringOrder('both hooks have run', expectedHooksConfirmed, hookTracker.hooksConfirmed);
 		}
+		
+		[Test]
+		public function removed_hook_should_not_run():void
+		{
+			var hookCallCount:uint;
+			injector.map(Function, "hookCallback").toValue(function():void
+			{
+				hookCallCount++
+			});
+			hooks.add(NullHook, CallbackHook);
+			hooks.remove(CallbackHook);
+			hooks.hook();
+			assertThat(hookCallCount, equalTo(0));
+		}
+
 	}
 }

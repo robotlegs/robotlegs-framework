@@ -5,15 +5,18 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.guards.api
+package org.robotlegs.v2.extensions.guards.support
 {
 
-	public interface IGuardGroup
+	public class CallbackGuard
 	{
-		function add(... guardClasses):void;
-		
-		function remove(... guardClasses):void;
 
-		function approve():Boolean;
+		[Inject(name="approveCallback")]
+		public var callback:Function;
+
+		public function approve():Boolean
+		{
+			return callback();
+		}
 	}
 }

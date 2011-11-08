@@ -12,6 +12,8 @@ package org.robotlegs.v2.extensions.hooks.api
 	{
 		function add(... hookClasses):void;
 
+		function remove(... hookClasses):void;
+
 		function hook():void;
 	}
 }
