@@ -7,11 +7,16 @@
 
 package org.robotlegs.v2.extensions.commandMap.api
 {
-	import org.robotlegs.v2.extensions.guardsAndHooks.api.IGuardsAndHooksConfig;
+	import org.robotlegs.v2.extensions.guards.api.IGuardGroup;
+	import org.robotlegs.v2.extensions.hooks.api.IHookGroup;
 
-	public interface ICommandMapping extends IGuardsAndHooksConfig
+	public interface ICommandMapping
 	{
 		function get commandClass():Class;
+
+		function get guards():IGuardGroup;
+
+		function get hooks():IHookGroup;
 
 		function unmap():ICommandUnmapper;
 	}

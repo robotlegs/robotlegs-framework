@@ -13,10 +13,6 @@ package org.robotlegs.v2.extensions.commandMap.impl
 	import flash.utils.describeType;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandMapping;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandTrigger;
-	import org.robotlegs.v2.extensions.guardsAndHooks.api.IGuardsProcessor;
-	import org.robotlegs.v2.extensions.guardsAndHooks.api.IHooksProcessor;
-	import org.robotlegs.v2.extensions.guardsAndHooks.impl.GuardsProcessor;
-	import org.robotlegs.v2.extensions.guardsAndHooks.impl.HooksProcessor;
 	import org.swiftsuspenders.Injector;
 
 	public class EventCommandTrigger implements ICommandTrigger
@@ -33,10 +29,6 @@ package org.robotlegs.v2.extensions.commandMap.impl
 
 		private var _mapping:ICommandMapping;
 
-		private const guardsProcessor:IGuardsProcessor = new GuardsProcessor();
-
-		private const hooksProcessor:IHooksProcessor = new HooksProcessor();
-
 		public function EventCommandTrigger(
 			injector:Injector,
 			dispatcher:IEventDispatcher,
@@ -44,7 +36,7 @@ package org.robotlegs.v2.extensions.commandMap.impl
 			eventClass:Class,
 			oneshot:Boolean)
 		{
-			_injector = injector.createChildInjector();
+			_injector = injector;
 			_dispatcher = dispatcher;
 			_type = type;
 			_eventClass = eventClass;
@@ -96,10 +88,10 @@ package org.robotlegs.v2.extensions.commandMap.impl
 				_injector.map(_eventClass).toValue(event);
 
 			// execute the command if allowed
-			if (allowedByGuards())
+			if (_mapping.guards.approve())
 			{
 				_injector.map(_mapping.commandClass).asSingleton();
-				_mapping.hooks.length > 0 && hooksProcessor.runHooks(_injector, _mapping.hooks);
+				_mapping.hooks.hook();
 				_injector.getInstance(_mapping.commandClass).execute();
 				_injector.unmap(_mapping.commandClass);
 			}
@@ -113,12 +105,6 @@ package org.robotlegs.v2.extensions.commandMap.impl
 
 			// question - should this be fromAll()?
 			_oneshot && _mapping.unmap().fromTrigger(this);
-		}
-
-		private function allowedByGuards():Boolean
-		{
-			return _mapping.guards.length == 0
-				|| guardsProcessor.processGuards(_injector, _mapping.guards);
 		}
 
 		private function throwAlreadyRegistered():void

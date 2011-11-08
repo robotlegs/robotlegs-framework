@@ -7,7 +7,6 @@
 
 package org.robotlegs.v2.extensions.commandMap.impl
 {
-	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	import flash.utils.Dictionary;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandMap;
@@ -15,10 +14,13 @@ package org.robotlegs.v2.extensions.commandMap.impl
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandMapping;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandTrigger;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandUnmapper;
-	import org.robotlegs.v2.extensions.guardsAndHooks.impl.GuardsAndHooksConfig;
+	import org.robotlegs.v2.extensions.guards.api.IGuardGroup;
+	import org.robotlegs.v2.extensions.guards.impl.GuardGroup;
+	import org.robotlegs.v2.extensions.hooks.api.IHookGroup;
+	import org.robotlegs.v2.extensions.hooks.impl.HookGroup;
 	import org.swiftsuspenders.Injector;
 
-	public class CommandMapping extends GuardsAndHooksConfig implements ICommandMapping, ICommandMapper, ICommandUnmapper
+	public class CommandMapping implements ICommandMapping, ICommandMapper, ICommandUnmapper
 	{
 
 		private var _commandClass:Class;
@@ -26,6 +28,20 @@ package org.robotlegs.v2.extensions.commandMap.impl
 		public function get commandClass():Class
 		{
 			return _commandClass;
+		}
+
+		private var _guards:IGuardGroup;
+
+		public function get guards():IGuardGroup
+		{
+			return _guards;
+		}
+
+		private var _hooks:IHookGroup;
+
+		public function get hooks():IHookGroup
+		{
+			return _hooks;
 		}
 
 		private const eventTriggers:Dictionary = new Dictionary();
@@ -44,10 +60,12 @@ package org.robotlegs.v2.extensions.commandMap.impl
 			commandMap:ICommandMap,
 			commandClass:Class)
 		{
-			_injector = injector;
+			_injector = injector.createChildInjector();
 			_dispatcher = dispatcher;
 			_commandMap = commandMap;
 			_commandClass = commandClass;
+			_guards = new GuardGroup(_injector);
+			_hooks = new HookGroup(_injector);
 		}
 
 		public function toEvent(type:String, eventClass:Class = null, oneshot:Boolean = false):ICommandMapper
@@ -96,9 +114,22 @@ package org.robotlegs.v2.extensions.commandMap.impl
 			}
 		}
 
-		public function numTriggers():uint
+		public function withGuards(... guardClasses):ICommandMapper
 		{
-			return triggers.length;
+			for each (var guardClass:* in guardClasses)
+			{
+				_guards.add(guardClass);
+			}
+			return this;
+		}
+
+		public function withHooks(... hookClasses):ICommandMapper
+		{
+			for each (var hookClass:* in hookClasses)
+			{
+				_hooks.add(hookClass);
+			}
+			return this;
 		}
 	}
 }
