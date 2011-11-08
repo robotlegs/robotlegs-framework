@@ -11,7 +11,6 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import org.robotlegs.v2.core.api.IContextExtension;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMap;
 	import org.robotlegs.v2.extensions.mediatorMap.impl.MediatorMap;
-	import org.robotlegs.v2.extensions.viewManager.api.IViewHandler;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewManager;
 
 	public class MediatorMapExtension implements IContextExtension
@@ -20,7 +19,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 
 		private var viewManager:IViewManager;
 
-		private var mediatorMap:IMediatorMap;
+		private var mediatorMap:MediatorMap;
 
 		public function install(context:IContext):void
 		{
@@ -32,13 +31,12 @@ package org.robotlegs.v2.extensions.mediatorMap
 		{
 			viewManager = context.injector.getInstance(IViewManager);
 			mediatorMap = context.injector.getInstance(IMediatorMap);
-			// TODO: shouldn't need to cast here. IMediatorMap should extend IViewManager
-			viewManager.addHandler(mediatorMap as IViewHandler);
+			viewManager.addHandler(mediatorMap);
 		}
 
 		public function uninstall():void
 		{
-			viewManager.removeHandler(mediatorMap as IViewHandler);
+			viewManager.removeHandler(mediatorMap);
 			context.injector.unmap(IMediatorMap)
 		}
 	}
