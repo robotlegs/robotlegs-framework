@@ -42,10 +42,6 @@ package org.robotlegs.v2.experimental
 		{
 			_eventStrings.push(eventString);
 			_rule = new CommandFlowRequireOnlyRule(eventString);
-			if(applyAtStart)
-			{
-				activate();
-			}
 			return _rule;
 		}
 
@@ -53,10 +49,6 @@ package org.robotlegs.v2.experimental
 		{
 			pushValuesToStringVector(eventStrings, _eventStrings);
 			_rule = new CommandFlowRequireAllRule(_eventStrings);
-			if(applyAtStart)
-			{
-				activate();
-			}
 			return _rule;
 		}
 
@@ -64,10 +56,6 @@ package org.robotlegs.v2.experimental
 		{
 			pushValuesToStringVector(eventStrings, _eventStrings);
 			_rule = new CommandFlowRequireAnyRule(_eventStrings);
-			if(applyAtStart)
-			{
-				activate();
-			}
 			return _rule;
 		}
 		

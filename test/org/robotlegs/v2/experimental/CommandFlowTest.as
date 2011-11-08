@@ -76,14 +76,27 @@ package org.robotlegs.v2.experimental
 		executeAll
 		withGuards
 		withHooks
+		initialize
+		destroy
+		reset
 		
 		*/
+		
+		[Test]
+		public function start_events_arent_responded_to_until_flow_is_initialized():void
+		{
+			instance.from(CommandFlowStart).after(Event.COMPLETE).execute(SimpleCommand);
+
+			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
+			assertEquals(0, commandTracker.commandsReceived.length);
+		}
 		
 		[Test]
 		public function one_event_triggers_one_command_with_injection_from_START():void
 		{
 			instance.from(CommandFlowStart).after(Event.COMPLETE).execute(SimpleCommand);
-			
+			instance.initialize();
+
 			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
 			const expectedCommands:Array = [SimpleCommand];
 			assertEqualsArraysIgnoringOrder(commandTracker.commandsReceived, expectedCommands);
@@ -94,7 +107,8 @@ package org.robotlegs.v2.experimental
 		public function one_event_triggers_two_commands_in_order_from_START():void
 		{
 			instance.from(CommandFlowStart).after(Event.COMPLETE).executeAll(SimpleCommand, AnotherCommand);
-			
+			instance.initialize();
+
 			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
 			const expectedCommands:Array = [SimpleCommand, AnotherCommand];
 			assertThat(commandTracker.commandsReceived, array(expectedCommands));
@@ -105,7 +119,8 @@ package org.robotlegs.v2.experimental
 		{
 			instance.from(CommandFlowStart).after(Event.COMPLETE).execute(SimpleCommand);
 			instance.from(CommandFlowStart).after(Event.CHANGE).execute(AnotherCommand);
-			
+			instance.initialize();
+
 			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
 			assertThat(commandTracker.commandsReceived, array([SimpleCommand]));
 			
@@ -118,7 +133,8 @@ package org.robotlegs.v2.experimental
 		{
 			instance.from(CommandFlowStart).after(Event.COMPLETE).execute(SimpleCommand);
 			instance.from(CommandFlowStart).after(Event.COMPLETE).execute(AnotherCommand);
-			
+			instance.initialize();
+
 			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
 			const expectedCommands:Array = [SimpleCommand, AnotherCommand];
 			assertThat(commandTracker.commandsReceived, array(expectedCommands));
@@ -128,7 +144,8 @@ package org.robotlegs.v2.experimental
 		public function afterAny_either_event_triggers_command_from_START_1():void
 		{
 			instance.from(CommandFlowStart).afterAny(Event.COMPLETE, Event.CHANGE).execute(SimpleCommand);
-			
+			instance.initialize();
+
 			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
 			assertThat(commandTracker.commandsReceived, array([SimpleCommand]));
 		}
@@ -137,7 +154,8 @@ package org.robotlegs.v2.experimental
 		public function afterAny_either_event_triggers_command_from_START_2():void
 		{	
 			instance.from(CommandFlowStart).afterAny(Event.COMPLETE, Event.CHANGE).execute(SimpleCommand);
-		
+			instance.initialize();
+
 			eventDispatcher.dispatchEvent(new Event(Event.CHANGE));
 			assertThat(commandTracker.commandsReceived, array([SimpleCommand]));
 		}
@@ -147,7 +165,8 @@ package org.robotlegs.v2.experimental
 		public function afterAll_one_event_does_NOT_trigger_command_from_START():void
 		{
 			instance.from(CommandFlowStart).afterAll(Event.COMPLETE, Event.CHANGE).execute(SimpleCommand);
-			
+			instance.initialize();
+
 			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
 			assertThat(commandTracker.commandsReceived, array([]));
 		}
@@ -156,7 +175,8 @@ package org.robotlegs.v2.experimental
 		public function afterAll_other_event_does_NOT_trigger_command_from_START():void
 		{
 			instance.from(CommandFlowStart).afterAll(Event.COMPLETE, Event.CHANGE).execute(SimpleCommand);
-			
+			instance.initialize();
+
 			eventDispatcher.dispatchEvent(new Event(Event.CHANGE));
 			assertThat(commandTracker.commandsReceived, array([]));
 		}
@@ -165,7 +185,8 @@ package org.robotlegs.v2.experimental
 		public function afterAll_both_events_trigger_command_from_START():void
 		{
 			instance.from(CommandFlowStart).afterAll(Event.COMPLETE, Event.CHANGE).execute(SimpleCommand);
-			
+			instance.initialize();
+
 			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
 			eventDispatcher.dispatchEvent(new Event(Event.CHANGE));
 

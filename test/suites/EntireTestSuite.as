@@ -20,8 +20,6 @@ import suites.UtilityPackageFunctionsSuite;
 
 		public var contextTestSuite:ContextTestSuite;
 
-		public var guards_AND_hooksTestSuite:GuardsAndHooksTestSuite;
-	
 		public var typeMatchingTestSuite:TypeMatchingTestSuite;
 
 		public var utilityPackageTestSuite:UtilityPackageFunctionsSuite;

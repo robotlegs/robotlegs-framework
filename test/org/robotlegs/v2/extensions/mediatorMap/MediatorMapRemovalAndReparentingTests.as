@@ -14,8 +14,6 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import mockolate.runner.MockolateRule;
 	import org.flexunit.asserts.*;
 	import org.hamcrest.assertThat;
-	import org.robotlegs.v2.extensions.guardsAndHooks.impl.GuardsProcessor;
-	import org.robotlegs.v2.extensions.guardsAndHooks.impl.HooksProcessor;
 	import org.robotlegs.v2.extensions.mediatorMap.impl.MediatorMap;
 	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.support.RL2Mediator;
 	import org.swiftsuspenders.Injector;
@@ -60,11 +58,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 			injector.map(IEventDispatcher).toValue(eventDispatcher);
 
 			instance = new MediatorMap();
-			instance.hooksProcessor = new HooksProcessor();
-			instance.guardsProcessor = new GuardsProcessor();
 			instance.injector = injector;
-			instance.hooksProcessor = new HooksProcessor();
-			instance.guardsProcessor = new GuardsProcessor();
 			instance.loadTrigger(trigger);
 
 			instance.map(RL2Mediator).toView(Sprite);

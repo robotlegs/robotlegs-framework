@@ -11,30 +11,31 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 	import org.robotlegs.v2.core.api.ITypeFilter;
 	import org.robotlegs.v2.core.api.ITypeMatcher;
 	import org.robotlegs.v2.core.impl.TypeMatcher;
-	import org.robotlegs.v2.extensions.guardsAndHooks.impl.GuardsAndHooksConfig;
-	import org.robotlegs.v2.extensions.guardsAndHooks.api.IGuardsAndHooksConfig;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorConfig;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMapping;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorUnmapping;
-	import org.swiftsuspenders.Reflector;
+	import org.robotlegs.v2.extensions.mediatorMap.impl.MediatorConfig;
+	import org.swiftsuspenders.Injector;
 
-	public class MediatorMapping extends GuardsAndHooksConfig implements IMediatorMapping, IMediatorUnmapping
+	public class MediatorMapping implements IMediatorMapping, IMediatorUnmapping
 	{
 
-		protected var _mediator:Class;
+		private var _mediator:Class;
 
 		public function get mediator():Class
 		{
 			return _mediator;
 		}
 
-		protected var _callbackForDeletion:Function;
+		private var _callbackForDeletion:Function;
 
-		protected var _configsByTypeFilter:Dictionary;
+		private var _configsByTypeFilter:Dictionary;
 
-		protected var _filtersByDescriptor:Dictionary;
+		private var _filtersByDescriptor:Dictionary;
 
-		protected const _localConfigsByFilter:Dictionary = new Dictionary();
+		private const _localConfigsByFilter:Dictionary = new Dictionary();
+		
+		private var _injector:Injector;
 
 		internal function get hasConfigs():Boolean
 		{
@@ -47,15 +48,16 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		}
 
 		public function MediatorMapping(configsByTypeFilter:Dictionary, filterDescriptorMap:Dictionary,
-			mediator:Class, callbackForDeletion:Function)
+			mediator:Class, callbackForDeletion:Function, injector:Injector)
 		{
 			_configsByTypeFilter = configsByTypeFilter;
 			_filtersByDescriptor = filterDescriptorMap;
 			_mediator = mediator;
 			_callbackForDeletion = callbackForDeletion;
+			_injector = injector;
 		}
 
-		public function toMatcher(typeMatcher:ITypeMatcher):IGuardsAndHooksConfig
+		public function toMatcher(typeMatcher:ITypeMatcher):IMediatorConfig
 		{
 			var typeFilter:ITypeFilter = typeMatcher.createTypeFilter();
 
@@ -66,17 +68,17 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			else
 			{
 				_filtersByDescriptor[typeFilter.descriptor] = typeFilter;
-				_configsByTypeFilter[typeFilter] = new Vector.<IMediatorConfig>();
+				_configsByTypeFilter[typeFilter] = new Vector.<MediatorConfig>();
 			}
 
-			const config:IMediatorConfig = new MediatorConfig(this);
+			const config:IMediatorConfig = new MediatorConfig(this, _injector);
 
 			_configsByTypeFilter[typeFilter].push(config);
 			_localConfigsByFilter[typeFilter] = config;
 			return config;
 		}
 
-		public function toView(viewType:Class):IGuardsAndHooksConfig
+		public function toView(viewType:Class):IMediatorConfig
 		{
 			return toMatcher(new TypeMatcher().allOf(viewType));
 		}
@@ -109,7 +111,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			{
 				const config:IMediatorConfig = _localConfigsByFilter[typeFilter];
 
-				const configs:Vector.<IMediatorConfig> = _configsByTypeFilter[typeFilter];
+				const configs:Vector.<MediatorConfig> = _configsByTypeFilter[typeFilter];
 
 				const index:int = configs.indexOf(config);
 

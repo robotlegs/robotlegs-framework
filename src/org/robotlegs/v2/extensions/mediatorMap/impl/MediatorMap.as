@@ -22,20 +22,11 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorUnmapping;
 	import org.swiftsuspenders.Injector;
 	import flash.errors.IllegalOperationError;
-	import org.robotlegs.v2.extensions.guardsAndHooks.api.IHooksProcessor;
-	import org.robotlegs.v2.extensions.guardsAndHooks.api.IGuardsProcessor;
 	import org.robotlegs.v2.extensions.viewManager.api.ViewInterests;
 
 	[Event(name="configurationChange", type="org.robotlegs.v2.extensions.viewManager.api.ViewHandlerEvent")]
 	public class MediatorMap extends EventDispatcher implements IViewHandler, IMediatorMap
 	{
-
-		[Inject]
-		public var guardsProcessor:IGuardsProcessor;
-
-		[Inject]
-		public var hooksProcessor:IHooksProcessor;
-
 		[Inject]
 		public var injector:Injector;
 
@@ -83,7 +74,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 
 					mapViewForFilterBinding(filter, view);
 
-					for each (var config:IMediatorConfig in _configsByTypeFilter[filter])
+					for each (var config:MediatorConfig in _configsByTypeFilter[filter])
 					{
 						processMapping(config, view);
 					}
@@ -173,13 +164,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			}
 		}
 
-		private function blockedByGuards(guards:Vector.<Class>):Boolean
-		{
-			return ((guards.length > 0)
-				&& !(guardsProcessor.processGuards(injector, guards)))
-		}
-
-		private function createMediatorForBinding(config:IMediatorConfig):*
+		private function createMediatorForBinding(config:MediatorConfig):*
 		{
 			const mediator:* = injector.getInstance(config.mapping.mediator);
 			injector.map(config.mapping.mediator).toValue(mediator);
@@ -191,7 +176,8 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			return new MediatorMapping(_configsByTypeFilter,
 				_filtersByDescription,
 				mediatorType,
-				cleanUpMapping);
+				cleanUpMapping,
+				injector);
 		}
 
 		private function mapViewForFilterBinding(filter:ITypeFilter, view:DisplayObject):void
@@ -209,12 +195,12 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			}
 		}
 
-		private function processMapping(config:IMediatorConfig, view:DisplayObject):void
+		private function processMapping(config:MediatorConfig, view:DisplayObject):void
 		{
-			if (!blockedByGuards(config.guards))
+			if(config.guards.approve())
 			{
 				const mediator:* = createMediatorForBinding(config);
-				hooksProcessor.runHooks(injector, config.hooks);
+				config.hooks.hook();
 				injector.unmap(config.mapping.mediator);
 
 				if (!_liveMediatorsByView[view])

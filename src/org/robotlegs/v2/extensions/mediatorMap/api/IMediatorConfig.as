@@ -7,12 +7,10 @@
 
 package org.robotlegs.v2.extensions.mediatorMap.api
 {
-	import org.robotlegs.v2.extensions.guardsAndHooks.api.IGuardsAndHooksConfig;
-
-	public interface IMediatorConfig extends IGuardsAndHooksConfig
+	public interface IMediatorConfig
 	{
+		function withGuards(... guardClasses):IMediatorConfig;
 
-		function get mapping():IMediatorMapping;
+		function withHooks(... hookClasses):IMediatorConfig;
 	}
-
 }

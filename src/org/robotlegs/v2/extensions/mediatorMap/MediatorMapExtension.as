@@ -9,10 +9,6 @@ package org.robotlegs.v2.extensions.mediatorMap
 {
 	import org.robotlegs.v2.core.api.IContext;
 	import org.robotlegs.v2.core.api.IContextExtension;
-	import org.robotlegs.v2.extensions.guardsAndHooks.api.IGuardsProcessor;
-	import org.robotlegs.v2.extensions.guardsAndHooks.api.IHooksProcessor;
-	import org.robotlegs.v2.extensions.guardsAndHooks.impl.GuardsProcessor;
-	import org.robotlegs.v2.extensions.guardsAndHooks.impl.HooksProcessor;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMap;
 	import org.robotlegs.v2.extensions.mediatorMap.impl.MediatorMap;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewHandler;
@@ -30,10 +26,6 @@ package org.robotlegs.v2.extensions.mediatorMap
 		{
 			this.context = context;
 			context.injector.map(IMediatorMap).toSingleton(MediatorMap);
-
-			// TODO: these should be installed via their own extension
-			context.injector.map(IGuardsProcessor).toSingleton(GuardsProcessor);
-			context.injector.map(IHooksProcessor).toSingleton(HooksProcessor);
 		}
 
 		public function initialize():void

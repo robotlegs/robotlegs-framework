@@ -10,11 +10,9 @@ package org.robotlegs.v2.experimental
 	import org.robotlegs.v2.experimental.ICommandFlowRule;
 	import org.robotlegs.v2.experimental.ICommandFlowConfig;
 	import flash.events.Event;
-	import org.robotlegs.v2.extensions.guardsAndHooks.api.IGuardsAndHooksConfig;
-	import org.robotlegs.v2.extensions.guardsAndHooks.impl.GuardsAndHooksConfig;
 	import org.robotlegs.v2.core.utilities.pushValuesToClassVector;
 
-	public class CommandFlowRule extends GuardsAndHooksConfig implements ICommandFlowRule, ICommandFlowConfig, IGuardsAndHooksConfig
+	public class CommandFlowRule implements ICommandFlowRule, ICommandFlowConfig
 	{
 		protected const _commandClasses:Vector.<Class> = new Vector.<Class>();
 	
@@ -35,13 +33,13 @@ package org.robotlegs.v2.experimental
 			return _receivedEvents;
 		}
 		
-		public function execute(commandClass:Class):IGuardsAndHooksConfig
+		public function execute(commandClass:Class):ICommandFlowConfig
 		{
 			_commandClasses.push(commandClass);
 			return this;
 		}
 
-		public function executeAll(...commandClassesList):IGuardsAndHooksConfig
+		public function executeAll(...commandClassesList):ICommandFlowConfig
 		{
 			pushValuesToClassVector(commandClassesList, _commandClasses);
 			return this;

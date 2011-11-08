@@ -68,7 +68,8 @@ package org.robotlegs.v2.experimental
 		{
 			instance.from(CommandFlowStart).after(Event.COMPLETE).execute(CommandA);
 			instance.from(CommandA).after(Event.CHANGE).execute(CommandB);
-			
+			instance.initialize();
+
 			eventDispatcher.dispatchEvent(new Event(Event.CHANGE));
 			assertEquals(0, commandTracker.commandsReceived.length);
 		}
@@ -78,6 +79,7 @@ package org.robotlegs.v2.experimental
 		{
 			instance.from(CommandFlowStart).after(Event.COMPLETE).execute(CommandA);
 			instance.from(CommandA).after(Event.CHANGE).execute(CommandB);
+			instance.initialize();
 			
 			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
 			assertThat(commandTracker.commandsReceived, array(CommandA));
@@ -88,6 +90,7 @@ package org.robotlegs.v2.experimental
 		{
 			instance.from(CommandFlowStart).after(Event.COMPLETE).execute(CommandA);
 			instance.from(CommandA).after(Event.CHANGE).execute(CommandB);
+			instance.initialize();
 			
 			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
 			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
@@ -99,6 +102,7 @@ package org.robotlegs.v2.experimental
 		{
 			instance.from(CommandFlowStart).after(Event.COMPLETE).execute(CommandA);
 			instance.from(CommandA).after(Event.CHANGE).execute(CommandB);
+			instance.initialize();
 			
 			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
 			eventDispatcher.dispatchEvent(new Event(Event.CHANGE));
@@ -111,6 +115,7 @@ package org.robotlegs.v2.experimental
 			instance.from(CommandFlowStart).after(Event.COMPLETE).execute(CommandA);
 			instance.from(CommandFlowStart).after(Event.CHANGE).execute(CommandB);
 			instance.fromAll(CommandA, CommandB).after(Event.CANCEL).execute(CommandC);
+			instance.initialize();
 			
 			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
 			eventDispatcher.dispatchEvent(new Event(Event.CANCEL));
@@ -124,6 +129,7 @@ package org.robotlegs.v2.experimental
 			instance.from(CommandFlowStart).after(Event.COMPLETE).execute(CommandA);
 			instance.from(CommandFlowStart).after(Event.CHANGE).execute(CommandB);
 			instance.fromAll(CommandA, CommandB).after(Event.CANCEL).execute(CommandC);
+			instance.initialize();
 			
 			eventDispatcher.dispatchEvent(new Event(Event.CHANGE));
 			eventDispatcher.dispatchEvent(new Event(Event.CANCEL));
@@ -137,6 +143,7 @@ package org.robotlegs.v2.experimental
 			instance.from(CommandFlowStart).after(Event.COMPLETE).execute(CommandA);
 			instance.from(CommandFlowStart).after(Event.CHANGE).execute(CommandB);
 			instance.fromAll(CommandA, CommandB).after(Event.CANCEL).execute(CommandC);
+			instance.initialize();
 			
 			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
 			eventDispatcher.dispatchEvent(new Event(Event.CHANGE));
@@ -151,6 +158,7 @@ package org.robotlegs.v2.experimental
 			instance.from(CommandFlowStart).after(Event.COMPLETE).execute(CommandA);
 			instance.from(CommandFlowStart).after(Event.CHANGE).execute(CommandB);
 			instance.fromAll(CommandA, CommandB).after(Event.CANCEL).execute(CommandC);
+			instance.initialize();
 			
 			eventDispatcher.dispatchEvent(new Event(Event.CHANGE));
 			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
@@ -165,6 +173,7 @@ package org.robotlegs.v2.experimental
 			instance.from(CommandFlowStart).after(Event.COMPLETE).execute(CommandA);
 			instance.from(CommandA).after(Event.CHANGE).execute(CommandB);
 			instance.from(CommandA).after(Event.CANCEL).execute(CommandC);
+			instance.initialize();
 			
 			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
 			eventDispatcher.dispatchEvent(new Event(Event.CHANGE));
@@ -179,6 +188,7 @@ package org.robotlegs.v2.experimental
 			instance.from(CommandFlowStart).after(Event.COMPLETE).execute(CommandA);
 			instance.from(CommandFlowStart).after(Event.CHANGE).execute(CommandB);
 			instance.fromAny(CommandA, CommandB).after(Event.CANCEL).execute(CommandC);
+			instance.initialize();
 			
 			eventDispatcher.dispatchEvent(new Event(Event.COMPLETE));
 			eventDispatcher.dispatchEvent(new Event(Event.CANCEL));
@@ -192,6 +202,7 @@ package org.robotlegs.v2.experimental
 			instance.from(CommandFlowStart).after(Event.COMPLETE).execute(CommandA);
 			instance.from(CommandFlowStart).after(Event.CHANGE).execute(CommandB);
 			instance.fromAny(CommandA, CommandB).after(Event.CANCEL).execute(CommandC);
+			instance.initialize();
 			
 			eventDispatcher.dispatchEvent(new Event(Event.CHANGE));
 			eventDispatcher.dispatchEvent(new Event(Event.CANCEL));

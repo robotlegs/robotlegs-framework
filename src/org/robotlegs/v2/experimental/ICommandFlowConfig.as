@@ -6,13 +6,11 @@
 //------------------------------------------------------------------------------
 
 package org.robotlegs.v2.experimental
-{
-	import org.robotlegs.v2.extensions.guardsAndHooks.api.IGuardsAndHooksConfig;
-	
+{	
 	public interface ICommandFlowConfig
 	{
-		function execute(commandClass:Class):IGuardsAndHooksConfig;
+		function execute(commandClass:Class):ICommandFlowConfig;
 		
-		function executeAll(...commandClassesList):IGuardsAndHooksConfig;
+		function executeAll(...commandClassesList):ICommandFlowConfig;
 	}
 }

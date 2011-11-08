@@ -18,11 +18,8 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import org.flexunit.asserts.assertEqualsVectorsIgnoringOrder;
 	import org.flexunit.async.Async;
 	import org.robotlegs.v2.core.impl.TypeMatcher;
-	import org.robotlegs.v2.extensions.guardsAndHooks.impl.GuardsProcessor;
-	import org.robotlegs.v2.extensions.guardsAndHooks.impl.HooksProcessor;
 	import org.robotlegs.v2.extensions.mediatorMap.impl.MediatorMap;
 	import org.robotlegs.v2.extensions.mediatorMap.impl.support.MediatorWatcher;
-	import org.robotlegs.v2.extensions.mediatorMap.support.DuckTypedRL1MediatorTrigger;
 	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.DuckTypedMediatorTrigger;
 	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.RL2MediatorTrigger;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewHandler;
@@ -44,11 +41,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 			injector = new Injector();
 
 			instance = new MediatorMap();
-			instance.hooksProcessor = new HooksProcessor();
-			instance.guardsProcessor = new GuardsProcessor();
 			instance.injector = injector;
-			instance.hooksProcessor = new HooksProcessor();
-			instance.guardsProcessor = new GuardsProcessor();
 			instance.loadTrigger(new DuckTypedMediatorTrigger(false));
 
 			mediatorWatcher = new MediatorWatcher();

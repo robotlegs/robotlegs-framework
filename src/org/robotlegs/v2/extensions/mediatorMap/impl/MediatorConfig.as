@@ -7,24 +7,54 @@
 
 package org.robotlegs.v2.extensions.mediatorMap.impl
 {
-	import org.robotlegs.v2.extensions.guardsAndHooks.impl.GuardsAndHooksConfig;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorConfig;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMapping;
+	import org.robotlegs.v2.extensions.guards.api.IGuardGroup;
+	import org.robotlegs.v2.extensions.hooks.api.IHookGroup;
+	import org.swiftsuspenders.Injector;
+	import org.robotlegs.v2.extensions.guards.impl.GuardGroup;
+	import org.robotlegs.v2.extensions.hooks.impl.HookGroup;
 
-	public class MediatorConfig extends GuardsAndHooksConfig implements IMediatorConfig
+	public class MediatorConfig implements IMediatorConfig
 	{
-
-		protected var _mapping:IMediatorMapping;
+		public function MediatorConfig(mapping:IMediatorMapping, injector:Injector)
+		{
+			_mapping = mapping;
+			_guards = new GuardGroup(injector);
+			_hooks = new HookGroup(injector);
+		}
+		
+		private var _mapping:IMediatorMapping;
 
 		public function get mapping():IMediatorMapping
 		{
 			return _mapping;
 		}
-
-		public function MediatorConfig(mapping:IMediatorMapping)
+		
+		private var _guards:IGuardGroup;
+		
+		public function get guards():IGuardGroup
 		{
-			_mapping = mapping;
+			return _guards;
+		}
+
+		private var _hooks:IHookGroup;
+
+		public function get hooks():IHookGroup
+		{
+			return _hooks;
+		}
+		
+		public function withGuards(... guardClasses):IMediatorConfig
+		{
+			_guards.add.apply(null, guardClasses);
+			return this;
+		}
+
+		public function withHooks(... hookClasses):IMediatorConfig
+		{
+			_hooks.add.apply(null, hookClasses);
+			return this;
 		}
 	}
-
 }

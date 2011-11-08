@@ -8,14 +8,14 @@
 package org.robotlegs.v2.extensions.mediatorMap.api
 {
 	import org.robotlegs.v2.core.api.ITypeMatcher;
-	import org.robotlegs.v2.extensions.guardsAndHooks.api.IGuardsAndHooksConfig;
+	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorConfig;
 
-	public interface IMediatorMapping extends IGuardsAndHooksConfig
+	public interface IMediatorMapping
 	{
 		function get mediator():Class;
 
-		function toMatcher(typeMatcher:ITypeMatcher):IGuardsAndHooksConfig;
+		function toMatcher(typeMatcher:ITypeMatcher):IMediatorConfig;
 
-		function toView(viewType:Class):IGuardsAndHooksConfig;
+		function toView(viewType:Class):IMediatorConfig;
 	}
 }

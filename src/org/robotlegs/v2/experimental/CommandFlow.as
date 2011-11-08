@@ -26,8 +26,9 @@ package org.robotlegs.v2.experimental
 		[Inject]
 		public var injector:Injector;
 		
-		public function CommandFlow()
+		public function initialize():void
 		{
+			checkIfMappingsShouldBeActive(_mappingsFrom[CommandFlowStart]);
 		}
 		
 		public function from(commandClass:Class):ICommandFlowMapping

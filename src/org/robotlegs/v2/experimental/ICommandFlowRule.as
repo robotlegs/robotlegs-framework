@@ -7,7 +7,6 @@
 
 package org.robotlegs.v2.experimental
 {
-	import org.robotlegs.v2.extensions.guardsAndHooks.api.IGuardsAndHooksConfig;
 	import flash.events.Event;
 
 	public interface ICommandFlowRule
