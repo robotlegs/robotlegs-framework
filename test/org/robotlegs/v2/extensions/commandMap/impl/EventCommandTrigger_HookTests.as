@@ -13,6 +13,7 @@ package org.robotlegs.v2.extensions.commandMap.impl
 	import org.robotlegs.v2.extensions.commandMap.support.SelfReportingCallbackHook;
 	import org.robotlegs.v2.extensions.commandMap.support.SupportEvent;
 
+	[Skip]
 	public class EventCommandTrigger_HookTests extends AbstractCommandMapTests
 	{
 
@@ -53,8 +54,9 @@ package org.robotlegs.v2.extensions.commandMap.impl
 			{
 				injectedCommand = hook.command;
 			});
-			commandMap.map(SelfReportingCallbackCommand)
-				.toEvent(SupportEvent.TYPE1)
+			commandMap
+				.mapEvent(SupportEvent.TYPE1)
+				.toCommand(SelfReportingCallbackCommand)
 				.withHooks(SelfReportingCallbackHook);
 			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
 			assertThat(injectedCommand, equalTo(executedCommand));
@@ -70,8 +72,9 @@ package org.robotlegs.v2.extensions.commandMap.impl
 			{
 				hookCallCount++;
 			});
-			commandMap.map(SelfReportingCallbackCommand)
-				.toEvent(SupportEvent.TYPE1)
+			commandMap
+				.mapEvent(SupportEvent.TYPE1)
+				.toCommand(SelfReportingCallbackCommand)
 				.withHooks(hooks);
 			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
 			return hookCallCount;

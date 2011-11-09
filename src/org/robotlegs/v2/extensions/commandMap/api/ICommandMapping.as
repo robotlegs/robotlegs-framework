@@ -18,6 +18,8 @@ package org.robotlegs.v2.extensions.commandMap.api
 
 		function get hooks():IHookGroup;
 
-		function unmap():ICommandUnmapper;
+		function withGuards(... guardClasses):ICommandMapping;
+
+		function withHooks(... hookClasses):ICommandMapping;
 	}
 }

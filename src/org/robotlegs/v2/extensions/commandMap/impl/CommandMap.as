@@ -7,57 +7,79 @@
 
 package org.robotlegs.v2.extensions.commandMap.impl
 {
+	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	import flash.utils.Dictionary;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandMap;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandMapper;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandMapping;
+	import org.robotlegs.v2.extensions.commandMap.api.ICommandTrigger;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandUnmapper;
 	import org.swiftsuspenders.Injector;
 
 	public class CommandMap implements ICommandMap
 	{
 
-		private const _mappings:Dictionary = new Dictionary();
+		private const mappers:Dictionary = new Dictionary();
 
-		private var _injector:Injector;
+		private const eventTriggers:Dictionary = new Dictionary();
 
-		private var _dispatcher:IEventDispatcher;
+		private var injector:Injector;
+
+		private var dispatcher:IEventDispatcher;
 
 		public function CommandMap(injector:Injector, dispatcher:IEventDispatcher):void
 		{
-			_injector = injector.createChildInjector();
-			_dispatcher = dispatcher;
+			this.injector = injector.createChildInjector();
+			this.dispatcher = dispatcher;
 		}
 
-		public function map(commandClass:Class):ICommandMapper
+		public function mapTrigger(trigger:ICommandTrigger):ICommandMapper
 		{
-			return _mappings[commandClass] ||= createMapping(commandClass);
+			return mappers[trigger] ||= createMapper(trigger);
 		}
 
-		public function unmap(commandClass:Class):ICommandUnmapper
+		public function mapEvent(type:String, eventClass:Class = null, once:Boolean = false):ICommandMapper
 		{
-			return _mappings[commandClass];
+			eventClass ||= Event;
+			const trigger:ICommandTrigger =
+				eventTriggers[type + eventClass] ||=
+				new EventCommandTrigger(injector, dispatcher, type, eventClass, once);
+			return mapTrigger(trigger);
 		}
 
-		public function unmapAll(commandClass:Class):void
+		public function unmapTrigger(trigger:ICommandTrigger):ICommandUnmapper
 		{
-			const mapping:ICommandMapping = _mappings[commandClass];
-			if (mapping)
-			{
-				delete _mappings[commandClass];
-				mapping.unmap().fromAll();
-			}
+			return mappers[trigger];
 		}
 
-		public function hasMapping(commandClass:Class):Boolean
+		public function unmapEvent(type:String, eventClass:Class = null):ICommandUnmapper
 		{
-			return _mappings[commandClass];
+			return unmapTrigger(getEventTrigger(type, eventClass));
 		}
 
-		private function createMapping(commandClass:Class):ICommandMapper
+		public function getTriggerMapping(trigger:ICommandTrigger, commandClass:Class):ICommandMapping
 		{
-			return new CommandMapping(_injector, _dispatcher, this, commandClass);
+			const mapper:CommandMapper = mappers[trigger];
+			return mapper ? mapper.forCommand(commandClass) : null;
+		}
+
+		public function getEventMapping(type:String, eventClass:Class, commandClass:Class):ICommandMapping
+		{
+			const trigger:ICommandTrigger = getEventTrigger(type, eventClass);
+			const mapper:CommandMapper = mappers[trigger];
+			return mapper ? mapper.forCommand(commandClass) : null;
+		}
+
+		private function createMapper(trigger:ICommandTrigger):ICommandMapper
+		{
+			return new CommandMapper(injector, trigger);
+		}
+
+		private function getEventTrigger(type:String, eventClass:Class = null):ICommandTrigger
+		{
+			eventClass ||= Event;
+			return eventTriggers[type + eventClass];
 		}
 	}
 }

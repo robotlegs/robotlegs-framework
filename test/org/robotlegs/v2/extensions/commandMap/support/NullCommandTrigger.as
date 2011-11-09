@@ -20,7 +20,7 @@ package org.robotlegs.v2.extensions.commandMap.support
 		{
 		}
 
-		public function unregister():void
+		public function unregister(mapping:ICommandMapping):void
 		{
 		}
 	}

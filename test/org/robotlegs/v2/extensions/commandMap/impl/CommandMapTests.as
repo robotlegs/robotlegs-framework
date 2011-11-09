@@ -9,15 +9,12 @@ package org.robotlegs.v2.extensions.commandMap.impl
 {
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.equalTo;
-	import org.hamcrest.object.isFalse;
-	import org.hamcrest.object.isTrue;
 	import org.hamcrest.object.notNullValue;
-	import org.robotlegs.v2.extensions.commandMap.api.ICommandMapper;
+	import org.hamcrest.object.nullValue;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandMapping;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandTrigger;
 	import org.robotlegs.v2.extensions.commandMap.support.CallbackCommandTrigger;
 	import org.robotlegs.v2.extensions.commandMap.support.NullCommand;
-	import org.robotlegs.v2.extensions.commandMap.support.NullCommandTrigger;
 	import org.robotlegs.v2.extensions.commandMap.support.SupportEvent;
 
 	public class CommandMapTests extends AbstractCommandMapTests
@@ -28,7 +25,7 @@ package org.robotlegs.v2.extensions.commandMap.impl
 		{
 			super.setUp();
 		}
-		
+
 		[After]
 		override public function tearDown():void
 		{
@@ -36,129 +33,73 @@ package org.robotlegs.v2.extensions.commandMap.impl
 		}
 
 		[Test]
-		public function map_creates_mapper():void
+		public function mapTrigger_creates_mapper():void
 		{
-			const mapping:ICommandMapper = commandMap.map(NullCommand);
-			assertThat(mapping, notNullValue());
+			assertThat(commandMap.mapTrigger(trigger), notNullValue());
 		}
 
 		[Test]
-		public function map_to_trigger_stores_mapping():void
+		public function mapEvent_creates_mapper():void
 		{
-			commandMap.map(NullCommand)
-				.toTrigger(new NullCommandTrigger());
-			assertThat(commandMap.hasMapping(NullCommand), isTrue());
+			assertThat(commandMap.mapEvent(SupportEvent.TYPE1, SupportEvent), notNullValue());
 		}
 
 		[Test]
-		public function map_to_event_stores_mapping():void
+		public function mapTrigger_to_command_stores_mapping():void
 		{
-			commandMap.map(NullCommand)
-				.toEvent(SupportEvent.TYPE1);
-			assertThat(commandMap.hasMapping(NullCommand), isTrue());
+			commandMap.mapTrigger(trigger).toCommand(NullCommand);
+			assertThat(commandMap.getTriggerMapping(trigger, NullCommand), notNullValue());
 		}
 
 		[Test]
-		public function unmap_trigger_removes_mapping():void
+		public function mapEvent_to_command_stores_mapping():void
 		{
-			const trigger:ICommandTrigger = new NullCommandTrigger();
-			commandMap.map(NullCommand).toTrigger(trigger);
-			commandMap.unmap(NullCommand).fromTrigger(trigger);
-			assertThat(commandMap.hasMapping(NullCommand), isFalse());
+			commandMap.mapEvent(SupportEvent.TYPE1, SupportEvent).toCommand(NullCommand);
+			assertThat(commandMap.getEventMapping(SupportEvent.TYPE1, SupportEvent, NullCommand), notNullValue());
 		}
 
 		[Test]
-		public function unmapAll_removes_mapping():void
+		public function unmapTrigger_from_command_removes_mapping():void
 		{
-			const trigger:ICommandTrigger = new NullCommandTrigger();
-			commandMap.map(NullCommand).toTrigger(trigger);
-			commandMap.unmapAll(NullCommand);
-			assertThat(commandMap.hasMapping(NullCommand), isFalse());
-		}
-		
-		[Test]
-		public function unmap_event_removes_mapping():void
-		{
-			commandMap.map(NullCommand).toEvent(SupportEvent.TYPE1);
-			commandMap.unmap(NullCommand).fromEvent(SupportEvent.TYPE1);
-			assertThat(commandMap.hasMapping(NullCommand), isFalse());
+			commandMap.mapTrigger(trigger).toCommand(NullCommand);
+			commandMap.unmapTrigger(trigger).fromCommand(NullCommand)
+			assertThat(commandMap.getTriggerMapping(trigger, NullCommand), nullValue());
 		}
 
 		[Test]
-		public function unmap_many_removes_mapping():void
+		public function unmapEvent_from_command_removes_mapping():void
 		{
-			const trigger1:ICommandTrigger = new NullCommandTrigger();
-			const trigger2:ICommandTrigger = new NullCommandTrigger();
-			const trigger3:ICommandTrigger = new NullCommandTrigger();
-			commandMap.map(NullCommand)
-				.toTrigger(trigger1)
-				.toTrigger(trigger2)
-				.toTrigger(trigger3);
-			commandMap.unmap(NullCommand)
-				.fromTrigger(trigger1)
-				.fromTrigger(trigger2)
-				.fromTrigger(trigger3);
-			assertThat(commandMap.hasMapping(NullCommand), isFalse());
+			commandMap.mapEvent(SupportEvent.TYPE1, SupportEvent).toCommand(NullCommand);
+			commandMap.unmapEvent(SupportEvent.TYPE1, SupportEvent).fromCommand(NullCommand);
+			assertThat(commandMap.getEventMapping(SupportEvent.TYPE1, SupportEvent, NullCommand), nullValue());
 		}
 
 		[Test]
-		public function unmapFromAll_removes_all_mappings():void
+		public function trigger_is_passed_mapping():void
 		{
-			commandMap.map(NullCommand)
-				.toTrigger(new NullCommandTrigger())
-				.toTrigger(new NullCommandTrigger())
-				.toTrigger(new NullCommandTrigger());
-			commandMap.unmap(NullCommand).fromAll();
-			assertThat(commandMap.hasMapping(NullCommand), isFalse());
-		}
-
-		[Test]
-		public function mapped_trigger_is_registered():void
-		{
-			var registerCallCount:int;
+			var addedCount:uint;
 			const trigger:ICommandTrigger = new CallbackCommandTrigger(
 				function(mapping:ICommandMapping):void
 				{
-					registerCallCount++;
+					addedCount++;
 				});
-			commandMap.map(NullCommand).toTrigger(trigger);
-			assertThat(registerCallCount, equalTo(1));
+			commandMap.mapTrigger(trigger).toCommand(NullCommand);
+			assertThat(addedCount, equalTo(1));
 		}
 
 		[Test]
-		public function unmap_trigger_is_unregistered():void
+		public function trigger_is_passed_mapping_for_removal():void
 		{
-			var unregisterCallCount:int;
+			var removedCount:uint;
 			const trigger:ICommandTrigger = new CallbackCommandTrigger(
 				null,
-				function():void
+				function(mapping:ICommandMapping):void
 				{
-					unregisterCallCount++;
+					removedCount++;
 				});
-			commandMap.map(NullCommand).toTrigger(trigger);
-			commandMap.unmap(NullCommand).fromTrigger(trigger);
-			assertThat(unregisterCallCount, equalTo(1));
-		}
-
-		[Test]
-		public function unmapAll_causes_triggers_to_be_unregistered():void
-		{
-			var unregisterCallCount:int;
-			const trigger:ICommandTrigger = new CallbackCommandTrigger(
-				null,
-				function():void
-				{
-					unregisterCallCount++;
-				});
-			commandMap.map(NullCommand).toTrigger(trigger);
-			commandMap.unmapAll(NullCommand);
-			assertThat(unregisterCallCount, equalTo(1));
-		}
-
-		[Test(expects="Error")]
-		public function mapping_null_trigger_throws_error():void
-		{
-			commandMap.map(NullCommand).toTrigger(null);
+			commandMap.mapTrigger(trigger).toCommand(NullCommand);
+			commandMap.unmapTrigger(trigger).fromCommand(NullCommand);
+			assertThat(removedCount, equalTo(1));
 		}
 	}
 }

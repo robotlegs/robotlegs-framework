@@ -7,7 +7,6 @@
 
 package org.robotlegs.v2.extensions.commandMap.impl
 {
-	import flash.errors.IllegalOperationError;
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	import flash.utils.describeType;
@@ -17,104 +16,100 @@ package org.robotlegs.v2.extensions.commandMap.impl
 
 	public class EventCommandTrigger implements ICommandTrigger
 	{
-		private var _injector:Injector;
+		private const mappings:Vector.<ICommandMapping> = new Vector.<ICommandMapping>;
 
-		private var _dispatcher:IEventDispatcher;
+		private var injector:Injector;
 
-		private var _type:String;
+		private var dispatcher:IEventDispatcher;
 
-		private var _eventClass:Class;
+		private var type:String;
 
-		private var _oneshot:Boolean;
+		private var eventClass:Class;
 
-		private var _mapping:ICommandMapping;
+		private var once:Boolean;
 
 		public function EventCommandTrigger(
 			injector:Injector,
 			dispatcher:IEventDispatcher,
 			type:String,
 			eventClass:Class,
-			oneshot:Boolean)
+			once:Boolean = false)
 		{
-			_injector = injector;
-			_dispatcher = dispatcher;
-			_type = type;
-			_eventClass = eventClass;
-			_oneshot = oneshot;
+			this.injector = injector;
+			this.dispatcher = dispatcher;
+			this.type = type;
+			this.eventClass = eventClass;
+			this.once = once;
 		}
 
-		public function register(mapping:ICommandMapping):void
+		public function addMapping(mapping:ICommandMapping):void
 		{
-			_mapping && throwAlreadyRegistered();
-			_mapping = mapping;
-			verifyCommandClass();
-			addListener();
+			verifyCommandClass(mapping);
+			mappings.push(mapping);
+			if (mappings.length == 1)
+				addListener();
 		}
 
-		public function unregister():void
+		public function removeMapping(mapping:ICommandMapping):void
 		{
-			_mapping || throwNotRegistered();
-			removeListener();
-			_mapping = null;
+			const index:int = mappings.indexOf(mapping);
+			if (index != -1)
+			{
+				mappings.splice(index, 1);
+				if (mappings.length == 0)
+					removeListener();
+			}
 		}
 
-		private function verifyCommandClass():void
+		private function verifyCommandClass(mapping:ICommandMapping):void
 		{
-			if (describeType(_mapping.commandClass).factory.method.(@name == "execute").length() == 0)
+			if (describeType(mapping.commandClass).factory.method.(@name == "execute").length() == 0)
 				throw new Error("Command Class must expose an execute method");
 		}
 
 		private function addListener():void
 		{
-			_dispatcher.addEventListener(_type, handleEvent);
+			dispatcher.addEventListener(type, handleEvent);
 		}
 
 		private function removeListener():void
 		{
-			_dispatcher.removeEventListener(_type, handleEvent);
+			dispatcher.removeEventListener(type, handleEvent);
 		}
 
 		private function handleEvent(event:Event):void
 		{
 			// check strongly-typed event (if specified)
-			if (_eventClass && _eventClass != Event && _eventClass != event["constructor"])
+			if (eventClass && eventClass != Event && eventClass != event["constructor"])
 				return;
 
 			// map the event for injection
-			_injector.map(Event).toValue(event);
+			injector.map(Event).toValue(event);
 
 			// map the strongly typed event for injection
-			if (_eventClass && _eventClass != Event)
-				_injector.map(_eventClass).toValue(event);
+			if (eventClass && eventClass != Event)
+				injector.map(eventClass).toValue(event);
 
-			// execute the command if allowed
-			if (_mapping.guards.approve())
+			for each (var mapping:ICommandMapping in mappings)
 			{
-				_injector.map(_mapping.commandClass).asSingleton();
-				_mapping.hooks.hook();
-				_injector.getInstance(_mapping.commandClass).execute();
-				_injector.unmap(_mapping.commandClass);
+				// execute the command if allowed
+				if (mapping.guards.approve())
+				{
+					injector.map(mapping.commandClass).asSingleton();
+					mapping.hooks.hook();
+					injector.getInstance(mapping.commandClass).execute();
+					injector.unmap(mapping.commandClass);
+					// question - should this be fromAll()?
+					once && removeMapping(mapping);
+				}
 			}
 
 			// unmap the event
-			_injector.unmap(Event);
+			injector.unmap(Event);
 
 			// unmap the strongly-typed event
-			if (_eventClass && _eventClass != Event)
-				_injector.unmap(_eventClass);
-
-			// question - should this be fromAll()?
-			_oneshot && _mapping.unmap().fromTrigger(this);
-		}
-
-		private function throwAlreadyRegistered():void
-		{
-			throw new IllegalOperationError("trigger has already been registered");
-		}
-
-		private function throwNotRegistered():void
-		{
-			throw new IllegalOperationError("trigger has not been registered");
+			if (eventClass && eventClass != Event)
+				injector.unmap(eventClass);
 		}
 	}
 }

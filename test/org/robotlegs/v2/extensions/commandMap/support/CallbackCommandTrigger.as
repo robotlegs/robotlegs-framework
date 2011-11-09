@@ -22,14 +22,14 @@ package org.robotlegs.v2.extensions.commandMap.support
 			_unregisterCallback = unregisterCallback;
 		}
 
-		public function register(mapping:ICommandMapping):void
+		public function addMapping(mapping:ICommandMapping):void
 		{
 			_registerCallback && _registerCallback(mapping);
 		}
 
-		public function unregister():void
+		public function removeMapping(mapping:ICommandMapping):void
 		{
-			_unregisterCallback && _unregisterCallback();
+			_unregisterCallback && _unregisterCallback(mapping);
 		}
 	}
 }
