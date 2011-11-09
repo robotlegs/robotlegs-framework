@@ -8,20 +8,11 @@
 package suites
 {
 	import org.robotlegs.v2.extensions.commandMap.impl.CommandMapTests;
-	import org.robotlegs.v2.extensions.commandMap.impl.EventCommandTrigger_GuardTests;
-	import org.robotlegs.v2.extensions.commandMap.impl.EventCommandTrigger_HookTests;
-	import org.robotlegs.v2.extensions.commandMap.impl.EventCommandTrigger_BasicTests;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
 	public class CommandMapTestSuite
 	{
 		public var commandMapTests:CommandMapTests;
-
-		public var eventCommandTriggerTests:EventCommandTrigger_BasicTests;
-
-		public var eventCommandTriggerGuardTests:EventCommandTrigger_GuardTests;
-
-		public var eventCommandTriggerHookTests:EventCommandTrigger_HookTests;
 	}
 }

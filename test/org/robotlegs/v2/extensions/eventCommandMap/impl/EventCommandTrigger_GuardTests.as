@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.commandMap.impl
+package org.robotlegs.v2.extensions.eventCommandMap.impl
 {
 	import flash.events.Event;
 	import org.hamcrest.assertThat;
@@ -13,25 +13,12 @@ package org.robotlegs.v2.extensions.commandMap.impl
 	import org.robotlegs.v2.extensions.commandMap.support.CallbackCommand;
 	import org.robotlegs.v2.extensions.commandMap.support.NullCommand;
 	import org.robotlegs.v2.extensions.commandMap.support.SelfReportingCallbackGuard;
-	import org.robotlegs.v2.extensions.commandMap.support.SupportEvent;
+	import org.robotlegs.v2.extensions.eventCommandMap.support.SupportEvent;
 	import org.robotlegs.v2.extensions.guards.support.GrumpyGuard;
 	import org.robotlegs.v2.extensions.guards.support.HappyGuard;
 
-	[Skip]
-	public class EventCommandTrigger_GuardTests extends AbstractCommandMapTests
+	public class EventCommandTrigger_GuardTests extends AbstractEventCommandMapTests
 	{
-
-		[Before]
-		override public function setUp():void
-		{
-			super.setUp();
-		}
-
-		[After]
-		override public function tearDown():void
-		{
-			super.tearDown();
-		}
 
 		[Test]
 		public function command_executes_when_the_guard_allows():void
@@ -71,8 +58,8 @@ package org.robotlegs.v2.extensions.commandMap.impl
 			{
 				injectedEvent = guard.event;
 			});
-			commandMap
-				.mapEvent(SupportEvent.TYPE1)
+			eventCommandMap
+				.map(SupportEvent.TYPE1)
 				.toCommand(NullCommand)
 				.withGuards(SelfReportingCallbackGuard);
 			const event:SupportEvent = new SupportEvent(SupportEvent.TYPE1);
@@ -87,8 +74,8 @@ package org.robotlegs.v2.extensions.commandMap.impl
 			{
 				executionCount++;
 			});
-			commandMap
-				.mapEvent(SupportEvent.TYPE1)
+			eventCommandMap
+				.map(SupportEvent.TYPE1)
 				.toCommand(CallbackCommand)
 				.withGuards(guards);
 			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));

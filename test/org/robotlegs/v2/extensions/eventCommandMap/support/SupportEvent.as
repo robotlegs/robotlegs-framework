@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.commandMap.support
+package org.robotlegs.v2.extensions.eventCommandMap.support
 {
 	import flash.events.Event;
 

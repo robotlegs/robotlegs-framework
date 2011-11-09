@@ -5,37 +5,24 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.commandMap.impl
+package org.robotlegs.v2.extensions.eventCommandMap.impl
 {
 	import flash.events.Event;
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.equalTo;
 	import org.robotlegs.v2.extensions.commandMap.support.CallbackCommand;
 	import org.robotlegs.v2.extensions.commandMap.support.SelfReportingCallbackCommand;
-	import org.robotlegs.v2.extensions.commandMap.support.SupportEvent;
+	import org.robotlegs.v2.extensions.eventCommandMap.support.SupportEvent;
 
-	[Skip]
-	public class EventCommandTrigger_BasicTests extends AbstractCommandMapTests
+	public class EventCommandTrigger_BasicTests extends AbstractEventCommandMapTests
 	{
-
-		[Before]
-		override public function setUp():void
-		{
-			super.setUp();
-		}
-
-		[After]
-		override public function tearDown():void
-		{
-			super.tearDown();
-		}
 
 		[Test(expects="Error")]
 		public function mapping_nonCommandClass_to_event_should_throw_error():void
 		{
 			// NOTE: we do this here, not in the CommandMap itself
 			// Some triggers don't require an execute() method
-			commandMap.mapEvent(SupportEvent.TYPE1).toCommand(Object);
+			eventCommandMap.map(SupportEvent.TYPE1).toCommand(Object);
 		}
 
 		[Test]
@@ -64,7 +51,7 @@ package org.robotlegs.v2.extensions.commandMap.impl
 			{
 				injectedEvent = command.event;
 			});
-			commandMap.mapEvent(SupportEvent.TYPE1)
+			eventCommandMap.map(SupportEvent.TYPE1)
 				.toCommand(SelfReportingCallbackCommand);
 			const event:SupportEvent = new SupportEvent(SupportEvent.TYPE1);
 			dispatcher.dispatchEvent(event);
@@ -79,7 +66,7 @@ package org.robotlegs.v2.extensions.commandMap.impl
 			{
 				injectedEvent = command.typedEvent;
 			});
-			commandMap.mapEvent(SupportEvent.TYPE1, SupportEvent)
+			eventCommandMap.map(SupportEvent.TYPE1, SupportEvent)
 				.toCommand(SupportEventTriggeredSelfReportingCallbackCommand);
 			const event:SupportEvent = new SupportEvent(SupportEvent.TYPE1);
 			dispatcher.dispatchEvent(event);
@@ -94,7 +81,7 @@ package org.robotlegs.v2.extensions.commandMap.impl
 			{
 				executeCount++;
 			});
-			commandMap.mapEvent(SupportEvent.TYPE1).toCommand(CallbackCommand);
+			eventCommandMap.map(SupportEvent.TYPE1).toCommand(CallbackCommand);
 			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE2));
 			assertThat(executeCount, equalTo(0));
 		}
@@ -107,7 +94,7 @@ package org.robotlegs.v2.extensions.commandMap.impl
 			{
 				executeCount++;
 			});
-			commandMap.mapEvent(SupportEvent.TYPE1, SupportEvent).toCommand(CallbackCommand);
+			eventCommandMap.map(SupportEvent.TYPE1, SupportEvent).toCommand(CallbackCommand);
 			dispatcher.dispatchEvent(new Event(SupportEvent.TYPE1));
 			assertThat(executeCount, equalTo(0));
 		}
@@ -120,8 +107,8 @@ package org.robotlegs.v2.extensions.commandMap.impl
 			{
 				executeCount++;
 			});
-			commandMap.mapEvent(SupportEvent.TYPE1, SupportEvent).toCommand(CallbackCommand);
-			commandMap.unmapEvent(SupportEvent.TYPE1, SupportEvent).fromCommand(CallbackCommand);
+			eventCommandMap.map(SupportEvent.TYPE1, SupportEvent).toCommand(CallbackCommand);
+			eventCommandMap.unmap(SupportEvent.TYPE1, SupportEvent).fromCommand(CallbackCommand);
 			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
 			assertThat(executeCount, equalTo(0));
 		}
@@ -133,7 +120,7 @@ package org.robotlegs.v2.extensions.commandMap.impl
 			{
 				executeCount++;
 			});
-			commandMap.mapEvent(SupportEvent.TYPE1, SupportEvent, oneshot).toCommand(CallbackCommand);
+			eventCommandMap.map(SupportEvent.TYPE1, SupportEvent, oneshot).toCommand(CallbackCommand);
 			while (totalEvents--)
 			{
 				dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
@@ -149,7 +136,7 @@ package org.robotlegs.v2.extensions.commandMap.impl
 }
 
 import flash.events.Event;
-import org.robotlegs.v2.extensions.commandMap.support.SupportEvent;
+import org.robotlegs.v2.extensions.eventCommandMap.support.SupportEvent;
 
 class SupportEventTriggeredSelfReportingCallbackCommand
 {

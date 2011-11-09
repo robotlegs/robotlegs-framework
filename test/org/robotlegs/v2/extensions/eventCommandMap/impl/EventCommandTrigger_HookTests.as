@@ -5,29 +5,16 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.commandMap.impl
+package org.robotlegs.v2.extensions.eventCommandMap.impl
 {
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.equalTo;
 	import org.robotlegs.v2.extensions.commandMap.support.SelfReportingCallbackCommand;
 	import org.robotlegs.v2.extensions.commandMap.support.SelfReportingCallbackHook;
-	import org.robotlegs.v2.extensions.commandMap.support.SupportEvent;
+	import org.robotlegs.v2.extensions.eventCommandMap.support.SupportEvent;
 
-	[Skip]
-	public class EventCommandTrigger_HookTests extends AbstractCommandMapTests
+	public class EventCommandTrigger_HookTests extends AbstractEventCommandMapTests
 	{
-
-		[Before]
-		override public function setUp():void
-		{
-			super.setUp();
-		}
-
-		[After]
-		override public function tearDown():void
-		{
-			super.tearDown();
-		}
 
 		[Test]
 		public function the_hook_is_called():void
@@ -54,8 +41,8 @@ package org.robotlegs.v2.extensions.commandMap.impl
 			{
 				injectedCommand = hook.command;
 			});
-			commandMap
-				.mapEvent(SupportEvent.TYPE1)
+			eventCommandMap
+				.map(SupportEvent.TYPE1)
 				.toCommand(SelfReportingCallbackCommand)
 				.withHooks(SelfReportingCallbackHook);
 			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
@@ -72,8 +59,8 @@ package org.robotlegs.v2.extensions.commandMap.impl
 			{
 				hookCallCount++;
 			});
-			commandMap
-				.mapEvent(SupportEvent.TYPE1)
+			eventCommandMap
+				.map(SupportEvent.TYPE1)
 				.toCommand(SelfReportingCallbackCommand)
 				.withHooks(hooks);
 			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));

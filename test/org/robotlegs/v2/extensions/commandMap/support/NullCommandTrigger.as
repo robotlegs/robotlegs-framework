@@ -16,11 +16,11 @@ package org.robotlegs.v2.extensions.commandMap.support
 		{
 		}
 
-		public function register(mapping:ICommandMapping):void
+		public function addMapping(mapping:ICommandMapping):void
 		{
 		}
 
-		public function unregister(mapping:ICommandMapping):void
+		public function removeMapping(mapping:ICommandMapping):void
 		{
 		}
 	}

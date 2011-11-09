@@ -7,7 +7,6 @@
 
 package suites
 {
-import suites.UtilityPackageFunctionsSuite;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
@@ -15,6 +14,8 @@ import suites.UtilityPackageFunctionsSuite;
 	{
 
 		public var commandMapTestSuite:CommandMapTestSuite;
+
+		public var eventCommandMapTestSuite:EventCommandMapTestSuite;
 
 		public var contextBuilderTestSuite:ContextBuilderTestSuite;
 
@@ -25,15 +26,15 @@ import suites.UtilityPackageFunctionsSuite;
 		public var utilityPackageTestSuite:UtilityPackageFunctionsSuite;
 
 		public var mediatorMapTestSuite:MediatorMapTestSuite;
-		
+
 		public var viewManagerTestSuite:ViewManagerTestSuite;
 
 		public var eventMapTestSuite:EventMapTestSuite;
-		
+
 		public var commandFlowTestSuite:CommandFlowTestSuite;
-		
+
 		public var guardsTestSuite:GuardsTestSuite;
-		
+
 		public var hooksTestSuite:HooksTestSuite;
 	}
 }

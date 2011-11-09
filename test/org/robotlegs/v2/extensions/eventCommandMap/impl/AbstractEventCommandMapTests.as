@@ -5,31 +5,31 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.commandMap.impl
+package org.robotlegs.v2.extensions.eventCommandMap.impl
 {
 	import flash.events.EventDispatcher;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandMap;
-	import org.robotlegs.v2.extensions.commandMap.api.ICommandTrigger;
-	import org.robotlegs.v2.extensions.commandMap.support.SupportEvent;
+	import org.robotlegs.v2.extensions.commandMap.impl.CommandMap;
+	import org.robotlegs.v2.extensions.eventCommandMap.api.IEventCommandMap;
 	import org.swiftsuspenders.Injector;
 
-	public class AbstractCommandMapTests
+	public class AbstractEventCommandMapTests
 	{
-		protected var commandMap:ICommandMap;
-
 		protected var injector:Injector;
 
 		protected var dispatcher:EventDispatcher;
 
-		protected var trigger:ICommandTrigger;
+		protected var eventCommandMap:IEventCommandMap;
+
+		private var commandMap:ICommandMap;
 
 		[Before]
 		public function setUp():void
 		{
 			injector = new Injector();
-			dispatcher = new EventDispatcher()
-			commandMap = new CommandMap(injector, dispatcher);
-			trigger = new EventCommandTrigger(injector, dispatcher, SupportEvent.TYPE1, SupportEvent);
+			dispatcher = new EventDispatcher();
+			commandMap = new CommandMap(injector);
+			eventCommandMap = new EventCommandMap(injector, dispatcher, commandMap);
 		}
 
 		[After]
@@ -38,6 +38,7 @@ package org.robotlegs.v2.extensions.commandMap.impl
 			injector = null;
 			dispatcher = null;
 			commandMap = null;
+			eventCommandMap = null;
 		}
 	}
 }
