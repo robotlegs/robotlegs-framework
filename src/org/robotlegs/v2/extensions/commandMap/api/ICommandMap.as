@@ -18,8 +18,8 @@ package org.robotlegs.v2.extensions.commandMap.api
 
 		function unmapEvent(type:String, eventClass:Class = null):ICommandUnmapper;
 
-		function getTriggerMapping(trigger:ICommandTrigger, commandClass:Class):ICommandMapping;
+		function getTriggerMapping(trigger:ICommandTrigger):ICommandMappingFinder;
 
-		function getEventMapping(type:String, eventClass:Class, commandClass:Class):ICommandMapping;
+		function getEventMapping(type:String, eventClass:Class):ICommandMappingFinder;
 	}
 }

@@ -48,14 +48,14 @@ package org.robotlegs.v2.extensions.commandMap.impl
 		public function mapTrigger_to_command_stores_mapping():void
 		{
 			commandMap.mapTrigger(trigger).toCommand(NullCommand);
-			assertThat(commandMap.getTriggerMapping(trigger, NullCommand), notNullValue());
+			assertThat(commandMap.getTriggerMapping(trigger).forCommand(NullCommand), notNullValue());
 		}
 
 		[Test]
 		public function mapEvent_to_command_stores_mapping():void
 		{
 			commandMap.mapEvent(SupportEvent.TYPE1, SupportEvent).toCommand(NullCommand);
-			assertThat(commandMap.getEventMapping(SupportEvent.TYPE1, SupportEvent, NullCommand), notNullValue());
+			assertThat(commandMap.getEventMapping(SupportEvent.TYPE1, SupportEvent).forCommand(NullCommand), notNullValue());
 		}
 
 		[Test]
@@ -63,7 +63,7 @@ package org.robotlegs.v2.extensions.commandMap.impl
 		{
 			commandMap.mapTrigger(trigger).toCommand(NullCommand);
 			commandMap.unmapTrigger(trigger).fromCommand(NullCommand)
-			assertThat(commandMap.getTriggerMapping(trigger, NullCommand), nullValue());
+			assertThat(commandMap.getTriggerMapping(trigger).forCommand(NullCommand), nullValue());
 		}
 
 		[Test]
@@ -71,7 +71,7 @@ package org.robotlegs.v2.extensions.commandMap.impl
 		{
 			commandMap.mapEvent(SupportEvent.TYPE1, SupportEvent).toCommand(NullCommand);
 			commandMap.unmapEvent(SupportEvent.TYPE1, SupportEvent).fromCommand(NullCommand);
-			assertThat(commandMap.getEventMapping(SupportEvent.TYPE1, SupportEvent, NullCommand), nullValue());
+			assertThat(commandMap.getEventMapping(SupportEvent.TYPE1, SupportEvent).forCommand(NullCommand), nullValue());
 		}
 
 		[Test]

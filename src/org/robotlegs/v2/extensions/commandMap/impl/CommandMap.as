@@ -12,7 +12,7 @@ package org.robotlegs.v2.extensions.commandMap.impl
 	import flash.utils.Dictionary;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandMap;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandMapper;
-	import org.robotlegs.v2.extensions.commandMap.api.ICommandMapping;
+	import org.robotlegs.v2.extensions.commandMap.api.ICommandMappingFinder;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandTrigger;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandUnmapper;
 	import org.swiftsuspenders.Injector;
@@ -58,17 +58,15 @@ package org.robotlegs.v2.extensions.commandMap.impl
 			return unmapTrigger(getEventTrigger(type, eventClass));
 		}
 
-		public function getTriggerMapping(trigger:ICommandTrigger, commandClass:Class):ICommandMapping
+		public function getTriggerMapping(trigger:ICommandTrigger):ICommandMappingFinder
 		{
-			const mapper:CommandMapper = mappers[trigger];
-			return mapper ? mapper.forCommand(commandClass) : null;
+			return mappers[trigger];
 		}
 
-		public function getEventMapping(type:String, eventClass:Class, commandClass:Class):ICommandMapping
+		public function getEventMapping(type:String, eventClass:Class):ICommandMappingFinder
 		{
 			const trigger:ICommandTrigger = getEventTrigger(type, eventClass);
-			const mapper:CommandMapper = mappers[trigger];
-			return mapper ? mapper.forCommand(commandClass) : null;
+			return mappers[trigger];
 		}
 
 		private function createMapper(trigger:ICommandTrigger):ICommandMapper

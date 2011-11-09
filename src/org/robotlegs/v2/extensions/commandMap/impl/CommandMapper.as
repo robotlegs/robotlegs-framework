@@ -10,11 +10,12 @@ package org.robotlegs.v2.extensions.commandMap.impl
 	import flash.utils.Dictionary;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandMapper;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandMapping;
+	import org.robotlegs.v2.extensions.commandMap.api.ICommandMappingFinder;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandTrigger;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandUnmapper;
 	import org.swiftsuspenders.Injector;
 
-	public class CommandMapper implements ICommandMapper, ICommandUnmapper
+	public class CommandMapper implements ICommandMapper, ICommandUnmapper, ICommandMappingFinder
 	{
 		private const mappings:Dictionary = new Dictionary();
 
@@ -36,7 +37,7 @@ package org.robotlegs.v2.extensions.commandMap.impl
 		public function fromCommand(commandClass:Class):ICommandMapping
 		{
 			const mapping:ICommandMapping = mappings[commandClass];
-			trigger.removeMapping(mapping);
+			mapping && trigger.removeMapping(mapping);
 			delete mappings[commandClass];
 			return mapping;
 		}
