@@ -7,10 +7,9 @@
 
 package org.robotlegs.v2.extensions.logging
 {
-	import org.as3commons.logging.api.ILogger;
-	import org.as3commons.logging.api.getLogger;
 	import org.robotlegs.v2.core.api.IContext;
 	import org.robotlegs.v2.core.api.IContextExtension;
+	import org.robotlegs.v2.core.api.ILogger;
 	import org.swiftsuspenders.InjectionEvent;
 	import org.swiftsuspenders.Injector;
 	import org.swiftsuspenders.MappingEvent;
@@ -18,13 +17,15 @@ package org.robotlegs.v2.extensions.logging
 	public class InjectorLoggingExtension implements IContextExtension
 	{
 
-		private static const logger:ILogger = getLogger(InjectorLoggingExtension);
-
 		private var context:IContext;
-		
+
+		private var logger:ILogger;
+
 		public function install(context:IContext):void
 		{
 			this.context = context;
+			// todo: fixme
+			logger = context.logger;
 			const injector:Injector = context.injector;
 			injector.addEventListener(InjectionEvent.POST_CONSTRUCT, onInjectionEvent);
 			injector.addEventListener(InjectionEvent.POST_INSTANTIATE, onInjectionEvent);

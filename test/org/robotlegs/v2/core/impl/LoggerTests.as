@@ -10,8 +10,8 @@ package org.robotlegs.v2.core.impl
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.equalTo;
 	import org.robotlegs.v2.core.api.ILogger;
-	import org.robotlegs.v2.core.api.ILoggingTarget;
-	import org.robotlegs.v2.core.impl.support.CallbackLoggingTarget;
+	import org.robotlegs.v2.core.api.ILogTarget;
+	import org.robotlegs.v2.core.impl.support.CallbackLogTarget;
 
 	public class LoggerTests
 	{
@@ -82,21 +82,33 @@ package org.robotlegs.v2.core.impl
 			assertThat(info.timesCalled, equalTo(1));
 		}
 
-		private function createReportingLogger(info:LogInfo, name:String = 'test', level:uint = 32):ILogger
+		[Test]
+		public function logger_does_not_throw_error_for_null_target():void
 		{
-			const target:ILoggingTarget = createReportingTarget(info, level);
-			return new Logger(target, name);
+			const logger:ILogger = new Logger('test');
+			logger.debug('');
+			logger.info('');
+			logger.warn('');
+			logger.error('');
+			logger.fatal('');
 		}
 
-		private function createReportingTarget(info:LogInfo, level:uint = 32):ILoggingTarget
+		private function createReportingLogger(info:LogInfo, name:String = 'test', level:uint = 32):ILogger
 		{
-			return new CallbackLoggingTarget(
+			const target:ILogTarget = createReportingTarget(info, level);
+			return new Logger(name, target);
+		}
+
+		private function createReportingTarget(info:LogInfo, level:uint = 32):ILogTarget
+		{
+			return new CallbackLogTarget(
 				level,
-				function(name:String, level:int, message:*, parameters:Array = null):void
+				function(name:String, level:int, time:Number, message:*, parameters:Array = null):void
 				{
 					info.timesCalled++;
 					info.name = name;
 					info.level = level;
+					info.time = time;
 					info.message = message;
 					info.parameters = parameters;
 				});
@@ -111,6 +123,8 @@ class LogInfo
 	public var name:String;
 
 	public var level:uint;
+
+	public var time:Number;
 
 	public var message:*;
 

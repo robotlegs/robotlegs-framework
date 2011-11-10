@@ -11,13 +11,13 @@ package org.robotlegs.v2.core.impl
 	import flash.errors.IllegalOperationError;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
-	import org.as3commons.logging.api.ILogger;
-	import org.as3commons.logging.api.getLogger;
 	import org.robotlegs.v2.core.api.ContextBuilderEvent;
 	import org.robotlegs.v2.core.api.IContext;
 	import org.robotlegs.v2.core.api.IContextBuilder;
 	import org.robotlegs.v2.core.api.IContextBuilderBundle;
 	import org.robotlegs.v2.core.api.IContextPreProcessor;
+	import org.robotlegs.v2.core.api.ILogTarget;
+	import org.robotlegs.v2.core.api.ILogger;
 	import org.swiftsuspenders.Injector;
 
 	[Event(name="contextBuildComplete", type="org.robotlegs.v2.core.api.ContextBuilderEvent")]
@@ -28,13 +28,13 @@ package org.robotlegs.v2.core.impl
 
 		protected const _id:String = 'ContextBuilder' + counter++;
 
-		protected var buildLocked:Boolean;
-
 		protected const context:IContext = new Context();
 
-		protected const logger:ILogger = getLogger(_id);
+		protected const logger:ILogger = new Logger(_id);
 
 		protected const preProcessorClasses:Vector.<Class> = new Vector.<Class>;
+
+		protected var buildLocked:Boolean;
 
 		public function ContextBuilder()
 		{
@@ -110,6 +110,14 @@ package org.robotlegs.v2.core.impl
 			buildLocked && throwBuildLockedError();
 			if (preProcessorClasses.indexOf(preProcessorClass) == -1)
 				preProcessorClasses.push(preProcessorClass);
+			return this;
+		}
+
+		public function withLogTarget(target:ILogTarget):IContextBuilder
+		{
+			logger.target = target;
+			logger.info('setting log target: {0}', [target]);
+			context.logger.target = target;
 			return this;
 		}
 

@@ -9,32 +9,33 @@ package org.robotlegs.v2.extensions.autoDestroy
 {
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
-	import org.as3commons.logging.api.ILogger;
-	import org.as3commons.logging.api.getLogger;
 	import org.robotlegs.v2.core.api.IContext;
 	import org.robotlegs.v2.core.api.IContextExtension;
+	import org.robotlegs.v2.core.api.ILogger;
+	import org.robotlegs.v2.core.impl.Logger;
 
 	public class AutoDestroyExtension implements IContextExtension
 	{
-
-		private static const logger:ILogger = getLogger(AutoDestroyExtension);
 
 		private var context:IContext;
 
 		private var contextView:DisplayObjectContainer;
 
+		private var logger:ILogger;
+
 		public function install(context:IContext):void
 		{
 			this.context = context;
+			logger = new Logger(context.id + ' AutoDestroyExtension', context.logger.target);
 			contextView = context.contextView;
 			if (contextView)
 			{
-				logger.info('installing AutoDestroyExtension into {0}', [context]);
+				logger.info('adding REMOVED_FROM_STAGE listener to contextView');
 				contextView.addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
 			}
 			else
 			{
-				logger.warn('an AutoDestroyExtension was installed into {0}, but the contextView is null. Consider removing this extension.', [context]);
+				logger.warn('extension installed, but the contextView is null. Consider removing this extension.');
 			}
 		}
 
@@ -44,16 +45,16 @@ package org.robotlegs.v2.extensions.autoDestroy
 
 		public function uninstall():void
 		{
-			logger.info('uninstalling AutoDestroyExtension from {0}', [context]);
 			if (contextView)
 			{
+				logger.info('removing REMOVED_FROM_STAGE listener from contextView');
 				contextView.removeEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
 			}
 		}
 
 		private function onRemovedFromStage(event:Event):void
 		{
-			logger.info('contextView was removed from stage, destroying context {0}', [context]);
+			logger.info('contextView was removed from stage, destroying context');
 			contextView.removeEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
 			context.destroy();
 		}

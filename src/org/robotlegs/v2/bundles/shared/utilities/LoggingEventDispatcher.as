@@ -9,17 +9,17 @@ package org.robotlegs.v2.bundles.shared.utilities
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import org.as3commons.logging.api.ILogger;
-	import org.as3commons.logging.api.getLogger;
+	import org.robotlegs.v2.core.api.ILogger;
 
 	public class LoggingEventDispatcher extends EventDispatcher
 	{
+		private var logger:ILogger;
 
-		protected static const logger:ILogger = getLogger(LoggingEventDispatcher);
-
-		public function LoggingEventDispatcher()
+		public function LoggingEventDispatcher(logger:ILogger)
 		{
 			super();
+			// todo: fixme
+			this.logger = logger;
 		}
 
 		override public function addEventListener(type:String, listener:Function, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = false):void

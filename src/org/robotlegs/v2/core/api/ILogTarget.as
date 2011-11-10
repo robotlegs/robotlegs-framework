@@ -8,12 +8,12 @@
 package org.robotlegs.v2.core.api
 {
 
-	public interface ILoggingTarget
+	public interface ILogTarget
 	{
 		function get level():uint;
 
 		function set level(value:uint):void;
 
-		function log(name:String, level:int, message:*, parameters:Array = null):void;
+		function log(name:String, level:uint, time:Number, message:*, parameters:Array = null):void;
 	}
 }

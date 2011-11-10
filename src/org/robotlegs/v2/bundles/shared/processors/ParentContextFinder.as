@@ -9,27 +9,29 @@ package org.robotlegs.v2.bundles.shared.processors
 {
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
-	import org.as3commons.logging.api.ILogger;
-	import org.as3commons.logging.api.getLogger;
 	import org.robotlegs.v2.core.api.IContext;
 	import org.robotlegs.v2.core.api.IContextPreProcessor;
 	import org.robotlegs.v2.core.api.IContextViewRegistry;
+	import org.robotlegs.v2.core.api.ILogger;
 	import org.robotlegs.v2.core.impl.ContextViewRegistry;
+	import org.robotlegs.v2.core.impl.Logger;
 
 	public class ParentContextFinder implements IContextPreProcessor
 	{
-
-		protected static const logger:ILogger = getLogger(ParentContextFinder);
-
 		protected var callback:Function;
 
 		protected var context:IContext;
 
 		protected var contextView:DisplayObjectContainer;
 
+		protected var logger:ILogger;
+
 		public function preProcess(context:IContext, callback:Function):void
 		{
-			logger.info('looking for parent of context: {0}', [context]);
+			// we use the context logger for pre processors (for now)
+			logger = new Logger(context.id + ' ParentContextFinder', context.logger.target);
+
+			logger.info('looking for parent context');
 
 			if (context.parent)
 			{
@@ -86,19 +88,20 @@ package org.robotlegs.v2.bundles.shared.processors
 
 		protected function onAddedToStage(event:Event):void
 		{
-			logger.info('added to stage, looking for parent of context: {0}', [context]);
+			logger.info('added to stage, looking for parent context');
 			contextView.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			const parentContext:IContext = findParentContext();
 			if (parentContext)
 			{
-				logger.info('found parent {0} for context {1}', [parentContext, context]);
+				logger.info('found parent {0}', [parentContext]);
 				context.parent = parentContext;
 			}
 			else
 			{
-				logger.info('no parent found for context: {0}', [context]);
+				logger.info('no parent found');
 			}
 			// and.. we're done!
+			logger.info('continuing');
 			callback();
 		}
 	}

@@ -7,44 +7,58 @@
 
 package org.robotlegs.v2.core.impl
 {
+	import org.robotlegs.v2.core.api.ILogTarget;
 	import org.robotlegs.v2.core.api.ILogger;
-	import org.robotlegs.v2.core.api.ILoggingTarget;
 
+	/**
+	 * Code duplication and magic numbers, but we want the speed
+	 */
 	public class Logger implements ILogger
 	{
-		private var target:ILoggingTarget;
 
-		private var name:String;
+		private var _target:ILogTarget;
 
-		public function Logger(target:ILoggingTarget, name:String)
+		public function get target():ILogTarget
 		{
-			this.target = target;
-			this.name = name;
+			return _target;
+		}
+
+		public function set target(value:ILogTarget):void
+		{
+			_target = value;
+		}
+
+		private var _name:String;
+
+		public function Logger(name:String, target:ILogTarget = null)
+		{
+			_name = name;
+			_target = target;
 		}
 
 		public function debug(message:*, parameters:Array = null):void
 		{
-			target.level >= 32 && target.log(name, 32, message, parameters);
+			_target && _target.level >= 32 && _target.log(_name, 32, new Date().time, message, parameters);
 		}
 
 		public function info(message:*, parameters:Array = null):void
 		{
-			target.level >= 16 && target.log(name, 16, message, parameters);
+			_target && _target.level >= 16 && _target.log(_name, 16, new Date().time, message, parameters);
 		}
 
 		public function warn(message:*, parameters:Array = null):void
 		{
-			target.level >= 8 && target.log(name, 8, message, parameters);
+			_target && _target.level >= 8 && _target.log(_name, 8, new Date().time, message, parameters);
 		}
 
 		public function error(message:*, parameters:Array = null):void
 		{
-			target.level >= 4 && target.log(name, 4, message, parameters);
+			_target && _target.level >= 4 && _target.log(_name, 4, new Date().time, message, parameters);
 		}
 
 		public function fatal(message:*, parameters:Array = null):void
 		{
-			target.level >= 2 && target.log(name, 2, message, parameters);
+			_target && _target.level >= 2 && _target.log(_name, 2, new Date().time, message, parameters);
 		}
 	}
 }

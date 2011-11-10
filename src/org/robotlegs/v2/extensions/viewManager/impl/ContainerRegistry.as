@@ -11,8 +11,8 @@ package org.robotlegs.v2.extensions.viewManager.impl
 	import flash.display.DisplayObjectContainer;
 	import flash.events.EventDispatcher;
 	import flash.utils.Dictionary;
-	import org.as3commons.logging.api.ILogger;
-	import org.as3commons.logging.api.getLogger;
+	import org.robotlegs.v2.core.api.ILogger;
+	import org.robotlegs.v2.core.impl.Logger;
 
 	[Event(name="containerAdd", type="org.robotlegs.v2.extensions.viewManager.impl.ContainerExistenceEvent")]
 	[Event(name="containerRemove", type="org.robotlegs.v2.extensions.viewManager.impl.ContainerExistenceEvent")]
@@ -20,7 +20,8 @@ package org.robotlegs.v2.extensions.viewManager.impl
 	[Event(name="rootContainerRemove", type="org.robotlegs.v2.extensions.viewManager.impl.ContainerExistenceEvent")]
 	public class ContainerRegistry extends EventDispatcher
 	{
-		private static const logger:ILogger = getLogger(ContainerRegistry);
+		// TODO: fixme
+		private static const logger:ILogger = new Logger('ContainerRegistry');
 
 		private const _bindings:Vector.<ContainerBinding> = new Vector.<ContainerBinding>;
 

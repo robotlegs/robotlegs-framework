@@ -11,15 +11,16 @@ package org.robotlegs.v2.extensions.viewManager.impl
 	import flash.display.DisplayObjectContainer;
 	import flash.utils.Dictionary;
 	import flash.utils.getQualifiedClassName;
-	import org.as3commons.logging.api.ILogger;
-	import org.as3commons.logging.api.getLogger;
+	import org.robotlegs.v2.core.api.ILogger;
+	import org.robotlegs.v2.core.impl.Logger;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewHandler;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewListener;
 	import org.robotlegs.v2.extensions.viewManager.api.ViewHandlerEvent;
 
 	public class ViewProcessor
 	{
-		private static const logger:ILogger = getLogger(ViewProcessor);
+		// TODO: fixme
+		private static const logger:ILogger = new Logger('ViewProcessor');
 
 		private const _activeListenerByView:Dictionary = new Dictionary(true);
 
@@ -67,6 +68,7 @@ package org.robotlegs.v2.extensions.viewManager.impl
 			const viewFQCN:String = getQualifiedClassName(view);
 
 			// process the view
+			// WARNING: this is totally flawed - we might traverse a different set of nodes
 			var confirmedHandlers:Vector.<IViewHandler> = _confirmedHandlersByFQCN[viewFQCN];
 			var response:uint;
 			if (confirmedHandlers)

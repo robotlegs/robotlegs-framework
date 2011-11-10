@@ -7,23 +7,22 @@
 
 package org.robotlegs.v2.extensions.logging
 {
-	import org.as3commons.logging.api.ILogger;
-	import org.as3commons.logging.api.LOGGER_FACTORY;
-	import org.as3commons.logging.api.getLogger;
-	import org.as3commons.logging.setup.SimpleTargetSetup;
-	import org.as3commons.logging.setup.target.TraceTarget;
 	import org.robotlegs.v2.core.api.IContext;
 	import org.robotlegs.v2.core.api.IContextExtension;
+	import org.robotlegs.v2.core.api.LogLevel;
+	import org.robotlegs.v2.extensions.logging.impl.TraceLogTarget;
+	import org.swiftsuspenders.Injector;
 
-	public class SimpleLoggingExtension implements IContextExtension
+	public class TraceLoggingExtension implements IContextExtension
 	{
 		private var context:IContext;
+
+		private var injector:Injector;
 
 		public function install(context:IContext):void
 		{
 			this.context = context;
-			LOGGER_FACTORY.setup = new SimpleTargetSetup(new TraceTarget());
-			context.injector.map(ILogger).toValue(getLogger(context));
+			context.logger.target = new TraceLogTarget(LogLevel.DEBUG);
 		}
 
 		public function initialize():void
@@ -32,7 +31,6 @@ package org.robotlegs.v2.extensions.logging
 
 		public function uninstall():void
 		{
-			context.injector.unmap(ILogger);
 		}
 	}
 }

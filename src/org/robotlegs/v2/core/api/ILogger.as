@@ -10,6 +10,10 @@ package org.robotlegs.v2.core.api
 
 	public interface ILogger
 	{
+		function get target():ILogTarget;
+
+		function set target(value:ILogTarget):void;
+
 		function debug(message:*, parameters:Array = null):void;
 
 		function info(message:*, parameters:Array = null):void;

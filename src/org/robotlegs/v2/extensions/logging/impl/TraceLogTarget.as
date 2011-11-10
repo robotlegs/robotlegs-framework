@@ -5,11 +5,12 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.core.impl.support
+package org.robotlegs.v2.extensions.logging.impl
 {
-	import org.robotlegs.v2.core.api.ILoggingTarget;
+	import org.robotlegs.v2.core.api.ILogTarget;
+	import org.robotlegs.v2.extensions.logging.api.ILogFormatter;
 
-	public class CallbackLoggingTarget implements ILoggingTarget
+	public class TraceLogTarget implements ILogTarget
 	{
 		private var _level:uint;
 
@@ -23,17 +24,16 @@ package org.robotlegs.v2.core.impl.support
 			_level = value;
 		}
 
-		private var callback:Function;
+		private const _formatter:ILogFormatter = new TraceLogFormatter();
 
-		public function CallbackLoggingTarget(level:uint, callback:Function)
+		public function TraceLogTarget(level:uint = 0)
 		{
 			_level = level;
-			this.callback = callback;
 		}
 
-		public function log(name:String, level:int, message:*, parameters:Array = null):void
+		public function log(name:String, level:uint, time:Number, message:*, parameters:Array = null):void
 		{
-			callback(name, level, message, parameters);
+			trace(_formatter.format(name, level, time, message, parameters));
 		}
 	}
 }

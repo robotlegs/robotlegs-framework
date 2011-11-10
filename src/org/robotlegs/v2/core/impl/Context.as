@@ -13,17 +13,24 @@ package org.robotlegs.v2.core.impl
 	import flash.events.IEventDispatcher;
 	import flash.system.ApplicationDomain;
 	import flash.utils.Dictionary;
-	import org.as3commons.logging.api.ILogger;
-	import org.as3commons.logging.api.getLogger;
 	import org.robotlegs.v2.core.api.IContext;
 	import org.robotlegs.v2.core.api.IContextConfig;
 	import org.robotlegs.v2.core.api.IContextExtension;
+	import org.robotlegs.v2.core.api.ILogger;
+	import org.robotlegs.v2.extensions.logging.integration.LoggerProvider;
 	import org.swiftsuspenders.Injector;
 
 	public class Context implements IContext
 	{
 
 		private static var counter:int;
+
+		private const _id:String = 'Context' + counter++;
+
+		public function get id():String
+		{
+			return _id;
+		}
 
 		private var _applicationDomain:ApplicationDomain;
 
@@ -102,15 +109,18 @@ package org.robotlegs.v2.core.impl
 			logger.info('parent context externally set to {0}', [value]);
 		}
 
-		private const _id:String = 'Context' + counter++;
+		private const _logger:ILogger = new Logger(_id);
+
+		public function get logger():ILogger
+		{
+			return _logger;
+		}
 
 		private const configClasses:Vector.<Class> = new Vector.<Class>;
 
 		private const extensionByClass:Dictionary = new Dictionary();
 
 		private const extensionClasses:Vector.<Class> = new Vector.<Class>;
-
-		private const logger:ILogger = getLogger(_id);
 
 		public function Context()
 		{
@@ -277,6 +287,7 @@ package org.robotlegs.v2.core.impl
 			injector.map(Injector).toValue(injector);
 			injector.map(IEventDispatcher).toValue(dispatcher);
 			injector.map(DisplayObjectContainer).toValue(contextView);
+			injector.map(ILogger).toProvider(new LoggerProvider());
 		}
 
 		private function throwContextDestroyedError():void
