@@ -43,7 +43,7 @@ package org.robotlegs.v2.extensions.mediatorMap.support
 		protected function addMappings(e:ContextBuilderEvent):void
 		{
 			const mediatorMap:IMediatorMap = e.context.injector.getInstance(IMediatorMap);
-			mediatorMap.map(TracingV1Mediator).toView(MovieClip);
+			mediatorMap.map(MovieClip).toMediator(TracingV1Mediator);
 			
 			e.context.injector.map(MediatorWatcher).toValue(_mediatorWatcher);
 		}

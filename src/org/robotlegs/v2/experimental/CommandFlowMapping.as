@@ -14,6 +14,7 @@ package org.robotlegs.v2.experimental
 	import org.robotlegs.v2.experimental.CommandFlowRequireOnlyRule;
 	import org.robotlegs.v2.experimental.CommandFlowRequireAllRule;
 	import flash.events.Event;
+	import org.swiftsuspenders.Injector;
 
 	public class CommandFlowMapping implements ICommandFlowMapping
 	{
@@ -29,33 +30,36 @@ package org.robotlegs.v2.experimental
 		private var _executionCallback:Function;
 		
 		private var _requireAllFrom:Boolean;
+		
+		private var _injector:Injector;
 
-		public function CommandFlowMapping(from:Vector.<Class>, eventDispatcher:IEventDispatcher, executionCallback:Function, requireAllFrom:Boolean)
+		public function CommandFlowMapping(from:Vector.<Class>, eventDispatcher:IEventDispatcher, executionCallback:Function, requireAllFrom:Boolean, injector:Injector)
 		{
 			_from = from;
 			_eventDispatcher = eventDispatcher;
 			_executionCallback = executionCallback;
 			_requireAllFrom = requireAllFrom;
+			_injector = injector;
 		}
 		
 		public function after(eventString:String):ICommandFlowConfig
 		{
 			_eventStrings.push(eventString);
-			_rule = new CommandFlowRequireOnlyRule(eventString);
+			_rule = new CommandFlowRequireOnlyRule(eventString, _injector);
 			return _rule;
 		}
 
 		public function afterAll(...eventStrings):ICommandFlowConfig
 		{
 			pushValuesToStringVector(eventStrings, _eventStrings);
-			_rule = new CommandFlowRequireAllRule(_eventStrings);
+			_rule = new CommandFlowRequireAllRule(_eventStrings, _injector);
 			return _rule;
 		}
 
 		public function afterAny(...eventStrings):ICommandFlowConfig
 		{
 			pushValuesToStringVector(eventStrings, _eventStrings);
-			_rule = new CommandFlowRequireAnyRule(_eventStrings);
+			_rule = new CommandFlowRequireAnyRule(_eventStrings, _injector);
 			return _rule;
 		}
 		

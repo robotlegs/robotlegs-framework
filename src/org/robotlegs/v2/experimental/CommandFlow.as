@@ -33,7 +33,7 @@ package org.robotlegs.v2.experimental
 		
 		public function from(commandClass:Class):ICommandFlowMapping
 		{
-			const mapping:CommandFlowMapping = new CommandFlowMapping(new <Class>[commandClass], eventDispatcher, executionCallback, false);
+			const mapping:CommandFlowMapping = new CommandFlowMapping(new <Class>[commandClass], eventDispatcher, executionCallback, false, injector);
 
 			addMappingTo(mapping, commandClass);
 			return mapping;
@@ -54,7 +54,7 @@ package org.robotlegs.v2.experimental
 			const commandVector:Vector.<Class> = new Vector.<Class>();
 			pushValuesToClassVector(commandClasses, commandVector);
 			
-			const mapping:CommandFlowMapping = new CommandFlowMapping(commandVector, eventDispatcher, executionCallback, requireFromAll);
+			const mapping:CommandFlowMapping = new CommandFlowMapping(commandVector, eventDispatcher, executionCallback, requireFromAll, injector);
 			
 			for each (var commandClass:Class in commandVector)
 			{

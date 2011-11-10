@@ -8,17 +8,22 @@
 package org.robotlegs.v2.extensions.mediatorMap.api
 {
 	import flash.display.DisplayObject;
+	import org.robotlegs.v2.core.api.ITypeMatcher;
 
 	public interface IMediatorMap
 	{
 
-		function getMapping(mediatorType:Class):IMediatorMapping;
+		function getMapping(viewTypeOrMatcher:*):IMediatorMapping;
 
-		function hasMapping(mediatorType:Class):Boolean;
+		function hasMapping(viewTypeOrMatcher:*):Boolean;
 
-		function map(mediatorType:Class):IMediatorMapping;
+		function mapMatcher(typeMatcher:ITypeMatcher):IMediatorMapping;
 
-		function unmap(mediatorType:Class):IMediatorUnmapping;
+		function map(viewType:Class):IMediatorMapping;
+
+		function unmap(viewType:Class):IMediatorUnmapping;
+		
+		function unmapMatcher(typeMatcher:ITypeMatcher):IMediatorUnmapping;
 
 		function loadTrigger(trigger:IMediatorTrigger):void;
 

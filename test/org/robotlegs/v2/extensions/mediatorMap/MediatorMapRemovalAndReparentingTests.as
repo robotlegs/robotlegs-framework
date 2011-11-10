@@ -61,7 +61,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 			instance.injector = injector;
 			instance.loadTrigger(trigger);
 
-			instance.map(RL2Mediator).toView(Sprite);
+			instance.map(Sprite).toMediator(RL2Mediator);
 		}
 
 		[After]

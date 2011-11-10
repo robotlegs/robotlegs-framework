@@ -12,10 +12,6 @@ package org.robotlegs.v2.extensions.mediatorMap.api
 
 	public interface IMediatorMapping
 	{
-		function get mediator():Class;
-
-		function toMatcher(typeMatcher:ITypeMatcher):IMediatorConfig;
-
-		function toView(viewType:Class):IMediatorConfig;
+		function toMediator(mediatorType:Class):IMediatorConfig;
 	}
 }

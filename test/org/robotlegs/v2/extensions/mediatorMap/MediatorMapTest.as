@@ -57,7 +57,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 		[Test]
 		public function a_hook_runs_and_receives_injections_of_view_and_mediator():void
 		{
-			instance.map(RectangleMediator).toView(Sprite).withHooks(HookWithMediatorAndViewInjectionDrawsRectangle);
+			instance.map(Sprite).toMediator(RectangleMediator).withHooks(HookWithMediatorAndViewInjectionDrawsRectangle);
 
 			const view:Sprite = new Sprite();
 
@@ -81,7 +81,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 		[Test]
 		public function create_mediator_instantiates_mediator_for_view_when_mapped():void
 		{
-			instance.map(ExampleMediator).toView(Sprite);
+			instance.map(Sprite).toMediator(ExampleMediator);
 
 			instance.mediate(new Sprite());
 
@@ -92,7 +92,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 		[Test]
 		public function doesnt_leave_view_and_mediator_mappings_lying_around():void
 		{
-			instance.map(ExampleMediator).toMatcher(new TypeMatcher().anyOf(MovieClip, Sprite));
+			instance.mapMatcher(new TypeMatcher().anyOf(MovieClip, Sprite)).toMediator(ExampleMediator);
 			instance.processView(new Sprite(), null);
 
 			assertFalse(injector.satisfies(MovieClip));
@@ -103,7 +103,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 		[Test]
 		public function handler_creates_mediator_for_view_mapped_by_matcher():void
 		{
-			instance.map(ExampleDisplayObjectMediator).toMatcher(new TypeMatcher().allOf(DisplayObject));
+			instance.mapMatcher(new TypeMatcher().allOf(DisplayObject)).toMediator(ExampleDisplayObjectMediator);
 
 			instance.processView(new Sprite(), null);
 
@@ -114,7 +114,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 		[Test]
 		public function handler_doesnt_create_mediator_for_wrong_view_mapped_by_matcher():void
 		{
-			instance.map(ExampleDisplayObjectMediator).toMatcher(new TypeMatcher().allOf(MovieClip));
+			instance.mapMatcher(new TypeMatcher().allOf(MovieClip)).toMediator(ExampleDisplayObjectMediator);
 
 			instance.processView(new Sprite(), null);
 
@@ -125,7 +125,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 		[Test]
 		public function handler_instantiates_mediator_for_view_mapped_by_type():void
 		{
-			instance.map(ExampleMediator).toView(Sprite);
+			instance.map(Sprite).toMediator(ExampleMediator);
 
 			instance.processView(new Sprite(), null);
 
@@ -134,39 +134,40 @@ package org.robotlegs.v2.extensions.mediatorMap
 		}
 
 		[Test]
-		public function hasMapping_returns_false_for_mapped_then_unmapped_mediator_class_by_fromAll():void
+		public function hasMapping_returns_false_for_mapped_then_unmapped_view_class_by_fromAll():void
 		{
-			instance.map(ExampleMediator).toView(Sprite);
-			instance.map(ExampleDisplayObjectMediator).toView(Sprite);
-			instance.unmap(ExampleDisplayObjectMediator).fromAll();
+			instance.map(Sprite).toMediator(ExampleMediator);
+			instance.map(Sprite).toMediator(ExampleDisplayObjectMediator);
+			instance.unmap(Sprite).fromAll();
 
-			assertFalse(instance.hasMapping(ExampleDisplayObjectMediator));
+			assertFalse(instance.hasMapping(Sprite));
 		}
 
 		[Test]
-		public function hasMapping_returns_false_for_mapped_then_unmapped_mediator_class_by_fromView():void
+		public function hasMapping_returns_false_for_mapped_then_unmapped_view_class_by_fromMediator():void
 		{
-			instance.map(ExampleMediator).toView(Sprite);
-			instance.map(ExampleDisplayObjectMediator).toView(Sprite);
-			instance.unmap(ExampleDisplayObjectMediator).fromView(Sprite);
+			instance.map(Sprite).toMediator(ExampleMediator);
+			instance.map(Sprite).toMediator(ExampleDisplayObjectMediator);
+			instance.unmap(Sprite).fromMediator(ExampleDisplayObjectMediator);
+			instance.unmap(Sprite).fromMediator(ExampleMediator);
 
-			assertFalse(instance.hasMapping(ExampleDisplayObjectMediator));
+			assertFalse(instance.hasMapping(Sprite));
 		}
 
 		[Test]
-		public function hasMapping_returns_false_for_unmapped_mediator_class():void
+		public function hasMapping_returns_false_for_unmapped_view_class():void
 		{
-			instance.map(ExampleMediator).toView(Sprite);
+			instance.map(Sprite).toMediator(ExampleMediator);
 
-			assertFalse(instance.hasMapping(ExampleDisplayObjectMediator));
+			assertFalse(instance.hasMapping(MovieClip));
 		}
 
 		[Test]
-		public function hasMapping_returns_true_for_mapped_mediator_class():void
+		public function hasMapping_returns_true_for_mapped_view_class():void
 		{
-			instance.map(ExampleMediator).toView(Sprite);
+			instance.map(Sprite).toMediator(ExampleMediator);
 
-			assertTrue(instance.hasMapping(ExampleMediator));
+			assertTrue(instance.hasMapping(Sprite));
 		}
 
 		[Test]
@@ -187,29 +188,33 @@ package org.robotlegs.v2.extensions.mediatorMap
 		[Test]
 		public function is_not_interested_if_all_mappings_unmapped_in_one_hit():void
 		{
-			instance.map(ExampleMediator).toView(Sprite);
-			instance.map(ExampleMediator).toView(MovieClip);
-			instance.unmap(ExampleMediator).fromAll();
+			instance.map(Sprite).toMediator(ExampleMediator);
+			instance.map(Sprite).toMediator(ExampleDisplayObjectMediator);
+			instance.unmap(Sprite).fromAll();
 
 			var interest:uint = instance.processView(new Sprite(), null);
 			assertEquals(0, interest);
 		}
+		
+		
 
 		[Test]
 		public function is_not_interested_if_mapping_is_unmapped_for_matcher():void
 		{
-			instance.map(ExampleDisplayObjectMediator).toMatcher(new TypeMatcher().allOf(DisplayObject));
-			instance.unmap(ExampleDisplayObjectMediator).fromMatcher(new TypeMatcher().allOf(DisplayObject));
+			instance.mapMatcher(new TypeMatcher().allOf(DisplayObject)).toMediator(ExampleMediator);
+			instance.mapMatcher(new TypeMatcher().allOf(DisplayObject)).toMediator(ExampleDisplayObjectMediator);
+			instance.unmapMatcher(new TypeMatcher().allOf(DisplayObject)).fromAll();
+
 
 			var interest:uint = instance.processView(new Sprite(), null);
 			assertEquals(0, interest);
 		}
 
 		[Test]
-		public function is_not_interested_if_mapping_is_unmapped_for_view_by_fromMatcher():void
+		public function is_not_interested_if_mapping_is_unmapped_for_view_by_fromMediator():void
 		{
-			instance.map(ExampleMediator).toView(Sprite);
-			instance.unmap(ExampleMediator).fromMatcher(new TypeMatcher().allOf(Sprite));
+			instance.mapMatcher(new TypeMatcher().allOf(DisplayObject)).toMediator(ExampleMediator);
+			instance.unmapMatcher(new TypeMatcher().allOf(DisplayObject)).fromMediator(ExampleMediator);
 
 			var interest:uint = instance.processView(new Sprite(), null);
 			assertEquals(0, interest);
@@ -218,8 +223,8 @@ package org.robotlegs.v2.extensions.mediatorMap
 		[Test]
 		public function is_not_interested_if_mapping_is_unmapped_for_view_by_fromView():void
 		{
-			instance.map(ExampleMediator).toView(Sprite);
-			instance.unmap(ExampleMediator).fromView(Sprite);
+			instance.map(Sprite).toMediator(ExampleMediator);
+			instance.unmap(Sprite).fromMediator(ExampleMediator);
 
 			var interest:uint = instance.processView(new Sprite(), null);
 			assertEquals(0, interest);
@@ -228,18 +233,18 @@ package org.robotlegs.v2.extensions.mediatorMap
 		[Test]
 		public function is_still_interested_if_only_one_mapping_of_two_is_unmapped():void
 		{
-			instance.map(ExampleMediator).toView(Sprite);
-			instance.map(ExampleMediator).toView(MovieClip);
-			instance.unmap(ExampleMediator).fromMatcher(new TypeMatcher().allOf(MovieClip));
+			instance.map(Sprite).toMediator(ExampleMediator);
+			instance.map(Sprite).toMediator(ExampleDisplayObjectMediator);
+			instance.unmap(Sprite).fromMediator(ExampleDisplayObjectMediator);
 
 			var interest:uint = instance.processView(new Sprite(), null);
-			assertEquals(1, interest);
+			assertTrue(interest > 0 );
 		}
 
 		[Test]
 		public function mediate_instantiates_mediator_for_view_when_matched_to_mapping():void
 		{
-			instance.map(ExampleMediator).toView(Sprite);
+			instance.map(Sprite).toMediator(ExampleMediator);
 
 			instance.mediate(new Sprite());
 
@@ -250,7 +255,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 		[Test]
 		public function mediate_returns_false_for_view_when_not_matched_to_mapping():void
 		{
-			instance.map(ExampleMediator).toView(MovieClip);
+			instance.map(MovieClip).toMediator(ExampleMediator);
 
 			assertFalse(instance.mediate(new Sprite()));
 		}
@@ -258,7 +263,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 		[Test]
 		public function mediate_returns_true_for_view_when_matched_to_mapping():void
 		{
-			instance.map(ExampleMediator).toView(Sprite);
+			instance.map(Sprite).toMediator(ExampleMediator);
 
 			assertTrue(instance.mediate(new Sprite()));
 		}
@@ -266,7 +271,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 		[Test]
 		public function mediator_is_created_if_guard_allows_it():void
 		{
-			instance.map(ExampleMediator).toView(Sprite).withGuards(OnlyIfViewHasChildrenGuard);
+			instance.map(Sprite).toMediator(ExampleMediator).withGuards(OnlyIfViewHasChildrenGuard);
 			const view:Sprite = new Sprite();
 			view.addChild(new Sprite());
 			instance.processView(view, null);
@@ -278,7 +283,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 		[Test]
 		public function no_mediator_is_created_if_guard_prevents_it():void
 		{
-			instance.map(ExampleMediator).toView(Sprite).withGuards(OnlyIfViewHasChildrenGuard);
+			instance.map(Sprite).toMediator(ExampleMediator).withGuards(OnlyIfViewHasChildrenGuard);
 			const view:Sprite = new Sprite();
 			instance.processView(view, null);
 
@@ -289,7 +294,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 		[Test]
 		public function returns_one_if_handler_interested():void
 		{
-			instance.map(ExampleMediator).toView(Sprite).withGuards(OnlyIfViewHasChildrenGuard);
+			instance.map(Sprite).toMediator(ExampleMediator).withGuards(OnlyIfViewHasChildrenGuard);
 
 			var interest:uint = instance.processView(new Sprite(), null);
 
@@ -299,7 +304,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 		[Test]
 		public function returns_zero_if_handler_not_interested():void
 		{
-			instance.map(ExampleMediator).toView(MovieClip).withGuards(OnlyIfViewHasChildrenGuard);
+			instance.map(MovieClip).toMediator(ExampleMediator).withGuards(OnlyIfViewHasChildrenGuard);
 
 			var interest:uint = instance.processView(new Sprite(), null);
 
@@ -309,7 +314,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 		[Test]
 		public function runs_destroy_on_created_mediator_when_handleViewRemoved_runs():void
 		{
-			instance.map(ExampleMediator).toView(Sprite);
+			instance.map(Sprite).toMediator(ExampleMediator);
 
 			const view:Sprite = new Sprite();
 			instance.processView(view, null);
@@ -328,7 +333,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 		[Test]
 		public function unmediate_cleans_up_mediators():void
 		{
-			instance.map(ExampleMediator).toView(Sprite);
+			instance.map(Sprite).toMediator(ExampleMediator);
 
 			const view:Sprite = new Sprite();
 

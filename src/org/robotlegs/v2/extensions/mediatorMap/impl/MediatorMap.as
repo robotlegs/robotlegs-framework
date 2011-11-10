@@ -23,6 +23,8 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 	import org.swiftsuspenders.Injector;
 	import flash.errors.IllegalOperationError;
 	import org.robotlegs.v2.extensions.viewManager.api.ViewInterests;
+	import org.robotlegs.v2.core.api.ITypeMatcher;
+	import org.robotlegs.v2.core.impl.TypeMatcher;
 
 	[Event(name="configurationChange", type="org.robotlegs.v2.extensions.viewManager.api.ViewHandlerEvent")]
 	public class MediatorMap extends EventDispatcher implements IViewHandler, IMediatorMap
@@ -35,22 +37,26 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			return ViewInterests.MEDIATION;
 		}
 
-		private const _configsByTypeFilter:Dictionary = new Dictionary();
-
 		private const _filtersByDescription:Dictionary = new Dictionary();
 
 		private const _liveMediatorsByView:Dictionary = new Dictionary();
 
-		private const _mappingsByMediatorType:Dictionary = new Dictionary();
+		private const _mappingsByTypeFilter:Dictionary = new Dictionary();
 
 		private var _trigger:IMediatorTrigger;
 
 		private const _viewsInRemovalPhase:Dictionary = new Dictionary();
 
 
-		public function getMapping(mediatorType:Class):IMediatorMapping
+		public function getMapping(viewTypeOrMatcher:*):IMediatorMapping
 		{
-			return _mappingsByMediatorType[mediatorType];
+			if(viewTypeOrMatcher is Class)
+			{
+				viewTypeOrMatcher = new TypeMatcher().allOf(viewTypeOrMatcher);
+			}
+			
+			const typeFilter:ITypeFilter = getOrCreateFilterForMatcher(viewTypeOrMatcher as ITypeMatcher);
+			return _mappingsByTypeFilter[typeFilter];
 		}
 
 		public function processView(view:DisplayObject, info:IViewClassInfo):uint
@@ -59,9 +65,9 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			// TODO - probably refactor to a linked list for iteration
 			var interest:uint = 0;
 
-			for (var filter:* in _configsByTypeFilter)
+			for (var filter:* in _mappingsByTypeFilter)
 			{				
-				if ((filter as ITypeFilter).matches(view))
+				if ((filter as ITypeFilter).matches(view)  && (_mappingsByTypeFilter[filter].hasConfigs))
 				{
 					interest = 1;
 
@@ -74,9 +80,11 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 
 					mapViewForFilterBinding(filter, view);
 
-					for each (var config:MediatorConfig in _configsByTypeFilter[filter])
+					var configsByMediator:Dictionary = _mappingsByTypeFilter[filter].configsByMediator;
+
+					for(var mediator:* in configsByMediator)
 					{
-						processMapping(config, view);
+						processMapping(mediator, configsByMediator[mediator], view);
 					}
 
 					unmapViewForFilterBinding(filter, view);
@@ -102,9 +110,9 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			}
 		}
 
-		public function hasMapping(mediatorType:Class):Boolean
+		public function hasMapping(viewTypeOrMatcher:*):Boolean
 		{
-			return (_mappingsByMediatorType[mediatorType] && _mappingsByMediatorType[mediatorType].hasConfigs);
+			return (getMapping(viewTypeOrMatcher) != null);
 		}
 
 		public function invalidate():void
@@ -112,17 +120,35 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			dispatchEvent(new ViewHandlerEvent(ViewHandlerEvent.HANDLER_CONFIGURATION_CHANGE));
 		}
 
-		public function map(mediatorType:Class):IMediatorMapping
+		public function map(viewType:Class):IMediatorMapping
 		{
-			if (!_mappingsByMediatorType[mediatorType])
-				_mappingsByMediatorType[mediatorType] = createMediatorMapping(mediatorType);
-
-			return _mappingsByMediatorType[mediatorType];
+			return mapMatcher(new TypeMatcher().allOf(viewType));
+		}
+		
+		public function mapMatcher(typeMatcher:ITypeMatcher):IMediatorMapping
+		{
+			const typeFilter:ITypeFilter = getOrCreateFilterForMatcher(typeMatcher);
+			
+			if(_mappingsByTypeFilter[typeFilter])
+			{
+				return _mappingsByTypeFilter[typeFilter];
+			}
+			
+			_mappingsByTypeFilter[typeFilter] = createMapping(typeFilter);
+			
+			return _mappingsByTypeFilter[typeFilter];
 		}
 
-		public function unmap(mediatorType:Class):IMediatorUnmapping
+		public function unmap(viewType:Class):IMediatorUnmapping
 		{
-			return _mappingsByMediatorType[mediatorType];
+			return unmapMatcher(new TypeMatcher().allOf(viewType));
+		} 
+		
+		public function unmapMatcher(typeMatcher:ITypeMatcher):IMediatorUnmapping
+		{
+			const typeFilter:ITypeFilter = getOrCreateFilterForMatcher(typeMatcher);
+			
+			return _mappingsByTypeFilter[typeFilter];
 		}
 
 		public function loadTrigger(trigger:IMediatorTrigger):void
@@ -148,6 +174,22 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		{
 		}
 		
+		
+		
+		private function getOrCreateFilterForMatcher(typeMatcher:ITypeMatcher):ITypeFilter
+		{
+			const typeFilter:ITypeFilter = typeMatcher.createTypeFilter();
+			const descriptor:String = typeFilter.descriptor;
+			
+			if(_filtersByDescription[descriptor])
+			{
+				return _filtersByDescription[descriptor];
+			}
+			
+			_filtersByDescription[descriptor] = typeFilter;
+			return typeFilter;
+		}
+		
 		private function onEnterFrameActionShutdown(e:Event):void
 		{
 			e.target.removeEventListener(Event.ENTER_FRAME, onEnterFrameActionShutdown);
@@ -164,20 +206,16 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			}
 		}
 
-		private function createMediatorForBinding(config:MediatorConfig):*
+		private function createMediator(mediatorType:Class):*
 		{
-			const mediator:* = injector.getInstance(config.mapping.mediator);
-			injector.map(config.mapping.mediator).toValue(mediator);
+			const mediator:* = injector.getInstance(mediatorType);
+			injector.map(mediatorType).toValue(mediator);
 			return mediator;
 		}
 
-		private function createMediatorMapping(mediatorType:Class):IMediatorMapping
+		private function createMapping(typeFilter:ITypeFilter):IMediatorMapping
 		{
-			return new MediatorMapping(_configsByTypeFilter,
-				_filtersByDescription,
-				mediatorType,
-				cleanUpMapping,
-				injector);
+			return new MediatorMapping(cleanUpMapping, typeFilter, injector);
 		}
 
 		private function mapViewForFilterBinding(filter:ITypeFilter, view:DisplayObject):void
@@ -195,13 +233,13 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			}
 		}
 
-		private function processMapping(config:MediatorConfig, view:DisplayObject):void
+		private function processMapping(mediatorType:Class, config:MediatorConfig, view:DisplayObject):void
 		{
 			if(config.guards.approve())
 			{
-				const mediator:* = createMediatorForBinding(config);
+				const mediator:* = createMediator(mediatorType);
 				config.hooks.hook();
-				injector.unmap(config.mapping.mediator);
+				injector.unmap(mediatorType);
 
 				if (!_liveMediatorsByView[view])
 					_liveMediatorsByView[view] = [];
@@ -241,9 +279,9 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			}
 		}
 
-		private function cleanUpMapping(mediatorType:Class):void
+		private function cleanUpMapping(typeFilter:ITypeFilter):void
 		{
-			delete _mappingsByMediatorType[mediatorType];
+			delete _mappingsByTypeFilter[typeFilter];
 		}
 	}
 }

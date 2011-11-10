@@ -20,26 +20,52 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 	public class MediatorMapping implements IMediatorMapping, IMediatorUnmapping
 	{
 
-		private var _mediator:Class;
-
-		public function get mediator():Class
-		{
-			return _mediator;
-		}
-
 		private var _callbackForDeletion:Function;
 
-		private var _configsByTypeFilter:Dictionary;
-
-		private var _filtersByDescriptor:Dictionary;
-
-		private const _localConfigsByFilter:Dictionary = new Dictionary();
-		
 		private var _injector:Injector;
+		
+		private var _configsByMediator:Dictionary;
+		
+		private var _typeFilter:ITypeFilter;
+
+		public function get configsByMediator():Dictionary
+		{
+			return _configsByMediator;
+		}
+
+		public function MediatorMapping(callbackForDeletion:Function, typeFilter:ITypeFilter, injector:Injector)
+		{
+			_configsByMediator = new Dictionary();
+			_callbackForDeletion = callbackForDeletion;
+			_typeFilter = typeFilter;
+			_injector = injector;
+		}
+		
+		public function toMediator(mediatorType:Class):IMediatorConfig
+		{
+			if(_configsByMediator[mediatorType])
+			{
+				// todo improve error;
+				throw Error("You've already created a mapping like this one. Duh.");
+			}
+			_configsByMediator[mediatorType] = new MediatorConfig(this, _injector);
+			return _configsByMediator[mediatorType];
+		}
+		
+		public function fromMediator(mediatorType:Class):void
+		{	
+			unmapMediator(mediatorType);
+		}
+
+		public function fromAll():void
+		{
+			_configsByMediator = new Dictionary();
+			_callbackForDeletion(_typeFilter);
+		}
 
 		internal function get hasConfigs():Boolean
 		{
-			for each (var item:Object in _localConfigsByFilter)
+			for each (var item:Object in _configsByMediator)
 			{
 				return true;
 			}
@@ -47,90 +73,16 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			return false;
 		}
 
-		public function MediatorMapping(configsByTypeFilter:Dictionary, filterDescriptorMap:Dictionary,
-			mediator:Class, callbackForDeletion:Function, injector:Injector)
+		private function unmapMediator(mediatorType:Class):void
 		{
-			_configsByTypeFilter = configsByTypeFilter;
-			_filtersByDescriptor = filterDescriptorMap;
-			_mediator = mediator;
-			_callbackForDeletion = callbackForDeletion;
-			_injector = injector;
-		}
-
-		public function toMatcher(typeMatcher:ITypeMatcher):IMediatorConfig
-		{
-			var typeFilter:ITypeFilter = typeMatcher.createTypeFilter();
-
-			if (_filtersByDescriptor[typeFilter.descriptor])
+			if (_configsByMediator[mediatorType])
 			{
-				typeFilter = _filtersByDescriptor[typeFilter.descriptor];
-			}
-			else
-			{
-				_filtersByDescriptor[typeFilter.descriptor] = typeFilter;
-				_configsByTypeFilter[typeFilter] = new Vector.<MediatorConfig>();
-			}
-
-			const config:IMediatorConfig = new MediatorConfig(this, _injector);
-
-			_configsByTypeFilter[typeFilter].push(config);
-			_localConfigsByFilter[typeFilter] = config;
-			return config;
-		}
-
-		public function toView(viewType:Class):IMediatorConfig
-		{
-			return toMatcher(new TypeMatcher().allOf(viewType));
-		}
-
-		public function fromMatcher(typeMatcher:ITypeMatcher):void
-		{
-			const typeFilter:ITypeFilter = typeMatcher.createTypeFilter();
-
-			unmapTypeFilter(typeFilter);
-		}
-
-		public function fromView(viewType:Class):void
-		{
-			fromMatcher(new TypeMatcher().allOf(viewType));
-		}
-
-		public function fromAll():void
-		{
-			for (var filter:* in _localConfigsByFilter)
-			{
-				unmapTypeFilter(filter as ITypeFilter);
-			}
-		}
-
-		protected function unmapTypeFilter(typeFilter:ITypeFilter):void
-		{
-			typeFilter = _filtersByDescriptor[typeFilter.descriptor];
-
-			if (_configsByTypeFilter[typeFilter])
-			{
-				const config:IMediatorConfig = _localConfigsByFilter[typeFilter];
-
-				const configs:Vector.<MediatorConfig> = _configsByTypeFilter[typeFilter];
-
-				const index:int = configs.indexOf(config);
-
-				if (index > -1)
-				{
-					configs.splice(index, 1);
-					if (configs.length == 0)
-					{
-						delete _configsByTypeFilter[typeFilter];
-						delete _filtersByDescriptor[typeFilter.descriptor];
-					}
-				}
-
-				delete _localConfigsByFilter[typeFilter];
+				delete _configsByMediator[mediatorType];
 			}
 
 			if (!hasConfigs)
 			{
-				_callbackForDeletion(_mediator);
+				_callbackForDeletion(_typeFilter);
 			}
 		}
 	}

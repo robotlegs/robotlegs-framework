@@ -11,11 +11,7 @@ package org.robotlegs.v2.extensions.mediatorMap.api
 
 	public interface IMediatorUnmapping
 	{
-		function get mediator():Class;
-
-		function fromMatcher(typeMatcher:ITypeMatcher):void;
-
-		function fromView(viewType:Class):void;
+		function fromMediator(mediatorType:Class):void;
 
 		function fromAll():void;
 	}

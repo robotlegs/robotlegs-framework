@@ -8,14 +8,16 @@
 package org.robotlegs.v2.experimental
 {
 	import flash.events.Event;
+	import org.swiftsuspenders.Injector;
 
 	public class CommandFlowRequireOnlyRule extends CommandFlowRule
 	{
 		private var _requiredEvent:String;
 	
-		public function CommandFlowRequireOnlyRule(eventString:String)
+		public function CommandFlowRequireOnlyRule(eventString:String, injector:Injector)
 		{
 			_requiredEvent = eventString;
+			super(injector);
 		}
 		
 		override public function applyEvent(event:Event):Boolean

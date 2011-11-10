@@ -12,6 +12,7 @@ package org.robotlegs.v2.experimental
 	import org.robotlegs.v2.experimental.ICommandFlowRule;
 	import flash.events.IEventDispatcher;
 	import flash.events.EventDispatcher;
+	import org.swiftsuspenders.Injector;
 
 	public class CommandFlowMappingTest 
 	{
@@ -25,7 +26,7 @@ package org.robotlegs.v2.experimental
 		public function setUp():void
 		{
 			eventDispatcher = new EventDispatcher();
-			instance = new CommandFlowMapping(FROM, eventDispatcher, callback, true);
+			instance = new CommandFlowMapping(FROM, eventDispatcher, callback, true, new Injector());
 		}
 
 		[After]

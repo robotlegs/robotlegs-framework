@@ -12,15 +12,19 @@ package org.robotlegs.v2.experimental
 	import org.hamcrest.collection.array;
 	import flash.events.Event;
 	import org.flexunit.asserts.assertEqualsVectorsIgnoringOrder;
+	import org.swiftsuspenders.Injector;
 
 	public class CommandFlowRuleTest 
 	{
 		private var instance:CommandFlowRule;
 
+		private var injector:Injector;
+
 		[Before]
 		public function setUp():void
 		{
-			instance = new CommandFlowRule();
+			injector = new Injector();
+			instance = new CommandFlowRule(injector);
 		}
 
 		[After]
@@ -58,21 +62,21 @@ package org.robotlegs.v2.experimental
 		[Test]
 		public function requireOnlyRule_returns_true_if_passed_required_event():void
 		{
-			instance = new CommandFlowRequireOnlyRule(Event.COMPLETE);
+			instance = new CommandFlowRequireOnlyRule(Event.COMPLETE, injector);
 			assertTrue(instance.applyEvent(new Event(Event.COMPLETE)));
 		}
 		
 		[Test]
 		public function requireOnlyRule_returns_false_if_passed_unrequired_event():void
 		{
-			instance = new CommandFlowRequireOnlyRule(Event.COMPLETE);
+			instance = new CommandFlowRequireOnlyRule(Event.COMPLETE, injector);
 			assertFalse(instance.applyEvent(new Event(Event.CHANGE)));
 		}
 		
 		[Test]
 		public function requireOnlyRule_returns_list_of_events_received_correctly():void
 		{
-			instance = new CommandFlowRequireOnlyRule(Event.COMPLETE);
+			instance = new CommandFlowRequireOnlyRule(Event.COMPLETE, injector);
 			const evt:Event = new Event(Event.COMPLETE);
 			instance.applyEvent(evt);
 			assertThat(instance.receivedEvents, array(evt));
@@ -81,28 +85,28 @@ package org.robotlegs.v2.experimental
 		[Test]
 		public function requireAnyRule_returns_true_if_passed_one_required_event():void
 		{
-			instance = new CommandFlowRequireAnyRule(new <String>[Event.COMPLETE, Event.CHANGE]);
+			instance = new CommandFlowRequireAnyRule(new <String>[Event.COMPLETE, Event.CHANGE], injector);
 			assertTrue(instance.applyEvent(new Event(Event.COMPLETE)));
 		}
 		
 		[Test]
 		public function requireAnyRule_returns_true_if_passed_different_required_event():void
 		{
-			instance = new CommandFlowRequireAnyRule(new <String>[Event.COMPLETE, Event.CHANGE]);
+			instance = new CommandFlowRequireAnyRule(new <String>[Event.COMPLETE, Event.CHANGE], injector);
 			assertTrue(instance.applyEvent(new Event(Event.CHANGE)));
 		}
 		
 		[Test]
 		public function requireAnyRule_returns_false_if_passed_unrequired_event():void
 		{
-			instance = new CommandFlowRequireAnyRule(new <String>[Event.COMPLETE, Event.CHANGE]);
+			instance = new CommandFlowRequireAnyRule(new <String>[Event.COMPLETE, Event.CHANGE], injector);
 			assertFalse(instance.applyEvent(new Event(Event.CANCEL)));
 		}
 		
 		[Test]
 		public function requireAnyRule_returns_list_of_events_received_correctly():void
 		{
-			instance = new CommandFlowRequireAnyRule(new <String>[Event.COMPLETE, Event.CHANGE]);
+			instance = new CommandFlowRequireAnyRule(new <String>[Event.COMPLETE, Event.CHANGE], injector);
 			const evt:Event = new Event(Event.COMPLETE);
 			instance.applyEvent(evt);
 			assertThat(instance.receivedEvents, array(evt));
@@ -111,7 +115,7 @@ package org.robotlegs.v2.experimental
 		[Test]
 		public function requireAllRule_returns_true_only_once_passed_final_required_event():void
 		{
-			instance = new CommandFlowRequireAllRule(new <String>[Event.COMPLETE, Event.CHANGE]);
+			instance = new CommandFlowRequireAllRule(new <String>[Event.COMPLETE, Event.CHANGE], injector);
 			assertFalse(instance.applyEvent(new Event(Event.CHANGE)));
 			assertTrue(instance.applyEvent(new Event(Event.COMPLETE)));
 		}
@@ -119,7 +123,7 @@ package org.robotlegs.v2.experimental
 		[Test]
 		public function requireAllRule_returns_true_only_once_passed_final_required_event_diff_circumstances():void
 		{
-			instance = new CommandFlowRequireAllRule(new <String>[Event.COMPLETE, Event.CHANGE]);
+			instance = new CommandFlowRequireAllRule(new <String>[Event.COMPLETE, Event.CHANGE], injector);
 			assertFalse(instance.applyEvent(new Event(Event.COMPLETE)));
 			assertFalse(instance.applyEvent(new Event(Event.COMPLETE)));
 			assertFalse(instance.applyEvent(new Event(Event.CANCEL)));
@@ -129,7 +133,7 @@ package org.robotlegs.v2.experimental
 		[Test]
 		public function requireAllRule_returns_last_relevant_given_events():void
 		{
-			instance = new CommandFlowRequireAllRule(new <String>[Event.COMPLETE, Event.CHANGE]);
+			instance = new CommandFlowRequireAllRule(new <String>[Event.COMPLETE, Event.CHANGE], injector);
 			
 			var evt1:Event = new Event(Event.COMPLETE);
 			var evt2:Event = new Event(Event.COMPLETE);

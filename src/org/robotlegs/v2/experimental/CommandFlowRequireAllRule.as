@@ -9,6 +9,7 @@ package org.robotlegs.v2.experimental
 {
 	import flash.events.Event;
 	import flash.utils.Dictionary;
+	import org.swiftsuspenders.Injector;
 
 	public class CommandFlowRequireAllRule extends CommandFlowRule
 	{
@@ -16,9 +17,10 @@ package org.robotlegs.v2.experimental
 		
 		private static const EVENT_NOT_RECEIVED:String = "eventNotReceived";
 	
-		public function CommandFlowRequireAllRule(eventStrings:Vector.<String>)
+		public function CommandFlowRequireAllRule(eventStrings:Vector.<String>, injector:Injector)
 		{
 			populateRequiredEvents(eventStrings);
+			super(injector);
 		}
 		
 		override public function applyEvent(event:Event):Boolean

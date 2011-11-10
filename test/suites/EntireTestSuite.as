@@ -27,6 +27,8 @@ package suites
 
 		public var mediatorMapTestSuite:MediatorMapTestSuite;
 
+		public var mediatorMapATestSuite:MediatorMapATestSuite;
+
 		public var viewManagerTestSuite:ViewManagerTestSuite;
 
 		public var eventMapTestSuite:EventMapTestSuite;
