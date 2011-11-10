@@ -36,5 +36,7 @@ package suites
 		public var guardsTestSuite:GuardsTestSuite;
 
 		public var hooksTestSuite:HooksTestSuite;
+		
+		public var loggingTestSuite:LoggingTestSuite;
 	}
 }
