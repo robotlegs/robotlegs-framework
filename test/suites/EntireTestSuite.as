@@ -40,5 +40,7 @@ package suites
 		public var hooksTestSuite:HooksTestSuite;
 		
 		public var loggingTestSuite:LoggingTestSuite;
+
+		public var viewInjectionMapTestSuite:ViewInjectionMapTestSuite;
 	}
 }
