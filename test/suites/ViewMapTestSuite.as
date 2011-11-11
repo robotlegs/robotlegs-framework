@@ -5,19 +5,14 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.core.api
+package suites
 {
-
-	public interface ITypeFilter
+	import org.robotlegs.v2.extensions.viewMap.impl.ViewMapTest;
+	
+	[RunWith("org.flexunit.runners.Suite")]
+	[Suite]
+	public class ViewMapTestSuite
 	{
-		function get allOfTypes():Vector.<Class>;
-
-		function get anyOfTypes():Vector.<Class>;
-
-		function get descriptor():String;
-
-		function get noneOfTypes():Vector.<Class>;
-
-		function matches(item:*):Boolean;
+		public var viewMapTest:ViewMapTest;
 	}
 }

@@ -5,19 +5,20 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.core.api
+package org.robotlegs.v2.extensions.viewMap.impl.support
 {
 
-	public interface ITypeFilter
+	public class ViewClassInfoSupport extends ViewClassInfo
 	{
-		function get allOfTypes():Vector.<Class>;
-
-		function get anyOfTypes():Vector.<Class>;
-
-		function get descriptor():String;
-
-		function get noneOfTypes():Vector.<Class>;
-
-		function matches(item:*):Boolean;
+	
+		public function ViewClassInfoSupport(object:Object)
+		{
+			
+			
+			super();
+		}
+	
 	}
+
 }
+

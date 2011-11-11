@@ -25,94 +25,68 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 	import org.robotlegs.v2.extensions.viewManager.api.ViewInterests;
 	import org.robotlegs.v2.core.api.ITypeMatcher;
 	import org.robotlegs.v2.core.impl.TypeMatcher;
+	import org.robotlegs.v2.extensions.viewMap.impl.ViewMap;
 
 	[Event(name="configurationChange", type="org.robotlegs.v2.extensions.viewManager.api.ViewHandlerEvent")]
 	public class MediatorMap extends EventDispatcher implements IViewHandler, IMediatorMap
 	{
 		[Inject]
 		public var injector:Injector;
-
+		
 		public function get interests():uint
 		{
 			return ViewInterests.MEDIATION;
 		}
 
-		private const _filtersByDescription:Dictionary = new Dictionary();
+		[Inject]
+		public function set viewMap(value:ViewMap):void
+		{
+			_viewMap = value;
+			_viewMap.processCallback = processMapping;
+		}
 
 		private const _liveMediatorsByView:Dictionary = new Dictionary();
-
-		private const _mappingsByTypeFilter:Dictionary = new Dictionary();
 
 		private var _trigger:IMediatorTrigger;
 
 		private const _viewsInRemovalPhase:Dictionary = new Dictionary();
-
+		
+		private var _viewMap:ViewMap;
+		
+		/* 			public 			*/
 
 		public function getMapping(viewTypeOrMatcher:*):IMediatorMapping
 		{
-			if(viewTypeOrMatcher is Class)
-			{
-				viewTypeOrMatcher = new TypeMatcher().allOf(viewTypeOrMatcher);
-			}
-			
-			const typeFilter:ITypeFilter = getOrCreateFilterForMatcher(viewTypeOrMatcher as ITypeMatcher);
-			return _mappingsByTypeFilter[typeFilter];
+			return _viewMap.getMapping(viewTypeOrMatcher) as IMediatorMapping;
 		}
-
-		public function processView(view:DisplayObject, info:IViewClassInfo):uint
-		{
-			// TODO = check _liveMediatorsByView for this view, exit / error if it would overwrite
-			// TODO - probably refactor to a linked list for iteration
-			var interest:uint = 0;
-
-			for (var filter:* in _mappingsByTypeFilter)
-			{				
-				if ((filter as ITypeFilter).matches(view)  && (_mappingsByTypeFilter[filter].hasConfigs))
-				{
-					interest = 1;
-
-					if (_liveMediatorsByView[view] && _viewsInRemovalPhase[view])
-					{
-						view.removeEventListener(Event.ENTER_FRAME, onEnterFrameActionShutdown);
-						delete _viewsInRemovalPhase[view];
-						return interest;
-					}
-
-					mapViewForFilterBinding(filter, view);
-
-					var configsByMediator:Dictionary = _mappingsByTypeFilter[filter].configsByMediator;
-
-					for(var mediator:* in configsByMediator)
-					{
-						processMapping(mediator, configsByMediator[mediator], view);
-					}
-
-					unmapViewForFilterBinding(filter, view);
-				}
-			}
-
-			return interest;
-		}
-
-		public function releaseView(view:DisplayObject):void
-		{
-			if (_liveMediatorsByView[view])
-			{
-				if (!view.parent)
-				{
-					actionRemoval(view);
-				}
-				else
-				{
-					_viewsInRemovalPhase[view] = view;
-					view.addEventListener(Event.ENTER_FRAME, onEnterFrameActionShutdown);
-				}
-			}
-		}
-
+		
 		public function hasMapping(viewTypeOrMatcher:*):Boolean
 		{
-			return (getMapping(viewTypeOrMatcher) != null);
+			return _viewMap.hasMapping(viewTypeOrMatcher);
+		}
+		
+		public function processView(view:DisplayObject, info:IViewClassInfo):uint
+		{
+			if(_viewMap.processView(view, info))
+				return 1;
+
+			return 0;
+		}
+		
+		public function releaseView(view:DisplayObject):void
+		{
+			if (!_liveMediatorsByView[view])
+				return;
+				
+			if (!view.parent)
+			{
+				actionRemoval(view);
+			}
+			else
+			{
+				_viewsInRemovalPhase[view] = view;
+				view.addEventListener(Event.ENTER_FRAME, onEnterFrameActionShutdown);
+			}
 		}
 
 		public function invalidate():void
@@ -127,16 +101,17 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		
 		public function mapMatcher(typeMatcher:ITypeMatcher):IMediatorMapping
 		{
-			const typeFilter:ITypeFilter = getOrCreateFilterForMatcher(typeMatcher);
+			var mapping:IMediatorMapping;
 			
-			if(_mappingsByTypeFilter[typeFilter])
+			if(_viewMap.hasMapping(typeMatcher))
 			{
-				return _mappingsByTypeFilter[typeFilter];
+				return _viewMap.getMapping(typeMatcher) as IMediatorMapping;
 			}
-			
-			_mappingsByTypeFilter[typeFilter] = createMapping(typeFilter);
-			
-			return _mappingsByTypeFilter[typeFilter];
+
+			const typeFilter:ITypeFilter = _viewMap.getOrCreateFilterForMatcher(typeMatcher);
+			mapping = createMapping(typeFilter);
+			_viewMap.createMapping(typeFilter, mapping);			
+			return mapping;
 		}
 
 		public function unmap(viewType:Class):IMediatorUnmapping
@@ -146,9 +121,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		
 		public function unmapMatcher(typeMatcher:ITypeMatcher):IMediatorUnmapping
 		{
-			const typeFilter:ITypeFilter = getOrCreateFilterForMatcher(typeMatcher);
-			
-			return _mappingsByTypeFilter[typeFilter];
+			return _viewMap.getMapping(typeMatcher) as IMediatorUnmapping;
 		}
 
 		public function loadTrigger(trigger:IMediatorTrigger):void
@@ -173,21 +146,30 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		public function destroy():void
 		{
 		}
+
+		/*        PRIVATE        */
 		
-		
-		
-		private function getOrCreateFilterForMatcher(typeMatcher:ITypeMatcher):ITypeFilter
+		// TODO = check _liveMediatorsByView for this view, exit / error if it would overwrite
+		// TODO - probably refactor to a linked list for iteration
+		private function processMapping(view:DisplayObject, info:IViewClassInfo, filter:ITypeFilter, mapping:MediatorMapping):void
 		{
-			const typeFilter:ITypeFilter = typeMatcher.createTypeFilter();
-			const descriptor:String = typeFilter.descriptor;
-			
-			if(_filtersByDescription[descriptor])
+			if (_liveMediatorsByView[view] && _viewsInRemovalPhase[view])
 			{
-				return _filtersByDescription[descriptor];
+				view.removeEventListener(Event.ENTER_FRAME, onEnterFrameActionShutdown);
+				delete _viewsInRemovalPhase[view];
+				return;
 			}
-			
-			_filtersByDescription[descriptor] = typeFilter;
-			return typeFilter;
+
+			_viewMap.mapViewForFilterBinding(filter, info, view);
+
+			var configsByMediator:Dictionary = mapping.configsByMediator;
+
+			for(var mediator:* in configsByMediator)
+			{
+				processConfig(mediator, configsByMediator[mediator], view);
+			}
+
+			_viewMap.unmapViewForFilterBinding(filter, info, view);
 		}
 		
 		private function onEnterFrameActionShutdown(e:Event):void
@@ -218,22 +200,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			return new MediatorMapping(cleanUpMapping, typeFilter, injector);
 		}
 
-		private function mapViewForFilterBinding(filter:ITypeFilter, view:DisplayObject):void
-		{
-			var requiredType:Class;
-
-			for each (requiredType in filter.allOfTypes)
-			{
-				injector.map(requiredType).toValue(view);
-			}
-
-			for each (requiredType in filter.anyOfTypes)
-			{
-				injector.map(requiredType).toValue(view);
-			}
-		}
-
-		private function processMapping(mediatorType:Class, config:MediatorConfig, view:DisplayObject):void
+		private function processConfig(mediatorType:Class, config:MediatorConfig, view:DisplayObject):void
 		{
 			if(config.guards.approve())
 			{
@@ -250,38 +217,20 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			}
 		}
 
-		private function unmapViewForFilterBinding(filter:ITypeFilter, view:DisplayObject):void
-		{
-			var requiredType:Class;
-
-			for each (requiredType in filter.allOfTypes)
-			{
-				injector.unmap(requiredType);
-			}
-
-			for each (requiredType in filter.anyOfTypes)
-			{
-				injector.unmap(requiredType);
-			}
-		}
-
 		private function cleanUpMediator(mediator:*, view:DisplayObject):void
 		{
 			if (!_viewsInRemovalPhase[view])
-			{
 				return;
-			}
 
 			const index:int = _liveMediatorsByView[view].indexOf(mediator);
+
 			if (index > -1)
-			{
 				_liveMediatorsByView[view].splice(index, 1);
-			}
 		}
 
 		private function cleanUpMapping(typeFilter:ITypeFilter):void
 		{
-			delete _mappingsByTypeFilter[typeFilter];
+			_viewMap.removeMapping(typeFilter);
 		}
 	}
 }

@@ -26,6 +26,8 @@ package suites
 		public var utilityPackageTestSuite:UtilityPackageFunctionsSuite;
 
 		public var mediatorMapTestSuite:MediatorMapTestSuite;
+		
+		public var viewMapTestSuite:ViewMapTestSuite;
 
 		public var viewManagerTestSuite:ViewManagerTestSuite;
 

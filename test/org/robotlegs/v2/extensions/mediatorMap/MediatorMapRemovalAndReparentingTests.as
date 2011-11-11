@@ -22,6 +22,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import org.robotlegs.v2.extensions.eventMap.impl.EventMap;
 	import org.robotlegs.v2.extensions.eventMap.api.IEventMap;
 	import flash.events.IEventDispatcher;
+	import org.robotlegs.v2.extensions.viewMap.impl.ViewMap;
 	
 	public class MediatorMapRemovalAndReparentingTests
 	{
@@ -54,11 +55,17 @@ package org.robotlegs.v2.extensions.mediatorMap
 			const eventDispatcher:IEventDispatcher = new EventDispatcher();
 
 			injector = new Injector();
+			
+			const viewMap:ViewMap = new ViewMap();
+			viewMap.injector = injector;
+			
 			injector.map(IEventMap).toValue(new EventMap(eventDispatcher));
 			injector.map(IEventDispatcher).toValue(eventDispatcher);
 
 			instance = new MediatorMap();
 			instance.injector = injector;
+			instance.viewMap = viewMap;
+			
 			instance.loadTrigger(trigger);
 
 			instance.map(Sprite).toMediator(RL2Mediator);
@@ -67,6 +74,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 		[After]
 		public function tearDown():void
 		{
+			injector = null;
 			instance = null;
 			view = null;
 		}

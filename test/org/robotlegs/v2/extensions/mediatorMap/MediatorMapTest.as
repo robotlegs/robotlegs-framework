@@ -25,6 +25,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import org.robotlegs.v2.extensions.viewManager.api.IViewHandler;
 	import org.robotlegs.v2.extensions.viewManager.api.ViewHandlerEvent;
 	import org.swiftsuspenders.Injector;
+	import org.robotlegs.v2.extensions.viewMap.impl.ViewMap;
 
 	public class MediatorMapTest
 	{
@@ -42,6 +43,12 @@ package org.robotlegs.v2.extensions.mediatorMap
 
 			instance = new MediatorMap();
 			instance.injector = injector;
+			
+			const viewMap:ViewMap = new ViewMap();
+			viewMap.injector = injector;
+			
+			instance.viewMap = viewMap;
+			
 			instance.loadTrigger(new DuckTypedMediatorTrigger(false));
 
 			mediatorWatcher = new MediatorWatcher();
@@ -196,15 +203,12 @@ package org.robotlegs.v2.extensions.mediatorMap
 			assertEquals(0, interest);
 		}
 		
-		
-
 		[Test]
 		public function is_not_interested_if_mapping_is_unmapped_for_matcher():void
 		{
 			instance.mapMatcher(new TypeMatcher().allOf(DisplayObject)).toMediator(ExampleMediator);
 			instance.mapMatcher(new TypeMatcher().allOf(DisplayObject)).toMediator(ExampleDisplayObjectMediator);
 			instance.unmapMatcher(new TypeMatcher().allOf(DisplayObject)).fromAll();
-
 
 			var interest:uint = instance.processView(new Sprite(), null);
 			assertEquals(0, interest);
@@ -369,7 +373,6 @@ import org.robotlegs.v2.extensions.mediatorMap.impl.support.MediatorWatcher;
 
 class ExampleMediator
 {
-
 	[Inject]
 	public var mediatorWatcher:MediatorWatcher;
 
@@ -389,7 +392,6 @@ class ExampleMediator
 
 class ExampleDisplayObjectMediator
 {
-
 	[Inject]
 	public var mediatorWatcher:MediatorWatcher;
 
@@ -404,7 +406,6 @@ class ExampleDisplayObjectMediator
 
 class RectangleMediator
 {
-
 	[Inject]
 	public var rectangle:Rectangle;
 
@@ -416,7 +417,6 @@ class RectangleMediator
 
 class OnlyIfViewHasChildrenGuard
 {
-
 	[Inject]
 	public var view:Sprite;
 
@@ -428,7 +428,6 @@ class OnlyIfViewHasChildrenGuard
 
 class HookWithMediatorAndViewInjectionDrawsRectangle
 {
-
 	[Inject]
 	public var mediator:RectangleMediator;
 

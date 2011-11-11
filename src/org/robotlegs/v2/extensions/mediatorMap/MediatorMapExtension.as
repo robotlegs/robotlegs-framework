@@ -12,6 +12,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMap;
 	import org.robotlegs.v2.extensions.mediatorMap.impl.MediatorMap;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewManager;
+	import org.robotlegs.v2.extensions.viewMap.impl.ViewMap;
 
 	public class MediatorMapExtension implements IContextExtension
 	{
@@ -24,6 +25,7 @@ package org.robotlegs.v2.extensions.mediatorMap
 		public function install(context:IContext):void
 		{
 			this.context = context;
+			context.injector.map(ViewMap).toType(ViewMap);
 			context.injector.map(IMediatorMap).toSingleton(MediatorMap);
 		}
 

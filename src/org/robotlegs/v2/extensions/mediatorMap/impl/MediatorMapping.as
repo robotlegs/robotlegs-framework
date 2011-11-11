@@ -63,7 +63,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			_callbackForDeletion(_typeFilter);
 		}
 
-		internal function get hasConfigs():Boolean
+		public function get hasConfigs():Boolean
 		{
 			for each (var item:Object in _configsByMediator)
 			{
