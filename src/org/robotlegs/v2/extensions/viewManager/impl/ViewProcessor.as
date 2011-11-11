@@ -9,10 +9,12 @@ package org.robotlegs.v2.extensions.viewManager.impl
 {
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
+	import flash.system.ApplicationDomain;
 	import flash.utils.Dictionary;
 	import flash.utils.getQualifiedClassName;
 	import org.robotlegs.v2.core.api.ILogger;
 	import org.robotlegs.v2.core.impl.Logger;
+	import org.robotlegs.v2.extensions.viewManager.api.IViewClassInfo;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewHandler;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewListener;
 	import org.robotlegs.v2.extensions.viewManager.api.ViewHandlerEvent;
@@ -65,20 +67,25 @@ package org.robotlegs.v2.extensions.viewManager.impl
 			if (_activeListenerByView[view])
 				return;
 
-			const viewFQCN:String = getQualifiedClassName(view);
+			const fqcn:String = getQualifiedClassName(view);
+
+			// todo: cache this by fqcn + application domain
+			const type:Class = view['constructor'];
+			const domain:ApplicationDomain = view.loaderInfo.applicationDomain;
+			const info:IViewClassInfo = new ViewClassInfo(type, fqcn, domain);
 
 			// process the view
 			// WARNING: this is totally flawed - we might traverse a different set of nodes
-			var confirmedHandlers:Vector.<IViewHandler> = _confirmedHandlersByFQCN[viewFQCN];
+			var confirmedHandlers:Vector.<IViewHandler> = _confirmedHandlersByFQCN[fqcn];
 			var response:uint;
 			if (confirmedHandlers)
 			{
-				response = processKnownView(view, viewFQCN, confirmedHandlers);
+				response = processKnownView(view, info, confirmedHandlers);
 			}
 			else
 			{
-				_confirmedHandlersByFQCN[viewFQCN] = confirmedHandlers = new Vector.<IViewHandler>;
-				response = processFreshView(view, viewFQCN, confirmedHandlers);
+				_confirmedHandlersByFQCN[fqcn] = confirmedHandlers = new Vector.<IViewHandler>;
+				response = processFreshView(view, info, confirmedHandlers);
 			}
 
 			// report any matches
@@ -115,7 +122,7 @@ package org.robotlegs.v2.extensions.viewManager.impl
 
 		private function processFreshView(
 			view:DisplayObject,
-			viewFQCN:String,
+			info:IViewClassInfo,
 			confirmedHandlers:Vector.<IViewHandler>):uint
 		{
 			var handlerResponse:uint = 0;
@@ -139,7 +146,7 @@ package org.robotlegs.v2.extensions.viewManager.impl
 					if (!((combinedResponse & 0xAAAAAAAA) ^ (handler.interests << 1)))
 						continue;
 
-					handlerResponse = handler.processView(view, null);
+					handlerResponse = handler.processView(view, info);
 					combinedResponse |= handlerResponse;
 
 					if (handlerResponse)
@@ -157,7 +164,7 @@ package org.robotlegs.v2.extensions.viewManager.impl
 
 		private function processKnownView(
 			view:DisplayObject,
-			viewFQCN:String,
+			info:IViewClassInfo,
 			confirmedHandlers:Vector.<IViewHandler>):uint
 		{
 			var handlerResponse:uint = 0;
@@ -173,7 +180,7 @@ package org.robotlegs.v2.extensions.viewManager.impl
 					continue;
 				}
 
-				handlerResponse = handler.processView(view, null);
+				handlerResponse = handler.processView(view, info);
 				combinedResponse |= handlerResponse;
 
 				if (handlerResponse)
