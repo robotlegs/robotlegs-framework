@@ -23,12 +23,12 @@ package suites
 
 		public var typeMatchingTestSuite:TypeMatchingTestSuite;
 
-		public var viewMapTestSuite:ViewMapTestSuite;
-
 		public var utilityPackageTestSuite:UtilityPackageFunctionsSuite;
 
 		public var mediatorMapTestSuite:MediatorMapTestSuite;
-		
+
+		public var viewMapTestSuite:ViewMapTestSuite;
+
 		public var viewManagerTestSuite:ViewManagerTestSuite;
 
 		public var eventMapTestSuite:EventMapTestSuite;
@@ -38,9 +38,11 @@ package suites
 		public var guardsTestSuite:GuardsTestSuite;
 
 		public var hooksTestSuite:HooksTestSuite;
-		
+
 		public var loggingTestSuite:LoggingTestSuite;
 
 		public var viewInjectionMapTestSuite:ViewInjectionMapTestSuite;
+
+		public var extensionManagerSuite:ExtensionManagerTestSuite;
 	}
 }
