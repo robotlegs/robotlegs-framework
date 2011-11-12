@@ -12,7 +12,6 @@ package org.robotlegs.v2.core.impl
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
 	import flash.system.ApplicationDomain;
-	import flash.utils.Dictionary;
 	import org.robotlegs.v2.core.api.IContext;
 	import org.robotlegs.v2.core.api.IContextConfig;
 	import org.robotlegs.v2.core.api.IContextExtension;
@@ -118,21 +117,19 @@ package org.robotlegs.v2.core.impl
 
 		private const configClasses:Vector.<Class> = new Vector.<Class>;
 
-		private const extensionByClass:Dictionary = new Dictionary();
-
-		private const extensionClasses:Vector.<Class> = new Vector.<Class>;
+		private var extensionManager:ExtensionManager;
 
 		public function Context()
 		{
-			// This page intentionally left blank
+			extensionManager = new ExtensionManager(this);
 		}
 
 		public function destroy():void
 		{
 			logger.info('destroying context');
 			_destroyed && throwContextDestroyedError();
-			uninstallExtensions();
 			_destroyed = true;
+			extensionManager.destroy();
 		}
 
 		public function initialize():void
@@ -145,8 +142,7 @@ package org.robotlegs.v2.core.impl
 			configureInjector();
 			mapInjections();
 			addContextToContextViewRegistry();
-			installExtensions();
-			initializeExtensions();
+			extensionManager.initialize();
 			initializeConfigs();
 			logger.info('context initialization complete');
 		}
@@ -155,18 +151,7 @@ package org.robotlegs.v2.core.impl
 		{
 			logger.info('installing extension {0}', [extensionClass]);
 			_destroyed && throwContextDestroyedError();
-			if (extensionClasses.indexOf(extensionClass) != -1)
-				return this;
-
-			extensionClasses.push(extensionClass);
-
-			if (initialized)
-			{
-				const extension:IContextExtension = createExtension(extensionClass);
-				extension.install(this);
-				extension.initialize();
-			}
-
+			extensionManager.addExtension(extensionClass);
 			return this;
 		}
 
@@ -179,15 +164,7 @@ package org.robotlegs.v2.core.impl
 		{
 			logger.info('uninstalling extension {0}', [extensionClass]);
 			_destroyed && throwContextDestroyedError();
-			const index:int = extensionClasses.indexOf(extensionClass);
-			if (index == -1)
-				return this;
-
-			extensionClasses.splice(index, 1);
-
-			const extension:IContextExtension = extensionByClass[extensionClass];
-			extension && extension.uninstall();
-
+			extensionManager.removeExtension(extensionClass);
 			return this;
 		}
 
@@ -232,13 +209,6 @@ package org.robotlegs.v2.core.impl
 			_injector ||= createInjector();
 		}
 
-		private function createExtension(extensionClass:Class):IContextExtension
-		{
-			const extension:IContextExtension = injector.getInstance(extensionClass);
-			extensionByClass[extensionClass] = extension;
-			return extension;
-		}
-
 		private function createInjector():Injector
 		{
 			if (parent && parent.injector)
@@ -256,27 +226,6 @@ package org.robotlegs.v2.core.impl
 			{
 				var config:IContextConfig = injector.getInstance(configClass);
 				config.configure(this);
-			}, this);
-		}
-
-		private function initializeExtensions():void
-		{
-			logger.info('initializing extensions');
-			extensionClasses.forEach(function(extensionClass:Class, ... rest):void
-			{
-				const extension:IContextExtension = extensionByClass[extensionClass]
-				extension.initialize();
-			}, this);
-		}
-
-		private function installExtensions():void
-		{
-			logger.info('installing extensions');
-
-			extensionClasses.forEach(function(extensionClass:Class, ... rest):void
-			{
-				const extension:IContextExtension = createExtension(extensionClass);
-				extension.install(this);
 			}, this);
 		}
 
@@ -302,18 +251,6 @@ package org.robotlegs.v2.core.impl
 			const message:String = 'This context has already been initialized and is now locked';
 			logger.fatal(message);
 			throw new IllegalOperationError(message);
-		}
-
-		private function uninstallExtensions():void
-		{
-			logger.info('uninstalling extensions');
-			// uninstall in reverse order
-			var extensionClass:Class;
-			while (extensionClass = extensionClasses.pop())
-			{
-				const extension:IContextExtension = extensionByClass[extensionClass];
-				extension.uninstall();
-			}
 		}
 	}
 }
