@@ -27,13 +27,13 @@ package org.robotlegs.v2.core.impl
 		{
 		}
 
-		public function allOf(... types):ITypeMatcher
+		public function allOf(... types):TypeMatcher
 		{
 			pushAddedTypesTo(types, _allOfTypes);
 			return this;
 		}
 
-		public function anyOf(... types):ITypeMatcher
+		public function anyOf(... types):TypeMatcher
 		{
 			pushAddedTypesTo(types, _anyOfTypes);
 			return this;
@@ -45,15 +45,15 @@ package org.robotlegs.v2.core.impl
 			return _typeFilter ||= buildTypeFilter();
 		}
 
-		public function lock():void
-		{
-			createTypeFilter();
-		}
-
-		public function noneOf(... types):ITypeMatcher
+		public function noneOf(... types):TypeMatcher
 		{
 			pushAddedTypesTo(types, _noneOfTypes);
 			return this;
+		}
+
+		public function lock():void
+		{
+			createTypeFilter();
 		}
 
 		protected function buildTypeFilter():ITypeFilter

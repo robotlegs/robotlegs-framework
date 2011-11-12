@@ -5,13 +5,17 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.core.api
+package org.robotlegs.v2.core.impl.support.c
 {
 
-	public interface ITypeMatcher
+public class PackagedTypeC extends Object
+{
+	
+	public function PackagedTypeC()
 	{
-		function createTypeFilter():ITypeFilter;
-
-		function lock():void;
+		super();
 	}
+	
+}
+
 }

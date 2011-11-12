@@ -12,6 +12,7 @@ package org.robotlegs.v2.extensions.viewInjectionMap.impl
 	import flash.display.Sprite;
 	import org.robotlegs.v2.extensions.viewInjectionMap.impl.processors.InjectInto;
 	import org.robotlegs.v2.extensions.viewMap.impl.ViewMap;
+	import org.robotlegs.v2.core.impl.TypeMatcher;
 
 	public class ViewInjectionMapTest 
 	{
@@ -63,6 +64,73 @@ package org.robotlegs.v2.extensions.viewInjectionMap.impl
 			instance.processView(view, null)
 			
 			assertEquals(injectionTracker, view.injectedItem);
+		}
+		
+		[Test]
+		public function view_mapped_by_typeMatcher_is_injected_into():void
+		{
+			const injectionTracker:InjectionTracker = new InjectionTracker();
+			
+			injector.map(InjectionTracker).toValue(injectionTracker);
+			
+			instance.mapMatcher(new TypeMatcher().allOf(Sprite)).toProcess(InjectInto);
+			
+			const view:ViewWithInjections = new ViewWithInjections();
+			
+			instance.processView(view, null)
+			
+			assertEquals(injectionTracker, view.injectedItem);
+		}
+		
+		[Test]
+		public function view_mapped_and_unmapped_by_typeMatcher_is_not_injected_into():void
+		{
+			const injectionTracker:InjectionTracker = new InjectionTracker();
+			
+			injector.map(InjectionTracker).toValue(injectionTracker);
+			
+			instance.mapMatcher(new TypeMatcher().allOf(Sprite)).toProcess(InjectInto);
+			instance.unmapMatcher(new TypeMatcher().allOf(Sprite)).fromProcess(InjectInto);
+			
+			const view:ViewWithInjections = new ViewWithInjections();
+			
+			instance.processView(view, null)
+			
+			assertEquals(null, view.injectedItem);
+		}
+		
+		[Test]
+		public function view_mapped_and_unmapped_by_viewClass_is_not_injected_into():void
+		{
+			const injectionTracker:InjectionTracker = new InjectionTracker();
+			
+			injector.map(InjectionTracker).toValue(injectionTracker);
+			
+			instance.map(Sprite).toProcess(InjectInto);
+			instance.unmap(Sprite).fromProcess(InjectInto);
+			
+			const view:ViewWithInjections = new ViewWithInjections();
+			
+			instance.processView(view, null)
+			
+			assertEquals(null, view.injectedItem);
+		}
+		
+		[Test]
+		public function after_view_mapped_and_unmapped_hasMapping_is_false():void
+		{
+			instance.map(Sprite).toProcess(InjectInto);
+			instance.unmap(Sprite).fromProcess(InjectInto);
+			
+			assertFalse(instance.hasMapping(Sprite));
+		}
+		
+		[Test]
+		public function after_view_mapped_hasMapping_is_true():void
+		{
+			instance.map(Sprite).toProcess(InjectInto);
+			
+			assertTrue(instance.hasMapping(Sprite));
 		}
 
 	}

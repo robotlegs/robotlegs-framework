@@ -18,6 +18,7 @@ package org.robotlegs.v2.extensions.viewInjectionMap.impl
 	import org.robotlegs.v2.extensions.viewMap.impl.ViewMap;
 	import org.robotlegs.v2.core.api.ITypeFilter;
 	import org.robotlegs.v2.core.impl.TypeMatcher;
+	import org.robotlegs.v2.core.api.ITypeMatcher;
 	
 	public class ViewInjectionMap extends EventDispatcher implements IViewHandler, IEventDispatcher
 	{
@@ -59,10 +60,26 @@ package org.robotlegs.v2.extensions.viewInjectionMap.impl
 		{
 			
 		}
+		
+		public function hasMapping(viewTypeOrMatcher:*):Boolean
+		{
+			const mapping:ViewInjectionMapping = _viewMap.getMapping(viewTypeOrMatcher) as ViewInjectionMapping;
+			return (mapping && mapping.hasConfigs);
+		}
+		
+		public function getMapping(viewTypeOrMatcher:*):ViewInjectionMapping
+		{
+			return _viewMap.getMapping(viewTypeOrMatcher) as ViewInjectionMapping;
+		}
 
 		public function map(viewType:Class):ViewInjectionMapping
 		{
-			const typeFilter:ITypeFilter = _viewMap.getOrCreateFilterForMatcher(new TypeMatcher().allOf(viewType));
+			return mapMatcher(new TypeMatcher().allOf(viewType));
+		}
+		
+		public function mapMatcher(typeMatcher:ITypeMatcher):ViewInjectionMapping
+		{
+			const typeFilter:ITypeFilter = _viewMap.getOrCreateFilterForMatcher(typeMatcher);
 			
 			const mapping:ViewInjectionMapping = new ViewInjectionMapping(typeFilter, injector);
 			
@@ -70,9 +87,18 @@ package org.robotlegs.v2.extensions.viewInjectionMap.impl
 			return mapping;
 		}
 		
+		public function unmap(viewType:Class):ViewInjectionMapping
+		{
+			return unmapMatcher(new TypeMatcher().allOf(viewType));
+		}
+		
+		public function unmapMatcher(typeMatcher:ITypeMatcher):ViewInjectionMapping
+		{
+			return _viewMap.getMapping(typeMatcher) as ViewInjectionMapping;
+		}
+		
 		private function processMapping(view:DisplayObject, info:IViewClassInfo, filter:ITypeFilter, mapping:ViewInjectionMapping):void
 		{
-			trace("ViewInjectionMap::processMapping()");
 			_viewMap.mapViewForFilterBinding(filter, info, view);
 
 			mapping.process(view);

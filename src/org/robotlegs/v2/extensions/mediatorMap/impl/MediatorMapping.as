@@ -54,7 +54,15 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		
 		public function fromMediator(mediatorType:Class):void
 		{	
-			unmapMediator(mediatorType);
+			if (_configsByMediator[mediatorType])
+			{
+				delete _configsByMediator[mediatorType];
+			}
+
+			if (!hasConfigs)
+			{
+				_callbackForDeletion(_typeFilter);
+			}
 		}
 
 		public function fromAll():void
@@ -71,19 +79,6 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 			}
 
 			return false;
-		}
-
-		private function unmapMediator(mediatorType:Class):void
-		{
-			if (_configsByMediator[mediatorType])
-			{
-				delete _configsByMediator[mediatorType];
-			}
-
-			if (!hasConfigs)
-			{
-				_callbackForDeletion(_typeFilter);
-			}
 		}
 	}
 }

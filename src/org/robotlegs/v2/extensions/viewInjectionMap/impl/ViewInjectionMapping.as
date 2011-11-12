@@ -39,11 +39,17 @@ package org.robotlegs.v2.extensions.viewInjectionMap.impl
 			_configsByProcessorType[viewProcessorType] = config;
 			return config;
 		}
-
+		
+		public function fromProcess(viewProcessorType:Class):void
+		{
+			delete _configsByProcessorType[viewProcessorType];
+		}
+		
 		public function process(view:DisplayObject):void
 		{
 			for (var processorClass:* in _configsByProcessorType)
 			{
+				// todo, use cached processors
 				var processor:* = _injector.getInstance(processorClass);
 				processor.process(view);
 			}
@@ -51,7 +57,12 @@ package org.robotlegs.v2.extensions.viewInjectionMap.impl
 		
 		public function get hasConfigs():Boolean
 		{
-			return true;
+			for each (var item:Object in _configsByProcessorType)
+			{
+				return true;
+			}
+
+			return false;
 		}
 
 	}
