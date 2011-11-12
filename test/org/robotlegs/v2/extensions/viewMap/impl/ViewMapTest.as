@@ -19,11 +19,16 @@ package org.robotlegs.v2.extensions.viewMap.impl
 	import org.swiftsuspenders.Injector;
 	import org.robotlegs.v2.core.api.ITypeFilter;
 	import org.robotlegs.v2.core.api.ITypeMatcher;
+	import org.robotlegs.v2.core.impl.PackageMatcher;
+	import flash.display.DisplayObject;
 
 	public class ViewMapTest 
 	{
 		private var instance:ViewMap;
 		private var injector:Injector;
+		
+		private var viewReceived:*;
+		private var mappingReceived:*;
 
 		[Before]
 		public function setUp():void
@@ -70,6 +75,31 @@ package org.robotlegs.v2.extensions.viewMap.impl
 														"sprite" : view,
 														"movieClip" : view  }))
 		}
+		
+		/*[Test]
+				public function handles_mapping_by_packageFilter():void
+				{
+					viewReceived = null;
+					mappingReceived = null;
+					
+					const packageMatcher:PackageMatcher = new PackageMatcher().require('flash.display');
+					const expectedMapping:Object = {};
+					const expectedView:Sprite = new Sprite();
+					const viewClassInfo:ViewClassInfo = new ViewClassInfo(Sprite, 'flash.display.Sprite', null);
+					
+					instance.createMapping(packageMatcher.createTypeFilter(), expectedMapping);
+
+					instance.processView(expectedView, viewClassInfo)
+
+					assertEquals(expectedView, viewReceived);
+					assertEquals(expectedMapping, mappingReceived);
+				}
+				
+				protected function handleView(view:DisplayObject, info:ViewClassInfo, filter:ITypeFilter, mapping:*):void
+				{
+					viewReceived = view;
+					mappingReceived = mapping;
+				}*/
 	}
 }
 

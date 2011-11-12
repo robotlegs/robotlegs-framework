@@ -13,22 +13,22 @@ package suites
 	public class EntireTestSuite
 	{
 
-/*		public var commandMapTestSuite:CommandMapTestSuite;
+		public var commandMapTestSuite:CommandMapTestSuite;
 
 		public var eventCommandMapTestSuite:EventCommandMapTestSuite;
 
 		public var contextBuilderTestSuite:ContextBuilderTestSuite;
 
-		public var contextTestSuite:ContextTestSuite;*/
+		public var contextTestSuite:ContextTestSuite;
 
 		public var typeMatchingTestSuite:TypeMatchingTestSuite;
 
-		/*public var utilityPackageTestSuite:UtilityPackageFunctionsSuite;
+		public var viewMapTestSuite:ViewMapTestSuite;
+
+		public var utilityPackageTestSuite:UtilityPackageFunctionsSuite;
 
 		public var mediatorMapTestSuite:MediatorMapTestSuite;
 		
-		public var viewMapTestSuite:ViewMapTestSuite;
-
 		public var viewManagerTestSuite:ViewManagerTestSuite;
 
 		public var eventMapTestSuite:EventMapTestSuite;
@@ -41,6 +41,6 @@ package suites
 		
 		public var loggingTestSuite:LoggingTestSuite;
 
-		public var viewInjectionMapTestSuite:ViewInjectionMapTestSuite;*/
+		public var viewInjectionMapTestSuite:ViewInjectionMapTestSuite;
 	}
 }
