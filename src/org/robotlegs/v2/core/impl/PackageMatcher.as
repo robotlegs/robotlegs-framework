@@ -63,7 +63,6 @@ package org.robotlegs.v2.core.impl
 
 		protected function buildTypeFilter():ITypeFilter
 		{
-			trace("PackageMatcher::buildTypeFilter()");
 			if (((!_requirePackage) || _requirePackage.length == 0) &&
 				(_anyOfPackages.length == 0) &&
 				(_noneOfPackages.length == 0))
@@ -87,7 +86,6 @@ package org.robotlegs.v2.core.impl
 		
 		protected function pushValuesToStringVector(values:Array, vector:Vector.<String>):void
 		{
-			trace("PackageMatcher::pushValuesToStringVector()");
 			if (values.length == 1
 				&& (values[0] is Array || values[0] is Vector.<String>))
 			{
