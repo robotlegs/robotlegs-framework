@@ -28,7 +28,6 @@ package org.robotlegs.v2.core.impl
 
 		public function createTypeFilter():ITypeFilter
 		{
-			trace("PackageMatcher::createTypeFilter()");
 			return _typeFilter ||= buildTypeFilter();
 		}
 

@@ -76,30 +76,33 @@ package org.robotlegs.v2.extensions.viewMap.impl
 														"movieClip" : view  }))
 		}
 		
-		/*[Test]
-				public function handles_mapping_by_packageFilter():void
-				{
-					viewReceived = null;
-					mappingReceived = null;
-					
-					const packageMatcher:PackageMatcher = new PackageMatcher().require('flash.display');
-					const expectedMapping:Object = {};
-					const expectedView:Sprite = new Sprite();
-					const viewClassInfo:ViewClassInfo = new ViewClassInfo(Sprite, 'flash.display.Sprite', null);
-					
-					instance.createMapping(packageMatcher.createTypeFilter(), expectedMapping);
+		[Test]
+		public function handles_mapping_by_packageFilter():void
+		{
+			viewReceived = null;
+			mappingReceived = null;
+			
+			const packageMatcher:PackageMatcher = new PackageMatcher().require('flash.display');
+			const expectedMapping:Object = {};
+			expectedMapping.hasConfigs = true;
+			const expectedView:Sprite = new Sprite();
+			const viewClassInfo:ViewClassInfo = new ViewClassInfo(Sprite, 'flash.display.Sprite', null);
+			
+			instance.processCallback = handleView;
+			
+			instance.createMapping(packageMatcher.createTypeFilter(), expectedMapping);
 
-					instance.processView(expectedView, viewClassInfo)
+			instance.processView(expectedView, viewClassInfo)
 
-					assertEquals(expectedView, viewReceived);
-					assertEquals(expectedMapping, mappingReceived);
-				}
-				
-				protected function handleView(view:DisplayObject, info:ViewClassInfo, filter:ITypeFilter, mapping:*):void
-				{
-					viewReceived = view;
-					mappingReceived = mapping;
-				}*/
+			assertEquals(expectedView, viewReceived);
+			assertEquals(expectedMapping, mappingReceived);
+		}
+		
+		protected function handleView(view:DisplayObject, info:ViewClassInfo, filter:ITypeFilter, mapping:*):void
+		{
+			viewReceived = view;
+			mappingReceived = mapping;
+		}
 	}
 }
 
