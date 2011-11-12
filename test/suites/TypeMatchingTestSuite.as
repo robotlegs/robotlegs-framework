@@ -10,7 +10,8 @@ package suites
 	import org.robotlegs.v2.core.impl.TypeFilterTest;
 	import org.robotlegs.v2.core.impl.TypeFilterUsageTest;
 	import org.robotlegs.v2.core.impl.TypeMatcherTest;
-	import org.robotlegs.v2.core.impl.PackageMatcherTest;
+	import org.robotlegs.v2.core.impl.PackageFilter_descriptorTest;
+	import org.robotlegs.v2.core.impl.PackageMatchingTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
@@ -23,6 +24,8 @@ package suites
 
 		public var typeMatcherTest:TypeMatcherTest;
 		
-		public var packageMatcherTest:PackageMatcherTest;
+		public var packageMatcherTest:PackageMatchingTest;
+		
+		public var packageFilter_descriptorTest:PackageFilter_descriptorTest;
 	}
 }

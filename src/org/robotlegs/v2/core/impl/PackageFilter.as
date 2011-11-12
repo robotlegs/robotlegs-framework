@@ -20,11 +20,15 @@ package org.robotlegs.v2.core.impl
 
 		protected var _noneOfPackages:Vector.<String>;
 		
+		protected var _descriptor:String;
+		
 		public function PackageFilter(requiredPackage:String, anyOfPackages:Vector.<String>, noneOfPackages:Vector.<String>)
 		{
 			_requirePackage = requiredPackage;
 			_anyOfPackages = anyOfPackages;
 			_noneOfPackages = noneOfPackages;
+			_anyOfPackages.sort(stringSort);
+			_noneOfPackages.sort(stringSort);
 		}
 		
 		public function get allOfTypes():Vector.<Class>
@@ -44,9 +48,10 @@ package org.robotlegs.v2.core.impl
 
 		public function get descriptor():String
 		{
-			return '';
+			return _descriptor ||= createDescriptor();
 		}
 
+		
 		public function matches(item:*):Boolean
 		{
 			const fqcn:String = getQualifiedClassName(item);
@@ -78,10 +83,27 @@ package org.robotlegs.v2.core.impl
 			return false;
 		}
 		
+		private function createDescriptor():String
+		{
+			trace("PackageFilter::createDescriptor()", _anyOfPackages, _noneOfPackages);
+			
+			return "require: " + _requirePackage
+				+ ", any of: " + _anyOfPackages.toString()
+				+ ", none of: " + _noneOfPackages.toString();
+		}
+		
 		private function matchPackageInFQCN(packageName:String, fqcn:String):Boolean
 		{
-			trace("PackageFilter::matchPackageInFQCN()", packageName, fqcn, (fqcn.indexOf(packageName) == 0));
 			return (fqcn.indexOf(packageName) == 0)
+		}
+		
+		protected function stringSort(item1:String, item2:String):int
+		{
+			if (item1 > item2)
+			{
+				return 1;
+			}
+			return -1;
 		}
 
 	}
