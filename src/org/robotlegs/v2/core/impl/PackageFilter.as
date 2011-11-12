@@ -85,8 +85,6 @@ package org.robotlegs.v2.core.impl
 		
 		private function createDescriptor():String
 		{
-			trace("PackageFilter::createDescriptor()", _anyOfPackages, _noneOfPackages);
-			
 			return "require: " + _requirePackage
 				+ ", any of: " + _anyOfPackages.toString()
 				+ ", none of: " + _noneOfPackages.toString();
