@@ -52,6 +52,6 @@ package org.robotlegs.v2.core.api
 		 */
 		function withPreProcessor(preProcessorClass:Class):IContextBuilder;
 
-		function withLogTarget(target:ILogTarget):IContextBuilder;
+		function withLogTarget(target:IContextLogTarget):IContextBuilder;
 	}
 }

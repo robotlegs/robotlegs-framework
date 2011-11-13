@@ -14,9 +14,7 @@ package org.robotlegs.v2.core.api
 
 	public interface IContext
 	{
-		function get id():String;
-
-		function get logger():ILogger;
+		function get logger():IContextLogger;
 
 		function get applicationDomain():ApplicationDomain;
 

@@ -11,7 +11,8 @@ package org.robotlegs.v2.core.impl.support
 	import flash.events.IEventDispatcher;
 	import flash.system.ApplicationDomain;
 	import org.robotlegs.v2.core.api.IContext;
-	import org.robotlegs.v2.core.api.ILogger;
+	import org.robotlegs.v2.core.api.IContextLogger;
+	import org.robotlegs.v2.core.impl.ContextLogger;
 	import org.swiftsuspenders.Injector;
 
 	public class NullContext implements IContext
@@ -29,12 +30,14 @@ package org.robotlegs.v2.core.impl.support
 			_injector = value;
 		}
 
-		public function get id():String
+		private var _logger:IContextLogger;
+
+		public function get logger():IContextLogger
 		{
-			return null;
+			return _logger;
 		}
 
-		public function get logger():ILogger
+		public function get id():String
 		{
 			return null;
 		}
@@ -83,6 +86,7 @@ package org.robotlegs.v2.core.impl.support
 
 		public function NullContext()
 		{
+			_logger = new ContextLogger(this);
 		}
 
 		public function destroy():void

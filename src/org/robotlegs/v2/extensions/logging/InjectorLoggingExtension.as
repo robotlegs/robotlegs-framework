@@ -9,7 +9,7 @@ package org.robotlegs.v2.extensions.logging
 {
 	import org.robotlegs.v2.core.api.IContext;
 	import org.robotlegs.v2.core.api.IContextExtension;
-	import org.robotlegs.v2.core.api.ILogger;
+	import org.robotlegs.v2.core.api.IContextLogger;
 	import org.swiftsuspenders.InjectionEvent;
 	import org.swiftsuspenders.Injector;
 	import org.swiftsuspenders.MappingEvent;
@@ -19,14 +19,15 @@ package org.robotlegs.v2.extensions.logging
 
 		private var context:IContext;
 
-		private var logger:ILogger;
+		private var injector:Injector;
+
+		private var logger:IContextLogger;
 
 		public function install(context:IContext):void
 		{
 			this.context = context;
-			// todo: fixme
 			logger = context.logger;
-			const injector:Injector = context.injector;
+			injector = context.injector;
 			injector.addEventListener(InjectionEvent.POST_CONSTRUCT, onInjectionEvent);
 			injector.addEventListener(InjectionEvent.POST_INSTANTIATE, onInjectionEvent);
 			injector.addEventListener(InjectionEvent.PRE_CONSTRUCT, onInjectionEvent);
@@ -42,7 +43,6 @@ package org.robotlegs.v2.extensions.logging
 
 		public function uninstall():void
 		{
-			const injector:Injector = context.injector;
 			injector.removeEventListener(InjectionEvent.POST_CONSTRUCT, onInjectionEvent);
 			injector.removeEventListener(InjectionEvent.POST_INSTANTIATE, onInjectionEvent);
 			injector.removeEventListener(InjectionEvent.PRE_CONSTRUCT, onInjectionEvent);
@@ -52,14 +52,19 @@ package org.robotlegs.v2.extensions.logging
 			injector.removeEventListener(MappingEvent.PRE_MAPPING_CREATE, onMappingEvent);
 		}
 
+		public function toString():String
+		{
+			return 'InjectorLoggingExtension';
+		}
+
 		private function onInjectionEvent(event:InjectionEvent):void
 		{
-			logger.info('{0}, instance: {1}, type: {2}', [event.type, event.instance, event.instanceType]);
+			logger.info(this, '{0}, instance: {1}, type: {2}', [event.type, event.instance, event.instanceType]);
 		}
 
 		private function onMappingEvent(event:MappingEvent):void
 		{
-			logger.info('{0}, mappedType: {1}, mappedName: {2}', [event.type, event.mappedType, event.mappedName]);
+			logger.info(this, '{0}, mappedType: {1}, mappedName: {2}', [event.type, event.mappedType, event.mappedName]);
 		}
 	}
 }

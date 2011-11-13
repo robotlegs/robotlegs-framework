@@ -8,20 +8,8 @@
 package org.robotlegs.v2.core.api
 {
 
-	public interface ILogger
+	public interface IContextLogTarget
 	{
-		function get target():ILogTarget;
-
-		function set target(value:ILogTarget):void;
-
-		function debug(message:*, parameters:Array = null):void;
-
-		function info(message:*, parameters:Array = null):void;
-
-		function warn(message:*, parameters:Array = null):void;
-
-		function error(message:*, parameters:Array = null):void;
-
-		function fatal(message:*, parameters:Array = null):void;
+		function log(context:IContext, source:Object, level:uint, timestamp:int, message:*, parameters:Array = null):void;
 	}
 }

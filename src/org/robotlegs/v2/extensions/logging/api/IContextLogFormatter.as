@@ -5,15 +5,12 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.core.api
+package org.robotlegs.v2.extensions.logging.api
 {
+	import org.robotlegs.v2.core.api.IContext;
 
-	public interface ILogTarget
+	public interface IContextLogFormatter
 	{
-		function get level():uint;
-
-		function set level(value:uint):void;
-
-		function log(name:String, level:uint, time:Number, message:*, parameters:Array = null):void;
+		function format(context:IContext, source:Object, level:uint, timestamp:int, message:*, parameters:Array = null):String;
 	}
 }

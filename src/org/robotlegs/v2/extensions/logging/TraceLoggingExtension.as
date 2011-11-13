@@ -7,9 +7,9 @@
 
 package org.robotlegs.v2.extensions.logging
 {
+	import org.robotlegs.v2.core.api.ContextLogLevel;
 	import org.robotlegs.v2.core.api.IContext;
 	import org.robotlegs.v2.core.api.IContextExtension;
-	import org.robotlegs.v2.core.api.LogLevel;
 	import org.robotlegs.v2.extensions.logging.impl.TraceLogTarget;
 	import org.swiftsuspenders.Injector;
 
@@ -22,7 +22,7 @@ package org.robotlegs.v2.extensions.logging
 		public function install(context:IContext):void
 		{
 			this.context = context;
-			context.logger.target = new TraceLogTarget(LogLevel.DEBUG);
+			context.logger.addTarget(new TraceLogTarget(ContextLogLevel.DEBUG));
 		}
 
 		public function initialize():void

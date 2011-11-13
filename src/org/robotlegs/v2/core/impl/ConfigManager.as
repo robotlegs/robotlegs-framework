@@ -94,14 +94,14 @@ package org.robotlegs.v2.core.impl
 		private function throwInitializedError():void
 		{
 			const message:String = 'This manager has been initialized and is now locked.';
-			context.logger.fatal(message);
+			context.logger.fatal(ConfigManager, message);
 			throw new IllegalOperationError(message);
 		}
 
 		private function throwDestroyedError():void
 		{
 			const message:String = 'This manager has been destroyed and is now dead.';
-			context.logger.fatal(message);
+			context.logger.fatal(ConfigManager, message);
 			throw new IllegalOperationError(message);
 		}
 	}

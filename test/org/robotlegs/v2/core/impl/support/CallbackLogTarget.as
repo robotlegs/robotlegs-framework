@@ -7,9 +7,10 @@
 
 package org.robotlegs.v2.core.impl.support
 {
-	import org.robotlegs.v2.core.api.ILogTarget;
+	import org.robotlegs.v2.core.api.IContext;
+	import org.robotlegs.v2.core.api.IContextLogTarget;
 
-	public class CallbackLogTarget implements ILogTarget
+	public class CallbackLogTarget implements IContextLogTarget
 	{
 		private var _level:uint;
 
@@ -31,9 +32,9 @@ package org.robotlegs.v2.core.impl.support
 			this.callback = callback;
 		}
 
-		public function log(name:String, level:uint, time:Number, message:*, parameters:Array = null):void
+		public function log(context:IContext, source:Object, level:uint, timestamp:int, message:*, parameters:Array = null):void
 		{
-			callback(name, level, time, message, parameters);
+			callback(context, source, level, timestamp, message, parameters);
 		}
 	}
 }

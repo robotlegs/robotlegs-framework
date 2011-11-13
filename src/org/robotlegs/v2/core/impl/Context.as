@@ -13,8 +13,7 @@ package org.robotlegs.v2.core.impl
 	import flash.events.IEventDispatcher;
 	import flash.system.ApplicationDomain;
 	import org.robotlegs.v2.core.api.IContext;
-	import org.robotlegs.v2.core.api.ILogger;
-	import org.robotlegs.v2.extensions.logging.integration.LoggerProvider;
+	import org.robotlegs.v2.core.api.IContextLogger;
 	import org.swiftsuspenders.Injector;
 
 	public class Context implements IContext
@@ -46,7 +45,7 @@ package org.robotlegs.v2.core.impl
 		{
 			_initialized && throwContextLockedError();
 			_contextView = value;
-			logger.info('Context view externally set to: {0}', [value]);
+			logger.info(this, 'Context view externally set to: {0}', [value]);
 		}
 
 		private var _destroyed:Boolean;
@@ -67,7 +66,7 @@ package org.robotlegs.v2.core.impl
 		{
 			_initialized && throwContextLockedError();
 			_dispatcher = value;
-			logger.info('Event dispatcher externally set to: {0}', [value]);
+			logger.info(this, 'Event dispatcher externally set to: {0}', [value]);
 		}
 
 		private var _initialized:Boolean;
@@ -88,7 +87,7 @@ package org.robotlegs.v2.core.impl
 		{
 			_initialized && throwContextLockedError();
 			_injector = value;
-			logger.info('Injector externally set to: {0}', [value]);
+			logger.info(this, 'Injector externally set to: {0}', [value]);
 		}
 
 		private var _parent:IContext;
@@ -102,12 +101,12 @@ package org.robotlegs.v2.core.impl
 		{
 			_initialized && throwContextLockedError();
 			_parent = value;
-			logger.info('Parent context externally set to: {0}', [value]);
+			logger.info(this, 'Parent context externally set to: {0}', [value]);
 		}
 
-		private const _logger:ILogger = new Logger(_id);
+		private var _logger:IContextLogger;
 
-		public function get logger():ILogger
+		public function get logger():IContextLogger
 		{
 			return _logger;
 		}
@@ -118,6 +117,7 @@ package org.robotlegs.v2.core.impl
 
 		public function Context()
 		{
+			_logger = new ContextLogger(this);
 			extensionManager = new ExtensionManager(this);
 			configManager = new ConfigManager(this);
 		}
@@ -126,7 +126,7 @@ package org.robotlegs.v2.core.impl
 		{
 			_destroyed && throwContextDestroyedError();
 			_destroyed = true;
-			logger.info('Destroying context.');
+			logger.info(this, 'Destroying context.');
 			configManager.destroy();
 			extensionManager.destroy();
 		}
@@ -135,7 +135,7 @@ package org.robotlegs.v2.core.impl
 		{
 			_initialized && throwContextLockedError();
 			_initialized = true;
-			logger.info('Initializing context.');
+			logger.info(this, 'Initializing context.');
 			configureApplicationDomain();
 			configureDispatcher();
 			configureInjector();
@@ -143,13 +143,13 @@ package org.robotlegs.v2.core.impl
 			addContextToContextViewRegistry();
 			extensionManager.initialize();
 			configManager.initialize();
-			logger.info('Context initialization complete.');
+			logger.info(this, 'Context initialization complete.');
 		}
 
 		public function installExtension(extensionClass:Class):IContext
 		{
 			_destroyed && throwContextDestroyedError();
-			logger.info('Installing extension: {0}', [extensionClass]);
+			logger.info(this, 'Installing extension: {0}', [extensionClass]);
 			extensionManager.addExtension(extensionClass);
 			return this;
 		}
@@ -162,7 +162,7 @@ package org.robotlegs.v2.core.impl
 		public function uninstallExtension(extensionClass:Class):IContext
 		{
 			_destroyed && throwContextDestroyedError();
-			logger.info('Uninstalling extension: {0}', [extensionClass]);
+			logger.info(this, 'Uninstalling extension: {0}', [extensionClass]);
 			extensionManager.removeExtension(extensionClass);
 			return this;
 		}
@@ -170,42 +170,42 @@ package org.robotlegs.v2.core.impl
 		public function withConfig(configClass:Class):IContext
 		{
 			_initialized && throwContextLockedError();
-			logger.info('Adding config: {0}', [configClass]);
+			logger.info(this, 'Adding config: {0}', [configClass]);
 			configManager.addConfig(configClass);
 			return this;
 		}
 
 		private function addContextToContextViewRegistry():void
 		{
-			logger.info('Adding context to context view registry.');
+			logger.info(this, 'Adding context to context view registry.');
 			if (contextView)
 				ContextViewRegistry.getSingleton().addContext(this);
 		}
 
 		private function configureApplicationDomain():void
 		{
-			logger.info('Configuring application domain');
+			logger.info(this, 'Configuring application domain');
 			if (contextView && contextView.loaderInfo)
 			{
-				logger.info('Configuring application domain based on contextView loaderInfo.');
+				logger.info(this, 'Configuring application domain based on contextView loaderInfo.');
 				_applicationDomain = contextView.loaderInfo.applicationDomain;
 			}
 			else
 			{
-				logger.info('Configuring application domain using currentDomain.');
+				logger.info(this, 'Configuring application domain using currentDomain.');
 				_applicationDomain = ApplicationDomain.currentDomain;
 			}
 		}
 
 		private function configureDispatcher():void
 		{
-			logger.info('Configuring event dispatcher.');
+			logger.info(this, 'Configuring event dispatcher.');
 			_dispatcher ||= new EventDispatcher();
 		}
 
 		private function configureInjector():void
 		{
-			logger.info('Configuring injector.');
+			logger.info(this, 'Configuring injector.');
 			_injector ||= createInjector();
 		}
 
@@ -213,34 +213,34 @@ package org.robotlegs.v2.core.impl
 		{
 			if (parent && parent.injector)
 			{
-				logger.info('Creating child injector from parent context.');
+				logger.info(this, 'Creating child injector from parent context.');
 				return parent.injector.createChildInjector(_applicationDomain);
 			}
-			logger.info('Creating new injector. Note: this injector will not inherit any rules.');
+			logger.info(this, 'Creating new injector. Note: this injector will not inherit any rules.');
 			return new Injector();
 		}
 
 		private function mapInjections():void
 		{
-			logger.info('Mapping default injections.');
+			logger.info(this, 'Mapping default injections.');
 			injector.map(IContext).toValue(this);
 			injector.map(Injector).toValue(injector);
 			injector.map(IEventDispatcher).toValue(dispatcher);
 			injector.map(DisplayObjectContainer).toValue(contextView);
-			injector.map(ILogger).toProvider(new LoggerProvider());
+			injector.map(IContextLogger).toValue(logger);
 		}
 
 		private function throwContextDestroyedError():void
 		{
 			const message:String = 'This context has been destroyed and is now dead.';
-			logger.fatal(message);
+			logger.fatal(this, message);
 			throw new IllegalOperationError(message);
 		}
 
 		private function throwContextLockedError():void
 		{
 			const message:String = 'This context has already been initialized and is now locked.';
-			logger.fatal(message);
+			logger.fatal(this, message);
 			throw new IllegalOperationError(message);
 		}
 	}

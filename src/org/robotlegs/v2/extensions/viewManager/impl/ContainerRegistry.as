@@ -11,8 +11,6 @@ package org.robotlegs.v2.extensions.viewManager.impl
 	import flash.display.DisplayObjectContainer;
 	import flash.events.EventDispatcher;
 	import flash.utils.Dictionary;
-	import org.robotlegs.v2.core.api.ILogger;
-	import org.robotlegs.v2.core.impl.Logger;
 
 	[Event(name="containerAdd", type="org.robotlegs.v2.extensions.viewManager.impl.ContainerExistenceEvent")]
 	[Event(name="containerRemove", type="org.robotlegs.v2.extensions.viewManager.impl.ContainerExistenceEvent")]
@@ -20,9 +18,6 @@ package org.robotlegs.v2.extensions.viewManager.impl
 	[Event(name="rootContainerRemove", type="org.robotlegs.v2.extensions.viewManager.impl.ContainerExistenceEvent")]
 	public class ContainerRegistry extends EventDispatcher
 	{
-		// TODO: fixme
-		private static const logger:ILogger = new Logger('ContainerRegistry');
-
 		private const _bindings:Vector.<ContainerBinding> = new Vector.<ContainerBinding>;
 
 		public function get bindings():Vector.<ContainerBinding>
@@ -73,8 +68,6 @@ package org.robotlegs.v2.extensions.viewManager.impl
 
 		private function createBinding(container:DisplayObjectContainer):ContainerBinding
 		{
-			logger.info('container binding created');
-
 			const binding:ContainerBinding = new ContainerBinding(container);
 			_bindings.push(binding);
 
@@ -110,8 +103,6 @@ package org.robotlegs.v2.extensions.viewManager.impl
 
 		private function removeBinding(binding:ContainerBinding):void
 		{
-			logger.info('container binding removed');
-
 			// Remove the binding itself
 			delete _bindingByContainer[binding.container];
 			const index:int = _bindings.indexOf(binding);
@@ -143,14 +134,12 @@ package org.robotlegs.v2.extensions.viewManager.impl
 
 		private function addRootBinding(binding:ContainerBinding):void
 		{
-			logger.info('root container binding added');
 			_rootBindings.push(binding);
 			dispatchEvent(new ContainerExistenceEvent(ContainerExistenceEvent.ROOT_CONTAINER_ADD, binding.container));
 		}
 
 		private function removeRootBinding(binding:ContainerBinding):void
 		{
-			logger.info('root container binding removed');
 			const index:int = _rootBindings.indexOf(binding);
 			_rootBindings.splice(index, 1);
 			dispatchEvent(new ContainerExistenceEvent(ContainerExistenceEvent.ROOT_CONTAINER_REMOVE, binding.container));

@@ -11,8 +11,7 @@ package org.robotlegs.v2.extensions.autoDestroy
 	import flash.events.Event;
 	import org.robotlegs.v2.core.api.IContext;
 	import org.robotlegs.v2.core.api.IContextExtension;
-	import org.robotlegs.v2.core.api.ILogger;
-	import org.robotlegs.v2.core.impl.Logger;
+	import org.robotlegs.v2.core.api.IContextLogger;
 
 	public class AutoDestroyExtension implements IContextExtension
 	{
@@ -21,21 +20,22 @@ package org.robotlegs.v2.extensions.autoDestroy
 
 		private var contextView:DisplayObjectContainer;
 
-		private var logger:ILogger;
+		private var logger:IContextLogger;
 
 		public function install(context:IContext):void
 		{
 			this.context = context;
-			logger = new Logger(context.id + ' AutoDestroyExtension', context.logger.target);
+			logger = context.logger;
 			contextView = context.contextView;
+
 			if (contextView)
 			{
-				logger.info('adding REMOVED_FROM_STAGE listener to contextView');
+				logger.info(this, 'Adding REMOVED_FROM_STAGE listener to contextView');
 				contextView.addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
 			}
 			else
 			{
-				logger.warn('extension installed, but the contextView is null. Consider removing this extension.');
+				logger.warn(this, 'Extension installed, but the contextView is null. Consider removing this extension.');
 			}
 		}
 
@@ -47,14 +47,19 @@ package org.robotlegs.v2.extensions.autoDestroy
 		{
 			if (contextView)
 			{
-				logger.info('removing REMOVED_FROM_STAGE listener from contextView');
+				logger.info(this, 'Removing REMOVED_FROM_STAGE listener from contextView');
 				contextView.removeEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
 			}
 		}
 
+		public function toString():String
+		{
+			return 'AutoDestroyExtension';
+		}
+
 		private function onRemovedFromStage(event:Event):void
 		{
-			logger.info('contextView was removed from stage, destroying context');
+			logger.info(this, 'ContextView was removed from stage, destroying context.');
 			contextView.removeEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
 			context.destroy();
 		}

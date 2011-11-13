@@ -7,12 +7,12 @@
 
 package suites
 {
-	import org.robotlegs.v2.core.impl.LoggerTests;
+	import org.robotlegs.v2.core.impl.ContextLoggerTests;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
 	public class LoggingTestSuite
 	{
-		public var loggerTests:LoggerTests;
+		public var loggerTests:ContextLoggerTests;
 	}
 }

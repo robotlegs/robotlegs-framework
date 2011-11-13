@@ -12,8 +12,6 @@ package org.robotlegs.v2.extensions.viewManager.impl
 	import flash.system.ApplicationDomain;
 	import flash.utils.Dictionary;
 	import flash.utils.getQualifiedClassName;
-	import org.robotlegs.v2.core.api.ILogger;
-	import org.robotlegs.v2.core.impl.Logger;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewClassInfo;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewHandler;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewListener;
@@ -21,9 +19,6 @@ package org.robotlegs.v2.extensions.viewManager.impl
 
 	public class ViewProcessor
 	{
-		// TODO: fixme
-		private static const logger:ILogger = new Logger('ViewProcessor');
-
 		private const _activeListenerByView:Dictionary = new Dictionary(true);
 
 		private const _confirmedHandlersByFQCN:Dictionary = new Dictionary(false);
@@ -176,7 +171,7 @@ package org.robotlegs.v2.extensions.viewManager.impl
 				handler = confirmedHandlers[i];
 				if (!((combinedResponse & 0xAAAAAAAA) ^ (handler.interests << 1)))
 				{
-					logger.warn('a confirmed handler was blocked - cache purging did not take place when it should have');
+					// TODO - warn: a confirmed handler was blocked - cache purging did not take place when it should have
 					continue;
 				}
 
@@ -189,7 +184,7 @@ package org.robotlegs.v2.extensions.viewManager.impl
 				}
 				else
 				{
-					logger.warn('a confirmed handler did not handle a view - cache purging did not take place when it should have');
+					// TODO - warn: a confirmed handler did not handle a view - cache purging did not take place when it should have.
 				}
 			}
 			return combinedResponse;
@@ -214,7 +209,7 @@ package org.robotlegs.v2.extensions.viewManager.impl
 
 		private function purgeConfirmedHandlerCache():void
 		{
-			logger.warn('the confirmed handler cache has been purged. This is normal, but if you see this message too often something might be wrong');
+			// TODO - warn: the confirmed handler cache has been purged. This is normal, but if you see this message too often something might be wrong.
 			for (var key:Object in _confirmedHandlersByFQCN)
 			{
 				delete _confirmedHandlersByFQCN[key];

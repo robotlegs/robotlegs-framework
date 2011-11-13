@@ -11,7 +11,7 @@ package org.robotlegs.v2.bundles.classic
 	import org.robotlegs.v2.bundles.shared.processors.ParentContextFinder;
 	import org.robotlegs.v2.core.api.IContextBuilder;
 	import org.robotlegs.v2.core.api.IContextBuilderBundle;
-	import org.robotlegs.v2.core.api.LogLevel;
+	import org.robotlegs.v2.core.api.ContextLogLevel;
 	import org.robotlegs.v2.extensions.autoDestroy.AutoDestroyExtension;
 	import org.robotlegs.v2.extensions.commandMap.CommandMapExtension;
 	import org.robotlegs.v2.extensions.eventCommandMap.EventCommandMapExtension;
@@ -25,7 +25,7 @@ package org.robotlegs.v2.bundles.classic
 		public function install(builder:IContextBuilder):void
 		{
 			// Use a simple trace logger
-			builder.withLogTarget(new TraceLogTarget(LogLevel.DEBUG));
+			builder.withLogTarget(new TraceLogTarget(ContextLogLevel.DEBUG));
 
 			// Determine context hierarchy by way of contextView
 			builder.withPreProcessor(ParentContextFinder);

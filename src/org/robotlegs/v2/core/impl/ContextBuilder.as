@@ -16,8 +16,8 @@ package org.robotlegs.v2.core.impl
 	import org.robotlegs.v2.core.api.IContextBuilder;
 	import org.robotlegs.v2.core.api.IContextBuilderBundle;
 	import org.robotlegs.v2.core.api.IContextPreProcessor;
-	import org.robotlegs.v2.core.api.ILogTarget;
-	import org.robotlegs.v2.core.api.ILogger;
+	import org.robotlegs.v2.core.api.IContextLogTarget;
+	import org.robotlegs.v2.core.api.IContextLogger;
 	import org.swiftsuspenders.Injector;
 
 	[Event(name="contextBuildComplete", type="org.robotlegs.v2.core.api.ContextBuilderEvent")]
@@ -30,7 +30,7 @@ package org.robotlegs.v2.core.impl
 
 		protected const context:IContext = new Context();
 
-		protected const logger:ILogger = new Logger(_id);
+		protected const logger:IContextLogger = context.logger;
 
 		protected const preProcessorClasses:Vector.<Class> = new Vector.<Class>;
 
@@ -43,7 +43,7 @@ package org.robotlegs.v2.core.impl
 
 		public function build():IContext
 		{
-			logger.info('starting build');
+			logger.info(this, 'starting build');
 			buildLocked && throwBuildLockedError();
 			buildLocked = true;
 			runPreProcessors();
@@ -57,7 +57,7 @@ package org.robotlegs.v2.core.impl
 
 		public function withBundle(bundleClass:Class):IContextBuilder
 		{
-			logger.info('installing bundle: {0}', [bundleClass]);
+			logger.info(this, 'installing bundle: {0}', [bundleClass]);
 			buildLocked && throwBuildLockedError();
 			const bundle:IContextBuilderBundle = new bundleClass();
 			bundle.install(this);
@@ -66,7 +66,7 @@ package org.robotlegs.v2.core.impl
 
 		public function withConfig(configClass:Class):IContextBuilder
 		{
-			logger.info('adding config: {0}', [configClass]);
+			logger.info(this, 'adding config: {0}', [configClass]);
 			buildLocked && throwBuildLockedError();
 			context.withConfig(configClass);
 			return this;
@@ -86,7 +86,7 @@ package org.robotlegs.v2.core.impl
 
 		public function withExtension(extensionClass:Class):IContextBuilder
 		{
-			logger.info('adding extension: {0}', [extensionClass]);
+			logger.info(this, 'adding extension: {0}', [extensionClass]);
 			buildLocked && throwBuildLockedError();
 			context.installExtension(extensionClass);
 			return this;
@@ -106,18 +106,17 @@ package org.robotlegs.v2.core.impl
 
 		public function withPreProcessor(preProcessorClass:Class):IContextBuilder
 		{
-			logger.info('adding processor: {0}', [preProcessorClass]);
+			logger.info(this, 'adding processor: {0}', [preProcessorClass]);
 			buildLocked && throwBuildLockedError();
 			if (preProcessorClasses.indexOf(preProcessorClass) == -1)
 				preProcessorClasses.push(preProcessorClass);
 			return this;
 		}
 
-		public function withLogTarget(target:ILogTarget):IContextBuilder
+		public function withLogTarget(target:IContextLogTarget):IContextBuilder
 		{
-			logger.target = target;
-			logger.info('setting log target: {0}', [target]);
-			context.logger.target = target;
+			logger.addTarget(target);
+			logger.info(this, 'setting log target: {0}', [target]);
 			return this;
 		}
 
@@ -136,7 +135,7 @@ package org.robotlegs.v2.core.impl
 			else if (preProcessorClasses.length > 0)
 			{
 				const preProcessorClass:Class = preProcessorClasses.shift();
-				logger.info('executing processor: {0}', [preProcessorClass]);
+				logger.info(this, 'executing processor: {0}', [preProcessorClass]);
 				const preProcessor:IContextPreProcessor = new preProcessorClass();
 				preProcessor.preProcess(context, preProcessorCallback);
 			}
@@ -148,14 +147,14 @@ package org.robotlegs.v2.core.impl
 
 		protected function runPreProcessors():void
 		{
-			logger.info('running context pre-processors');
+			logger.info(this, 'running context pre-processors');
 			preProcessorCallback();
 		}
 
 		protected function throwBuildLockedError():void
 		{
 			const message:String = 'The build has started and is now locked';
-			logger.fatal(message);
+			logger.fatal(this, message);
 			throw new IllegalOperationError(message);
 		}
 	}

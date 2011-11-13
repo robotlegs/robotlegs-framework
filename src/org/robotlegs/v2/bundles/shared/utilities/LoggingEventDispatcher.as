@@ -9,13 +9,13 @@ package org.robotlegs.v2.bundles.shared.utilities
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import org.robotlegs.v2.core.api.ILogger;
+	import org.robotlegs.v2.core.api.IContextLogger;
 
 	public class LoggingEventDispatcher extends EventDispatcher
 	{
-		private var logger:ILogger;
+		private var logger:IContextLogger;
 
-		public function LoggingEventDispatcher(logger:ILogger)
+		public function LoggingEventDispatcher(logger:IContextLogger)
 		{
 			super();
 			// todo: fixme

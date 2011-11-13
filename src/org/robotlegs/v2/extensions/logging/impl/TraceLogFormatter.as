@@ -7,16 +7,26 @@
 
 package org.robotlegs.v2.extensions.logging.impl
 {
-	import org.robotlegs.v2.core.api.LogLevel;
-	import org.robotlegs.v2.extensions.logging.api.ILogFormatter;
+	import flash.utils.getTimer;
+	import org.robotlegs.v2.core.api.ContextLogLevel;
+	import org.robotlegs.v2.core.api.IContext;
+	import org.robotlegs.v2.extensions.logging.api.IContextLogFormatter;
 
-	public class TraceLogFormatter implements ILogFormatter
+	public class TraceLogFormatter implements IContextLogFormatter
 	{
-		public function format(name:String, level:uint, time:Number, message:*, parameters:Array = null):String
+		private const startedAt:Number = new Date().time + getTimer();
+
+		public function format(
+			context:IContext,
+			source:Object,
+			level:uint,
+			timestamp:int,
+			message:*,
+			parameters:Array = null):String
 		{
-			return time
-				+ ' ' + LogLevel.getName(level)
-				+ ' - ' + name
+			return (startedAt + timestamp)
+				+ ' ' + ContextLogLevel.getName(level)
+				+ ' - ' + context + '|' + source
 				+ ' - ' + message
 				+ (parameters ? ' - ' + parameters : '');
 		}

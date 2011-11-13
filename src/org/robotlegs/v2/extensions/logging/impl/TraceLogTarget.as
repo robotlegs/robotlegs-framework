@@ -7,10 +7,11 @@
 
 package org.robotlegs.v2.extensions.logging.impl
 {
-	import org.robotlegs.v2.core.api.ILogTarget;
-	import org.robotlegs.v2.extensions.logging.api.ILogFormatter;
+	import org.robotlegs.v2.core.api.IContext;
+	import org.robotlegs.v2.core.api.IContextLogTarget;
+	import org.robotlegs.v2.extensions.logging.api.IContextLogFormatter;
 
-	public class TraceLogTarget implements ILogTarget
+	public class TraceLogTarget implements IContextLogTarget
 	{
 		private var _level:uint;
 
@@ -24,16 +25,22 @@ package org.robotlegs.v2.extensions.logging.impl
 			_level = value;
 		}
 
-		private const _formatter:ILogFormatter = new TraceLogFormatter();
+		private const _formatter:IContextLogFormatter = new TraceLogFormatter();
 
 		public function TraceLogTarget(level:uint = 0)
 		{
 			_level = level;
 		}
 
-		public function log(name:String, level:uint, time:Number, message:*, parameters:Array = null):void
+		public function log(
+			context:IContext,
+			source:Object,
+			level:uint,
+			timestamp:int,
+			message:*,
+			parameters:Array = null):void
 		{
-			trace(_formatter.format(name, level, time, message, parameters));
+			trace(_formatter.format(context, source, level, timestamp, message, parameters));
 		}
 	}
 }

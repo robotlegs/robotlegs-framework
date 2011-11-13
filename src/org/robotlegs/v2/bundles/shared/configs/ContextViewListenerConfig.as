@@ -10,7 +10,6 @@ package org.robotlegs.v2.bundles.shared.configs
 	import flash.display.DisplayObjectContainer;
 	import org.robotlegs.v2.core.api.IContext;
 	import org.robotlegs.v2.core.api.IContextConfig;
-	import org.robotlegs.v2.core.api.ILogger;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewManager;
 
 	public class ContextViewListenerConfig implements IContextConfig
@@ -22,20 +21,22 @@ package org.robotlegs.v2.bundles.shared.configs
 		[Inject]
 		public var viewManager:IViewManager;
 
-		[Inject]
-		public var logger:ILogger;
-
 		public function configure(context:IContext):void
 		{
 			if (contextView)
 			{
-				logger.info('adding contextView to viewManager. Note: avoid this where performance is critical.');
+				context.logger.info(this, 'Adding contextView to viewManager. Note: avoid this where performance is critical.');
 				viewManager.addContainer(contextView);
 			}
 			else
 			{
-				logger.warn('a ContextViewListenerConfig was installed into {0}, but the contextView is null. Consider removing this config.');
+				context.logger.warn(this, 'ContextViewListenerConfig was installed, but the contextView is null. Consider removing this config.');
 			}
+		}
+
+		public function toString():String
+		{
+			return 'ContextViewListenerConfig';
 		}
 	}
 }

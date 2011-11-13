@@ -9,7 +9,7 @@ package org.robotlegs.v2.core.api
 {
 	import flash.utils.Dictionary;
 
-	public class LogLevel
+	public class ContextLogLevel
 	{
 		public static const NONE:uint = 0;
 
