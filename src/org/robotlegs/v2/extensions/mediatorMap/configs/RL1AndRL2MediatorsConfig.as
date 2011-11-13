@@ -15,12 +15,9 @@ package org.robotlegs.v2.extensions.mediatorMap.configs
 	import org.robotlegs.core.IEventMap;
 	import org.robotlegs.base.EventMap;
 	import org.robotlegs.core.IMediatorMap;
-	import org.robotlegs.base.MediatorMap;
 	import org.robotlegs.v2.extensions.eventMap.api.IEventMap;
 	import org.robotlegs.v2.extensions.eventMap.impl.EventMap;
-	import org.robotlegs.core.IInjector;
-	import org.robotlegs.adapters.SwiftSuspendersInjector;
-	import org.robotlegs.v2.extensions.mediatorMap.impl.NullV1MediatorMap;
+	import org.robotlegs.v2.extensions.mediatorMap.impl.RL1MediatorMapAdapter;
 	
 	public class RL1AndRL2MediatorsConfig implements IContextConfig
 	{
@@ -28,6 +25,7 @@ package org.robotlegs.v2.extensions.mediatorMap.configs
 		
 		protected const IMediatorMapV1:Class = org.robotlegs.core.IMediatorMap;
 		protected const IMediatorMapV2:Class = org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMap;
+		protected const MediatorMapV2:Class = org.robotlegs.v2.extensions.mediatorMap.impl.MediatorMap;
 		
 		public function RL1AndRL2MediatorsConfig(strict:Boolean = false)
 		{
@@ -43,11 +41,14 @@ package org.robotlegs.v2.extensions.mediatorMap.configs
 							
 			context.injector.map(org.robotlegs.v2.extensions.eventMap.api.IEventMap)
 							.toType(org.robotlegs.v2.extensions.eventMap.impl.EventMap);
+
+			const mediatorMap:org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMap = context.injector.getInstance(IMediatorMapV2);
+
+			context.injector.map(MediatorMapV2)
+							.toValue(mediatorMap);
 							
 			context.injector.map(IMediatorMapV1)
-							.toSingleton(NullV1MediatorMap);
-						
-			const mediatorMap:org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMap = context.injector.getInstance(IMediatorMapV2);
+							.toSingleton(RL1MediatorMapAdapter);
 
 			const trigger:RL1AndRL2MediatorTrigger = new RL1AndRL2MediatorTrigger(_strict);
 			

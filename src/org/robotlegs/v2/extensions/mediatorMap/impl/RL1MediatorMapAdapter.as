@@ -13,6 +13,7 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 	import org.robotlegs.v2.extensions.mediatorMap.impl.MediatorMap;
 	import flash.display.DisplayObject;
 	import org.robotlegs.v2.core.impl.TypeMatcher;
+	import flash.utils.getDefinitionByName;
 	
 	public class RL1MediatorMapAdapter implements IMediatorMap
 	{
@@ -20,6 +21,23 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 		public var _mediatorMap:MediatorMap;
 		
 		private var _contextView:DisplayObjectContainer;
+		
+		private const DISABLE_NOT_SUPPORTED_ERROR:String = 
+			"You cannot disable this MediatorMap by using the enabled property."+
+			" Instead you need to disable the version 2 mediator map that supports this adapter.";
+		
+		private const AUTO_CREATE_AUTO_REMOVE_FALSE_NOT_SUPPORTED_ERROR:String = 
+			"The Robotlegs 1 MediatorMap adapter does not support setting autoCreate or autoRemove to false.";
+		
+		private const MANUAL_REGISTRATION_NOT_SUPPORTED_ERROR:String = 
+			"The RL1MediatorMapAdapter doesn't support manually registering a mediator for a view."+
+			" Instead, map the mediator and use createMediator(viewComponent)";
+		
+		private const MANUAL_REMOVAL_NOT_SUPPORTED_ERROR:String = 
+			"The RL1MediatorMapAdapter doesn't support manually removing a mediator.";
+		
+		private const AMBIGUOUS_MEDIATOR_ERROR:String = 
+			"This view has more than one mediator, so the map could not resolve which one you wanted.";
 		
 		/* 	Provides an adapter to allow RL1 Mediators and Commands to have a 
 			RL1 IMediatorMap injected into them. Some features not supported. */
@@ -41,91 +59,119 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 
 		public function get enabled():Boolean
 		{
-			return false;
+			return true;
 		}
 
 		public function set enabled(value:Boolean):void
 		{
-			
+			if(!value)
+				throw new ArgumentError(DISABLE_NOT_SUPPORTED_ERROR);
 		}
 
 		public function mapView(viewClassOrName:*, mediatorClass:Class, injectViewAs:* = null, autoCreate:Boolean = true, autoRemove:Boolean = true):void
 		{
 			if(!(autoCreate && autoRemove))
-			{
-				throw new ArgumentError('The Robotlegs 1 MediatorMap adapter does not support setting autoCreate or autoRemove to false.');
-			}
+				throw new ArgumentError(AUTO_CREATE_AUTO_REMOVE_FALSE_NOT_SUPPORTED_ERROR);
 			
-			// TODO check when string used and convert to class
+			const viewClass:Class = turnViewClassOrNameToClass(viewClassOrName);
 			
-			const matcher:TypeMatcher = new TypeMatcher().allOf(viewClassOrName);
+			const matcher:TypeMatcher = new TypeMatcher().allOf(viewClass);
 						
-			if(injectViewAs && (injectViewAs != viewClassOrName))
+			if(	injectViewAs && (injectViewAs != viewClassOrName))
 			{
-				if( ( (injectViewAs is Array) || (injectViewAs is Vector.<Class>) )
-				 	&& (injectViewAs.indexOf(viewClassOrName) > -1) )
+				if( isArrayOrClassVector(injectViewAs) && (injectViewAs.indexOf(viewClass) > -1) )
 				{
-					injectViewAs.splice(injectViewAs.indexOf(viewClassOrName), 1);
+					injectViewAs.splice(injectViewAs.indexOf(viewClass), 1);
 				}
 				matcher.anyOf(injectViewAs);
 			}
 
 			_mediatorMap.mapMatcher(matcher).toMediator(mediatorClass);
 			
-			// TODO - remove explicit stage check as can throw SecurityError in Air
-			if(	_contextView 
-				&& _contextView.stage 
-				&& (viewClassOrName is Class) 
-				&& (_contextView is viewClassOrName))
-			{
-				_mediatorMap.processView(_contextView, null);
-			}
+			mediateContextViewImmediately(viewClass);
 		}
 
 		public function unmapView(viewClassOrName:*):void
 		{
-			_mediatorMap.unmap(viewClassOrName).fromAll();
+			const viewClass:Class = turnViewClassOrNameToClass(viewClassOrName);
+			_mediatorMap.unmap(viewClass).fromAll();
 		}
 
 		public function createMediator(viewComponent:Object):IMediator
 		{
 			_mediatorMap.mediate(viewComponent as DisplayObject);
-			return null;
+			return retrieveMediator(viewComponent);
 		}
 
 		public function registerMediator(viewComponent:Object, mediator:IMediator):void
 		{
-			
+			throw new Error(MANUAL_REGISTRATION_NOT_SUPPORTED_ERROR);
 		}
 
 		public function removeMediator(mediator:IMediator):IMediator
 		{
+			throw new Error(MANUAL_REMOVAL_NOT_SUPPORTED_ERROR);
 			return null;
 		}
 
 		public function removeMediatorByView(viewComponent:Object):IMediator
 		{
+			const mediator:IMediator = retrieveMediator(viewComponent);
 			_mediatorMap.unmediate(viewComponent as DisplayObject);
-			return null;
+			return mediator;
 		}
 
 		public function retrieveMediator(viewComponent:Object):IMediator
 		{
+			const mediators:Array = _mediatorMap.getMediatorsForView(viewComponent as DisplayObject)
+			
+			if(!mediators)
+				return null;
+
+			if(mediators.length == 1)
+				return mediators[0] as IMediator;
+			
+			if(mediators.length > 1)
+				throw new Error(AMBIGUOUS_MEDIATOR_ERROR);
+			
 			return null;
 		}
 
 		public function hasMapping(viewClassOrName:*):Boolean
 		{
-			return _mediatorMap.hasMapping(viewClassOrName);
+			const viewClass:Class = turnViewClassOrNameToClass(viewClassOrName);
+			return _mediatorMap.hasMapping(viewClass);
 		}
 
 		public function hasMediator(mediator:IMediator):Boolean
 		{
-			return false;
+			return _mediatorMap.hasLiveMediator(mediator);
 		}
 
 		public function hasMediatorForView(viewComponent:Object):Boolean
 		{
+			return (_mediatorMap.getMediatorsForView(viewComponent as DisplayObject) != null);
+		}
+		
+		private function turnViewClassOrNameToClass(viewClassOrName:*):Class
+		{
+			if(viewClassOrName is Class)
+				return viewClassOrName;
+				
+			return getDefinitionByName(viewClassOrName) as Class;
+		}
+		
+		private function mediateContextViewImmediately(viewClass:Class):void
+		{
+			if(	_contextView && (_contextView is viewClass))
+				_mediatorMap.processView(_contextView, null);
+		}
+		
+		private function isArrayOrClassVector(item:*):Boolean
+		{
+			if(item is Array || item is Vector.<Class>)
+				return true;
+			
 			return false;
 		}
 	}

@@ -20,12 +20,13 @@ package org.robotlegs.v2.extensions.mediatorMap.configs
 	import org.robotlegs.core.IMediatorMap;
 	import org.robotlegs.v2.extensions.eventMap.api.IEventMap;
 	import org.robotlegs.v2.extensions.eventMap.impl.EventMap;
-	import org.robotlegs.v2.extensions.mediatorMap.impl.NullV1MediatorMap;
+	import org.robotlegs.v2.extensions.mediatorMap.impl.RL1MediatorMapAdapter;
 	
 	public class DuckTypedMediatorsConfig implements IContextConfig
 	{
 		protected const IMediatorMapV1:Class = org.robotlegs.core.IMediatorMap;
 		protected const IMediatorMapV2:Class = org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMap;
+		protected const MediatorMapV2:Class = org.robotlegs.v2.extensions.mediatorMap.impl.MediatorMap;
 		
 		protected var _strict:Boolean;
 
@@ -42,10 +43,13 @@ package org.robotlegs.v2.extensions.mediatorMap.configs
 			context.injector.map(org.robotlegs.v2.extensions.eventMap.api.IEventMap)
 							.toType(org.robotlegs.v2.extensions.eventMap.impl.EventMap);
 
-			context.injector.map(IMediatorMapV1)
-							.toSingleton(NullV1MediatorMap);
-
 			const mediatorMap:org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMap = context.injector.getInstance(IMediatorMapV2);
+
+			context.injector.map(MediatorMapV2)
+							.toValue(mediatorMap);
+
+			context.injector.map(IMediatorMapV1)
+							.toSingleton(RL1MediatorMapAdapter);
 
 			const trigger:DuckTypedMediatorTrigger = new DuckTypedMediatorTrigger(_strict);
 			

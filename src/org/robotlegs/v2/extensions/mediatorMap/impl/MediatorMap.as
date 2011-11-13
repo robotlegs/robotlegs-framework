@@ -46,9 +46,9 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 
 		private const _liveMediatorsByView:Dictionary = new Dictionary();
 
-		private var _trigger:IMediatorTrigger;
-
 		private const _viewsInRemovalPhase:Dictionary = new Dictionary();
+
+		private var _trigger:IMediatorTrigger;
 		
 		private var _viewMap:ViewMap;
 		
@@ -144,6 +144,26 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 
 		public function destroy():void
 		{
+		}
+		
+		/*			INTERNAL		*/
+		
+		internal function getMediatorsForView(view:DisplayObject):Array
+		{
+			return _liveMediatorsByView[view];
+		}
+		
+		internal function hasLiveMediator(mediator:Object):Boolean
+		{
+			for each (var mediators:Array in _liveMediatorsByView)
+			{
+				if(mediators.indexOf(mediator) > -1)
+				{
+					return true;
+				}
+			}
+			
+			return false;
 		}
 
 		/*        PRIVATE        */

@@ -7,25 +7,20 @@
 
 package org.robotlegs.v2.extensions.mediatorMap.configs
 {
-	import flash.display.DisplayObject;
-	import flash.utils.getDefinitionByName;
 	import org.robotlegs.v2.core.api.IContext;
 	import org.robotlegs.v2.core.api.IContextConfig;
-	import org.robotlegs.v2.core.impl.TypeMatcher;
-	import org.robotlegs.v2.core.utilities.checkUIComponentAvailable;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMap;
-	import org.robotlegs.v2.extensions.mediatorMap.utilities.strategies.NoWaitStrategy;
-	import org.robotlegs.v2.extensions.mediatorMap.utilities.strategies.WaitForCreationCompleteStrategy;
 	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.RL1MediatorTrigger;
 	import org.robotlegs.core.IEventMap;
 	import org.robotlegs.base.EventMap;
 	import org.robotlegs.core.IMediatorMap;
-	import org.robotlegs.v2.extensions.mediatorMap.impl.NullV1MediatorMap;
+	import org.robotlegs.v2.extensions.mediatorMap.impl.RL1MediatorMapAdapter;
 		
 	public class RL1MediatorsConfig implements IContextConfig
 	{
 		protected const IMediatorMapV1:Class = org.robotlegs.core.IMediatorMap;
 		protected const IMediatorMapV2:Class = org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMap;
+		protected const MediatorMapV2:Class = org.robotlegs.v2.extensions.mediatorMap.impl.MediatorMap;
 
 		protected var _strict:Boolean;
 
@@ -41,8 +36,11 @@ package org.robotlegs.v2.extensions.mediatorMap.configs
 			
 			const trigger:RL1MediatorTrigger = new RL1MediatorTrigger(_strict);
 
+			context.injector.map(MediatorMapV2)
+							.toValue(mediatorMap);
+
 			context.injector.map(IMediatorMapV1)
-							.toSingleton(NullV1MediatorMap);
+							.toSingleton(RL1MediatorMapAdapter);
 			
 			mediatorMap.loadTrigger(trigger);	
 		}
