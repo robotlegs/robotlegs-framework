@@ -129,7 +129,8 @@ package org.robotlegs.v2.extensions.viewMap.impl
 
 			for each (requiredType in requiredTypes)
 			{
-				injector.unmap(requiredType);
+				if(injector.map(requiredType))
+					injector.unmap(requiredType);
 			}
 		}
 		

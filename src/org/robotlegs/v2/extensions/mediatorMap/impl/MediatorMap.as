@@ -15,7 +15,6 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 	import org.robotlegs.v2.extensions.viewManager.api.IViewClassInfo;
 	import org.robotlegs.v2.extensions.viewManager.api.IViewHandler;
 	import org.robotlegs.v2.extensions.viewManager.api.ViewHandlerEvent;
-	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorConfig;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMap;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorMapping;
 	import org.robotlegs.v2.extensions.mediatorMap.api.IMediatorTrigger;

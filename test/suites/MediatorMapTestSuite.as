@@ -19,6 +19,7 @@ package suites
 	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.RL1AndRL2MediatorTrigger_strategiesTest;
 	import org.robotlegs.v2.extensions.mediatorMap.MediatorMapExtensionTest;
 	import org.robotlegs.v2.extensions.mediatorMap.impl.MediatorSugarTest;
+	import org.robotlegs.v2.extensions.mediatorMap.MediatorMapV1Test;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
@@ -48,8 +49,6 @@ package suites
 		
 		public var mediatorSugarTest:MediatorSugarTest;
 		
-		/// Don't uncomment this - the test is only in the code base for
-		// reference while we match behaviour.
-		//public var mediatorMapV1FunctionalityTest:MediatorMapV1Test;
+		public var mediatorMapV1FunctionalityTest:MediatorMapV1Test;
 	}
 }
