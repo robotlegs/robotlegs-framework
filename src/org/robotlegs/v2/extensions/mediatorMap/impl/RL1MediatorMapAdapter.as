@@ -68,7 +68,8 @@ package org.robotlegs.v2.extensions.mediatorMap.impl
 				throw new ArgumentError(DISABLE_NOT_SUPPORTED_ERROR);
 		}
 
-		public function mapView(viewClassOrName:*, mediatorClass:Class, injectViewAs:* = null, autoCreate:Boolean = true, autoRemove:Boolean = true):void
+		public function mapView(viewClassOrName:*, mediatorClass:Class, injectViewAs:* = null, 
+										autoCreate:Boolean = true, autoRemove:Boolean = true):void
 		{
 			if(!(autoCreate && autoRemove))
 				throw new ArgumentError(AUTO_CREATE_AUTO_REMOVE_FALSE_NOT_SUPPORTED_ERROR);
