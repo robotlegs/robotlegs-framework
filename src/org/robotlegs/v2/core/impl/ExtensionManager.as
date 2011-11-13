@@ -14,15 +14,15 @@ package org.robotlegs.v2.core.impl
 
 	public class ExtensionManager
 	{
+		private const extensionClasses:Vector.<Class> = new Vector.<Class>;
+
+		private const extensionByClass:Dictionary = new Dictionary();
+
 		private var context:IContext;
 
 		private var initialized:Boolean;
 
 		private var destroyed:Boolean;
-
-		private const extensionByClass:Dictionary = new Dictionary();
-
-		private const extensionClasses:Vector.<Class> = new Vector.<Class>;
 
 		public function ExtensionManager(context:IContext)
 		{
@@ -31,7 +31,7 @@ package org.robotlegs.v2.core.impl
 
 		public function addExtension(extensionClass:Class):void
 		{
-
+			destroyed && throwDestroyedError();
 			if (hasExtension(extensionClass))
 				return;
 
@@ -52,12 +52,14 @@ package org.robotlegs.v2.core.impl
 
 		public function removeExtension(extensionClass:Class):void
 		{
+			destroyed && throwDestroyedError();
 			if (!hasExtension(extensionClass))
 				return;
 
 			extensionClasses.splice(extensionClasses.indexOf(extensionClass), 1);
 
 			const extension:IContextExtension = extensionByClass[extensionClass];
+			delete extensionByClass[extensionClass];
 			extension && extension.uninstall();
 		}
 
@@ -65,7 +67,6 @@ package org.robotlegs.v2.core.impl
 		{
 			initialized && throwInitializedError();
 			initialized = true;
-
 			installExtensions();
 			initializeExtensions();
 		}
@@ -104,25 +105,26 @@ package org.robotlegs.v2.core.impl
 
 		private function uninstallExtensions():void
 		{
-			// Note: must uninstall in reverse order
+			// Note: uninstall in reverse order
 			var extensionClass:Class;
 			while (extensionClass = extensionClasses.pop())
 			{
 				const extension:IContextExtension = extensionByClass[extensionClass];
+				delete extensionByClass[extensionClass];
 				extension.uninstall();
 			}
 		}
 
 		private function throwInitializedError():void
 		{
-			const message:String = 'This manager has already been initialized and is now locked';
+			const message:String = 'This manager has been initialized and is now locked.';
 			context.logger.fatal(message);
 			throw new IllegalOperationError(message);
 		}
 
 		private function throwDestroyedError():void
 		{
-			const message:String = 'This manager has already been destroyed and is now dead';
+			const message:String = 'This manager has been destroyed and is now dead.';
 			context.logger.fatal(message);
 			throw new IllegalOperationError(message);
 		}

@@ -228,6 +228,22 @@ package org.robotlegs.v2.core.impl
 			manager.destroy();
 			manager.destroy();
 		}
+
+		[Test(expects="Error")]
+		public function manager_throws_when_adding_extension_after_destruction():void
+		{
+			manager.initialize();
+			manager.destroy();
+			manager.addExtension(CallbackExtension);
+		}
+
+		[Test(expects="Error")]
+		public function manager_throws_when_removing_extension_after_destruction():void
+		{
+			manager.initialize();
+			manager.destroy();
+			manager.removeExtension(CallbackExtension);
+		}
 	}
 }
 

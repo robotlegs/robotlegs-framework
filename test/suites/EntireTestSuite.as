@@ -44,5 +44,7 @@ package suites
 		public var viewInjectionMapTestSuite:ViewInjectionMapTestSuite;
 
 		public var extensionManagerSuite:ExtensionManagerTestSuite;
+		
+		public var configManagerSuite:ConfigManagerTestSuite;
 	}
 }
