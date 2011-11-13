@@ -43,14 +43,14 @@ package org.robotlegs.v2.core.impl
 		[Test]
 		public function a_default_dispatcher_should_be_used_if_none_provided():void
 		{
-			context.initialize();
+			context.initialize(nullCallback);
 			assertThat(context.dispatcher, notNullValue());
 		}
 
 		[Test]
 		public function a_default_injector_should_be_used_if_none_provided():void
 		{
-			context.initialize();
+			context.initialize(nullCallback);
 			assertThat(context.injector, notNullValue());
 		}
 
@@ -58,7 +58,7 @@ package org.robotlegs.v2.core.impl
 		public function applicationDomain_that_is_not_explicitly_set_is_determined_by_contextView_if_provided():void
 		{
 			context.contextView = contextView;
-			context.initialize();
+			context.initialize(nullCallback);
 			assertEquals(contextView.loaderInfo.applicationDomain, context.applicationDomain);
 		}
 
@@ -72,17 +72,17 @@ package org.robotlegs.v2.core.impl
 		[Test(expects='Error')]
 		public function initialize_should_throw_if_called_twice():void
 		{
-			context.initialize();
-			context.initialize();
+			context.initialize(nullCallback);
+			context.initialize(nullCallback);
 		}
 
 		[Test]
 		public function injector_should_be_childInjector_if_parent_provided_and_no_injector_given():void
 		{
 			const parent:IContext = new Context();
-			parent.initialize();
+			parent.initialize(nullCallback);
 			context.parent = parent;
-			context.initialize();
+			context.initialize(nullCallback);
 			assertThat(context.injector.parentInjector, strictlyEqualTo(parent.injector));
 		}
 
@@ -91,7 +91,7 @@ package org.robotlegs.v2.core.impl
 		{
 			const providedDispatcher:EventDispatcher = new EventDispatcher();
 			context.dispatcher = providedDispatcher;
-			context.initialize();
+			context.initialize(nullCallback);
 			assertThat(context.dispatcher, strictlyEqualTo(providedDispatcher));
 		}
 
@@ -100,36 +100,40 @@ package org.robotlegs.v2.core.impl
 		{
 			const providedInjector:Injector = new Injector();
 			context.injector = providedInjector;
-			context.initialize();
+			context.initialize(nullCallback);
 			assertThat(context.injector, strictlyEqualTo(providedInjector));
 		}
 
 		[Test(expects='Error')]
 		public function setting_contextView_should_throw_if_context_already_initialized():void
 		{
-			context.initialize();
+			context.initialize(nullCallback);
 			context.contextView = contextView;
 		}
 
 		[Test(expects='Error')]
 		public function setting_dispatcher_should_throw_if_context_already_initialized():void
 		{
-			context.initialize();
+			context.initialize(nullCallback);
 			context.dispatcher = new EventDispatcher();
 		}
 
 		[Test(expects='Error')]
 		public function setting_injector_should_throw_if_context_already_initialized():void
 		{
-			context.initialize();
+			context.initialize(nullCallback);
 			context.injector = new Injector();
 		}
 
 		[Test(expects='Error')]
 		public function setting_parent_should_throw_if_context_already_initialized():void
 		{
-			context.initialize();
+			context.initialize(nullCallback);
 			context.parent = new Context();
+		}
+
+		private function nullCallback():void
+		{
 		}
 	}
 }
