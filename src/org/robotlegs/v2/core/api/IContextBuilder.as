@@ -45,13 +45,6 @@ package org.robotlegs.v2.core.api
 
 		function withParent(value:IContext):IContextBuilder;
 
-		/**
-		 * Installs a context pre-processor
-		 * @param preProcessorClass a class that implements IContextPreProcessor
-		 * @return builder
-		 */
-		function withPreProcessor(preProcessorClass:Class):IContextBuilder;
-
 		function withLogTarget(target:IContextLogTarget):IContextBuilder;
 	}
 }

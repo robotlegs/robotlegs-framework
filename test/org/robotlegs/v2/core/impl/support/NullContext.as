@@ -10,6 +10,7 @@ package org.robotlegs.v2.core.impl.support
 	import flash.display.DisplayObjectContainer;
 	import flash.events.IEventDispatcher;
 	import flash.system.ApplicationDomain;
+	
 	import org.robotlegs.v2.core.api.IContext;
 	import org.robotlegs.v2.core.api.IContextLogger;
 	import org.robotlegs.v2.core.impl.ContextLogger;
@@ -93,7 +94,7 @@ package org.robotlegs.v2.core.impl.support
 		{
 		}
 
-		public function initialize():void
+		public function initialize(callback:Function):void
 		{
 		}
 

@@ -36,7 +36,7 @@ package org.robotlegs.v2.core.api
 
 		function destroy():void;
 
-		function initialize():void;
+		function initialize(callback:Function):void;
 
 		/**
 		 * Install a runtime context extension

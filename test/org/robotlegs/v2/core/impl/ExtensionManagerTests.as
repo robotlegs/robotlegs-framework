@@ -56,7 +56,7 @@ package org.robotlegs.v2.core.impl
 		public function destroy_removes_all_extensions():void
 		{
 			manager.addExtension(CallbackExtension);
-			manager.initialize();
+			manager.initialize(nullCallback);
 			manager.destroy();
 			assertThat(manager.hasExtension(CallbackExtension), isFalse());
 		}
@@ -70,7 +70,7 @@ package org.robotlegs.v2.core.impl
 				installCount++;
 			});
 			manager.addExtension(CallbackExtension);
-			manager.initialize();
+			manager.initialize(nullCallback);
 			assertThat(installCount, equalTo(1));
 		}
 
@@ -83,7 +83,7 @@ package org.robotlegs.v2.core.impl
 				initCount++;
 			});
 			manager.addExtension(CallbackExtension);
-			manager.initialize();
+			manager.initialize(nullCallback);
 			assertThat(initCount, equalTo(1));
 		}
 
@@ -96,7 +96,7 @@ package org.robotlegs.v2.core.impl
 				uninstallCount++;
 			});
 			manager.addExtension(CallbackExtension);
-			manager.initialize();
+			manager.initialize(nullCallback);
 			manager.destroy();
 			assertThat(uninstallCount, equalTo(1));
 		}
@@ -109,7 +109,7 @@ package org.robotlegs.v2.core.impl
 			{
 				installCount++;
 			});
-			manager.initialize();
+			manager.initialize(nullCallback);
 			manager.addExtension(CallbackExtension);
 			assertThat(installCount, equalTo(1));
 		}
@@ -123,7 +123,7 @@ package org.robotlegs.v2.core.impl
 				uninstallCount++;
 			});
 			manager.addExtension(CallbackExtension);
-			manager.initialize();
+			manager.initialize(nullCallback);
 			manager.removeExtension(CallbackExtension);
 			assertThat(uninstallCount, equalTo(1));
 		}
@@ -138,7 +138,7 @@ package org.robotlegs.v2.core.impl
 			});
 			manager.addExtension(CallbackExtension);
 			manager.removeExtension(CallbackExtension);
-			manager.initialize();
+			manager.initialize(nullCallback);
 			manager.destroy();
 			assertThat(installCount, equalTo(0));
 		}
@@ -153,7 +153,7 @@ package org.robotlegs.v2.core.impl
 			});
 			manager.addExtension(CallbackExtension);
 			manager.removeExtension(CallbackExtension);
-			manager.initialize();
+			manager.initialize(nullCallback);
 			manager.destroy();
 			assertThat(initCount, equalTo(0));
 		}
@@ -168,7 +168,7 @@ package org.robotlegs.v2.core.impl
 			});
 			manager.addExtension(CallbackExtension);
 			manager.removeExtension(CallbackExtension);
-			manager.initialize();
+			manager.initialize(nullCallback);
 			manager.destroy();
 			assertThat(uninstallCount, equalTo(0));
 		}
@@ -188,7 +188,7 @@ package org.robotlegs.v2.core.impl
 			manager.addExtension(CallbackExtension);
 			manager.addExtension(CallbackExtension2);
 			manager.addExtension(CallbackExtension3);
-			manager.initialize();
+			manager.initialize(nullCallback);
 			assertThat(log, array([
 				'install', 'CallbackExtension',
 				'install', 'CallbackExtension2',
@@ -209,7 +209,7 @@ package org.robotlegs.v2.core.impl
 			manager.addExtension(CallbackExtension);
 			manager.addExtension(CallbackExtension2);
 			manager.addExtension(CallbackExtension3);
-			manager.initialize();
+			manager.initialize(nullCallback);
 			manager.destroy();
 			assertThat(log, array(['CallbackExtension3', 'CallbackExtension2', 'CallbackExtension']));
 		}
@@ -217,14 +217,14 @@ package org.robotlegs.v2.core.impl
 		[Test(expects="Error")]
 		public function manager_throws_on_double_initialization():void
 		{
-			manager.initialize();
-			manager.initialize();
+			manager.initialize(nullCallback);
+			manager.initialize(nullCallback);
 		}
 
 		[Test(expects="Error")]
 		public function manager_throws_on_double_destruction():void
 		{
-			manager.initialize();
+			manager.initialize(nullCallback);
 			manager.destroy();
 			manager.destroy();
 		}
@@ -232,7 +232,7 @@ package org.robotlegs.v2.core.impl
 		[Test(expects="Error")]
 		public function manager_throws_when_adding_extension_after_destruction():void
 		{
-			manager.initialize();
+			manager.initialize(nullCallback);
 			manager.destroy();
 			manager.addExtension(CallbackExtension);
 		}
@@ -240,15 +240,34 @@ package org.robotlegs.v2.core.impl
 		[Test(expects="Error")]
 		public function manager_throws_when_removing_extension_after_destruction():void
 		{
-			manager.initialize();
+			manager.initialize(nullCallback);
 			manager.destroy();
 			manager.removeExtension(CallbackExtension);
+		}
+
+		[Test]
+		public function preProcessing_extension_should_run_during_initialization():void
+		{
+			var preProcessCallCount:uint;
+			injector.map(Function, 'installCallback').toValue(function(count:uint):void
+			{
+				preProcessCallCount = count;
+			});
+			manager.addExtension(PreProcessingExtension);
+			manager.initialize(nullCallback);
+			assertThat(preProcessCallCount, equalTo(1));
+		}
+
+		private function nullCallback():void
+		{
+			// null impl
 		}
 	}
 }
 
 import org.robotlegs.v2.core.api.IContext;
 import org.robotlegs.v2.core.api.IContextExtension;
+import org.robotlegs.v2.core.api.IContextPreProcessor;
 import org.robotlegs.v2.core.impl.support.NullContext;
 import org.swiftsuspenders.Injector;
 
@@ -265,7 +284,7 @@ class CallbackExtension implements IContextExtension
 
 	protected var name:String = 'CallbackExtension';
 
-	private var context:IContext;
+	protected var context:IContext;
 
 	public function install(context:IContext):void
 	{
@@ -306,5 +325,25 @@ class CallbackExtension3 extends CallbackExtension
 	public function CallbackExtension3()
 	{
 		name = 'CallbackExtension3';
+	}
+}
+
+class PreProcessingExtension extends CallbackExtension implements IContextPreProcessor
+{
+	private var preProcessCallCount:uint;
+
+	public function preProcess(context:IContext, callback:Function):void
+	{
+		preProcessCallCount++;
+		callback();
+	}
+
+	override public function install(context:IContext):void
+	{
+		this.context = context;
+		const callback:Function =
+			context.injector.satisfies(Function, 'installCallback') ?
+			context.injector.getInstance(Function, 'installCallback') : null;
+		callback && callback(preProcessCallCount);
 	}
 }

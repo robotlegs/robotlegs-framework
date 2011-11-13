@@ -15,7 +15,6 @@ package org.robotlegs.v2.core.impl
 	import org.robotlegs.v2.core.api.IContext;
 	import org.robotlegs.v2.core.api.IContextBuilder;
 	import org.robotlegs.v2.core.api.IContextBuilderBundle;
-	import org.robotlegs.v2.core.api.IContextPreProcessor;
 	import org.robotlegs.v2.core.api.IContextLogTarget;
 	import org.robotlegs.v2.core.api.IContextLogger;
 	import org.swiftsuspenders.Injector;
@@ -24,17 +23,15 @@ package org.robotlegs.v2.core.impl
 	public class ContextBuilder extends EventDispatcher implements IContextBuilder
 	{
 
-		protected static var counter:int;
-
-		protected const _id:String = 'ContextBuilder' + counter++;
+		private static var counter:int;
 
 		protected const context:IContext = new Context();
 
-		protected const logger:IContextLogger = context.logger;
+		private const _id:String = 'ContextBuilder' + counter++;
 
-		protected const preProcessorClasses:Vector.<Class> = new Vector.<Class>;
+		private const logger:IContextLogger = context.logger;
 
-		protected var buildLocked:Boolean;
+		private var buildLocked:Boolean;
 
 		public function ContextBuilder()
 		{
@@ -46,7 +43,7 @@ package org.robotlegs.v2.core.impl
 			logger.info(this, 'starting build');
 			buildLocked && throwBuildLockedError();
 			buildLocked = true;
-			runPreProcessors();
+			context.initialize(finishBuild);
 			return context;
 		}
 
@@ -104,15 +101,6 @@ package org.robotlegs.v2.core.impl
 			return this;
 		}
 
-		public function withPreProcessor(preProcessorClass:Class):IContextBuilder
-		{
-			logger.info(this, 'adding processor: {0}', [preProcessorClass]);
-			buildLocked && throwBuildLockedError();
-			if (preProcessorClasses.indexOf(preProcessorClass) == -1)
-				preProcessorClasses.push(preProcessorClass);
-			return this;
-		}
-
 		public function withLogTarget(target:IContextLogTarget):IContextBuilder
 		{
 			logger.addTarget(target);
@@ -122,38 +110,13 @@ package org.robotlegs.v2.core.impl
 
 		protected function finishBuild():void
 		{
-			context.initialize();
+			logger.info(this, 'Build complete.');
 			dispatchEvent(new ContextBuilderEvent(ContextBuilderEvent.CONTEXT_BUILD_COMPLETE, this, context));
-		}
-
-		protected function preProcessorCallback(error:Object = null):void
-		{
-			if (error)
-			{
-				throw new Error(error);
-			}
-			else if (preProcessorClasses.length > 0)
-			{
-				const preProcessorClass:Class = preProcessorClasses.shift();
-				logger.info(this, 'executing processor: {0}', [preProcessorClass]);
-				const preProcessor:IContextPreProcessor = new preProcessorClass();
-				preProcessor.preProcess(context, preProcessorCallback);
-			}
-			else
-			{
-				finishBuild();
-			}
-		}
-
-		protected function runPreProcessors():void
-		{
-			logger.info(this, 'running context pre-processors');
-			preProcessorCallback();
 		}
 
 		protected function throwBuildLockedError():void
 		{
-			const message:String = 'The build has started and is now locked';
+			const message:String = 'The build has started and is now locked.';
 			logger.fatal(this, message);
 			throw new IllegalOperationError(message);
 		}

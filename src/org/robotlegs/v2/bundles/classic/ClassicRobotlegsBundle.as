@@ -8,15 +8,15 @@
 package org.robotlegs.v2.bundles.classic
 {
 	import org.robotlegs.v2.bundles.shared.configs.ContextViewListenerConfig;
-	import org.robotlegs.v2.bundles.shared.processors.ParentContextFinder;
+	import org.robotlegs.v2.core.api.ContextLogLevel;
 	import org.robotlegs.v2.core.api.IContextBuilder;
 	import org.robotlegs.v2.core.api.IContextBuilderBundle;
-	import org.robotlegs.v2.core.api.ContextLogLevel;
 	import org.robotlegs.v2.extensions.autoDestroy.AutoDestroyExtension;
 	import org.robotlegs.v2.extensions.commandMap.CommandMapExtension;
 	import org.robotlegs.v2.extensions.eventCommandMap.EventCommandMapExtension;
 	import org.robotlegs.v2.extensions.logging.impl.TraceLogTarget;
 	import org.robotlegs.v2.extensions.mediatorMap.MediatorMapExtension;
+	import org.robotlegs.v2.extensions.modularity.ModularityExtension;
 	import org.robotlegs.v2.extensions.viewManager.ViewManagerExtension;
 
 	public class ClassicRobotlegsBundle implements IContextBuilderBundle
@@ -27,13 +27,13 @@ package org.robotlegs.v2.bundles.classic
 			// Use a simple trace logger
 			builder.withLogTarget(new TraceLogTarget(ContextLogLevel.DEBUG));
 
-			// Determine context hierarchy by way of contextView
-			builder.withPreProcessor(ParentContextFinder);
+			// Install the Modularity extension
+			builder.withExtension(ModularityExtension);
 
 			// Install the CommandMap extension
 			builder.withExtension(CommandMapExtension);
 
-			// Install the CommandMap extension
+			// Install the EventCommandMap extension
 			builder.withExtension(EventCommandMapExtension);
 
 			// Install the DisplayList extension

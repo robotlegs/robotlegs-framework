@@ -111,9 +111,13 @@ package org.robotlegs.v2.core.impl
 			return _logger;
 		}
 
+		private var _initializing:Boolean;
+
 		private var extensionManager:ExtensionManager;
 
 		private var configManager:ConfigManager;
+
+		private var completeCallback:Function;
 
 		public function Context()
 		{
@@ -131,19 +135,18 @@ package org.robotlegs.v2.core.impl
 			extensionManager.destroy();
 		}
 
-		public function initialize():void
+		public function initialize(callback:Function):void
 		{
-			_initialized && throwContextLockedError();
-			_initialized = true;
+			_initializing && throwContextLockedError();
+			_initializing = true;
 			logger.info(this, 'Initializing context.');
+			completeCallback = callback;
 			configureApplicationDomain();
 			configureDispatcher();
 			configureInjector();
 			mapInjections();
 			addContextToContextViewRegistry();
-			extensionManager.initialize();
-			configManager.initialize();
-			logger.info(this, 'Context initialization complete.');
+			extensionManager.initialize(finish);
 		}
 
 		public function installExtension(extensionClass:Class):IContext
@@ -173,6 +176,14 @@ package org.robotlegs.v2.core.impl
 			logger.info(this, 'Adding config: {0}', [configClass]);
 			configManager.addConfig(configClass);
 			return this;
+		}
+
+		private function finish():void
+		{
+			configManager.initialize();
+			_initialized = true;
+			logger.info(this, 'Context initialization complete.');
+			completeCallback();
 		}
 
 		private function addContextToContextViewRegistry():void
