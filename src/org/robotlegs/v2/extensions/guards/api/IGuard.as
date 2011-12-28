@@ -7,7 +7,8 @@
 
 package org.robotlegs.v2.extensions.guards.api
 {
-
+	
+	// TODO: move out of extensions and into core
 	public interface IGuard
 	{
 		function approve():Boolean;

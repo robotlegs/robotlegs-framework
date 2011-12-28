@@ -16,6 +16,11 @@ package org.robotlegs.v2.extensions.eventCommandMap.impl
 
 	public class EventCommandTrigger implements ICommandTrigger
 	{
+
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
+
 		private const mappings:Vector.<ICommandMapping> = new Vector.<ICommandMapping>;
 
 		private var injector:Injector;
@@ -28,11 +33,15 @@ package org.robotlegs.v2.extensions.eventCommandMap.impl
 
 		private var once:Boolean;
 
+		/*============================================================================*/
+		/* Constructor                                                                */
+		/*============================================================================*/
+
 		public function EventCommandTrigger(
 			injector:Injector,
 			dispatcher:IEventDispatcher,
 			type:String,
-			eventClass:Class,
+			eventClass:Class = null,
 			once:Boolean = false)
 		{
 			this.injector = injector;
@@ -41,6 +50,10 @@ package org.robotlegs.v2.extensions.eventCommandMap.impl
 			this.eventClass = eventClass;
 			this.once = once;
 		}
+
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
 
 		public function addMapping(mapping:ICommandMapping):void
 		{
@@ -61,6 +74,10 @@ package org.robotlegs.v2.extensions.eventCommandMap.impl
 			}
 		}
 
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
+
 		private function verifyCommandClass(mapping:ICommandMapping):void
 		{
 			if (describeType(mapping.commandClass).factory.method.(@name == "execute").length() == 0)
@@ -79,37 +96,40 @@ package org.robotlegs.v2.extensions.eventCommandMap.impl
 
 		private function handleEvent(event:Event):void
 		{
+			const eventConstructor:Class = event["constructor"];
+
 			// check strongly-typed event (if specified)
-			if (eventClass && eventClass != Event && eventClass != event["constructor"])
+			if (eventClass && eventConstructor != eventClass)
 				return;
 
-			// map the event for injection
+			// map loosely typed event for injection
 			injector.map(Event).toValue(event);
 
 			// map the strongly typed event for injection
-			if (eventClass && eventClass != Event)
-				injector.map(eventClass).toValue(event);
+			if (eventConstructor != Event)
+				injector.map(eventClass || eventConstructor).toValue(event);
 
+			// run past the guards and hooks, and execute
+			const mappings:Vector.<ICommandMapping> = this.mappings.concat();
 			for each (var mapping:ICommandMapping in mappings)
 			{
-				// execute the command if allowed
 				if (mapping.guards.approve())
 				{
-					injector.map(mapping.commandClass).asSingleton();
-					mapping.hooks.hook();
-					injector.getInstance(mapping.commandClass).execute();
-					injector.unmap(mapping.commandClass);
-					// question - should this be fromAll()?
 					once && removeMapping(mapping);
+					injector.map(mapping.commandClass).asSingleton();
+					const command:Object = injector.getInstance(mapping.commandClass);
+					mapping.hooks.hook();
+					injector.unmap(mapping.commandClass);
+					command.execute();
 				}
 			}
 
-			// unmap the event
+			// unmap the loosely typed event
 			injector.unmap(Event);
 
-			// unmap the strongly-typed event
-			if (eventClass && eventClass != Event)
-				injector.unmap(eventClass);
+			// unmap the strongly typed event
+			if (eventConstructor != Event)
+				injector.unmap(eventClass || eventConstructor);
 		}
 	}
 }

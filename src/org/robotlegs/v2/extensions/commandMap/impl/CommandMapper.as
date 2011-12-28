@@ -17,17 +17,30 @@ package org.robotlegs.v2.extensions.commandMap.impl
 
 	public class CommandMapper implements ICommandMapper, ICommandUnmapper, ICommandMappingFinder
 	{
+
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
+
 		private const mappings:Dictionary = new Dictionary();
 
 		private var injector:Injector;
 
 		private var trigger:ICommandTrigger;
 
+		/*============================================================================*/
+		/* Constructor                                                                */
+		/*============================================================================*/
+
 		public function CommandMapper(injector:Injector, trigger:ICommandTrigger)
 		{
 			this.injector = injector;
 			this.trigger = trigger;
 		}
+
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
 
 		public function toCommand(commandClass:Class):ICommandMapping
 		{
@@ -46,6 +59,10 @@ package org.robotlegs.v2.extensions.commandMap.impl
 		{
 			return mappings[commandClass];
 		}
+
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
 
 		private function createMapping(commandClass:Class):ICommandMapping
 		{

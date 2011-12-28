@@ -14,6 +14,7 @@ package org.robotlegs.v2.extensions.guards.impl
 	import org.robotlegs.v2.extensions.guards.api.IGuardGroup;
 	import org.swiftsuspenders.Injector;
 
+	// TODO: move out of extensions and into core
 	public class GuardGroup implements IGuardGroup
 	{
 		private const _verifiedGuardClasses:Dictionary = new Dictionary();

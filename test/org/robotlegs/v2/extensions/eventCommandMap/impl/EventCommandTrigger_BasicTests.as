@@ -9,13 +9,20 @@ package org.robotlegs.v2.extensions.eventCommandMap.impl
 {
 	import flash.events.Event;
 	import org.hamcrest.assertThat;
+	import org.hamcrest.collection.array;
 	import org.hamcrest.object.equalTo;
 	import org.robotlegs.v2.extensions.commandMap.support.CallbackCommand;
+	import org.robotlegs.v2.extensions.commandMap.support.CallbackCommand2;
 	import org.robotlegs.v2.extensions.commandMap.support.SelfReportingCallbackCommand;
+	import org.robotlegs.v2.extensions.commandMap.support.SelfReportingCallbackCommand2;
 	import org.robotlegs.v2.extensions.eventCommandMap.support.SupportEvent;
 
 	public class EventCommandTrigger_BasicTests extends AbstractEventCommandMapTests
 	{
+
+		/*============================================================================*/
+		/* Tests                                                                      */
+		/*============================================================================*/
 
 		[Test(expects="Error")]
 		public function mapping_nonCommandClass_to_event_should_throw_error():void
@@ -59,7 +66,7 @@ package org.robotlegs.v2.extensions.eventCommandMap.impl
 		}
 
 		[Test]
-		public function typed_event_is_injected_into_command():void
+		public function specified_typed_event_is_injected_into_command():void
 		{
 			var injectedEvent:SupportEvent;
 			injector.map(Function, 'executeCallback').toValue(function(command:SupportEventTriggeredSelfReportingCallbackCommand):void
@@ -67,6 +74,21 @@ package org.robotlegs.v2.extensions.eventCommandMap.impl
 				injectedEvent = command.typedEvent;
 			});
 			eventCommandMap.map(SupportEvent.TYPE1, SupportEvent)
+				.toCommand(SupportEventTriggeredSelfReportingCallbackCommand);
+			const event:SupportEvent = new SupportEvent(SupportEvent.TYPE1);
+			dispatcher.dispatchEvent(event);
+			assertThat(injectedEvent, equalTo(event));
+		}
+
+		[Test]
+		public function unspecified_typed_event_is_injected_into_command():void
+		{
+			var injectedEvent:SupportEvent;
+			injector.map(Function, 'executeCallback').toValue(function(command:SupportEventTriggeredSelfReportingCallbackCommand):void
+			{
+				injectedEvent = command.typedEvent;
+			});
+			eventCommandMap.map(SupportEvent.TYPE1)
 				.toCommand(SupportEventTriggeredSelfReportingCallbackCommand);
 			const event:SupportEvent = new SupportEvent(SupportEvent.TYPE1);
 			dispatcher.dispatchEvent(event);
@@ -113,6 +135,62 @@ package org.robotlegs.v2.extensions.eventCommandMap.impl
 			assertThat(executeCount, equalTo(0));
 		}
 
+		[Test]
+		public function oneshot_mappings_should_not_bork_stacked_mappings():void
+		{
+			var executeCount:uint;
+			injector.map(Function, 'executeCallback').toValue(function():void
+			{
+				executeCount++;
+			});
+			eventCommandMap.map(SupportEvent.TYPE1, SupportEvent, true).toCommand(CallbackCommand);
+			eventCommandMap.map(SupportEvent.TYPE1, SupportEvent, true).toCommand(CallbackCommand2);
+			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
+			assertThat(executeCount, equalTo(2));
+		}
+
+		[Test]
+		public function one_shot_command_should_not_cause_infinite_loop_when_dispatching_to_self():void
+		{
+			injector.map(Function, 'executeCallback').toValue(function():void
+			{
+				dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
+			});
+			eventCommandMap.map(SupportEvent.TYPE1, null, true).toCommand(CallbackCommand);
+			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
+		}
+
+		[Ignore]
+		[Test]
+		public function commands_should_not_stomp_over_event_mappings():void
+		{
+			injector.map(Function, 'executeCallback').toValue(function():void
+			{
+				dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE2));
+			});
+			eventCommandMap.map(SupportEvent.TYPE1).toCommand(CallbackCommand);
+			eventCommandMap.map(SupportEvent.TYPE2, null, true).toCommand(CallbackCommand);
+			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
+		}
+
+		[Test]
+		public function commands_are_executed_in_order():void
+		{
+			var commands:Array = [];
+			injector.map(Function, 'executeCallback').toValue(function(command:Object):void
+			{
+				commands.push(command.toString());
+			});
+			eventCommandMap.map(SupportEvent.TYPE1).toCommand(SelfReportingCallbackCommand);
+			eventCommandMap.map(SupportEvent.TYPE1).toCommand(SelfReportingCallbackCommand2);
+			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
+			assertThat(commands, array("[object SelfReportingCallbackCommand]", "[object SelfReportingCallbackCommand2]"));
+		}
+
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
+
 		private function commandExecutionCount(totalEvents:int = 1, oneshot:Boolean = false):uint
 		{
 			var executeCount:uint;
@@ -141,6 +219,10 @@ import org.robotlegs.v2.extensions.eventCommandMap.support.SupportEvent;
 class SupportEventTriggeredSelfReportingCallbackCommand
 {
 
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
 	[Inject]
 	public var event:Event;
 
@@ -150,8 +232,13 @@ class SupportEventTriggeredSelfReportingCallbackCommand
 	[Inject(name="executeCallback")]
 	public var callback:Function;
 
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
 	public function execute():void
 	{
 		callback(this);
 	}
 }
+

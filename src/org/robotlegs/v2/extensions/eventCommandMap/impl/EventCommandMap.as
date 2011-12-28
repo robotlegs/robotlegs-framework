@@ -7,7 +7,6 @@
 
 package org.robotlegs.v2.extensions.eventCommandMap.impl
 {
-	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	import flash.utils.Dictionary;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandMap;
@@ -20,6 +19,11 @@ package org.robotlegs.v2.extensions.eventCommandMap.impl
 
 	public class EventCommandMap implements IEventCommandMap
 	{
+
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
+
 		private const eventTriggers:Dictionary = new Dictionary();
 
 		private var injector:Injector;
@@ -28,6 +32,10 @@ package org.robotlegs.v2.extensions.eventCommandMap.impl
 
 		private var commandMap:ICommandMap;
 
+		/*============================================================================*/
+		/* Constructor                                                                */
+		/*============================================================================*/
+
 		public function EventCommandMap(injector:Injector, dispatcher:IEventDispatcher, commandMap:ICommandMap)
 		{
 			this.injector = injector;
@@ -35,10 +43,14 @@ package org.robotlegs.v2.extensions.eventCommandMap.impl
 			this.commandMap = commandMap;
 		}
 
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
+
 		public function map(type:String, eventClass:Class = null, once:Boolean = false):ICommandMapper
 		{
 			const trigger:ICommandTrigger =
-				eventTriggers[type + (eventClass || Event)] ||=
+				eventTriggers[type + eventClass] ||=
 				createEventTrigger(type, eventClass, once);
 			return commandMap.map(trigger);
 		}
@@ -54,14 +66,18 @@ package org.robotlegs.v2.extensions.eventCommandMap.impl
 			return commandMap.getMapping(trigger);
 		}
 
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
+
 		private function createEventTrigger(type:String, eventClass:Class = null, once:Boolean = false):ICommandTrigger
 		{
-			return new EventCommandTrigger(injector, dispatcher, type, (eventClass || Event), once);
+			return new EventCommandTrigger(injector, dispatcher, type, eventClass, once);
 		}
 
 		private function getEventTrigger(type:String, eventClass:Class = null):ICommandTrigger
 		{
-			return eventTriggers[type + (eventClass || Event)];
+			return eventTriggers[type + eventClass];
 		}
 	}
 }

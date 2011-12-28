@@ -18,14 +18,26 @@ package org.robotlegs.v2.extensions.commandMap.impl
 	public class CommandMap implements ICommandMap
 	{
 
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
+
 		private const mappers:Dictionary = new Dictionary();
 
 		private var injector:Injector;
+
+		/*============================================================================*/
+		/* Constructor                                                                */
+		/*============================================================================*/
 
 		public function CommandMap(injector:Injector):void
 		{
 			this.injector = injector.createChildInjector();
 		}
+
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
 
 		public function map(trigger:ICommandTrigger):ICommandMapper
 		{
