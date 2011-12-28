@@ -7,19 +7,21 @@
 
 package org.robotlegs.v2.extensions.viewInjectionMap.impl
 {
-	import org.robotlegs.v2.extensions.viewManager.api.ViewHandlerEvent;
-	import org.robotlegs.v2.extensions.viewManager.api.IViewHandler;
-	import org.robotlegs.v2.extensions.viewManager.api.ViewInterests;
 	import flash.display.DisplayObject;
-	import org.robotlegs.v2.extensions.viewManager.api.IViewClassInfo;
-	import flash.events.IEventDispatcher;
 	import flash.events.EventDispatcher;
-	import org.swiftsuspenders.Injector;
-	import org.robotlegs.v2.extensions.viewMap.impl.ViewMap;
-	import org.robotlegs.v2.core.api.ITypeFilter;
-	import org.robotlegs.v2.core.impl.TypeMatcher;
-	import org.robotlegs.v2.core.api.ITypeMatcher;
+	import flash.events.IEventDispatcher;
 	
+	import org.robotlegs.v2.core.api.ITypeFilter;
+	import org.robotlegs.v2.core.api.ITypeMatcher;
+	import org.robotlegs.v2.core.impl.TypeMatcher;
+	import org.robotlegs.v2.extensions.viewManager.api.IViewClassInfo;
+	import org.robotlegs.v2.extensions.viewManager.api.IViewHandler;
+	import org.robotlegs.v2.extensions.viewManager.api.ViewHandlerEvent;
+	import org.robotlegs.v2.extensions.viewManager.api.ViewInterests;
+	import org.robotlegs.v2.extensions.viewMap.impl.ViewMap;
+	import org.swiftsuspenders.Injector;
+	
+	// TODO: review
 	public class ViewInjectionMap extends EventDispatcher implements IViewHandler, IEventDispatcher
 	{
 		[Inject]

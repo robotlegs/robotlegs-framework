@@ -9,12 +9,34 @@ package org.robotlegs.v2.extensions.commandMap.support
 {
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandMapping;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandTrigger;
+	import org.swiftsuspenders.Injector;
 
 	public class NullCommandTrigger implements ICommandTrigger
 	{
-		public function NullCommandTrigger()
+
+		/*============================================================================*/
+		/* Public Properties                                                          */
+		/*============================================================================*/
+
+		private var _injector:Injector;
+
+		public function get injector():Injector
 		{
+			return null;
 		}
+
+		/*============================================================================*/
+		/* Constructor                                                                */
+		/*============================================================================*/
+
+		public function NullCommandTrigger(injector:Injector)
+		{
+			_injector = injector;
+		}
+
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
 
 		public function addMapping(mapping:ICommandMapping):void
 		{

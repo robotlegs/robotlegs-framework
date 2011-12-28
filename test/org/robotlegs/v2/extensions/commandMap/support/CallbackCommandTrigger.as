@@ -9,18 +9,44 @@ package org.robotlegs.v2.extensions.commandMap.support
 {
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandMapping;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandTrigger;
+	import org.swiftsuspenders.Injector;
 
 	public class CallbackCommandTrigger implements ICommandTrigger
 	{
+
+		/*============================================================================*/
+		/* Public Properties                                                          */
+		/*============================================================================*/
+
+		private var _injector:Injector;
+
+		public function get injector():Injector
+		{
+			return _injector;
+		}
+
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
+
 		private var _registerCallback:Function;
 
 		private var _unregisterCallback:Function;
 
-		public function CallbackCommandTrigger(registerCallback:Function = null, unregisterCallback:Function = null)
+		/*============================================================================*/
+		/* Constructor                                                                */
+		/*============================================================================*/
+
+		public function CallbackCommandTrigger(injector:Injector, registerCallback:Function = null, unregisterCallback:Function = null)
 		{
+			_injector = injector;
 			_registerCallback = registerCallback;
 			_unregisterCallback = unregisterCallback;
 		}
+
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
 
 		public function addMapping(mapping:ICommandMapping):void
 		{

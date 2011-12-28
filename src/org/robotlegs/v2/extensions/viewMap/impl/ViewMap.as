@@ -17,6 +17,7 @@ package org.robotlegs.v2.extensions.viewMap.impl
 	import flash.utils.getQualifiedClassName;
 	import org.robotlegs.v2.extensions.viewManager.impl.ViewClassInfo;
 
+	// TODO: review
 	public class ViewMap
 	{
 		[Inject]
@@ -26,6 +27,7 @@ package org.robotlegs.v2.extensions.viewMap.impl
 
 		private const _mappingsByTypeFilter:Dictionary = new Dictionary();
 		
+		// TODO: avoid this callback
 		private var _processCallback:Function;
 		
 		public function set processCallback(value:Function):void

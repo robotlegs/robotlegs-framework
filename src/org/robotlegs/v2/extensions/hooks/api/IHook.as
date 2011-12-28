@@ -8,6 +8,7 @@
 package org.robotlegs.v2.extensions.hooks.api
 {
 
+	// TODO: move out of extensions and into core
 	public interface IHook
 	{
 		function hook():void;

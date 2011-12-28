@@ -14,6 +14,7 @@ package org.robotlegs.v2.extensions.hooks.impl
 	import org.robotlegs.v2.extensions.hooks.api.IHookGroup;
 	import org.swiftsuspenders.Injector;
 
+	// TODO: move out of extensions and into core
 	public class HookGroup implements IHookGroup
 	{
 		private const _verifiedHookClasses:Dictionary = new Dictionary();

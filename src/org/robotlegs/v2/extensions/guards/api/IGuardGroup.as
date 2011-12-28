@@ -8,6 +8,7 @@
 package org.robotlegs.v2.extensions.guards.api
 {
 
+	// TODO: move out of extensions and into core
 	public interface IGuardGroup
 	{
 		function add(... guardClasses):void;

@@ -16,6 +16,7 @@ package org.robotlegs.v2.extensions.eventMap.impl
 	/**
 	 * An abstract <code>IEventMap</code> implementation
 	 */
+	// TODO: review
 	public class EventMap implements IEventMap
 	{
 		/**
@@ -140,6 +141,7 @@ package org.robotlegs.v2.extensions.eventMap.impl
 			while (i--)
 			{
 				eventConfig = currentListeners[i];
+				// todo: move test to EventMapConfig
 				if (eventConfig.dispatcher == dispatcher
 					&& eventConfig.eventString == eventString
 					&& eventConfig.listener == listener
