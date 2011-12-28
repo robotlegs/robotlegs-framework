@@ -17,6 +17,10 @@ package org.robotlegs.v2.extensions.commandMap.impl
 	public class CommandMapping implements ICommandMapping
 	{
 
+		/*============================================================================*/
+		/* Public Properties                                                          */
+		/*============================================================================*/
+
 		private var _commandClass:Class;
 
 		public function get commandClass():Class
@@ -38,12 +42,20 @@ package org.robotlegs.v2.extensions.commandMap.impl
 			return _hooks;
 		}
 
+		/*============================================================================*/
+		/* Constructor                                                                */
+		/*============================================================================*/
+
 		public function CommandMapping(injector:Injector, commandClass:Class)
 		{
 			_commandClass = commandClass;
 			_guards = new GuardGroup(injector);
 			_hooks = new HookGroup(injector);
 		}
+
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
 
 		public function withGuards(... guardClasses):ICommandMapping
 		{

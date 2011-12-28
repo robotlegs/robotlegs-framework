@@ -8,6 +8,7 @@
 package org.robotlegs.v2.core.impl
 {
 
+	// TODO: should be in API
 	public class TypeMatcherError extends Error
 	{
 

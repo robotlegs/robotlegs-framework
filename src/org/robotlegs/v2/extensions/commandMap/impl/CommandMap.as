@@ -13,23 +13,23 @@ package org.robotlegs.v2.extensions.commandMap.impl
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandMappingFinder;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandTrigger;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandUnmapper;
-	import org.swiftsuspenders.Injector;
 
 	public class CommandMap implements ICommandMap
 	{
 
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
+
 		private const mappers:Dictionary = new Dictionary();
 
-		private var injector:Injector;
-
-		public function CommandMap(injector:Injector):void
-		{
-			this.injector = injector.createChildInjector();
-		}
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
 
 		public function map(trigger:ICommandTrigger):ICommandMapper
 		{
-			return mappers[trigger] ||= new CommandMapper(injector, trigger);
+			return mappers[trigger] ||= new CommandMapper(trigger);
 		}
 
 		public function unmap(trigger:ICommandTrigger):ICommandUnmapper

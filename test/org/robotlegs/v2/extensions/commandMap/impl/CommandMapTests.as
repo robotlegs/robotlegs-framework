@@ -32,8 +32,8 @@ package org.robotlegs.v2.extensions.commandMap.impl
 		public function setUp():void
 		{
 			injector = new Injector();
-			commandMap = new CommandMap(injector);
-			trigger = new NullCommandTrigger();
+			commandMap = new CommandMap();
+			trigger = new NullCommandTrigger(injector);
 		}
 
 		[After]
@@ -70,6 +70,7 @@ package org.robotlegs.v2.extensions.commandMap.impl
 		{
 			var addedCount:uint;
 			const trigger:ICommandTrigger = new CallbackCommandTrigger(
+				injector,
 				function(mapping:ICommandMapping):void
 				{
 					addedCount++;
@@ -83,6 +84,7 @@ package org.robotlegs.v2.extensions.commandMap.impl
 		{
 			var removedCount:uint;
 			const trigger:ICommandTrigger = new CallbackCommandTrigger(
+				injector,
 				null,
 				function(mapping:ICommandMapping):void
 				{

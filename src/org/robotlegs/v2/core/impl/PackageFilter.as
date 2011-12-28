@@ -10,6 +10,7 @@ package org.robotlegs.v2.core.impl
 	import org.robotlegs.v2.core.api.ITypeFilter;
 	import flash.utils.getQualifiedClassName;
 
+	// TODO: review (location, design)
 	public class PackageFilter implements ITypeFilter
 	{
 		protected const emptyVector:Vector.<Class> = new Vector.<Class>();

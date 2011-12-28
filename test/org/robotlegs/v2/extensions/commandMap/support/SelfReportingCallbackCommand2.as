@@ -5,24 +5,10 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package org.robotlegs.v2.extensions.viewInjectionMap.impl.processors
+package org.robotlegs.v2.extensions.commandMap.support
 {
-	import org.swiftsuspenders.Injector;
-	
-	// TODO: review (naming, design)
-	public class InjectInto
+
+	public class SelfReportingCallbackCommand2 extends SelfReportingCallbackCommand
 	{
-		[Inject]
-		public var injector:Injector;
-
-		public function InjectInto()
-		{
-		}
-		
-		public function process(item:Object):void
-		{
-			injector.injectInto(item);
-		}
-
 	}
 }

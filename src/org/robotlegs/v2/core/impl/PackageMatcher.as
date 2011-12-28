@@ -12,6 +12,7 @@ package org.robotlegs.v2.core.impl
 	import org.robotlegs.v2.core.api.ITypeMatcher;
 	import org.robotlegs.v2.core.impl.TypeMatcherError;
 	
+	// TODO: review (location)
 	public class PackageMatcher implements ITypeMatcher
 	{
 		protected var _requirePackage:String;

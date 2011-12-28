@@ -12,6 +12,7 @@ package org.robotlegs.v2.core.api
 	{
 		function createTypeFilter():ITypeFilter;
 
+		// TODO: review (why is this in the API? should it not already be locked?)
 		function lock():void;
 	}
 }
