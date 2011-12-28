@@ -28,7 +28,7 @@ package org.robotlegs.v2.extensions.eventCommandMap.impl
 		{
 			injector = new Injector();
 			dispatcher = new EventDispatcher();
-			commandMap = new CommandMap(injector);
+			commandMap = new CommandMap();
 			eventCommandMap = new EventCommandMap(injector, dispatcher, commandMap);
 		}
 

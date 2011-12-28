@@ -13,7 +13,6 @@ package org.robotlegs.v2.extensions.commandMap.impl
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandMappingFinder;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandTrigger;
 	import org.robotlegs.v2.extensions.commandMap.api.ICommandUnmapper;
-	import org.swiftsuspenders.Injector;
 
 	public class CommandMapper implements ICommandMapper, ICommandUnmapper, ICommandMappingFinder
 	{
@@ -24,17 +23,14 @@ package org.robotlegs.v2.extensions.commandMap.impl
 
 		private const mappings:Dictionary = new Dictionary();
 
-		private var injector:Injector;
-
 		private var trigger:ICommandTrigger;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function CommandMapper(injector:Injector, trigger:ICommandTrigger)
+		public function CommandMapper(trigger:ICommandTrigger)
 		{
-			this.injector = injector;
 			this.trigger = trigger;
 		}
 
@@ -66,7 +62,7 @@ package org.robotlegs.v2.extensions.commandMap.impl
 
 		private function createMapping(commandClass:Class):ICommandMapping
 		{
-			const mapping:ICommandMapping = new CommandMapping(injector, commandClass);
+			const mapping:ICommandMapping = new CommandMapping(trigger.injector, commandClass);
 			trigger.addMapping(mapping);
 			return mapping;
 		}

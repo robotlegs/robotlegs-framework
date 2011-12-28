@@ -7,9 +7,12 @@
 
 package org.robotlegs.v2.extensions.commandMap.api
 {
+	import org.swiftsuspenders.Injector;
 
 	public interface ICommandTrigger
 	{
+		function get injector():Injector;
+
 		function addMapping(mapping:ICommandMapping):void;
 
 		function removeMapping(mapping:ICommandMapping):void;

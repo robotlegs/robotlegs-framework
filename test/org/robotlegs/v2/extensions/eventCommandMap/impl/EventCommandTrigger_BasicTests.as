@@ -160,7 +160,6 @@ package org.robotlegs.v2.extensions.eventCommandMap.impl
 			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
 		}
 
-		[Ignore]
 		[Test]
 		public function commands_should_not_stomp_over_event_mappings():void
 		{

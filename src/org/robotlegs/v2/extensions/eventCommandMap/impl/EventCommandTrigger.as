@@ -18,12 +18,21 @@ package org.robotlegs.v2.extensions.eventCommandMap.impl
 	{
 
 		/*============================================================================*/
+		/* Public Properties                                                          */
+		/*============================================================================*/
+
+		private var _injector:Injector;
+
+		public function get injector():Injector
+		{
+			return _injector;
+		}
+
+		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
 		private const mappings:Vector.<ICommandMapping> = new Vector.<ICommandMapping>;
-
-		private var injector:Injector;
 
 		private var dispatcher:IEventDispatcher;
 
@@ -44,7 +53,7 @@ package org.robotlegs.v2.extensions.eventCommandMap.impl
 			eventClass:Class = null,
 			once:Boolean = false)
 		{
-			this.injector = injector;
+			this._injector = injector.createChildInjector();
 			this.dispatcher = dispatcher;
 			this.type = type;
 			this.eventClass = eventClass;
@@ -103,11 +112,11 @@ package org.robotlegs.v2.extensions.eventCommandMap.impl
 				return;
 
 			// map loosely typed event for injection
-			injector.map(Event).toValue(event);
+			_injector.map(Event).toValue(event);
 
 			// map the strongly typed event for injection
 			if (eventConstructor != Event)
-				injector.map(eventClass || eventConstructor).toValue(event);
+				_injector.map(eventClass || eventConstructor).toValue(event);
 
 			// run past the guards and hooks, and execute
 			const mappings:Vector.<ICommandMapping> = this.mappings.concat();
@@ -116,20 +125,20 @@ package org.robotlegs.v2.extensions.eventCommandMap.impl
 				if (mapping.guards.approve())
 				{
 					once && removeMapping(mapping);
-					injector.map(mapping.commandClass).asSingleton();
-					const command:Object = injector.getInstance(mapping.commandClass);
+					_injector.map(mapping.commandClass).asSingleton();
+					const command:Object = _injector.getInstance(mapping.commandClass);
 					mapping.hooks.hook();
-					injector.unmap(mapping.commandClass);
+					_injector.unmap(mapping.commandClass);
 					command.execute();
 				}
 			}
 
 			// unmap the loosely typed event
-			injector.unmap(Event);
+			_injector.unmap(Event);
 
 			// unmap the strongly typed event
 			if (eventConstructor != Event)
-				injector.unmap(eventClass || eventConstructor);
+				_injector.unmap(eventClass || eventConstructor);
 		}
 	}
 }
