@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.mxml
@@ -11,32 +11,45 @@ package robotlegs.bender.mxml
 	import flash.utils.setTimeout;
 	import mx.core.IMXMLObject;
 	import robotlegs.bender.core.api.IContextBuilderBundle;
+	import robotlegs.bender.core.api.IContextConfig;
 	import robotlegs.bender.core.impl.ContextBuilder;
 
 	[DefaultProperty("configs")]
 	public class ContextBuilderTag extends ContextBuilder implements IMXMLObject
 	{
 
-		protected var _configs:Vector.<IContextBuilderBundle> = new Vector.<IContextBuilderBundle>;
+		/*============================================================================*/
+		/* Public Properties                                                          */
+		/*============================================================================*/
 
-		public function get configs():Vector.<IContextBuilderBundle>
+		private var _configs:Vector.<Object> = new Vector.<Object>;
+
+		public function get configs():Vector.<Object>
 		{
 			return _configs;
 		}
 
-		public function set configs(value:Vector.<IContextBuilderBundle>):void
+		public function set configs(value:Vector.<Object>):void
 		{
 			_configs = value;
 		}
 
-		protected var _contextView:DisplayObjectContainer;
+		private var _contextView:DisplayObjectContainer;
 
 		public function set contextView(value:DisplayObjectContainer):void
 		{
 			_contextView = value;
 		}
 
-		protected var _documentView:DisplayObjectContainer;
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
+
+		private var _documentView:DisplayObjectContainer;
+
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
 
 		public function initialized(document:Object, id:String):void
 		{
@@ -45,19 +58,35 @@ package robotlegs.bender.mxml
 			setTimeout(configureBuilder, 1);
 		}
 
-		protected function configureBuilder():void
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
+
+		private function configureBuilder():void
 		{
 			if (!context.contextView)
 			{
 				withContextView(_contextView || _documentView);
 			}
 
-			configs.forEach(function(config:IContextBuilderBundle, ... rest):void
+			for each (var config:Object in configs)
 			{
-				withBundle(config['constructor'] as Class);
-			}, this);
+				const configClass:Class = config['constructor'] as Class;
+				if (config is IContextBuilderBundle)
+				{
+					withBundle(configClass);
+				}
+				else if (config is IContextConfig)
+				{
+					withConfig(configClass);
+				}
+				else
+				{
+					throw new Error("Unrecognised builder option.");
+				}
+			}
 
-			configs = null;
+			configs.length = 0;
 
 			build();
 		}
