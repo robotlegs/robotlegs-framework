@@ -92,7 +92,7 @@
 <!-- So true. -->
       <arg value="-incremental=true"/>
       <arg value="-verbose-stacktraces=true"/>
-      <arg value="-headless-server=false"/> 
+      <arg value="-headless-server=false"/>
       <arg value="-debug=true"/>
     </java>
 <!-- Execute TestRunner.swf as FlexUnit tests and publish reports -->
@@ -122,8 +122,8 @@
       <arg line="-window-title 'Robotlegs ${robotlegs.ver.num}'"/>
       <arg line="-main-title 'Robotlegs ${robotlegs.ver.num}'"/>
       <arg line="-footer 'Robotlegs - http://www.robotlegs.org/ - Documentation generated at: ${docgen.time}'"/>
-      <arg line="-package org.robotlegs.v2.core.api 'Core framework API'"/>
-      <arg line="-package org.robotlegs.v2.core.impl 'Core framework implementation'"/>
+      <arg line="-package robotlegs.bender.core.api 'Core framework API'"/>
+      <arg line="-package robotlegs.bender.core.impl 'Core framework implementation'"/>
     </java>
     <echo>[asdoc] ASDOC documentation generated successfully</echo>
   </target>

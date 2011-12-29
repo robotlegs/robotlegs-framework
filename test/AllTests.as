@@ -7,54 +7,54 @@ package {
 	 */
 
 	import asunit.framework.TestSuite;
-	import org.robotlegs.v2.core.impl.TypeFilterTest;
-	import org.robotlegs.v2.core.impl.TypeFilterUsageTest;
-	import org.robotlegs.v2.core.impl.TypeMatcherTest;
-	import org.robotlegs.v2.core.utilities.RunningInFlexUtilFunctionTest;
-	import org.robotlegs.v2.extensions.eventMap.api.IEventMapTest;
-	import org.robotlegs.v2.extensions.eventMap.impl.EventMapTest;
-	import org.robotlegs.v2.extensions.guardsAndHooks.impl.GuardsProcessorTest;
-	import org.robotlegs.v2.extensions.guardsAndHooks.impl.HooksProcessorTest;
-	import org.robotlegs.v2.extensions.mediatorMap.configs.RL2MediatorsConfigTest;
-	import org.robotlegs.v2.extensions.mediatorMap.impl.MediatorTest;
-	import org.robotlegs.v2.extensions.mediatorMap.MediatorMapExtensionTest;
-	import org.robotlegs.v2.extensions.mediatorMap.MediatorMapTest;
-	import org.robotlegs.v2.extensions.mediatorMap.MediatorMapV1Test;
-	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.DuckTypedMediatorTrigger_strategiesTest;
-	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.DuckTypedMediatorTriggerTest;
-	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.RL1AndRL2MediatorTrigger_strategiesTest;
-	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.RL1AndRL2MediatorTriggerTest;
-	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.RL1MediatorTriggerTest;
-	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.RL2MediatorTrigger_strategiesTest;
-	import org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.RL2MediatorTriggerTest;
-	import org.robotlegs.v2.extensions.viewHookMap.HookMapTest;
-	import org.robotlegs.v2.extensions.viewHookMap.ViewHookMapTest;
+	import robotlegs.bender.core.impl.TypeFilterTest;
+	import robotlegs.bender.core.impl.TypeFilterUsageTest;
+	import robotlegs.bender.core.impl.TypeMatcherTest;
+	import robotlegs.bender.core.utilities.RunningInFlexUtilFunctionTest;
+	import robotlegs.bender.extensions.eventMap.api.IEventMapTest;
+	import robotlegs.bender.extensions.eventMap.impl.EventMapTest;
+	import robotlegs.bender.extensions.guardsAndHooks.impl.GuardsProcessorTest;
+	import robotlegs.bender.extensions.guardsAndHooks.impl.HooksProcessorTest;
+	import robotlegs.bender.extensions.mediatorMap.configs.RL2MediatorsConfigTest;
+	import robotlegs.bender.extensions.mediatorMap.impl.MediatorTest;
+	import robotlegs.bender.extensions.mediatorMap.MediatorMapExtensionTest;
+	import robotlegs.bender.extensions.mediatorMap.MediatorMapTest;
+	import robotlegs.bender.extensions.mediatorMap.MediatorMapV1Test;
+	import robotlegs.bender.extensions.mediatorMap.utilities.triggers.DuckTypedMediatorTrigger_strategiesTest;
+	import robotlegs.bender.extensions.mediatorMap.utilities.triggers.DuckTypedMediatorTriggerTest;
+	import robotlegs.bender.extensions.mediatorMap.utilities.triggers.RL1AndRL2MediatorTrigger_strategiesTest;
+	import robotlegs.bender.extensions.mediatorMap.utilities.triggers.RL1AndRL2MediatorTriggerTest;
+	import robotlegs.bender.extensions.mediatorMap.utilities.triggers.RL1MediatorTriggerTest;
+	import robotlegs.bender.extensions.mediatorMap.utilities.triggers.RL2MediatorTrigger_strategiesTest;
+	import robotlegs.bender.extensions.mediatorMap.utilities.triggers.RL2MediatorTriggerTest;
+	import robotlegs.bender.extensions.viewHookMap.HookMapTest;
+	import robotlegs.bender.extensions.viewHookMap.ViewHookMapTest;
 
 	public class AllTests extends TestSuite {
 
 		public function AllTests() {
-			addTest(new org.robotlegs.v2.core.impl.TypeFilterTest());
-			addTest(new org.robotlegs.v2.core.impl.TypeFilterUsageTest());
-			addTest(new org.robotlegs.v2.core.impl.TypeMatcherTest());
-			addTest(new org.robotlegs.v2.core.utilities.RunningInFlexUtilFunctionTest());
-			addTest(new org.robotlegs.v2.extensions.eventMap.api.IEventMapTest());
-			addTest(new org.robotlegs.v2.extensions.eventMap.impl.EventMapTest());
-			addTest(new org.robotlegs.v2.extensions.guardsAndHooks.impl.GuardsProcessorTest());
-			addTest(new org.robotlegs.v2.extensions.guardsAndHooks.impl.HooksProcessorTest());
-			addTest(new org.robotlegs.v2.extensions.mediatorMap.configs.RL2MediatorsConfigTest());
-			addTest(new org.robotlegs.v2.extensions.mediatorMap.impl.MediatorTest());
-			addTest(new org.robotlegs.v2.extensions.mediatorMap.MediatorMapExtensionTest());
-			addTest(new org.robotlegs.v2.extensions.mediatorMap.MediatorMapTest());
-			addTest(new org.robotlegs.v2.extensions.mediatorMap.MediatorMapV1Test());
-			addTest(new org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.DuckTypedMediatorTrigger_strategiesTest());
-			addTest(new org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.DuckTypedMediatorTriggerTest());
-			addTest(new org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.RL1AndRL2MediatorTrigger_strategiesTest());
-			addTest(new org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.RL1AndRL2MediatorTriggerTest());
-			addTest(new org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.RL1MediatorTriggerTest());
-			addTest(new org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.RL2MediatorTrigger_strategiesTest());
-			addTest(new org.robotlegs.v2.extensions.mediatorMap.utilities.triggers.RL2MediatorTriggerTest());
-			addTest(new org.robotlegs.v2.extensions.viewHookMap.HookMapTest());
-			addTest(new org.robotlegs.v2.extensions.viewHookMap.ViewHookMapTest());
+			addTest(new robotlegs.bender.core.impl.TypeFilterTest());
+			addTest(new robotlegs.bender.core.impl.TypeFilterUsageTest());
+			addTest(new robotlegs.bender.core.impl.TypeMatcherTest());
+			addTest(new robotlegs.bender.core.utilities.RunningInFlexUtilFunctionTest());
+			addTest(new robotlegs.bender.extensions.eventMap.api.IEventMapTest());
+			addTest(new robotlegs.bender.extensions.eventMap.impl.EventMapTest());
+			addTest(new robotlegs.bender.extensions.guardsAndHooks.impl.GuardsProcessorTest());
+			addTest(new robotlegs.bender.extensions.guardsAndHooks.impl.HooksProcessorTest());
+			addTest(new robotlegs.bender.extensions.mediatorMap.configs.RL2MediatorsConfigTest());
+			addTest(new robotlegs.bender.extensions.mediatorMap.impl.MediatorTest());
+			addTest(new robotlegs.bender.extensions.mediatorMap.MediatorMapExtensionTest());
+			addTest(new robotlegs.bender.extensions.mediatorMap.MediatorMapTest());
+			addTest(new robotlegs.bender.extensions.mediatorMap.MediatorMapV1Test());
+			addTest(new robotlegs.bender.extensions.mediatorMap.utilities.triggers.DuckTypedMediatorTrigger_strategiesTest());
+			addTest(new robotlegs.bender.extensions.mediatorMap.utilities.triggers.DuckTypedMediatorTriggerTest());
+			addTest(new robotlegs.bender.extensions.mediatorMap.utilities.triggers.RL1AndRL2MediatorTrigger_strategiesTest());
+			addTest(new robotlegs.bender.extensions.mediatorMap.utilities.triggers.RL1AndRL2MediatorTriggerTest());
+			addTest(new robotlegs.bender.extensions.mediatorMap.utilities.triggers.RL1MediatorTriggerTest());
+			addTest(new robotlegs.bender.extensions.mediatorMap.utilities.triggers.RL2MediatorTrigger_strategiesTest());
+			addTest(new robotlegs.bender.extensions.mediatorMap.utilities.triggers.RL2MediatorTriggerTest());
+			addTest(new robotlegs.bender.extensions.viewHookMap.HookMapTest());
+			addTest(new robotlegs.bender.extensions.viewHookMap.ViewHookMapTest());
 		}
 	}
 }
