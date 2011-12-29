@@ -11,9 +11,9 @@
 
 <componentPackage>
 
-	<component 
+	<component
 		id="ContextBuilder"
-		class="org.robotlegs.v2.flex.mxml.ContextBuilderTag"
+		class="robotlegs.bender.mxml.ContextBuilderTag"
 		/>
 
 </componentPackage>
