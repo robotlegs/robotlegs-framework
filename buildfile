@@ -49,7 +49,7 @@ define "robotlegs-framework", :layout => layout do
     include( _(:src,"*.xml") ).
     path('docs').
        include( _(:target,:doc,:tempdita,'packages.dita*') ).
-       include( _(:target,:doc,:tempdita,'org.*') )
+       include( _(:target,:doc,:tempdita,'robotlegs.*') )
 
 
 end

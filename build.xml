@@ -54,8 +54,8 @@
     <java jar="${FLEX_HOME}/lib/compc.jar" dir="${FLEX_HOME}/frameworks" fork="true" failonerror="true">
 <!-- Build our SWC with a versioned name. -->
       <arg value="-output=${bin.loc}/${project.name.versioned}.swc"/>
-<!-- We want all the org package classes in the SWC being built. -->
-      <arg value="-include-sources+=${main.src.loc}/org"/>
+<!-- We want all the robotlegs package classes in the SWC being built. -->
+      <arg value="-include-sources+=${main.src.loc}/robotlegs"/>
 <!-- Include classes from SWCs in this folder, but only the ones we use. -->
       <arg value="-library-path+=${lib.loc}"/>
 <!-- Keep the magic alive. -->
@@ -140,8 +140,8 @@
     <mkdir dir="${dist.loc}/libs"/>
     <copy file="${bin.loc}/${project.name.versioned}.swc" todir="${dist.loc}/bin"/>
     <copy file="${lib.loc}/${swift.suspenders.name.versioned}.swc" todir="${dist.loc}/libs"/>
-    <copy todir="${dist.loc}/src/org">
-      <fileset dir="${main.src.loc}/org"/>
+    <copy todir="${dist.loc}/src/robotlegs">
+      <fileset dir="${main.src.loc}/robotlegs"/>
     </copy>
     <copy todir="${dist.loc}/docs">
       <fileset dir="${doc.loc}"/>
@@ -151,7 +151,7 @@
     <zip destfile="${dist.loc}/bin/${project.name.versioned}.swc" update="true">
       <zipfileset dir="${doc.loc}/tempdita" prefix="docs">
         <include name="*packages.dita*"/>
-        <include name="*org.*"/>
+        <include name="*robotlegs.*"/>
       </zipfileset>
     </zip>
 <!-- Copy README  -->
