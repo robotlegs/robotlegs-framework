@@ -25,6 +25,7 @@ package robotlegs.bender.extensions.mediatorMap.configs
 
 		public function configure(context:IContext):void
 		{
+			// TODO: remove this. The EventMap is an optional extension (even if required by MediatorMap)
 			context.injector.map(IEventMap).toType(EventMap);
 
 			const mediatorMap:IMediatorMap = context.injector.getInstance(IMediatorMap);
