@@ -1,20 +1,20 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package suites
 {
-	import org.robotlegs.v2.extensions.viewManager.impl.ViewManager_BasicTests;
-	import org.robotlegs.v2.extensions.viewManager.impl.ViewManager_BlockingTests;
-	import org.robotlegs.v2.extensions.viewManager.impl.ViewManager_OptimisationTests;
-	import org.robotlegs.v2.extensions.viewManager.impl.ViewManager_TimingTests;
-	import org.robotlegs.v2.extensions.viewManager.impl.ContainerBindingTest;
-	import org.robotlegs.v2.extensions.viewManager.impl.ContainerRegistryTest;
-	import org.robotlegs.v2.extensions.viewManager.impl.ViewClassInfoTest;
-	import org.robotlegs.v2.extensions.viewManager.api.ViewInterestsTest;
+	import robotlegs.bender.extensions.viewManager.impl.ViewManager_BasicTests;
+	import robotlegs.bender.extensions.viewManager.impl.ViewManager_BlockingTests;
+	import robotlegs.bender.extensions.viewManager.impl.ViewManager_OptimisationTests;
+	import robotlegs.bender.extensions.viewManager.impl.ViewManager_TimingTests;
+	import robotlegs.bender.extensions.viewManager.impl.ContainerBindingTest;
+	import robotlegs.bender.extensions.viewManager.impl.ContainerRegistryTest;
+	import robotlegs.bender.extensions.viewManager.impl.ViewClassInfoTest;
+	import robotlegs.bender.extensions.viewManager.api.ViewInterestsTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
@@ -28,13 +28,13 @@ package suites
 		public var viewManagerOptimisationTests:ViewManager_OptimisationTests;
 
 		public var viewManagerTimingTests:ViewManager_TimingTests;
-		
+
 		public var containerBindingTest:ContainerBindingTest;
-		
+
 		public var containerRegistryTest:ContainerRegistryTest;
-		
+
 		public var viewClassInfoTest:ViewClassInfoTest;
-		
+
 		public var viewInterestsTest:ViewInterestsTest;
 	}
 }

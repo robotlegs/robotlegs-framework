@@ -1,16 +1,16 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package suites
 {
-	import org.robotlegs.v2.extensions.eventCommandMap.impl.EventCommandMapTests;
-	import org.robotlegs.v2.extensions.eventCommandMap.impl.EventCommandTrigger_BasicTests;
-	import org.robotlegs.v2.extensions.eventCommandMap.impl.EventCommandTrigger_GuardTests;
-	import org.robotlegs.v2.extensions.eventCommandMap.impl.EventCommandTrigger_HookTests;
+	import robotlegs.bender.extensions.eventCommandMap.impl.EventCommandMapTests;
+	import robotlegs.bender.extensions.eventCommandMap.impl.EventCommandTrigger_BasicTests;
+	import robotlegs.bender.extensions.eventCommandMap.impl.EventCommandTrigger_GuardTests;
+	import robotlegs.bender.extensions.eventCommandMap.impl.EventCommandTrigger_HookTests;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
