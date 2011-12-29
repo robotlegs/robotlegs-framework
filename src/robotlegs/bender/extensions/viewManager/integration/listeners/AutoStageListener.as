@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.viewManager.integration.listeners
@@ -18,9 +18,18 @@ package robotlegs.bender.extensions.viewManager.integration.listeners
 
 	public class AutoStageListener implements IViewListener
 	{
+
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
+
 		private var _containerRegistry:ContainerRegistry;
 
 		private var _viewProcessor:ViewProcessor;
+
+		/*============================================================================*/
+		/* Constructor                                                                */
+		/*============================================================================*/
 
 		public function AutoStageListener(
 			viewProcessor:ViewProcessor,
@@ -32,11 +41,15 @@ package robotlegs.bender.extensions.viewManager.integration.listeners
 			_containerRegistry.addEventListener(ContainerExistenceEvent.ROOT_CONTAINER_ADD, onRootBindingRegister);
 			_containerRegistry.addEventListener(ContainerExistenceEvent.ROOT_CONTAINER_REMOVE, onRootBindingUnregister);
 			// We might have arrived late on the scene
-			_containerRegistry.rootBindings.forEach(function(binding:ContainerBinding, ... rest):void
+			for each (var binding:ContainerBinding in _containerRegistry.rootBindings)
 			{
 				addContainerListeners(binding.container);
-			}, this);
+			}
 		}
+
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
 
 		public function destroy():void
 		{
@@ -44,10 +57,10 @@ package robotlegs.bender.extensions.viewManager.integration.listeners
 			_containerRegistry.removeEventListener(ContainerExistenceEvent.ROOT_CONTAINER_ADD, onRootBindingRegister);
 			_containerRegistry.removeEventListener(ContainerExistenceEvent.ROOT_CONTAINER_REMOVE, onRootBindingUnregister);
 			// We must say goodbye properly
-			_containerRegistry.rootBindings.forEach(function(binding:ContainerBinding, ... rest):void
+			for each (var binding:ContainerBinding in _containerRegistry.rootBindings)
 			{
 				removeContainerListeners(binding.container);
-			}, this);
+			}
 		}
 
 		public function onViewProcessed(view:DisplayObject):void
@@ -61,6 +74,10 @@ package robotlegs.bender.extensions.viewManager.integration.listeners
 			// Release the target removal listener
 			view.removeEventListener(Event.REMOVED_FROM_STAGE, onViewRemovedFromStage);
 		}
+
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
 
 		private function addContainerListeners(container:DisplayObjectContainer):void
 		{

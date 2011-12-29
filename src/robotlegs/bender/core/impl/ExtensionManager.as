@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.core.impl
@@ -18,6 +18,11 @@ package robotlegs.bender.core.impl
 
 	public class ExtensionManager
 	{
+
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
+
 		private const extensionClasses:Vector.<Class> = new Vector.<Class>;
 
 		private const extensionByClass:Dictionary = new Dictionary();
@@ -36,11 +41,19 @@ package robotlegs.bender.core.impl
 
 		private var completeCallback:Function;
 
+		/*============================================================================*/
+		/* Constructor                                                                */
+		/*============================================================================*/
+
 		public function ExtensionManager(context:IContext)
 		{
 			this.context = context;
 			logger = context.logger;
 		}
+
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
 
 		public function addExtension(extensionClass:Class):void
 		{
@@ -114,16 +127,20 @@ package robotlegs.bender.core.impl
 			return 'ExtensionManager';
 		}
 
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
+
 		private function findPreProcessors():void
 		{
-			extensionClasses.forEach(function(extensionClass:Class, ... rest):void
+			for each (var extensionClass:Class in extensionClasses)
 			{
 				if (classImplements(extensionClass, IContextPreProcessor))
 				{
 					logger.info(this, 'Pre processor extension found: ', [extensionClass]);
 					preProcessorClasses.push(extensionClass);
 				}
-			}, this);
+			}
 		}
 
 		private function classImplements(type:Class, superType:Class):Boolean
@@ -171,22 +188,22 @@ package robotlegs.bender.core.impl
 
 		private function installExtensions():void
 		{
-			extensionClasses.forEach(function(extensionClass:Class, ... rest):void
+			for each (var extensionClass:Class in extensionClasses)
 			{
 				const extension:IContextExtension = extensionByClass[extensionClass] || createExtension(extensionClass);
 				logger.info(this, 'Installing extension:', [extensionClass]);
 				extension.install(context);
-			}, this);
+			}
 		}
 
 		private function initializeExtensions():void
 		{
-			extensionClasses.forEach(function(extensionClass:Class, ... rest):void
+			for each (var extensionClass:Class in extensionClasses)
 			{
 				const extension:IContextExtension = extensionByClass[extensionClass];
 				logger.info(this, 'Initializing extension:', [extensionClass]);
 				extension.initialize();
-			}, this);
+			}
 		}
 
 		private function uninstallExtensions():void

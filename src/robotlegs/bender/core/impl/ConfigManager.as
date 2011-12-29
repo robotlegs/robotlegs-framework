@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.core.impl
@@ -14,6 +14,11 @@ package robotlegs.bender.core.impl
 
 	public class ConfigManager
 	{
+
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
+
 		private const configClasses:Vector.<Class> = new Vector.<Class>;
 
 		private const configByClass:Dictionary = new Dictionary();
@@ -24,10 +29,18 @@ package robotlegs.bender.core.impl
 
 		private var destroyed:Boolean;
 
+		/*============================================================================*/
+		/* Constructor                                                                */
+		/*============================================================================*/
+
 		public function ConfigManager(context:IContext)
 		{
 			this.context = context;
 		}
+
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
 
 		public function addConfig(configClass:Class):void
 		{
@@ -69,14 +82,18 @@ package robotlegs.bender.core.impl
 			destroyConfigs();
 		}
 
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
+
 		private function initializeConfigs():void
 		{
-			configClasses.forEach(function(configClass:Class, ... rest):void
+			for each (var configClass:Class in configClasses)
 			{
 				const config:IContextConfig = context.injector.getInstance(configClass);
 				configByClass[configClass] = config;
 				config.configure(context);
-			}, this);
+			}
 		}
 
 		private function destroyConfigs():void
