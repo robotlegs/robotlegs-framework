@@ -5,20 +5,18 @@
 //  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.guards.support
+package robotlegs.bender.core.impl.support
 {
 
-	public class JustTheMiddleManGuard
+	public class CallbackGuard
 	{
 
-		[Inject]
-		public var bossDecision:BossGuard;
+		[Inject(name="approveCallback")]
+		public var callback:Function;
 
 		public function approve():Boolean
 		{
-			return bossDecision.approve();
+			return callback();
 		}
 	}
-
 }
-

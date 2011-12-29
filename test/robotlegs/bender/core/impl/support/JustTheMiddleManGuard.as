@@ -5,13 +5,20 @@
 //  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.hooks.support
+package robotlegs.bender.core.impl.support
 {
 
-	public class NullHook
+	public class JustTheMiddleManGuard
 	{
-		public function hook():void
+
+		[Inject]
+		public var bossDecision:BossGuard;
+
+		public function approve():Boolean
 		{
+			return bossDecision.approve();
 		}
 	}
+
 }
+

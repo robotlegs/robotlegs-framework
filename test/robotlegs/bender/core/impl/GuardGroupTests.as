@@ -5,19 +5,19 @@
 //  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.guards.impl
+package robotlegs.bender.core.impl
 {
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.instanceOf;
 	import org.hamcrest.object.isFalse;
 	import org.hamcrest.object.isTrue;
-	import robotlegs.bender.extensions.guards.api.IGuardGroup;
-	import robotlegs.bender.extensions.guards.support.BossGuard;
-	import robotlegs.bender.extensions.guards.support.CallbackGuard;
-	import robotlegs.bender.extensions.guards.support.GrumpyGuard;
-	import robotlegs.bender.extensions.guards.support.HappyGuard;
-	import robotlegs.bender.extensions.guards.support.JustTheMiddleManGuard;
+	import robotlegs.bender.core.api.IGuardGroup;
+	import robotlegs.bender.core.impl.support.BossGuard;
+	import robotlegs.bender.core.impl.support.CallbackGuard;
+	import robotlegs.bender.core.impl.support.GrumpyGuard;
+	import robotlegs.bender.core.impl.support.HappyGuard;
+	import robotlegs.bender.core.impl.support.JustTheMiddleManGuard;
 	import org.swiftsuspenders.Injector;
 
 	public class GuardGroupTests

@@ -5,18 +5,17 @@
 //  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.hooks.support
+package robotlegs.bender.core.impl.support
 {
 
-	public class CallbackHook
+	public class HappyGuard
 	{
 
-		[Inject(name="hookCallback")]
-		public var callback:Function;
-
-		public function hook():void
+		public function approve():Boolean
 		{
-			callback();
+			return true;
 		}
 	}
+
 }
+

@@ -8,10 +8,10 @@
 package robotlegs.bender.extensions.commandMap.impl
 {
 	import robotlegs.bender.extensions.commandMap.api.ICommandMapping;
-	import robotlegs.bender.extensions.guards.api.IGuardGroup;
-	import robotlegs.bender.extensions.guards.impl.GuardGroup;
-	import robotlegs.bender.extensions.hooks.api.IHookGroup;
-	import robotlegs.bender.extensions.hooks.impl.HookGroup;
+	import robotlegs.bender.core.api.IGuardGroup;
+	import robotlegs.bender.core.impl.GuardGroup;
+	import robotlegs.bender.core.api.IHookGroup;
+	import robotlegs.bender.core.impl.HookGroup;
 	import org.swiftsuspenders.Injector;
 
 	public class CommandMapping implements ICommandMapping

@@ -5,23 +5,18 @@
 //  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.hooks.support
+package robotlegs.bender.core.impl.support
 {
 
-	public class HookTracker
+	public class CallbackHook
 	{
 
-		public var hooksConfirmed:Vector.<String> = new Vector.<String>();
+		[Inject(name="hookCallback")]
+		public var callback:Function;
 
-		public function HookTracker()
+		public function hook():void
 		{
-
-		}
-
-		public function confirm(hookName:String):void
-		{
-			hooksConfirmed.push(hookName);
+			callback();
 		}
 	}
-
 }

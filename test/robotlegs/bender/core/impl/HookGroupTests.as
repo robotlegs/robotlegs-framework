@@ -5,19 +5,19 @@
 //  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.hooks.impl
+package robotlegs.bender.core.impl
 {
 	import org.flexunit.asserts.assertEqualsVectorsIgnoringOrder;
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.instanceOf;
-	import robotlegs.bender.extensions.hooks.api.IHookGroup;
-	import robotlegs.bender.extensions.hooks.support.CallbackHook;
-	import robotlegs.bender.extensions.hooks.support.HookTracker;
-	import robotlegs.bender.extensions.hooks.support.NonHook;
-	import robotlegs.bender.extensions.hooks.support.NullHook;
-	import robotlegs.bender.extensions.hooks.support.TrackableHook1;
-	import robotlegs.bender.extensions.hooks.support.TrackableHook2;
+	import robotlegs.bender.core.api.IHookGroup;
+	import robotlegs.bender.core.impl.support.CallbackHook;
+	import robotlegs.bender.core.impl.support.HookTracker;
+	import robotlegs.bender.core.impl.support.NonHook;
+	import robotlegs.bender.core.impl.support.NullHook;
+	import robotlegs.bender.core.impl.support.TrackableHook1;
+	import robotlegs.bender.core.impl.support.TrackableHook2;
 	import org.swiftsuspenders.Injector;
 
 	public class HookGroupTests

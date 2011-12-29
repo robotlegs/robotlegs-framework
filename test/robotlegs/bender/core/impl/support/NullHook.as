@@ -5,16 +5,13 @@
 //  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.guards.api
+package robotlegs.bender.core.impl.support
 {
 
-	// TODO: move out of extensions and into core
-	public interface IGuardGroup
+	public class NullHook
 	{
-		function add(... guardClasses):void;
-
-		function remove(... guardClasses):void;
-
-		function approve():Boolean;
+		public function hook():void
+		{
+		}
 	}
 }

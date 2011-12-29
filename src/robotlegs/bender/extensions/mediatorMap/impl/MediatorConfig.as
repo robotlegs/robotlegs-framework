@@ -9,11 +9,11 @@ package robotlegs.bender.extensions.mediatorMap.impl
 {
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorConfig;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
-	import robotlegs.bender.extensions.guards.api.IGuardGroup;
-	import robotlegs.bender.extensions.hooks.api.IHookGroup;
+	import robotlegs.bender.core.api.IGuardGroup;
+	import robotlegs.bender.core.api.IHookGroup;
 	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.extensions.guards.impl.GuardGroup;
-	import robotlegs.bender.extensions.hooks.impl.HookGroup;
+	import robotlegs.bender.core.impl.GuardGroup;
+	import robotlegs.bender.core.impl.HookGroup;
 
 	public class MediatorConfig implements IMediatorConfig
 	{

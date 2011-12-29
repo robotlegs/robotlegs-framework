@@ -5,18 +5,20 @@
 //  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.guards.support
+package robotlegs.bender.core.impl.support
 {
 
-	public class CallbackGuard
+	public class TrackableHook1
 	{
 
-		[Inject(name="approveCallback")]
-		public var callback:Function;
+		[Inject]
+		public var hookTracker:HookTracker;
 
-		public function approve():Boolean
+		public function hook():void
 		{
-			return callback();
+			hookTracker.confirm("TrackableHook1");
 		}
 	}
+
 }
+

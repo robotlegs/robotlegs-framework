@@ -14,8 +14,8 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import robotlegs.bender.extensions.commandMap.support.NullCommand;
 	import robotlegs.bender.extensions.commandMap.support.SelfReportingCallbackGuard;
 	import robotlegs.bender.extensions.eventCommandMap.support.SupportEvent;
-	import robotlegs.bender.extensions.guards.support.GrumpyGuard;
-	import robotlegs.bender.extensions.guards.support.HappyGuard;
+	import robotlegs.bender.core.impl.support.GrumpyGuard;
+	import robotlegs.bender.core.impl.support.HappyGuard;
 
 	public class EventCommandTrigger_GuardTests extends AbstractEventCommandMapTests
 	{

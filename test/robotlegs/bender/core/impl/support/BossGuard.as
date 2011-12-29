@@ -5,18 +5,22 @@
 //  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.hooks.support
+package robotlegs.bender.core.impl.support
 {
 
-	public class TrackableHook2
+	public class BossGuard
 	{
 
-		[Inject]
-		public var hookTracker:HookTracker;
+		protected var _approve:Boolean;
 
-		public function hook():void
+		public function BossGuard(approve:Boolean)
 		{
-			hookTracker.confirm("TrackableHook2");
+			_approve = approve;
+		}
+
+		public function approve():Boolean
+		{
+			return _approve;
 		}
 	}
 

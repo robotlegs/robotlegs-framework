@@ -5,15 +5,15 @@
 //  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.guards.support
+package robotlegs.bender.core.impl.support
 {
 
-	public class HappyGuard
+	public class GrumpyGuard
 	{
 
 		public function approve():Boolean
 		{
-			return true;
+			return false;
 		}
 	}
 

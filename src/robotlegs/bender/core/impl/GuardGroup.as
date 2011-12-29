@@ -1,32 +1,44 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.guards.impl
+package robotlegs.bender.core.impl
 {
 	import flash.utils.Dictionary;
+	import org.swiftsuspenders.Injector;
+	import robotlegs.bender.core.api.IGuardGroup;
 	import robotlegs.bender.core.utilities.classHasMethod;
 	import robotlegs.bender.core.utilities.pushValuesToClassVector;
 	import robotlegs.bender.core.utilities.removeValuesFromClassVector;
-	import robotlegs.bender.extensions.guards.api.IGuardGroup;
-	import org.swiftsuspenders.Injector;
 
-	// TODO: move out of extensions and into core
 	public class GuardGroup implements IGuardGroup
 	{
+
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
+
 		private const _verifiedGuardClasses:Dictionary = new Dictionary();
 
 		private const _guardClasses:Vector.<Class> = new Vector.<Class>;
 
 		private var _injector:Injector;
 
+		/*============================================================================*/
+		/* Constructor                                                                */
+		/*============================================================================*/
+
 		public function GuardGroup(injector:Injector)
 		{
 			_injector = injector;
 		}
+
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
 
 		public function add(... guardClasses):void
 		{
@@ -43,12 +55,16 @@ package robotlegs.bender.extensions.guards.impl
 		{
 			for each (var guardClass:Class in _guardClasses)
 			{
-				var guard:* = _injector.getInstance(guardClass);
+				const guard:* = _injector.getInstance(guardClass);
 				if (!guard.approve())
 					return false;
 			}
 			return true;
 		}
+
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
 
 		private function verifyGuardClasses(guardClasses:Vector.<Class>):void
 		{

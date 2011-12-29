@@ -5,16 +5,20 @@
 //  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.hooks.api
+package robotlegs.bender.core.impl.support
 {
 
-	// TODO: move out of extensions and into core
-	public interface IHookGroup
+	public class TrackableHook2
 	{
-		function add(... hookClasses):void;
 
-		function remove(... hookClasses):void;
+		[Inject]
+		public var hookTracker:HookTracker;
 
-		function hook():void;
+		public function hook():void
+		{
+			hookTracker.confirm("TrackableHook2");
+		}
 	}
+
 }
+

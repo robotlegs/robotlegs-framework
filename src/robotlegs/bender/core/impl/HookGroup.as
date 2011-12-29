@@ -1,32 +1,44 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.hooks.impl
+package robotlegs.bender.core.impl
 {
 	import flash.utils.Dictionary;
+	import org.swiftsuspenders.Injector;
+	import robotlegs.bender.core.api.IHookGroup;
 	import robotlegs.bender.core.utilities.classHasMethod;
 	import robotlegs.bender.core.utilities.pushValuesToClassVector;
 	import robotlegs.bender.core.utilities.removeValuesFromClassVector;
-	import robotlegs.bender.extensions.hooks.api.IHookGroup;
-	import org.swiftsuspenders.Injector;
 
-	// TODO: move out of extensions and into core
 	public class HookGroup implements IHookGroup
 	{
+
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
+
 		private const _verifiedHookClasses:Dictionary = new Dictionary();
 
 		private const _hookClasses:Vector.<Class> = new Vector.<Class>;
 
 		private var _injector:Injector;
 
+		/*============================================================================*/
+		/* Constructor                                                                */
+		/*============================================================================*/
+
 		public function HookGroup(injector:Injector)
 		{
 			_injector = injector;
 		}
+
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
 
 		public function add(... hookClasses):void
 		{
@@ -43,10 +55,14 @@ package robotlegs.bender.extensions.hooks.impl
 		{
 			for each (var hookClass:Class in _hookClasses)
 			{
-				var hook:* = _injector.getInstance(hookClass);
+				const hook:* = _injector.getInstance(hookClass);
 				hook.hook();
 			}
 		}
+
+		/*============================================================================*/
+		/* Protected Functions                                                        */
+		/*============================================================================*/
 
 		protected function verifyHookClasses():void
 		{

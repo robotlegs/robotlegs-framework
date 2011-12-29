@@ -7,8 +7,8 @@
 
 package robotlegs.bender.extensions.commandMap.api
 {
-	import robotlegs.bender.extensions.guards.api.IGuardGroup;
-	import robotlegs.bender.extensions.hooks.api.IHookGroup;
+	import robotlegs.bender.core.api.IGuardGroup;
+	import robotlegs.bender.core.api.IHookGroup;
 
 	public interface ICommandMapping
 	{
