@@ -12,6 +12,7 @@ package robotlegs.bender.mxml
 	import mx.core.IMXMLObject;
 	import robotlegs.bender.core.api.IContextBuilderBundle;
 	import robotlegs.bender.core.api.IContextConfig;
+	import robotlegs.bender.core.api.IContextExtension;
 	import robotlegs.bender.core.impl.ContextBuilder;
 
 	[DefaultProperty("configs")]
@@ -79,6 +80,10 @@ package robotlegs.bender.mxml
 				else if (config is IContextConfig)
 				{
 					withConfig(configClass);
+				}
+				else if (config is IContextExtension)
+				{
+					withExtension(configClass);
 				}
 				else
 				{
