@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.modularity.impl
@@ -17,6 +17,11 @@ package robotlegs.bender.extensions.modularity.impl
 
 	public class ParentContextFinder implements IContextPreProcessor
 	{
+
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
+
 		private var callback:Function;
 
 		private var context:IContext;
@@ -25,9 +30,30 @@ package robotlegs.bender.extensions.modularity.impl
 
 		private var logger:IContextLogger;
 
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
+
 		public function preProcess(context:IContext, callback:Function):void
 		{
-			logger = context.logger;
+			this.context = context;
+			this.callback = callback;
+			this.contextView = context.contextView;
+			this.logger = context.logger;
+			start();
+		}
+
+		public function toString():String
+		{
+			return 'ParentContextFinder';
+		}
+
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
+
+		private function start():void
+		{
 			logger.info(this, 'Looking for parent context.');
 
 			if (context.parent)
@@ -39,14 +65,10 @@ package robotlegs.bender.extensions.modularity.impl
 
 			if (context.contextView == null)
 			{
-				logger.info(this, 'No way to find parent for context (no context view)');
+				logger.info(this, 'No way to find parent for context (no context view).');
 				finish();
 				return;
 			}
-
-			this.context = context;
-			this.callback = callback;
-			this.contextView = context.contextView;
 
 			const parentContext:IContext = findParentContext();
 			if (parentContext)
@@ -58,7 +80,7 @@ package robotlegs.bender.extensions.modularity.impl
 			}
 			if (contextView.stage)
 			{
-				logger.info(this, 'No way to find parent for context. ContextView is on stage, but has not parent context.');
+				logger.info(this, 'No way to find parent for context. ContextView is already on stage, but has no parent context.');
 				finish();
 				return;
 			}
@@ -66,9 +88,20 @@ package robotlegs.bender.extensions.modularity.impl
 			contextView.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
 
-		public function toString():String
+		private function onAddedToStage(event:Event):void
 		{
-			return 'ParentContextFinder';
+			logger.info(this, 'Added to stage event caught, looking for parent context.');
+			contextView.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			const parentContext:IContext = findParentContext();
+			if (parentContext)
+			{
+				logger.info(this, 'Found parent {0}', [parentContext]);
+				context.parent = parentContext;
+				finish();
+				return;
+			}
+			logger.info(this, 'No parent found.');
+			finish();
 		}
 
 		private function findParentContext():IContext
@@ -88,25 +121,9 @@ package robotlegs.bender.extensions.modularity.impl
 			return null;
 		}
 
-		private function onAddedToStage(event:Event):void
-		{
-			logger.info(this, 'Added to stage event caught, looking for parent context.');
-			contextView.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-			const parentContext:IContext = findParentContext();
-			if (parentContext)
-			{
-				logger.info(this, 'Found parent {0}', [parentContext]);
-				context.parent = parentContext;
-				finish();
-				return;
-			}
-			logger.info(this, 'No parent found.');
-			finish();
-		}
-
 		private function finish():void
 		{
-			logger.info(this, 'Finished. Continuing build.');
+			logger.info(this, 'Finished looking. Continuing build.');
 			callback();
 		}
 	}

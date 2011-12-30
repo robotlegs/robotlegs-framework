@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.modularity
@@ -14,7 +14,16 @@ package robotlegs.bender.extensions.modularity
 
 	public class ModularityExtension implements IContextExtension, IContextPreProcessor
 	{
+
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
+
 		private const parentContextFinder:ParentContextFinder = new ParentContextFinder();
+
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
 
 		public function preProcess(context:IContext, callback:Function):void
 		{

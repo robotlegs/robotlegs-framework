@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.bundles.shared.configs
@@ -15,11 +15,19 @@ package robotlegs.bender.bundles.shared.configs
 	public class ContextViewListenerConfig implements IContextConfig
 	{
 
+		/*============================================================================*/
+		/* Public Properties                                                          */
+		/*============================================================================*/
+
 		[Inject]
 		public var contextView:DisplayObjectContainer;
 
 		[Inject]
 		public var viewManager:IViewManager;
+
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
 
 		public function configure(context:IContext):void
 		{
