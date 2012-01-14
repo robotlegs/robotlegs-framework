@@ -1,51 +1,71 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.viewManager
 {
-	import robotlegs.bender.core.api.IContext;
-	import robotlegs.bender.core.api.IContextExtension;
 	import robotlegs.bender.extensions.viewManager.api.IViewListener;
 	import robotlegs.bender.extensions.viewManager.impl.ContainerRegistry;
 	import robotlegs.bender.extensions.viewManager.impl.ViewProcessor;
 	import robotlegs.bender.extensions.viewManager.integration.listeners.AutoStageListener;
+	import robotlegs.bender.framework.context.api.IContext;
+	import robotlegs.bender.framework.context.api.IContextConfig;
+	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
 
-	public class AutoStageListenerExtension implements IContextExtension
+	public class AutoStageListenerExtension implements IContextConfig
 	{
-		private static var installCount:uint;
+
+		/*============================================================================*/
+		/* Private Static Properties                                                  */
+		/*============================================================================*/
 
 		// Really? Yes, there can be only one.
-		private static var viewListener:IViewListener;
+		private static var _viewListener:IViewListener;
 
-		private var context:IContext;
+		private static var _installCount:uint;
 
-		public function install(context:IContext):void
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
+
+		private var _context:IContext;
+
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
+
+		public function configureContext(context:IContext):void
 		{
-			this.context = context;
-			installCount++;
+			_installCount++;
+			_context = context;
+			_context.addStateHandler(ManagedObject.SELF_INITIALIZE, handleContextSelfInitialize);
+			_context.addStateHandler(ManagedObject.SELF_DESTROY, handleContextSelfDestroy);
 		}
 
-		public function initialize():void
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
+
+		private function handleContextSelfInitialize():void
 		{
-			if (viewListener == null)
+			if (_viewListener == null)
 			{
-				const containerRegistry:ContainerRegistry = context.injector.getInstance(ContainerRegistry);
-				const viewProcessor:ViewProcessor = context.injector.getInstance(ViewProcessor);
-				viewListener = new AutoStageListener(viewProcessor, containerRegistry);
+				const containerRegistry:ContainerRegistry = _context.injector.getInstance(ContainerRegistry);
+				const viewProcessor:ViewProcessor = _context.injector.getInstance(ViewProcessor);
+				_viewListener = new AutoStageListener(viewProcessor, containerRegistry);
 			}
 		}
 
-		public function uninstall():void
+		private function handleContextSelfDestroy():void
 		{
-			installCount--;
-			if (installCount == 0)
+			_installCount--;
+			if (_installCount == 0)
 			{
-				viewListener.destroy();
-				viewListener = null;
+				_viewListener.destroy();
+				_viewListener = null;
 			}
 		}
 	}

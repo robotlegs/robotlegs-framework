@@ -10,13 +10,11 @@ package robotlegs.bender.mxml
 	import flash.display.DisplayObjectContainer;
 	import flash.utils.setTimeout;
 	import mx.core.IMXMLObject;
-	import robotlegs.bender.core.api.IContextBuilderBundle;
-	import robotlegs.bender.core.api.IContextConfig;
-	import robotlegs.bender.core.api.IContextExtension;
-	import robotlegs.bender.core.impl.ContextBuilder;
+	import robotlegs.bender.framework.context.api.IContext;
+	import robotlegs.bender.framework.context.impl.Context;
 
 	[DefaultProperty("configs")]
-	public class ContextBuilderTag extends ContextBuilder implements IMXMLObject
+	public class ContextBuilderTag implements IMXMLObject
 	{
 
 		/*============================================================================*/
@@ -46,7 +44,7 @@ package robotlegs.bender.mxml
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var _documentView:DisplayObjectContainer;
+		private const _context:IContext = new Context();
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
@@ -54,7 +52,7 @@ package robotlegs.bender.mxml
 
 		public function initialized(document:Object, id:String):void
 		{
-			_documentView = document as DisplayObjectContainer;
+			_contextView = document as DisplayObjectContainer;
 			// if the contextView is bound it will only be set a frame later
 			setTimeout(configureBuilder, 1);
 		}
@@ -65,35 +63,15 @@ package robotlegs.bender.mxml
 
 		private function configureBuilder():void
 		{
-			if (!context.contextView)
+			for each (var config:Object in _configs)
 			{
-				withContextView(_contextView || _documentView);
+				_context.require(config);
 			}
 
-			for each (var config:Object in configs)
-			{
-				const configClass:Class = config['constructor'] as Class;
-				if (config is IContextBuilderBundle)
-				{
-					withBundle(configClass);
-				}
-				else if (config is IContextConfig)
-				{
-					withConfig(configClass);
-				}
-				else if (config is IContextExtension)
-				{
-					withExtension(configClass);
-				}
-				else
-				{
-					throw new Error("Unrecognised builder option.");
-				}
-			}
+			if (_contextView)
+				_context.require(_contextView);
 
-			configs.length = 0;
-
-			build();
+			_configs.length = 0;
 		}
 	}
 }

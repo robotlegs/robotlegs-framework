@@ -7,7 +7,7 @@
 
 package suites
 {
-	import robotlegs.bender.core.impl.HookGroupTests;
+	import robotlegs.bender.framework.hook.impl.HookGroupTests;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]

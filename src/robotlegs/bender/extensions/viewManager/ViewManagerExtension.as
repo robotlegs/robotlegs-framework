@@ -1,58 +1,79 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.viewManager
 {
-	import robotlegs.bender.core.api.IContext;
-	import robotlegs.bender.core.api.IContextExtension;
 	import robotlegs.bender.extensions.viewManager.api.IViewManager;
 	import robotlegs.bender.extensions.viewManager.impl.ContainerRegistry;
 	import robotlegs.bender.extensions.viewManager.impl.ViewManager;
 	import robotlegs.bender.extensions.viewManager.impl.ViewProcessor;
+	import robotlegs.bender.framework.context.api.IContext;
+	import robotlegs.bender.framework.context.api.IContextConfig;
+	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
 
-	public class ViewManagerExtension implements IContextExtension
+	public class ViewManagerExtension implements IContextConfig
 	{
-		// Really? Yes, there can be only one.
-		private static var containerRegistry:ContainerRegistry;
+
+		/*============================================================================*/
+		/* Private Static Properties                                                  */
+		/*============================================================================*/
 
 		// Really? Yes, there can be only one.
-		private static var viewProcessor:ViewProcessor;
+		private static var _containerRegistry:ContainerRegistry;
 
-		private var context:IContext;
+		// Really? Yes, there can be only one.
+		private static var _viewProcessor:ViewProcessor;
 
-		private var viewManager:IViewManager;
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
 
-		public function install(context:IContext):void
+		private var _context:IContext;
+
+		private var _viewManager:IViewManager;
+
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
+
+		public function configureContext(context:IContext):void
 		{
-			this.context = context;
+			_context = context;
 
 			// Just one Container Registry
-			containerRegistry ||= new ContainerRegistry();
-			context.injector.map(ContainerRegistry).toValue(containerRegistry);
+			_containerRegistry ||= new ContainerRegistry();
+			_context.injector.map(ContainerRegistry).toValue(_containerRegistry);
 
 			// And just one View Processor
-			viewProcessor ||= new ViewProcessor(containerRegistry);
-			context.injector.map(ViewProcessor).toValue(viewProcessor);
+			_viewProcessor ||= new ViewProcessor(_containerRegistry);
+			_context.injector.map(ViewProcessor).toValue(_viewProcessor);
 
 			// But you get your own View Manager
-			context.injector.map(IViewManager).toSingleton(ViewManager);
+			_context.injector.map(IViewManager).toSingleton(ViewManager);
+
+			_context.addStateHandler(ManagedObject.SELF_INITIALIZE, handleContextSelfInitialize);
+			_context.addStateHandler(ManagedObject.SELF_DESTROY, handleContextSelfDestroy);
 		}
 
-		public function initialize():void
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
+
+		private function handleContextSelfInitialize():void
 		{
-			viewManager = context.injector.getInstance(IViewManager);
+			_viewManager = _context.injector.getInstance(IViewManager);
 		}
 
-		public function uninstall():void
+		private function handleContextSelfDestroy():void
 		{
-			viewManager.destroy();
-			context.injector.unmap(IViewManager);
-			context.injector.unmap(ViewProcessor);
-			context.injector.unmap(ContainerRegistry);
+			_viewManager.destroy();
+			_context.injector.unmap(IViewManager);
+			_context.injector.unmap(ViewProcessor);
+			_context.injector.unmap(ContainerRegistry);
 		}
 	}
 }

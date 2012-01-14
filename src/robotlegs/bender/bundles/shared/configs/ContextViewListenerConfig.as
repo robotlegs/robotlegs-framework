@@ -8,11 +8,9 @@
 package robotlegs.bender.bundles.shared.configs
 {
 	import flash.display.DisplayObjectContainer;
-	import robotlegs.bender.core.api.IContext;
-	import robotlegs.bender.core.api.IContextConfig;
 	import robotlegs.bender.extensions.viewManager.api.IViewManager;
 
-	public class ContextViewListenerConfig implements IContextConfig
+	public class ContextViewListenerConfig
 	{
 
 		/*============================================================================*/
@@ -29,22 +27,10 @@ package robotlegs.bender.bundles.shared.configs
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function configure(context:IContext):void
+		[PostConstruct]
+		public function init():void
 		{
-			if (contextView)
-			{
-				context.logger.info(this, 'Adding contextView to viewManager. Note: avoid this where performance is critical.');
-				viewManager.addContainer(contextView);
-			}
-			else
-			{
-				context.logger.warn(this, 'ContextViewListenerConfig was installed, but the contextView is null. Consider removing this config.');
-			}
-		}
-
-		public function toString():String
-		{
-			return 'ContextViewListenerConfig';
+			viewManager.addContainer(contextView);
 		}
 	}
 }

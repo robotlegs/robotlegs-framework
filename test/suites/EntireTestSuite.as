@@ -13,38 +13,20 @@ package suites
 	public class EntireTestSuite
 	{
 
+		/*============================================================================*/
+		/* Public Properties                                                          */
+		/*============================================================================*/
+
 		public var commandMapTestSuite:CommandMapTestSuite;
 
 		public var eventCommandMapTestSuite:EventCommandMapTestSuite;
-
-		public var contextBuilderTestSuite:ContextBuilderTestSuite;
-
-		public var contextTestSuite:ContextTestSuite;
-
-		public var typeMatchingTestSuite:TypeMatchingTestSuite;
-
-		public var utilityPackageTestSuite:UtilityPackageFunctionsSuite;
-
-		public var mediatorMapTestSuite:MediatorMapTestSuite;
-
-		public var viewMapTestSuite:ViewMapTestSuite;
 
 		public var viewManagerTestSuite:ViewManagerTestSuite;
 
 		public var eventMapTestSuite:EventMapTestSuite;
 
-		public var commandFlowTestSuite:CommandFlowTestSuite;
-
 		public var guardsTestSuite:GuardsTestSuite;
 
 		public var hooksTestSuite:HooksTestSuite;
-
-		public var loggingTestSuite:LoggingTestSuite;
-
-		public var viewInjectionMapTestSuite:ViewInjectionMapTestSuite;
-
-		public var extensionManagerSuite:ExtensionManagerTestSuite;
-		
-		public var configManagerSuite:ConfigManagerTestSuite;
 	}
 }

@@ -1,14 +1,14 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.commandMap.api
 {
-	import robotlegs.bender.core.api.IGuardGroup;
-	import robotlegs.bender.core.api.IHookGroup;
+	import robotlegs.bender.framework.guard.api.IGuardGroup;
+	import robotlegs.bender.framework.hook.api.IHookGroup;
 
 	public interface ICommandMapping
 	{

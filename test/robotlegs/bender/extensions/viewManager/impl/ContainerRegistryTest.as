@@ -16,7 +16,7 @@ package robotlegs.bender.extensions.viewManager.impl
 	import robotlegs.bender.extensions.viewManager.impl.support.ViewHandlerSupport;
 	import org.flexunit.asserts.assertEqualsVectorsIgnoringOrder;
 	import ArgumentError;
-	import robotlegs.bender.core.impl.support.TreeSpriteSupport;
+	import robotlegs.bender.support.TreeSpriteSupport;
 
 	public class ContainerRegistryTest
 	{
