@@ -40,11 +40,12 @@ package robotlegs.bender.mxml
 			_contextView = value;
 		}
 
-		/*============================================================================*/
-		/* Private Properties                                                         */
-		/*============================================================================*/
-
 		private const _context:IContext = new Context();
+
+		public function get context():IContext
+		{
+			return _context;
+		}
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
