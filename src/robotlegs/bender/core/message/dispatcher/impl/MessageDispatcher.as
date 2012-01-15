@@ -79,7 +79,18 @@ package robotlegs.bender.core.message.dispatcher.impl
 		 */
 		public function dispatchMessage(message:Object, callback:Function = null, reverse:Boolean = false):void
 		{
-			dispatchScopedMessage(message, message, callback, reverse);
+			// note: code duplication to avoid increasing the stack depth unnecessarily
+			if (_handlers[message])
+			{
+				// note: list is cloned and reversed because elements are popped
+				const handlers:Array = _handlers[message].concat();
+				reverse || handlers.reverse();
+				next(message, handlers, callback);
+			}
+			else
+			{
+				callback && safelyCallBack(callback);
+			}
 		}
 
 		/**
@@ -87,15 +98,13 @@ package robotlegs.bender.core.message.dispatcher.impl
 		 */
 		public function dispatchScopedMessage(scope:Object, message:Object, callback:Function = null, reverse:Boolean = false):void
 		{
-			if (hasMessageHandler(scope))
+			// note: code duplication to avoid increasing the stack depth unnecessarily
+			if (_handlers[scope])
 			{
-				// handler list is frozen at dispatch time
-				// todo: explore options for mid dispatch list mutation and composed sequencing
-				// note: list is cloned because elements are popped
+				// note: list is cloned and reversed because elements are popped
 				const handlers:Array = _handlers[scope].concat();
-				// note: order is flipped because elements are popped
 				reverse || handlers.reverse();
-				runHandler(message, handlers, callback);
+				next(message, handlers, callback);
 			}
 			else
 			{
@@ -116,7 +125,7 @@ package robotlegs.bender.core.message.dispatcher.impl
 		 * @param handlers The list of handlers that need to be called
 		 * @param callback The eventual callback
 		 */
-		private function runHandler(message:Object, handlers:Array, callback:Function):void
+		private function next(message:Object, handlers:Array, callback:Function):void
 		{
 			// Try to keep things synchronous with a simple loop,
 			// forcefully breaking out for async handlers and recursing.
@@ -124,15 +133,15 @@ package robotlegs.bender.core.message.dispatcher.impl
 			var handler:Function;
 			while (handler = handlers.pop())
 			{
-				if (handler.length == 0) // sync handler ()
+				if (handler.length == 0) // sync handler: ()
 				{
 					handler();
 				}
-				else if (handler.length == 1) // sync handler (message)
+				else if (handler.length == 1) // sync handler: (message)
 				{
 					handler(message);
 				}
-				else if (handler.length == 2) // sync or async handler (message, callback)
+				else if (handler.length == 2) // sync or async handler: (message, callback)
 				{
 					var handled:Boolean;
 					handler(message, function(error:Object = null, msg:Object = null):void
@@ -149,7 +158,7 @@ package robotlegs.bender.core.message.dispatcher.impl
 						}
 						else
 						{
-							runHandler(message, handlers, callback);
+							next(message, handlers, callback);
 						}
 					});
 					// IMPORTANT: MUST break this loop with a RETURN. See above.
