@@ -101,7 +101,7 @@ end
 def flexsdk
   @flexsdk ||= begin
     # should be using the flex sdk version from user.properties (if it exists) or environment
-    flexsdk = FlexSDK.new("4.1.0.16076")
+    flexsdk = FlexSDK.new("4.5.1.21328")
     flexsdk.default_options << "-keep-as3-metadata+=Inject" << "-keep-as3-metadata+=PostConstruct"
     flexsdk
   end

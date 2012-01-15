@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Application 
 	xmlns:s="library://ns.adobe.com/flex/spark"
-	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:fx="http://ns.adobe.com/mxml/2009"
 	width="200"
 	height="200"
 	creationComplete="onCreationComplete()"
 	backgroundColor="#000000"
 	>
 
-	<mx:Script>
+	<fx:Script>
 		<![CDATA[
 			import org.flexunit.internals.TraceListener;
 			import org.flexunit.listeners.CIListener;
@@ -30,9 +30,9 @@
 				core.run(EntireTestSuite);
 			}
 		]]>
-	</mx:Script>
+	</fx:Script>
 
-	<s:Image 
+	<s:BitmapImage 
 		source="{Logo}"
 		horizontalCenter="0"
 		verticalCenter="0"
