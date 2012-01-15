@@ -12,6 +12,6 @@ package robotlegs.bender.core.object.processor.api
 	public interface IObjectHandler
 	{
 		function get matcher():Matcher;
-		function get handler():Function;
+		function get closure():Function;
 	}
 }

@@ -24,21 +24,21 @@ package robotlegs.bender.core.object.processor.impl
 			return _matcher;
 		}
 
-		private var _handler:Function;
+		private var _closure:Function;
 
-		public function get handler():Function
+		public function get closure():Function
 		{
-			return _handler;
+			return _closure;
 		}
 
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function ObjectHandler(matcher:Matcher, handler:Function)
+		public function ObjectHandler(matcher:Matcher, closure:Function)
 		{
 			_matcher = matcher;
-			_handler = handler;
+			_closure = closure;
 		}
 	}
 }

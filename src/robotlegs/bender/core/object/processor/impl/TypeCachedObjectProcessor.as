@@ -58,7 +58,7 @@ package robotlegs.bender.core.object.processor.impl
 				matchingBindings = _knownBindings[type];
 				for each (var binding:ObjectHandler in matchingBindings)
 				{
-					_messageDispatcher.addMessageHandler(object, binding.handler);
+					_messageDispatcher.addMessageHandler(object, binding.closure);
 				}
 			}
 
@@ -68,7 +68,7 @@ package robotlegs.bender.core.object.processor.impl
 				// and we don't want to leave any handlers lying around
 				for each (var matchingBinding:ObjectHandler in matchingBindings)
 				{
-					_messageDispatcher.removeMessageHandler(object, matchingBinding.handler);
+					_messageDispatcher.removeMessageHandler(object, matchingBinding.closure);
 				}
 				callback && safelyCallBack(callback, error, object);
 			});

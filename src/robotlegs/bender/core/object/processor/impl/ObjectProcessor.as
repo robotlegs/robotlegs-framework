@@ -45,14 +45,14 @@ package robotlegs.bender.core.object.processor.impl
 
 		public function addObject(object:Object, callback:Function = null):void
 		{
-			const matchingBindings:Array = [];
+			const matchingHandlers:Array = [];
 
-			for each (var binding:ObjectHandler in _handlers)
+			for each (var handler:ObjectHandler in _handlers)
 			{
-				if (binding.matcher.matches(object))
+				if (handler.matcher.matches(object))
 				{
-					matchingBindings.push(binding);
-					_messageDispatcher.addMessageHandler(object, binding.handler);
+					matchingHandlers.push(handler);
+					_messageDispatcher.addMessageHandler(object, handler.closure);
 				}
 			}
 
@@ -60,9 +60,9 @@ package robotlegs.bender.core.object.processor.impl
 				// even with oneShot handlers we would have to clean up here as
 				// a handler may have terminated the dispatch with an error
 				// and we don't want to leave any handlers lying around
-				for each (var matchingBinding:ObjectHandler in matchingBindings)
+				for each (var matchingHandler:ObjectHandler in matchingHandlers)
 				{
-					_messageDispatcher.removeMessageHandler(object, matchingBinding.handler);
+					_messageDispatcher.removeMessageHandler(object, matchingHandler.closure);
 				}
 				callback && safelyCallBack(callback, error, object);
 			});
@@ -70,9 +70,9 @@ package robotlegs.bender.core.object.processor.impl
 
 		public function matches(object:Object):Boolean
 		{
-			for each (var binding:ObjectHandler in _handlers)
+			for each (var handler:ObjectHandler in _handlers)
 			{
-				if (binding.matcher.matches(object))
+				if (handler.matcher.matches(object))
 				{
 					return true;
 				}
