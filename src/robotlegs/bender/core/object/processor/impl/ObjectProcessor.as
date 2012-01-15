@@ -21,7 +21,7 @@ package robotlegs.bender.core.object.processor.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private const _bindings:Array = [];
+		private const _handlers:Array = [];
 
 		private var _messageDispatcher:IMessageDispatcher;
 
@@ -40,14 +40,14 @@ package robotlegs.bender.core.object.processor.impl
 
 		public function addObjectHandler(matcher:Matcher, handler:Function):void
 		{
-			_bindings.push(new ObjectHandlerBinding(matcher, handler));
+			_handlers.push(new ObjectHandler(matcher, handler));
 		}
 
 		public function addObject(object:Object, callback:Function = null):void
 		{
 			const matchingBindings:Array = [];
 
-			for each (var binding:ObjectHandlerBinding in _bindings)
+			for each (var binding:ObjectHandler in _handlers)
 			{
 				if (binding.matcher.matches(object))
 				{
@@ -60,7 +60,7 @@ package robotlegs.bender.core.object.processor.impl
 				// even with oneShot handlers we would have to clean up here as
 				// a handler may have terminated the dispatch with an error
 				// and we don't want to leave any handlers lying around
-				for each (var matchingBinding:ObjectHandlerBinding in matchingBindings)
+				for each (var matchingBinding:ObjectHandler in matchingBindings)
 				{
 					_messageDispatcher.removeMessageHandler(object, matchingBinding.handler);
 				}
@@ -70,7 +70,7 @@ package robotlegs.bender.core.object.processor.impl
 
 		public function matches(object:Object):Boolean
 		{
-			for each (var binding:ObjectHandlerBinding in _bindings)
+			for each (var binding:ObjectHandler in _handlers)
 			{
 				if (binding.matcher.matches(object))
 				{

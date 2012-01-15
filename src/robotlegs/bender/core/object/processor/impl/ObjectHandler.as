@@ -8,8 +8,9 @@
 package robotlegs.bender.core.object.processor.impl
 {
 	import org.hamcrest.Matcher;
+	import robotlegs.bender.core.object.processor.api.IObjectHandler;
 
-	public class ObjectHandlerBinding
+	public class ObjectHandler implements IObjectHandler
 	{
 
 		/*============================================================================*/
@@ -34,7 +35,7 @@ package robotlegs.bender.core.object.processor.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function ObjectHandlerBinding(matcher:Matcher, handler:Function)
+		public function ObjectHandler(matcher:Matcher, handler:Function)
 		{
 			_matcher = matcher;
 			_handler = handler;

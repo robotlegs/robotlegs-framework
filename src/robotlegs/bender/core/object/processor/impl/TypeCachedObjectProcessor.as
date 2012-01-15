@@ -43,7 +43,7 @@ package robotlegs.bender.core.object.processor.impl
 
 		public function addObjectHandler(matcher:Matcher, handler:Function):void
 		{
-			_bindings.push(new ObjectHandlerBinding(matcher, handler));
+			_bindings.push(new ObjectHandler(matcher, handler));
 			flushCache();
 		}
 
@@ -56,7 +56,7 @@ package robotlegs.bender.core.object.processor.impl
 			{
 				const type:Class = object["constructor"];
 				matchingBindings = _knownBindings[type];
-				for each (var binding:ObjectHandlerBinding in matchingBindings)
+				for each (var binding:ObjectHandler in matchingBindings)
 				{
 					_messageDispatcher.addMessageHandler(object, binding.handler);
 				}
@@ -66,7 +66,7 @@ package robotlegs.bender.core.object.processor.impl
 				// even with oneShot handlers we would have to clean up here as
 				// a handler may have terminated the dispatch with an error
 				// and we don't want to leave any handlers lying around
-				for each (var matchingBinding:ObjectHandlerBinding in matchingBindings)
+				for each (var matchingBinding:ObjectHandler in matchingBindings)
 				{
 					_messageDispatcher.removeMessageHandler(object, matchingBinding.handler);
 				}
@@ -88,7 +88,7 @@ package robotlegs.bender.core.object.processor.impl
 
 			// ok, we obviously haven't seen it before
 			_knownBindings[type] = false;
-			for each (var binding:ObjectHandlerBinding in _bindings)
+			for each (var binding:ObjectHandler in _bindings)
 			{
 				if (binding.matcher.matches(item))
 				{
