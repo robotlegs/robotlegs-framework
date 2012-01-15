@@ -28,7 +28,8 @@ define "robotlegs-framework", :layout => layout do
   compile.using( :compc, :flexsdk => flexsdk, :args => args ).
     with( _(:lib,"as3commons-logging-2.7.swc"),
           _(:lib,"Swiftsuspenders-v2.0.0b3.swc"),
-          _(:lib,"robotlegs-framework-v1.5.2.swc") )
+          _(:lib,"robotlegs-framework-v1.5.2.swc"),
+          _(:lib,"hamcrest-as3-flex-1.1.3.swc") )
 
   testrunner = _(:source, :test, :as3, "RobotlegsTest.mxml")
   test.using(:flexunit4 => true, :headless => false, :version => "4.1.0-8")
