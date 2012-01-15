@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application 
+<s:Application 
+	xmlns:s="library://ns.adobe.com/flex/spark"
 	xmlns:mx="http://www.adobe.com/2006/mxml"
 	width="200"
 	height="200"
-	horizontalScrollPolicy="off"
-	verticalScrollPolicy="off"
 	creationComplete="onCreationComplete()"
 	backgroundColor="#000000"
 	>
@@ -33,10 +32,10 @@
 		]]>
 	</mx:Script>
 
-	<mx:Image 
+	<s:Image 
 		source="{Logo}"
 		horizontalCenter="0"
 		verticalCenter="0"
 		/>
 
-</mx:Application>
+</s:Application>

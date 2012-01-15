@@ -17,7 +17,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import robotlegs.bender.framework.guard.support.GrumpyGuard;
 	import robotlegs.bender.framework.guard.support.HappyGuard;
 
-	public class EventCommandTrigger_GuardTests extends AbstractEventCommandMapTests
+	public class EventCommandTrigger_GuardTest extends AbstractEventCommandMapTest
 	{
 
 		[Test]

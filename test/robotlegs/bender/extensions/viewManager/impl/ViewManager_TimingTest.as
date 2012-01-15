@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.viewManager.impl
@@ -19,8 +19,13 @@ package robotlegs.bender.extensions.viewManager.impl
 	import robotlegs.bender.extensions.viewManager.impl.support.ViewHandlerSupport;
 	import robotlegs.bender.extensions.viewManager.integration.listeners.AutoStageListener;
 
-	public class ViewManager_TimingTests
+	public class ViewManager_TimingTest
 	{
+
+		/*============================================================================*/
+		/* Protected Properties                                                       */
+		/*============================================================================*/
+
 		protected var container:DisplayObjectContainer;
 
 		protected var containerRegistry:ContainerRegistry;
@@ -28,6 +33,10 @@ package robotlegs.bender.extensions.viewManager.impl
 		protected var group:UIComponent;
 
 		protected var viewProcessor:ViewProcessor;
+
+		/*============================================================================*/
+		/* Test Setup and Teardown                                                    */
+		/*============================================================================*/
 
 		[Before(ui)]
 		public function setUp():void
@@ -37,14 +46,18 @@ package robotlegs.bender.extensions.viewManager.impl
 			containerRegistry = new ContainerRegistry();
 			viewProcessor = new ViewProcessor(containerRegistry);
 			group.addChild(container)
-			UIImpersonator.addChild(group);
+			UIImpersonator.addElement(group);
 		}
 
 		[After]
 		public function tearDown():void
 		{
-			UIImpersonator.removeAllChildren();
+			UIImpersonator.removeAllElements();
 		}
+
+		/*============================================================================*/
+		/* Tests                                                                      */
+		/*============================================================================*/
 
 		[Test]
 		public function watcher_added_after_container_should_still_respond():void

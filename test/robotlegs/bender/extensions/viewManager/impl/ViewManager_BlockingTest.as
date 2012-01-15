@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.viewManager.impl
@@ -21,8 +21,12 @@ package robotlegs.bender.extensions.viewManager.impl
 	import robotlegs.bender.extensions.viewManager.impl.support.ViewHandlerSupport;
 	import robotlegs.bender.extensions.viewManager.integration.listeners.AutoStageListener;
 
-	public class ViewManager_BlockingTests
+	public class ViewManager_BlockingTest
 	{
+
+		/*============================================================================*/
+		/* Protected Properties                                                       */
+		/*============================================================================*/
 
 		protected var container:DisplayObjectContainer;
 
@@ -34,6 +38,10 @@ package robotlegs.bender.extensions.viewManager.impl
 
 		protected var viewProcessor:ViewProcessor;
 
+		/*============================================================================*/
+		/* Test Setup and Teardown                                                    */
+		/*============================================================================*/
+
 		[Before(ui)]
 		public function setUp():void
 		{
@@ -44,15 +52,19 @@ package robotlegs.bender.extensions.viewManager.impl
 			viewListener = new AutoStageListener(viewProcessor, containerRegistry);
 
 			group.addChild(container)
-			UIImpersonator.addChild(group);
+			UIImpersonator.addElement(group);
 		}
 
 		[After]
 		public function tearDown():void
 		{
 			viewListener.destroy();
-			UIImpersonator.removeAllChildren();
+			UIImpersonator.removeAllElements();
 		}
+
+		/*============================================================================*/
+		/* Tests                                                                      */
+		/*============================================================================*/
 
 		[Test]
 		public function bitmasking_should_work_as_expected():void
@@ -106,6 +118,10 @@ package robotlegs.bender.extensions.viewManager.impl
 			assertThat(secondHandlerAddedCalled, isTrue());
 		}
 
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
+
 		private function add_handlers_and_add_and_remove_view_and_return_results(handlerConfigs:Array):Array
 		{
 			const view:Sprite = new Sprite();
@@ -145,11 +161,19 @@ package robotlegs.bender.extensions.viewManager.impl
 class HandlerConfig
 {
 
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
 	public var blocking:Boolean;
 
 	public var interests:uint;
 
 	public var interestsToHandle:uint;
+
+	/*============================================================================*/
+	/* Constructor                                                                */
+	/*============================================================================*/
 
 	public function HandlerConfig(interests:uint, interestsToHandle:uint, blocking:Boolean)
 	{
@@ -161,6 +185,10 @@ class HandlerConfig
 
 class HandlerResult
 {
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
 
 	public var addedCallCount:uint;
 

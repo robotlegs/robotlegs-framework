@@ -19,7 +19,7 @@ package robotlegs.bender.extensions.commandMap.impl
 	import robotlegs.bender.extensions.commandMap.support.NullCommandTrigger;
 	import org.swiftsuspenders.Injector;
 
-	public class CommandMapTests
+	public class CommandMapTest
 	{
 
 		protected var commandMap:ICommandMap;

@@ -11,7 +11,7 @@ package robotlegs.bender.framework.config.manager.impl
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.instanceOf;
 	import robotlegs.bender.framework.config.manager.api.IConfigManager;
-	import robotlegs.bender.framework.config.manager.impl.support.CallbackContextConfig;
+	import robotlegs.bender.framework.config.manager.support.CallbackContextConfig;
 	import robotlegs.bender.framework.context.api.IContext;
 	import robotlegs.bender.framework.context.api.IContextConfig;
 	import robotlegs.bender.framework.context.impl.Context;

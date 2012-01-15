@@ -17,7 +17,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import robotlegs.bender.extensions.commandMap.support.SelfReportingCallbackCommand2;
 	import robotlegs.bender.extensions.eventCommandMap.support.SupportEvent;
 
-	public class EventCommandTrigger_BasicTests extends AbstractEventCommandMapTests
+	public class EventCommandTrigger_BasicTest extends AbstractEventCommandMapTest
 	{
 
 		/*============================================================================*/

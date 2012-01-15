@@ -20,7 +20,7 @@ package robotlegs.bender.framework.guard.impl
 	import robotlegs.bender.framework.guard.support.JustTheMiddleManGuard;
 	import robotlegs.bender.framework.guard.api.IGuardGroup;
 
-	public class GuardGroupTests
+	public class GuardGroupTest
 	{
 
 		/*============================================================================*/

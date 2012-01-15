@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.viewManager.impl
@@ -21,8 +21,12 @@ package robotlegs.bender.extensions.viewManager.impl
 	import robotlegs.bender.extensions.viewManager.impl.support.ViewHandlerSupport;
 	import robotlegs.bender.extensions.viewManager.integration.listeners.AutoStageListener;
 
-	public class ViewManager_BasicTests
+	public class ViewManager_BasicTest
 	{
+
+		/*============================================================================*/
+		/* Protected Properties                                                       */
+		/*============================================================================*/
 
 		protected var container:DisplayObjectContainer;
 
@@ -34,6 +38,10 @@ package robotlegs.bender.extensions.viewManager.impl
 
 		protected var viewProcessor:ViewProcessor;
 
+		/*============================================================================*/
+		/* Test Setup and Teardown                                                    */
+		/*============================================================================*/
+
 		[Before(ui)]
 		public function setUp():void
 		{
@@ -44,15 +52,19 @@ package robotlegs.bender.extensions.viewManager.impl
 			viewListener = new AutoStageListener(viewProcessor, containerRegistry);
 
 			group.addChild(container)
-			UIImpersonator.addChild(group);
+			UIImpersonator.addElement(group);
 		}
 
 		[After]
 		public function tearDown():void
 		{
 			viewListener.destroy();
-			UIImpersonator.removeAllChildren();
+			UIImpersonator.removeAllElements();
 		}
+
+		/*============================================================================*/
+		/* Tests                                                                      */
+		/*============================================================================*/
 
 		[Test]
 		public function addHandler_should_run_when_view_lands_in_container():void
@@ -102,6 +114,10 @@ package robotlegs.bender.extensions.viewManager.impl
 			assertThat(removedHandlerRan, isTrue());
 		}
 
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
+
 		private function add_and_remove_view_and_return_result(interests:uint,
 			interestsToActuallyHandle:uint = 0,
 			blocking:Boolean = false):HandlerResult
@@ -131,6 +147,10 @@ package robotlegs.bender.extensions.viewManager.impl
 
 class HandlerResult
 {
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
 
 	public var addedCallCount:uint;
 

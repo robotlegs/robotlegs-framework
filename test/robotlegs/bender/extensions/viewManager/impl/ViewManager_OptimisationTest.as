@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.viewManager.impl
@@ -19,8 +19,12 @@ package robotlegs.bender.extensions.viewManager.impl
 	import robotlegs.bender.extensions.viewManager.impl.support.ViewHandlerSupport;
 	import robotlegs.bender.extensions.viewManager.integration.listeners.AutoStageListener;
 
-	public class ViewManager_OptimisationTests
+	public class ViewManager_OptimisationTest
 	{
+
+		/*============================================================================*/
+		/* Protected Properties                                                       */
+		/*============================================================================*/
 
 		protected var container:DisplayObjectContainer;
 
@@ -32,6 +36,10 @@ package robotlegs.bender.extensions.viewManager.impl
 
 		protected var viewWatcher:IViewListener;
 
+		/*============================================================================*/
+		/* Test Setup and Teardown                                                    */
+		/*============================================================================*/
+
 		[Before(ui)]
 		public function setUp():void
 		{
@@ -42,15 +50,19 @@ package robotlegs.bender.extensions.viewManager.impl
 			viewWatcher = new AutoStageListener(viewProcessor, containerRegistry);
 
 			group.addChild(container)
-			UIImpersonator.addChild(group);
+			UIImpersonator.addElement(group);
 		}
 
 		[After]
 		public function tearDown():void
 		{
 			viewWatcher.destroy();
-			UIImpersonator.removeAllChildren();
+			UIImpersonator.removeAllElements();
 		}
+
+		/*============================================================================*/
+		/* Tests                                                                      */
+		/*============================================================================*/
 
 		[Test]
 		public function a_handler_that_doesnt_handle_a_view_SHOULD_be_reconsulted_after_processor_invalidation():void

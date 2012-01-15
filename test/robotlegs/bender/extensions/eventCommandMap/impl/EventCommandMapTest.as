@@ -13,7 +13,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import robotlegs.bender.extensions.commandMap.support.NullCommand;
 	import robotlegs.bender.extensions.eventCommandMap.support.SupportEvent;
 
-	public class EventCommandMapTests extends AbstractEventCommandMapTests
+	public class EventCommandMapTest extends AbstractEventCommandMapTest
 	{
 
 		[Test]

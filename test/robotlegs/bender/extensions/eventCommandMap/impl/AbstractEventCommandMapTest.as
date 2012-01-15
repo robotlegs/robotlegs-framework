@@ -13,7 +13,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
 	import org.swiftsuspenders.Injector;
 
-	public class AbstractEventCommandMapTests
+	public class AbstractEventCommandMapTest
 	{
 		protected var injector:Injector;
 

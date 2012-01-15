@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.framework.config.manager.impl.support
+package robotlegs.bender.framework.config.manager.support
 {
 	import robotlegs.bender.core.async.safelyCallBack;
 	import robotlegs.bender.framework.context.api.IContext;

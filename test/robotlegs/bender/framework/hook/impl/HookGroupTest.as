@@ -20,7 +20,7 @@ package robotlegs.bender.framework.hook.impl
 	import robotlegs.bender.framework.hook.support.TrackableHook2;
 	import robotlegs.bender.framework.hook.api.IHookGroup;
 
-	public class HookGroupTests
+	public class HookGroupTest
 	{
 
 		/*============================================================================*/
