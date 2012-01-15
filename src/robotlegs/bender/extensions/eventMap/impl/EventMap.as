@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.eventMap.impl
@@ -10,8 +10,6 @@ package robotlegs.bender.extensions.eventMap.impl
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	import robotlegs.bender.extensions.eventMap.api.IEventMap;
-	import org.robotlegs.base.ContextError;
-	import robotlegs.bender.extensions.eventMap.impl.EventMapConfig;
 
 	/**
 	 * An abstract <code>IEventMap</code> implementation
@@ -19,6 +17,11 @@ package robotlegs.bender.extensions.eventMap.impl
 	// TODO: review
 	public class EventMap implements IEventMap
 	{
+
+		/*============================================================================*/
+		/* Protected Properties                                                       */
+		/*============================================================================*/
+
 		/**
 		 * The <code>IEventDispatcher</code>
 		 */
@@ -39,9 +42,9 @@ package robotlegs.bender.extensions.eventMap.impl
 		 */
 		protected var _suspended:Boolean = false;
 
-		//---------------------------------------------------------------------
-		//  Constructor
-		//---------------------------------------------------------------------
+		/*============================================================================*/
+		/* Constructor                                                                */
+		/*============================================================================*/
 
 		/**
 		 * Creates a new <code>EventMap</code> object
@@ -53,9 +56,9 @@ package robotlegs.bender.extensions.eventMap.impl
 			_eventDispatcher = eventDispatcher;
 		}
 
-		//---------------------------------------------------------------------
-		//  API
-		//---------------------------------------------------------------------
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
 
 		/**
 		 * The same as calling <code>addEventListener</code> directly on the <code>IEventDispatcher</code>,
@@ -69,7 +72,8 @@ package robotlegs.bender.extensions.eventMap.impl
 		 * @param priority
 		 * @param useWeakReference
 		 */
-		public function mapListener(dispatcher:IEventDispatcher, eventString:String, listener:Function, eventClass:Class = null, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = true):void
+		public function mapListener(dispatcher:IEventDispatcher, eventString:String, listener:Function, eventClass:Class = null, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean =
+			true):void
 		{
 			eventClass ||= Event;
 
@@ -93,9 +97,9 @@ package robotlegs.bender.extensions.eventMap.impl
 
 			var callback:Function;
 
-			if(eventClass != Event)
+			if (eventClass != Event)
 			{
-			 	callback = function(event:Event):void
+				callback = function(event:Event):void
 				{
 					routeEventToListener(event, listener, eventClass);
 				};
@@ -105,16 +109,16 @@ package robotlegs.bender.extensions.eventMap.impl
 				callback = listener;
 			}
 
-			eventConfig = new EventMapConfig( 	dispatcher,
-											eventString,
-											listener,
-											eventClass,
-											callback,
-											useCapture );
+			eventConfig = new EventMapConfig(dispatcher,
+				eventString,
+				listener,
+				eventClass,
+				callback,
+				useCapture);
 
 			currentListeners.push(eventConfig);
 
-			if(!_suspended)
+			if (!_suspended)
 			{
 				dispatcher.addEventListener(eventString, callback, useCapture, priority, useWeakReference);
 			}
@@ -148,7 +152,7 @@ package robotlegs.bender.extensions.eventMap.impl
 					&& eventConfig.useCapture == useCapture
 					&& eventConfig.eventClass == eventClass)
 				{
-					if(!_suspended)
+					if (!_suspended)
 					{
 						dispatcher.removeEventListener(eventString, eventConfig.callback, useCapture);
 					}
@@ -169,7 +173,7 @@ package robotlegs.bender.extensions.eventMap.impl
 			var dispatcher:IEventDispatcher;
 			while (eventConfig = currentListeners.pop())
 			{
-				if(!_suspended)
+				if (!_suspended)
 				{
 					dispatcher = eventConfig.dispatcher;
 					dispatcher.removeEventListener(eventConfig.eventString, eventConfig.callback, eventConfig.useCapture);
@@ -179,7 +183,7 @@ package robotlegs.bender.extensions.eventMap.impl
 
 		public function suspend():void
 		{
-			if(_suspended)
+			if (_suspended)
 				return;
 
 			_suspended = true;
@@ -196,7 +200,7 @@ package robotlegs.bender.extensions.eventMap.impl
 
 		public function resume():void
 		{
-			if(!_suspended)
+			if (!_suspended)
 				return;
 
 			_suspended = false;
@@ -211,9 +215,9 @@ package robotlegs.bender.extensions.eventMap.impl
 			}
 		}
 
-		//---------------------------------------------------------------------
-		//  Internal
-		//---------------------------------------------------------------------
+		/*============================================================================*/
+		/* Protected Functions                                                        */
+		/*============================================================================*/
 
 		/**
 		 * Event Handler
