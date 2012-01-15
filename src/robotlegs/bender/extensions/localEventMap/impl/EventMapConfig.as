@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.eventMap.impl
+package robotlegs.bender.extensions.localEventMap.impl
 {
 	import flash.events.IEventDispatcher;
 

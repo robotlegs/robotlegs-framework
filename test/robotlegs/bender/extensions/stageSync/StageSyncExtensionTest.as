@@ -5,17 +5,17 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.displayList
+package robotlegs.bender.extensions.stageSync
 {
 	import flash.display.DisplayObjectContainer;
 	import org.flexunit.assertThat;
-	import org.hamcrest.object.equalTo;
+	import org.fluint.uiImpersonation.UIImpersonator;
+	import org.hamcrest.object.isTrue;
 	import robotlegs.bender.framework.context.api.IContext;
 	import robotlegs.bender.framework.context.impl.Context;
-	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
 	import spark.components.Group;
 
-	public class ContextViewExtensionTest
+	public class StageSyncExtensionTest
 	{
 
 		/*============================================================================*/
@@ -30,7 +30,7 @@ package robotlegs.bender.extensions.displayList
 		/* Test Setup and Teardown                                                    */
 		/*============================================================================*/
 
-		[Before]
+		[Before(ui)]
 		public function before():void
 		{
 			context = new Context();
@@ -42,17 +42,34 @@ package robotlegs.bender.extensions.displayList
 		/*============================================================================*/
 
 		[Test]
-		public function contextView_is_mapped_into_injector():void
+		public function adding_contextView_to_stage_initializes_context():void
 		{
-			var actual:DisplayObjectContainer;
 			context.require(
-				ContextViewExtension,
+				StageSyncExtension,
 				contextView);
-			context.addStateHandler(ManagedObject.SELF_INITIALIZE, function():void {
-				actual = context.injector.getInstance(DisplayObjectContainer);
-			});
-			context.initialize();
-			assertThat(actual, equalTo(contextView));
+			UIImpersonator.addElement(contextView);
+			assertThat(context.initialized, isTrue());
+		}
+
+		[Test]
+		public function adding_contextView_that_is_already_on_stage_initializes_context():void
+		{
+			UIImpersonator.addElement(contextView);
+			context.require(
+				StageSyncExtension,
+				contextView);
+			assertThat(context.initialized, isTrue());
+		}
+
+		[Test]
+		public function removing_contextView_from_stage_destroys_context():void
+		{
+			context.require(
+				StageSyncExtension,
+				contextView);
+			UIImpersonator.addElement(contextView);
+			UIImpersonator.removeElement(contextView);
+			assertThat(context.destroyed, isTrue());
 		}
 	}
 }

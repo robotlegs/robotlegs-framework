@@ -5,15 +5,15 @@
 //  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.eventMap.impl
+package robotlegs.bender.extensions.localEventMap.impl
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
 
 	import org.flexunit.asserts.*;
-	import robotlegs.bender.extensions.eventMap.impl.support.CustomEvent;
-	import robotlegs.bender.extensions.eventMap.api.IEventMap;
+	import robotlegs.bender.extensions.localEventMap.impl.support.CustomEvent;
+	import robotlegs.bender.extensions.localEventMap.api.IEventMap;
 
 	public class EventMapTest
 	{

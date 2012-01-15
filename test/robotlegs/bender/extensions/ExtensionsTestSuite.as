@@ -8,15 +8,15 @@
 package robotlegs.bender.extensions
 {
 	import robotlegs.bender.extensions.commandMap.impl.CommandMapTest;
-	import robotlegs.bender.extensions.displayList.ContextViewExtensionTest;
-	import robotlegs.bender.extensions.displayList.StageSyncExtensionTest;
+	import robotlegs.bender.extensions.contextView.ContextViewExtensionTest;
+	import robotlegs.bender.extensions.stageSync.StageSyncExtensionTest;
 	import robotlegs.bender.extensions.eventBus.EventBusExtensionTest;
 	import robotlegs.bender.extensions.eventCommandMap.impl.EventCommandMapTest;
 	import robotlegs.bender.extensions.eventCommandMap.impl.EventCommandTrigger_BasicTest;
 	import robotlegs.bender.extensions.eventCommandMap.impl.EventCommandTrigger_GuardTest;
 	import robotlegs.bender.extensions.eventCommandMap.impl.EventCommandTrigger_HookTest;
-	import robotlegs.bender.extensions.eventMap.impl.EventMapConfigTest;
-	import robotlegs.bender.extensions.eventMap.impl.EventMapTest;
+	import robotlegs.bender.extensions.localEventMap.impl.EventMapConfigTest;
+	import robotlegs.bender.extensions.localEventMap.impl.EventMapTest;
 	import robotlegs.bender.extensions.modularity.ModularityExtensionTest;
 	import robotlegs.bender.extensions.viewManager.api.ViewInterestsTest;
 	import robotlegs.bender.extensions.viewManager.impl.ContainerBindingTest;

@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.displayList
+package robotlegs.bender.extensions.stageSync
 {
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;

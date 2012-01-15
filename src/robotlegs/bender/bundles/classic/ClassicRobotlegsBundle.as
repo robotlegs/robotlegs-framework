@@ -9,10 +9,10 @@ package robotlegs.bender.bundles.classic
 {
 	import robotlegs.bender.bundles.shared.configs.ContextViewListenerConfig;
 	import robotlegs.bender.extensions.commandMap.CommandMapExtension;
-	import robotlegs.bender.extensions.displayList.StageSyncExtension;
+	import robotlegs.bender.extensions.stageSync.StageSyncExtension;
 	import robotlegs.bender.extensions.eventBus.EventBusExtension;
 	import robotlegs.bender.extensions.eventCommandMap.EventCommandMapExtension;
-	import robotlegs.bender.extensions.eventMap.EventMapExtension;
+	import robotlegs.bender.extensions.localEventMap.LocalEventMapExtension;
 	import robotlegs.bender.extensions.modularity.ModularityExtension;
 	import robotlegs.bender.extensions.viewManager.AutoStageListenerExtension;
 	import robotlegs.bender.extensions.viewManager.ViewManagerExtension;
@@ -34,7 +34,7 @@ package robotlegs.bender.bundles.classic
 				StageSyncExtension,
 				CommandMapExtension,
 				EventCommandMapExtension,
-				EventMapExtension,
+				LocalEventMapExtension,
 				ViewManagerExtension,
 				AutoStageListenerExtension,
 				ContextViewListenerConfig);

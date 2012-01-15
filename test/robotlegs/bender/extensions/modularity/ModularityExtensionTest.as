@@ -12,7 +12,7 @@ package robotlegs.bender.extensions.modularity
 	import org.fluint.uiImpersonation.UIImpersonator;
 	import org.hamcrest.core.not;
 	import org.hamcrest.object.equalTo;
-	import robotlegs.bender.extensions.displayList.StageSyncExtension;
+	import robotlegs.bender.extensions.stageSync.StageSyncExtension;
 	import robotlegs.bender.framework.context.api.IContext;
 	import robotlegs.bender.framework.context.impl.Context;
 

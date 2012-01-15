@@ -9,7 +9,7 @@ package robotlegs.bender.extensions.modularity
 {
 	import flash.display.DisplayObjectContainer;
 	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.extensions.displayList.ContextViewExtension;
+	import robotlegs.bender.extensions.contextView.ContextViewExtension;
 	import robotlegs.bender.extensions.modularity.events.ModularContextEvent;
 	import robotlegs.bender.framework.context.api.IContext;
 	import robotlegs.bender.framework.context.api.IContextConfig;
