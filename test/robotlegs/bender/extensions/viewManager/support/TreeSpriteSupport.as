@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.viewManager.impl.support
+package robotlegs.bender.extensions.viewManager.support
 {
 	import flash.display.Sprite;
 

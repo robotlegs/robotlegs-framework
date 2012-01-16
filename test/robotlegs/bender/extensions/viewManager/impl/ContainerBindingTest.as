@@ -1,104 +1,136 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.viewManager.impl
 {
+	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 	import org.flexunit.assertThat;
+	import org.hamcrest.collection.array;
 	import org.hamcrest.object.equalTo;
 	import robotlegs.bender.extensions.viewManager.api.IViewHandler;
-	import robotlegs.bender.extensions.viewManager.impl.support.ViewHandlerSupport;
-	import org.flexunit.asserts.assertEqualsVectorsIgnoringOrder;
-	import ArgumentError;
+	import robotlegs.bender.extensions.viewManager.support.CallbackViewHandler;
 
 	public class ContainerBindingTest
 	{
 
-		protected var instance:ContainerBinding;
-		protected const CONTAINER:DisplayObjectContainer = new Sprite();
-		protected const HANDLER_1:IViewHandler = new ViewHandlerSupport();
-		protected const HANDLER_2:IViewHandler = new ViewHandlerSupport();
-		protected const HANDLER_3:IViewHandler = new ViewHandlerSupport();
-		protected const ZERO_HANDLER:IViewHandler = new ViewHandlerSupport(0);
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
+
+		private var binding:ContainerBinding;
+
+		private var container:DisplayObjectContainer;
+
+		/*============================================================================*/
+		/* Test Setup and Teardown                                                    */
+		/*============================================================================*/
 
 		[Before]
-		public function setUp():void
+		public function before():void
 		{
-			instance = new ContainerBinding(CONTAINER);
+			binding = new ContainerBinding(container);
 		}
 
-		[After]
-		public function tearDown():void
+		/*============================================================================*/
+		/* Tests                                                                      */
+		/*============================================================================*/
+
+		[Test]
+		public function container_is_stored():void
 		{
-			instance = null;
+			assertThat(binding.container, equalTo(container));
 		}
 
 		[Test]
-		public function get_container_returns_given_container():void
+		public function handler_is_invoked():void
 		{
-			assertThat(instance.container, equalTo(CONTAINER));
+			var callCount:int = 0;
+			binding.addHandler(new CallbackViewHandler(function(view:DisplayObject, type:Class):void {
+				callCount++;
+			}));
+			binding.handleView(new Sprite(), Sprite);
+			assertThat(callCount, equalTo(1));
 		}
 
 		[Test]
-		public function set_and_get_parent_returns_given_value():void
+		public function handler_is_passed_correct_details():void
 		{
-			const test_parent:ContainerBinding = new ContainerBinding(new Sprite());
-			instance.parent =  test_parent;
-			assertThat(instance.parent, equalTo(test_parent));
+			const expectedView:Sprite = new Sprite();
+			const expectedType:Class = Sprite;
+			var actualView:DisplayObject;
+			var actualType:Class;
+			binding.addHandler(new CallbackViewHandler(function(view:DisplayObject, type:Class):void {
+				actualView = view;
+				actualType = type;
+			}));
+			binding.handleView(expectedView, expectedType);
+			assertThat(actualView, equalTo(expectedView));
+			assertThat(actualType, equalTo(expectedType));
 		}
 
 		[Test]
-		public function handlers_is_initially_empty():void
+		public function handler_is_not_invoked_after_removal():void
 		{
-			assertThat(instance.handlers.length, equalTo(0));
+			var callCount:int = 0;
+			const handler:IViewHandler = new CallbackViewHandler(function(view:DisplayObject, type:Class):void {
+				callCount++;
+			});
+			binding.addHandler(handler);
+			binding.removeHandler(handler);
+			binding.handleView(new Sprite(), Sprite);
+			assertThat(callCount, equalTo(0));
 		}
 
 		[Test]
-		public function adding_a_handler_puts_it_in_the_handlers_list():void
+		public function handler_is_not_invoked_multiple_times_when_added_multiple_times():void
 		{
-			instance.addHandler(HANDLER_1);
-			instance.addHandler(HANDLER_2);
-
-			const expectedHandlers:Vector.<IViewHandler> = new <IViewHandler>[HANDLER_1, HANDLER_2];
-			assertEqualsVectorsIgnoringOrder(expectedHandlers, instance.handlers);
+			var callCount:int = 0;
+			const handler:IViewHandler = new CallbackViewHandler(function(view:DisplayObject, type:Class):void {
+				callCount++;
+			});
+			binding.addHandler(handler);
+			binding.addHandler(handler);
+			binding.addHandler(handler);
+			binding.handleView(new Sprite(), Sprite);
+			assertThat(callCount, equalTo(1));
 		}
 
 		[Test]
-		public function removing_a_handler_takes_it_out_of_the_list():void
+		public function handlers_are_invoked_in_order():void
 		{
-			instance.addHandler(HANDLER_1);
-			instance.addHandler(HANDLER_2);
-			instance.addHandler(HANDLER_3);
-
-			instance.removeHandler(HANDLER_2);
-
-			const expectedHandlers:Vector.<IViewHandler> = new <IViewHandler>[HANDLER_1, HANDLER_3];
-			assertEqualsVectorsIgnoringOrder(expectedHandlers, instance.handlers);
+			const expected:Array = ['handler1', 'handler2', 'handler3'];
+			var actual:Array = [];
+			binding.addHandler(new CallbackViewHandler(function(view:DisplayObject, type:Class):void {
+				actual.push('handler1');
+			}));
+			binding.addHandler(new CallbackViewHandler(function(view:DisplayObject, type:Class):void {
+				actual.push('handler2');
+			}));
+			binding.addHandler(new CallbackViewHandler(function(view:DisplayObject, type:Class):void {
+				actual.push('handler3');
+			}));
+			binding.handleView(new Sprite(), Sprite);
+			assertThat(actual, array(expected));
 		}
 
 		[Test]
-		public function adding_the_same_handler_repeatedly_doesnt_duplicate_it_in_the_list():void
+		public function binding_fires_event_on_empty():void
 		{
-			instance.addHandler(HANDLER_1);
-			instance.addHandler(HANDLER_2);
-			instance.addHandler(HANDLER_3);
-			instance.addHandler(HANDLER_1);
-			instance.addHandler(HANDLER_2);
-			instance.addHandler(HANDLER_3);
-
-			const expectedHandlers:Vector.<IViewHandler> = new <IViewHandler>[HANDLER_1, HANDLER_2, HANDLER_3];
-			assertEqualsVectorsIgnoringOrder(expectedHandlers, instance.handlers);
-		}
-
-		[Test(expects="ArgumentError")]
-		public function adding_a_handler_with_zero_interest_throws_error():void
-		{
-			instance.addHandler(ZERO_HANDLER);
+			const handler:IViewHandler = new CallbackViewHandler();
+			var callCount:int = 0;
+			binding.addEventListener(ContainerBindingEvent.BINDING_EMPTY, function(event:ContainerBindingEvent):void {
+				callCount++;
+			});
+			binding.addHandler(handler);
+			binding.removeHandler(handler);
+			assertThat(callCount, equalTo(1));
 		}
 	}
 }
+

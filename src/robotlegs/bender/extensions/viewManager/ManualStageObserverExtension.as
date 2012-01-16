@@ -7,15 +7,13 @@
 
 package robotlegs.bender.extensions.viewManager
 {
-	import robotlegs.bender.extensions.viewManager.api.IViewListener;
+	import robotlegs.bender.extensions.viewManager.impl.ManualStageObserver;
 	import robotlegs.bender.extensions.viewManager.impl.ContainerRegistry;
-	import robotlegs.bender.extensions.viewManager.impl.ViewProcessor;
-	import robotlegs.bender.extensions.viewManager.integration.listeners.ConfigureViewListener;
 	import robotlegs.bender.framework.context.api.IContext;
 	import robotlegs.bender.framework.context.api.IContextConfig;
 	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
 
-	public class ConfigureViewListenerExtension implements IContextConfig
+	public class ManualStageObserverExtension implements IContextConfig
 	{
 
 		/*============================================================================*/
@@ -23,7 +21,7 @@ package robotlegs.bender.extensions.viewManager
 		/*============================================================================*/
 
 		// Really? Yes, there can be only one.
-		private static var _viewListener:IViewListener;
+		private static var _manualStageObserver:ManualStageObserver;
 
 		private static var _installCount:uint;
 
@@ -51,11 +49,10 @@ package robotlegs.bender.extensions.viewManager
 
 		private function handleContextSelfInitialize():void
 		{
-			if (_viewListener == null)
+			if (_manualStageObserver == null)
 			{
 				const containerRegistry:ContainerRegistry = _context.injector.getInstance(ContainerRegistry);
-				const viewProcessor:ViewProcessor = _context.injector.getInstance(ViewProcessor);
-				_viewListener = new ConfigureViewListener(viewProcessor, containerRegistry);
+				_manualStageObserver = new ManualStageObserver(containerRegistry);
 			}
 		}
 
@@ -64,8 +61,8 @@ package robotlegs.bender.extensions.viewManager
 			_installCount--;
 			if (_installCount == 0)
 			{
-				_viewListener.destroy();
-				_viewListener = null;
+				_manualStageObserver.destroy();
+				_manualStageObserver = null;
 			}
 		}
 	}

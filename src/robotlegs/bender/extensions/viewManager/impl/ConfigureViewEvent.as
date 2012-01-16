@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.viewManager.integration.listeners
+package robotlegs.bender.extensions.viewManager.impl
 {
 	import flash.display.DisplayObject;
 	import flash.events.Event;

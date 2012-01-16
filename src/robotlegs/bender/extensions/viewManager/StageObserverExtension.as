@@ -7,15 +7,13 @@
 
 package robotlegs.bender.extensions.viewManager
 {
-	import robotlegs.bender.extensions.viewManager.api.IViewListener;
 	import robotlegs.bender.extensions.viewManager.impl.ContainerRegistry;
-	import robotlegs.bender.extensions.viewManager.impl.ViewProcessor;
-	import robotlegs.bender.extensions.viewManager.integration.listeners.AutoStageListener;
+	import robotlegs.bender.extensions.viewManager.impl.StageObserver;
 	import robotlegs.bender.framework.context.api.IContext;
 	import robotlegs.bender.framework.context.api.IContextConfig;
 	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
 
-	public class AutoStageListenerExtension implements IContextConfig
+	public class StageObserverExtension implements IContextConfig
 	{
 
 		/*============================================================================*/
@@ -23,7 +21,7 @@ package robotlegs.bender.extensions.viewManager
 		/*============================================================================*/
 
 		// Really? Yes, there can be only one.
-		private static var _viewListener:IViewListener;
+		private static var _stageObserver:StageObserver;
 
 		private static var _installCount:uint;
 
@@ -51,11 +49,10 @@ package robotlegs.bender.extensions.viewManager
 
 		private function handleContextSelfInitialize():void
 		{
-			if (_viewListener == null)
+			if (_stageObserver == null)
 			{
 				const containerRegistry:ContainerRegistry = _context.injector.getInstance(ContainerRegistry);
-				const viewProcessor:ViewProcessor = _context.injector.getInstance(ViewProcessor);
-				_viewListener = new AutoStageListener(viewProcessor, containerRegistry);
+				_stageObserver = new StageObserver(containerRegistry);
 			}
 		}
 
@@ -64,8 +61,8 @@ package robotlegs.bender.extensions.viewManager
 			_installCount--;
 			if (_installCount == 0)
 			{
-				_viewListener.destroy();
-				_viewListener = null;
+				_stageObserver.destroy();
+				_stageObserver = null;
 			}
 		}
 	}

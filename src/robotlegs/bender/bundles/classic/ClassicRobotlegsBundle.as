@@ -14,7 +14,7 @@ package robotlegs.bender.bundles.classic
 	import robotlegs.bender.extensions.eventCommandMap.EventCommandMapExtension;
 	import robotlegs.bender.extensions.localEventMap.LocalEventMapExtension;
 	import robotlegs.bender.extensions.modularity.ModularityExtension;
-	import robotlegs.bender.extensions.viewManager.AutoStageListenerExtension;
+	import robotlegs.bender.extensions.viewManager.StageObserverExtension;
 	import robotlegs.bender.extensions.viewManager.ViewManagerExtension;
 	import robotlegs.bender.framework.context.api.IContext;
 	import robotlegs.bender.framework.context.api.IContextConfig;
@@ -36,7 +36,7 @@ package robotlegs.bender.bundles.classic
 				EventCommandMapExtension,
 				LocalEventMapExtension,
 				ViewManagerExtension,
-				AutoStageListenerExtension,
+				StageObserverExtension,
 				ContextViewListenerConfig);
 		}
 	}

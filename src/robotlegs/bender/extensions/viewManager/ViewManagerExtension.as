@@ -10,7 +10,6 @@ package robotlegs.bender.extensions.viewManager
 	import robotlegs.bender.extensions.viewManager.api.IViewManager;
 	import robotlegs.bender.extensions.viewManager.impl.ContainerRegistry;
 	import robotlegs.bender.extensions.viewManager.impl.ViewManager;
-	import robotlegs.bender.extensions.viewManager.impl.ViewProcessor;
 	import robotlegs.bender.framework.context.api.IContext;
 	import robotlegs.bender.framework.context.api.IContextConfig;
 	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
@@ -24,9 +23,6 @@ package robotlegs.bender.extensions.viewManager
 
 		// Really? Yes, there can be only one.
 		private static var _containerRegistry:ContainerRegistry;
-
-		// Really? Yes, there can be only one.
-		private static var _viewProcessor:ViewProcessor;
 
 		/*============================================================================*/
 		/* Private Properties                                                         */
@@ -48,10 +44,6 @@ package robotlegs.bender.extensions.viewManager
 			_containerRegistry ||= new ContainerRegistry();
 			_context.injector.map(ContainerRegistry).toValue(_containerRegistry);
 
-			// And just one View Processor
-			_viewProcessor ||= new ViewProcessor(_containerRegistry);
-			_context.injector.map(ViewProcessor).toValue(_viewProcessor);
-
 			// But you get your own View Manager
 			_context.injector.map(IViewManager).toSingleton(ViewManager);
 
@@ -70,9 +62,8 @@ package robotlegs.bender.extensions.viewManager
 
 		private function handleContextSelfDestroy():void
 		{
-			_viewManager.destroy();
+			_viewManager.removeAllHandlers();
 			_context.injector.unmap(IViewManager);
-			_context.injector.unmap(ViewProcessor);
 			_context.injector.unmap(ContainerRegistry);
 		}
 	}

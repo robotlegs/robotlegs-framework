@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.viewManager.impl
@@ -12,12 +12,17 @@ package robotlegs.bender.extensions.viewManager.impl
 	import flash.events.EventDispatcher;
 	import flash.utils.Dictionary;
 
-	[Event(name="containerAdd", type="robotlegs.bender.extensions.viewManager.impl.ContainerExistenceEvent")]
-	[Event(name="containerRemove", type="robotlegs.bender.extensions.viewManager.impl.ContainerExistenceEvent")]
-	[Event(name="rootContainerAdd", type="robotlegs.bender.extensions.viewManager.impl.ContainerExistenceEvent")]
-	[Event(name="rootContainerRemove", type="robotlegs.bender.extensions.viewManager.impl.ContainerExistenceEvent")]
+	[Event(name="containerAdd", type="robotlegs.bender.extensions.viewManager.impl.ContainerRegistryEvent")]
+	[Event(name="containerRemove", type="robotlegs.bender.extensions.viewManager.impl.ContainerRegistryEvent")]
+	[Event(name="rootContainerAdd", type="robotlegs.bender.extensions.viewManager.impl.ContainerRegistryEvent")]
+	[Event(name="rootContainerRemove", type="robotlegs.bender.extensions.viewManager.impl.ContainerRegistryEvent")]
 	public class ContainerRegistry extends EventDispatcher
 	{
+
+		/*============================================================================*/
+		/* Public Properties                                                          */
+		/*============================================================================*/
+
 		private const _bindings:Vector.<ContainerBinding> = new Vector.<ContainerBinding>;
 
 		public function get bindings():Vector.<ContainerBinding>
@@ -32,19 +37,22 @@ package robotlegs.bender.extensions.viewManager.impl
 			return _rootBindings;
 		}
 
-		private const _bindingByContainer:Dictionary = new Dictionary(false);
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
 
-		public function getBinding(container:DisplayObjectContainer):ContainerBinding
-		{
-			return _bindingByContainer[container];
-		}
+		private const _bindingByContainer:Dictionary = new Dictionary();
 
-		public function registerContainer(container:DisplayObjectContainer):ContainerBinding
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
+
+		public function addContainer(container:DisplayObjectContainer):ContainerBinding
 		{
 			return _bindingByContainer[container] ||= createBinding(container);
 		}
 
-		public function unregisterContainer(container:DisplayObjectContainer):ContainerBinding
+		public function removeContainer(container:DisplayObjectContainer):ContainerBinding
 		{
 			const binding:ContainerBinding = _bindingByContainer[container];
 			binding && removeBinding(binding);
@@ -66,10 +74,22 @@ package robotlegs.bender.extensions.viewManager.impl
 			return null;
 		}
 
+		public function getBinding(container:DisplayObjectContainer):ContainerBinding
+		{
+			return _bindingByContainer[container];
+		}
+
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
+
 		private function createBinding(container:DisplayObjectContainer):ContainerBinding
 		{
 			const binding:ContainerBinding = new ContainerBinding(container);
 			_bindings.push(binding);
+
+			// Add a listener so that we can remove this binding when it has no handlers
+			binding.addEventListener(ContainerBindingEvent.BINDING_EMPTY, onBindingEmpty);
 
 			// If the new binding doesn't have a parent it is a Root
 			binding.parent = findParentBinding(container);
@@ -97,7 +117,7 @@ package robotlegs.bender.extensions.viewManager.impl
 				}
 			}
 
-			dispatchEvent(new ContainerExistenceEvent(ContainerExistenceEvent.CONTAINER_ADD, binding.container));
+			dispatchEvent(new ContainerRegistryEvent(ContainerRegistryEvent.CONTAINER_ADD, binding.container));
 			return binding;
 		}
 
@@ -107,6 +127,9 @@ package robotlegs.bender.extensions.viewManager.impl
 			delete _bindingByContainer[binding.container];
 			const index:int = _bindings.indexOf(binding);
 			_bindings.splice(index, 1);
+
+			// Drop the empty binding listener
+			binding.removeEventListener(ContainerBindingEvent.BINDING_EMPTY, onBindingEmpty);
 
 			if (!binding.parent)
 			{
@@ -129,20 +152,25 @@ package robotlegs.bender.extensions.viewManager.impl
 				}
 			}
 
-			dispatchEvent(new ContainerExistenceEvent(ContainerExistenceEvent.CONTAINER_REMOVE, binding.container));
+			dispatchEvent(new ContainerRegistryEvent(ContainerRegistryEvent.CONTAINER_REMOVE, binding.container));
 		}
 
 		private function addRootBinding(binding:ContainerBinding):void
 		{
 			_rootBindings.push(binding);
-			dispatchEvent(new ContainerExistenceEvent(ContainerExistenceEvent.ROOT_CONTAINER_ADD, binding.container));
+			dispatchEvent(new ContainerRegistryEvent(ContainerRegistryEvent.ROOT_CONTAINER_ADD, binding.container));
 		}
 
 		private function removeRootBinding(binding:ContainerBinding):void
 		{
 			const index:int = _rootBindings.indexOf(binding);
 			_rootBindings.splice(index, 1);
-			dispatchEvent(new ContainerExistenceEvent(ContainerExistenceEvent.ROOT_CONTAINER_REMOVE, binding.container));
+			dispatchEvent(new ContainerRegistryEvent(ContainerRegistryEvent.ROOT_CONTAINER_REMOVE, binding.container));
+		}
+
+		private function onBindingEmpty(event:ContainerBindingEvent):void
+		{
+			removeBinding(event.target as ContainerBinding);
 		}
 	}
 }

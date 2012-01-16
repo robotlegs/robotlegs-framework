@@ -9,7 +9,6 @@ package robotlegs.bender.extensions
 {
 	import robotlegs.bender.extensions.commandMap.impl.CommandMapTest;
 	import robotlegs.bender.extensions.contextView.ContextViewExtensionTest;
-	import robotlegs.bender.extensions.stageSync.StageSyncExtensionTest;
 	import robotlegs.bender.extensions.eventBus.EventBusExtensionTest;
 	import robotlegs.bender.extensions.eventCommandMap.impl.EventCommandMapTest;
 	import robotlegs.bender.extensions.eventCommandMap.impl.EventCommandTrigger_BasicTest;
@@ -18,14 +17,12 @@ package robotlegs.bender.extensions
 	import robotlegs.bender.extensions.localEventMap.impl.EventMapConfigTest;
 	import robotlegs.bender.extensions.localEventMap.impl.EventMapTest;
 	import robotlegs.bender.extensions.modularity.ModularityExtensionTest;
-	import robotlegs.bender.extensions.viewManager.api.ViewInterestsTest;
+	import robotlegs.bender.extensions.stageSync.StageSyncExtensionTest;
+	import robotlegs.bender.extensions.viewManager.ViewManagerExtensionTest;
 	import robotlegs.bender.extensions.viewManager.impl.ContainerBindingTest;
 	import robotlegs.bender.extensions.viewManager.impl.ContainerRegistryTest;
-	import robotlegs.bender.extensions.viewManager.impl.ViewClassInfoTest;
-	import robotlegs.bender.extensions.viewManager.impl.ViewManager_BasicTest;
-	import robotlegs.bender.extensions.viewManager.impl.ViewManager_BlockingTest;
-	import robotlegs.bender.extensions.viewManager.impl.ViewManager_OptimisationTest;
-	import robotlegs.bender.extensions.viewManager.impl.ViewManager_TimingTest;
+	import robotlegs.bender.extensions.viewManager.impl.StageObserverTest;
+	import robotlegs.bender.extensions.viewManager.impl.ViewManagerTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
@@ -58,22 +55,14 @@ package robotlegs.bender.extensions
 
 		public var eventMapConfig:EventMapConfigTest;
 
-		// view manager is old, will be re-designed
-
-		public var viewInteterest:ViewInterestsTest;
-
 		public var containerBinding:ContainerBindingTest;
 
 		public var containerRegistry:ContainerRegistryTest;
 
-		public var viewClassInfo:ViewClassInfoTest;
+		public var stageObserver:StageObserverTest;
 
-		public var viewManager_Basic:ViewManager_BasicTest;
+		public var viewManager:ViewManagerTest;
 
-		public var viewManager_Blocking:ViewManager_BlockingTest;
-
-		public var viewManager_Optimisation:ViewManager_OptimisationTest;
-
-		public var viewManager_Timing:ViewManager_TimingTest;
+		public var viewManagerExtension:ViewManagerExtensionTest;
 	}
 }
