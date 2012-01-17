@@ -5,26 +5,27 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.framework.hook.support
+package robotlegs.bender.extensions.mediatorMap.support
 {
 
-	public class CallbackHook
+	public class CallbackMediator
 	{
 
 		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		[Inject(name="hookCallback", optional="true")]
+		[Inject(name='callback', optional='true')]
 		public var callback:Function;
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function hook():void
+		[PostConstruct]
+		public function init():void
 		{
-			callback && callback();
+			callback && callback(this);
 		}
 	}
 }

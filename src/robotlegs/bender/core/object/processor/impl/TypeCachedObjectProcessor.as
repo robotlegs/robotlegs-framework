@@ -78,7 +78,7 @@ package robotlegs.bender.core.object.processor.impl
 		{
 			const type:Class = item["constructor"];
 
-			// we've seen it before and nobody was interested
+			// we've seen this type before and nobody was interested
 			if (_knownBindings[type] === false)
 				return false;
 

@@ -55,6 +55,7 @@ An extension hooks into the various context life cycle phases by adding handlers
 
 ## Packaging a Robotlegs-Specific Extension
 
+  src
     robotlegs
       extensions
         superDuper
@@ -69,6 +70,7 @@ We can clearly spot the API, implementation and integration classes above. The A
 
 ## Packaging a Non-Robotlegs-Specific Extension - Keeping the Extension Separate
 
+  src
     robotlegs
       extensions
         superDuper
@@ -79,6 +81,7 @@ In this example the API and implementation classes are in a separate, versioned 
 
 ## Packaging a Non-Robotlegs-Specific Extension - Bundling the Extension into the Library
 
+  src
     domain
       library
         integration
@@ -87,6 +90,26 @@ In this example the API and implementation classes are in a separate, versioned 
             SuperDuperExtension (implements IContextConfig)
 
 In this example the library offers Robotlegs integration by providing an Extension bundled in its own source.
+
+## Unit Tests
+
+Unit tests should be packaged thusly:
+
+  test
+    robotlegs
+      extensions
+        superDuper
+          SuperDuperTestSuite
+          impl
+            SuperDuperTest
+          support
+            SuperDuperFrequencyModulator
+
+# Distributing an Extension
+
+todo: recommend GitHub. Recommend unit tests.
+
+robotlegs-extensions-SuperDuper
 
 # Dev Notes
 

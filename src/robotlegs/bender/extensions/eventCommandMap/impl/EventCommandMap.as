@@ -1,21 +1,21 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.eventCommandMap.impl
 {
 	import flash.events.IEventDispatcher;
 	import flash.utils.Dictionary;
+	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.commandMap.api.ICommandMap;
 	import robotlegs.bender.extensions.commandMap.api.ICommandMapper;
 	import robotlegs.bender.extensions.commandMap.api.ICommandMappingFinder;
 	import robotlegs.bender.extensions.commandMap.api.ICommandTrigger;
 	import robotlegs.bender.extensions.commandMap.api.ICommandUnmapper;
 	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
-	import org.swiftsuspenders.Injector;
 
 	public class EventCommandMap implements IEventCommandMap
 	{
@@ -24,13 +24,13 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private const eventTriggers:Dictionary = new Dictionary();
+		private const _eventTriggers:Dictionary = new Dictionary();
 
-		private var injector:Injector;
+		private var _injector:Injector;
 
-		private var dispatcher:IEventDispatcher;
+		private var _dispatcher:IEventDispatcher;
 
-		private var commandMap:ICommandMap;
+		private var _commandMap:ICommandMap;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -38,9 +38,9 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 
 		public function EventCommandMap(injector:Injector, dispatcher:IEventDispatcher, commandMap:ICommandMap)
 		{
-			this.injector = injector;
-			this.dispatcher = dispatcher;
-			this.commandMap = commandMap;
+			_injector = injector;
+			_dispatcher = dispatcher;
+			_commandMap = commandMap;
 		}
 
 		/*============================================================================*/
@@ -50,20 +50,20 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		public function map(type:String, eventClass:Class = null, once:Boolean = false):ICommandMapper
 		{
 			const trigger:ICommandTrigger =
-				eventTriggers[type + eventClass] ||=
+				_eventTriggers[type + eventClass] ||=
 				createEventTrigger(type, eventClass, once);
-			return commandMap.map(trigger);
+			return _commandMap.map(trigger);
 		}
 
 		public function unmap(type:String, eventClass:Class = null):ICommandUnmapper
 		{
-			return commandMap.unmap(getEventTrigger(type, eventClass));
+			return _commandMap.unmap(getEventTrigger(type, eventClass));
 		}
 
 		public function getMapping(type:String, eventClass:Class = null):ICommandMappingFinder
 		{
 			const trigger:ICommandTrigger = getEventTrigger(type, eventClass);
-			return commandMap.getMapping(trigger);
+			return _commandMap.getMapping(trigger);
 		}
 
 		/*============================================================================*/
@@ -72,12 +72,12 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 
 		private function createEventTrigger(type:String, eventClass:Class = null, once:Boolean = false):ICommandTrigger
 		{
-			return new EventCommandTrigger(injector, dispatcher, type, eventClass, once);
+			return new EventCommandTrigger(_injector, _dispatcher, type, eventClass, once);
 		}
 
 		private function getEventTrigger(type:String, eventClass:Class = null):ICommandTrigger
 		{
-			return eventTriggers[type + eventClass];
+			return _eventTriggers[type + eventClass];
 		}
 	}
 }

@@ -10,6 +10,6 @@ package robotlegs.bender.extensions.commandMap.api
 
 	public interface ICommandUnmapper
 	{
-		function fromCommand(commandClass:Class):ICommandMapping;
+		function fromCommand(commandClass:Class):void;
 	}
 }

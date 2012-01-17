@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.commandMap.impl
@@ -11,16 +11,20 @@ package robotlegs.bender.extensions.commandMap.impl
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.notNullValue;
 	import org.hamcrest.object.nullValue;
+	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.commandMap.api.ICommandMap;
 	import robotlegs.bender.extensions.commandMap.api.ICommandMapping;
 	import robotlegs.bender.extensions.commandMap.api.ICommandTrigger;
 	import robotlegs.bender.extensions.commandMap.support.CallbackCommandTrigger;
 	import robotlegs.bender.extensions.commandMap.support.NullCommand;
 	import robotlegs.bender.extensions.commandMap.support.NullCommandTrigger;
-	import org.swiftsuspenders.Injector;
 
 	public class CommandMapTest
 	{
+
+		/*============================================================================*/
+		/* Protected Properties                                                       */
+		/*============================================================================*/
 
 		protected var commandMap:ICommandMap;
 
@@ -28,8 +32,12 @@ package robotlegs.bender.extensions.commandMap.impl
 
 		protected var trigger:ICommandTrigger;
 
+		/*============================================================================*/
+		/* Test Setup and Teardown                                                    */
+		/*============================================================================*/
+
 		[Before]
-		public function setUp():void
+		public function before():void
 		{
 			injector = new Injector();
 			commandMap = new CommandMap();
@@ -37,12 +45,16 @@ package robotlegs.bender.extensions.commandMap.impl
 		}
 
 		[After]
-		public function tearDown():void
+		public function after():void
 		{
 			injector = null;
 			commandMap = null;
 			trigger = null;
 		}
+
+		/*============================================================================*/
+		/* Tests                                                                      */
+		/*============================================================================*/
 
 		[Test]
 		public function mapTrigger_creates_mapper():void

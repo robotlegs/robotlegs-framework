@@ -11,11 +11,12 @@ package robotlegs.bender.extensions
 	import robotlegs.bender.extensions.contextView.ContextViewExtensionTest;
 	import robotlegs.bender.extensions.eventBus.EventBusExtensionTest;
 	import robotlegs.bender.extensions.eventCommandMap.impl.EventCommandMapTest;
-	import robotlegs.bender.extensions.eventCommandMap.impl.EventCommandTrigger_BasicTest;
+	import robotlegs.bender.extensions.eventCommandMap.impl.EventCommandTriggerTest;
 	import robotlegs.bender.extensions.eventCommandMap.impl.EventCommandTrigger_GuardTest;
 	import robotlegs.bender.extensions.eventCommandMap.impl.EventCommandTrigger_HookTest;
 	import robotlegs.bender.extensions.localEventMap.impl.EventMapConfigTest;
 	import robotlegs.bender.extensions.localEventMap.impl.EventMapTest;
+	import robotlegs.bender.extensions.mediatorMap.MediatorMapTestSuite;
 	import robotlegs.bender.extensions.modularity.ModularityExtensionTest;
 	import robotlegs.bender.extensions.stageSync.StageSyncExtensionTest;
 	import robotlegs.bender.extensions.viewManager.ViewManagerExtensionTest;
@@ -43,7 +44,7 @@ package robotlegs.bender.extensions
 
 		public var eventCommandMap:EventCommandMapTest;
 
-		public var eventCommandMapTrigger_Basic:EventCommandTrigger_BasicTest;
+		public var eventCommandMapTrigger:EventCommandTriggerTest;
 
 		public var eventCommandMapTrigger_Guard:EventCommandTrigger_GuardTest;
 
@@ -64,5 +65,7 @@ package robotlegs.bender.extensions
 		public var viewManager:ViewManagerTest;
 
 		public var viewManagerExtension:ViewManagerExtensionTest;
+
+		public var mediatorMapTestSuite:MediatorMapTestSuite;
 	}
 }

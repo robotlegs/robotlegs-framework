@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.eventCommandMap.impl
@@ -16,14 +16,12 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	public class EventCommandTrigger_HookTest extends AbstractEventCommandMapTest
 	{
 
-		[Test]
-		public function the_hook_is_called():void
-		{
-			assertThat(hookCallCount(SelfReportingCallbackHook), equalTo(1));
-		}
+		/*============================================================================*/
+		/* Tests                                                                      */
+		/*============================================================================*/
 
 		[Test]
-		public function all_hooks_are_called():void
+		public function hooks_are_called():void
 		{
 			assertThat(hookCallCount(SelfReportingCallbackHook, SelfReportingCallbackHook), equalTo(2));
 		}
@@ -33,12 +31,10 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		{
 			var executedCommand:SelfReportingCallbackCommand;
 			var injectedCommand:SelfReportingCallbackCommand;
-			injector.map(Function, 'executeCallback').toValue(function(command:SelfReportingCallbackCommand):void
-			{
+			injector.map(Function, 'executeCallback').toValue(function(command:SelfReportingCallbackCommand):void {
 				executedCommand = command;
 			});
-			injector.map(Function, 'hookCallback').toValue(function(hook:SelfReportingCallbackHook):void
-			{
+			injector.map(Function, 'hookCallback').toValue(function(hook:SelfReportingCallbackHook):void {
 				injectedCommand = hook.command;
 			});
 			eventCommandMap
@@ -49,14 +45,16 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			assertThat(injectedCommand, equalTo(executedCommand));
 		}
 
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
+
 		private function hookCallCount(... hooks):uint
 		{
 			var hookCallCount:uint;
-			injector.map(Function, 'executeCallback').toValue(function(command:SelfReportingCallbackCommand):void
-			{
+			injector.map(Function, 'executeCallback').toValue(function(command:SelfReportingCallbackCommand):void {
 			});
-			injector.map(Function, 'hookCallback').toValue(function(hook:SelfReportingCallbackHook):void
-			{
+			injector.map(Function, 'hookCallback').toValue(function(hook:SelfReportingCallbackHook):void {
 				hookCallCount++;
 			});
 			eventCommandMap

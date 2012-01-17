@@ -5,66 +5,71 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.commandMap.impl
+package robotlegs.bender.extensions.mediatorMap.impl
 {
+	import flash.display.DisplayObject;
 	import flash.utils.Dictionary;
-	import robotlegs.bender.extensions.commandMap.api.ICommandMapper;
-	import robotlegs.bender.extensions.commandMap.api.ICommandMapping;
-	import robotlegs.bender.extensions.commandMap.api.ICommandMappingConfig;
-	import robotlegs.bender.extensions.commandMap.api.ICommandMappingFinder;
-	import robotlegs.bender.extensions.commandMap.api.ICommandTrigger;
-	import robotlegs.bender.extensions.commandMap.api.ICommandUnmapper;
+	import org.hamcrest.Matcher;
+	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
+	import robotlegs.bender.extensions.mediatorMap.api.IMediatorHandler;
+	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMap;
+	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapper;
+	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMappingFinder;
+	import robotlegs.bender.extensions.mediatorMap.api.IMediatorUnmapper;
 
-	public class CommandMapper implements ICommandMapper, ICommandMappingFinder, ICommandUnmapper
+	public class MediatorMap implements IMediatorMap
 	{
 
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private const _mappings:Dictionary = new Dictionary();
+		private const _mappers:Dictionary = new Dictionary();
 
-		private var _trigger:ICommandTrigger;
+		private const _handler:IMediatorHandler = new MediatorHandler();
+
+		private var _mediatorFactory:IMediatorFactory;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function CommandMapper(trigger:ICommandTrigger)
+		public function MediatorMap(mediatorFactory:IMediatorFactory)
 		{
-			_trigger = trigger;
+			_mediatorFactory = mediatorFactory;
 		}
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function toCommand(commandClass:Class):ICommandMappingConfig
+		public function map(matcher:Matcher):IMediatorMapper
 		{
-			return _mappings[commandClass] ||= createMapping(commandClass);
+			return _mappers[String(matcher)] ||= createMapper(matcher);
 		}
 
-		public function forCommand(commandClass:Class):ICommandMappingConfig
+		public function getMapping(matcher:Matcher):IMediatorMappingFinder
 		{
-			return _mappings[commandClass];
+			return _mappers[String(matcher)];
 		}
 
-		public function fromCommand(commandClass:Class):void
+		public function unmap(matcher:Matcher):IMediatorUnmapper
 		{
-			const mapping:ICommandMapping = _mappings[commandClass];
-			mapping && _trigger.removeMapping(mapping);
-			delete _mappings[commandClass];
+			return _mappers[String(matcher)];
+		}
+
+		public function handleView(view:DisplayObject, type:Class):void
+		{
+			_handler.handleView(view, type);
 		}
 
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
 
-		private function createMapping(commandClass:Class):CommandMapping
+		private function createMapper(matcher:Matcher):IMediatorMapper
 		{
-			const mapping:CommandMapping = new CommandMapping(commandClass, _trigger.injector);
-			_trigger.addMapping(mapping);
-			return mapping;
+			return new MediatorMapper(matcher, _handler, _mediatorFactory);
 		}
 	}
 }

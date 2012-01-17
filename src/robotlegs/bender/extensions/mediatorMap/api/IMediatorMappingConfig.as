@@ -5,17 +5,17 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.commandMap.api
+package robotlegs.bender.extensions.mediatorMap.api
 {
-	import robotlegs.bender.framework.guard.api.IGuardGroup;
-	import robotlegs.bender.framework.hook.api.IHookGroup;
 
-	public interface ICommandMapping
+	public interface IMediatorMappingConfig
 	{
-		function get commandClass():Class;
+		function asType(viewType:Class):IMediatorMappingConfig;
 
-		function get guards():IGuardGroup;
+		function withGuards(... guardClasses):IMediatorMappingConfig;
 
-		function get hooks():IHookGroup;
+		function withHooks(... hookClasses):IMediatorMappingConfig;
+
+		function withFactory(factory:IMediatorFactory):IMediatorMappingConfig;
 	}
 }

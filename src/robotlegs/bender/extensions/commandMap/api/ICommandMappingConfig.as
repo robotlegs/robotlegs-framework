@@ -7,15 +7,11 @@
 
 package robotlegs.bender.extensions.commandMap.api
 {
-	import robotlegs.bender.framework.guard.api.IGuardGroup;
-	import robotlegs.bender.framework.hook.api.IHookGroup;
 
-	public interface ICommandMapping
+	public interface ICommandMappingConfig
 	{
-		function get commandClass():Class;
+		function withGuards(... guardClasses):ICommandMappingConfig;
 
-		function get guards():IGuardGroup;
-
-		function get hooks():IHookGroup;
+		function withHooks(... hookClasses):ICommandMappingConfig;
 	}
 }

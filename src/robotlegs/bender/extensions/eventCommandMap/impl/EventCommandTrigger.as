@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.eventCommandMap.impl
@@ -10,9 +10,9 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	import flash.utils.describeType;
+	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.commandMap.api.ICommandMapping;
 	import robotlegs.bender.extensions.commandMap.api.ICommandTrigger;
-	import org.swiftsuspenders.Injector;
 
 	public class EventCommandTrigger implements ICommandTrigger
 	{
@@ -32,15 +32,15 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private const mappings:Vector.<ICommandMapping> = new Vector.<ICommandMapping>;
+		private const _mappings:Vector.<ICommandMapping> = new Vector.<ICommandMapping>;
 
-		private var dispatcher:IEventDispatcher;
+		private var _dispatcher:IEventDispatcher;
 
-		private var type:String;
+		private var _type:String;
 
-		private var eventClass:Class;
+		private var _eventClass:Class;
 
-		private var once:Boolean;
+		private var _once:Boolean;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -53,11 +53,11 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			eventClass:Class = null,
 			once:Boolean = false)
 		{
-			this._injector = injector.createChildInjector();
-			this.dispatcher = dispatcher;
-			this.type = type;
-			this.eventClass = eventClass;
-			this.once = once;
+			_injector = injector.createChildInjector();
+			_dispatcher = dispatcher;
+			_type = type;
+			_eventClass = eventClass;
+			_once = once;
 		}
 
 		/*============================================================================*/
@@ -67,18 +67,18 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		public function addMapping(mapping:ICommandMapping):void
 		{
 			verifyCommandClass(mapping);
-			mappings.push(mapping);
-			if (mappings.length == 1)
+			_mappings.push(mapping);
+			if (_mappings.length == 1)
 				addListener();
 		}
 
 		public function removeMapping(mapping:ICommandMapping):void
 		{
-			const index:int = mappings.indexOf(mapping);
+			const index:int = _mappings.indexOf(mapping);
 			if (index != -1)
 			{
-				mappings.splice(index, 1);
-				if (mappings.length == 0)
+				_mappings.splice(index, 1);
+				if (_mappings.length == 0)
 					removeListener();
 			}
 		}
@@ -95,12 +95,12 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 
 		private function addListener():void
 		{
-			dispatcher.addEventListener(type, handleEvent);
+			_dispatcher.addEventListener(_type, handleEvent);
 		}
 
 		private function removeListener():void
 		{
-			dispatcher.removeEventListener(type, handleEvent);
+			_dispatcher.removeEventListener(_type, handleEvent);
 		}
 
 		private function handleEvent(event:Event):void
@@ -108,7 +108,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			const eventConstructor:Class = event["constructor"];
 
 			// check strongly-typed event (if specified)
-			if (eventClass && eventConstructor != eventClass)
+			if (_eventClass && eventConstructor != _eventClass)
 				return;
 
 			// map loosely typed event for injection
@@ -116,15 +116,15 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 
 			// map the strongly typed event for injection
 			if (eventConstructor != Event)
-				_injector.map(eventClass || eventConstructor).toValue(event);
+				_injector.map(_eventClass || eventConstructor).toValue(event);
 
 			// run past the guards and hooks, and execute
-			const mappings:Vector.<ICommandMapping> = this.mappings.concat();
+			const mappings:Vector.<ICommandMapping> = this._mappings.concat();
 			for each (var mapping:ICommandMapping in mappings)
 			{
 				if (mapping.guards.approve())
 				{
-					once && removeMapping(mapping);
+					_once && removeMapping(mapping);
 					_injector.map(mapping.commandClass).asSingleton();
 					const command:Object = _injector.getInstance(mapping.commandClass);
 					mapping.hooks.hook();
@@ -138,7 +138,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 
 			// unmap the strongly typed event
 			if (eventConstructor != Event)
-				_injector.unmap(eventClass || eventConstructor);
+				_injector.unmap(_eventClass || eventConstructor);
 		}
 	}
 }

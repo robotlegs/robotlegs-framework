@@ -10,6 +10,6 @@ package robotlegs.bender.extensions.commandMap.api
 
 	public interface ICommandMapper
 	{
-		function toCommand(commandClass:Class):ICommandMapping;
+		function toCommand(commandClass:Class):ICommandMappingConfig;
 	}
 }

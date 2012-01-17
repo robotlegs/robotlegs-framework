@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.commandMap.impl
@@ -21,7 +21,7 @@ package robotlegs.bender.extensions.commandMap.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private const mappers:Dictionary = new Dictionary();
+		private const _mappers:Dictionary = new Dictionary();
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
@@ -29,17 +29,17 @@ package robotlegs.bender.extensions.commandMap.impl
 
 		public function map(trigger:ICommandTrigger):ICommandMapper
 		{
-			return mappers[trigger] ||= new CommandMapper(trigger);
+			return _mappers[trigger] ||= new CommandMapper(trigger);
 		}
 
 		public function unmap(trigger:ICommandTrigger):ICommandUnmapper
 		{
-			return mappers[trigger];
+			return _mappers[trigger];
 		}
 
 		public function getMapping(trigger:ICommandTrigger):ICommandMappingFinder
 		{
-			return mappers[trigger];
+			return _mappers[trigger];
 		}
 	}
 }

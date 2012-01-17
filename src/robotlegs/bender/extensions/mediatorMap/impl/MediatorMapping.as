@@ -5,28 +5,43 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.commandMap.impl
+package robotlegs.bender.extensions.mediatorMap.impl
 {
-	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.extensions.commandMap.api.ICommandMapping;
-	import robotlegs.bender.extensions.commandMap.api.ICommandMappingConfig;
+	import org.hamcrest.Matcher;
+	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
+	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
+	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMappingConfig;
 	import robotlegs.bender.framework.guard.api.IGuardGroup;
 	import robotlegs.bender.framework.guard.impl.GuardGroup;
 	import robotlegs.bender.framework.hook.api.IHookGroup;
 	import robotlegs.bender.framework.hook.impl.HookGroup;
 
-	public class CommandMapping implements ICommandMapping, ICommandMappingConfig
+	public class MediatorMapping implements IMediatorMapping, IMediatorMappingConfig
 	{
 
 		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		private var _commandClass:Class;
+		private var _matcher:Matcher;
 
-		public function get commandClass():Class
+		public function get matcher():Matcher
 		{
-			return _commandClass;
+			return _matcher;
+		}
+
+		private var _mediatorClass:Class;
+
+		public function get mediatorClass():Class
+		{
+			return _mediatorClass;
+		}
+
+		private var _viewType:Class;
+
+		public function get viewType():Class
+		{
+			return _viewType;
 		}
 
 		private var _guards:IGuardGroup;
@@ -43,28 +58,49 @@ package robotlegs.bender.extensions.commandMap.impl
 			return _hooks;
 		}
 
+		private var _factory:IMediatorFactory;
+
+		public function get factory():IMediatorFactory
+		{
+			return _factory;
+		}
+
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function CommandMapping(commandClass:Class, injector:Injector)
+		public function MediatorMapping(matcher:Matcher, mediatorClass:Class, factory:IMediatorFactory)
 		{
-			_commandClass = commandClass;
-			_guards = new GuardGroup(injector);
-			_hooks = new HookGroup(injector);
+			_matcher = matcher;
+			_mediatorClass = mediatorClass;
+			_factory = factory;
+			_guards = new GuardGroup(factory.injector);
+			_hooks = new HookGroup(factory.injector);
 		}
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function withGuards(... guardClasses):ICommandMappingConfig
+		public function asType(viewType:Class):IMediatorMappingConfig
+		{
+			_viewType = viewType;
+			return this;
+		}
+
+		public function withFactory(factory:IMediatorFactory):IMediatorMappingConfig
+		{
+			_factory = factory;
+			return this;
+		}
+
+		public function withGuards(... guardClasses):IMediatorMappingConfig
 		{
 			_guards.add.apply(null, guardClasses)
 			return this;
 		}
 
-		public function withHooks(... hookClasses):ICommandMappingConfig
+		public function withHooks(... hookClasses):IMediatorMappingConfig
 		{
 			_hooks.add.apply(null, hookClasses)
 			return this;
