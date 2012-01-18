@@ -183,7 +183,11 @@ Sequential synchronous callbacks increase the stack depth. However, the stack de
 
 ## Asynchronous Error Handling
 
+todo: intro
+
 ### The type of the error objects
+
+todo: discuss plain objects vs Error instances
 
 ### Uncaught Exceptions
 
@@ -195,13 +199,9 @@ Currently: allowed. Handler will be called more than once.
 
 todo: decide if allowed, justify
 
-## Safety
-
-todo: write safety tests
-
 ## Speed
 
-Message Dispatcher performs roughly the same as an Event Dispatcher for non-callback handlers. Handlers that accept callbacks slow things down and increase the stack depth.
+A Message Dispatcher performs roughly the same as an Event Dispatcher for non-callback handlers. Handlers that accept callbacks slow things down and increase the stack depth.
 
 ## Limitations
 
@@ -209,7 +209,7 @@ todo: stack depth maximums, stack overflow
 
 # Background
 
-The majority of the API is modelled on Event Dispatcher, but the callback style is inspired by work going on in other evented environments where control flow is an issue. See:
+The majority of the API is modeled on Event Dispatcher. The callback style is inspired by work going on in other evented environments where asynchronous control flow is important. See:
 
 http://nodeguide.com/style.html#callbacks
 https://github.com/caolan/async

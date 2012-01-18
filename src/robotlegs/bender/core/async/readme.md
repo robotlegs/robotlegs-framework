@@ -4,7 +4,7 @@ To deal with asynchronicity we must establish some conventions.
 
 # Handlers and Callbacks
 
-Handlers and callbacks are conventions used by the low level Message Dispatcher.
+Handlers and callbacks are conventions used by low level components such as the Message Dispatcher.
 
 ## Handlers
 

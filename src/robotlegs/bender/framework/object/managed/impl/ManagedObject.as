@@ -18,7 +18,7 @@ package robotlegs.bender.framework.object.managed.impl
 		/* Public Static Properties                                                   */
 		/*============================================================================*/
 
-		public static const PRE_INITIALISE:String = 'preInitialize';
+		public static const PRE_INITIALIZE:String = 'preInitialize';
 
 		public static const SELF_INITIALIZE:String = 'selfInitialize';
 
@@ -34,7 +34,7 @@ package robotlegs.bender.framework.object.managed.impl
 		/* Private Static Properties                                                  */
 		/*============================================================================*/
 
-		private static const INITIALISE:String = 'initialize';
+		private static const INITIALIZE:String = 'initialize';
 
 		private static const DESTROY:String = 'destroy';
 
@@ -84,7 +84,7 @@ package robotlegs.bender.framework.object.managed.impl
 		public function ManagedObject(object:Object)
 		{
 			_object = object;
-			addState(INITIALISE, [PRE_INITIALISE, SELF_INITIALIZE, POST_INITIALIZE]);
+			addState(INITIALIZE, [PRE_INITIALIZE, SELF_INITIALIZE, POST_INITIALIZE]);
 			addState(DESTROY, [PRE_DESTROY, SELF_DESTROY, POST_DESTROY], true);
 		}
 
@@ -97,7 +97,7 @@ package robotlegs.bender.framework.object.managed.impl
 			if (_initializing || _initialized)
 				return;
 			_initializing = true;
-			setCurrentState(INITIALISE, function(error:Object):void {
+			setCurrentState(INITIALIZE, function(error:Object):void {
 				_initializing = false;
 				_initialized = true;
 				callback && safelyCallBack(callback, error);

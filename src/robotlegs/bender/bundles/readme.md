@@ -1,6 +1,6 @@
 # Robotlegs Bundles
 
-## Extensions vs Bundles
+## Bundles Vs Extensions
 
 An extension integrates a single utility or library into a Robotlegs context.
 
@@ -17,10 +17,9 @@ A bundle implements the IContextConfig interface. When included into a context, 
         public function configureContext(context:IContext):void
         {
           context.require(
-	        SuperDuperExtensionA,
-	        SuperDuperExtensionB,
-	        SuperDuperExtensionC
-	      );
+            SuperDuperExtensionA,
+            SuperDuperExtensionB,
+            SuperDuperExtensionC);
         }
       }
     }

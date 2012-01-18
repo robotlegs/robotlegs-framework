@@ -59,7 +59,7 @@ package robotlegs.bender.extensions.modularity
 		{
 			_context = context;
 			_injector = context.injector;
-			_context.addStateHandler(ManagedObject.PRE_INITIALISE, handleContextPreInitialize);
+			_context.addStateHandler(ManagedObject.PRE_INITIALIZE, handleContextPreInitialize);
 		}
 
 		/*============================================================================*/

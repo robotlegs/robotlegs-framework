@@ -1,6 +1,6 @@
 # Robotlegs Extensions
 
-## Extensions vs Bundles
+## Extensions Vs Bundles
 
 An extension integrates a single utility or library into a Robotlegs context.
 
@@ -18,11 +18,11 @@ The readme file is the most important. It's the first thing that you write when 
 
 http://tom.preston-werner.com/2010/08/23/readme-driven-development.html
 
-If you can't sum up what the extension is and how it can be used in a small readme file, then the scope of your extension is too big and you should consider breaking it out into smaller, more focused extensions.
+If you can't sum up what the extension is and how it can be used in a readme file, then perhaps the scope of your extension is too big. In that case consider breaking it out into smaller, more focused extensions.
 
 ## The Extension/Integration Class (IContextConfig)
 
-An extension implements the IContextConfig interface. When included into a context, that context is immediately passed through to the configureContext() method.
+An extension implements the IContextConfig interface. When included into a context, that context is immediately passed through to the configureContext() method:
 
     package robotlegs.extensions.superDuper
     {
@@ -31,29 +31,54 @@ An extension implements the IContextConfig interface. When included into a conte
         public function configureContext(context:IContext):void
         {
           trace(this, " is being installed into ", context);
-          // BEWARE: the context may not yet be initialized.
+          // BEWARE: the context may not be fully initialized.
         }
       }
     }
 
 NOTE: The context instance provided to configureContext() may not be fully initialized.
 
-### Initializing an Extension
+### A Simple Extension
 
-An extension hooks into the various context life cycle phases by adding handlers when it is installed.
+An extension might simply map a singleton:
+
+    public function configureContext(context:IContext):void
+    {
+      context.injector.map(ISuperDuper).toSingleton(SuperDuper);
+    }
+
+### Synchronizing With The Context
+
+An extension can hook into various context lifecycle phases by adding state handlers to that context when the extension is installed:
 
     public function configureContext(context:IContext):void
     {
       if (context.initialized)
-      {
         throw new Error("This extension must be installed prior to context initialization");
-      }
-      context.addStateHandler(ManagedObject.PRE_INITIALISE, handleContextPreInitialize);
+      
+      context.addStateHandler(ManagedObject.PRE_INITIALIZE, handleContextPreInitialize);
+      context.addStateHandler(ManagedObject.POST_INITIALIZE, handleContextPostInitialize);
     }
 
-// todo: finish
+    private function handleContextPreInitialize():void
+    {
+      trace("Doing some things before the context self initializes...");
+    }
 
-## Packaging a Robotlegs-Specific Extension
+    private function handleContextPostInitialize():void
+    {
+      trace("Doing some things now that the context is initialized...");
+    }
+
+For more information on message handling and managed objects see:
+
+1. core.async.readme
+2. core.message.dispatcher.readme
+3. framework.object.managed.readme
+
+## Packaging A Robotlegs-Specific Extension
+
+The source for an extension should be packaged thusly:
 
   src
     robotlegs
@@ -66,44 +91,24 @@ An extension hooks into the various context life cycle phases by adding handlers
           impl
             SuperDuper
 
-We can clearly spot the API, implementation and integration classes above. The API and implementation classes are in the robotlegs.extensions namespace.
-
-## Packaging a Non-Robotlegs-Specific Extension - Keeping the Extension Separate
-
-  src
-    robotlegs
-      extensions
-        superDuper
-          readme.md
-          SuperDuperExtension (implements IContextConfig)
-
-In this example the API and implementation classes are in a separate, versioned library that is not dependent on Robotlegs in any way. The extension is merely a convenient way to include and bootstrap that library in the context of a Robotlegs application/module. The extension lives on its own and does not include Robotlegs or the library itself.
-
-## Packaging a Non-Robotlegs-Specific Extension - Bundling the Extension into the Library
-
-  src
-    domain
-      library
-        integration
-          robotlegs
-            readme.md
-            SuperDuperExtension (implements IContextConfig)
-
-In this example the library offers Robotlegs integration by providing an Extension bundled in its own source.
+We can clearly spot the API, implementation and integration classes above.
 
 ## Unit Tests
 
-Unit tests should be packaged thusly:
+The unit tests for an extension should be packaged thusly:
 
   test
     robotlegs
       extensions
         superDuper
+          SuperDuperExtensionTest
           SuperDuperExtensionTestSuite
           impl
             SuperDuperTest
           support
             SuperDuperFrequencyModulator
+
+The ExtensionTest tests the extension integration class itself. The implementation package contains tests for implementation classes. And the TestSuite catalogs all of the test cases.
 
 # Distributing an Extension
 

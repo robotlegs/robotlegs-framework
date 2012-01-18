@@ -74,7 +74,7 @@ package robotlegs.bender.framework.object.managed.impl
 			const expected:Error = new Error("error");
 			var actual:Object;
 			managedObject.addStateHandler(
-				ManagedObject.PRE_INITIALISE,
+				ManagedObject.PRE_INITIALIZE,
 				function(step:String, callback:Function):void {
 					callback(expected);
 				});
@@ -88,7 +88,7 @@ package robotlegs.bender.framework.object.managed.impl
 		public function initialize_handled_by_step_handlers():void
 		{
 			const expected:Array = [
-				ManagedObject.PRE_INITIALISE,
+				ManagedObject.PRE_INITIALIZE,
 				ManagedObject.SELF_INITIALIZE,
 				ManagedObject.POST_INITIALIZE];
 			var actual:Array = [];
