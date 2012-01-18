@@ -12,6 +12,7 @@ package robotlegs.bender.extensions.modularity
 	import org.fluint.uiImpersonation.UIImpersonator;
 	import org.hamcrest.core.not;
 	import org.hamcrest.object.equalTo;
+	import robotlegs.bender.extensions.contextView.ContextViewExtension;
 	import robotlegs.bender.extensions.stageSync.StageSyncExtension;
 	import robotlegs.bender.framework.context.api.IContext;
 	import robotlegs.bender.framework.context.impl.Context;
@@ -44,8 +45,8 @@ package robotlegs.bender.extensions.modularity
 			parentView = new UIComponent()
 			childView = new UIComponent();
 
-			parentContext = new Context(StageSyncExtension);
-			childContext = new Context(StageSyncExtension);
+			parentContext = new Context(StageSyncExtension, ContextViewExtension);
+			childContext = new Context(StageSyncExtension, ContextViewExtension);
 
 			container.addChild(parentView);
 			parentView.addChild(childView);

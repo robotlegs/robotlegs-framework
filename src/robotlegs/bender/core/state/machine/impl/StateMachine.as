@@ -147,7 +147,7 @@ package robotlegs.bender.core.state.machine.impl
 			// todo: can optimise by checking if any of the steps have handlers
 			const definition:StateDefinition = getState(state);
 
-			handleStep(
+			next(
 				definition.steps.reverse(),
 				definition.reverseNotify,
 				function(error:Object = null):void {
@@ -176,9 +176,10 @@ package robotlegs.bender.core.state.machine.impl
 		 * Possibly recursive step runner
 		 *
 		 * @param steps The remaining steps to notify
+		 * @param reverseDispatch Reverse notification order
 		 * @param callback The eventual callback
 		 */
-		private function handleStep(steps:Array, reverseDispatch:Boolean, callback:Function):void
+		private function next(steps:Array, reverseDispatch:Boolean, callback:Function):void
 		{
 			// Try to keep things synchronous with a simple loop,
 			// forcefully breaking out for async handlers and recursing.
@@ -197,7 +198,7 @@ package robotlegs.bender.core.state.machine.impl
 						}
 						else
 						{
-							handleStep(steps, reverseDispatch, callback);
+							next(steps, reverseDispatch, callback);
 						}
 					}, reverseDispatch);
 					// IMPORTANT: MUST break this loop with a RETURN. See above.

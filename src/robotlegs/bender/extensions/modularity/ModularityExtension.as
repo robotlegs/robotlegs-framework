@@ -9,7 +9,6 @@ package robotlegs.bender.extensions.modularity
 {
 	import flash.display.DisplayObjectContainer;
 	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.extensions.contextView.ContextViewExtension;
 	import robotlegs.bender.extensions.modularity.events.ModularContextEvent;
 	import robotlegs.bender.framework.context.api.IContext;
 	import robotlegs.bender.framework.context.api.IContextConfig;
@@ -58,8 +57,7 @@ package robotlegs.bender.extensions.modularity
 
 		public function configureContext(context:IContext):void
 		{
-			// todo: I'm not convinced that extensions should slurp in their dependencies
-			_context = context.require(ContextViewExtension);
+			_context = context;
 			_injector = context.injector;
 			_context.addStateHandler(ManagedObject.PRE_INITIALISE, handleContextPreInitialize);
 		}

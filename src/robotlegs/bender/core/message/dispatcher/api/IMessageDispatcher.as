@@ -17,10 +17,8 @@ package robotlegs.bender.core.message.dispatcher.api
 
 		function hasMessageHandler(message:Object):Boolean;
 
-		// todo: callbacks should always come last
 		function dispatchMessage(message:Object, callback:Function = null, reverse:Boolean = false):void;
 
-		// todo: decide if this is *really* neeeded
 		function dispatchScopedMessage(scope:Object, message:Object, callback:Function = null, reverse:Boolean = false):void;
 	}
 }

@@ -72,8 +72,14 @@ package robotlegs.bender.extensions.localEventMap.impl
 		 * @param priority
 		 * @param useWeakReference
 		 */
-		public function mapListener(dispatcher:IEventDispatcher, eventString:String, listener:Function, eventClass:Class = null, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean =
-			true):void
+		public function mapListener(
+			dispatcher:IEventDispatcher,
+			eventString:String,
+			listener:Function,
+			eventClass:Class = null,
+			useCapture:Boolean = false,
+			priority:int = 0,
+			useWeakReference:Boolean = true):void
 		{
 			eventClass ||= Event;
 
@@ -134,7 +140,12 @@ package robotlegs.bender.extensions.localEventMap.impl
 		 * @param eventClass Optional Event class for a stronger mapping. Defaults to <code>flash.events.Event</code>.
 		 * @param useCapture
 		 */
-		public function unmapListener(dispatcher:IEventDispatcher, eventString:String, listener:Function, eventClass:Class = null, useCapture:Boolean = false):void
+		public function unmapListener(
+			dispatcher:IEventDispatcher,
+			eventString:String,
+			listener:Function,
+			eventClass:Class = null,
+			useCapture:Boolean = false):void
 		{
 			eventClass ||= Event;
 			var eventConfig:EventMapConfig;
