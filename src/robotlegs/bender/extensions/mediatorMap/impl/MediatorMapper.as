@@ -64,6 +64,15 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			_handler.removeMapping(mapping);
 		}
 
+		public function fromMediators():void
+		{
+			for each (var mapping:IMediatorMapping in _mappings)
+			{
+				delete _mappings[mapping.mediatorClass];
+				_handler.removeMapping(mapping);
+			}
+		}
+
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/

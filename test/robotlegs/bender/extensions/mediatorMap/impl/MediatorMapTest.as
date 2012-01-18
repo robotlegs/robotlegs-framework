@@ -15,6 +15,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
 	import robotlegs.bender.extensions.mediatorMap.support.CallbackMediator;
+	import robotlegs.bender.extensions.mediatorMap.support.NullMediator;
 
 	public class MediatorMapTest
 	{
@@ -64,6 +65,16 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			mediatorMap.map(instanceOf(Sprite)).toMediator(CallbackMediator);
 			mediatorMap.unmap(instanceOf(Sprite)).fromMediator(CallbackMediator);
 			assertThat(mediatorMap.getMapping(instanceOf(Sprite)).forMediator(CallbackMediator), nullValue());
+		}
+
+		[Test]
+		public function unmap_from_all_removes_mappings():void
+		{
+			mediatorMap.map(instanceOf(Sprite)).toMediator(CallbackMediator);
+			mediatorMap.map(instanceOf(Sprite)).toMediator(NullMediator);
+			mediatorMap.unmap(instanceOf(Sprite)).fromMediators();
+			assertThat(mediatorMap.getMapping(instanceOf(Sprite)).forMediator(CallbackMediator), nullValue());
+			assertThat(mediatorMap.getMapping(instanceOf(Sprite)).forMediator(NullMediator), nullValue());
 		}
 
 		[Test]
