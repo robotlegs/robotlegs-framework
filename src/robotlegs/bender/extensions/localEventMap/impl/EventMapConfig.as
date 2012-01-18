@@ -1,29 +1,73 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.localEventMap.impl
 {
 	import flash.events.IEventDispatcher;
 
-	public class  EventMapConfig
+	public class EventMapConfig
 	{
-		protected var _dispatcher:IEventDispatcher;
-		protected var _eventString:String;
-		protected var _listener:Function;
-		protected var _eventClass:Class;
-		protected var _callback:Function;
-		protected var _useCapture:Boolean;
 
-		public function EventMapConfig(	dispatcher:IEventDispatcher,
-										eventString:String,
-										listener:Function,
-										eventClass:Class,
-										callback:Function,
-										useCapture:Boolean )
+		/*============================================================================*/
+		/* Public Properties                                                          */
+		/*============================================================================*/
+
+		private var _dispatcher:IEventDispatcher;
+
+		public function get dispatcher():IEventDispatcher
+		{
+			return _dispatcher;
+		}
+
+		private var _eventString:String;
+
+		public function get eventString():String
+		{
+			return _eventString;
+		}
+
+		private var _listener:Function;
+
+		public function get listener():Function
+		{
+			return _listener;
+		}
+
+		private var _eventClass:Class;
+
+		public function get eventClass():Class
+		{
+			return _eventClass;
+		}
+
+		private var _callback:Function;
+
+		public function get callback():Function
+		{
+			return _callback;
+		}
+
+		private var _useCapture:Boolean;
+
+		public function get useCapture():Boolean
+		{
+			return _useCapture;
+		}
+
+		/*============================================================================*/
+		/* Constructor                                                                */
+		/*============================================================================*/
+
+		public function EventMapConfig(dispatcher:IEventDispatcher,
+			eventString:String,
+			listener:Function,
+			eventClass:Class,
+			callback:Function,
+			useCapture:Boolean)
 		{
 			_dispatcher = dispatcher;
 			_eventString = eventString;
@@ -31,36 +75,6 @@ package robotlegs.bender.extensions.localEventMap.impl
 			_eventClass = eventClass;
 			_callback = callback;
 			_useCapture = useCapture;
-		}
-
-		public function get dispatcher():IEventDispatcher
-		{
-			return _dispatcher;
-		}
-
-		public function get eventString():String
-		{
-			return _eventString;
-		}
-
-		public function get listener():Function
-		{
-			return _listener;
-		}
-
-		public function get eventClass():Class
-		{
-			return _eventClass;
-		}
-
-		public function get callback():Function
-		{
-			return _callback;
-		}
-
-		public function get useCapture():Boolean
-		{
-			return _useCapture;
 		}
 	}
 }

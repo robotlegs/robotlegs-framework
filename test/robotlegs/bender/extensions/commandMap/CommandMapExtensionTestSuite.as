@@ -18,6 +18,8 @@ package robotlegs.bender.extensions.commandMap
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
+		public var commandMapExtension:CommandMapExtensionTest;
+
 		public var commandMap:CommandMapTest;
 	}
 }

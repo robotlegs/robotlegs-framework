@@ -5,26 +5,22 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.contextView
+package robotlegs.bender.extensions.viewManager
 {
-	import flash.display.DisplayObjectContainer;
 	import org.flexunit.assertThat;
-	import org.hamcrest.object.equalTo;
-	import robotlegs.bender.framework.context.api.IContext;
+	import org.hamcrest.object.instanceOf;
+	import robotlegs.bender.extensions.viewManager.api.IViewManager;
 	import robotlegs.bender.framework.context.impl.Context;
 	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
-	import spark.components.Group;
 
-	public class ContextViewExtensionTest
+	public class ViewManagerExtensionTest
 	{
 
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var context:IContext;
-
-		private var contextView:DisplayObjectContainer;
+		private var context:Context;
 
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
@@ -34,7 +30,6 @@ package robotlegs.bender.extensions.contextView
 		public function before():void
 		{
 			context = new Context();
-			contextView = new Group();
 		}
 
 		/*============================================================================*/
@@ -42,17 +37,15 @@ package robotlegs.bender.extensions.contextView
 		/*============================================================================*/
 
 		[Test]
-		public function contextView_is_mapped_into_injector():void
+		public function viewManager_is_mapped_into_injector():void
 		{
 			var actual:Object;
-			context.require(
-				ContextViewExtension,
-				contextView);
+			context.require(ViewManagerExtension);
 			context.addStateHandler(ManagedObject.SELF_INITIALIZE, function():void {
-				actual = context.injector.getInstance(DisplayObjectContainer);
+				actual = context.injector.getInstance(IViewManager);
 			});
 			context.initialize();
-			assertThat(actual, equalTo(contextView));
+			assertThat(actual, instanceOf(IViewManager));
 		}
 	}
 }

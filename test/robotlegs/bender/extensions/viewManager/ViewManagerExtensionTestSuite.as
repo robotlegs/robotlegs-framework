@@ -22,6 +22,8 @@ package robotlegs.bender.extensions.viewManager
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
+		public var viewManagerExtension:ViewManagerExtensionTest;
+
 		public var configureViewObserver:ConfigureViewObserverTest;
 
 		public var containerBinding:ContainerBindingTest;

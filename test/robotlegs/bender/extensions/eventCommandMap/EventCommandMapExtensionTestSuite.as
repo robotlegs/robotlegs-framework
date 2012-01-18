@@ -21,6 +21,8 @@ package robotlegs.bender.extensions.eventCommandMap
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
+		public var eventCommandMapExtension:EventCommandMapExtensionTest;
+
 		public var eventCommandMap:EventCommandMapTest;
 
 		public var eventCommandTrigger:EventCommandTriggerTest;

@@ -19,6 +19,8 @@ package robotlegs.bender.extensions.localEventMap
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
+		public var localEventMapExtension:LocalEventMapExtensionTest;
+
 		public var eventMap:EventMapTest;
 
 		public var eventMapConfig:EventMapConfigTest;

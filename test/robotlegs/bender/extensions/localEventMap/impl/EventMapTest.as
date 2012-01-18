@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.localEventMap.impl
@@ -10,17 +10,28 @@ package robotlegs.bender.extensions.localEventMap.impl
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
-
 	import org.flexunit.asserts.*;
-	import robotlegs.bender.extensions.localEventMap.impl.support.CustomEvent;
 	import robotlegs.bender.extensions.localEventMap.api.IEventMap;
+	import robotlegs.bender.extensions.localEventMap.impl.support.CustomEvent;
 
 	public class EventMapTest
 	{
-		protected var eventDispatcher:IEventDispatcher;
-		protected var eventMap:IEventMap;
-		protected var listenerExecuted:Boolean;
-		protected var listenerExecutedCount:uint;
+
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
+
+		private var eventDispatcher:IEventDispatcher;
+
+		private var eventMap:IEventMap;
+
+		private var listenerExecuted:Boolean;
+
+		private var listenerExecutedCount:uint;
+
+		/*============================================================================*/
+		/* Test Setup and Teardown                                                    */
+		/*============================================================================*/
 
 		[Before]
 		public function runBeforeEachTest():void
@@ -35,6 +46,10 @@ package robotlegs.bender.extensions.localEventMap.impl
 			resetListenerExecuted();
 			resetListenerExecutedCount();
 		}
+
+		/*============================================================================*/
+		/* Tests                                                                      */
+		/*============================================================================*/
 
 		[Test]
 		public function listener_mapped_without_type_is_triggered_by_plain_Event():void
@@ -222,7 +237,10 @@ package robotlegs.bender.extensions.localEventMap.impl
 			assertFalse(listenerExecuted);
 		}
 
-		// Helpers
+		/*============================================================================*/
+		/* Protected Functions                                                        */
+		/*============================================================================*/
+
 		protected function listener(e:Event):void
 		{
 			listenerExecuted = true;
@@ -237,6 +255,7 @@ package robotlegs.bender.extensions.localEventMap.impl
 		{
 			listenerExecutedCount++;
 		}
+
 		protected function resetListenerExecutedCount():void
 		{
 			listenerExecutedCount = 0;

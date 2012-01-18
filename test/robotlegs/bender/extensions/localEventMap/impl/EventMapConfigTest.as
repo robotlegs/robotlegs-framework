@@ -1,36 +1,53 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.localEventMap.impl
 {
-	import org.flexunit.asserts.*;
-	import flash.events.EventDispatcher;
 	import flash.events.Event;
+	import flash.events.EventDispatcher;
+	import org.flexunit.asserts.*;
 
 	public class EventMapConfigTest
 	{
-		private var instance:EventMapConfig;
+
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
 
 		private const DISPATCHER:EventDispatcher = new EventDispatcher();
+
 		private const EVENT_STRING:String = "event string";
-		private const LISTENER:Function = function():void{};
+
+		private const LISTENER:Function = function():void {
+		};
+
 		private const EVENT_TYPE:Class = Event;
-		private const CALLBACK:Function = function():void{};
+
+		private const CALLBACK:Function = function():void {
+		};
+
 		private const USE_CAPTURE:Boolean = true;
+
+		private var instance:EventMapConfig;
+
+		/*============================================================================*/
+		/* Test Setup and Teardown                                                    */
+		/*============================================================================*/
 
 		[Before]
 		public function setUp():void
 		{
-			instance = new EventMapConfig(	DISPATCHER,
-											EVENT_STRING,
-											LISTENER,
-											EVENT_TYPE,
-											CALLBACK,
-											USE_CAPTURE	);
+			instance = new EventMapConfig(
+				DISPATCHER,
+				EVENT_STRING,
+				LISTENER,
+				EVENT_TYPE,
+				CALLBACK,
+				USE_CAPTURE);
 		}
 
 		[After]
@@ -38,6 +55,10 @@ package robotlegs.bender.extensions.localEventMap.impl
 		{
 			instance = null;
 		}
+
+		/*============================================================================*/
+		/* Tests                                                                      */
+		/*============================================================================*/
 
 		[Test]
 		public function can_be_instantiated():void
