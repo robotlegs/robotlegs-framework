@@ -9,6 +9,7 @@ package robotlegs.bender.bundles.classic
 {
 	import robotlegs.bender.bundles.shared.configs.ContextViewListenerConfig;
 	import robotlegs.bender.extensions.commandMap.CommandMapExtension;
+	import robotlegs.bender.extensions.contextView.ContextViewExtension;
 	import robotlegs.bender.extensions.eventBus.EventBusExtension;
 	import robotlegs.bender.extensions.eventCommandMap.EventCommandMapExtension;
 	import robotlegs.bender.extensions.localEventMap.LocalEventMapExtension;
@@ -31,6 +32,7 @@ package robotlegs.bender.bundles.classic
 		public function configureContext(context:IContext):void
 		{
 			context.require(
+				ContextViewExtension,
 				EventBusExtension,
 				ModularityExtension,
 				StageSyncExtension,

@@ -21,14 +21,14 @@ package robotlegs.bender.mxml
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		private var _configs:Vector.<Object> = new Vector.<Object>;
+		private var _configs:Array = [];
 
-		public function get configs():Vector.<Object>
+		public function get configs():Array
 		{
 			return _configs;
 		}
 
-		public function set configs(value:Vector.<Object>):void
+		public function set configs(value:Array):void
 		{
 			_configs = value;
 		}
@@ -53,7 +53,7 @@ package robotlegs.bender.mxml
 
 		public function initialized(document:Object, id:String):void
 		{
-			_contextView = document as DisplayObjectContainer;
+			_contextView ||= document as DisplayObjectContainer;
 			// if the contextView is bound it will only be set a frame later
 			setTimeout(configureBuilder, 1);
 		}
