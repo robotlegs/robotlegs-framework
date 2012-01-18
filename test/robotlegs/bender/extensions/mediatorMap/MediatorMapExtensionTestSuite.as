@@ -20,8 +20,12 @@ package robotlegs.bender.extensions.mediatorMap
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
+		public var mediatorMapExtension:MediatorMapExtensionTest;
+
 		public var mediatorMap:MediatorMapTest;
+
 		public var mediatorHandler:MediatorHandlerTest;
+
 		public var defaultMediatorFactory:DefaultMediatorFactoryTest;
 	}
 }
