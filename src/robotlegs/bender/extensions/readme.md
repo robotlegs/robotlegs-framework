@@ -99,7 +99,7 @@ Unit tests should be packaged thusly:
     robotlegs
       extensions
         superDuper
-          SuperDuperTestSuite
+          SuperDuperExtensionTestSuite
           impl
             SuperDuperTest
           support

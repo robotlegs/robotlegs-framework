@@ -7,11 +7,10 @@
 
 package robotlegs.bender.core
 {
-	import robotlegs.bender.core.async.SafelyCallBackTest;
-	import robotlegs.bender.core.message.dispatcher.impl.MessageDispatcherTest;
-	import robotlegs.bender.core.object.processor.impl.ObjectProcessorTest;
-	import robotlegs.bender.core.object.processor.impl.TypeCachedObjectProcessorTest;
-	import robotlegs.bender.core.state.machine.impl.StateMachineTest;
+	import robotlegs.bender.core.async.AsyncTestSuite;
+	import robotlegs.bender.core.message.MessageTestSuite;
+	import robotlegs.bender.core.object.ObjectTestSuite;
+	import robotlegs.bender.core.state.StateTestSuite;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
@@ -22,14 +21,12 @@ package robotlegs.bender.core
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		public var async:SafelyCallBackTest;
+		public var async:AsyncTestSuite;
 
-		public var messageDispatcher:MessageDispatcherTest;
+		public var message:MessageTestSuite;
 
-		public var stateMachine:StateMachineTest;
+		public var object:ObjectTestSuite;
 
-		public var objectProcessor:ObjectProcessorTest;
-
-		public var typeCachedObjectProcessor:TypeCachedObjectProcessorTest;
+		public var state:StateTestSuite;
 	}
 }

@@ -5,28 +5,18 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.viewManager
+package robotlegs.bender.extensions.contextView
 {
 
-	public class ViewManagerExtensionTest
+	[RunWith("org.flexunit.runners.Suite")]
+	[Suite]
+	public class ContextViewExtensionTestSuite
 	{
 
 		/*============================================================================*/
-		/* Test Setup and Teardown                                                    */
+		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		[Before]
-		public function before():void
-		{
-		}
-
-		/*============================================================================*/
-		/* Tests                                                                      */
-		/*============================================================================*/
-
-		[Test]
-		public function go():void
-		{
-		}
+		public var contextViewExtension:ContextViewExtensionTest;
 	}
 }

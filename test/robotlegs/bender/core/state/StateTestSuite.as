@@ -5,23 +5,19 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.mediatorMap
+package robotlegs.bender.core.state
 {
-	import robotlegs.bender.extensions.mediatorMap.impl.DefaultMediatorFactoryTest;
-	import robotlegs.bender.extensions.mediatorMap.impl.MediatorHandlerTest;
-	import robotlegs.bender.extensions.mediatorMap.impl.MediatorMapTest;
+	import robotlegs.bender.core.state.machine.impl.StateMachineTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
-	public class MediatorMapTestSuite
+	public class StateTestSuite
 	{
 
 		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		public var mediatorMap:MediatorMapTest;
-		public var mediatorHandler:MediatorHandlerTest;
-		public var defaultMediatorFactory:DefaultMediatorFactoryTest;
+		public var stateMachine:StateMachineTest;
 	}
 }

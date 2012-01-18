@@ -7,23 +7,15 @@
 
 package robotlegs.bender.extensions
 {
-	import robotlegs.bender.extensions.commandMap.impl.CommandMapTest;
-	import robotlegs.bender.extensions.contextView.ContextViewExtensionTest;
-	import robotlegs.bender.extensions.eventBus.EventBusExtensionTest;
-	import robotlegs.bender.extensions.eventCommandMap.impl.EventCommandMapTest;
-	import robotlegs.bender.extensions.eventCommandMap.impl.EventCommandTriggerTest;
-	import robotlegs.bender.extensions.eventCommandMap.impl.EventCommandTrigger_GuardTest;
-	import robotlegs.bender.extensions.eventCommandMap.impl.EventCommandTrigger_HookTest;
-	import robotlegs.bender.extensions.localEventMap.impl.EventMapConfigTest;
-	import robotlegs.bender.extensions.localEventMap.impl.EventMapTest;
-	import robotlegs.bender.extensions.mediatorMap.MediatorMapTestSuite;
-	import robotlegs.bender.extensions.modularity.ModularityExtensionTest;
-	import robotlegs.bender.extensions.stageSync.StageSyncExtensionTest;
-	import robotlegs.bender.extensions.viewManager.ViewManagerExtensionTest;
-	import robotlegs.bender.extensions.viewManager.impl.ContainerBindingTest;
-	import robotlegs.bender.extensions.viewManager.impl.ContainerRegistryTest;
-	import robotlegs.bender.extensions.viewManager.impl.StageObserverTest;
-	import robotlegs.bender.extensions.viewManager.impl.ViewManagerTest;
+	import robotlegs.bender.extensions.commandMap.CommandMapExtensionTestSuite;
+	import robotlegs.bender.extensions.contextView.ContextViewExtensionTestSuite;
+	import robotlegs.bender.extensions.eventBus.EventBusExtensionTestSuite;
+	import robotlegs.bender.extensions.eventCommandMap.EventCommandMapExtensionTestSuite;
+	import robotlegs.bender.extensions.localEventMap.LocalEventMapExtensionTestSuite;
+	import robotlegs.bender.extensions.mediatorMap.MediatorMapExtensionTestSuite;
+	import robotlegs.bender.extensions.modularity.ModularityExtensionTestSuite;
+	import robotlegs.bender.extensions.stageSync.StageSyncExtensionTestSuite;
+	import robotlegs.bender.extensions.viewManager.ViewManagerExtensionTestSuite;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
@@ -34,38 +26,22 @@ package robotlegs.bender.extensions
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		public var commandMap:CommandMapTest;
+		public var commandMapExtension:CommandMapExtensionTestSuite;
 
-		public var contextView:ContextViewExtensionTest;
+		public var contextViewExtension:ContextViewExtensionTestSuite;
 
-		public var stateSync:StageSyncExtensionTest;
+		public var eventBusExtension:EventBusExtensionTestSuite;
 
-		public var eventBus:EventBusExtensionTest;
+		public var eventCommandMapExtension:EventCommandMapExtensionTestSuite;
 
-		public var eventCommandMap:EventCommandMapTest;
+		public var localEventMapExtension:LocalEventMapExtensionTestSuite;
 
-		public var eventCommandMapTrigger:EventCommandTriggerTest;
+		public var mediatorMapExtension:MediatorMapExtensionTestSuite;
 
-		public var eventCommandMapTrigger_Guard:EventCommandTrigger_GuardTest;
+		public var modularityExtension:ModularityExtensionTestSuite;
 
-		public var eventCommandMapTrigger_Hook:EventCommandTrigger_HookTest;
+		public var stageSyncExtension:StageSyncExtensionTestSuite;
 
-		public var modularity:ModularityExtensionTest;
-
-		public var eventMap:EventMapTest;
-
-		public var eventMapConfig:EventMapConfigTest;
-
-		public var containerBinding:ContainerBindingTest;
-
-		public var containerRegistry:ContainerRegistryTest;
-
-		public var stageObserver:StageObserverTest;
-
-		public var viewManager:ViewManagerTest;
-
-		public var viewManagerExtension:ViewManagerExtensionTest;
-
-		public var mediatorMapTestSuite:MediatorMapTestSuite;
+		public var viewManagerExtension:ViewManagerExtensionTestSuite;
 	}
 }

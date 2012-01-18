@@ -5,31 +5,22 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.framework
+package robotlegs.bender.extensions.localEventMap
 {
-	import robotlegs.bender.framework.config.ConfigTestSuite;
-	import robotlegs.bender.framework.context.ContextTestSuite;
-	import robotlegs.bender.framework.guard.GuardTestSuite;
-	import robotlegs.bender.framework.hook.HookTestSuite;
-	import robotlegs.bender.framework.object.ObjectTestSuite;
+	import robotlegs.bender.extensions.localEventMap.impl.EventMapConfigTest;
+	import robotlegs.bender.extensions.localEventMap.impl.EventMapTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
-	public class FrameworkTestSuite
+	public class LocalEventMapExtensionTestSuite
 	{
 
 		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		public var config:ConfigTestSuite;
+		public var eventMap:EventMapTest;
 
-		public var context:ContextTestSuite;
-
-		public var guard:GuardTestSuite;
-
-		public var hook:HookTestSuite;
-
-		public var object:ObjectTestSuite
+		public var eventMapConfig:EventMapConfigTest;
 	}
 }
