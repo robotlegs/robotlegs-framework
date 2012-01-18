@@ -9,8 +9,8 @@ package robotlegs.bender.extensions
 {
 	import robotlegs.bender.extensions.commandMap.CommandMapExtensionTestSuite;
 	import robotlegs.bender.extensions.contextView.ContextViewExtensionTestSuite;
-	import robotlegs.bender.extensions.eventBus.EventBusExtensionTestSuite;
 	import robotlegs.bender.extensions.eventCommandMap.EventCommandMapExtensionTestSuite;
+	import robotlegs.bender.extensions.eventDispatcher.EventDispatcherExtensionTestSuite;
 	import robotlegs.bender.extensions.localEventMap.LocalEventMapExtensionTestSuite;
 	import robotlegs.bender.extensions.mediatorMap.MediatorMapExtensionTestSuite;
 	import robotlegs.bender.extensions.modularity.ModularityExtensionTestSuite;
@@ -30,9 +30,9 @@ package robotlegs.bender.extensions
 
 		public var contextViewExtension:ContextViewExtensionTestSuite;
 
-		public var eventBusExtension:EventBusExtensionTestSuite;
-
 		public var eventCommandMapExtension:EventCommandMapExtensionTestSuite;
+
+		public var eventDispatcherExtension:EventDispatcherExtensionTestSuite;
 
 		public var localEventMapExtension:LocalEventMapExtensionTestSuite;
 

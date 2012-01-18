@@ -10,7 +10,7 @@ package robotlegs.bender.extensions.commandMap
 	import org.flexunit.assertThat;
 	import org.hamcrest.object.instanceOf;
 	import robotlegs.bender.extensions.commandMap.api.ICommandMap;
-	import robotlegs.bender.extensions.eventBus.EventBusExtension;
+	import robotlegs.bender.extensions.eventDispatcher.EventDispatcherExtension;
 	import robotlegs.bender.framework.context.impl.Context;
 	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
 
@@ -31,7 +31,7 @@ package robotlegs.bender.extensions.commandMap
 		public function before():void
 		{
 			context = new Context();
-			context.require(EventBusExtension, CommandMapExtension);
+			context.require(EventDispatcherExtension, CommandMapExtension);
 		}
 
 		/*============================================================================*/

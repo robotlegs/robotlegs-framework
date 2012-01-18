@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.eventBus
+package robotlegs.bender.extensions.eventDispatcher
 {
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
@@ -15,7 +15,7 @@ package robotlegs.bender.extensions.eventBus
 	/**
 	 * This extension maps an IEventDispatcher into a context's injector.
 	 */
-	public class EventBusExtension implements IContextConfig
+	public class EventDispatcherExtension implements IContextConfig
 	{
 
 		/*============================================================================*/
@@ -28,7 +28,7 @@ package robotlegs.bender.extensions.eventBus
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function EventBusExtension(eventDispatcher:IEventDispatcher = null)
+		public function EventDispatcherExtension(eventDispatcher:IEventDispatcher = null)
 		{
 			_eventDispatcher = eventDispatcher || new EventDispatcher();
 		}

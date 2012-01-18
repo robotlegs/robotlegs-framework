@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.eventBus
+package robotlegs.bender.extensions.eventDispatcher
 {
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
@@ -16,7 +16,7 @@ package robotlegs.bender.extensions.eventBus
 	import robotlegs.bender.framework.context.impl.Context;
 	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
 
-	public class EventBusExtensionTest
+	public class EventDispatcherExtensionTest
 	{
 
 		/*============================================================================*/
@@ -43,7 +43,7 @@ package robotlegs.bender.extensions.eventBus
 		public function an_EventDispatcher_is_mapped_into_injector():void
 		{
 			var actual:Object;
-			context.require(EventBusExtension);
+			context.require(EventDispatcherExtension);
 			context.addStateHandler(ManagedObject.SELF_INITIALIZE, function():void {
 				actual = context.injector.getInstance(IEventDispatcher);
 			});
@@ -56,7 +56,7 @@ package robotlegs.bender.extensions.eventBus
 		{
 			const expected:IEventDispatcher = new EventDispatcher();
 			var actual:Object;
-			context.require(new EventBusExtension(expected));
+			context.require(new EventDispatcherExtension(expected));
 			context.addStateHandler(ManagedObject.SELF_INITIALIZE, function():void {
 				actual = context.injector.getInstance(IEventDispatcher);
 			});

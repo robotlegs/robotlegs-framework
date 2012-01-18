@@ -5,18 +5,18 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.eventBus
+package robotlegs.bender.extensions.eventDispatcher
 {
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
-	public class EventBusExtensionTestSuite
+	public class EventDispatcherExtensionTestSuite
 	{
 
 		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		public var eventBusExtension:EventBusExtensionTest;
+		public var eventDispatcherExtension:EventDispatcherExtensionTest;
 	}
 }
