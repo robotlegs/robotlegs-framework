@@ -10,8 +10,8 @@ package robotlegs.bender.extensions.commandMap.api
 
 	public interface ICommandMappingConfig
 	{
-		function withGuards(... guardClasses):ICommandMappingConfig;
+		function withGuards(... guards):ICommandMappingConfig;
 
-		function withHooks(... hookClasses):ICommandMappingConfig;
+		function withHooks(... hooks):ICommandMappingConfig;
 	}
 }

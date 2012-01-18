@@ -62,7 +62,7 @@ package robotlegs.bender.extensions.commandMap.impl
 
 		private function createMapping(commandClass:Class):CommandMapping
 		{
-			const mapping:CommandMapping = new CommandMapping(commandClass, _trigger.injector);
+			const mapping:CommandMapping = new CommandMapping(commandClass);
 			_trigger.addMapping(mapping);
 			return mapping;
 		}

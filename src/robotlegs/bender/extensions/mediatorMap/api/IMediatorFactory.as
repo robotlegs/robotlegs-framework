@@ -7,12 +7,16 @@
 
 package robotlegs.bender.extensions.mediatorMap.api
 {
-	import org.swiftsuspenders.Injector;
 
 	public interface IMediatorFactory
 	{
-		function get injector():Injector;
-
+		/**
+		 * Mediator factory function
+		 *
+		 * @param view The view instance to create a mediator for.
+		 * @param mapping The mediator mapping to use.
+		 * @return The mediator
+		 */
 		function createMediator(view:Object, mapping:IMediatorMapping):Object;
 	}
 }

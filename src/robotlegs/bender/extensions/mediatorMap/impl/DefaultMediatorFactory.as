@@ -10,20 +10,17 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
+	import robotlegs.bender.framework.guard.impl.guardsApprove;
+	import robotlegs.bender.framework.hook.impl.applyHooks;
 
 	public class DefaultMediatorFactory implements IMediatorFactory
 	{
 
 		/*============================================================================*/
-		/* Public Properties                                                          */
+		/* Private Properties                                                         */
 		/*============================================================================*/
 
 		private var _injector:Injector;
-
-		public function get injector():Injector
-		{
-			return _injector;
-		}
 
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -38,6 +35,9 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function createMediator(view:Object, mapping:IMediatorMapping):Object
 		{
 			var mediator:Object;
@@ -45,11 +45,11 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			const viewType:Class = mapping.viewType || view['constructor'];
 			_injector.map(viewType).toValue(view);
 
-			if (mapping.guards.approve())
+			if (guardsApprove(mapping.guards, _injector))
 			{
 				mediator = _injector.getInstance(mapping.mediatorClass);
 				_injector.map(mapping.mediatorClass).toValue(mediator);
-				mapping.hooks.hook();
+				applyHooks(mapping.hooks, _injector);
 				_injector.unmap(mapping.mediatorClass);
 			}
 

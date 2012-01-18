@@ -7,13 +7,8 @@
 
 package robotlegs.bender.extensions.commandMap.impl
 {
-	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.commandMap.api.ICommandMapping;
 	import robotlegs.bender.extensions.commandMap.api.ICommandMappingConfig;
-	import robotlegs.bender.framework.guard.api.IGuardGroup;
-	import robotlegs.bender.framework.guard.impl.GuardGroup;
-	import robotlegs.bender.framework.hook.api.IHookGroup;
-	import robotlegs.bender.framework.hook.impl.HookGroup;
 
 	public class CommandMapping implements ICommandMapping, ICommandMappingConfig
 	{
@@ -29,16 +24,16 @@ package robotlegs.bender.extensions.commandMap.impl
 			return _commandClass;
 		}
 
-		private var _guards:IGuardGroup;
+		private var _guards:Array = [];
 
-		public function get guards():IGuardGroup
+		public function get guards():Array
 		{
 			return _guards;
 		}
 
-		private var _hooks:IHookGroup;
+		private var _hooks:Array = [];
 
-		public function get hooks():IHookGroup
+		public function get hooks():Array
 		{
 			return _hooks;
 		}
@@ -47,26 +42,24 @@ package robotlegs.bender.extensions.commandMap.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function CommandMapping(commandClass:Class, injector:Injector)
+		public function CommandMapping(commandClass:Class)
 		{
 			_commandClass = commandClass;
-			_guards = new GuardGroup(injector);
-			_hooks = new HookGroup(injector);
 		}
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function withGuards(... guardClasses):ICommandMappingConfig
+		public function withGuards(... guards):ICommandMappingConfig
 		{
-			_guards.add.apply(null, guardClasses)
+			_guards = _guards.concat.apply(null, guards);
 			return this;
 		}
 
-		public function withHooks(... hookClasses):ICommandMappingConfig
+		public function withHooks(... hooks):ICommandMappingConfig
 		{
-			_hooks.add.apply(null, hookClasses)
+			_hooks = _hooks.concat.apply(null, hooks);
 			return this;
 		}
 	}

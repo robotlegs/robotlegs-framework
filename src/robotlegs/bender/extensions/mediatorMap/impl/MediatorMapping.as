@@ -11,10 +11,6 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMappingConfig;
-	import robotlegs.bender.framework.guard.api.IGuardGroup;
-	import robotlegs.bender.framework.guard.impl.GuardGroup;
-	import robotlegs.bender.framework.hook.api.IHookGroup;
-	import robotlegs.bender.framework.hook.impl.HookGroup;
 
 	public class MediatorMapping implements IMediatorMapping, IMediatorMappingConfig
 	{
@@ -44,16 +40,16 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			return _viewType;
 		}
 
-		private var _guards:IGuardGroup;
+		private var _guards:Array = [];
 
-		public function get guards():IGuardGroup
+		public function get guards():Array
 		{
 			return _guards;
 		}
 
-		private var _hooks:IHookGroup;
+		private var _hooks:Array = [];
 
-		public function get hooks():IHookGroup
+		public function get hooks():Array
 		{
 			return _hooks;
 		}
@@ -74,8 +70,6 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			_matcher = matcher;
 			_mediatorClass = mediatorClass;
 			_factory = factory;
-			_guards = new GuardGroup(factory.injector);
-			_hooks = new HookGroup(factory.injector);
 		}
 
 		/*============================================================================*/
@@ -94,15 +88,15 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			return this;
 		}
 
-		public function withGuards(... guardClasses):IMediatorMappingConfig
+		public function withGuards(... guards):IMediatorMappingConfig
 		{
-			_guards.add.apply(null, guardClasses)
+			_guards = _guards.concat.apply(null, guards);
 			return this;
 		}
 
-		public function withHooks(... hookClasses):IMediatorMappingConfig
+		public function withHooks(... hooks):IMediatorMappingConfig
 		{
-			_hooks.add.apply(null, hookClasses)
+			_hooks = _hooks.concat.apply(null, hooks);
 			return this;
 		}
 	}

@@ -158,7 +158,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 				hookCallCount++;
 			});
 			const mapping:MediatorMapping = new MediatorMapping(instanceOf(Sprite), CallbackMediator, factory);
-			mapping.withHooks.apply(null, hooks);
+			mapping.withHooks(hooks);
 			factory.createMediator(new Sprite(), mapping);
 			return hookCallCount;
 		}
@@ -166,7 +166,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		private function mediatorCreatedWithGuards(... guards):Boolean
 		{
 			const mapping:MediatorMapping = new MediatorMapping(instanceOf(Sprite), CallbackMediator, factory);
-			mapping.withGuards.apply(null, guards);
+			mapping.withGuards(guards);
 			return factory.createMediator(new Sprite(), mapping);
 		}
 	}

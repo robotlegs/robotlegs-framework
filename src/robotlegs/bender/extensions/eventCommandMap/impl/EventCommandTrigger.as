@@ -13,26 +13,19 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.commandMap.api.ICommandMapping;
 	import robotlegs.bender.extensions.commandMap.api.ICommandTrigger;
+	import robotlegs.bender.framework.guard.impl.guardsApprove;
+	import robotlegs.bender.framework.hook.impl.applyHooks;
 
 	public class EventCommandTrigger implements ICommandTrigger
 	{
-
-		/*============================================================================*/
-		/* Public Properties                                                          */
-		/*============================================================================*/
-
-		private var _injector:Injector;
-
-		public function get injector():Injector
-		{
-			return _injector;
-		}
 
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
 		private const _mappings:Vector.<ICommandMapping> = new Vector.<ICommandMapping>;
+
+		private var _injector:Injector;
 
 		private var _dispatcher:IEventDispatcher;
 
@@ -119,15 +112,15 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 				_injector.map(_eventClass || eventConstructor).toValue(event);
 
 			// run past the guards and hooks, and execute
-			const mappings:Vector.<ICommandMapping> = this._mappings.concat();
+			const mappings:Vector.<ICommandMapping> = _mappings.concat();
 			for each (var mapping:ICommandMapping in mappings)
 			{
-				if (mapping.guards.approve())
+				if (guardsApprove(mapping.guards, _injector))
 				{
 					_once && removeMapping(mapping);
 					_injector.map(mapping.commandClass).asSingleton();
 					const command:Object = _injector.getInstance(mapping.commandClass);
-					mapping.hooks.hook();
+					applyHooks(mapping.hooks, _injector);
 					_injector.unmap(mapping.commandClass);
 					command.execute();
 				}

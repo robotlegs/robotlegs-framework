@@ -12,9 +12,9 @@ package robotlegs.bender.extensions.mediatorMap.api
 	{
 		function asType(viewType:Class):IMediatorMappingConfig;
 
-		function withGuards(... guardClasses):IMediatorMappingConfig;
+		function withGuards(... guards):IMediatorMappingConfig;
 
-		function withHooks(... hookClasses):IMediatorMappingConfig;
+		function withHooks(... hooks):IMediatorMappingConfig;
 
 		function withFactory(factory:IMediatorFactory):IMediatorMappingConfig;
 	}

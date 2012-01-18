@@ -8,6 +8,11 @@
 package robotlegs.bender.framework.hook.api
 {
 
+	/**
+	 * A hook is expected to expose a "hook" method.
+	 *
+	 * Note: a hook does not need to implement this interface.
+	 */
 	public interface IHook
 	{
 		function hook():void;

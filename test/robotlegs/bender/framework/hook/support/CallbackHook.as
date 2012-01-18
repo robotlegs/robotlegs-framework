@@ -19,6 +19,15 @@ package robotlegs.bender.framework.hook.support
 		public var callback:Function;
 
 		/*============================================================================*/
+		/* Constructor                                                                */
+		/*============================================================================*/
+
+		public function CallbackHook(callback:Function = null)
+		{
+			this.callback = callback;
+		}
+
+		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 

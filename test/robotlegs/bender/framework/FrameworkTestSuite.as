@@ -9,8 +9,8 @@ package robotlegs.bender.framework
 {
 	import robotlegs.bender.framework.config.manager.impl.ConfigManagerTest;
 	import robotlegs.bender.framework.context.impl.ContextTest;
-	import robotlegs.bender.framework.guard.impl.GuardGroupTest;
-	import robotlegs.bender.framework.hook.impl.HookGroupTest;
+	import robotlegs.bender.framework.guard.impl.GuardsApproveTest;
+	import robotlegs.bender.framework.hook.impl.ApplyHooksTest;
 	import robotlegs.bender.framework.object.managed.impl.ManagedObjectTest;
 	import robotlegs.bender.framework.object.manager.impl.ObjectManagerTest;
 
@@ -29,9 +29,9 @@ package robotlegs.bender.framework
 
 		public var managedObject:ManagedObjectTest;
 
-		public var guardGroup:GuardGroupTest;
+		public var guardsApprove:GuardsApproveTest;
 
-		public var hookGroup:HookGroupTest;
+		public var applyHooks:ApplyHooksTest;
 
 		public var context:ContextTest;
 	}
