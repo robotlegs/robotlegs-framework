@@ -113,7 +113,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			container.addChild(view);
 			delayAssertion(function():void {
 				assertThat(mediator.initialized, isTrue());
-			}, 10)
+			}, 50)
 		}
 
 		/*============================================================================*/
