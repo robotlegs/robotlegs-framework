@@ -20,7 +20,7 @@ package robotlegs.bender.core.async
 	 * <p>NOTE: This helper will not handle null callbacks. You should check
 	 * if the callback is null from the calling location:</p>
 	 *
-	 * <code>callback && safelyCallBack(callback, error, message);</code>
+	 * <code>callback &amp;&amp; safelyCallBack(callback, error, message);</code>
 	 *
 	 * <p>This prevents the overhead of calling safelyCallBack()
 	 * when there is no callback to call. Likewise it reduces the overhead

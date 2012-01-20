@@ -2,6 +2,9 @@
 
 Robotlegs 2 is under active development. Developers are encouraged to download the stable Robotlegs v1 release from: http://www.robotlegs.org/
 
+The source for Robotlegs 1 can be found in the master branch:
+
+https://github.com/robotlegs/robotlegs-framework/tree/master
 
 # Robotlegs
 

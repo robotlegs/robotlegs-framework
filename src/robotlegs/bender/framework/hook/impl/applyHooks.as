@@ -16,7 +16,7 @@ package robotlegs.bender.framework.hook.impl
 	/**
 	 * <p>A hook can be a function, object or class.</p>
 	 *
-	 * <p>When an object is passed it is expected to expose a "hook" method.
+	 * <p>When an object is passed it is expected to expose a "hook" method.</p>
 	 *
 	 * <p>When a class is passed, an instance of that class will be instantiated and called.
 	 * If an injector is provided the instance will be created using that injector,

@@ -122,8 +122,11 @@
       <arg line="-window-title 'Robotlegs ${robotlegs.ver.num}'"/>
       <arg line="-main-title 'Robotlegs ${robotlegs.ver.num}'"/>
       <arg line="-footer 'Robotlegs - http://www.robotlegs.org/ - Documentation generated at: ${docgen.time}'"/>
-      <arg line="-package robotlegs.bender.core.api 'Core framework API'"/>
-      <arg line="-package robotlegs.bender.core.impl 'Core framework implementation'"/>
+      <arg line="-package robotlegs.bender.core 'Robotlegs Core'"/>
+      <arg line="-package robotlegs.bender.framework 'Robotlegs Framework'"/>
+      <arg line="-package robotlegs.bender.bundles 'Robotlegs Bundles'"/>
+      <arg line="-package robotlegs.bender.extensions 'Robotlegs Extensions'"/>
+      <arg line="-package robotlegs.bender.mxml 'Robotlegs MXML Integration'"/>
     </java>
     <echo>[asdoc] ASDOC documentation generated successfully</echo>
   </target>
