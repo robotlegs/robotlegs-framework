@@ -54,12 +54,11 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			return _hooks;
 		}
 
-		private var _factory:IMediatorFactory;
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
 
-		public function get factory():IMediatorFactory
-		{
-			return _factory;
-		}
+		private var _factory:IMediatorFactory;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -98,6 +97,11 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		{
 			_hooks = _hooks.concat.apply(null, hooks);
 			return this;
+		}
+
+		public function createMediator(view:Object):Object
+		{
+			return _factory.createMediator(view, this);
 		}
 	}
 }

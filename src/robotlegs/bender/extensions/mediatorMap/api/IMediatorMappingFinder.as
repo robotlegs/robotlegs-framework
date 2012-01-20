@@ -10,6 +10,6 @@ package robotlegs.bender.extensions.mediatorMap.api
 
 	public interface IMediatorMappingFinder
 	{
-		function forMediator(mediatorClass:Class):IMediatorMappingConfig;
+		function forMediator(mediatorClass:Class):IMediatorMapping;
 	}
 }

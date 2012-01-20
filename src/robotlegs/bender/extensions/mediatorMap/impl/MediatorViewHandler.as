@@ -9,10 +9,10 @@ package robotlegs.bender.extensions.mediatorMap.impl
 {
 	import flash.display.DisplayObject;
 	import flash.utils.Dictionary;
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorHandler;
+	import robotlegs.bender.extensions.mediatorMap.api.IMediatorViewHandler;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
 
-	public class MediatorHandler implements IMediatorHandler
+	public class MediatorViewHandler implements IMediatorViewHandler
 	{
 
 		/*============================================================================*/
@@ -74,7 +74,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			const interestedMappings:Array = _knownMappings[type] as Array;
 			for each (mapping in interestedMappings)
 			{
-				mapping.factory.createMediator(view, mapping);
+				mapping.createMediator(view);
 			}
 		}
 

@@ -17,10 +17,10 @@ package robotlegs.bender.extensions.mediatorMap.api
 
 		function get viewType():Class;
 
-		function get factory():IMediatorFactory;
-
 		function get guards():Array;
 
 		function get hooks():Array;
+
+		function createMediator(view:Object):Object;
 	}
 }

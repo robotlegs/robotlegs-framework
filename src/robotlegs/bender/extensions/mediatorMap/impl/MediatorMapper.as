@@ -10,12 +10,12 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import flash.utils.Dictionary;
 	import org.hamcrest.Matcher;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorHandler;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapper;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMappingConfig;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMappingFinder;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorUnmapper;
+	import robotlegs.bender.extensions.mediatorMap.api.IMediatorViewHandler;
 
 	public class MediatorMapper implements IMediatorMapper, IMediatorMappingFinder, IMediatorUnmapper
 	{
@@ -28,7 +28,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		private var _matcher:Matcher;
 
-		private var _handler:IMediatorHandler;
+		private var _handler:IMediatorViewHandler;
 
 		private var _factory:IMediatorFactory;
 
@@ -36,7 +36,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function MediatorMapper(matcher:Matcher, handler:IMediatorHandler, factory:IMediatorFactory)
+		public function MediatorMapper(matcher:Matcher, handler:IMediatorViewHandler, factory:IMediatorFactory)
 		{
 			_matcher = matcher;
 			_handler = handler;
@@ -52,7 +52,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			return _mappings[mediatorClass] ||= createMapping(mediatorClass);
 		}
 
-		public function forMediator(mediatorClass:Class):IMediatorMappingConfig
+		public function forMediator(mediatorClass:Class):IMediatorMapping
 		{
 			return _mappings[mediatorClass];
 		}

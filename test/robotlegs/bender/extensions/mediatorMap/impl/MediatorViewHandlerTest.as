@@ -16,14 +16,14 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.mediatorMap.support.CallbackMediator;
 
-	public class MediatorHandlerTest
+	public class MediatorViewHandlerTest
 	{
 
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var handler:MediatorHandler;
+		private var handler:MediatorViewHandler;
 
 		private var injector:Injector;
 
@@ -36,7 +36,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		[Before]
 		public function before():void
 		{
-			handler = new MediatorHandler();
+			handler = new MediatorViewHandler();
 			injector = new Injector();
 			factory = new DefaultMediatorFactory(injector);
 		}
