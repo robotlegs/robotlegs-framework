@@ -8,7 +8,7 @@
 package robotlegs.bender.extensions.commandMap.impl
 {
 	import robotlegs.bender.extensions.commandMap.api.ICommandMapping;
-	import robotlegs.bender.extensions.commandMap.api.ICommandMappingConfig;
+	import robotlegs.bender.extensions.commandMap.dsl.ICommandMappingConfig;
 
 	public class CommandMapping implements ICommandMapping, ICommandMappingConfig
 	{

@@ -10,6 +10,7 @@ package robotlegs.bender.framework.config.manager.impl
 	import org.flexunit.assertThat;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.instanceOf;
+	import org.hamcrest.object.nullValue;
 	import robotlegs.bender.framework.config.manager.api.IConfigManager;
 	import robotlegs.bender.framework.config.manager.support.CallbackContextConfig;
 	import robotlegs.bender.framework.context.api.IContext;
@@ -119,19 +120,20 @@ package robotlegs.bender.framework.config.manager.impl
 		}
 
 		[Test]
-		public function plain_config_class_is_instantaited_at_context_initialization():void
+		public function plain_config_class_is_instantiated_at_context_initialization():void
 		{
 			var actual:Object;
 			configManager.addConfig(PlainConfig);
 			context.injector.map(Function, 'callback').toValue(function(config:PlainConfig):void {
 				actual = config;
 			});
+			assertThat(actual, nullValue());
 			context.initialize();
 			assertThat(actual, instanceOf(PlainConfig));
 		}
 
 		[Test]
-		public function plain_config_class_is_instantaited_after_context_initialization():void
+		public function plain_config_class_is_instantiated_after_context_initialization():void
 		{
 			var actual:Object;
 			context.initialize();
@@ -140,6 +142,33 @@ package robotlegs.bender.framework.config.manager.impl
 			});
 			configManager.addConfig(PlainConfig);
 			assertThat(actual, instanceOf(PlainConfig));
+		}
+
+		[Test]
+		public function plain_config_object_is_injected_into_at_context_initialization():void
+		{
+			const expected:PlainConfig = new PlainConfig();
+			var actual:Object;
+			configManager.addConfig(expected);
+			context.injector.map(Function, 'callback').toValue(function(config:Object):void {
+				actual = config;
+			});
+			assertThat(actual, nullValue());
+			context.initialize();
+			assertThat(actual, equalTo(expected));
+		}
+
+		[Test]
+		public function plain_config_object_is_injected_into_after_context_initialization():void
+		{
+			const expected:PlainConfig = new PlainConfig();
+			var actual:Object;
+			context.initialize();
+			context.injector.map(Function, 'callback').toValue(function(config:Object):void {
+				actual = config;
+			});
+			configManager.addConfig(expected);
+			assertThat(actual, equalTo(expected));
 		}
 	}
 }

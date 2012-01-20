@@ -7,15 +7,33 @@
 
 package robotlegs.bender.extensions.mediatorMap
 {
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorManager;
+	import org.swiftsuspenders.Injector;
+	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMap;
 	import robotlegs.bender.extensions.mediatorMap.impl.DefaultMediatorManager;
+	import robotlegs.bender.extensions.mediatorMap.impl.MediatorFactory;
 	import robotlegs.bender.extensions.mediatorMap.impl.MediatorMap;
+	import robotlegs.bender.extensions.viewManager.api.IViewManager;
 	import robotlegs.bender.framework.context.api.IContext;
 	import robotlegs.bender.framework.context.api.IContextConfig;
+	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
 
 	public class MediatorMapExtension implements IContextConfig
 	{
+
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
+
+		private var _context:IContext;
+
+		private var _injector:Injector;
+
+		private var _mediatorMap:IMediatorMap;
+
+		private var _viewManager:IViewManager;
+
+		private var _mediatorManager:DefaultMediatorManager;
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
@@ -23,8 +41,26 @@ package robotlegs.bender.extensions.mediatorMap
 
 		public function configureContext(context:IContext):void
 		{
-			context.injector.map(IMediatorManager).toSingleton(DefaultMediatorManager);
-			context.injector.map(IMediatorMap).toSingleton(MediatorMap);
+			_context = context;
+			_injector = context.injector;
+			_injector.map(IMediatorFactory).toSingleton(MediatorFactory);
+			_injector.map(IMediatorMap).toSingleton(MediatorMap);
+			_context.addStateHandler(ManagedObject.PRE_INITIALIZE, handleContextPreInitialize);
+		}
+
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
+
+		private function handleContextPreInitialize():void
+		{
+			_mediatorMap = _injector.getInstance(IMediatorMap);
+			_mediatorManager = _injector.getInstance(DefaultMediatorManager);
+			if (_injector.satisfiesDirectly(IViewManager))
+			{
+				_viewManager = _injector.getInstance(IViewManager);
+				_viewManager.addViewHandler(_mediatorMap);
+			}
 		}
 	}
 }

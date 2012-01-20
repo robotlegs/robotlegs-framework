@@ -10,6 +10,7 @@ package robotlegs.bender.extensions.mediatorMap
 	import org.flexunit.assertThat;
 	import org.hamcrest.object.instanceOf;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMap;
+	import robotlegs.bender.extensions.viewManager.ViewManagerExtension;
 	import robotlegs.bender.framework.context.impl.Context;
 	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
 
@@ -40,7 +41,7 @@ package robotlegs.bender.extensions.mediatorMap
 		public function mediatorMap_is_mapped_into_injector():void
 		{
 			var actual:Object;
-			context.require(MediatorMapExtension);
+			context.require(ViewManagerExtension, MediatorMapExtension);
 			context.addStateHandler(ManagedObject.SELF_INITIALIZE, function():void {
 				actual = context.injector.getInstance(IMediatorMap);
 			});

@@ -7,7 +7,10 @@
 
 package robotlegs.bender.framework.config.manager.impl
 {
+	import flash.display.DisplayObject;
 	import org.hamcrest.Matcher;
+	import org.hamcrest.core.allOf;
+	import org.hamcrest.core.not;
 	import org.hamcrest.object.instanceOf;
 	import org.swiftsuspenders.DescribeTypeJSONReflector;
 	import org.swiftsuspenders.Reflector;
@@ -22,6 +25,16 @@ package robotlegs.bender.framework.config.manager.impl
 	{
 
 		/*============================================================================*/
+		/* Private Static Properties                                                  */
+		/*============================================================================*/
+
+		private static const plainObjectMatcher:Matcher = allOf(
+			instanceOf(Object),
+			not(instanceOf(Class)),
+			not(instanceOf(IContextConfig)),
+			not(instanceOf(DisplayObject)));
+
+		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
@@ -32,6 +45,8 @@ package robotlegs.bender.framework.config.manager.impl
 		private const _configs:Array = [];
 
 		private const _plainClassConfigs:Array = [];
+
+		private const _plainObjectConfigs:Array = [];
 
 		private var _context:IContext;
 
@@ -71,6 +86,7 @@ package robotlegs.bender.framework.config.manager.impl
 		{
 			addConfigHandler(instanceOf(IContextConfig), handleContextConfig);
 			addConfigHandler(instanceOf(Class), handleClass);
+			addConfigHandler(plainObjectMatcher, handleObject);
 			_context.addStateHandler(ManagedObject.SELF_INITIALIZE, onContextSelfInitialize);
 		}
 
@@ -108,13 +124,30 @@ package robotlegs.bender.framework.config.manager.impl
 			}
 		}
 
+		private function handleObject(object:Object):void
+		{
+			if (_context.initialized)
+			{
+				_context.injector.injectInto(object);
+			}
+			else
+			{
+				_plainObjectConfigs.push(object);
+			}
+		}
+
 		private function onContextSelfInitialize():void
 		{
 			for each (var configClass:Class in _plainClassConfigs)
 			{
 				_context.injector.getInstance(configClass);
 			}
+			for each (var configObject:Object in _plainObjectConfigs)
+			{
+				_context.injector.injectInto(configObject);
+			}
 			_plainClassConfigs.length = 0;
+			_plainObjectConfigs.length = 0;
 		}
 	}
 }

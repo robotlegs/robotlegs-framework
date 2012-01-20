@@ -7,54 +7,122 @@
 
 package robotlegs.bender.extensions.mediatorMap.impl
 {
-	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorManager;
+	import flash.display.DisplayObject;
+	import flash.events.Event;
+	import flash.utils.Dictionary;
+	import flash.utils.getDefinitionByName;
+	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
-	import robotlegs.bender.framework.guard.impl.guardsApprove;
-	import robotlegs.bender.framework.hook.impl.applyHooks;
+	import robotlegs.bender.extensions.mediatorMap.api.MediatorFactoryEvent;
 
-	public class DefaultMediatorManager implements IMediatorManager
+	public class DefaultMediatorManager
 	{
+
+		/*============================================================================*/
+		/* Protected Static Properties                                                */
+		/*============================================================================*/
+
+		protected static var UIComponentClass:Class;
+
+		protected static const flexAvailable:Boolean = checkFlex();
 
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var _injector:Injector;
+		private const _mappings:Dictionary = new Dictionary();
+
+		private var _factory:IMediatorFactory;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function DefaultMediatorManager(injector:Injector)
+		public function DefaultMediatorManager(factory:IMediatorFactory)
 		{
-			_injector = injector;
+			_factory = factory;
+			_factory.addEventListener(MediatorFactoryEvent.MEDIATOR_CREATE, onMediatorCreate);
+			_factory.addEventListener(MediatorFactoryEvent.MEDIATOR_REMOVE, onMediatorRemove);
 		}
 
 		/*============================================================================*/
-		/* Public Functions                                                           */
+		/* Private Static Functions                                                   */
 		/*============================================================================*/
 
-		/**
-		 * @inheritDoc
-		 */
-		public function createMediator(view:Object, mapping:IMediatorMapping):Object
+		private static function checkFlex():Boolean
 		{
-			var mediator:Object;
-
-			const viewType:Class = mapping.viewType || view['constructor'];
-			_injector.map(viewType).toValue(view);
-
-			if (guardsApprove(mapping.guards, _injector))
+			try
 			{
-				mediator = _injector.getInstance(mapping.mediatorClass);
-				_injector.map(mapping.mediatorClass).toValue(mediator);
-				applyHooks(mapping.hooks, _injector);
-				_injector.unmap(mapping.mediatorClass);
+				UIComponentClass = getDefinitionByName('mx.core::UIComponent') as Class;
 			}
+			catch (error:Error)
+			{
+				// do nothing
+			}
+			return UIComponentClass != null;
+		}
 
-			_injector.unmap(viewType);
-			return mediator;
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
+
+		private function onMediatorCreate(event:MediatorFactoryEvent):void
+		{
+			const view:DisplayObject = event.view as DisplayObject;
+			if (!view)
+				return;
+			_mappings[event.view] ||= [];
+			_mappings[event.view].push(event.mapping);
+			view.addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
+
+			if (flexAvailable && (event.view is UIComponentClass) && !event.view['initialized'])
+			{
+				view.addEventListener('creationComplete', function(e:Event):void {
+					view.removeEventListener('creationComplete', arguments.callee);
+					// check that we haven't been removed in the meantime
+					if (_factory.getMediator(event.view, event.mapping))
+						initializeMediator(view, event.mediator);
+				}, false, 0, true);
+			}
+			else
+			{
+				initializeMediator(view, event.mediator);
+			}
+		}
+
+		private function onMediatorRemove(event:MediatorFactoryEvent):void
+		{
+			const view:DisplayObject = event.view as DisplayObject;
+			if (!view)
+				return;
+			view.removeEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
+			// note: as far as I know, the re-parenting issue does not exist with Flex 4+.
+			// question: should we bother handling re-parenting?
+			destroyMediator(event.mediator);
+		}
+
+		private function onRemovedFromStage(event:Event):void
+		{
+			const mappings:Array = _mappings[event.target];
+			for each (var mapping:IMediatorMapping in mappings)
+			{
+				mapping.removeMediator(event.target);
+			}
+		}
+
+		private function initializeMediator(view:DisplayObject, mediator:Object):void
+		{
+			if (mediator.hasOwnProperty('viewComponent'))
+				mediator.viewComponent = view;
+
+			if (mediator.hasOwnProperty('initialize'))
+				mediator.initialize();
+		}
+
+		private function destroyMediator(mediator:Object):void
+		{
+			if (mediator.hasOwnProperty('destroy'))
+				mediator.destroy();
 		}
 	}
 }

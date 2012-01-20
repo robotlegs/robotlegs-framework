@@ -9,12 +9,12 @@ package robotlegs.bender.extensions.mediatorMap.impl
 {
 	import flash.utils.Dictionary;
 	import org.hamcrest.Matcher;
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorManager;
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapper;
+	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
+	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMapper;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMappingConfig;
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMappingFinder;
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorUnmapper;
+	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMappingConfig;
+	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMappingFinder;
+	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorUnmapper;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorViewHandler;
 
 	public class MediatorMapper implements IMediatorMapper, IMediatorMappingFinder, IMediatorUnmapper
@@ -30,13 +30,13 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		private var _handler:IMediatorViewHandler;
 
-		private var _manager:IMediatorManager;
+		private var _manager:IMediatorFactory;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function MediatorMapper(matcher:Matcher, handler:IMediatorViewHandler, manager:IMediatorManager)
+		public function MediatorMapper(matcher:Matcher, handler:IMediatorViewHandler, manager:IMediatorFactory)
 		{
 			_matcher = matcher;
 			_handler = handler;

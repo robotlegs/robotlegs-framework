@@ -8,8 +8,12 @@
 package robotlegs.bender.extensions.mediatorMap.api
 {
 
-	public interface IMediatorMapper
+	public interface IMediator
 	{
-		function toMediator(mediatorClass:Class):IMediatorMappingConfig;
+		function set viewComponent(view:Object):void;
+
+		function initialize():void;
+
+		function destroy():void;
 	}
 }

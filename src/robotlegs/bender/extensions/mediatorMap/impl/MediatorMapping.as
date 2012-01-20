@@ -8,9 +8,9 @@
 package robotlegs.bender.extensions.mediatorMap.impl
 {
 	import org.hamcrest.Matcher;
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorManager;
+	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMappingConfig;
+	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMappingConfig;
 
 	public class MediatorMapping implements IMediatorMapping, IMediatorMappingConfig
 	{
@@ -58,17 +58,17 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var _manager:IMediatorManager;
+		private var _factory:IMediatorFactory;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function MediatorMapping(matcher:Matcher, mediatorClass:Class, manager:IMediatorManager)
+		public function MediatorMapping(matcher:Matcher, mediatorClass:Class, manager:IMediatorFactory)
 		{
 			_matcher = matcher;
 			_mediatorClass = mediatorClass;
-			_manager = manager;
+			_factory = manager;
 		}
 
 		/*============================================================================*/
@@ -95,7 +95,12 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		public function createMediator(view:Object):Object
 		{
-			return _manager.createMediator(view, this);
+			return _factory.createMediator(view, this);
+		}
+
+		public function removeMediator(view:Object):void
+		{
+			_factory.removeMediator(view, this);
 		}
 	}
 }

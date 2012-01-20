@@ -22,5 +22,7 @@ package robotlegs.bender.extensions.mediatorMap.api
 		function get hooks():Array;
 
 		function createMediator(view:Object):Object;
+		
+		function removeMediator(view:Object):void;
 	}
 }

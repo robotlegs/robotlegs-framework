@@ -5,11 +5,12 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.mediatorMap.api
+package robotlegs.bender.extensions.mediatorMap.dsl
 {
 
-	public interface IMediatorMappingFinder
+	public interface IMediatorUnmapper
 	{
-		function forMediator(mediatorClass:Class):IMediatorMapping;
+		function fromMediator(mediatorClass:Class):void;
+		function fromMediators():void;
 	}
 }

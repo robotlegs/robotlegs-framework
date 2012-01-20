@@ -7,16 +7,16 @@
 
 package robotlegs.bender.extensions.mediatorMap.api
 {
+	import flash.events.IEventDispatcher;
 
-	public interface IMediatorManager
+	[Event(name="mediatorCreate", type="robotlegs.bender.extensions.mediatorMap.api.MediatorFactoryEvent")]
+	[Event(name="mediatorRemove", type="robotlegs.bender.extensions.mediatorMap.api.MediatorFactoryEvent")]
+	public interface IMediatorFactory extends IEventDispatcher
 	{
-		/**
-		 * Mediator factory function
-		 *
-		 * @param view The view instance to create a mediator for.
-		 * @param mapping The mediator mapping to use.
-		 * @return The mediator
-		 */
 		function createMediator(view:Object, mapping:IMediatorMapping):Object;
+
+		function getMediator(view:Object, mapping:IMediatorMapping):Object;
+
+		function removeMediator(view:Object, mapping:IMediatorMapping):void;
 	}
 }

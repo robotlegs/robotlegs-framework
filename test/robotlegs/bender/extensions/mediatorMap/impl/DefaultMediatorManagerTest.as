@@ -7,19 +7,20 @@
 
 package robotlegs.bender.extensions.mediatorMap.impl
 {
-	import flash.display.DisplayObject;
 	import flash.display.Sprite;
+	import mx.core.UIComponent;
 	import org.flexunit.assertThat;
+	import org.flexunit.async.Async;
+	import org.fluint.uiImpersonation.UIImpersonator;
+	import org.hamcrest.collection.array;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.instanceOf;
 	import org.hamcrest.object.isFalse;
 	import org.hamcrest.object.isTrue;
+	import org.hamcrest.object.nullValue;
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
 	import robotlegs.bender.extensions.mediatorMap.support.CallbackMediator;
-	import robotlegs.bender.framework.guard.support.GrumpyGuard;
-	import robotlegs.bender.framework.guard.support.HappyGuard;
-	import robotlegs.bender.framework.hook.support.CallbackHook;
 
 	public class DefaultMediatorManagerTest
 	{
@@ -30,206 +31,139 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		private var injector:Injector;
 
+		private var factory:MediatorFactory;
+
 		private var manager:DefaultMediatorManager;
+
+		private var container:UIComponent;
 
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
 		/*============================================================================*/
 
-		[Before]
+		[Before(async, ui)]
 		public function before():void
 		{
 			injector = new Injector();
-			manager = new DefaultMediatorManager(injector);
+			factory = new MediatorFactory(injector);
+			manager = new DefaultMediatorManager(factory);
+			container = new UIComponent();
+			UIImpersonator.addElement(container);
 		}
 
 		/*============================================================================*/
 		/* Tests                                                                      */
 		/*============================================================================*/
 
-		[Test]
-		public function mediator_is_created():void
-		{
-			const mapping:IMediatorMapping = new MediatorMapping(instanceOf(Sprite), CallbackMediator, manager);
-			const mediator:Object = manager.createMediator(new Sprite(), mapping);
-			assertThat(mediator, instanceOf(CallbackMediator));
-		}
-
-		[Test]
-		public function mediator_is_injected_into():void
-		{
-			const expected:Number = 128;
-			const mapping:IMediatorMapping = new MediatorMapping(instanceOf(Sprite), InjectedMediator, manager);
-			injector.map(Number).toValue(expected);
-			const mediator:InjectedMediator = manager.createMediator(new Sprite(), mapping) as InjectedMediator;
-			assertThat(mediator.number, equalTo(expected));
-		}
-
-		[Test]
-		public function view_is_injected_as_exact_type_into_mediator():void
-		{
-			const expected:Sprite = new Sprite();
-			const mapping:IMediatorMapping = new MediatorMapping(instanceOf(Sprite), ViewInjectedMediator, manager);
-			const mediator:ViewInjectedMediator = manager.createMediator(expected, mapping) as ViewInjectedMediator;
-			assertThat(mediator.view, equalTo(expected));
-		}
-
-		[Test]
-		public function view_is_injected_as_requested_type_into_mediator():void
-		{
-			const expected:Sprite = new Sprite();
-
-			const mapping:MediatorMapping =
-				new MediatorMapping(instanceOf(Sprite), ViewInjectedAsRequestedMediator, manager);
-
-			mapping.asType(DisplayObject);
-
-			const mediator:ViewInjectedAsRequestedMediator =
-				manager.createMediator(expected, mapping) as ViewInjectedAsRequestedMediator;
-
-			assertThat(mediator.view, equalTo(expected));
-		}
-
-		[Test]
-		public function hooks_are_called():void
-		{
-			assertThat(hookCallCount(CallbackHook, CallbackHook), equalTo(2));
-		}
-
-		[Test]
-		public function hook_receives_mediator_and_view():void
+		[Test(async, ui)]
+		public function mediator_is_removed_when_view_leaves_stage():void
 		{
 			const view:Sprite = new Sprite();
-			var injectedMediator:Object;
-			var injectedView:Object;
-			injector.map(Function, 'callback').toValue(function(hook:MediatorHook):void {
-				injectedMediator = hook.mediator;
-				injectedView = hook.view;
+			const mapping:IMediatorMapping = new MediatorMapping(instanceOf(Sprite), CallbackMediator, factory);
+			container.addChild(view);
+			mapping.createMediator(view);
+			container.removeChild(view);
+			assertThat(factory.getMediator(view, mapping), nullValue());
+		}
+
+		[Test]
+		public function mediator_is_initialized():void
+		{
+			const expected:Array = ['initialize'];
+			const actual:Array = [];
+			injector.map(Function, 'initializeCallback').toValue(function(phase:String):void {
+				actual.push(phase);
 			});
-			const mapping:MediatorMapping =
-				new MediatorMapping(instanceOf(Sprite), ViewInjectedMediator, manager);
-
-			mapping.withHooks(MediatorHook);
-
-			manager.createMediator(view, mapping);
-
-			assertThat(injectedMediator, instanceOf(ViewInjectedMediator));
-			assertThat(injectedView, equalTo(view));
+			const mapping:IMediatorMapping = new MediatorMapping(instanceOf(Sprite), SomeMediator, factory);
+			mapping.createMediator(new Sprite());
+			assertThat(actual, array(expected));
 		}
 
 		[Test]
-		public function mediator_is_created_when_the_guard_allows():void
+		public function mediator_is_given_view():void
 		{
-			assertThat(mediatorCreatedWithGuards(HappyGuard), isTrue());
+			const expected:Sprite = new Sprite();
+			const mapping:IMediatorMapping = new MediatorMapping(instanceOf(Sprite), SomeMediator, factory);
+			const mediator:SomeMediator = mapping.createMediator(expected) as SomeMediator;
+			assertThat(mediator.view, equalTo(expected));
 		}
 
 		[Test]
-		public function mediator_is_created_when_all_guards_allow():void
+		public function mediator_is_destroyed():void
 		{
-			assertThat(mediatorCreatedWithGuards(HappyGuard, HappyGuard), isTrue());
+			const expected:Array = ['destroy'];
+			const actual:Array = [];
+			const view:Sprite = new Sprite();
+			injector.map(Function, 'destroyCallback').toValue(function(phase:String):void {
+				actual.push(phase);
+			});
+			const mapping:IMediatorMapping = new MediatorMapping(instanceOf(Sprite), SomeMediator, factory);
+			mapping.createMediator(view);
+			mapping.removeMediator(view);
+			assertThat(actual, array(expected));
 		}
 
-		[Test]
-		public function mediator_is_not_created_when_the_guard_denies():void
+		[Test(async, ui)]
+		public function mediator_for_UIComponent_is_only_initialized_after_creationComplete():void
 		{
-			assertThat(mediatorCreatedWithGuards(GrumpyGuard), isFalse());
-		}
-
-		[Test]
-		public function mediator_is_not_created_when_any_guards_denies():void
-		{
-			assertThat(mediatorCreatedWithGuards(HappyGuard, GrumpyGuard), isFalse());
-		}
-
-		[Test]
-		public function mediator_is_not_created_when_all_guards_deny():void
-		{
-			assertThat(mediatorCreatedWithGuards(GrumpyGuard, GrumpyGuard), isFalse());
+			const view:UIComponent = new UIComponent();
+			const mapping:IMediatorMapping = new MediatorMapping(instanceOf(UIComponent), SomeMediator, factory);
+			const mediator:SomeMediator = mapping.createMediator(view) as SomeMediator;
+			assertThat(mediator.initialized, isFalse());
+			container.addChild(view);
+			delayAssertion(function():void {
+				assertThat(mediator.initialized, isTrue());
+			}, 10)
 		}
 
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
 
-		private function hookCallCount(... hooks):uint
+		private function delayAssertion(closure:Function, delay:Number = 50):void
 		{
-			var hookCallCount:uint;
-			injector.map(Function, 'hookCallback').toValue(function():void {
-				hookCallCount++;
-			});
-			const mapping:MediatorMapping = new MediatorMapping(instanceOf(Sprite), CallbackMediator, manager);
-			mapping.withHooks(hooks);
-			manager.createMediator(new Sprite(), mapping);
-			return hookCallCount;
-		}
-
-		private function mediatorCreatedWithGuards(... guards):Boolean
-		{
-			const mapping:MediatorMapping = new MediatorMapping(instanceOf(Sprite), CallbackMediator, manager);
-			mapping.withGuards(guards);
-			return manager.createMediator(new Sprite(), mapping);
+			Async.delayCall(this, closure, delay);
 		}
 	}
 }
 
-import flash.display.DisplayObject;
-import flash.display.Sprite;
-
-class InjectedMediator
+class SomeMediator
 {
 
 	/*============================================================================*/
 	/* Public Properties                                                          */
 	/*============================================================================*/
 
-	[Inject]
-	public var number:Number;
-}
+	[Inject(name="initializeCallback", optional="true")]
+	public var initializeCallback:Function;
 
-class ViewInjectedMediator
-{
+	[Inject(name="destroyCallback", optional="true")]
+	public var destroyCallback:Function;
 
-	/*============================================================================*/
-	/* Public Properties                                                          */
-	/*============================================================================*/
+	public var initialized:Boolean;
 
-	[Inject]
-	public var view:Sprite;
-}
+	public var destroyed:Boolean;
 
-class ViewInjectedAsRequestedMediator
-{
+	public var view:Object;
 
-	/*============================================================================*/
-	/* Public Properties                                                          */
-	/*============================================================================*/
-
-	[Inject]
-	public var view:DisplayObject;
-}
-
-class MediatorHook
-{
-
-	/*============================================================================*/
-	/* Public Properties                                                          */
-	/*============================================================================*/
-
-	[Inject]
-	public var view:Sprite;
-
-	[Inject]
-	public var mediator:ViewInjectedMediator;
-
-	[Inject(name="callback", optional="true")]
-	public var callback:Function;
+	public function set viewComponent(view:Object):void
+	{
+		this.view = view;
+	}
 
 	/*============================================================================*/
 	/* Public Functions                                                           */
 	/*============================================================================*/
 
-	public function hook():void
+	public function initialize():void
 	{
-		callback && callback(this);
+		initialized = true;
+		initializeCallback && initializeCallback('initialize');
+	}
+
+	public function destroy():void
+	{
+		destroyed = true;
+		destroyCallback && destroyCallback('destroy');
 	}
 }

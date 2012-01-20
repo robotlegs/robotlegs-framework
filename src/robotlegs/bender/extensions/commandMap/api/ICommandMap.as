@@ -7,6 +7,9 @@
 
 package robotlegs.bender.extensions.commandMap.api
 {
+	import robotlegs.bender.extensions.commandMap.dsl.ICommandMapper;
+	import robotlegs.bender.extensions.commandMap.dsl.ICommandMappingFinder;
+	import robotlegs.bender.extensions.commandMap.dsl.ICommandUnmapper;
 
 	public interface ICommandMap
 	{

@@ -5,11 +5,11 @@
 //  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.commandMap.api
+package robotlegs.bender.extensions.commandMap.dsl
 {
 
-	public interface ICommandUnmapper
+	public interface ICommandMapper
 	{
-		function fromCommand(commandClass:Class):void;
+		function toCommand(commandClass:Class):ICommandMappingConfig;
 	}
 }

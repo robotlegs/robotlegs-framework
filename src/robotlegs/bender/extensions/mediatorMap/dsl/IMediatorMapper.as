@@ -5,15 +5,11 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.mediatorMap.api
+package robotlegs.bender.extensions.mediatorMap.dsl
 {
 
-	public interface IMediatorMappingConfig
+	public interface IMediatorMapper
 	{
-		function asType(viewType:Class):IMediatorMappingConfig;
-
-		function withGuards(... guards):IMediatorMappingConfig;
-
-		function withHooks(... hooks):IMediatorMappingConfig;
+		function toMediator(mediatorClass:Class):IMediatorMappingConfig;
 	}
 }

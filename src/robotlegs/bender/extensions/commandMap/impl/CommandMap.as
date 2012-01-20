@@ -9,10 +9,10 @@ package robotlegs.bender.extensions.commandMap.impl
 {
 	import flash.utils.Dictionary;
 	import robotlegs.bender.extensions.commandMap.api.ICommandMap;
-	import robotlegs.bender.extensions.commandMap.api.ICommandMapper;
-	import robotlegs.bender.extensions.commandMap.api.ICommandMappingFinder;
+	import robotlegs.bender.extensions.commandMap.dsl.ICommandMapper;
+	import robotlegs.bender.extensions.commandMap.dsl.ICommandMappingFinder;
 	import robotlegs.bender.extensions.commandMap.api.ICommandTrigger;
-	import robotlegs.bender.extensions.commandMap.api.ICommandUnmapper;
+	import robotlegs.bender.extensions.commandMap.dsl.ICommandUnmapper;
 
 	public class CommandMap implements ICommandMap
 	{
