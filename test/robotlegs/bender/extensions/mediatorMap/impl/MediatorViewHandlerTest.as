@@ -27,7 +27,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		private var injector:Injector;
 
-		private var factory:DefaultMediatorFactory;
+		private var manager:DefaultMediatorManager;
 
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
@@ -38,7 +38,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		{
 			handler = new MediatorViewHandler();
 			injector = new Injector();
-			factory = new DefaultMediatorFactory(injector);
+			manager = new DefaultMediatorManager(injector);
 		}
 
 		/*============================================================================*/
@@ -52,7 +52,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			injector.map(Function, 'callback').toValue(function(mediator:Object):void {
 				createdMediator = mediator;
 			});
-			const mapping:MediatorMapping = new MediatorMapping(instanceOf(Sprite), CallbackMediator, factory);
+			const mapping:MediatorMapping = new MediatorMapping(instanceOf(Sprite), CallbackMediator, manager);
 			handler.addMapping(mapping);
 			handler.handleView(new Sprite(), Sprite);
 			assertThat(createdMediator, notNullValue());
@@ -65,7 +65,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			injector.map(Function, 'callback').toValue(function(mediator:Object):void {
 				createdMediator = mediator;
 			});
-			const mapping:MediatorMapping = new MediatorMapping(instanceOf(MovieClip), CallbackMediator, factory);
+			const mapping:MediatorMapping = new MediatorMapping(instanceOf(MovieClip), CallbackMediator, manager);
 			handler.addMapping(mapping);
 			handler.handleView(new Sprite(), Sprite);
 			assertThat(createdMediator, nullValue());

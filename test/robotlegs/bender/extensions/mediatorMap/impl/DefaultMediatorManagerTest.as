@@ -21,7 +21,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import robotlegs.bender.framework.guard.support.HappyGuard;
 	import robotlegs.bender.framework.hook.support.CallbackHook;
 
-	public class DefaultMediatorFactoryTest
+	public class DefaultMediatorManagerTest
 	{
 
 		/*============================================================================*/
@@ -30,7 +30,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		private var injector:Injector;
 
-		private var factory:DefaultMediatorFactory;
+		private var manager:DefaultMediatorManager;
 
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
@@ -40,7 +40,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		public function before():void
 		{
 			injector = new Injector();
-			factory = new DefaultMediatorFactory(injector);
+			manager = new DefaultMediatorManager(injector);
 		}
 
 		/*============================================================================*/
@@ -50,8 +50,8 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		[Test]
 		public function mediator_is_created():void
 		{
-			const mapping:IMediatorMapping = new MediatorMapping(instanceOf(Sprite), CallbackMediator, factory);
-			const mediator:Object = factory.createMediator(new Sprite(), mapping);
+			const mapping:IMediatorMapping = new MediatorMapping(instanceOf(Sprite), CallbackMediator, manager);
+			const mediator:Object = manager.createMediator(new Sprite(), mapping);
 			assertThat(mediator, instanceOf(CallbackMediator));
 		}
 
@@ -59,9 +59,9 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		public function mediator_is_injected_into():void
 		{
 			const expected:Number = 128;
-			const mapping:IMediatorMapping = new MediatorMapping(instanceOf(Sprite), InjectedMediator, factory);
+			const mapping:IMediatorMapping = new MediatorMapping(instanceOf(Sprite), InjectedMediator, manager);
 			injector.map(Number).toValue(expected);
-			const mediator:InjectedMediator = factory.createMediator(new Sprite(), mapping) as InjectedMediator;
+			const mediator:InjectedMediator = manager.createMediator(new Sprite(), mapping) as InjectedMediator;
 			assertThat(mediator.number, equalTo(expected));
 		}
 
@@ -69,8 +69,8 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		public function view_is_injected_as_exact_type_into_mediator():void
 		{
 			const expected:Sprite = new Sprite();
-			const mapping:IMediatorMapping = new MediatorMapping(instanceOf(Sprite), ViewInjectedMediator, factory);
-			const mediator:ViewInjectedMediator = factory.createMediator(expected, mapping) as ViewInjectedMediator;
+			const mapping:IMediatorMapping = new MediatorMapping(instanceOf(Sprite), ViewInjectedMediator, manager);
+			const mediator:ViewInjectedMediator = manager.createMediator(expected, mapping) as ViewInjectedMediator;
 			assertThat(mediator.view, equalTo(expected));
 		}
 
@@ -80,12 +80,12 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			const expected:Sprite = new Sprite();
 
 			const mapping:MediatorMapping =
-				new MediatorMapping(instanceOf(Sprite), ViewInjectedAsRequestedMediator, factory);
+				new MediatorMapping(instanceOf(Sprite), ViewInjectedAsRequestedMediator, manager);
 
 			mapping.asType(DisplayObject);
 
 			const mediator:ViewInjectedAsRequestedMediator =
-				factory.createMediator(expected, mapping) as ViewInjectedAsRequestedMediator;
+				manager.createMediator(expected, mapping) as ViewInjectedAsRequestedMediator;
 
 			assertThat(mediator.view, equalTo(expected));
 		}
@@ -107,11 +107,11 @@ package robotlegs.bender.extensions.mediatorMap.impl
 				injectedView = hook.view;
 			});
 			const mapping:MediatorMapping =
-				new MediatorMapping(instanceOf(Sprite), ViewInjectedMediator, factory);
+				new MediatorMapping(instanceOf(Sprite), ViewInjectedMediator, manager);
 
 			mapping.withHooks(MediatorHook);
 
-			factory.createMediator(view, mapping);
+			manager.createMediator(view, mapping);
 
 			assertThat(injectedMediator, instanceOf(ViewInjectedMediator));
 			assertThat(injectedView, equalTo(view));
@@ -157,17 +157,17 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			injector.map(Function, 'hookCallback').toValue(function():void {
 				hookCallCount++;
 			});
-			const mapping:MediatorMapping = new MediatorMapping(instanceOf(Sprite), CallbackMediator, factory);
+			const mapping:MediatorMapping = new MediatorMapping(instanceOf(Sprite), CallbackMediator, manager);
 			mapping.withHooks(hooks);
-			factory.createMediator(new Sprite(), mapping);
+			manager.createMediator(new Sprite(), mapping);
 			return hookCallCount;
 		}
 
 		private function mediatorCreatedWithGuards(... guards):Boolean
 		{
-			const mapping:MediatorMapping = new MediatorMapping(instanceOf(Sprite), CallbackMediator, factory);
+			const mapping:MediatorMapping = new MediatorMapping(instanceOf(Sprite), CallbackMediator, manager);
 			mapping.withGuards(guards);
-			return factory.createMediator(new Sprite(), mapping);
+			return manager.createMediator(new Sprite(), mapping);
 		}
 	}
 }

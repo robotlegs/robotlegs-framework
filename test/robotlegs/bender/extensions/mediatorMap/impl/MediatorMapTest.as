@@ -13,7 +13,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import org.hamcrest.object.notNullValue;
 	import org.hamcrest.object.nullValue;
 	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
+	import robotlegs.bender.extensions.mediatorMap.api.IMediatorManager;
 	import robotlegs.bender.extensions.mediatorMap.support.CallbackMediator;
 	import robotlegs.bender.extensions.mediatorMap.support.NullMediator;
 
@@ -26,7 +26,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		private var injector:Injector;
 
-		private var mediatorFactory:IMediatorFactory;
+		private var manager:IMediatorManager;
 
 		private var mediatorMap:MediatorMap;
 
@@ -38,8 +38,8 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		public function before():void
 		{
 			injector = new Injector();
-			mediatorFactory = new DefaultMediatorFactory(injector);
-			mediatorMap = new MediatorMap(mediatorFactory);
+			manager = new DefaultMediatorManager(injector);
+			mediatorMap = new MediatorMap(manager);
 		}
 
 		/*============================================================================*/

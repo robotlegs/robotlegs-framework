@@ -9,7 +9,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 {
 	import flash.utils.Dictionary;
 	import org.hamcrest.Matcher;
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
+	import robotlegs.bender.extensions.mediatorMap.api.IMediatorManager;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapper;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMappingConfig;
@@ -30,17 +30,17 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		private var _handler:IMediatorViewHandler;
 
-		private var _factory:IMediatorFactory;
+		private var _manager:IMediatorManager;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function MediatorMapper(matcher:Matcher, handler:IMediatorViewHandler, factory:IMediatorFactory)
+		public function MediatorMapper(matcher:Matcher, handler:IMediatorViewHandler, manager:IMediatorManager)
 		{
 			_matcher = matcher;
 			_handler = handler;
-			_factory = factory;
+			_manager = manager;
 		}
 
 		/*============================================================================*/
@@ -79,7 +79,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		private function createMapping(mediatorClass:Class):MediatorMapping
 		{
-			const mapping:MediatorMapping = new MediatorMapping(_matcher, mediatorClass, _factory);
+			const mapping:MediatorMapping = new MediatorMapping(_matcher, mediatorClass, _manager);
 			_handler.addMapping(mapping);
 			return mapping;
 		}

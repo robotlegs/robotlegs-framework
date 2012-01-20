@@ -7,9 +7,9 @@
 
 package robotlegs.bender.extensions.mediatorMap
 {
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
+	import robotlegs.bender.extensions.mediatorMap.api.IMediatorManager;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMap;
-	import robotlegs.bender.extensions.mediatorMap.impl.DefaultMediatorFactory;
+	import robotlegs.bender.extensions.mediatorMap.impl.DefaultMediatorManager;
 	import robotlegs.bender.extensions.mediatorMap.impl.MediatorMap;
 	import robotlegs.bender.framework.context.api.IContext;
 	import robotlegs.bender.framework.context.api.IContextConfig;
@@ -23,7 +23,7 @@ package robotlegs.bender.extensions.mediatorMap
 
 		public function configureContext(context:IContext):void
 		{
-			context.injector.map(IMediatorFactory).toSingleton(DefaultMediatorFactory);
+			context.injector.map(IMediatorManager).toSingleton(DefaultMediatorManager);
 			context.injector.map(IMediatorMap).toSingleton(MediatorMap);
 		}
 	}

@@ -8,12 +8,12 @@
 package robotlegs.bender.extensions.mediatorMap.impl
 {
 	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
+	import robotlegs.bender.extensions.mediatorMap.api.IMediatorManager;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
 	import robotlegs.bender.framework.guard.impl.guardsApprove;
 	import robotlegs.bender.framework.hook.impl.applyHooks;
 
-	public class DefaultMediatorFactory implements IMediatorFactory
+	public class DefaultMediatorManager implements IMediatorManager
 	{
 
 		/*============================================================================*/
@@ -26,7 +26,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function DefaultMediatorFactory(injector:Injector)
+		public function DefaultMediatorManager(injector:Injector)
 		{
 			_injector = injector;
 		}

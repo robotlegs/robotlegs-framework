@@ -8,7 +8,7 @@
 package robotlegs.bender.extensions.mediatorMap.impl
 {
 	import org.hamcrest.Matcher;
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
+	import robotlegs.bender.extensions.mediatorMap.api.IMediatorManager;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMappingConfig;
 
@@ -58,17 +58,17 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var _factory:IMediatorFactory;
+		private var _manager:IMediatorManager;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function MediatorMapping(matcher:Matcher, mediatorClass:Class, factory:IMediatorFactory)
+		public function MediatorMapping(matcher:Matcher, mediatorClass:Class, manager:IMediatorManager)
 		{
 			_matcher = matcher;
 			_mediatorClass = mediatorClass;
-			_factory = factory;
+			_manager = manager;
 		}
 
 		/*============================================================================*/
@@ -78,12 +78,6 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		public function asType(viewType:Class):IMediatorMappingConfig
 		{
 			_viewType = viewType;
-			return this;
-		}
-
-		public function withFactory(factory:IMediatorFactory):IMediatorMappingConfig
-		{
-			_factory = factory;
 			return this;
 		}
 
@@ -101,7 +95,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		public function createMediator(view:Object):Object
 		{
-			return _factory.createMediator(view, this);
+			return _manager.createMediator(view, this);
 		}
 	}
 }

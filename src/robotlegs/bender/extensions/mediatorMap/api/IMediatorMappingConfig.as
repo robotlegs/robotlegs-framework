@@ -15,7 +15,5 @@ package robotlegs.bender.extensions.mediatorMap.api
 		function withGuards(... guards):IMediatorMappingConfig;
 
 		function withHooks(... hooks):IMediatorMappingConfig;
-
-		function withFactory(factory:IMediatorFactory):IMediatorMappingConfig;
 	}
 }

@@ -8,7 +8,7 @@
 package robotlegs.bender.extensions.mediatorMap.api
 {
 
-	public interface IMediatorFactory
+	public interface IMediatorManager
 	{
 		/**
 		 * Mediator factory function
