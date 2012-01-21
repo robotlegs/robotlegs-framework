@@ -15,11 +15,13 @@ package robotlegs.bender.framework.guard.impl
 
 	/**
 	 * <p>A guard can be a function, object or class.</p>
+	 * 
+	 * <p>When a function is provided it is expected to return a Boolean when called.</p>
 	 *
-	 * <p>When an object is passed it is expected to expose an "approve" method
+	 * <p>When an object is provided it is expected to expose an "approve" method
 	 * that returns a Boolean.</p>
 	 *
-	 * <p>When a class is passed, an instance of that class will be instantiated and tested.
+	 * <p>When a class is provided, an instance of that class will be instantiated and tested.
 	 * If an injector is provided the instance will be created using that injector,
 	 * otherwise the instance will be created manually.</p>
 	 *

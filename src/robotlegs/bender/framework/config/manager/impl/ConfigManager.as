@@ -85,6 +85,7 @@ package robotlegs.bender.framework.config.manager.impl
 		private function configure():void
 		{
 			addConfigHandler(instanceOf(IContextConfig), handleContextConfig);
+			// todo: make a classOf(IContextConfig) matcher
 			addConfigHandler(instanceOf(Class), handleClass);
 			addConfigHandler(plainObjectMatcher, handleObject);
 			_context.addStateHandler(ManagedObject.SELF_INITIALIZE, onContextSelfInitialize);
@@ -102,6 +103,7 @@ package robotlegs.bender.framework.config.manager.impl
 
 		private function handleClass(type:Class):void
 		{
+			// todo: this can be replaced by a classOf(type) matcher
 			if (_reflector.typeImplements(type, IContextConfig))
 			{
 				addConfig(new type());
