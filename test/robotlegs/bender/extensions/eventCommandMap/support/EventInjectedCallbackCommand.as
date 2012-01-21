@@ -5,11 +5,22 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.commandMap.support
+package robotlegs.bender.extensions.eventCommandMap.support
 {
+	import flash.events.Event;
 
-	public class NullCommand
+	public class EventInjectedCallbackCommand
 	{
+
+		/*============================================================================*/
+		/* Public Properties                                                          */
+		/*============================================================================*/
+
+		[Inject]
+		public var event:Event;
+
+		[Inject(name="executeCallback")]
+		public var callback:Function;
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
@@ -17,6 +28,7 @@ package robotlegs.bender.extensions.commandMap.support
 
 		public function execute():void
 		{
+			callback(this);
 		}
 	}
 }

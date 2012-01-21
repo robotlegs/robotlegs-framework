@@ -5,18 +5,31 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.commandMap.support
+package robotlegs.bender.extensions.eventCommandMap.support
 {
+	import flash.events.Event;
 
-	public class NullCommand
+	public class EventInjectedCallbackGuard
 	{
+
+		/*============================================================================*/
+		/* Public Properties                                                          */
+		/*============================================================================*/
+
+		[Inject]
+		public var event:Event;
+
+		[Inject(name="approveCallback")]
+		public var callback:Function;
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function execute():void
+		public function approve():Boolean
 		{
+			callback(this);
+			return true;
 		}
 	}
 }

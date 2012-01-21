@@ -13,6 +13,7 @@ package robotlegs.bender.extensions
 	import robotlegs.bender.extensions.eventDispatcher.EventDispatcherExtensionTestSuite;
 	import robotlegs.bender.extensions.localEventMap.LocalEventMapExtensionTestSuite;
 	import robotlegs.bender.extensions.mediatorMap.MediatorMapExtensionTestSuite;
+	import robotlegs.bender.extensions.messageCommandMap.MessageCommandMapExtensionTestSuite;
 	import robotlegs.bender.extensions.modularity.ModularityExtensionTestSuite;
 	import robotlegs.bender.extensions.stageSync.StageSyncExtensionTestSuite;
 	import robotlegs.bender.extensions.viewManager.ViewManagerExtensionTestSuite;
@@ -37,6 +38,8 @@ package robotlegs.bender.extensions
 		public var localEventMapExtension:LocalEventMapExtensionTestSuite;
 
 		public var mediatorMapExtension:MediatorMapExtensionTestSuite;
+
+		public var messageCommandMapExtension:MessageCommandMapExtensionTestSuite;
 
 		public var modularityExtension:ModularityExtensionTestSuite;
 

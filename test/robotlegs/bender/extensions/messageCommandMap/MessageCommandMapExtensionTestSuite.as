@@ -5,27 +5,24 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.commandMap.support
+package robotlegs.bender.extensions.messageCommandMap
 {
+	import robotlegs.bender.extensions.messageCommandMap.impl.MessageCommandMapTest;
+	import robotlegs.bender.extensions.messageCommandMap.impl.MessageCommandTriggerTest;
 
-	public class SelfReportingCallbackGuard
+	[RunWith("org.flexunit.runners.Suite")]
+	[Suite]
+	public class MessageCommandMapExtensionTestSuite
 	{
 
 		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		[Inject(name="approveCallback")]
-		public var callback:Function;
+		public var messageCommandMapExtension:MessageCommandMapExtensionTest;
 
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
+		public var messageCommandMap:MessageCommandMapTest;
 
-		public function approve():Boolean
-		{
-			callback(this);
-			return true;
-		}
+		public var messageCommandTrigger:MessageCommandTriggerTest;
 	}
 }

@@ -5,20 +5,19 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.eventCommandMap.impl
+package robotlegs.bender.extensions.messageCommandMap.impl
 {
-	import flash.events.EventDispatcher;
-	import org.hamcrest.assertThat;
+	import org.flexunit.assertThat;
 	import org.hamcrest.object.notNullValue;
 	import org.hamcrest.object.nullValue;
 	import org.swiftsuspenders.Injector;
+	import robotlegs.bender.core.message.dispatcher.impl.MessageDispatcher;
 	import robotlegs.bender.extensions.commandMap.api.ICommandMap;
 	import robotlegs.bender.extensions.commandMap.impl.CommandMap;
 	import robotlegs.bender.extensions.commandMap.support.NullCommand;
-	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
-	import robotlegs.bender.extensions.eventCommandMap.support.SupportEvent;
+	import robotlegs.bender.extensions.messageCommandMap.api.IMessageCommandMap;
 
-	public class EventCommandMapTest
+	public class MessageCommandMapTest
 	{
 
 		/*============================================================================*/
@@ -27,11 +26,13 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 
 		private var injector:Injector;
 
-		private var dispatcher:EventDispatcher;
+		private var dispatcher:MessageDispatcher;
 
 		private var commandMap:ICommandMap;
 
-		private var eventCommandMap:IEventCommandMap;
+		private var messageCommandMap:IMessageCommandMap;
+
+		private var message:Object;
 
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
@@ -41,9 +42,10 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		public function before():void
 		{
 			injector = new Injector();
-			dispatcher = new EventDispatcher();
+			dispatcher = new MessageDispatcher();
 			commandMap = new CommandMap();
-			eventCommandMap = new EventCommandMap(injector, dispatcher, commandMap);
+			messageCommandMap = new MessageCommandMap(injector, dispatcher, commandMap);
+			message = {};
 		}
 
 		/*============================================================================*/
@@ -51,24 +53,24 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		/*============================================================================*/
 
 		[Test]
-		public function mapEvent_creates_mapper():void
+		public function mapMessage_creates_mapper():void
 		{
-			assertThat(eventCommandMap.map(SupportEvent.TYPE1, SupportEvent), notNullValue());
+			assertThat(messageCommandMap.map(message), notNullValue());
 		}
 
 		[Test]
-		public function mapEvent_to_command_stores_mapping():void
+		public function mapMessage_to_command_stores_mapping():void
 		{
-			eventCommandMap.map(SupportEvent.TYPE1).toCommand(NullCommand);
-			assertThat(eventCommandMap.getMapping(SupportEvent.TYPE1).forCommand(NullCommand), notNullValue());
+			messageCommandMap.map(message).toCommand(NullCommand);
+			assertThat(messageCommandMap.getMapping(message).forCommand(NullCommand), notNullValue());
 		}
 
 		[Test]
-		public function unmapEvent_from_command_removes_mapping():void
+		public function unmapMessage_from_command_removes_mapping():void
 		{
-			eventCommandMap.map(SupportEvent.TYPE1).toCommand(NullCommand);
-			eventCommandMap.unmap(SupportEvent.TYPE1).fromCommand(NullCommand);
-			assertThat(eventCommandMap.getMapping(SupportEvent.TYPE1).forCommand(NullCommand), nullValue());
+			messageCommandMap.map(message).toCommand(NullCommand);
+			messageCommandMap.unmap(message).fromCommand(NullCommand);
+			assertThat(messageCommandMap.getMapping(message).forCommand(NullCommand), nullValue());
 		}
 	}
 }

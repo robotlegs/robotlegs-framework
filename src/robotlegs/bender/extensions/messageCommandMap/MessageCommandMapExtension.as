@@ -5,18 +5,23 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.commandMap.support
+package robotlegs.bender.extensions.messageCommandMap
 {
+	import robotlegs.bender.extensions.messageCommandMap.api.IMessageCommandMap;
+	import robotlegs.bender.extensions.messageCommandMap.impl.MessageCommandMap;
+	import robotlegs.bender.framework.context.api.IContext;
+	import robotlegs.bender.framework.context.api.IContextConfig;
 
-	public class NullCommand
+	public class MessageCommandMapExtension implements IContextConfig
 	{
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function execute():void
+		public function configureContext(context:IContext):void
 		{
+			context.injector.map(IMessageCommandMap).toSingleton(MessageCommandMap);
 		}
 	}
 }

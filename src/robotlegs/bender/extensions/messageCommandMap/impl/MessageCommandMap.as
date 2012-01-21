@@ -5,19 +5,19 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.eventCommandMap.impl
+package robotlegs.bender.extensions.messageCommandMap.impl
 {
-	import flash.events.IEventDispatcher;
 	import flash.utils.Dictionary;
 	import org.swiftsuspenders.Injector;
+	import robotlegs.bender.core.message.dispatcher.api.IMessageDispatcher;
 	import robotlegs.bender.extensions.commandMap.api.ICommandMap;
 	import robotlegs.bender.extensions.commandMap.api.ICommandTrigger;
 	import robotlegs.bender.extensions.commandMap.dsl.ICommandMapper;
 	import robotlegs.bender.extensions.commandMap.dsl.ICommandMappingFinder;
 	import robotlegs.bender.extensions.commandMap.dsl.ICommandUnmapper;
-	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
+	import robotlegs.bender.extensions.messageCommandMap.api.IMessageCommandMap;
 
-	public class EventCommandMap implements IEventCommandMap
+	public class MessageCommandMap implements IMessageCommandMap
 	{
 
 		/*============================================================================*/
@@ -28,7 +28,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 
 		private var _injector:Injector;
 
-		private var _dispatcher:IEventDispatcher;
+		private var _dispatcher:IMessageDispatcher;
 
 		private var _commandMap:ICommandMap;
 
@@ -36,7 +36,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function EventCommandMap(injector:Injector, dispatcher:IEventDispatcher, commandMap:ICommandMap)
+		public function MessageCommandMap(injector:Injector, dispatcher:IMessageDispatcher, commandMap:ICommandMap)
 		{
 			_injector = injector;
 			_dispatcher = dispatcher;
@@ -47,36 +47,36 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function map(type:String, eventClass:Class = null, once:Boolean = false):ICommandMapper
+		public function map(message:Object, once:Boolean = false):ICommandMapper
 		{
 			const trigger:ICommandTrigger =
-				_triggers[type + eventClass] ||=
-				createTrigger(type, eventClass, once);
+				_triggers[message] ||=
+				createTrigger(message, once);
 			return _commandMap.map(trigger);
 		}
 
-		public function unmap(type:String, eventClass:Class = null):ICommandUnmapper
+		public function unmap(message:Object):ICommandUnmapper
 		{
-			return _commandMap.unmap(getTrigger(type, eventClass));
+			return _commandMap.unmap(getTrigger(message));
 		}
 
-		public function getMapping(type:String, eventClass:Class = null):ICommandMappingFinder
+		public function getMapping(message:Object):ICommandMappingFinder
 		{
-			return _commandMap.getMapping(getTrigger(type, eventClass));
+			return _commandMap.getMapping(getTrigger(message));
 		}
 
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
 
-		private function createTrigger(type:String, eventClass:Class = null, once:Boolean = false):ICommandTrigger
+		private function createTrigger(message:Object, once:Boolean = false):ICommandTrigger
 		{
-			return new EventCommandTrigger(_injector, _dispatcher, type, eventClass, once);
+			return new MessageCommandTrigger(_injector, _dispatcher, message, once);
 		}
 
-		private function getTrigger(type:String, eventClass:Class = null):ICommandTrigger
+		private function getTrigger(message:Object):ICommandTrigger
 		{
-			return _triggers[type + eventClass];
+			return _triggers[message];
 		}
 	}
 }

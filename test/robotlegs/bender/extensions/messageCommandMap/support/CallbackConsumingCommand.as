@@ -5,18 +5,19 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.commandMap.support
+package robotlegs.bender.extensions.messageCommandMap.support
 {
 
-	public class NullCommand
+	public class CallbackConsumingCommand
 	{
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function execute():void
+		public function execute(message:Object, callback:Function):void
 		{
+			// note: callback is not called, this halts the flow
 		}
 	}
 }

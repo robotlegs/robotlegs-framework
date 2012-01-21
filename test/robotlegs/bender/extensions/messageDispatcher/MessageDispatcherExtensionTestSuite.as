@@ -5,18 +5,18 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.commandMap.support
+package robotlegs.bender.extensions.messageDispatcher
 {
 
-	public class NullCommand
+	[RunWith("org.flexunit.runners.Suite")]
+	[Suite]
+	public class MessageDispatcherExtensionTestSuite
 	{
 
 		/*============================================================================*/
-		/* Public Functions                                                           */
+		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		public function execute():void
-		{
-		}
+		public var messageDispatcherExtension:MessageDispatcherExtensionTest;
 	}
 }
