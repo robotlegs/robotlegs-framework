@@ -13,11 +13,14 @@ package robotlegs.bender.framework.context.impl
 	import robotlegs.bender.framework.config.manager.api.IConfigManager;
 	import robotlegs.bender.framework.config.manager.impl.ConfigManager;
 	import robotlegs.bender.framework.context.api.IContext;
+	import robotlegs.bender.framework.logging.api.ILogTarget;
+	import robotlegs.bender.framework.logging.api.ILogger;
+	import robotlegs.bender.framework.logging.impl.Logger;
 	import robotlegs.bender.framework.object.managed.api.IManagedObject;
 	import robotlegs.bender.framework.object.manager.api.IObjectManager;
 	import robotlegs.bender.framework.object.manager.impl.ObjectManager;
 
-	public class Context implements IContext
+	public class Context implements IContext, ILogTarget
 	{
 
 		/*============================================================================*/
@@ -144,6 +147,16 @@ package robotlegs.bender.framework.context.impl
 		{
 			_managedObject.removeStateHandler(step, handler);
 			return this;
+		}
+
+		public function getLogger(source:Object):ILogger
+		{
+			return new Logger(source, this);
+		}
+
+		public function log(source:Object, level:uint, timestamp:int, message:*, parameters:Array = null):void
+		{
+			trace(this, source, level, timestamp, message, parameters);
 		}
 
 		/*============================================================================*/

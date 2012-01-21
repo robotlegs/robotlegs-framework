@@ -19,6 +19,7 @@ package robotlegs.bender.framework.config.manager.impl
 	import robotlegs.bender.framework.config.manager.api.IConfigManager;
 	import robotlegs.bender.framework.context.api.IContext;
 	import robotlegs.bender.framework.context.api.IContextConfig;
+	import robotlegs.bender.framework.logging.api.ILogger;
 	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
 
 	public class ConfigManager implements IConfigManager
@@ -50,6 +51,8 @@ package robotlegs.bender.framework.config.manager.impl
 
 		private var _context:IContext;
 
+		private var _logger:ILogger;
+
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
@@ -57,6 +60,7 @@ package robotlegs.bender.framework.config.manager.impl
 		public function ConfigManager(context:IContext)
 		{
 			_context = context;
+			_logger = _context.getLogger(this);
 			configure();
 		}
 
@@ -68,6 +72,7 @@ package robotlegs.bender.framework.config.manager.impl
 		{
 			if (!hasConfig(config))
 			{
+				_logger.info("Adding config {0}", [config]);
 				_configs.push(config);
 				_objectProcessor.addObject(config);
 			}
@@ -75,6 +80,8 @@ package robotlegs.bender.framework.config.manager.impl
 
 		public function addConfigHandler(matcher:Matcher, handler:Function):void
 		{
+			// _logger.info({addConfigHandler: {matcher: matcher, handler: handler}});
+			_logger.info("Adding config handler {1} to matcher {0}", [matcher, handler]);
 			_objectProcessor.addObjectHandler(matcher, handler);
 		}
 
@@ -98,6 +105,7 @@ package robotlegs.bender.framework.config.manager.impl
 
 		private function handleContextConfig(config:IContextConfig):void
 		{
+			_logger.info("Handling IContextConfig {0}", [config]);
 			config.configureContext(_context);
 		}
 
@@ -118,10 +126,12 @@ package robotlegs.bender.framework.config.manager.impl
 		{
 			if (_context.initialized)
 			{
+				_logger.info("Context alread initialized. Handling plain class {0}", [type]);
 				_context.injector.getInstance(type);
 			}
 			else
 			{
+				_logger.info("Context not initialized. Queuing plain class {0}", [type]);
 				_plainClassConfigs.push(type);
 			}
 		}
@@ -130,10 +140,12 @@ package robotlegs.bender.framework.config.manager.impl
 		{
 			if (_context.initialized)
 			{
+				_logger.info("Context alread initialized. Handling plain object {0}", [object]);
 				_context.injector.injectInto(object);
 			}
 			else
 			{
+				_logger.info("Context not initialized. Queuing plain object {0}", [object]);
 				_plainObjectConfigs.push(object);
 			}
 		}
@@ -142,10 +154,12 @@ package robotlegs.bender.framework.config.manager.impl
 		{
 			for each (var configClass:Class in _plainClassConfigs)
 			{
+				_logger.info("Context initialized. Handling plain class {0}", [configClass]);
 				_context.injector.getInstance(configClass);
 			}
 			for each (var configObject:Object in _plainObjectConfigs)
 			{
+				_logger.info("Context initialized. Handling plain object {0}", [configObject]);
 				_context.injector.injectInto(configObject);
 			}
 			_plainClassConfigs.length = 0;

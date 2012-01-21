@@ -9,6 +9,7 @@ package robotlegs.bender.framework.context.api
 {
 	import org.hamcrest.Matcher;
 	import org.swiftsuspenders.Injector;
+	import robotlegs.bender.framework.logging.api.ILogger;
 	import robotlegs.bender.framework.object.managed.api.IManagedObject;
 
 	public interface IContext extends Matcher
@@ -40,5 +41,7 @@ package robotlegs.bender.framework.context.api
 		function addStateHandler(step:String, handler:Function):IContext;
 
 		function removeStateHandler(step:String, handler:Function):IContext;
+
+		function getLogger(source:Object):ILogger;
 	}
 }
