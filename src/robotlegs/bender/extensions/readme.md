@@ -1,5 +1,7 @@
 # Robotlegs Extensions
 
+A selection of built-in extensions.
+
 ## Extensions Vs Bundles
 
 An extension integrates a single utility or library into a Robotlegs context.

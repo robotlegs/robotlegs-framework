@@ -1,6 +1,6 @@
 # Async
 
-To deal with asynchronicity we must establish some conventions.
+To deal with asynchroneity in the framework we must establish some conventions.
 
 # Handlers and Callbacks
 

@@ -1,5 +1,7 @@
 # Robotlegs Bundles
 
+A selection of built-in bundles.
+
 ## Bundles Vs Extensions
 
 An extension integrates a single utility or library into a Robotlegs context.
@@ -25,4 +27,6 @@ A bundle implements the IContextConfig interface. When included into a context, 
     }
 
 NOTE: The context instance provided to configureContext() may not be fully initialized.
+
+A bundle should do little more than include required extensions.
 

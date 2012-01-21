@@ -16,37 +16,3 @@ These core components are composed to form:
 + An object manager
 + A configuration manager
 + A context
-
-## Code
-
-The codebase is broken down as follows:
-
-### Core
-
-The low level stuff:
-
-+ MessageDispatcher
-+ StateMachine
-+ ObjectProcessor
-
-### Framework
-
-The high level stuff:
-
-+ ObjectManager
-+ ConfigManager
-+ Context
-
-### Extensions
-
-Built-in framework extensions:
-
-+ ContextViewExtension
-+ StageSyncExtension
-+ ModularityExtension
-
-### Bundles
-
-Built-in bundles:
-
-+ ClassicRobotlegsBundle
