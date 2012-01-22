@@ -6,6 +6,10 @@ The source for Robotlegs 1 can be found in the master branch:
 
 https://github.com/robotlegs/robotlegs-framework/tree/master
 
+# Note For Extension Authors
+
+Extensions have changed. Please see: robotlegs.bender.extensions
+
 # Robotlegs
 
 Robotlegs is an Action Script application framework for Flash and Flex. It offers:
@@ -22,6 +26,7 @@ Robotlegs 2 is a complete rewrite of the Robotlegs framework. It features:
 
 + Better configuration
 + Better extension
++ Flexible type matching
 
 # Robotlegs v1 vs v2
 
