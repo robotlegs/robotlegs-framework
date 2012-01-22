@@ -8,8 +8,14 @@
 package robotlegs.bender.framework.logging.api
 {
 
-	public interface ILogTarget
+	public interface ILogManager
 	{
-		function log(source:Object, level:uint, timestamp:int, message:String, params:Array = null):void;
+		function get logLevel():uint;
+
+		function set logLevel(value:uint):void;
+
+		function getLogger(source:Object):ILogger;
+
+		function addLogTarget(target:ILogTarget):void;
 	}
 }

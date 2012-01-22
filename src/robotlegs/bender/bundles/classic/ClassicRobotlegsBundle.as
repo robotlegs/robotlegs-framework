@@ -13,6 +13,7 @@ package robotlegs.bender.bundles.classic
 	import robotlegs.bender.extensions.eventCommandMap.EventCommandMapExtension;
 	import robotlegs.bender.extensions.eventDispatcher.EventDispatcherExtension;
 	import robotlegs.bender.extensions.localEventMap.LocalEventMapExtension;
+	import robotlegs.bender.extensions.logging.TraceLoggingExtension;
 	import robotlegs.bender.extensions.mediatorMap.MediatorMapExtension;
 	import robotlegs.bender.extensions.modularity.ModularityExtension;
 	import robotlegs.bender.extensions.stageSync.StageSyncExtension;
@@ -32,6 +33,7 @@ package robotlegs.bender.bundles.classic
 		public function configureContext(context:IContext):void
 		{
 			context.require(
+				TraceLoggingExtension,
 				ContextViewExtension,
 				EventDispatcherExtension,
 				ModularityExtension,

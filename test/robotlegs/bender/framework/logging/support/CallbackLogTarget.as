@@ -5,60 +5,40 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.framework.logging.impl
+package robotlegs.bender.framework.logging.support
 {
-	import flash.utils.getTimer;
 	import robotlegs.bender.framework.logging.api.ILogTarget;
-	import robotlegs.bender.framework.logging.api.ILogger;
 
-	public class Logger implements ILogger
+	public class CallbackLogTarget implements ILogTarget
 	{
 
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var _source:Object;
-
-		private var _target:ILogTarget;
+		private var _callback:Function;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function Logger(source:Object, target:ILogTarget)
+		public function CallbackLogTarget(callback:Function)
 		{
-			_source = source;
-			_target = target;
+			_callback = callback;
 		}
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function debug(message:*, params:Array = null):void
+		public function log(source:Object, level:uint, timestamp:int, message:String, params:Array = null):void
 		{
-			_target.log(_source, 32, getTimer(), message, params);
-		}
-
-		public function info(message:*, params:Array = null):void
-		{
-			_target.log(_source, 16, getTimer(), message, params);
-		}
-
-		public function warn(message:*, params:Array = null):void
-		{
-			_target.log(_source, 8, getTimer(), message, params);
-		}
-
-		public function error(message:*, params:Array = null):void
-		{
-			_target.log(_source, 4, getTimer(), message, params);
-		}
-
-		public function fatal(message:*, params:Array = null):void
-		{
-			_target.log(_source, 2, getTimer(), message, params);
+			_callback && _callback({
+					source: source,
+					level: level,
+					timestamp: timestamp,
+					message: message,
+					params: params});
 		}
 	}
 }

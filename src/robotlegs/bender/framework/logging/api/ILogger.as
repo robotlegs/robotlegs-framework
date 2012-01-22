@@ -10,10 +10,10 @@ package robotlegs.bender.framework.logging.api
 
 	public interface ILogger
 	{
-		function debug(message:*, parameters:Array = null):void;
-		function info(message:*, parameters:Array = null):void;
-		function warn(message:*, parameters:Array = null):void;
-		function error(message:*, parameters:Array = null):void;
-		function fatal(message:*, parameters:Array = null):void;
+		function debug(message:*, params:Array = null):void;
+		function info(message:*, params:Array = null):void;
+		function warn(message:*, params:Array = null):void;
+		function error(message:*, params:Array = null):void;
+		function fatal(message:*, params:Array = null):void;
 	}
 }

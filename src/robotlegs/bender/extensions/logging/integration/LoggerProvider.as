@@ -5,60 +5,38 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.framework.logging.impl
+package robotlegs.bender.extensions.logging.integration
 {
-	import flash.utils.getTimer;
-	import robotlegs.bender.framework.logging.api.ILogTarget;
-	import robotlegs.bender.framework.logging.api.ILogger;
+	import flash.utils.Dictionary;
+	import org.swiftsuspenders.Injector;
+	import org.swiftsuspenders.dependencyproviders.DependencyProvider;
+	import robotlegs.bender.framework.context.api.IContext;
 
-	public class Logger implements ILogger
+	public class LoggerProvider implements DependencyProvider
 	{
 
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var _source:Object;
-
-		private var _target:ILogTarget;
+		private var _context:IContext;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function Logger(source:Object, target:ILogTarget)
+		public function LoggerProvider(context:IContext)
 		{
-			_source = source;
-			_target = target;
+			_context = context;
 		}
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function debug(message:*, params:Array = null):void
+		public function apply(targetType:Class, activeInjector:Injector, injectParameters:Dictionary):Object
 		{
-			_target.log(_source, 32, getTimer(), message, params);
-		}
-
-		public function info(message:*, params:Array = null):void
-		{
-			_target.log(_source, 16, getTimer(), message, params);
-		}
-
-		public function warn(message:*, params:Array = null):void
-		{
-			_target.log(_source, 8, getTimer(), message, params);
-		}
-
-		public function error(message:*, params:Array = null):void
-		{
-			_target.log(_source, 4, getTimer(), message, params);
-		}
-
-		public function fatal(message:*, params:Array = null):void
-		{
-			_target.log(_source, 2, getTimer(), message, params);
+			return _context.getLogger(targetType);
 		}
 	}
 }

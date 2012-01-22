@@ -12,6 +12,8 @@ package robotlegs.bender.extensions.modularity
 	import robotlegs.bender.extensions.modularity.events.ModularContextEvent;
 	import robotlegs.bender.framework.context.api.IContext;
 	import robotlegs.bender.framework.context.api.IContextConfig;
+	import robotlegs.bender.framework.logging.api.ILogger;
+	import robotlegs.bender.framework.object.identity.UID;
 	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
 
 	/**
@@ -27,13 +29,19 @@ package robotlegs.bender.extensions.modularity
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
+		private const _uid:String = UID.create(ModularityExtension);
+
 		private var _context:IContext;
 
 		private var _injector:Injector;
 
+		private var _logger:ILogger;
+
 		private var _inherit:Boolean;
 
 		private var _export:Boolean;
+
+		private var _contextView:DisplayObjectContainer;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -59,7 +67,14 @@ package robotlegs.bender.extensions.modularity
 		{
 			_context = context;
 			_injector = context.injector;
+			_logger = context.getLogger(this);
 			_context.addStateHandler(ManagedObject.PRE_INITIALIZE, handleContextPreInitialize);
+			_context.addStateHandler(ManagedObject.PRE_DESTROY, handleContextPreDestroy);
+		}
+
+		public function toString():String
+		{
+			return _uid;
 		}
 
 		/*============================================================================*/
@@ -71,17 +86,32 @@ package robotlegs.bender.extensions.modularity
 			if (!_injector.satisfiesDirectly(DisplayObjectContainer))
 				throw new Error("This extension requires a DisplayObjectContainer to mapped.");
 
-			const contextView:DisplayObjectContainer = _injector.getInstance(DisplayObjectContainer);
+			_contextView = _injector.getInstance(DisplayObjectContainer);
+			_inherit && broadcastExistence();
+			_export && addExistenceListener();
+		}
 
-			if (_inherit)
-				contextView.dispatchEvent(new ModularContextEvent(ModularContextEvent.CONTEXT_ADD, _context));
+		private function handleContextPreDestroy():void
+		{
+			_logger.debug("Removing modular context existence event listener...");
+			_export && _contextView.removeEventListener(ModularContextEvent.CONTEXT_ADD, onContextAdd);
+		}
 
-			if (_export)
-				contextView.addEventListener(ModularContextEvent.CONTEXT_ADD, onContextAdd);
+		private function broadcastExistence():void
+		{
+			_logger.debug("Modular context configured to inherit. Broadcasting existence event...");
+			_contextView.dispatchEvent(new ModularContextEvent(ModularContextEvent.CONTEXT_ADD, _context));
+		}
+
+		private function addExistenceListener():void
+		{
+			_logger.debug("Modular context configured to export. Listening for existence events...");
+			_contextView.addEventListener(ModularContextEvent.CONTEXT_ADD, onContextAdd);
 		}
 
 		private function onContextAdd(event:ModularContextEvent):void
 		{
+			_logger.debug("Modular context existence message caught. Configuring child module...");
 			event.stopImmediatePropagation();
 			event.context.injector.parentInjector = _context.injector;
 		}

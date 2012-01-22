@@ -5,34 +5,23 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.framework
+package robotlegs.bender.extensions.logging
 {
-	import robotlegs.bender.framework.config.ConfigTestSuite;
-	import robotlegs.bender.framework.context.ContextTestSuite;
-	import robotlegs.bender.framework.guard.GuardTestSuite;
-	import robotlegs.bender.framework.hook.HookTestSuite;
-	import robotlegs.bender.framework.logging.LoggingTestSuite;
-	import robotlegs.bender.framework.object.ObjectTestSuite;
+	import robotlegs.bender.extensions.logging.impl.TraceLogTargetTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
-	public class FrameworkTestSuite
+	public class LoggingExtensionTestSuite
 	{
 
 		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		public var config:ConfigTestSuite;
+		public var loggingExtension:LoggingExtensionTest;
 
-		public var context:ContextTestSuite;
+		public var traceLoggingExtension:TraceLoggingExtensionTest;
 
-		public var guard:GuardTestSuite;
-
-		public var hook:HookTestSuite;
-
-		public var logging:LoggingTestSuite;
-
-		public var object:ObjectTestSuite
+		public var traceLogTarget:TraceLogTargetTest;
 	}
 }

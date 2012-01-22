@@ -13,14 +13,16 @@ package robotlegs.bender.framework.context.impl
 	import robotlegs.bender.framework.config.manager.api.IConfigManager;
 	import robotlegs.bender.framework.config.manager.impl.ConfigManager;
 	import robotlegs.bender.framework.context.api.IContext;
+	import robotlegs.bender.framework.logging.api.ILogManager;
 	import robotlegs.bender.framework.logging.api.ILogTarget;
 	import robotlegs.bender.framework.logging.api.ILogger;
-	import robotlegs.bender.framework.logging.impl.Logger;
+	import robotlegs.bender.framework.logging.impl.LogManager;
+	import robotlegs.bender.framework.object.identity.UID;
 	import robotlegs.bender.framework.object.managed.api.IManagedObject;
 	import robotlegs.bender.framework.object.manager.api.IObjectManager;
 	import robotlegs.bender.framework.object.manager.impl.ObjectManager;
 
-	public class Context implements IContext, ILogTarget
+	public class Context implements IContext
 	{
 
 		/*============================================================================*/
@@ -54,15 +56,31 @@ package robotlegs.bender.framework.context.impl
 			return _managedObject.destroyed;
 		}
 
+		public function get logLevel():uint
+		{
+			return _logManager.logLevel;
+		}
+
+		public function set logLevel(value:uint):void
+		{
+			_logManager.logLevel = value;
+		}
+
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
+		private const _uid:String = UID.create(Context);
+
 		private const _objectManager:IObjectManager = new ObjectManager();
+
+		private const _logManager:ILogManager = new LogManager();
 
 		private var _configManager:IConfigManager;
 
 		private var _managedObject:IManagedObject;
+
+		private var _logger:ILogger;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -71,6 +89,7 @@ package robotlegs.bender.framework.context.impl
 		public function Context(... configs)
 		{
 			_injector.map(Injector).toValue(_injector);
+			_logger = _logManager.getLogger(this);
 			_managedObject = _objectManager.addObject(this);
 			_configManager = new ConfigManager(this);
 			require.apply(this, configs);
@@ -82,12 +101,14 @@ package robotlegs.bender.framework.context.impl
 
 		public function initialize():void
 		{
-			_managedObject.initialize(handleError);
+			_logger.info("Initializing...");
+			_managedObject.initialize(handleInitializeComplete);
 		}
 
 		public function destroy():void
 		{
-			_managedObject.destroy(handleError);
+			_logger.info("Destroying...");
+			_managedObject.destroy(handleDestroyComplete);
 		}
 
 		public function require(... configs):IContext
@@ -151,20 +172,38 @@ package robotlegs.bender.framework.context.impl
 
 		public function getLogger(source:Object):ILogger
 		{
-			return new Logger(source, this);
+			return _logManager.getLogger(source);
 		}
 
-		public function log(source:Object, level:uint, timestamp:int, message:*, parameters:Array = null):void
+		public function addLogTarget(target:ILogTarget):void
 		{
-			trace(this, source, level, timestamp, message, parameters);
+			_logManager.addLogTarget(target);
+		}
+
+		public function toString():String
+		{
+			return _uid;
 		}
 
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
 
+		private function handleInitializeComplete(error:Object):void
+		{
+			error && handleError(error);
+			_logger.info("Initialize complete");
+		}
+
+		private function handleDestroyComplete(error:Object):void
+		{
+			error && handleError(error);
+			_logger.info("Destroy complete");
+		}
+
 		private function handleError(error:Object):void
 		{
+			_logger.error(error);
 			if (error is Error)
 			{
 				throw error as Error;
