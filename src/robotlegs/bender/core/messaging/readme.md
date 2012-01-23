@@ -2,7 +2,7 @@
 
 ## Listeners listen, handlers handle
 
-The Event Dispatcher give us a great way to observe objects, but the dispatch processes is synchronous and listeners do not have the opportunity to suspend or terminate the dispatch. That's completely fine when we're just watching.
+The Event Dispatcher gives us a great way to observe objects, but the dispatch processes is synchronous and listeners do not have the opportunity to suspend or terminate the dispatch. That's completely fine when we're just watching.
 
 A Message Dispatcher is like an Event Dispatcher, but the dispatch has the potential to be asynchronous and handlers have the opportunity to suspend or terminate the dispatch.
 
@@ -211,13 +211,13 @@ todo: stack depth maximums, stack overflow
 
 The majority of the API is modeled on Event Dispatcher. The callback style is inspired by work going on in other evented environments where asynchronous control flow is important. See:
 
-http://nodeguide.com/style.html#callbacks
-https://github.com/caolan/async
-http://en.wikipedia.org/wiki/Futures_and_promises
-http://wiki.commonjs.org/wiki/Promises/A
-http://taskjs.org/
-http://api.jquery.com/category/deferred-object/
-https://github.com/briancavalier/when.js
+* http://nodeguide.com/style.html#callbacks
+* https://github.com/caolan/async
+* http://en.wikipedia.org/wiki/Futures_and_promises
+* http://wiki.commonjs.org/wiki/Promises/A
+* http://taskjs.org/
+* http://api.jquery.com/category/deferred-object/
+* https://github.com/briancavalier/when.js
 
 The Message Dispatcher provides a simple alternative to a full blown Deferred, Promise or Future implementation, but at the cost of flexibility: 
 
