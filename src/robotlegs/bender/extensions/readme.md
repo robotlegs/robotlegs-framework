@@ -62,9 +62,10 @@ An extension can hook into various context lifecycle phases by adding state hand
       context.addStateHandler(ManagedObject.POST_INITIALIZE, handleContextPostInitialize);
     }
 
-    private function handleContextPreInitialize():void
+    private function handleContextPreInitialize(step:String, callback:Function):void
     {
       trace("Doing some things before the context self initializes...");
+      setTimeout(callback, 1000);
     }
 
     private function handleContextPostInitialize():void
@@ -75,23 +76,23 @@ An extension can hook into various context lifecycle phases by adding state hand
 For more information on message handling and managed objects see:
 
 1. core.async.readme
-2. core.message.dispatcher.readme
+2. core.messageDispatcher.readme
 3. framework.object.managed.readme
 
 ## Packaging A Robotlegs-Specific Extension
 
 The source for an extension should be packaged thusly:
 
-  src
-    robotlegs
-      extensions
-        superDuper
-          readme.md
-          SuperDuperExtension (implements IContextConfig)
-          api
-            ISuperDuper
-          impl
-            SuperDuper
+    src
+      robotlegs
+        extensions
+          superDuper
+            readme.md
+            SuperDuperExtension (implements IContextConfig)
+            api
+              ISuperDuper
+            impl
+              SuperDuper
 
 We can clearly spot the API, implementation and integration classes above.
 
@@ -99,16 +100,16 @@ We can clearly spot the API, implementation and integration classes above.
 
 The unit tests for an extension should be packaged thusly:
 
-  test
-    robotlegs
-      extensions
-        superDuper
-          SuperDuperExtensionTest
-          SuperDuperExtensionTestSuite
-          impl
-            SuperDuperTest
-          support
-            SuperDuperFrequencyModulator
+    test
+      robotlegs
+        extensions
+          superDuper
+            SuperDuperExtensionTest
+            SuperDuperExtensionTestSuite
+            impl
+              SuperDuperTest
+            support
+              SuperDuperFrequencyModulator
 
 The ExtensionTest tests the extension integration class itself. The implementation package contains tests for implementation classes. And the TestSuite catalogs all of the test cases.
 
