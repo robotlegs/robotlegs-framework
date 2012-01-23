@@ -11,7 +11,7 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 	import org.hamcrest.object.notNullValue;
 	import org.hamcrest.object.nullValue;
 	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.core.message.dispatcher.impl.MessageDispatcher;
+	import robotlegs.bender.core.messaging.MessageDispatcher;
 	import robotlegs.bender.extensions.commandMap.api.ICommandMap;
 	import robotlegs.bender.extensions.commandMap.impl.CommandMap;
 	import robotlegs.bender.extensions.commandMap.support.NullCommand;

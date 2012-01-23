@@ -16,6 +16,7 @@ package robotlegs.bender.core.message.dispatcher.impl
 	import org.hamcrest.number.lessThan;
 	import org.hamcrest.object.isFalse;
 	import org.hamcrest.object.isTrue;
+	import robotlegs.bender.core.messaging.MessageDispatcher;
 
 	public class MessageDispatcherStressTest
 	{

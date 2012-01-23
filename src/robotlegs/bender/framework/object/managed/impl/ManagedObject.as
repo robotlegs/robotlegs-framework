@@ -8,7 +8,7 @@
 package robotlegs.bender.framework.object.managed.impl
 {
 	import robotlegs.bender.core.async.safelyCallBack;
-	import robotlegs.bender.core.state.machine.impl.StateMachine;
+	import robotlegs.bender.core.stateMachine.impl.StateMachine;
 	import robotlegs.bender.framework.object.managed.api.IManagedObject;
 
 	public class ManagedObject extends StateMachine implements IManagedObject

@@ -10,8 +10,8 @@ package robotlegs.bender.framework.object.manager.impl
 	import flash.utils.Dictionary;
 	import org.hamcrest.Description;
 	import org.hamcrest.Matcher;
-	import robotlegs.bender.core.object.processor.api.IObjectProcessor;
-	import robotlegs.bender.core.object.processor.impl.ObjectProcessor;
+	import robotlegs.bender.core.objectProcessor.api.IObjectProcessor;
+	import robotlegs.bender.core.objectProcessor.impl.ObjectProcessor;
 	import robotlegs.bender.framework.object.managed.api.IManagedObject;
 	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
 	import robotlegs.bender.framework.object.manager.api.IObjectManager;

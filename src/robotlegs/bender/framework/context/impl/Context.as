@@ -10,8 +10,8 @@ package robotlegs.bender.framework.context.impl
 	import org.hamcrest.Description;
 	import org.hamcrest.Matcher;
 	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.framework.config.manager.api.IConfigManager;
-	import robotlegs.bender.framework.config.manager.impl.ConfigManager;
+	import robotlegs.bender.framework.configManager.api.IConfigManager;
+	import robotlegs.bender.framework.configManager.impl.ConfigManager;
 	import robotlegs.bender.framework.context.api.IContext;
 	import robotlegs.bender.framework.logging.api.ILogManager;
 	import robotlegs.bender.framework.logging.api.ILogTarget;

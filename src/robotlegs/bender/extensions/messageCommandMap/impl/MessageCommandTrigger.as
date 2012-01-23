@@ -10,7 +10,7 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 	import flash.utils.describeType;
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.core.async.safelyCallBack;
-	import robotlegs.bender.core.message.dispatcher.api.IMessageDispatcher;
+	import robotlegs.bender.core.messaging.IMessageDispatcher;
 	import robotlegs.bender.extensions.commandMap.api.ICommandMapping;
 	import robotlegs.bender.extensions.commandMap.api.ICommandTrigger;
 	import robotlegs.bender.framework.guard.impl.guardsApprove;

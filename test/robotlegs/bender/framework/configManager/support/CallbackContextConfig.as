@@ -5,29 +5,28 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.messageDispatcher
+package robotlegs.bender.framework.configManager.support
 {
-	import robotlegs.bender.core.messaging.IMessageDispatcher;
-	import robotlegs.bender.core.messaging.MessageDispatcher;
+	import robotlegs.bender.core.async.safelyCallBack;
 	import robotlegs.bender.framework.context.api.IContext;
 	import robotlegs.bender.framework.context.api.IContextConfig;
 
-	public class MessageDispatcherExtension implements IContextConfig
+	public class CallbackContextConfig implements IContextConfig
 	{
 
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var _messageDispatcher:IMessageDispatcher;
+		private var _callback:Function;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function MessageDispatcherExtension(messageDispatcher:IMessageDispatcher = null)
+		public function CallbackContextConfig(callback:Function = null)
 		{
-			_messageDispatcher = messageDispatcher || new MessageDispatcher();
+			_callback = callback;
 		}
 
 		/*============================================================================*/
@@ -36,7 +35,7 @@ package robotlegs.bender.extensions.messageDispatcher
 
 		public function configureContext(context:IContext):void
 		{
-			context.injector.map(IMessageDispatcher).toValue(_messageDispatcher);
+			_callback && safelyCallBack(_callback, null, context);
 		}
 	}
 }

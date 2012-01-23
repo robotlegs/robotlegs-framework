@@ -5,34 +5,22 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.framework
+package robotlegs.bender.core.objectProcessor
 {
-	import robotlegs.bender.framework.configManager.ConfigManagerTestSuite;
-	import robotlegs.bender.framework.context.ContextTestSuite;
-	import robotlegs.bender.framework.guard.GuardTestSuite;
-	import robotlegs.bender.framework.hook.HookTestSuite;
-	import robotlegs.bender.framework.logging.LoggingTestSuite;
-	import robotlegs.bender.framework.object.ObjectTestSuite;
+	import robotlegs.bender.core.objectProcessor.impl.ObjectProcessorTest;
+	import robotlegs.bender.core.objectProcessor.impl.TypeCachedObjectProcessorTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
-	public class FrameworkTestSuite
+	public class ObjectProcessorTestSuite
 	{
 
 		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		public var config:ConfigManagerTestSuite;
+		public var objectProcessor:ObjectProcessorTest;
 
-		public var context:ContextTestSuite;
-
-		public var guard:GuardTestSuite;
-
-		public var hook:HookTestSuite;
-
-		public var logging:LoggingTestSuite;
-
-		public var object:ObjectTestSuite
+		public var typeCachedObjectProcessor:TypeCachedObjectProcessorTest;
 	}
 }

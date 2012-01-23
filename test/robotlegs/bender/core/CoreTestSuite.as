@@ -8,9 +8,9 @@
 package robotlegs.bender.core
 {
 	import robotlegs.bender.core.async.AsyncTestSuite;
-	import robotlegs.bender.core.message.MessageTestSuite;
-	import robotlegs.bender.core.object.ObjectTestSuite;
-	import robotlegs.bender.core.state.StateTestSuite;
+	import robotlegs.bender.core.messaging.MessageDispatcherTestSuite;
+	import robotlegs.bender.core.objectProcessor.ObjectProcessorTestSuite;
+	import robotlegs.bender.core.stateMachine.StateMachineTestSuite;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
@@ -23,10 +23,10 @@ package robotlegs.bender.core
 
 		public var async:AsyncTestSuite;
 
-		public var message:MessageTestSuite;
+		public var message:MessageDispatcherTestSuite;
 
-		public var object:ObjectTestSuite;
+		public var object:ObjectProcessorTestSuite;
 
-		public var state:StateTestSuite;
+		public var state:StateMachineTestSuite;
 	}
 }

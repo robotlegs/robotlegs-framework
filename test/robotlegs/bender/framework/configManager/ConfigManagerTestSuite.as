@@ -5,34 +5,19 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.framework
+package robotlegs.bender.framework.configManager
 {
-	import robotlegs.bender.framework.configManager.ConfigManagerTestSuite;
-	import robotlegs.bender.framework.context.ContextTestSuite;
-	import robotlegs.bender.framework.guard.GuardTestSuite;
-	import robotlegs.bender.framework.hook.HookTestSuite;
-	import robotlegs.bender.framework.logging.LoggingTestSuite;
-	import robotlegs.bender.framework.object.ObjectTestSuite;
+	import robotlegs.bender.framework.configManager.impl.ConfigManagerTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
-	public class FrameworkTestSuite
+	public class ConfigManagerTestSuite
 	{
 
 		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		public var config:ConfigManagerTestSuite;
-
-		public var context:ContextTestSuite;
-
-		public var guard:GuardTestSuite;
-
-		public var hook:HookTestSuite;
-
-		public var logging:LoggingTestSuite;
-
-		public var object:ObjectTestSuite
+		public var configManager:ConfigManagerTest;
 	}
 }

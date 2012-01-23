@@ -7,7 +7,7 @@
 
 package robotlegs.bender.framework.object.managed.api
 {
-	import robotlegs.bender.core.state.machine.api.IStateMachine;
+	import robotlegs.bender.core.stateMachine.api.IStateMachine;
 
 	public interface IManagedObject extends IStateMachine
 	{

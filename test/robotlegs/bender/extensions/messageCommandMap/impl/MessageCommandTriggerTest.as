@@ -12,8 +12,8 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 	import org.hamcrest.collection.array;
 	import org.hamcrest.object.equalTo;
 	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.core.message.dispatcher.api.IMessageDispatcher;
-	import robotlegs.bender.core.message.dispatcher.impl.MessageDispatcher;
+	import robotlegs.bender.core.messaging.IMessageDispatcher;
+	import robotlegs.bender.core.messaging.MessageDispatcher;
 	import robotlegs.bender.extensions.commandMap.api.ICommandMap;
 	import robotlegs.bender.extensions.commandMap.impl.CommandMap;
 	import robotlegs.bender.extensions.commandMap.support.CallbackCommand;

@@ -10,8 +10,8 @@ package robotlegs.bender.extensions.messageDispatcher
 	import org.flexunit.assertThat;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.instanceOf;
-	import robotlegs.bender.core.message.dispatcher.api.IMessageDispatcher;
-	import robotlegs.bender.core.message.dispatcher.impl.MessageDispatcher;
+	import robotlegs.bender.core.messaging.IMessageDispatcher;
+	import robotlegs.bender.core.messaging.MessageDispatcher;
 	import robotlegs.bender.framework.context.api.IContext;
 	import robotlegs.bender.framework.context.impl.Context;
 	import robotlegs.bender.framework.object.managed.impl.ManagedObject;

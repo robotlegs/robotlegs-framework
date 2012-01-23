@@ -1,6 +1,6 @@
 # Async
 
-To deal with asynchroneity in the framework we must establish some conventions.
+To deal with asynchronous processes in the framework we must establish some conventions.
 
 # Handlers and Callbacks
 
@@ -36,7 +36,7 @@ A handler can terminate a process by sending an error to the callback:
 
 Note: A handler *must* eventually call the callback or the processes will never complete.
 
-A handler should only call the callback once. The following is *bad*:
+A handler should only call the callback once. The following is *naughty*:
 
     function handler(message:Object, callback:Function):void {
       if (!message) {

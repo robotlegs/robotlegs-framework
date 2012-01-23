@@ -11,7 +11,7 @@ package robotlegs.bender.framework.context.impl
 	import org.hamcrest.core.isA;
 	import org.hamcrest.object.equalTo;
 	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.framework.config.manager.support.CallbackContextConfig;
+	import robotlegs.bender.framework.configManager.support.CallbackContextConfig;
 	import robotlegs.bender.framework.context.api.IContext;
 	import robotlegs.bender.framework.context.api.IContextConfig;
 
