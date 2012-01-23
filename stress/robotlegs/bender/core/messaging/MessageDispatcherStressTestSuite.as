@@ -5,13 +5,12 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.core.message
+package robotlegs.bender.core.messaging
 {
-	import robotlegs.bender.core.message.dispatcher.impl.MessageDispatcherStressTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
-	public class MessageStressTestSuite
+	public class MessageDispatcherStressTestSuite
 	{
 
 		/*============================================================================*/

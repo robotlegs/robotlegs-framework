@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.core.message.dispatcher.impl
+package robotlegs.bender.core.messaging
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -16,7 +16,6 @@ package robotlegs.bender.core.message.dispatcher.impl
 	import org.hamcrest.number.lessThan;
 	import org.hamcrest.object.isFalse;
 	import org.hamcrest.object.isTrue;
-	import robotlegs.bender.core.messaging.MessageDispatcher;
 
 	public class MessageDispatcherStressTest
 	{

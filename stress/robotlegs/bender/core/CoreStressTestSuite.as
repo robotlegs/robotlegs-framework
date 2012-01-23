@@ -7,7 +7,7 @@
 
 package robotlegs.bender.core
 {
-	import robotlegs.bender.core.message.MessageStressTestSuite;
+	import robotlegs.bender.core.messaging.MessageDispatcherStressTestSuite;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
@@ -18,6 +18,6 @@ package robotlegs.bender.core
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		public var message:MessageStressTestSuite;
+		public var message:MessageDispatcherStressTestSuite;
 	}
 }
