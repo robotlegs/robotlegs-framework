@@ -16,6 +16,8 @@ package robotlegs.bender.extensions
 	import robotlegs.bender.extensions.mediatorMap.MediatorMapExtensionTestSuite;
 	import robotlegs.bender.extensions.messageCommandMap.MessageCommandMapExtensionTestSuite;
 	import robotlegs.bender.extensions.modularity.ModularityExtensionTestSuite;
+	import robotlegs.bender.extensions.scopedEventDispatcher.ScopedEventDispatcherExtensionTestSuite;
+	import robotlegs.bender.extensions.scopedMessageDispatcher.ScopedMessageDispatcherExtensionTestSuite;
 	import robotlegs.bender.extensions.stageSync.StageSyncExtensionTestSuite;
 	import robotlegs.bender.extensions.viewManager.ViewManagerExtensionTestSuite;
 
@@ -45,6 +47,10 @@ package robotlegs.bender.extensions
 		public var messageCommandMapExtension:MessageCommandMapExtensionTestSuite;
 
 		public var modularityExtension:ModularityExtensionTestSuite;
+
+		public var scopedEventDispatcherExtension:ScopedEventDispatcherExtensionTestSuite;
+
+		public var scopedMessageDispatcherExtension:ScopedMessageDispatcherExtensionTestSuite;
 
 		public var stageSyncExtension:StageSyncExtensionTestSuite;
 
