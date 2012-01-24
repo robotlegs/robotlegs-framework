@@ -15,6 +15,7 @@ package robotlegs.bender.extensions.viewManager.impl
 	import org.hamcrest.collection.array;
 	import org.hamcrest.object.equalTo;
 	import robotlegs.bender.extensions.viewManager.support.CallbackViewHandler;
+	import robotlegs.bender.extensions.viewManager.support.SupportView;
 
 	public class ViewManagerTest
 	{
@@ -59,7 +60,7 @@ package robotlegs.bender.extensions.viewManager.impl
 		[Test]
 		public function addContainer():void
 		{
-			viewManager.addContainer(new Sprite());
+			viewManager.addContainer(new SupportView());
 		}
 
 		[Test(expects="Error")]
@@ -75,7 +76,7 @@ package robotlegs.bender.extensions.viewManager.impl
 		[Test]
 		public function handler_is_called():void
 		{
-			const expected:Sprite = new Sprite();
+			const expected:SupportView = new SupportView();
 			var actual:DisplayObject;
 			viewManager.addContainer(container);
 			viewManager.addViewHandler(new CallbackViewHandler(function(view:DisplayObject, type:Class):void {
@@ -100,7 +101,7 @@ package robotlegs.bender.extensions.viewManager.impl
 			viewManager.addViewHandler(new CallbackViewHandler(function(view:DisplayObject, type:Class):void {
 				actual.push('handler3');
 			}));
-			container.addChild(new Sprite());
+			container.addChild(new SupportView());
 			assertThat(actual, array(expected));
 		}
 
@@ -113,7 +114,7 @@ package robotlegs.bender.extensions.viewManager.impl
 				callCount++;
 			}));
 			viewManager.removeContainer(container);
-			container.addChild(new Sprite());
+			container.addChild(new SupportView());
 			assertThat(callCount, equalTo(0));
 		}
 
@@ -126,7 +127,7 @@ package robotlegs.bender.extensions.viewManager.impl
 				callCount++;
 			}));
 			viewManager.removeAllHandlers();
-			container.addChild(new Sprite());
+			container.addChild(new SupportView());
 			assertThat(callCount, equalTo(0));
 		}
 	}

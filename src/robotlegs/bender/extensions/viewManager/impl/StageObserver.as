@@ -10,6 +10,7 @@ package robotlegs.bender.extensions.viewManager.impl
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
+	import flash.utils.getQualifiedClassName;
 
 	public class StageObserver
 	{
@@ -19,6 +20,8 @@ package robotlegs.bender.extensions.viewManager.impl
 		/*============================================================================*/
 
 		private var _registry:ContainerRegistry;
+
+		private var _filter:RegExp = /^mx\.|^spark\.|^flash\./;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -79,7 +82,10 @@ package robotlegs.bender.extensions.viewManager.impl
 		private function onViewAddedToStage(event:Event):void
 		{
 			const view:DisplayObject = event.target as DisplayObject;
-			// todo: global filter
+			const qcn:String = getQualifiedClassName(view);
+			const filtered:Boolean = _filter.test(qcn);
+			if (filtered)
+				return;
 			const type:Class = view['constructor'];
 			// Walk upwards from the nearest binding
 			var binding:ContainerBinding = _registry.findParentBinding(view);

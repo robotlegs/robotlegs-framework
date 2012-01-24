@@ -14,6 +14,7 @@ package robotlegs.bender.extensions.viewManager.impl
 	import org.fluint.uiImpersonation.UIImpersonator;
 	import org.hamcrest.object.equalTo;
 	import robotlegs.bender.extensions.viewManager.support.CallbackViewHandler;
+	import robotlegs.bender.extensions.viewManager.support.SupportView;
 
 	public class StageObserverTest
 	{
@@ -59,7 +60,7 @@ package robotlegs.bender.extensions.viewManager.impl
 		[Test]
 		public function view_is_handled_when_added_to_container():void
 		{
-			const expected:Sprite = new Sprite();
+			const expected:SupportView = new SupportView();
 			var actual:DisplayObject;
 			registry
 				.addContainer(container)
@@ -73,15 +74,15 @@ package robotlegs.bender.extensions.viewManager.impl
 		[Test]
 		public function view_is_handled_when_added_somewhere_inside_container():void
 		{
-			const expected:Sprite = new Sprite();
+			const expected:SupportView = new SupportView();
 			var actual:DisplayObject;
 			registry
 				.addContainer(container)
 				.addHandler(new CallbackViewHandler(function(view:DisplayObject, type:Class):void {
 					actual = view;
 				}));
-			var middle:Sprite = new Sprite();
-			var middle2:Sprite = new Sprite();
+			const middle:Sprite = new Sprite();
+			const middle2:Sprite = new Sprite();
 			middle.addChild(middle2);
 			middle2.addChild(expected)
 			container.addChild(middle);
@@ -97,7 +98,7 @@ package robotlegs.bender.extensions.viewManager.impl
 				.addHandler(new CallbackViewHandler(function(view:DisplayObject, type:Class):void {
 					callCount++;
 				}));
-			container2.addChild(new Sprite());
+			container2.addChild(new SupportView());
 			assertThat(callCount, equalTo(0));
 		}
 
@@ -111,7 +112,7 @@ package robotlegs.bender.extensions.viewManager.impl
 					callCount++;
 				}));
 			registry.removeContainer(container);
-			container.addChild(new Sprite());
+			container.addChild(new SupportView());
 			assertThat(callCount, equalTo(0));
 		}
 
@@ -125,6 +126,19 @@ package robotlegs.bender.extensions.viewManager.impl
 					callCount++;
 				}));
 			observer.destroy();
+			container.addChild(new SupportView());
+			assertThat(callCount, equalTo(0));
+		}
+
+		[Test]
+		public function flash_spark_mx_views_are_filtered_out():void
+		{
+			var callCount:int = 0;
+			registry
+				.addContainer(container)
+				.addHandler(new CallbackViewHandler(function(view:DisplayObject, type:Class):void {
+					callCount++;
+				}));
 			container.addChild(new Sprite());
 			assertThat(callCount, equalTo(0));
 		}
