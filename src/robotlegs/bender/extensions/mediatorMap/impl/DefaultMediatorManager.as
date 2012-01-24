@@ -82,7 +82,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 					// check that we haven't been removed in the meantime
 					if (_factory.getMediator(event.view, event.mapping))
 						initializeMediator(view, event.mediator);
-				}, false, 0, true);
+				});
 			}
 			else
 			{
