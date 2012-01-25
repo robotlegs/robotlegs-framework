@@ -19,28 +19,28 @@ package robotlegs.bender.extensions.localEventMap.impl
 	{
 
 		/*============================================================================*/
-		/* Protected Properties                                                       */
+		/* Private Properties                                                         */
 		/*============================================================================*/
 
 		/**
 		 * The <code>IEventDispatcher</code>
 		 */
-		protected var _eventDispatcher:IEventDispatcher;
+		private var _eventDispatcher:IEventDispatcher;
 
 		/**
 		 * @private
 		 */
-		protected const _listeners:Vector.<EventMapConfig> = new Vector.<EventMapConfig>();
+		private const _listeners:Vector.<EventMapConfig> = new Vector.<EventMapConfig>();
 
 		/**
 		 * @private
 		 */
-		protected const _suspendedListeners:Vector.<EventMapConfig> = new Vector.<EventMapConfig>();
+		private const _suspendedListeners:Vector.<EventMapConfig> = new Vector.<EventMapConfig>();
 
 		/**
 		 * @private
 		 */
-		protected var _suspended:Boolean = false;
+		private var _suspended:Boolean = false;
 
 		/*============================================================================*/
 		/* Constructor                                                                */

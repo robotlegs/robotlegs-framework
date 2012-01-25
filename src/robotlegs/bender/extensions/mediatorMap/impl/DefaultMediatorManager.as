@@ -19,12 +19,12 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	{
 
 		/*============================================================================*/
-		/* Protected Static Properties                                                */
+		/* Private Static Properties                                                  */
 		/*============================================================================*/
 
-		protected static var UIComponentClass:Class;
+		private static var UIComponentClass:Class;
 
-		protected static const flexAvailable:Boolean = checkFlex();
+		private static const flexAvailable:Boolean = checkFlex();
 
 		/*============================================================================*/
 		/* Private Properties                                                         */
