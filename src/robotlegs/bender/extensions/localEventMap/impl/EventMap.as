@@ -227,7 +227,7 @@ package robotlegs.bender.extensions.localEventMap.impl
 		}
 
 		/*============================================================================*/
-		/* Protected Functions                                                        */
+		/* Private Functions                                                          */
 		/*============================================================================*/
 
 		/**
@@ -237,7 +237,7 @@ package robotlegs.bender.extensions.localEventMap.impl
 		 * @param listener
 		 * @param originalEventClass
 		 */
-		protected function routeEventToListener(event:Event, listener:Function, originalEventClass:Class):void
+		private function routeEventToListener(event:Event, listener:Function, originalEventClass:Class):void
 		{
 			if (event is originalEventClass)
 			{
