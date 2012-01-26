@@ -10,6 +10,9 @@ package robotlegs.bender.core.objectProcessor.impl
 	import org.hamcrest.Matcher;
 	import robotlegs.bender.core.objectProcessor.api.IObjectHandler;
 
+	/**
+	 * Default ObjectHandler implementation
+	 */
 	public class ObjectHandler implements IObjectHandler
 	{
 
@@ -19,6 +22,9 @@ package robotlegs.bender.core.objectProcessor.impl
 
 		private var _matcher:Matcher;
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get matcher():Matcher
 		{
 			return _matcher;
@@ -26,6 +32,9 @@ package robotlegs.bender.core.objectProcessor.impl
 
 		private var _closure:Function;
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get closure():Function
 		{
 			return _closure;

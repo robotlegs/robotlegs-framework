@@ -10,6 +10,9 @@ package robotlegs.bender.core.messaging
 	import flash.utils.Dictionary;
 	import robotlegs.bender.core.async.safelyCallBack;
 
+	/**
+	 * Message Dispatcher implementation.
+	 */
 	public final class MessageDispatcher implements IMessageDispatcher
 	{
 
@@ -41,7 +44,6 @@ package robotlegs.bender.core.messaging
 			const messageHandlers:Array = _handlers[message];
 			if (messageHandlers)
 			{
-				// todo: validate handler for (message) and (message, callback)
 				messageHandlers.push(handler);
 			}
 			else
@@ -92,9 +94,7 @@ package robotlegs.bender.core.messaging
 			}
 		}
 
-		/**
-		 * @inheritDoc
-		 */
+		// todo: remove this if nobody needs it.
 		public function dispatchScopedMessage(scope:Object, message:Object, callback:Function = null, reverse:Boolean = false):void
 		{
 			// note: code duplication to avoid increasing the stack depth unnecessarily

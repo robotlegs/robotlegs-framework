@@ -8,8 +8,21 @@
 package robotlegs.bender.framework.context.api
 {
 
+	/**
+	 * The context Extension/Bundle contract.
+	 */
 	public interface IContextConfig
 	{
+		/**
+		 * This method will be called immediately when the extension/bundle is installed.
+		 *
+		 * <p>Note: the context may not be fully initialized yet. A bundle should do
+		 * little more than install additional bundles/extensions. An extension
+		 * can add lifecycle handlers to the context instance to perform synchronized
+		 * initialization.</p>
+		 *
+		 * @param context The context that this bundle/extension is being installed into.
+		 */
 		function configureContext(context:IContext):void;
 	}
 }

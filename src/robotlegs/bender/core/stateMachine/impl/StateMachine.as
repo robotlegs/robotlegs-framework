@@ -64,8 +64,6 @@ package robotlegs.bender.core.stateMachine.impl
 		/*============================================================================*/
 
 		/**
-		 * todo: intro
-		 *
 		 * @param messageDispatcher The message dispatcher to dispatch step messages on
 		 */
 		public function StateMachine(messageDispatcher:IMessageDispatcher = null)

@@ -14,6 +14,9 @@ package robotlegs.bender.core.objectProcessor.impl
 	import robotlegs.bender.core.messaging.MessageDispatcher;
 	import robotlegs.bender.core.objectProcessor.api.IObjectProcessor;
 
+	/**
+	 * Default IObjectProcessor implementation.
+	 */
 	public class ObjectProcessor implements IObjectProcessor
 	{
 
@@ -38,11 +41,17 @@ package robotlegs.bender.core.objectProcessor.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function addObjectHandler(matcher:Matcher, handler:Function):void
 		{
 			_handlers.push(new ObjectHandler(matcher, handler));
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function addObject(object:Object, callback:Function = null):void
 		{
 			const matchingHandlers:Array = [];
@@ -68,6 +77,9 @@ package robotlegs.bender.core.objectProcessor.impl
 			});
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function matches(object:Object):Boolean
 		{
 			for each (var handler:ObjectHandler in _handlers)
@@ -80,11 +92,17 @@ package robotlegs.bender.core.objectProcessor.impl
 			return false;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function describeTo(description:Description):void
 		{
 			description.appendText("object processor");
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function describeMismatch(item:Object, mismatchDescription:Description):void
 		{
 			mismatchDescription.appendText("was ").appendValue(item);

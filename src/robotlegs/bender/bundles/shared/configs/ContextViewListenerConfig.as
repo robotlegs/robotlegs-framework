@@ -10,6 +10,10 @@ package robotlegs.bender.bundles.shared.configs
 	import flash.display.DisplayObjectContainer;
 	import robotlegs.bender.extensions.viewManager.api.IViewManager;
 
+	/**
+	 * This simple configuration adds the mapped DisplayObjectContainer ("contextView")
+	 * to the viewManager.
+	 */
 	public class ContextViewListenerConfig
 	{
 

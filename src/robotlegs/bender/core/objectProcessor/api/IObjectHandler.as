@@ -9,9 +9,19 @@ package robotlegs.bender.core.objectProcessor.api
 {
 	import org.hamcrest.Matcher;
 
+	/**
+	 * Object handler Value Object
+	 */
 	public interface IObjectHandler
 	{
+		/**
+		 * @return Matcher
+		 */
 		function get matcher():Matcher;
+
+		/**
+		 * @return Handler function
+		 */
 		function get closure():Function;
 	}
 }

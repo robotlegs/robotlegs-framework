@@ -23,6 +23,12 @@ package robotlegs.bender.bundles.classic
 	import robotlegs.bender.framework.context.api.IContext;
 	import robotlegs.bender.framework.context.api.IContextConfig;
 
+	/**
+	 * For that Classic Robotlegs flavour.
+	 *
+	 * <p>This bundle installs a number of extensions commonly used in typical Robotlegs
+	 * applications and modules.</p>
+	 */
 	public class ClassicRobotlegsBundle implements IContextConfig
 	{
 

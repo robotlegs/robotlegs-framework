@@ -12,6 +12,11 @@ package robotlegs.bender.bundles.classic.impl
 	import robotlegs.bender.extensions.localEventMap.api.IEventMap;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediator;
 
+	/**
+	 * The Classic mediator implementation.
+	 *
+	 * <p>Override initialize and destroy to hook into the mediator lifecycle.</p>
+	 */
 	public class Mediator implements IMediator
 	{
 
