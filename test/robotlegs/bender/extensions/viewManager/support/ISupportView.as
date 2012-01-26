@@ -5,13 +5,10 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.mediatorMap.dsl
+package robotlegs.bender.extensions.viewManager.support
 {
 
-	public interface IMediatorMappingConfig
+	public interface ISupportView
 	{
-		function withGuards(... guards):IMediatorMappingConfig;
-
-		function withHooks(... hooks):IMediatorMappingConfig;
 	}
 }

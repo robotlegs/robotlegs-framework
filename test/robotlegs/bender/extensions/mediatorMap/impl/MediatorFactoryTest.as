@@ -83,9 +83,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			const expected:Sprite = new Sprite();
 
 			const mapping:MediatorMapping =
-				new MediatorMapping(instanceOf(Sprite), ViewInjectedAsRequestedMediator, factory);
-
-			mapping.asType(DisplayObject);
+				new MediatorMapping(instanceOf(Sprite), ViewInjectedAsRequestedMediator, factory, DisplayObject);
 
 			const mediator:ViewInjectedAsRequestedMediator =
 				factory.createMediator(expected, mapping) as ViewInjectedAsRequestedMediator;

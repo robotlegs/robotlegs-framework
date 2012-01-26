@@ -9,7 +9,7 @@ package robotlegs.bender.extensions.viewManager.support
 {
 	import flash.display.Sprite;
 
-	public class SupportView extends Sprite
+	public class SupportView extends Sprite implements ISupportView
 	{
 
 		/*============================================================================*/

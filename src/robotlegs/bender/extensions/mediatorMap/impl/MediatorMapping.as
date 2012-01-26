@@ -64,22 +64,17 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function MediatorMapping(matcher:Matcher, mediatorClass:Class, manager:IMediatorFactory)
+		public function MediatorMapping(matcher:Matcher, mediatorClass:Class, manager:IMediatorFactory, viewType:Class = null)
 		{
 			_matcher = matcher;
 			_mediatorClass = mediatorClass;
 			_factory = manager;
+			_viewType = viewType;
 		}
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
-
-		public function asType(viewType:Class):IMediatorMappingConfig
-		{
-			_viewType = viewType;
-			return this;
-		}
 
 		public function withGuards(... guards):IMediatorMappingConfig
 		{

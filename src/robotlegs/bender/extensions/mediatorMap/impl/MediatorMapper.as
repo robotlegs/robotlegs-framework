@@ -10,12 +10,12 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import flash.utils.Dictionary;
 	import org.hamcrest.Matcher;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
-	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMapper;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
+	import robotlegs.bender.extensions.mediatorMap.api.IMediatorViewHandler;
+	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMapper;
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMappingConfig;
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMappingFinder;
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorUnmapper;
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorViewHandler;
 
 	public class MediatorMapper implements IMediatorMapper, IMediatorMappingFinder, IMediatorUnmapper
 	{
@@ -32,15 +32,18 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		private var _manager:IMediatorFactory;
 
+		private var _viewType:Class;
+
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function MediatorMapper(matcher:Matcher, handler:IMediatorViewHandler, manager:IMediatorFactory)
+		public function MediatorMapper(matcher:Matcher, handler:IMediatorViewHandler, manager:IMediatorFactory, viewType:Class = null)
 		{
 			_matcher = matcher;
 			_handler = handler;
 			_manager = manager;
+			_viewType = viewType;
 		}
 
 		/*============================================================================*/
@@ -79,7 +82,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		private function createMapping(mediatorClass:Class):MediatorMapping
 		{
-			const mapping:MediatorMapping = new MediatorMapping(_matcher, mediatorClass, _manager);
+			const mapping:MediatorMapping = new MediatorMapping(_matcher, mediatorClass, _manager, _viewType);
 			_handler.addMapping(mapping);
 			return mapping;
 		}
