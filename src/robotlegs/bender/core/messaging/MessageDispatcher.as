@@ -80,28 +80,10 @@ package robotlegs.bender.core.messaging
 		 */
 		public function dispatchMessage(message:Object, callback:Function = null, reverse:Boolean = false):void
 		{
-			// note: code duplication to avoid increasing the stack depth unnecessarily
 			if (_handlers[message])
 			{
 				// note: list is cloned and reversed because elements are popped
 				const handlers:Array = _handlers[message].concat();
-				reverse || handlers.reverse();
-				next(message, handlers, callback);
-			}
-			else
-			{
-				callback && safelyCallBack(callback);
-			}
-		}
-
-		// todo: remove this if nobody needs it.
-		public function dispatchScopedMessage(scope:Object, message:Object, callback:Function = null, reverse:Boolean = false):void
-		{
-			// note: code duplication to avoid increasing the stack depth unnecessarily
-			if (_handlers[scope])
-			{
-				// note: list is cloned and reversed because elements are popped
-				const handlers:Array = _handlers[scope].concat();
 				reverse || handlers.reverse();
 				next(message, handlers, callback);
 			}

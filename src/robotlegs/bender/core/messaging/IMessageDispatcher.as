@@ -41,8 +41,5 @@ package robotlegs.bender.core.messaging
 		 * @param reverse Reverse the dispatch order
 		 */
 		function dispatchMessage(message:Object, callback:Function = null, reverse:Boolean = false):void;
-
-		[Deprecated(message="Don't seem to use this anywhere. Why is it here?")]
-		function dispatchScopedMessage(scope:Object, message:Object, callback:Function = null, reverse:Boolean = false):void;
 	}
 }

@@ -11,7 +11,6 @@ package robotlegs.bender.core.messaging
 	import org.flexunit.assertThat;
 	import org.flexunit.async.Async;
 	import org.hamcrest.collection.array;
-	import org.hamcrest.core.not;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.isFalse;
 	import org.hamcrest.object.isTrue;
@@ -415,7 +414,7 @@ package robotlegs.bender.core.messaging
 		[Test(async)]
 		public function terminated_async_message_should_not_reach_further_handlers():void
 		{
-			for each (var reverse:Boolean in[false, true])
+			for each (var reverse:Boolean in [false, true])
 			{
 				const actual:Array = [];
 				const expected:Array = reverse ?
@@ -435,36 +434,6 @@ package robotlegs.bender.core.messaging
 					}, 200);
 				})(reverse, actual, expected);
 			}
-		}
-
-		[Test]
-		public function dispatchScopedMessage_runs():void
-		{
-			dispatcher.dispatchScopedMessage({}, {});
-		}
-
-		[Test]
-		public function dispatchScopedMessage_scoped_handler_receives_scoped_message():void
-		{
-			const scope:Object = {};
-			var actualMessage:Object;
-			dispatcher.addMessageHandler(scope, function(msg:Object):void {
-				actualMessage = msg;
-			});
-			dispatcher.dispatchScopedMessage(scope, message);
-			assertThat(actualMessage, equalTo(message));
-		}
-
-		[Test]
-		public function dispatchScopedMessage_non_scoped_handler_does_not_receive_message():void
-		{
-			const scope:Object = {};
-			var actualMessage:Object;
-			dispatcher.addMessageHandler(message, function(msg:Object):void {
-				actualMessage = msg;
-			});
-			dispatcher.dispatchScopedMessage(scope, message);
-			assertThat(actualMessage, not(message));
 		}
 
 		/*============================================================================*/
