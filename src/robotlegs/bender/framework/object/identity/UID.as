@@ -7,7 +7,7 @@
 
 package robotlegs.bender.framework.object.identity
 {
-	import avmplus.getQualifiedClassName;
+	import flash.utils.getQualifiedClassName;
 
 	public class UID
 	{
@@ -26,6 +26,7 @@ package robotlegs.bender.framework.object.identity
 		{
 			if (source is Class)
 				source = getQualifiedClassName(source).split("::").pop();
+
 			return (source ? source + '-' : '')
 				+ (i++).toString(16)
 				+ '-'
