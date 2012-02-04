@@ -179,19 +179,39 @@ Note: One should always accept and handle errors in a callback.
 
 ## Stack Depth
 
-Sequential synchronous callbacks increase the stack depth. However, the stack depth should drop back as soon as an asynchronous handler is encountered.
+Sequential synchronous callbacks increase the stack depth. Consider the following handler:
+
+    function(message:Class, callback:Function):void {
+        callback();
+    }
+
+It should be clear that such a handler will increase the stack depth. If all handlers in a given dispatch follow that form there will eventually be a stack overflow. On my machine the overflow occurs after roughly 1400 synchronous handlers. However, as soon as an actual asynchronous handler is encountered the stack will drop back to normal as the dispatch will be spread over more than one frame:
+
+    function(message:Class, callback:Function):void {
+        setTimeout(callback, 10);
+    }
 
 ## Asynchronous Error Handling
 
-todo: intro
+Consider the following:
 
-### The type of the error objects
+    try
+    {
+        dispatcher.dispatchMessage(Message);
+    }
+    catch(error:Error)
+    {
+        trace(error);
+    }
 
-todo: discuss plain objects vs Error instances
+It is important to understand that an error thrown by an asynchronous handler will not be caught by this try-catch as it will occur in a future turn of the event loop.
 
-### Uncaught Exceptions
+This is why it's important that error handling be core to the asynchronous callback conventions employed by the framework:
 
-todo: write tests for inspecting an Error passed back to callback.
+    dispatcher.dispatchMessage(Message, function(error:Error):void {
+        if (error) throw error;
+        trace("Completed successfully!");
+    });
 
 ## Adding a handler more than once
 
@@ -201,11 +221,7 @@ todo: decide if allowed, justify
 
 ## Speed
 
-A Message Dispatcher performs roughly the same as an Event Dispatcher for non-callback handlers. Handlers that accept callbacks slow things down and increase the stack depth.
-
-## Limitations
-
-todo: stack depth maximums, stack overflow
+A Message Dispatcher performs roughly the same as an Event Dispatcher for non-callback handlers. Handlers that accept callbacks slow things down and have the potential to increase the stack depth.
 
 # Background
 
@@ -225,4 +241,4 @@ The Message Dispatcher provides a simple alternative to a full blown Deferred, P
 
 # Dev Notes
 
-todo: add thoughts and considerations for future.
+The dispatch chain is presently frozen at the time of dispatch. Explore options for manipulation of the dispatch chain mid-dispatch.

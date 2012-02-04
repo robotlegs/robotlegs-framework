@@ -70,6 +70,7 @@ Robotlegs 2 is a complete rewrite of the Robotlegs framework. It features:
 
 + Better configuration
 + Better extension
++ Better module support
 + Flexible type matching
 
 # Robotlegs 1 vs Robotlegs 2

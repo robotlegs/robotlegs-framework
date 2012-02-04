@@ -15,8 +15,8 @@ Note: you must hold on to that context reference. Failing to do so will result i
 
 In the example above we are installing a bundle, a configuration and a reference to a Display Object Container.
 
-For more information on configuration see:
+Note: For more information on configuration processing see:
 
-* framework.config.manager
-* extensions
-* bundles
++ framework.configManager.readme
++ extensions.readme
++ bundles.readme

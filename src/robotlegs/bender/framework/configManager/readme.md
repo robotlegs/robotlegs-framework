@@ -6,19 +6,20 @@ The config manager is responsible for installing configuration files into a cont
 
 A config manager is essentially just an object processor. Objects are fed into the manager and processed by object handlers.
 
-Note: for information on object handling see:
+Note: For general information on object handling see:
 
-* core.async
-* core.message.dispatcher
++ core.async.readme
++ core.messaging.readme
++ core.objectProcessor.readme
 
 ## Built-in Config Handlers
 
 For convenience the config manager has a couple of built-in handlers:
 
-* IContextConfig instances
-* IContextConfig classes
-* Plain objects
-* Plain classes
+* IContextConfig Instance Handler
+* IContextConfig Class Handler
+* Plain Object Handler
+* Plain Class Handler
 
 ### IContextConfig Instance Handler
 
@@ -45,8 +46,8 @@ When the instance is installed the configureContext() method on that instance is
 
 For more information on IContextConfig implementations see:
 
-* extensions
-* bundles
++ extensions.readme
++ bundles.readme
 
 ### IContextConfig Class Handler
 
