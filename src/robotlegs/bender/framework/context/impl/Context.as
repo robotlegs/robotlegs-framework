@@ -10,6 +10,7 @@ package robotlegs.bender.framework.context.impl
 	import org.hamcrest.Description;
 	import org.hamcrest.Matcher;
 	import org.swiftsuspenders.Injector;
+	
 	import robotlegs.bender.framework.configManager.api.IConfigManager;
 	import robotlegs.bender.framework.configManager.impl.ConfigManager;
 	import robotlegs.bender.framework.context.api.IContext;
@@ -89,6 +90,7 @@ package robotlegs.bender.framework.context.impl
 		public function Context(... configs)
 		{
 			_injector.map(Injector).toValue(_injector);
+			_injector.map(IContext).toValue(this);
 			_logger = _logManager.getLogger(this);
 			_managedObject = _objectManager.addObject(this);
 			_configManager = new ConfigManager(this);
