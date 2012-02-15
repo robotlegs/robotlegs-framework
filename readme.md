@@ -52,11 +52,7 @@ A simple configuration might look something like this:
 
     public class MyAppConfig
     {
-        [Inject]
-        public var mediatorMap:IMediatorMap;
-
-        [PostConstruct]
-        public function configure():void
+        public function MyAppConfig(mediatorMap:IMediatorMap)
         {
             mediatorMap.mapView(SomeView).toMediator(SomeMediator);
         }
