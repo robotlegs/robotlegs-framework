@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.bundles.classic.impl
+package robotlegs.bender.bundles.mvcs.impl
 {
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;

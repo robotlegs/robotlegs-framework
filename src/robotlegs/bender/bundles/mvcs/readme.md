@@ -1,4 +1,4 @@
-# Classic Robotlegs Bundle
+# MVCS Bundle (Classic)
 
 This bundle installs a number of extensions and configurations for developers who are comfortable with the typical Robotlegs V1 MVCS setup.
 

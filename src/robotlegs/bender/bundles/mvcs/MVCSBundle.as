@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.bundles.classic
+package robotlegs.bender.bundles.mvcs
 {
 	import robotlegs.bender.bundles.shared.configs.ContextViewListenerConfig;
 	import robotlegs.bender.extensions.commandMap.CommandMapExtension;
@@ -29,7 +29,7 @@ package robotlegs.bender.bundles.classic
 	 * <p>This bundle installs a number of extensions commonly used in typical Robotlegs
 	 * applications and modules.</p>
 	 */
-	public class ClassicRobotlegsBundle implements IContextConfig
+	public class MVCSBundle implements IContextConfig
 	{
 
 		/*============================================================================*/
