@@ -27,7 +27,7 @@ Object handling follows the framework asynchronous conventions. See:
 + core.async.readme
 + core.messaging.readme
 
-## Aync Handling
+## Async Handling
 
     const processor:IObjectProcessor = new ObjectProcessor();
 

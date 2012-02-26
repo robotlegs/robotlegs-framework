@@ -2,7 +2,7 @@
 
 ## Listeners listen, handlers handle
 
-The Event Dispatcher gives us a great way to observe objects, but the dispatch processes is synchronous and listeners do not have the opportunity to suspend or terminate the dispatch. That's completely fine when we're just watching.
+The Event Dispatcher gives us a great way to observe objects, but the dispatch process is synchronous and listeners do not have the opportunity to suspend or terminate the dispatch. That's completely fine when we're just watching.
 
 A Message Dispatcher is like an Event Dispatcher, but the dispatch has the potential to be asynchronous and handlers have the opportunity to suspend or terminate the dispatch.
 
