@@ -119,6 +119,7 @@ package robotlegs.bender.framework.configManager.impl
 			// todo: this can be replaced by a classOf(type) matcher
 			if (_reflector.typeImplements(type, IContextConfig))
 			{
+				//TODO: let the injector instantiate this
 				addConfig(new type());
 			}
 			else
