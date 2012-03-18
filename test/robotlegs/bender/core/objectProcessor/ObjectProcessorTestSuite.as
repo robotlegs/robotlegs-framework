@@ -8,7 +8,6 @@
 package robotlegs.bender.core.objectProcessor
 {
 	import robotlegs.bender.core.objectProcessor.impl.ObjectProcessorTest;
-	import robotlegs.bender.core.objectProcessor.impl.TypeCachedObjectProcessorTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
@@ -20,7 +19,5 @@ package robotlegs.bender.core.objectProcessor
 		/*============================================================================*/
 
 		public var objectProcessor:ObjectProcessorTest;
-
-		public var typeCachedObjectProcessor:TypeCachedObjectProcessorTest;
 	}
 }
