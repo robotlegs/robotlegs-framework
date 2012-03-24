@@ -48,7 +48,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			factory = new MediatorFactory(injector);
 			manager = new DefaultMediatorManager(factory);
 			container = new UIComponent();
-			UIImpersonator.addElement(container);
+			UIImpersonator.addChild(container);
 		}
 
 		/*============================================================================*/

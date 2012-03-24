@@ -83,7 +83,7 @@ package robotlegs.bender.extensions.scopedMessageDispatcher
 
 			container.addChild(parentView);
 			parentView.addChild(childView);
-			UIImpersonator.addElement(container);
+			UIImpersonator.addChild(container);
 
 			const parentDispatchers:Array = [];
 			const childDispatchers:Array = [];
@@ -96,7 +96,7 @@ package robotlegs.bender.extensions.scopedMessageDispatcher
 			}
 
 			assertThat(childDispatchers, array(parentDispatchers));
-			UIImpersonator.removeElement(container);
+			UIImpersonator.removeChild(container);
 		}
 	}
 }

@@ -8,12 +8,15 @@
 package robotlegs.bender.extensions.contextView
 {
 	import flash.display.DisplayObjectContainer;
+
+	import mx.containers.Canvas;
+
 	import org.flexunit.assertThat;
 	import org.hamcrest.object.equalTo;
+
 	import robotlegs.bender.framework.context.api.IContext;
 	import robotlegs.bender.framework.context.impl.Context;
 	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
-	import spark.components.Group;
 
 	public class ContextViewExtensionTest
 	{
@@ -34,7 +37,7 @@ package robotlegs.bender.extensions.contextView
 		public function before():void
 		{
 			context = new Context();
-			contextView = new Group();
+			contextView = new Canvas();
 		}
 
 		/*============================================================================*/

@@ -42,7 +42,7 @@ package robotlegs.bender.extensions.modularity
 		public function setUp():void
 		{
 			container = new UIComponent();
-			parentView = new UIComponent()
+			parentView = new UIComponent();
 			childView = new UIComponent();
 
 			parentContext = new Context(StageSyncExtension, ContextViewExtension);
@@ -55,7 +55,7 @@ package robotlegs.bender.extensions.modularity
 		[After(async, ui)]
 		public function tearDown():void
 		{
-			UIImpersonator.removeElement(container);
+			UIImpersonator.removeChild(container);
 		}
 
 		/*============================================================================*/
@@ -68,7 +68,7 @@ package robotlegs.bender.extensions.modularity
 			parentContext.require(ModularityExtension, parentView);
 			childContext.require(ModularityExtension, childView);
 
-			UIImpersonator.addElement(container);
+			UIImpersonator.addChild(container);
 			assertThat(childContext.injector.parentInjector, equalTo(parentContext.injector));
 		}
 
@@ -78,7 +78,7 @@ package robotlegs.bender.extensions.modularity
 			parentContext.require(ModularityExtension, parentView);
 			childContext.require(new ModularityExtension(false), childView);
 
-			UIImpersonator.addElement(container);
+			UIImpersonator.addChild(container);
 			assertThat(childContext.injector.parentInjector, not(parentContext.injector));
 		}
 
@@ -88,7 +88,7 @@ package robotlegs.bender.extensions.modularity
 			parentContext.require(new ModularityExtension(true, false), parentView);
 			childContext.require(ModularityExtension, childView);
 
-			UIImpersonator.addElement(container);
+			UIImpersonator.addChild(container);
 			assertThat(childContext.injector.parentInjector, not(parentContext.injector));
 		}
 

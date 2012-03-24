@@ -8,12 +8,15 @@
 package robotlegs.bender.extensions.stageSync
 {
 	import flash.display.DisplayObjectContainer;
+
+	import mx.containers.Canvas;
+
 	import org.flexunit.assertThat;
 	import org.fluint.uiImpersonation.UIImpersonator;
 	import org.hamcrest.object.isTrue;
+
 	import robotlegs.bender.framework.context.api.IContext;
 	import robotlegs.bender.framework.context.impl.Context;
-	import spark.components.Group;
 
 	public class StageSyncExtensionTest
 	{
@@ -34,7 +37,7 @@ package robotlegs.bender.extensions.stageSync
 		public function before():void
 		{
 			context = new Context();
-			contextView = new Group();
+			contextView = new Canvas();
 		}
 
 		/*============================================================================*/
@@ -47,14 +50,14 @@ package robotlegs.bender.extensions.stageSync
 			context.require(
 				StageSyncExtension,
 				contextView);
-			UIImpersonator.addElement(contextView);
+			UIImpersonator.addChild(contextView);
 			assertThat(context.initialized, isTrue());
 		}
 
 		[Test]
 		public function adding_contextView_that_is_already_on_stage_initializes_context():void
 		{
-			UIImpersonator.addElement(contextView);
+			UIImpersonator.addChild(contextView);
 			context.require(
 				StageSyncExtension,
 				contextView);
@@ -67,8 +70,8 @@ package robotlegs.bender.extensions.stageSync
 			context.require(
 				StageSyncExtension,
 				contextView);
-			UIImpersonator.addElement(contextView);
-			UIImpersonator.removeElement(contextView);
+			UIImpersonator.addChild(contextView);
+			UIImpersonator.removeChild(contextView);
 			assertThat(context.destroyed, isTrue());
 		}
 	}

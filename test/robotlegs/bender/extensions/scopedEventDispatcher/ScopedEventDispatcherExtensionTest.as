@@ -64,7 +64,7 @@ package robotlegs.bender.extensions.scopedEventDispatcher
 		{
 			const names:Array = ['global', 'other', 'name'];
 			const container:UIComponent = new UIComponent();
-			const parentView:UIComponent = new UIComponent()
+			const parentView:UIComponent = new UIComponent();
 			const childView:UIComponent = new UIComponent();
 
 			const parentContext:IContext = new Context(
@@ -83,7 +83,7 @@ package robotlegs.bender.extensions.scopedEventDispatcher
 
 			container.addChild(parentView);
 			parentView.addChild(childView);
-			UIImpersonator.addElement(container);
+			UIImpersonator.addChild(container);
 
 			const parentDispatchers:Array = [];
 			const childDispatchers:Array = [];
@@ -96,7 +96,7 @@ package robotlegs.bender.extensions.scopedEventDispatcher
 			}
 
 			assertThat(childDispatchers, array(parentDispatchers));
-			UIImpersonator.removeElement(container);
+			UIImpersonator.removeChild(container);
 		}
 	}
 }
