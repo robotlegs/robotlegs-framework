@@ -5,32 +5,35 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.eventDispatcher
+package robotlegs.bender.framework.context.support
 {
-	import flash.events.EventDispatcher;
-	import flash.events.IEventDispatcher;
+	import robotlegs.bender.core.async.safelyCallBack;
 	import robotlegs.bender.framework.context.api.IContext;
 	import robotlegs.bender.framework.context.api.IContextExtension;
 
-	/**
-	 * This extension maps an IEventDispatcher into a context's injector.
-	 */
-	public class EventDispatcherExtension implements IContextExtension
+	public class CallbackExtension implements IContextExtension
 	{
+
+		/*============================================================================*/
+		/* Public Static Properties                                                   */
+		/*============================================================================*/
+
+		public static var staticCallback:Function;
 
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var _eventDispatcher:IEventDispatcher;
+		private var _callback:Function;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function EventDispatcherExtension(eventDispatcher:IEventDispatcher = null)
+		public function CallbackExtension(callback:Function = null)
 		{
-			_eventDispatcher = eventDispatcher || new EventDispatcher();
+			_callback = callback || staticCallback;
+			staticCallback = null;
 		}
 
 		/*============================================================================*/
@@ -39,7 +42,7 @@ package robotlegs.bender.extensions.eventDispatcher
 
 		public function extend(context:IContext):void
 		{
-			context.injector.map(IEventDispatcher).toValue(_eventDispatcher);
+			_callback && safelyCallBack(_callback, null, context);
 		}
 	}
 }

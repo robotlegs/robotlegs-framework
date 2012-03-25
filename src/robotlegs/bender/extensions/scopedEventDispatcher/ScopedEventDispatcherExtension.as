@@ -11,14 +11,14 @@ package robotlegs.bender.extensions.scopedEventDispatcher
 	import flash.events.IEventDispatcher;
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.framework.context.api.IContext;
-	import robotlegs.bender.framework.context.api.IContextConfig;
+	import robotlegs.bender.framework.context.api.IContextExtension;
 	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
 
 	/**
 	 * This extensions maps a series of named IEventDispatcher instances
 	 * provided those names have not been mapped by a parent context.
 	 */
-	public class ScopedEventDispatcherExtension implements IContextConfig
+	public class ScopedEventDispatcherExtension implements IContextExtension
 	{
 
 		/*============================================================================*/
@@ -44,7 +44,7 @@ package robotlegs.bender.extensions.scopedEventDispatcher
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function configureContext(context:IContext):void
+		public function extend(context:IContext):void
 		{
 			_context = context;
 			_injector = context.injector;

@@ -8,17 +8,17 @@
 package robotlegs.bender.extensions.logging
 {
 	import robotlegs.bender.framework.context.api.IContext;
-	import robotlegs.bender.framework.context.api.IContextConfig;
+	import robotlegs.bender.framework.context.api.IContextExtension;
 	import robotlegs.bender.extensions.logging.impl.TraceLogTarget;
 
-	public class TraceLoggingExtension implements IContextConfig
+	public class TraceLoggingExtension implements IContextExtension
 	{
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function configureContext(context:IContext):void
+		public function extend(context:IContext):void
 		{
 			context.addLogTarget(new TraceLogTarget(context));
 		}

@@ -30,7 +30,7 @@ package robotlegs.bender.extensions.logging
 		public function before():void
 		{
 			context = new Context();
-			context.require(LoggingExtension);
+			context.extend(LoggingExtension);
 		}
 
 		/*============================================================================*/

@@ -10,19 +10,19 @@ package robotlegs.bender.extensions.localEventMap
 	import robotlegs.bender.extensions.localEventMap.api.IEventMap;
 	import robotlegs.bender.extensions.localEventMap.impl.EventMap;
 	import robotlegs.bender.framework.context.api.IContext;
-	import robotlegs.bender.framework.context.api.IContextConfig;
+	import robotlegs.bender.framework.context.api.IContextExtension;
 
 	/**
 	 * todo: extension description
 	 */
-	public class LocalEventMapExtension implements IContextConfig
+	public class LocalEventMapExtension implements IContextExtension
 	{
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function configureContext(context:IContext):void
+		public function extend(context:IContext):void
 		{
 			context.injector.map(IEventMap).toType(EventMap);
 		}

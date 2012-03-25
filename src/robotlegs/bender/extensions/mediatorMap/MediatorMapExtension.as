@@ -15,10 +15,10 @@ package robotlegs.bender.extensions.mediatorMap
 	import robotlegs.bender.extensions.mediatorMap.impl.MediatorMap;
 	import robotlegs.bender.extensions.viewManager.api.IViewManager;
 	import robotlegs.bender.framework.context.api.IContext;
-	import robotlegs.bender.framework.context.api.IContextConfig;
+	import robotlegs.bender.framework.context.api.IContextExtension;
 	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
 
-	public class MediatorMapExtension implements IContextConfig
+	public class MediatorMapExtension implements IContextExtension
 	{
 
 		/*============================================================================*/
@@ -39,7 +39,7 @@ package robotlegs.bender.extensions.mediatorMap
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function configureContext(context:IContext):void
+		public function extend(context:IContext):void
 		{
 			_context = context;
 			_injector = context.injector;

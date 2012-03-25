@@ -10,7 +10,10 @@ package robotlegs.bender.mxml
 	import flash.display.DisplayObjectContainer;
 	import flash.utils.setTimeout;
 	import mx.core.IMXMLObject;
+	import org.swiftsuspenders.DescribeTypeReflector;
+	import org.swiftsuspenders.Reflector;
 	import robotlegs.bender.framework.context.api.IContext;
+	import robotlegs.bender.framework.context.api.IContextExtension;
 	import robotlegs.bender.framework.context.impl.Context;
 
 	[DefaultProperty("configs")]
@@ -48,6 +51,12 @@ package robotlegs.bender.mxml
 		}
 
 		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
+
+		private const _reflector:Reflector = new DescribeTypeReflector();
+
+		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
@@ -66,13 +75,18 @@ package robotlegs.bender.mxml
 		{
 			for each (var config:Object in _configs)
 			{
-				_context.require(config);
+				isExtension(config)
+					? _context.extend(config)
+					: _context.configure(config);
 			}
 
-			if (_contextView)
-				_context.require(_contextView);
-
+			_contextView && _context.configure(_contextView);
 			_configs.length = 0;
+		}
+
+		private function isExtension(object:Object):Boolean
+		{
+			return (object is IContextExtension) || (object is Class && _reflector.typeImplements(object as Class, IContextExtension));
 		}
 	}
 }

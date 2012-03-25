@@ -5,17 +5,13 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.framework.configManager.impl
+package robotlegs.bender.framework.context.impl
 {
 	import org.flexunit.assertThat;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.instanceOf;
 	import org.hamcrest.object.nullValue;
-	import robotlegs.bender.framework.configManager.api.IConfigManager;
-	import robotlegs.bender.framework.configManager.support.CallbackContextConfig;
 	import robotlegs.bender.framework.context.api.IContext;
-	import robotlegs.bender.framework.context.api.IContextConfig;
-	import robotlegs.bender.framework.context.impl.Context;
 
 	public class ConfigManagerTest
 	{
@@ -44,12 +40,6 @@ package robotlegs.bender.framework.configManager.impl
 		/*============================================================================*/
 
 		[Test]
-		public function can_instantiate():void
-		{
-			assertThat(configManager, instanceOf(IConfigManager));
-		}
-
-		[Test]
 		public function addConfig():void
 		{
 			configManager.addConfig({});
@@ -71,52 +61,6 @@ package robotlegs.bender.framework.configManager.impl
 			});
 			configManager.addConfig(expected);
 			assertThat(actual, equalTo(expected));
-		}
-
-		[Test]
-		public function IContextConfig_instance_is_configured():void
-		{
-			var actual:IContext;
-			const config:IContextConfig = new CallbackContextConfig(function(error:Object, context:IContext):void {
-				actual = context;
-			});
-			configManager.addConfig(config);
-			assertThat(actual, equalTo(this.context));
-		}
-
-		[Test]
-		public function IContextConfig_class_is_configured():void
-		{
-			var actual:IContextConfig;
-			configManager.addConfigHandler(instanceOf(IContextConfig), function(config:IContextConfig):void {
-				actual = config;
-			});
-			configManager.addConfig(CallbackContextConfig);
-			assertThat(actual, instanceOf(CallbackContextConfig));
-		}
-
-		[Test]
-		public function IContextConfig_is_only_installed_once():void
-		{
-			var callCount:int;
-			const config:IContextConfig = new CallbackContextConfig(function():void {
-				callCount++;
-			});
-			configManager.addConfig(config);
-			configManager.addConfig(config);
-			assertThat(callCount, equalTo(1));
-		}
-
-		[Test]
-		public function IContextConfig_class_is_only_installed_once():void
-		{
-			var callCount:int;
-			configManager.addConfigHandler(instanceOf(IContextConfig), function():void {
-				callCount++;
-			});
-			configManager.addConfig(CallbackContextConfig);
-			configManager.addConfig(CallbackContextConfig);
-			assertThat(callCount, equalTo(1));
 		}
 
 		[Test]

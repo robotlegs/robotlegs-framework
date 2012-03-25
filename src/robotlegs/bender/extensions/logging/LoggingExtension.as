@@ -9,17 +9,17 @@ package robotlegs.bender.extensions.logging
 {
 	import robotlegs.bender.extensions.logging.integration.LoggerProvider;
 	import robotlegs.bender.framework.context.api.IContext;
-	import robotlegs.bender.framework.context.api.IContextConfig;
+	import robotlegs.bender.framework.context.api.IContextExtension;
 	import robotlegs.bender.framework.logging.api.ILogger;
 
-	public class LoggingExtension implements IContextConfig
+	public class LoggingExtension implements IContextExtension
 	{
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function configureContext(context:IContext):void
+		public function extend(context:IContext):void
 		{
 			context.injector.map(ILogger).toProvider(new LoggerProvider(context));
 		}

@@ -31,7 +31,7 @@ package robotlegs.bender.extensions.localEventMap
 		public function before():void
 		{
 			context = new Context();
-			context.require(EventDispatcherExtension, LocalEventMapExtension);
+			context.extend(EventDispatcherExtension, LocalEventMapExtension);
 		}
 
 		/*============================================================================*/

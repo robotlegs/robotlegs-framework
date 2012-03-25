@@ -6,8 +6,6 @@ The Event Dispatcher gives us a great way to observe objects, but the dispatch p
 
 A Message Dispatcher is like an Event Dispatcher, but the dispatch has the potential to be asynchronous and handlers have the opportunity to suspend or terminate the dispatch.
 
-If an Event Dispatcher is a loudhailer, a Message Dispatcher is a circuit board [todo: find better thing].
-
 ## Important
 
 Message Dispatchers do not replace Event Dispatchers in any way. They solve completely different problems. The differences are explored in greater detail below.
@@ -212,12 +210,6 @@ This is why it's important that error handling be core to the asynchronous callb
         if (error) throw error;
         trace("Completed successfully!");
     });
-
-## Adding a handler more than once
-
-Currently: allowed. Handler will be called more than once.
-
-todo: decide if allowed, justify
 
 ## Speed
 

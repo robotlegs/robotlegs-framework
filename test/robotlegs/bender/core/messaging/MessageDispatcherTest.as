@@ -397,10 +397,9 @@ package robotlegs.bender.core.messaging
 			for each (var reverse:Boolean in[false, true])
 			{
 				const actual:Array = [];
-				const expected:Array = reverse ?
-					['handler 4', 'handler 3 (with error)']
-					:
-					['handler 1', 'handler 2', 'handler 3 (with error)'];
+				const expected:Array = reverse
+                    ? ['handler 4', 'handler 3 (with error)']
+					: ['handler 1', 'handler 2', 'handler 3 (with error)'];
 				dispatcher = new MessageDispatcher();
 				dispatcher.addMessageHandler(message, createHandler(actual.push, 'handler 1'));
 				dispatcher.addMessageHandler(message, createHandler(actual.push, 'handler 2'));
@@ -417,10 +416,9 @@ package robotlegs.bender.core.messaging
 			for each (var reverse:Boolean in [false, true])
 			{
 				const actual:Array = [];
-				const expected:Array = reverse ?
-					['handler 4', 'handler 3 (with error)']
-					:
-					['handler 1', 'handler 2', 'handler 3 (with error)'];
+				const expected:Array = reverse
+                    ? ['handler 4', 'handler 3 (with error)']
+					: ['handler 1', 'handler 2', 'handler 3 (with error)'];
 				dispatcher = new MessageDispatcher();
 				dispatcher.addMessageHandler(message, createAsyncHandler(actual.push, 'handler 1'));
 				dispatcher.addMessageHandler(message, createAsyncHandler(actual.push, 'handler 2'));
@@ -436,7 +434,20 @@ package robotlegs.bender.core.messaging
 			}
 		}
 
-		/*============================================================================*/
+        [Test]
+        public function handler_is_only_added_once():void
+        {
+            var callbackCount:int = 0;
+            const handler:Function = function():void{
+				callbackCount++;
+            };
+            dispatcher.addMessageHandler(message, handler);
+            dispatcher.addMessageHandler(message, handler);
+			dispatcher.dispatchMessage(message);
+            assertThat(callbackCount, equalTo(1));
+        }
+
+        /*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
 
@@ -445,19 +456,5 @@ package robotlegs.bender.core.messaging
 			Async.delayCall(this, closure, delay);
 		}
 
-		private function createCallbackHandler(closure:Function = null, ... params):Function
-		{
-			return function(message:Object, callback:Function):void {
-				closure && closure.apply(null, params);
-				callback();
-			};
-		}
-
-		private function createSetterHandler(target:Object, property:String, value:Object):Function
-		{
-			return function():void {
-				target[property] = value;
-			};
-		}
 	}
 }

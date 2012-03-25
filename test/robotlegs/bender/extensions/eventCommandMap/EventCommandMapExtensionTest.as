@@ -10,8 +10,8 @@ package robotlegs.bender.extensions.eventCommandMap
 	import org.flexunit.assertThat;
 	import org.hamcrest.object.instanceOf;
 	import robotlegs.bender.extensions.commandMap.CommandMapExtension;
-	import robotlegs.bender.extensions.eventDispatcher.EventDispatcherExtension;
 	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
+	import robotlegs.bender.extensions.eventDispatcher.EventDispatcherExtension;
 	import robotlegs.bender.framework.context.impl.Context;
 	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
 
@@ -32,7 +32,7 @@ package robotlegs.bender.extensions.eventCommandMap
 		public function before():void
 		{
 			context = new Context();
-			context.require(EventDispatcherExtension, CommandMapExtension);
+			context.extend(EventDispatcherExtension, CommandMapExtension);
 		}
 
 		/*============================================================================*/
@@ -43,7 +43,7 @@ package robotlegs.bender.extensions.eventCommandMap
 		public function eventCommandMap_is_mapped_into_injector():void
 		{
 			var actual:Object;
-			context.require(EventCommandMapExtension);
+			context.extend(EventCommandMapExtension);
 			context.addStateHandler(ManagedObject.SELF_INITIALIZE, function():void {
 				actual = context.injector.getInstance(IEventCommandMap);
 			});

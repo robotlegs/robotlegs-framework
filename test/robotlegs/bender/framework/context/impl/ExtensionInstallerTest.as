@@ -7,15 +7,13 @@
 
 package robotlegs.bender.framework.context.impl
 {
-	import org.flexunit.assertThat;
-	import org.hamcrest.core.isA;
+	import org.hamcrest.assertThat;
 	import org.hamcrest.object.equalTo;
-	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.framework.context.api.IContext;
 	import robotlegs.bender.framework.context.api.IContextExtension;
 	import robotlegs.bender.framework.context.support.CallbackExtension;
 
-	public class ContextTest
+	public class ExtensionInstallerTest
 	{
 
 		/*============================================================================*/
@@ -23,6 +21,8 @@ package robotlegs.bender.framework.context.impl
 		/*============================================================================*/
 
 		private var context:IContext;
+
+		private var extensionManager:ExtensionInstaller;
 
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
@@ -32,6 +32,7 @@ package robotlegs.bender.framework.context.impl
 		public function before():void
 		{
 			context = new Context();
+			extensionManager = new ExtensionInstaller(context);
 		}
 
 		/*============================================================================*/
@@ -39,49 +40,49 @@ package robotlegs.bender.framework.context.impl
 		/*============================================================================*/
 
 		[Test]
-		public function can_instantiate():void
+		public function extension_instance_is_installed():void
 		{
-			assertThat(context, isA(IContext));
+			var callCount:int;
+			extensionManager.install(new CallbackExtension(function():void {
+				callCount++;
+			}));
+			assertThat(callCount, equalTo(1));
 		}
 
 		[Test]
-		public function extensions_are_installed():void
+		public function extension_class_is_installed():void
 		{
-			var actual:IContext;
-			const extension:IContextExtension = new CallbackExtension(function(error:Object, context:IContext):void {
-				actual = context;
-			});
-			context.extend(extension);
-			assertThat(actual, equalTo(context));
+			var callCount:int;
+			CallbackExtension.staticCallback = function():void {
+				callCount++;
+			};
+			extensionManager.install(CallbackExtension);
+			assertThat(callCount, equalTo(1));
 		}
 
 		[Test]
-		public function injector_is_mapped_into_itself():void
+		public function extension_is_installed_once_for_same_instance():void
 		{
-			context.injector.getInstance(SomeClass);
+			var callCount:int;
+			const callback:Function = function():void {
+				callCount++;
+			};
+			const extension:IContextExtension = new CallbackExtension(callback);
+			extensionManager.install(extension);
+			extensionManager.install(extension);
+			assertThat(callCount, equalTo(1));
 		}
-	}
-}
 
-import org.swiftsuspenders.Injector;
-
-class SomeClass
-{
-
-	/*============================================================================*/
-	/* Public Properties                                                          */
-	/*============================================================================*/
-
-	[Inject]
-	public var injector:Injector;
-
-	/*============================================================================*/
-	/* Constructor                                                                */
-	/*============================================================================*/
-
-	public function SomeClass(injector:Injector)
-	{
-		if (!injector)
-			throw new Error("ouch");
+		[Test]
+		public function extension_is_installed_once_for_same_class():void
+		{
+			var callCount:int;
+			const callback:Function = function():void {
+				callCount++;
+			}
+			extensionManager.install(new CallbackExtension(callback));
+			extensionManager.install(new CallbackExtension(callback));
+			assertThat(callCount, equalTo(1));
+		}
 	}
 }

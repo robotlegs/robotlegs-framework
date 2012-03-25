@@ -28,8 +28,6 @@ package robotlegs.bender.core.messaging
 
 		public function MessageDispatcher()
 		{
-			// todo: some concept of a "source" like EventDispatcher?
-			// how would anyone access that?
 		}
 
 		/*============================================================================*/
@@ -44,7 +42,8 @@ package robotlegs.bender.core.messaging
 			const messageHandlers:Array = _handlers[message];
 			if (messageHandlers)
 			{
-				messageHandlers.push(handler);
+				if (messageHandlers.indexOf(handler) == -1)
+					messageHandlers.push(handler);
 			}
 			else
 			{

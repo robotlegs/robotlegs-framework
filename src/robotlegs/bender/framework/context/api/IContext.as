@@ -33,7 +33,9 @@ package robotlegs.bender.framework.context.api
 
 		function destroy():void;
 
-		function require(... configs):IContext;
+		function extend(... extensions):IContext;
+		
+		function configure(... configs):IContext;
 
 		function addConfigHandler(matcher:Matcher, handler:Function):IContext;
 

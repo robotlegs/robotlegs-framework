@@ -11,14 +11,14 @@ package robotlegs.bender.extensions.scopedMessageDispatcher
 	import robotlegs.bender.core.messaging.IMessageDispatcher;
 	import robotlegs.bender.core.messaging.MessageDispatcher;
 	import robotlegs.bender.framework.context.api.IContext;
-	import robotlegs.bender.framework.context.api.IContextConfig;
+	import robotlegs.bender.framework.context.api.IContextExtension;
 	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
 
 	/**
 	 * This extensions maps a series of named IMessageDispatcher instances
 	 * provided those names have not been mapped by a parent context.
 	 */
-	public class ScopedMessageDispatcherExtension implements IContextConfig
+	public class ScopedMessageDispatcherExtension implements IContextExtension
 	{
 
 		/*============================================================================*/
@@ -44,7 +44,7 @@ package robotlegs.bender.extensions.scopedMessageDispatcher
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function configureContext(context:IContext):void
+		public function extend(context:IContext):void
 		{
 			_context = context;
 			_injector = context.injector;

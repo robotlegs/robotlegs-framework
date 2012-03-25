@@ -11,7 +11,7 @@ package robotlegs.bender.framework.context.api
 	/**
 	 * The context Extension/Bundle contract.
 	 */
-	public interface IContextConfig
+	public interface IContextExtension
 	{
 		/**
 		 * This method will be called immediately when the extension/bundle is installed.
@@ -23,6 +23,6 @@ package robotlegs.bender.framework.context.api
 		 *
 		 * @param context The context that this bundle/extension is being installed into.
 		 */
-		function configureContext(context:IContext):void;
+		function extend(context:IContext):void;
 	}
 }

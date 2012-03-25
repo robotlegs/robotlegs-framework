@@ -45,8 +45,8 @@ package robotlegs.bender.extensions.modularity
 			parentView = new UIComponent();
 			childView = new UIComponent();
 
-			parentContext = new Context(StageSyncExtension, ContextViewExtension);
-			childContext = new Context(StageSyncExtension, ContextViewExtension);
+			parentContext = new Context().extend(StageSyncExtension, ContextViewExtension);
+			childContext = new Context().extend(StageSyncExtension, ContextViewExtension);
 
 			container.addChild(parentView);
 			parentView.addChild(childView);
@@ -65,8 +65,8 @@ package robotlegs.bender.extensions.modularity
 		[Test(async, ui)]
 		public function context_inherits_parent_injector():void
 		{
-			parentContext.require(ModularityExtension, parentView);
-			childContext.require(ModularityExtension, childView);
+			parentContext.extend(ModularityExtension).configure(parentView);
+			childContext.extend(ModularityExtension).configure(childView);
 
 			UIImpersonator.addChild(container);
 			assertThat(childContext.injector.parentInjector, equalTo(parentContext.injector));
@@ -75,8 +75,8 @@ package robotlegs.bender.extensions.modularity
 		[Test(async, ui)]
 		public function context_does_not_inherit_parent_injector_when_not_interested():void
 		{
-			parentContext.require(ModularityExtension, parentView);
-			childContext.require(new ModularityExtension(false), childView);
+			parentContext.extend(ModularityExtension).configure(parentView);
+			childContext.extend(new ModularityExtension(false)).configure(childView);
 
 			UIImpersonator.addChild(container);
 			assertThat(childContext.injector.parentInjector, not(parentContext.injector));
@@ -85,8 +85,8 @@ package robotlegs.bender.extensions.modularity
 		[Test(async, ui)]
 		public function context_does_not_inherit_parent_injector_when_disallowed_by_parent():void
 		{
-			parentContext.require(new ModularityExtension(true, false), parentView);
-			childContext.require(ModularityExtension, childView);
+			parentContext.extend(new ModularityExtension(true, false)).configure(parentView);
+			childContext.extend(ModularityExtension).configure(childView);
 
 			UIImpersonator.addChild(container);
 			assertThat(childContext.injector.parentInjector, not(parentContext.injector));
@@ -95,7 +95,7 @@ package robotlegs.bender.extensions.modularity
 		[Test(expects="Error")]
 		public function extension_throws_if_context_initialized_with_no_contextView():void
 		{
-			childContext.require(ModularityExtension);
+			childContext.extend(ModularityExtension);
 			childContext.initialize();
 		}
 	}

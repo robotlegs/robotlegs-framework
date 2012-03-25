@@ -34,7 +34,7 @@ package robotlegs.bender.extensions.scopedMessageDispatcher
 			const name:String = 'global';
 			const context:IContext = new Context();
 			var actual:Object;
-			context.require(new ScopedMessageDispatcherExtension(name));
+			context.extend(new ScopedMessageDispatcherExtension(name));
 			context.addStateHandler(ManagedObject.SELF_INITIALIZE, function():void {
 				actual = context.injector.getInstance(IMessageDispatcher, name);
 			});
@@ -48,7 +48,7 @@ package robotlegs.bender.extensions.scopedMessageDispatcher
 			const names:Array = ['global', 'other', 'name'];
 			const dispatchers:Array = [];
 			const context:IContext = new Context();
-			context.require(new ScopedMessageDispatcherExtension('global', 'other', 'name'));
+			context.extend(new ScopedMessageDispatcherExtension('global', 'other', 'name'));
 			context.addStateHandler(ManagedObject.SELF_INITIALIZE, function():void {
 				for each (var name:String in names)
 				{
@@ -67,19 +67,19 @@ package robotlegs.bender.extensions.scopedMessageDispatcher
 			const parentView:UIComponent = new UIComponent()
 			const childView:UIComponent = new UIComponent();
 
-			const parentContext:IContext = new Context(
+			const parentContext:IContext = new Context().extend(
 				ModularityExtension,
 				StageSyncExtension,
 				ContextViewExtension,
-				parentView,
-				new ScopedMessageDispatcherExtension('global', 'other', 'name'));
+				new ScopedMessageDispatcherExtension('global', 'other', 'name'))
+				.configure(parentView);
 
-			const childContext:IContext = new Context(
+			const childContext:IContext = new Context().extend(
 				ModularityExtension,
 				StageSyncExtension,
 				ContextViewExtension,
-				childView,
-				new ScopedMessageDispatcherExtension('global', 'other', 'name'));
+				new ScopedMessageDispatcherExtension('global', 'other', 'name'))
+				.configure(childView);
 
 			container.addChild(parentView);
 			parentView.addChild(childView);

@@ -48,9 +48,7 @@ package robotlegs.bender.extensions.contextView
 		public function contextView_is_mapped_into_injector():void
 		{
 			var actual:Object;
-			context.require(
-				ContextViewExtension,
-				contextView);
+			context.extend(ContextViewExtension).configure(contextView);
 			context.addStateHandler(ManagedObject.SELF_INITIALIZE, function():void {
 				actual = context.injector.getInstance(DisplayObjectContainer);
 			});

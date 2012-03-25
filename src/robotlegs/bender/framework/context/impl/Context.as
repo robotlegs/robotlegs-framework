@@ -10,9 +10,6 @@ package robotlegs.bender.framework.context.impl
 	import org.hamcrest.Description;
 	import org.hamcrest.Matcher;
 	import org.swiftsuspenders.Injector;
-	
-	import robotlegs.bender.framework.configManager.api.IConfigManager;
-	import robotlegs.bender.framework.configManager.impl.ConfigManager;
 	import robotlegs.bender.framework.context.api.IContext;
 	import robotlegs.bender.framework.logging.api.ILogManager;
 	import robotlegs.bender.framework.logging.api.ILogTarget;
@@ -77,7 +74,9 @@ package robotlegs.bender.framework.context.impl
 
 		private const _logManager:ILogManager = new LogManager();
 
-		private var _configManager:IConfigManager;
+		private var _configManager:ConfigManager;
+
+		private var _extensionInstaller:ExtensionInstaller;
 
 		private var _managedObject:IManagedObject;
 
@@ -87,14 +86,14 @@ package robotlegs.bender.framework.context.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function Context(... configs)
+		public function Context()
 		{
 			_injector.map(Injector).toValue(_injector);
 			_injector.map(IContext).toValue(this);
 			_logger = _logManager.getLogger(this);
 			_managedObject = _objectManager.addObject(this);
 			_configManager = new ConfigManager(this);
-			require.apply(this, configs);
+			_extensionInstaller = new ExtensionInstaller(this);
 		}
 
 		/*============================================================================*/
@@ -113,7 +112,16 @@ package robotlegs.bender.framework.context.impl
 			_managedObject.destroy(handleDestroyComplete);
 		}
 
-		public function require(... configs):IContext
+		public function extend(... extensions):IContext
+		{
+			for each (var extension:Object in extensions)
+			{
+				_extensionInstaller.install(extension);
+			}
+			return this;
+		}
+
+		public function configure(... configs):IContext
 		{
 			for each (var config:Object in configs)
 			{

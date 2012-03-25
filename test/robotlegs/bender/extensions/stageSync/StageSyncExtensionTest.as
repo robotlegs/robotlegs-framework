@@ -47,9 +47,7 @@ package robotlegs.bender.extensions.stageSync
 		[Test]
 		public function adding_contextView_to_stage_initializes_context():void
 		{
-			context.require(
-				StageSyncExtension,
-				contextView);
+			context.extend(StageSyncExtension).configure(contextView);
 			UIImpersonator.addChild(contextView);
 			assertThat(context.initialized, isTrue());
 		}
@@ -58,18 +56,14 @@ package robotlegs.bender.extensions.stageSync
 		public function adding_contextView_that_is_already_on_stage_initializes_context():void
 		{
 			UIImpersonator.addChild(contextView);
-			context.require(
-				StageSyncExtension,
-				contextView);
+			context.extend(StageSyncExtension).configure(contextView);
 			assertThat(context.initialized, isTrue());
 		}
 
 		[Test]
 		public function removing_contextView_from_stage_destroys_context():void
 		{
-			context.require(
-				StageSyncExtension,
-				contextView);
+			context.extend(StageSyncExtension).configure(contextView);
 			UIImpersonator.addChild(contextView);
 			UIImpersonator.removeChild(contextView);
 			assertThat(context.destroyed, isTrue());

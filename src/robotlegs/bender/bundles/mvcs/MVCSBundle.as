@@ -21,7 +21,7 @@ package robotlegs.bender.bundles.mvcs
 	import robotlegs.bender.extensions.viewManager.StageObserverExtension;
 	import robotlegs.bender.extensions.viewManager.ViewManagerExtension;
 	import robotlegs.bender.framework.context.api.IContext;
-	import robotlegs.bender.framework.context.api.IContextConfig;
+	import robotlegs.bender.framework.context.api.IContextExtension;
 
 	/**
 	 * For that Classic Robotlegs flavour.
@@ -29,16 +29,16 @@ package robotlegs.bender.bundles.mvcs
 	 * <p>This bundle installs a number of extensions commonly used in typical Robotlegs
 	 * applications and modules.</p>
 	 */
-	public class MVCSBundle implements IContextConfig
+	public class MVCSBundle implements IContextExtension
 	{
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function configureContext(context:IContext):void
+		public function extend(context:IContext):void
 		{
-			context.require(
+			context.extend(
 				TraceLoggingExtension,
 				ContextViewExtension,
 				EventDispatcherExtension,
@@ -50,8 +50,9 @@ package robotlegs.bender.bundles.mvcs
 				ViewManagerExtension,
 				StageObserverExtension,
 				ManualStageObserverExtension,
-				MediatorMapExtension,
-				ContextViewListenerConfig);
+				MediatorMapExtension);
+
+			context.configure(ContextViewListenerConfig);
 		}
 	}
 }

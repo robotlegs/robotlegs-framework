@@ -43,7 +43,7 @@ package robotlegs.bender.extensions.messageDispatcher
 		public function a_MessageDispatcher_is_mapped_into_injector():void
 		{
 			var actual:Object;
-			context.require(MessageDispatcherExtension);
+			context.extend(MessageDispatcherExtension);
 			context.addStateHandler(ManagedObject.SELF_INITIALIZE, function():void {
 				actual = context.injector.getInstance(IMessageDispatcher);
 			});
@@ -56,7 +56,7 @@ package robotlegs.bender.extensions.messageDispatcher
 		{
 			const expected:IMessageDispatcher = new MessageDispatcher();
 			var actual:Object;
-			context.require(new MessageDispatcherExtension(expected));
+			context.extend(new MessageDispatcherExtension(expected));
 			context.addStateHandler(ManagedObject.SELF_INITIALIZE, function():void {
 				actual = context.injector.getInstance(IMessageDispatcher);
 			});

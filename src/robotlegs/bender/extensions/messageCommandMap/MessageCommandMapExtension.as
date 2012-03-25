@@ -10,16 +10,16 @@ package robotlegs.bender.extensions.messageCommandMap
 	import robotlegs.bender.extensions.messageCommandMap.api.IMessageCommandMap;
 	import robotlegs.bender.extensions.messageCommandMap.impl.MessageCommandMap;
 	import robotlegs.bender.framework.context.api.IContext;
-	import robotlegs.bender.framework.context.api.IContextConfig;
+	import robotlegs.bender.framework.context.api.IContextExtension;
 
-	public class MessageCommandMapExtension implements IContextConfig
+	public class MessageCommandMapExtension implements IContextExtension
 	{
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function configureContext(context:IContext):void
+		public function extend(context:IContext):void
 		{
 			context.injector.map(IMessageCommandMap).toSingleton(MessageCommandMap);
 		}

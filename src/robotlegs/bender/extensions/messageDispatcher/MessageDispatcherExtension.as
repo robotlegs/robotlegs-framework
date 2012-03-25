@@ -10,9 +10,9 @@ package robotlegs.bender.extensions.messageDispatcher
 	import robotlegs.bender.core.messaging.IMessageDispatcher;
 	import robotlegs.bender.core.messaging.MessageDispatcher;
 	import robotlegs.bender.framework.context.api.IContext;
-	import robotlegs.bender.framework.context.api.IContextConfig;
+	import robotlegs.bender.framework.context.api.IContextExtension;
 
-	public class MessageDispatcherExtension implements IContextConfig
+	public class MessageDispatcherExtension implements IContextExtension
 	{
 
 		/*============================================================================*/
@@ -34,7 +34,7 @@ package robotlegs.bender.extensions.messageDispatcher
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function configureContext(context:IContext):void
+		public function extend(context:IContext):void
 		{
 			context.injector.map(IMessageDispatcher).toValue(_messageDispatcher);
 		}

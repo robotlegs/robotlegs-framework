@@ -31,7 +31,7 @@ package robotlegs.bender.extensions.commandMap
 		public function before():void
 		{
 			context = new Context();
-			context.require(EventDispatcherExtension, CommandMapExtension);
+			context.extend(EventDispatcherExtension, CommandMapExtension);
 		}
 
 		/*============================================================================*/

@@ -7,7 +7,6 @@
 
 package robotlegs.bender.framework
 {
-	import robotlegs.bender.framework.configManager.ConfigManagerTestSuite;
 	import robotlegs.bender.framework.context.ContextTestSuite;
 	import robotlegs.bender.framework.guard.GuardTestSuite;
 	import robotlegs.bender.framework.hook.HookTestSuite;
@@ -22,8 +21,6 @@ package robotlegs.bender.framework
 		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
-
-		public var config:ConfigManagerTestSuite;
 
 		public var context:ContextTestSuite;
 

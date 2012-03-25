@@ -5,25 +5,22 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.framework.configManager.impl
+package robotlegs.bender.framework.context.impl
 {
 	import flash.display.DisplayObject;
+	import flash.utils.Dictionary;
 	import org.hamcrest.Matcher;
 	import org.hamcrest.core.allOf;
 	import org.hamcrest.core.not;
 	import org.hamcrest.object.instanceOf;
-	import org.swiftsuspenders.DescribeTypeJSONReflector;
-	import org.swiftsuspenders.Reflector;
 	import robotlegs.bender.core.objectProcessor.api.IObjectProcessor;
 	import robotlegs.bender.core.objectProcessor.impl.ObjectProcessor;
-	import robotlegs.bender.framework.configManager.api.IConfigManager;
 	import robotlegs.bender.framework.context.api.IContext;
-	import robotlegs.bender.framework.context.api.IContextConfig;
 	import robotlegs.bender.framework.logging.api.ILogger;
 	import robotlegs.bender.framework.object.identity.UID;
 	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
 
-	public class ConfigManager implements IConfigManager
+	public class ConfigManager
 	{
 
 		/*============================================================================*/
@@ -33,7 +30,6 @@ package robotlegs.bender.framework.configManager.impl
 		private static const plainObjectMatcher:Matcher = allOf(
 			instanceOf(Object),
 			not(instanceOf(Class)),
-			not(instanceOf(IContextConfig)),
 			not(instanceOf(DisplayObject)));
 
 		/*============================================================================*/
@@ -42,15 +38,11 @@ package robotlegs.bender.framework.configManager.impl
 
 		private const _uid:String = UID.create(ConfigManager);
 
-		private const _reflector:Reflector = new DescribeTypeJSONReflector();
-
 		private const _objectProcessor:IObjectProcessor = new ObjectProcessor();
 
-		private const _configs:Array = [];
+		private const _configs:Dictionary = new Dictionary();
 
-		private const _plainClassConfigs:Array = [];
-
-		private const _plainObjectConfigs:Array = [];
+		private const _queue:Array = [];
 
 		private var _context:IContext;
 
@@ -64,6 +56,7 @@ package robotlegs.bender.framework.configManager.impl
 		{
 			_context = context;
 			_logger = _context.getLogger(this);
+			// no! not from inside. add these externally
 			addDefaultHandlers();
 		}
 
@@ -73,9 +66,9 @@ package robotlegs.bender.framework.configManager.impl
 
 		public function addConfig(config:Object):void
 		{
-			if (!hasConfig(config))
+			if (!_configs[config])
 			{
-				_configs.push(config);
+				_configs[config] = true;
 				_objectProcessor.addObject(config);
 			}
 		}
@@ -96,49 +89,25 @@ package robotlegs.bender.framework.configManager.impl
 
 		private function addDefaultHandlers():void
 		{
-			addConfigHandler(instanceOf(IContextConfig), handleContextConfig);
-			// todo: make a classOf(IContextConfig) matcher
 			addConfigHandler(instanceOf(Class), handleClass);
 			addConfigHandler(plainObjectMatcher, handleObject);
+			// todo: no! this is horrid. call something like: configManager.initialize()
+			// which in turn removes the dependency on IContext
+			// we only need the injector in that case
 			_context.addStateHandler(ManagedObject.SELF_INITIALIZE, onContextSelfInitialize);
-		}
-
-		private function hasConfig(config:Object):Boolean
-		{
-			return _configs.indexOf(config) > -1;
-		}
-
-		private function handleContextConfig(config:IContextConfig):void
-		{
-			_logger.debug("Installing IContextConfig {0}", [config]);
-			config.configureContext(_context);
 		}
 
 		private function handleClass(type:Class):void
 		{
-			// todo: this can be replaced by a classOf(type) matcher
-			if (_reflector.typeImplements(type, IContextConfig))
-			{
-				//TODO: let the injector instantiate this
-				addConfig(new type());
-			}
-			else
-			{
-				handlePlainClass(type);
-			}
-		}
-
-		private function handlePlainClass(type:Class):void
-		{
 			if (_context.initialized)
 			{
-				_logger.debug("Context alread initialized. Instantiating plain class {0}", [type]);
+				_logger.debug("Context already initialized. Instantiating config class {0}", [type]);
 				_context.injector.getInstance(type);
 			}
 			else
 			{
-				_logger.debug("Context not initialized. Queuing plain class {0}", [type]);
-				_plainClassConfigs.push(type);
+				_logger.debug("Context not yet initialized. Queuing config class {0}", [type]);
+				_queue.push(type);
 			}
 		}
 
@@ -146,30 +115,32 @@ package robotlegs.bender.framework.configManager.impl
 		{
 			if (_context.initialized)
 			{
-				_logger.debug("Context alread initialized. Injecting into plain object {0}", [object]);
+				_logger.debug("Context already initialized. Injecting into config object {0}", [object]);
 				_context.injector.injectInto(object);
 			}
 			else
 			{
-				_logger.debug("Context not initialized. Queuing plain object {0}", [object]);
-				_plainObjectConfigs.push(object);
+				_logger.debug("Context not yet initialized. Queuing config object {0}", [object]);
+				_queue.push(object);
 			}
 		}
 
 		private function onContextSelfInitialize():void
 		{
-			for each (var configClass:Class in _plainClassConfigs)
+			for each (var config:Object in _queue)
 			{
-				_logger.debug("Context initializing. Instantiating plain class {0}", [configClass]);
-				_context.injector.getInstance(configClass);
+				if (config is Class)
+				{
+					_logger.debug("Context initializing. Instantiating config class {0}", [config]);
+					_context.injector.getInstance(config as Class);
+				}
+				else
+				{
+					_logger.debug("Context initializing. Injecting into config object {0}", [config]);
+					_context.injector.injectInto(config);
+				}
 			}
-			for each (var configObject:Object in _plainObjectConfigs)
-			{
-				_logger.debug("Context initializing. Injecting into plain object {0}", [configObject]);
-				_context.injector.injectInto(configObject);
-			}
-			_plainClassConfigs.length = 0;
-			_plainObjectConfigs.length = 0;
+			_queue.length = 0;
 		}
 	}
 }
