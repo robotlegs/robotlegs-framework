@@ -14,6 +14,7 @@ package robotlegs.bender.extensions.viewManager.impl
 	import org.fluint.uiImpersonation.UIImpersonator;
 	import org.hamcrest.object.equalTo;
 	import robotlegs.bender.extensions.viewManager.support.CallbackViewHandler;
+	import robotlegs.bender.extensions.viewManager.support.SupportContainer;
 	import robotlegs.bender.extensions.viewManager.support.SupportView;
 
 	public class StageObserverTest
@@ -142,5 +143,20 @@ package robotlegs.bender.extensions.viewManager.impl
 			container.addChild(new Sprite());
 			assertThat(callCount, equalTo(0));
 		}
+
+		[Test]
+		public function root_container_is_handled_when_added_to_stage():void
+		{
+			const expected:SupportContainer = new SupportContainer();
+			var actual:DisplayObject;
+			registry
+				.addContainer(expected)
+				.addHandler(new CallbackViewHandler(function(view:DisplayObject, type:Class):void {
+					actual = view;
+				}));
+			container.addChild(expected);
+			assertThat(actual, equalTo(expected));
+		}
+
 	}
 }

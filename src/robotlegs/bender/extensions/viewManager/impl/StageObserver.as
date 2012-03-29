@@ -72,11 +72,14 @@ package robotlegs.bender.extensions.viewManager.impl
 		{
 			// The magical, but extremely expensive, capture-phase ADDED_TO_STAGE listener
 			container.addEventListener(Event.ADDED_TO_STAGE, onViewAddedToStage, true);
+			// Watch the root container itself - nobody else is going to pick it up!
+			container.addEventListener(Event.ADDED_TO_STAGE, onContainerRootAddedToStage);
 		}
 
 		private function removeRootListener(container:DisplayObjectContainer):void
 		{
 			container.removeEventListener(Event.ADDED_TO_STAGE, onViewAddedToStage, true);
+			container.removeEventListener(Event.ADDED_TO_STAGE, onContainerRootAddedToStage);
 		}
 
 		private function onViewAddedToStage(event:Event):void
@@ -94,6 +97,15 @@ package robotlegs.bender.extensions.viewManager.impl
 				binding.handleView(view, type);
 				binding = binding.parent;
 			}
+		}
+
+		private function onContainerRootAddedToStage(event:Event):void
+		{
+			const container:DisplayObjectContainer = event.target as DisplayObjectContainer;
+			container.removeEventListener(Event.ADDED_TO_STAGE, onContainerRootAddedToStage);
+			const type:Class = container['constructor'];
+			const binding:ContainerBinding = _registry.getBinding(container);
+			binding.handleView(container, type);
 		}
 	}
 }
