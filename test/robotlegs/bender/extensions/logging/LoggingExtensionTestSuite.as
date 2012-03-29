@@ -23,5 +23,7 @@ package robotlegs.bender.extensions.logging
 		public var traceLoggingExtension:TraceLoggingExtensionTest;
 
 		public var traceLogTarget:TraceLogTargetTest;
+
+		public var injectorLoggingExtension:InjectorLoggingExtensionTest;
 	}
 }
