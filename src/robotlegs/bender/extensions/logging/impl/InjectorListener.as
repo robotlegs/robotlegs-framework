@@ -25,7 +25,7 @@ package robotlegs.bender.extensions.logging.impl
 			InjectionEvent.PRE_CONSTRUCT];
 
 		private static const MAPPING_TYPES:Array = [
-			MappingEvent.MAPPING_OVERRIDE,
+			// MappingEvent.MAPPING_OVERRIDE, // TODO: re-enable on next Swiftsuspenders update
 			MappingEvent.POST_MAPPING_CHANGE,
 			MappingEvent.POST_MAPPING_CREATE,
 			MappingEvent.POST_MAPPING_REMOVE,
