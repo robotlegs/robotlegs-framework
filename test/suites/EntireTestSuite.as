@@ -7,44 +7,23 @@
 
 package suites
 {
+	import robotlegs.bender.core.CoreTestSuite;
+	import robotlegs.bender.extensions.ExtensionsTestSuite;
+	import robotlegs.bender.framework.FrameworkTestSuite;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
 	public class EntireTestSuite
 	{
 
-		public var commandMapTestSuite:CommandMapTestSuite;
+		/*============================================================================*/
+		/* Public Properties                                                          */
+		/*============================================================================*/
 
-		public var eventCommandMapTestSuite:EventCommandMapTestSuite;
+		public var core:CoreTestSuite;
 
-		public var contextBuilderTestSuite:ContextBuilderTestSuite;
+		public var framework:FrameworkTestSuite;
 
-		public var contextTestSuite:ContextTestSuite;
-
-		public var typeMatchingTestSuite:TypeMatchingTestSuite;
-
-		public var utilityPackageTestSuite:UtilityPackageFunctionsSuite;
-
-		public var mediatorMapTestSuite:MediatorMapTestSuite;
-
-		public var viewMapTestSuite:ViewMapTestSuite;
-
-		public var viewManagerTestSuite:ViewManagerTestSuite;
-
-		public var eventMapTestSuite:EventMapTestSuite;
-
-		public var commandFlowTestSuite:CommandFlowTestSuite;
-
-		public var guardsTestSuite:GuardsTestSuite;
-
-		public var hooksTestSuite:HooksTestSuite;
-
-		public var loggingTestSuite:LoggingTestSuite;
-
-		public var viewInjectionMapTestSuite:ViewInjectionMapTestSuite;
-
-		public var extensionManagerSuite:ExtensionManagerTestSuite;
-		
-		public var configManagerSuite:ConfigManagerTestSuite;
+		public var extensions:ExtensionsTestSuite;
 	}
 }
