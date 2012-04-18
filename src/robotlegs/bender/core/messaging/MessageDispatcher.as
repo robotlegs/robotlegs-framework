@@ -17,6 +17,14 @@ package robotlegs.bender.core.messaging
 	{
 
 		/*============================================================================*/
+		/* Public Static Properties                                                   */
+		/*============================================================================*/
+
+		public static const HALT_ON_ERROR:uint = 1;
+
+		public static const REVERSE:uint = 2;
+
+		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
@@ -77,82 +85,17 @@ package robotlegs.bender.core.messaging
 		/**
 		 * @inheritDoc
 		 */
-		public function dispatchMessage(message:Object, callback:Function = null, reverse:Boolean = false):void
+		public function dispatchMessage(message:Object, callback:Function = null, flags:uint = 0):void
 		{
-			if (_handlers[message])
+			const handlers:Array = _handlers[message];
+			if (handlers)
 			{
-				// note: list is cloned and reversed because elements are popped
-				const handlers:Array = _handlers[message].concat();
-				reverse || handlers.reverse();
-				next(message, handlers, callback);
+				new MessageRunner(message, handlers, callback, flags).run();
 			}
 			else
 			{
 				callback && safelyCallBack(callback);
 			}
-		}
-
-		/*============================================================================*/
-		/* Private Functions                                                          */
-		/*============================================================================*/
-
-		/**
-		 * Helper method to dispatch to a handler in one of the 3 handler forms:
-		 *
-		 * (), (message), (message, callback)
-		 *
-		 * @param message The message being dispatched
-		 * @param handlers The list of handlers that need to be called
-		 * @param callback The eventual callback
-		 */
-		private function next(message:Object, handlers:Array, callback:Function):void
-		{
-			// Try to keep things synchronous with a simple loop,
-			// forcefully breaking out for async handlers and recursing.
-			// We do this to avoid increasing the stack depth unnecessarily.
-			var handler:Function;
-			while (handler = handlers.pop())
-			{
-				if (handler.length == 0) // sync handler: ()
-				{
-					handler();
-				}
-				else if (handler.length == 1) // sync handler: (message)
-				{
-					handler(message);
-				}
-				else if (handler.length == 2) // sync or async handler: (message, callback)
-				{
-					var handled:Boolean;
-					handler(message, function(error:Object = null, msg:Object = null):void
-					{
-						// handler must not invoke the callback more than once 
-						if (handled)
-							return;
-
-						handled = true;
-
-						if (error || handlers.length == 0)
-						{
-							callback && safelyCallBack(callback, error, message);
-						}
-						else
-						{
-							next(message, handlers, callback);
-						}
-					});
-					// IMPORTANT: MUST break this loop with a RETURN. See above.
-					return;
-				}
-				else // ERROR: this should NEVER happen
-				{
-					throw new Error("Bad handler signature");
-				}
-			}
-			// If we got here then this loop finished synchronously.
-			// Nobody broke out, so we are done.
-			// This relies on the various return statements above. Be careful.
-			callback && safelyCallBack(callback, null, message);
 		}
 	}
 }

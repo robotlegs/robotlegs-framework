@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.bundles.mvcs.impl
+package robotlegs.bender.bundles.mvcs
 {
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
@@ -54,22 +54,22 @@ package robotlegs.bender.bundles.mvcs.impl
 		/* Protected Functions                                                        */
 		/*============================================================================*/
 
-		protected function addViewListener(eventString:String, listener:Function, eventClass:Class):void
+		protected function addViewListener(eventString:String, listener:Function, eventClass:Class = null):void
 		{
 			eventMap.mapListener(IEventDispatcher(_viewComponent), eventString, listener, eventClass);
 		}
 
-		protected function addContextListener(eventString:String, listener:Function, eventClass:Class):void
+		protected function addContextListener(eventString:String, listener:Function, eventClass:Class = null):void
 		{
 			eventMap.mapListener(eventDispatcher, eventString, listener, eventClass);
 		}
 
-		protected function removeViewListener(eventString:String, listener:Function, eventClass:Class):void
+		protected function removeViewListener(eventString:String, listener:Function, eventClass:Class = null):void
 		{
 			eventMap.unmapListener(IEventDispatcher(_viewComponent), eventString, listener, eventClass);
 		}
 
-		protected function removeContextListener(eventString:String, listener:Function, eventClass:Class):void
+		protected function removeContextListener(eventString:String, listener:Function, eventClass:Class = null):void
 		{
 			eventMap.unmapListener(eventDispatcher, eventString, listener, eventClass);
 		}

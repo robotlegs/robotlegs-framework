@@ -74,7 +74,7 @@ package robotlegs.bender.core.objectProcessor.impl
 					_messageDispatcher.removeMessageHandler(object, matchingHandler.closure);
 				}
 				callback && safelyCallBack(callback, error, object);
-			});
+			}, MessageDispatcher.HALT_ON_ERROR);
 		}
 
 		/**
