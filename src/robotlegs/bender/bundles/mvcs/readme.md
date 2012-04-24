@@ -21,6 +21,7 @@ Note: for more information on these extensions please see the extensions package
 ## Included Base Classes
 
 * Mediator
+* Command
 
 ## Included Configs
 

@@ -6,16 +6,11 @@ The source for Robotlegs 1 can be found in the master branch:
 
 https://github.com/robotlegs/robotlegs-framework/tree/master
 
-# Note For Extension Authors
-
-Extensions have changed. Please see: robotlegs.bender.extensions
-
 # Robotlegs
 
-Robotlegs is an Action Script application framework for Flash and Flex. It offers:
+Robotlegs is an ActionScript application framework for Flash and Flex. It offers:
 
-+ Dependency configuration
-+ Dependency injection
++ Dependency management
 + Module management
 + Command management
 + View management
@@ -32,7 +27,7 @@ Plain ActionScript:
         .extend(MVCSBundle)
         .configure(MyAppConfig, this);
 
-Note: We pass the instance "this" through to the context. It will be used as the "contextView" which is required by many of the view related extensions. It must be installed after the bundle or it won't be processed. Also, you must hold on the the context instance or it will be garbage collected.
+Note: We pass the instance "this" through to the context. It will be used as the "contextView" which is required by many of the view related extensions. It must be installed after the bundle or it won't be processed. Also, you must hold on to the context instance or it will be garbage collected.
 
 Flex:
 
@@ -59,6 +54,12 @@ A simple configuration might look something like this:
 
 Note: The configuration is a plain class. An instance of this class will be created automatically when the context initializes.
 
+# Reading The Source
+
+Start here:
+
++ src/robotlegs/readme
+
 # Robotlegs 2 - What's New?
 
 Robotlegs 2 is a complete rewrite of the Robotlegs framework. It features:
@@ -81,7 +82,17 @@ Robotlegs 2 is a complete rewrite of the Robotlegs framework. It features:
 2. Small
 3. Fast
 
-# Building and Running the Tests on OS X
+# Building and Running the Tests
+
+## Requirements
+
+Whilst Robotlegs can be used for Flex 3 & 4 and plain ActionScript projects, the library must be built with the Flex 4.6 SDK or above.
+
+## Using ANT
+
+ant package
+
+## Using Ruby on OSX
 
 - Install XCode 3 or 4
 - check RubyGems version
