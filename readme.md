@@ -40,7 +40,7 @@ Flex:
 
 Note: In Flex we don't need to manually provide a "contextView" as the builder can determine this automatically.
 
-## Application & Module Configurations
+## Application & Module Configuration
 
 A simple configuration might look something like this:
 
@@ -52,7 +52,38 @@ A simple configuration might look something like this:
         }
     }
 
-Note: The configuration is a plain class. An instance of this class will be created automatically when the context initializes.
+The configuration file above is a plain class. An instance of this class will be created automatically when the context initializes.
+
+Notice that we are using constructor injection to gain access to the mediator map inside our constructor.
+
+If you want to use setter injection you must use a [PostConstruct] tag to ensure that all dependencies have been injected before you start interacting with them:
+
+    public class MyAppConfig
+    {
+        [Inject]
+        public var mediatorMap:IMediatorMap;
+
+        [PostConstruct]
+        public function init():void
+        {
+            // OK, ready to rock
+            mediatorMap.mapView(SomeView).toMediator(SomeMediator);
+        }
+    }
+
+Dependencies supplied via setter injection are not available until *after* construction, and attempting to access them will result in Null Pointer exceptions. This is *wrong*:
+
+    public class MyErroneousAppConfig
+    {
+        [Inject]
+        public var mediatorMap:IMediatorMap;
+
+        public function MyErroneousAppConfig()
+        {
+            // ERROR: the mediatorMap property will not have been set yet!
+            mediatorMap.mapView(SomeView).toMediator(SomeMediator);
+        }
+    }
 
 # Reading The Source
 
