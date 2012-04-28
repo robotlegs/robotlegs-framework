@@ -16,6 +16,7 @@ package robotlegs.bender.framework.context.impl
 	import robotlegs.bender.framework.logging.impl.LogManager;
 	import robotlegs.bender.framework.object.identity.UID;
 	import robotlegs.bender.framework.object.managed.api.IManagedObject;
+	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
 	import robotlegs.bender.framework.object.manager.api.IObjectManager;
 	import robotlegs.bender.framework.object.manager.impl.ObjectManager;
 
@@ -93,6 +94,7 @@ package robotlegs.bender.framework.context.impl
 			_managedObject = _objectManager.addObject(this);
 			_configManager = new ConfigManager(this);
 			_extensionInstaller = new ExtensionInstaller(this);
+			_managedObject.addStateHandler(ManagedObject.SELF_INITIALIZE, handleInitialize);
 		}
 
 		/*============================================================================*/
@@ -182,6 +184,11 @@ package robotlegs.bender.framework.context.impl
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
+
+		private function handleInitialize():void
+		{
+			_configManager.initialize();
+		}
 
 		private function handleInitializeComplete(error:Object):void
 		{

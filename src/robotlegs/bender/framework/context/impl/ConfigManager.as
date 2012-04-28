@@ -13,12 +13,12 @@ package robotlegs.bender.framework.context.impl
 	import org.hamcrest.core.allOf;
 	import org.hamcrest.core.not;
 	import org.hamcrest.object.instanceOf;
+	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.core.objectProcessor.api.IObjectProcessor;
 	import robotlegs.bender.core.objectProcessor.impl.ObjectProcessor;
 	import robotlegs.bender.framework.context.api.IContext;
 	import robotlegs.bender.framework.logging.api.ILogger;
 	import robotlegs.bender.framework.object.identity.UID;
-	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
 
 	public class ConfigManager
 	{
@@ -44,9 +44,11 @@ package robotlegs.bender.framework.context.impl
 
 		private const _queue:Array = [];
 
-		private var _context:IContext;
+		private var _injector:Injector;
 
 		private var _logger:ILogger;
+
+		private var _initialized:Boolean;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -54,10 +56,10 @@ package robotlegs.bender.framework.context.impl
 
 		public function ConfigManager(context:IContext)
 		{
-			_context = context;
-			_logger = _context.getLogger(this);
-			// no! not from inside. add these externally
-			addDefaultHandlers();
+			_injector = context.injector;
+			_logger = context.getLogger(this);
+			addConfigHandler(instanceOf(Class), handleClass);
+			addConfigHandler(plainObjectMatcher, handleObject);
 		}
 
 		/*============================================================================*/
@@ -78,6 +80,15 @@ package robotlegs.bender.framework.context.impl
 			_objectProcessor.addObjectHandler(matcher, handler);
 		}
 
+		public function initialize():void
+		{
+			if (!_initialized)
+			{
+				_initialized = true;
+				processQueue();
+			}
+		}
+
 		public function toString():String
 		{
 			return _uid;
@@ -87,57 +98,47 @@ package robotlegs.bender.framework.context.impl
 		/* Private Functions                                                          */
 		/*============================================================================*/
 
-		private function addDefaultHandlers():void
-		{
-			addConfigHandler(instanceOf(Class), handleClass);
-			addConfigHandler(plainObjectMatcher, handleObject);
-			// todo: no! this is horrid. call something like: configManager.initialize()
-			// which in turn removes the dependency on IContext
-			// we only need the injector in that case
-			_context.addStateHandler(ManagedObject.SELF_INITIALIZE, onContextSelfInitialize);
-		}
-
 		private function handleClass(type:Class):void
 		{
-			if (_context.initialized)
+			if (_initialized)
 			{
-				_logger.debug("Context already initialized. Instantiating config class {0}", [type]);
-				_context.injector.getInstance(type);
+				_logger.debug("Already initialized. Instantiating config class {0}", [type]);
+				_injector.getInstance(type);
 			}
 			else
 			{
-				_logger.debug("Context not yet initialized. Queuing config class {0}", [type]);
+				_logger.debug("Not yet initialized. Queuing config class {0}", [type]);
 				_queue.push(type);
 			}
 		}
 
 		private function handleObject(object:Object):void
 		{
-			if (_context.initialized)
+			if (_initialized)
 			{
-				_logger.debug("Context already initialized. Injecting into config object {0}", [object]);
-				_context.injector.injectInto(object);
+				_logger.debug("Already initialized. Injecting into config object {0}", [object]);
+				_injector.injectInto(object);
 			}
 			else
 			{
-				_logger.debug("Context not yet initialized. Queuing config object {0}", [object]);
+				_logger.debug("Not yet initialized. Queuing config object {0}", [object]);
 				_queue.push(object);
 			}
 		}
 
-		private function onContextSelfInitialize():void
+		private function processQueue():void
 		{
 			for each (var config:Object in _queue)
 			{
 				if (config is Class)
 				{
-					_logger.debug("Context initializing. Instantiating config class {0}", [config]);
-					_context.injector.getInstance(config as Class);
+					_logger.debug("Now initializing. Instantiating config class {0}", [config]);
+					_injector.getInstance(config as Class);
 				}
 				else
 				{
-					_logger.debug("Context initializing. Injecting into config object {0}", [config]);
-					_context.injector.injectInto(config);
+					_logger.debug("Now initializing. Injecting into config object {0}", [config]);
+					_injector.injectInto(config);
 				}
 			}
 			_queue.length = 0;
