@@ -52,11 +52,11 @@ A simple configuration might look something like this:
         }
     }
 
-The configuration file above is a plain class. An instance of this class will be created automatically when the context initializes.
+The configuration file above is a plain class. An instance of this class will be created automatically when the context initializes. Notice that we are using constructor injection to gain access to the mediator map inside our constructor.
 
-Notice that we are using constructor injection to gain access to the mediator map inside our constructor.
+WARNING: The config above will not work when using declarative configuration in Flex. For Flex configs that you intend to add directly to the ContextBuilder you have to use setter injection.. Read on.
 
-If you want to use setter injection you must use a [PostConstruct] tag to ensure that all dependencies have been injected before you start interacting with them:
+If you want to use setter injection you must use a [PostConstruct] tag in your config to ensure that all your dependencies have been injected before you start interacting with them:
 
     public class MyAppConfig
     {
