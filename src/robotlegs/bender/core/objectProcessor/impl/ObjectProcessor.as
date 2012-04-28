@@ -7,11 +7,7 @@
 
 package robotlegs.bender.core.objectProcessor.impl
 {
-	import org.hamcrest.Description;
 	import org.hamcrest.Matcher;
-	import robotlegs.bender.core.async.safelyCallBack;
-	import robotlegs.bender.core.messaging.IMessageDispatcher;
-	import robotlegs.bender.core.messaging.MessageDispatcher;
 	import robotlegs.bender.core.objectProcessor.api.IObjectProcessor;
 
 	/**
@@ -25,17 +21,6 @@ package robotlegs.bender.core.objectProcessor.impl
 		/*============================================================================*/
 
 		private const _handlers:Array = [];
-
-		private var _messageDispatcher:IMessageDispatcher;
-
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
-
-		public function ObjectProcessor(messageDispatcher:IMessageDispatcher = null)
-		{
-			_messageDispatcher = messageDispatcher || new MessageDispatcher();
-		}
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
@@ -52,60 +37,45 @@ package robotlegs.bender.core.objectProcessor.impl
 		/**
 		 * @inheritDoc
 		 */
-		public function addObject(object:Object, callback:Function = null):void
-		{
-			const matchingHandlers:Array = [];
-
-			for each (var handler:ObjectHandler in _handlers)
-			{
-				if (handler.matcher.matches(object))
-				{
-					matchingHandlers.push(handler);
-					_messageDispatcher.addMessageHandler(object, handler.closure);
-				}
-			}
-
-			_messageDispatcher.dispatchMessage(object, function(error:Object):void {
-				// even with oneShot handlers we would have to clean up here as
-				// a handler may have terminated the dispatch with an error
-				// and we don't want to leave any handlers lying around
-				for each (var matchingHandler:ObjectHandler in matchingHandlers)
-				{
-					_messageDispatcher.removeMessageHandler(object, matchingHandler.closure);
-				}
-				callback && safelyCallBack(callback, error, object);
-			}, MessageDispatcher.HALT_ON_ERROR);
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public function matches(object:Object):Boolean
+		public function processObject(object:Object):void
 		{
 			for each (var handler:ObjectHandler in _handlers)
 			{
-				if (handler.matcher.matches(object))
-				{
-					return true;
-				}
+				handler.handle(object);
 			}
-			return false;
 		}
+	}
+}
 
-		/**
-		 * @inheritDoc
-		 */
-		public function describeTo(description:Description):void
-		{
-			description.appendText("object processor");
-		}
+import org.hamcrest.Matcher;
 
-		/**
-		 * @inheritDoc
-		 */
-		public function describeMismatch(item:Object, mismatchDescription:Description):void
-		{
-			mismatchDescription.appendText("was ").appendValue(item);
-		}
+class ObjectHandler
+{
+
+	/*============================================================================*/
+	/* Private Properties                                                         */
+	/*============================================================================*/
+
+	private var _matcher:Matcher;
+
+	private var _handler:Function;
+
+	/*============================================================================*/
+	/* Constructor                                                                */
+	/*============================================================================*/
+
+	public function ObjectHandler(matcher:Matcher, handler:Function)
+	{
+		_matcher = matcher;
+		_handler = handler;
+	}
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
+	public function handle(object:Object):void
+	{
+		_matcher.matches(object) && _handler(object);
 	}
 }

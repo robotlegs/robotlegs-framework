@@ -69,7 +69,7 @@ package robotlegs.bender.framework.context.impl
 			if (!_configs[config])
 			{
 				_configs[config] = true;
-				_objectProcessor.addObject(config);
+				_objectProcessor.processObject(config);
 			}
 		}
 

@@ -7,7 +7,6 @@
 
 package robotlegs.bender.framework.context.impl
 {
-	import org.hamcrest.Description;
 	import org.hamcrest.Matcher;
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.framework.context.api.IContext;
@@ -151,21 +150,6 @@ package robotlegs.bender.framework.context.impl
 		public function getManagedObject(object:Object):IManagedObject
 		{
 			return _objectManager.getManagedObject(object);
-		}
-
-		public function matches(object:Object):Boolean
-		{
-			return _objectManager.matches(object);
-		}
-
-		public function describeTo(description:Description):void
-		{
-			_objectManager.describeTo(description);
-		}
-
-		public function describeMismatch(item:Object, mismatchDescription:Description):void
-		{
-			_objectManager.describeMismatch(item, mismatchDescription);
 		}
 
 		public function addStateHandler(step:String, handler:Function):IContext

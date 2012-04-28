@@ -10,7 +10,7 @@ package robotlegs.bender.framework.object.manager.api
 	import org.hamcrest.Matcher;
 	import robotlegs.bender.framework.object.managed.api.IManagedObject;
 
-	public interface IObjectManager extends Matcher
+	public interface IObjectManager// extends Matcher
 	{
 		function addObject(object:Object):IManagedObject;
 
