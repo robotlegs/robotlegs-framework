@@ -22,8 +22,6 @@ package robotlegs.bender.framework.lifecycle
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var target:Object;
-
 		private var lifecycle:Lifecycle;
 
 		private var transition:LifecycleTransition;
@@ -35,7 +33,7 @@ package robotlegs.bender.framework.lifecycle
 		[Before]
 		public function before():void
 		{
-			target = new Object();
+			const target:Object = new Object();
 			lifecycle = new Lifecycle(target);
 			transition = new LifecycleTransition("test", lifecycle);
 		}

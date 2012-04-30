@@ -39,6 +39,14 @@ package robotlegs.bender.framework.lifecycle
 
 		private var _reversePriority:int;
 
+		private var _initialize:LifecycleTransition;
+
+		private var _suspend:LifecycleTransition;
+
+		private var _resume:LifecycleTransition;
+
+		private var _destroy:LifecycleTransition;
+
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
@@ -46,15 +54,36 @@ package robotlegs.bender.framework.lifecycle
 		public function Lifecycle(target:Object)
 		{
 			_target = target;
+			configureTransitions();
 		}
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		public function initialize(callback:Function = null):void
+		{
+			_initialize.enter(callback);
+		}
+
+		public function suspend(callback:Function = null):void
+		{
+			_suspend.enter(callback);
+		}
+
+		public function resume(callback:Function = null):void
+		{
+			_resume.enter(callback);
+		}
+
+		public function destroy(callback:Function = null):void
+		{
+			_destroy.enter(callback);
+		}
+
 		override public function addEventListener(type:String, listener:Function, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = false):void
 		{
-			priority = modPriority(type, priority);
+			priority = flipPriority(type, priority);
 			super.addEventListener(type, listener, useCapture, priority, useWeakReference);
 		}
 
@@ -67,7 +96,7 @@ package robotlegs.bender.framework.lifecycle
 			if (_state == state)
 				return;
 			_state = state;
-
+			// todo: dispatch LifecycleEvent.STATE_CHANGE
 		}
 
 		internal function addReversedEventTypes(... types):void
@@ -80,7 +109,30 @@ package robotlegs.bender.framework.lifecycle
 		/* Private Functions                                                          */
 		/*============================================================================*/
 
-		private function modPriority(type:String, priority:int):int
+		private function configureTransitions():void
+		{
+			_initialize = new LifecycleTransition("initialize", this)
+				.fromStates(LifecycleState.UNINITIALIZED)
+				.toStates(LifecycleState.INITIALIZING, LifecycleState.ACTIVE)
+				.withEvents(LifecycleEvent.PRE_INITIALIZE, LifecycleEvent.INITIALIZE, LifecycleEvent.POST_INITIALIZE);
+
+			_suspend = new LifecycleTransition("suspend", this)
+				.fromStates(LifecycleState.ACTIVE)
+				.toStates(LifecycleState.SUSPENDING, LifecycleState.SUSPENDED)
+				.withEvents(LifecycleEvent.PRE_SUSPEND, LifecycleEvent.SUSPEND, LifecycleEvent.POST_SUSPEND);
+
+			_resume = new LifecycleTransition("resume", this)
+				.fromStates(LifecycleState.SUSPENDED)
+				.toStates(LifecycleState.RESUMING, LifecycleState.ACTIVE)
+				.withEvents(LifecycleEvent.PRE_RESUME, LifecycleEvent.RESUME, LifecycleEvent.POST_RESUME);
+
+			_destroy = new LifecycleTransition("destroy", this)
+				.fromStates(LifecycleState.SUSPENDED, LifecycleState.ACTIVE)
+				.toStates(LifecycleState.DESTROYING, LifecycleState.DESTROYED)
+				.withEvents(LifecycleEvent.PRE_DESTROY, LifecycleEvent.DESTROY, LifecycleEvent.POST_DESTROY);
+		}
+
+		private function flipPriority(type:String, priority:int):int
 		{
 			return (priority == 0 && _reversedEventTypes[type])
 				? _reversePriority++

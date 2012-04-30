@@ -134,8 +134,7 @@ package robotlegs.bender.framework.lifecycle
 			// run before handlers
 			_dispatcher.dispatchMessage(_name, function(error:Object):void
 			{
-
-				// revert state and report error
+				// revert state, report error, and exit
 				if (error)
 				{
 					setState(initialState);
