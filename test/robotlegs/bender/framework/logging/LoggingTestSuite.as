@@ -7,7 +7,6 @@
 
 package robotlegs.bender.framework.logging
 {
-	import robotlegs.bender.framework.logging.impl.LogManagerTest;
 	import robotlegs.bender.framework.logging.impl.LoggerTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
@@ -20,7 +19,5 @@ package robotlegs.bender.framework.logging
 		/*============================================================================*/
 
 		public var logger:LoggerTest;
-
-		public var logManager:LogManagerTest;
 	}
 }

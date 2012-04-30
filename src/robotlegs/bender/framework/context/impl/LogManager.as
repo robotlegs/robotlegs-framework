@@ -5,14 +5,14 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.framework.logging.impl
+package robotlegs.bender.framework.context.impl
 {
-	import robotlegs.bender.framework.logging.api.ILogManager;
 	import robotlegs.bender.framework.logging.api.ILogTarget;
 	import robotlegs.bender.framework.logging.api.ILogger;
 	import robotlegs.bender.framework.logging.api.LogLevel;
+	import robotlegs.bender.framework.logging.impl.Logger;
 
-	public class LogManager implements ILogManager, ILogTarget
+	public class LogManager implements ILogTarget
 	{
 
 		/*============================================================================*/

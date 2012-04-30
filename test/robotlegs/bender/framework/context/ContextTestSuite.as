@@ -10,6 +10,7 @@ package robotlegs.bender.framework.context
 	import robotlegs.bender.framework.context.impl.ConfigManagerTest;
 	import robotlegs.bender.framework.context.impl.ContextTest;
 	import robotlegs.bender.framework.context.impl.ExtensionInstallerTest;
+	import robotlegs.bender.framework.context.impl.LogManagerTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
@@ -25,5 +26,7 @@ package robotlegs.bender.framework.context
 		public var configManager:ConfigManagerTest;
 
 		public var extensionInstaller:ExtensionInstallerTest;
+
+		public var logManager:LogManagerTest;
 	}
 }

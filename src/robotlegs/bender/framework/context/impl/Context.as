@@ -10,10 +10,8 @@ package robotlegs.bender.framework.context.impl
 	import org.hamcrest.Matcher;
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.framework.context.api.IContext;
-	import robotlegs.bender.framework.logging.api.ILogManager;
 	import robotlegs.bender.framework.logging.api.ILogTarget;
 	import robotlegs.bender.framework.logging.api.ILogger;
-	import robotlegs.bender.framework.logging.impl.LogManager;
 	import robotlegs.bender.framework.object.identity.UID;
 	import robotlegs.bender.framework.object.managed.api.IManagedObject;
 	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
@@ -72,7 +70,7 @@ package robotlegs.bender.framework.context.impl
 
 		private const _objectManager:IObjectManager = new ObjectManager();
 
-		private const _logManager:ILogManager = new LogManager();
+		private const _logManager:LogManager = new LogManager();
 
 		private var _configManager:ConfigManager;
 

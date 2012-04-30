@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.framework.logging.impl
+package robotlegs.bender.framework.context.impl
 {
 	import org.flexunit.assertThat;
 	import org.hamcrest.collection.array;
