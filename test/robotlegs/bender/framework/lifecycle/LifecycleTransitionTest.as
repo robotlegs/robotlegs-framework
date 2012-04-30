@@ -15,7 +15,7 @@ package robotlegs.bender.framework.lifecycle
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.instanceOf;
 
-	public class LifecycleStateTest
+	public class LifecycleTransitionTest
 	{
 
 		/*============================================================================*/
@@ -26,7 +26,7 @@ package robotlegs.bender.framework.lifecycle
 
 		private var lifecycle:Lifecycle;
 
-		private var state:LifecycleState;
+		private var transition:LifecycleTransition;
 
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
@@ -37,7 +37,7 @@ package robotlegs.bender.framework.lifecycle
 		{
 			target = new Object();
 			lifecycle = new Lifecycle(target);
-			state = new LifecycleState("test", lifecycle);
+			transition = new LifecycleTransition("test", lifecycle);
 		}
 
 		/*============================================================================*/
@@ -47,7 +47,7 @@ package robotlegs.bender.framework.lifecycle
 		[Test(expects="Error")]
 		public function invalid_transition_throws_error():void
 		{
-			state.fromStates("impossible").enter();
+			transition.fromStates("impossible").enter();
 		}
 
 		[Test]
@@ -55,20 +55,20 @@ package robotlegs.bender.framework.lifecycle
 		{
 			lifecycle.addEventListener(LifecycleEvent.ERROR, function(event:LifecycleEvent):void {
 			});
-			state.fromStates("impossible").enter();
+			transition.fromStates("impossible").enter();
 		}
 
 		[Test]
 		public function finalState_is_set():void
 		{
-			state.toStates(LifecycleState.INITIALIZING, LifecycleState.ACTIVE).enter();
+			transition.toStates(LifecycleState.INITIALIZING, LifecycleState.ACTIVE).enter();
 			assertThat(lifecycle.state, equalTo(LifecycleState.ACTIVE));
 		}
 
 		[Test]
 		public function transitionState_is_set():void
 		{
-			state.toStates(LifecycleState.INITIALIZING, LifecycleState.ACTIVE)
+			transition.toStates(LifecycleState.INITIALIZING, LifecycleState.ACTIVE)
 				.withBeforeHandlers(function(message:Object, callback:Function):void {
 					setTimeout(callback, 1);
 				})
@@ -84,14 +84,14 @@ package robotlegs.bender.framework.lifecycle
 				LifecycleEvent.PRE_INITIALIZE,
 				LifecycleEvent.INITIALIZE,
 				LifecycleEvent.POST_INITIALIZE];
-			state.withEvents(expected[0], expected[1], expected[2]);
+			transition.withEvents(expected[0], expected[1], expected[2]);
 			for each (var type:String in expected)
 			{
 				lifecycle.addEventListener(type, function(event:Event):void {
 					actual.push(event.type);
 				});
 			}
-			state.enter();
+			transition.enter();
 			assertThat(actual, array(expected));
 		}
 
@@ -100,7 +100,7 @@ package robotlegs.bender.framework.lifecycle
 		{
 			const actual:Array = [];
 			const expected:Array = [3, 2, 1];
-			state.withEvents("preEvent", "event", "postEvent").inReverse();
+			transition.withEvents("preEvent", "event", "postEvent").inReverse();
 			lifecycle.addEventListener("event", function(event:Event):void {
 				actual.push(1);
 			});
@@ -110,43 +110,43 @@ package robotlegs.bender.framework.lifecycle
 			lifecycle.addEventListener("event", function(event:Event):void {
 				actual.push(3);
 			});
-			state.enter();
+			transition.enter();
 			assertThat(actual, array(expected));
 		}
 
 		[Test(expects="Error")]
 		public function enter_locks_fromStates():void
 		{
-			state.enter();
-			state.fromStates("state");
+			transition.enter();
+			transition.fromStates("transition");
 		}
 
 		[Test(expects="Error")]
 		public function enter_locks_toStates():void
 		{
-			state.enter();
-			state.toStates("changing", "changed");
+			transition.enter();
+			transition.toStates("changing", "changed");
 		}
 
 		[Test(expects="Error")]
 		public function enter_locks_events():void
 		{
-			state.enter();
-			state.withEvents("preEvent", "event", "postEvent");
+			transition.enter();
+			transition.withEvents("preEvent", "event", "postEvent");
 		}
 
 		[Test(expects="Error")]
 		public function enter_locks_reverse():void
 		{
-			state.enter();
-			state.inReverse();
+			transition.enter();
+			transition.inReverse();
 		}
 
 		[Test]
 		public function callback_is_called():void
 		{
 			var callCount:int = 0;
-			state.enter(function():void {
+			transition.enter(function():void {
 				callCount++;
 			});
 			assertThat(callCount, equalTo(1));
@@ -157,7 +157,7 @@ package robotlegs.bender.framework.lifecycle
 		{
 			const expected:Array = ["a", "b", "c"];
 			const actual:Array = [];
-			state.withBeforeHandlers(function():void {
+			transition.withBeforeHandlers(function():void {
 				actual.push("a");
 			}, function():void {
 				actual.push("b");
@@ -172,8 +172,8 @@ package robotlegs.bender.framework.lifecycle
 		{
 			const expected:Array = ["c", "b", "a"];
 			const actual:Array = [];
-			state.inReverse();
-			state.withBeforeHandlers(function():void {
+			transition.inReverse();
+			transition.withBeforeHandlers(function():void {
 				actual.push("a");
 			}, function():void {
 				actual.push("b");
@@ -186,7 +186,7 @@ package robotlegs.bender.framework.lifecycle
 		[Test(expects="Error")]
 		public function beforeHandler_error_throws():void
 		{
-			state.withBeforeHandlers(function(message:String, callback:Function):void {
+			transition.withBeforeHandlers(function(message:String, callback:Function):void {
 				callback("some error message");
 			}).enter();
 		}
@@ -198,7 +198,7 @@ package robotlegs.bender.framework.lifecycle
 			var actual:Error = null;
 			lifecycle.addEventListener(LifecycleEvent.ERROR, function(event:LifecycleEvent):void {
 			});
-			state.withBeforeHandlers(function(message:String, callback:Function):void {
+			transition.withBeforeHandlers(function(message:String, callback:Function):void {
 				callback(expected);
 			}).enter(function(error:Error):void {
 				actual = error;
@@ -213,7 +213,7 @@ package robotlegs.bender.framework.lifecycle
 			var actual:Object = null;
 			lifecycle.addEventListener(LifecycleEvent.ERROR, function(event:LifecycleEvent):void {
 			});
-			state.fromStates("impossible").enter(function(error:Object):void {
+			transition.fromStates("impossible").enter(function(error:Object):void {
 				actual = error;
 			});
 			assertThat(actual, instanceOf(Error));
@@ -225,7 +225,7 @@ package robotlegs.bender.framework.lifecycle
 			const expected:String = lifecycle.state;
 			lifecycle.addEventListener(LifecycleEvent.ERROR, function(event:LifecycleEvent):void {
 			});
-			state.fromStates(LifecycleState.UNINITIALIZED)
+			transition.fromStates(LifecycleState.UNINITIALIZED)
 				.toStates("startState", "endState")
 				.withBeforeHandlers(function(message:String, callback:Function):void {
 					callback("There was a problem");
@@ -237,9 +237,9 @@ package robotlegs.bender.framework.lifecycle
 		public function callback_is_called_if_already_transitioned():void
 		{
 			var callCount:int = 0;
-			state.fromStates(LifecycleState.UNINITIALIZED).toStates("startState", "endState");
-			state.enter();
-			state.enter(function():void {
+			transition.fromStates(LifecycleState.UNINITIALIZED).toStates("startState", "endState");
+			transition.enter();
+			transition.enter(function():void {
 				callCount++;
 			});
 			assertThat(callCount, equalTo(1));
@@ -249,13 +249,13 @@ package robotlegs.bender.framework.lifecycle
 		public function callback_added_during_transition_is_called():void
 		{
 			var callCount:int = 0;
-			state.fromStates(LifecycleState.UNINITIALIZED)
+			transition.fromStates(LifecycleState.UNINITIALIZED)
 				.toStates("startState", "endState")
 				.withBeforeHandlers(function(message:Object, callback:Function):void {
 					setTimeout(callback, 1);
 				});
-			state.enter();
-			state.enter(function():void {
+			transition.enter();
+			transition.enter(function():void {
 				callCount++;
 			});
 			Async.delayCall(this, function():void {
