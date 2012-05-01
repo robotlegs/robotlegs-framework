@@ -58,18 +58,20 @@ An extension can hook into various context lifecycle phases by adding state hand
       if (context.initialized)
         throw new Error("This extension must be installed prior to context initialization");
       
-      context.addStateHandler(ManagedObject.PRE_INITIALIZE, handleContextPreInitialize);
-      context.addStateHandler(ManagedObject.POST_INITIALIZE, handleContextPostInitialize);
+      context.lifecycle.beforeInitializing(beforeInitializing);
+      context.lifecycle.afterInitializing(afterInitializing);
     }
 
-    private function handleContextPreInitialize(step:String, callback:Function):void
+    private function beforeInitializing(phase:String, callback:Function):void
     {
+      // `before` handlers can accept a callback as the second argument
       trace("Doing some things before the context self initializes...");
       setTimeout(callback, 1000);
     }
 
-    private function handleContextPostInitialize():void
+    private function afterInitializing():void
     {
+      // `after` handlers are synchronous and are not provided with callbacks
       trace("Doing some things now that the context is initialized...");
     }
 

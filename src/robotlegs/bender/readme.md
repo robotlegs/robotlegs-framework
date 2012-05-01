@@ -1,25 +1,19 @@
 # Robotlegs
 
-## Core
-
-Robotlegs is built on top of a few core building blocks:
-
-+ A set of conventions for dealing with asynchronous operations
-+ An asynchronous message dispatcher
-+ A state machine
-+ An object processor
-
 ## Framework
 
-These core components are composed to form the basic framework:
+The Robotlegs framework:
 
-+ An object manager
-+ A configuration manager
-+ A context
++ Context
++ Configuration manager
++ Extension installer
++ Guards and hooks
++ Lifecycle
++ Logging
 
 ## Extensions
 
-Robotlegs also provides a number of built-in extensions:
+Robotlegs provides a number of built-in extensions:
 
 + Command map
 + Mediator map

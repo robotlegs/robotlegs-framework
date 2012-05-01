@@ -14,7 +14,6 @@ package robotlegs.bender.extensions.messageDispatcher
 	import robotlegs.bender.framework.impl.MessageDispatcher;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.impl.Context;
-	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
 
 	public class MessageDispatcherExtensionTest
 	{
@@ -42,9 +41,9 @@ package robotlegs.bender.extensions.messageDispatcher
 		[Test]
 		public function a_MessageDispatcher_is_mapped_into_injector():void
 		{
-			var actual:Object;
+			var actual:Object = null;
 			context.extend(MessageDispatcherExtension);
-			context.addStateHandler(ManagedObject.SELF_INITIALIZE, function():void {
+			context.lifecycle.whenInitializing(function():void {
 				actual = context.injector.getInstance(IMessageDispatcher);
 			});
 			context.initialize();
@@ -55,9 +54,9 @@ package robotlegs.bender.extensions.messageDispatcher
 		public function provided_MessageDispatcher_is_mapped_into_injector():void
 		{
 			const expected:IMessageDispatcher = new MessageDispatcher();
-			var actual:Object;
+			var actual:Object = null;
 			context.extend(new MessageDispatcherExtension(expected));
-			context.addStateHandler(ManagedObject.SELF_INITIALIZE, function():void {
+			context.lifecycle.whenInitializing(function():void {
 				actual = context.injector.getInstance(IMessageDispatcher);
 			});
 			context.initialize();
