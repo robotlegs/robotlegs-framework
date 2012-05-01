@@ -8,14 +8,14 @@
 package robotlegs.bender.extensions.mediatorMap.impl
 {
 	import flash.utils.Dictionary;
-	import org.hamcrest.Matcher;
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorViewHandler;
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMapper;
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMappingConfig;
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMappingFinder;
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorUnmapper;
+	import robotlegs.bender.core.matching.ITypeMatcher;
+	import robotlegs.bender.core.matching.ITypeFilter;
 
 	public class MediatorMapper implements IMediatorMapper, IMediatorMappingFinder, IMediatorUnmapper
 	{
@@ -26,24 +26,18 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		private const _mappings:Dictionary = new Dictionary();
 
-		private var _matcher:Matcher;
+		private var _matcher:ITypeFilter;
 
 		private var _handler:IMediatorViewHandler;
-
-		private var _manager:IMediatorFactory;
-
-		private var _viewType:Class;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function MediatorMapper(matcher:Matcher, handler:IMediatorViewHandler, manager:IMediatorFactory, viewType:Class = null)
+		public function MediatorMapper(matcher:ITypeFilter, handler:IMediatorViewHandler)
 		{
 			_matcher = matcher;
 			_handler = handler;
-			_manager = manager;
-			_viewType = viewType;
 		}
 
 		/*============================================================================*/
@@ -82,7 +76,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		private function createMapping(mediatorClass:Class):MediatorMapping
 		{
-			const mapping:MediatorMapping = new MediatorMapping(_matcher, mediatorClass, _manager, _viewType);
+			const mapping:MediatorMapping = new MediatorMapping(_matcher, mediatorClass);
 			_handler.addMapping(mapping);
 			return mapping;
 		}

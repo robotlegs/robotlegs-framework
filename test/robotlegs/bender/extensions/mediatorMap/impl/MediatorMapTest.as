@@ -63,9 +63,9 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		}
 
 		[Test]
-		public function mapView_to_mediator_stores_mapping():void
+		public function mapType_to_mediator_stores_mapping():void
 		{
-			mediatorMap.mapView(Sprite).toMediator(CallbackMediator);
+			mediatorMap.mapType(Sprite).toMediator(CallbackMediator);
 			assertThat(mediatorMap.getViewMapping(Sprite).forMediator(CallbackMediator), notNullValue());
 		}
 
@@ -78,10 +78,10 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		}
 
 		[Test]
-		public function unmapView_from_mediator_removes_mapping():void
+		public function unmapType_from_mediator_removes_mapping():void
 		{
-			mediatorMap.mapView(Sprite).toMediator(CallbackMediator);
-			mediatorMap.unmapView(Sprite).fromMediator(CallbackMediator);
+			mediatorMap.mapType(Sprite).toMediator(CallbackMediator);
+			mediatorMap.unmapType(Sprite).fromMediator(CallbackMediator);
 			assertThat(mediatorMap.getViewMapping(Sprite).forMediator(CallbackMediator), nullValue());
 		}
 
@@ -96,11 +96,11 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		}
 
 		[Test]
-		public function unmapView_from_all_removes_mappings():void
+		public function unmapType_from_all_removes_mappings():void
 		{
-			mediatorMap.mapView(Sprite).toMediator(CallbackMediator);
-			mediatorMap.mapView(Sprite).toMediator(NullMediator);
-			mediatorMap.unmapView(Sprite).fromMediators();
+			mediatorMap.mapType(Sprite).toMediator(CallbackMediator);
+			mediatorMap.mapType(Sprite).toMediator(NullMediator);
+			mediatorMap.unmapType(Sprite).fromMediators();
 			assertThat(mediatorMap.getViewMapping(Sprite).forMediator(CallbackMediator), nullValue());
 			assertThat(mediatorMap.getViewMapping(Sprite).forMediator(NullMediator), nullValue());
 		}
@@ -124,7 +124,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			injector.map(Function, 'callback').toValue(function(mediator:Object):void {
 				actual = mediator;
 			});
-			mediatorMap.mapView(ISupportView).toMediator(SupportViewMediator);
+			mediatorMap.mapType(ISupportView).toMediator(SupportViewMediator);
 			mediatorMap.handleView(new SupportView(), SupportView);
 			assertThat(actual, instanceOf(SupportViewMediator));
 		}

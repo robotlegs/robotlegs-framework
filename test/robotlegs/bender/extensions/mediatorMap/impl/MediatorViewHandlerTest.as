@@ -15,6 +15,8 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import org.hamcrest.object.nullValue;
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.mediatorMap.support.CallbackMediator;
+	import robotlegs.bender.core.matching.TypeMatcher;
+	import robotlegs.bender.core.matching.ITypeFilter;
 
 	public class MediatorViewHandlerTest
 	{
@@ -36,9 +38,9 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		[Before]
 		public function before():void
 		{
-			handler = new MediatorViewHandler();
 			injector = new Injector();
 			factory = new MediatorFactory(injector);
+			handler = new MediatorViewHandler(factory);
 		}
 
 		/*============================================================================*/
@@ -52,7 +54,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			injector.map(Function, 'callback').toValue(function(mediator:Object):void {
 				createdMediator = mediator;
 			});
-			const mapping:MediatorMapping = new MediatorMapping(instanceOf(Sprite), CallbackMediator, factory);
+			const mapping:MediatorMapping = new MediatorMapping(createTypeFilter([Sprite]), CallbackMediator);
 			handler.addMapping(mapping);
 			handler.handleView(new Sprite(), Sprite);
 			assertThat(createdMediator, notNullValue());
@@ -65,10 +67,27 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			injector.map(Function, 'callback').toValue(function(mediator:Object):void {
 				createdMediator = mediator;
 			});
-			const mapping:MediatorMapping = new MediatorMapping(instanceOf(MovieClip), CallbackMediator, factory);
+			const mapping:MediatorMapping = new MediatorMapping(createTypeFilter([MovieClip]), CallbackMediator);
 			handler.addMapping(mapping);
 			handler.handleView(new Sprite(), Sprite);
 			assertThat(createdMediator, nullValue());
+		}
+		
+		/* 
+			PRIVATE
+		*/
+		
+		private function createTypeFilter(allOf:Array, anyOf:Array = null, noneOf:Array = null):ITypeFilter
+		{
+			const matcher:TypeMatcher = new TypeMatcher();
+			if(allOf)
+				matcher.allOf(allOf);
+			if(anyOf)
+				matcher.anyOf(anyOf);
+			if(noneOf)
+				matcher.noneOf(noneOf);
+				
+			return matcher.createTypeFilter();
 		}
 	}
 }

@@ -7,22 +7,16 @@
 
 package robotlegs.bender.extensions.mediatorMap.api
 {
-	import org.hamcrest.Matcher;
+	import robotlegs.bender.core.matching.ITypeFilter;
 
 	public interface IMediatorMapping
 	{
-		function get matcher():Matcher;
+		function get matcher():ITypeFilter;
 
 		function get mediatorClass():Class;
-
-		function get viewType():Class;
 
 		function get guards():Array;
 
 		function get hooks():Array;
-
-		function createMediator(view:Object):Object;
-		
-		function removeMediator(view:Object):void;
 	}
 }

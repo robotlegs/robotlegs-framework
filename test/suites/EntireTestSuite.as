@@ -10,6 +10,7 @@ package suites
 	import robotlegs.bender.core.CoreTestSuite;
 	import robotlegs.bender.extensions.ExtensionsTestSuite;
 	import robotlegs.bender.framework.FrameworkTestSuite;
+	import robotlegs.bender.core.matching.TypeMatchingTestSuite;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
@@ -25,5 +26,7 @@ package suites
 		public var framework:FrameworkTestSuite;
 
 		public var extensions:ExtensionsTestSuite;
+	
+		public var typeMatcher:TypeMatchingTestSuite;
 	}
 }

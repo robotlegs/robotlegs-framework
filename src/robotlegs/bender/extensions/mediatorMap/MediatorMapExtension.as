@@ -17,6 +17,7 @@ package robotlegs.bender.extensions.mediatorMap
 	import robotlegs.bender.framework.context.api.IContext;
 	import robotlegs.bender.framework.context.api.IContextExtension;
 	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
+	import robotlegs.bender.extensions.viewManager.api.IViewHandler;
 
 	public class MediatorMapExtension implements IContextExtension
 	{
@@ -59,7 +60,7 @@ package robotlegs.bender.extensions.mediatorMap
 			if (_injector.satisfiesDirectly(IViewManager))
 			{
 				_viewManager = _injector.getInstance(IViewManager);
-				_viewManager.addViewHandler(_mediatorMap);
+				_viewManager.addViewHandler(_mediatorMap as IViewHandler);
 			}
 		}
 	}

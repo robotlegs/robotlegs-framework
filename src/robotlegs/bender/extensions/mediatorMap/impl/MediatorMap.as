@@ -7,74 +7,64 @@
 
 package robotlegs.bender.extensions.mediatorMap.impl
 {
-	import flash.display.DisplayObject;
 	import flash.utils.Dictionary;
-	import org.hamcrest.Matcher;
-	import org.hamcrest.object.instanceOf;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMap;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorViewHandler;
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMapper;
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMappingFinder;
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorUnmapper;
+	import robotlegs.bender.core.matching.ITypeMatcher;
+	import robotlegs.bender.core.matching.TypeMatcher;
+	import flash.display.DisplayObject;
+	import robotlegs.bender.extensions.viewManager.api.IViewHandler;
 
-	public class MediatorMap implements IMediatorMap
+	public class MediatorMap implements IMediatorMap, IViewHandler
 	{
-
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
 		private const _mappers:Dictionary = new Dictionary();
 
-		private const _handler:IMediatorViewHandler = new MediatorViewHandler();
+		private var _handler:IMediatorViewHandler;
 
-		private var _manager:IMediatorFactory;
+		private var _factory:IMediatorFactory;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function MediatorMap(manager:IMediatorFactory)
+		public function MediatorMap(factory:IMediatorFactory, handler:IMediatorViewHandler = null)
 		{
-			_manager = manager;
+			_factory = factory;
+			_handler = handler || new MediatorViewHandler(_factory);
 		}
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function map(matcher:Matcher):IMediatorMapper
+		public function mapMatcher(matcher:ITypeMatcher):IMediatorMapper
 		{
-			return _mappers[String(matcher)] ||= createMapper(matcher);
+			return _mappers[matcher.createTypeFilter().descriptor] ||= createMapper(matcher);
 		}
 
-		public function mapView(viewType:Class):IMediatorMapper
+		public function map(type:Class):IMediatorMapper
 		{
-			const matcher:Matcher = instanceOf(viewType);
-			return _mappers[String(matcher) + '|' + String(viewType)] ||= createMapper(matcher, viewType);
+			const matcher:ITypeMatcher = new TypeMatcher().allOf(type);
+			return mapMatcher(matcher);
 		}
 
-		public function getMapping(matcher:Matcher):IMediatorMappingFinder
+		public function unmapMatcher(matcher:ITypeMatcher):IMediatorUnmapper
 		{
-			return _mappers[String(matcher)];
+			return _mappers[matcher.createTypeFilter().descriptor];
 		}
 
-		public function getViewMapping(viewType:Class):IMediatorMappingFinder
+		public function unmap(type:Class):IMediatorUnmapper
 		{
-			const matcher:Matcher = instanceOf(viewType);
-			return _mappers[String(matcher) + '|' + String(viewType)];
-		}
-
-		public function unmap(matcher:Matcher):IMediatorUnmapper
-		{
-			return _mappers[String(matcher)];
-		}
-
-		public function unmapView(viewType:Class):IMediatorUnmapper
-		{
-			const matcher:Matcher = instanceOf(viewType);
-			return _mappers[String(matcher) + '|' + String(viewType)];
+			const matcher:ITypeMatcher = new TypeMatcher().allOf(type);
+			return unmapMatcher(matcher);
 		}
 
 		public function handleView(view:DisplayObject, type:Class):void
@@ -82,13 +72,24 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			_handler.handleView(view, type);
 		}
 
+		public function mediate(item:Object):void
+		{
+			const type:Class = item.constructor;
+			_handler.handleItem(item, type);
+		}
+		
+		public function unmediate(item:Object):void
+		{
+			_factory.removeMediators(item);
+		}
+
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
 
-		private function createMapper(matcher:Matcher, viewType:Class = null):IMediatorMapper
+		private function createMapper(matcher:ITypeMatcher, viewType:Class = null):IMediatorMapper
 		{
-			return new MediatorMapper(matcher, _handler, _manager, viewType);
+			return new MediatorMapper(matcher.createTypeFilter(), _handler);
 		}
 	}
 }

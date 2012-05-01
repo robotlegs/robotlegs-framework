@@ -41,7 +41,7 @@ package robotlegs.bender.extensions
 		public var localEventMapExtension:LocalEventMapExtensionTestSuite;
 
 		public var loggingExtension:LoggingExtensionTestSuite;
-
+		
 		public var mediatorMapExtension:MediatorMapExtensionTestSuite;
 
 		public var messageCommandMapExtension:MessageCommandMapExtensionTestSuite;

@@ -30,8 +30,6 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private const _mappings:Dictionary = new Dictionary();
-
 		private var _factory:IMediatorFactory;
 
 		/*============================================================================*/
@@ -69,10 +67,13 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		private function onMediatorCreate(event:MediatorFactoryEvent):void
 		{
 			const view:DisplayObject = event.view as DisplayObject;
+			
+			if(event.view && !view)
+				initializeMediator(view, event.mediator);
+			
 			if (!view)
 				return;
-			_mappings[event.view] ||= [];
-			_mappings[event.view].push(event.mapping);
+
 			view.addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
 
 			if (flexAvailable && (event.view is UIComponentClass) && !event.view['initialized'])
@@ -93,21 +94,22 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		private function onMediatorRemove(event:MediatorFactoryEvent):void
 		{
 			const view:DisplayObject = event.view as DisplayObject;
-			if (!view)
-				return;
-			view.removeEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
+
+			if (view)
+				view.removeEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
+			
+			if(event.mediator)
+				destroyMediator(event.mediator);
+			
 			// note: as far as I know, the re-parenting issue does not exist with Flex 4+.
 			// question: should we bother handling re-parenting?
-			destroyMediator(event.mediator);
+			// Stray: let's not handle it. People can defend against unwanted hooks running
+			// during reparenting for themselves quite easily.
 		}
 
 		private function onRemovedFromStage(event:Event):void
 		{
-			const mappings:Array = _mappings[event.target];
-			for each (var mapping:IMediatorMapping in mappings)
-			{
-				mapping.removeMediator(event.target);
-			}
+			_factory.removeMediators(event.target);
 		}
 
 		private function initializeMediator(view:DisplayObject, mediator:Object):void

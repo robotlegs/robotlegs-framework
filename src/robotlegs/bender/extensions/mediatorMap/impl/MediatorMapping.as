@@ -7,10 +7,10 @@
 
 package robotlegs.bender.extensions.mediatorMap.impl
 {
-	import org.hamcrest.Matcher;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMappingConfig;
+	import robotlegs.bender.core.matching.ITypeFilter;
 
 	public class MediatorMapping implements IMediatorMapping, IMediatorMappingConfig
 	{
@@ -19,9 +19,9 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		private var _matcher:Matcher;
+		private var _matcher:ITypeFilter;
 
-		public function get matcher():Matcher
+		public function get matcher():ITypeFilter
 		{
 			return _matcher;
 		}
@@ -31,13 +31,6 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		public function get mediatorClass():Class
 		{
 			return _mediatorClass;
-		}
-
-		private var _viewType:Class;
-
-		public function get viewType():Class
-		{
-			return _viewType;
 		}
 
 		private var _guards:Array = [];
@@ -55,21 +48,13 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		}
 
 		/*============================================================================*/
-		/* Private Properties                                                         */
-		/*============================================================================*/
-
-		private var _factory:IMediatorFactory;
-
-		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function MediatorMapping(matcher:Matcher, mediatorClass:Class, manager:IMediatorFactory, viewType:Class = null)
+		public function MediatorMapping(matcher:ITypeFilter, mediatorClass:Class)
 		{
 			_matcher = matcher;
 			_mediatorClass = mediatorClass;
-			_factory = manager;
-			_viewType = viewType;
 		}
 
 		/*============================================================================*/
@@ -86,16 +71,6 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		{
 			_hooks = _hooks.concat.apply(null, hooks);
 			return this;
-		}
-
-		public function createMediator(view:Object):Object
-		{
-			return _factory.createMediator(view, this);
-		}
-
-		public function removeMediator(view:Object):void
-		{
-			_factory.removeMediator(view, this);
 		}
 	}
 }

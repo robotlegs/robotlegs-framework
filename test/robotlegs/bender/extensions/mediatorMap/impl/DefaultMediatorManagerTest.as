@@ -21,6 +21,10 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
 	import robotlegs.bender.extensions.mediatorMap.support.CallbackMediator;
+	import utils.checkFlex;
+	import utils.traceAndSkipTest;
+	import robotlegs.bender.core.matching.ITypeFilter;
+	import robotlegs.bender.core.matching.TypeMatcher;
 
 	public class DefaultMediatorManagerTest
 	{
@@ -59,9 +63,9 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		public function mediator_is_removed_when_view_leaves_stage():void
 		{
 			const view:Sprite = new Sprite();
-			const mapping:IMediatorMapping = new MediatorMapping(instanceOf(Sprite), CallbackMediator, factory);
+			const mapping:IMediatorMapping = new MediatorMapping(createTypeFilter([Sprite]), CallbackMediator);
 			container.addChild(view);
-			mapping.createMediator(view);
+			factory.createMediators(view, Sprite, [mapping]);
 			container.removeChild(view);
 			assertThat(factory.getMediator(view, mapping), nullValue());
 		}
@@ -74,8 +78,8 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			injector.map(Function, 'initializeCallback').toValue(function(phase:String):void {
 				actual.push(phase);
 			});
-			const mapping:IMediatorMapping = new MediatorMapping(instanceOf(Sprite), SomeMediator, factory);
-			mapping.createMediator(new Sprite());
+			const mapping:IMediatorMapping = new MediatorMapping(createTypeFilter([Sprite]), SomeMediator);
+			factory.createMediators(new Sprite(), Sprite, [mapping]);
 			assertThat(actual, array(expected));
 		}
 
@@ -83,8 +87,8 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		public function mediator_is_given_view():void
 		{
 			const expected:Sprite = new Sprite();
-			const mapping:IMediatorMapping = new MediatorMapping(instanceOf(Sprite), SomeMediator, factory);
-			const mediator:SomeMediator = mapping.createMediator(expected) as SomeMediator;
+			const mapping:IMediatorMapping = new MediatorMapping(createTypeFilter([Sprite]), SomeMediator);
+			const mediator:SomeMediator = factory.createMediators(expected, Sprite, [mapping])[0];
 			assertThat(mediator.view, equalTo(expected));
 		}
 
@@ -97,18 +101,22 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			injector.map(Function, 'destroyCallback').toValue(function(phase:String):void {
 				actual.push(phase);
 			});
-			const mapping:IMediatorMapping = new MediatorMapping(instanceOf(Sprite), SomeMediator, factory);
-			mapping.createMediator(view);
-			mapping.removeMediator(view);
+			const mapping:IMediatorMapping = new MediatorMapping(createTypeFilter([Sprite]), SomeMediator);
+			factory.createMediators(view, Sprite, [mapping])
+			factory.removeMediators(view);
 			assertThat(actual, array(expected));
 		}
 
 		[Test(async, ui)]
 		public function mediator_for_UIComponent_is_only_initialized_after_creationComplete():void
 		{
+			// early exit for as3 only test environments
+			if(!checkFlex()) 
+				return traceAndSkipTest('mediator_for_UIComponent_is_only_initialized_after_creationComplete - flex not available');
+			
 			const view:UIComponent = new UIComponent();
-			const mapping:IMediatorMapping = new MediatorMapping(instanceOf(UIComponent), SomeMediator, factory);
-			const mediator:SomeMediator = mapping.createMediator(view) as SomeMediator;
+			const mapping:IMediatorMapping = new MediatorMapping(createTypeFilter([UIComponent]), SomeMediator);
+			const mediator:SomeMediator = factory.createMediators(view, Sprite, [mapping])[0];
 			assertThat(mediator.initialized, isFalse());
 			container.addChild(view);
 			delayAssertion(function():void {
@@ -123,6 +131,19 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		private function delayAssertion(closure:Function, delay:Number = 50):void
 		{
 			Async.delayCall(this, closure, delay);
+		}
+		
+		private function createTypeFilter(allOf:Array, anyOf:Array = null, noneOf:Array = null):ITypeFilter
+		{
+			const matcher:TypeMatcher = new TypeMatcher();
+			if(allOf)
+				matcher.allOf(allOf);
+			if(anyOf)
+				matcher.anyOf(anyOf);
+			if(noneOf)
+				matcher.noneOf(noneOf);
+				
+			return matcher.createTypeFilter();
 		}
 	}
 }

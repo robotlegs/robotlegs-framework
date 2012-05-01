@@ -14,5 +14,7 @@ package robotlegs.bender.extensions.mediatorMap.api
 		function addMapping(mapping:IMediatorMapping):void;
 
 		function removeMapping(mapping:IMediatorMapping):void;
+		
+		function handleItem(item:Object, type:Class):void;
 	}
 }

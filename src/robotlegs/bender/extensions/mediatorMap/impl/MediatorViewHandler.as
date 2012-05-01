@@ -7,10 +7,12 @@
 
 package robotlegs.bender.extensions.mediatorMap.impl
 {
-	import flash.display.DisplayObject;
 	import flash.utils.Dictionary;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorViewHandler;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
+	import robotlegs.bender.core.matching.ITypeFilter;
+	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
+	import flash.display.DisplayObject;
 
 	public class MediatorViewHandler implements IMediatorViewHandler
 	{
@@ -22,10 +24,17 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		private const _mappings:Array = [];
 
 		private var _knownMappings:Dictionary = new Dictionary(true);
+		
+		private var _factory:IMediatorFactory;
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
+
+		public function MediatorViewHandler(factory:IMediatorFactory):void
+		{
+			_factory = factory;
+		}
 
 		public function addMapping(mapping:IMediatorMapping):void
 		{
@@ -47,12 +56,35 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		public function handleView(view:DisplayObject, type:Class):void
 		{
+			const interestedMappings:Array = getInterestedMappingsFor(view, type);
+			if(interestedMappings)
+				_factory.createMediators(view, type, interestedMappings);
+		}
+		
+		public function handleItem(item:Object, type:Class):void
+		{
+			const interestedMappings:Array = getInterestedMappingsFor(item, type);
+			if(interestedMappings)
+				_factory.createMediators(item, type, interestedMappings);
+		}
+		
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
+
+		private function flushCache():void
+		{
+			_knownMappings = new Dictionary(true);
+		}
+		
+		private function getInterestedMappingsFor(view:Object, type:Class):Array
+		{
 			var mapping:IMediatorMapping;
 
 			// we've seen this type before and nobody was interested
 			if (_knownMappings[type] === false)
-				return;
-
+				return null;
+			
 			// we haven't seen this type before
 			if (_knownMappings[type] == undefined)
 			{
@@ -67,24 +99,12 @@ package robotlegs.bender.extensions.mediatorMap.impl
 				}
 				// nobody cares, let's get out of here
 				if (_knownMappings[type] === false)
-					return;
+					return null;
 			}
 
 			// these mappings really do care
-			const interestedMappings:Array = _knownMappings[type] as Array;
-			for each (mapping in interestedMappings)
-			{
-				mapping.createMediator(view);
-			}
+			return _knownMappings[type] as Array;
 		}
-
-		/*============================================================================*/
-		/* Private Functions                                                          */
-		/*============================================================================*/
-
-		private function flushCache():void
-		{
-			_knownMappings = new Dictionary(true);
-		}
+		
 	}
 }

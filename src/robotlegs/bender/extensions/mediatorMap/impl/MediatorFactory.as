@@ -15,6 +15,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import robotlegs.bender.extensions.mediatorMap.api.MediatorFactoryEvent;
 	import robotlegs.bender.framework.guard.impl.guardsApprove;
 	import robotlegs.bender.framework.hook.impl.applyHooks;
+	import robotlegs.bender.core.matching.ITypeFilter;
 
 	[Event(name="mediatorCreate", type="robotlegs.bender.extensions.mediatorMap.api.MediatorFactoryEvent")]
 	[Event(name="mediatorRemove", type="robotlegs.bender.extensions.mediatorMap.api.MediatorFactoryEvent")]
@@ -42,19 +43,64 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		/**
-		 * @inheritDoc
-		 */
-		public function createMediator(view:Object, mapping:IMediatorMapping):Object
+		public function getMediator(view:Object, mapping:IMediatorMapping):Object
+		{
+			return _mediators[view] ? _mediators[view][mapping] : null;
+		}
+		
+		public function createMediators(view:Object, type:Class, mappings:Array):Array
+		{
+			const createdMediators:Array = [];
+			var filter:ITypeFilter;
+			var mediator:Object;
+			for each (var mapping:IMediatorMapping in mappings)
+			{
+				mediator = getMediator(view, mapping);
+
+				if (!mediator)
+				{
+					filter = mapping.matcher;
+					mapTypeForFilterBinding(filter, type, view);
+					mediator = createMediator(view, mapping);
+					unmapTypeForFilterBinding(filter, type, view)
+				}
+				
+				if(mediator)
+					createdMediators.push(mediator);
+			}
+			return createdMediators;
+		}
+		
+		public function removeMediators(view:Object):void
+		{
+			const mediators:Dictionary = _mediators[view];
+			if (!mediators)
+				return;
+			
+			if (hasEventListener(MediatorFactoryEvent.MEDIATOR_REMOVE))
+			{
+				for (var mapping:Object in mediators)
+				{
+					dispatchEvent(new MediatorFactoryEvent(
+						MediatorFactoryEvent.MEDIATOR_REMOVE,
+						mediators[mapping], view, mapping as IMediatorMapping, this));
+				}
+			}
+			
+			delete _mediators[view];
+		}
+		
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
+
+		private function createMediator(view:Object, mapping:IMediatorMapping):Object
 		{
 			var mediator:Object = getMediator(view, mapping);
 
 			if (mediator)
 				return mediator;
-
-			const viewType:Class = mapping.viewType || view['constructor'];
-			_injector.map(viewType).toValue(view);
-
+			
 			if (guardsApprove(mapping.guards, _injector))
 			{
 				mediator = _injector.getInstance(mapping.mediatorClass);
@@ -63,17 +109,10 @@ package robotlegs.bender.extensions.mediatorMap.impl
 				_injector.unmap(mapping.mediatorClass);
 				addMediator(mediator, view, mapping);
 			}
-
-			_injector.unmap(viewType);
 			return mediator;
 		}
 
-		public function getMediator(view:Object, mapping:IMediatorMapping):Object
-		{
-			return _mediators[view] ? _mediators[view][mapping] : null;
-		}
-
-		public function removeMediator(view:Object, mapping:IMediatorMapping):void
+		private function removeMediator(view:Object, mapping:IMediatorMapping):void
 		{
 			const mediators:Dictionary = _mediators[view];
 			if (!mediators)
@@ -88,10 +127,6 @@ package robotlegs.bender.extensions.mediatorMap.impl
 					mediator, view, mapping, this));
 		}
 
-		/*============================================================================*/
-		/* Private Functions                                                          */
-		/*============================================================================*/
-
 		private function addMediator(mediator:Object, view:Object, mapping:IMediatorMapping):void
 		{
 			_mediators[view] ||= new Dictionary();
@@ -100,6 +135,39 @@ package robotlegs.bender.extensions.mediatorMap.impl
 				dispatchEvent(new MediatorFactoryEvent(
 					MediatorFactoryEvent.MEDIATOR_CREATE,
 					mediator, view, mapping, this));
+		}
+		
+		private function mapTypeForFilterBinding(filter:ITypeFilter, type:Class, view:Object):void
+		{
+			var requiredType:Class;
+			const requiredTypes:Vector.<Class> = requiredTypesFor(filter, type);
+
+			for each (requiredType in requiredTypes)
+			{
+				_injector.map(requiredType).toValue(view);
+			}
+		}
+
+		private function unmapTypeForFilterBinding(filter:ITypeFilter, type:Class, view:Object):void
+		{
+			var requiredType:Class;
+			const requiredTypes:Vector.<Class> = requiredTypesFor(filter, type);
+
+			for each (requiredType in requiredTypes)
+			{
+				if(_injector.map(requiredType))
+					_injector.unmap(requiredType);
+			}
+		}
+		
+		private function requiredTypesFor(filter:ITypeFilter, type:Class):Vector.<Class>
+		{
+			const requiredTypes:Vector.<Class> = filter.allOfTypes.concat(filter.anyOfTypes);
+
+			if(requiredTypes.indexOf(type) == -1)
+				requiredTypes.push(type);
+			
+			return requiredTypes;
 		}
 	}
 }

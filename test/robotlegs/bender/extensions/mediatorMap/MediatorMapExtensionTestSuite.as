@@ -11,6 +11,8 @@ package robotlegs.bender.extensions.mediatorMap
 	import robotlegs.bender.extensions.mediatorMap.impl.MediatorFactoryTest;
 	import robotlegs.bender.extensions.mediatorMap.impl.MediatorMapTest;
 	import robotlegs.bender.extensions.mediatorMap.impl.MediatorViewHandlerTest;
+	import robotlegs.bender.extensions.mediatorMap.impl.MediatorSugarTest;
+	import robotlegs.bender.extensions.mediatorMap.impl.MediatorMapTestPreloaded;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
@@ -23,12 +25,16 @@ package robotlegs.bender.extensions.mediatorMap
 
 		public var mediatorMapExtension:MediatorMapExtensionTest;
 
-		public var mediatorMap:MediatorMapTest;
-
 		public var mediatorHandler:MediatorViewHandlerTest;
 
 		public var mediatorFactory:MediatorFactoryTest;
 
 		public var defaultMediatorManager:DefaultMediatorManagerTest;
+		
+		// added by stray recovered from pre-reloaded tests
+		
+		public var mediatorMapTestsOriginal:MediatorMapTestPreloaded;
+		
+		public var mediatorSugarTest:MediatorSugarTest;
 	}
 }

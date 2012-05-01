@@ -37,7 +37,7 @@ Added applicationDomain getter/setter to IInjector to help with Application Doma
 
 h3. v1.2.0
 
-*MediatorMap.mapView*
+*MediatorMap.mapType*
 The injectViewAs parameter is changed from expecting a Class to expecting a Class or an Array of Classes.
 
 h3. v1.1.2
@@ -95,7 +95,7 @@ Fixes to SwiftSuspenders
 
 h3. v1.0RC8
 
-Added IMediatorMap.unmapView()
+Added IMediatorMap.unmapType()
 
 h3. v1.0RC7
 
@@ -132,9 +132,9 @@ h3. v0.9.8 - Untitled4
 Removed ICommand
 
 *MediatorMap*
-Merged MediatorMap#mapModule into MediatorMap#mapView
+Merged MediatorMap#mapModule into MediatorMap#mapType
 New view mapping signature
-mapView(viewClassOrName:*, mediatorClass:Class, injectViewAs:Class = null, autoCreate:Boolean = true, autoRemove:Boolean = true):void
+mapType(viewClassOrName:*, mediatorClass:Class, injectViewAs:Class = null, autoCreate:Boolean = true, autoRemove:Boolean = true):void
 
 h3. v0.9.7 - XtensibleMixdownLoafers
 

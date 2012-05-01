@@ -13,10 +13,10 @@ package robotlegs.bender.extensions.mediatorMap.api
 	[Event(name="mediatorRemove", type="robotlegs.bender.extensions.mediatorMap.api.MediatorFactoryEvent")]
 	public interface IMediatorFactory extends IEventDispatcher
 	{
-		function createMediator(view:Object, mapping:IMediatorMapping):Object;
-
 		function getMediator(view:Object, mapping:IMediatorMapping):Object;
 
-		function removeMediator(view:Object, mapping:IMediatorMapping):void;
+		function createMediators(view:Object, type:Class, mappings:Array):Array;
+		
+		function removeMediators(view:Object):void;
 	}
 }

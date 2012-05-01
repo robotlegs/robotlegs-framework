@@ -53,7 +53,7 @@ A simple configuration might look something like this:
     {
         public function MyAppConfig(mediatorMap:IMediatorMap)
         {
-            mediatorMap.mapView(SomeView).toMediator(SomeMediator);
+            mediatorMap.mapType(SomeView).toMediator(SomeMediator);
         }
     }
 
