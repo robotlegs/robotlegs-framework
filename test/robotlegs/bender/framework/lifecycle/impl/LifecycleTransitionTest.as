@@ -69,7 +69,7 @@ package robotlegs.bender.framework.lifecycle.impl
 		public function transitionState_is_set():void
 		{
 			transition.toStates(LifecycleState.INITIALIZING, LifecycleState.ACTIVE)
-				.withBeforeHandlers(function(message:Object, callback:Function):void {
+				.addBeforeHandler(function(message:Object, callback:Function):void {
 					setTimeout(callback, 1);
 				})
 				.enter();
@@ -157,13 +157,16 @@ package robotlegs.bender.framework.lifecycle.impl
 		{
 			const expected:Array = ["a", "b", "c"];
 			const actual:Array = [];
-			transition.withBeforeHandlers(function():void {
+			transition.addBeforeHandler(function():void {
 				actual.push("a");
-			}, function():void {
+			});
+			transition.addBeforeHandler(function():void {
 				actual.push("b");
-			}, function():void {
+			});
+			transition.addBeforeHandler(function():void {
 				actual.push("c");
-			}).enter();
+			});
+			transition.enter();
 			assertThat(actual, array(expected));
 		}
 
@@ -173,20 +176,23 @@ package robotlegs.bender.framework.lifecycle.impl
 			const expected:Array = ["c", "b", "a"];
 			const actual:Array = [];
 			transition.inReverse();
-			transition.withBeforeHandlers(function():void {
+			transition.addBeforeHandler(function():void {
 				actual.push("a");
-			}, function():void {
+			});
+			transition.addBeforeHandler(function():void {
 				actual.push("b");
-			}, function():void {
+			});
+			transition.addBeforeHandler(function():void {
 				actual.push("c");
-			}).enter();
+			});
+			transition.enter();
 			assertThat(actual, array(expected));
 		}
 
 		[Test(expects="Error")]
 		public function beforeHandler_error_throws():void
 		{
-			transition.withBeforeHandlers(function(message:String, callback:Function):void {
+			transition.addBeforeHandler(function(message:String, callback:Function):void {
 				callback("some error message");
 			}).enter();
 		}
@@ -198,7 +204,7 @@ package robotlegs.bender.framework.lifecycle.impl
 			var actual:Error = null;
 			lifecycle.addEventListener(LifecycleEvent.ERROR, function(event:LifecycleEvent):void {
 			});
-			transition.withBeforeHandlers(function(message:String, callback:Function):void {
+			transition.addBeforeHandler(function(message:String, callback:Function):void {
 				callback(expected);
 			}).enter(function(error:Error):void {
 				actual = error;
@@ -227,7 +233,7 @@ package robotlegs.bender.framework.lifecycle.impl
 			});
 			transition.fromStates(LifecycleState.UNINITIALIZED)
 				.toStates("startState", "endState")
-				.withBeforeHandlers(function(message:String, callback:Function):void {
+				.addBeforeHandler(function(message:String, callback:Function):void {
 					callback("There was a problem");
 				}).enter();
 			assertThat(lifecycle.state, equalTo(expected));
@@ -251,7 +257,7 @@ package robotlegs.bender.framework.lifecycle.impl
 			var callCount:int = 0;
 			transition.fromStates(LifecycleState.UNINITIALIZED)
 				.toStates("startState", "endState")
-				.withBeforeHandlers(function(message:Object, callback:Function):void {
+				.addBeforeHandler(function(message:Object, callback:Function):void {
 					setTimeout(callback, 1);
 				});
 			transition.enter();

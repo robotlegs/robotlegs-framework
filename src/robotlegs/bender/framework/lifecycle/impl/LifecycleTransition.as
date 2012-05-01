@@ -90,10 +90,9 @@ package robotlegs.bender.framework.lifecycle.impl
 			return this;
 		}
 
-		public function withBeforeHandlers(... handlers):LifecycleTransition
+		public function addBeforeHandler(handler:Function):LifecycleTransition
 		{
-			for each (var handler:Function in handlers)
-				_dispatcher.addMessageHandler(_name, handler);
+			_dispatcher.addMessageHandler(_name, handler);
 			return this;
 		}
 

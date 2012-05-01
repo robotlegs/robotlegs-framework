@@ -86,25 +86,25 @@ package robotlegs.bender.framework.lifecycle.impl
 
 		public function beforeInitializing(handler:Function):ILifecycle
 		{
-			_initialize.withBeforeHandlers(handler);
+			_initialize.addBeforeHandler(handler);
 			return this;
 		}
 
 		public function beforeSuspending(handler:Function):ILifecycle
 		{
-			_suspend.withBeforeHandlers(handler);
+			_suspend.addBeforeHandler(handler);
 			return this;
 		}
 
 		public function beforeResuming(handler:Function):ILifecycle
 		{
-			_resume.withBeforeHandlers(handler);
+			_resume.addBeforeHandler(handler);
 			return this;
 		}
 
 		public function beforeDestroying(handler:Function):ILifecycle
 		{
-			_destroy.withBeforeHandlers(handler);
+			_destroy.addBeforeHandler(handler);
 			return this;
 		}
 
