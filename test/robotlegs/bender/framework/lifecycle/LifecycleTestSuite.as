@@ -5,32 +5,22 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.framework
+package robotlegs.bender.framework.lifecycle
 {
-	import robotlegs.bender.framework.context.ContextTestSuite;
-	import robotlegs.bender.framework.guard.GuardTestSuite;
-	import robotlegs.bender.framework.hook.HookTestSuite;
-	import robotlegs.bender.framework.lifecycle.LifecycleTestSuite;
-	import robotlegs.bender.framework.logging.LoggingTestSuite;
+	import robotlegs.bender.framework.lifecycle.impl.LifecycleTest;
+	import robotlegs.bender.framework.lifecycle.impl.LifecycleTransitionTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
-	public class FrameworkTestSuite
+	public class LifecycleTestSuite
 	{
 
 		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		public var context:ContextTestSuite;
+		public var lifecycle:LifecycleTest;
 
-		public var guard:GuardTestSuite;
-
-		public var hook:HookTestSuite;
-
-		public var logging:LoggingTestSuite;
-
-		public var lifecycle:LifecycleTestSuite;
-
+		public var lifecycleTransition:LifecycleTransitionTest;
 	}
 }
