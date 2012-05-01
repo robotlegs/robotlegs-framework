@@ -13,9 +13,9 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
 	import robotlegs.bender.extensions.mediatorMap.api.MediatorFactoryEvent;
-	import robotlegs.bender.framework.guard.impl.guardsApprove;
-	import robotlegs.bender.framework.hook.impl.applyHooks;
-	import robotlegs.bender.core.matching.ITypeFilter;
+	import robotlegs.bender.extensions.matching.ITypeFilter;
+	import robotlegs.bender.framework.impl.applyHooks;
+	import robotlegs.bender.framework.impl.guardsApprove;
 
 	[Event(name="mediatorCreate", type="robotlegs.bender.extensions.mediatorMap.api.MediatorFactoryEvent")]
 	[Event(name="mediatorRemove", type="robotlegs.bender.extensions.mediatorMap.api.MediatorFactoryEvent")]

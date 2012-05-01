@@ -1,6 +1,6 @@
 package robotlegs.bender.extensions.mediatorMap.impl
 {
-	import robotlegs.bender.core.matching.ITypeFilter;
+	import robotlegs.bender.extensions.matching.ITypeFilter;
 	import robotlegs.bender.extensions.mediatorMap.api.MediatorMappingError;
 	
 	public class MediatorMappingValidator

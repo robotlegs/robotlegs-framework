@@ -14,9 +14,8 @@ package robotlegs.bender.extensions.mediatorMap
 	import robotlegs.bender.extensions.mediatorMap.impl.MediatorFactory;
 	import robotlegs.bender.extensions.mediatorMap.impl.MediatorMap;
 	import robotlegs.bender.extensions.viewManager.api.IViewManager;
-	import robotlegs.bender.framework.context.api.IContext;
-	import robotlegs.bender.framework.context.api.IContextExtension;
-	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
+	import robotlegs.bender.framework.api.IContext;
+	import robotlegs.bender.framework.api.IContextExtension;
 	import robotlegs.bender.extensions.viewManager.api.IViewHandler;
 
 	public class MediatorMapExtension implements IContextExtension
@@ -46,7 +45,8 @@ package robotlegs.bender.extensions.mediatorMap
 			_injector = context.injector;
 			_injector.map(IMediatorFactory).toSingleton(MediatorFactory);
 			_injector.map(IMediatorMap).toSingleton(MediatorMap);
-			_context.addStateHandler(ManagedObject.PRE_INITIALIZE, handleContextPreInitialize);
+			// todo: figure out why this is done as preInitialize
+			_context.lifecycle.beforeInitializing(handleContextPreInitialize);
 		}
 
 		/*============================================================================*/

@@ -5,18 +5,19 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.mediatorMap.api
+package robotlegs.bender.extensions.matching
 {
-	import robotlegs.bender.extensions.matching.ITypeFilter;
 
-	public interface IMediatorMapping
+	public interface ITypeFilter
 	{
-		function get matcher():ITypeFilter;
+		function get allOfTypes():Vector.<Class>;
 
-		function get mediatorClass():Class;
+		function get anyOfTypes():Vector.<Class>;
 
-		function get guards():Array;
+		function get descriptor():String;
 
-		function get hooks():Array;
+		function get noneOfTypes():Vector.<Class>;
+
+		function matches(item:*):Boolean;
 	}
 }

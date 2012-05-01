@@ -10,7 +10,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import flash.utils.Dictionary;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorViewHandler;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
-	import robotlegs.bender.core.matching.ITypeFilter;
+	import robotlegs.bender.extensions.matching.ITypeFilter;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
 	import flash.display.DisplayObject;
 

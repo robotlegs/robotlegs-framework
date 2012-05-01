@@ -23,8 +23,8 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import robotlegs.bender.extensions.mediatorMap.support.CallbackMediator;
 	import utils.checkFlex;
 	import utils.traceAndSkipTest;
-	import robotlegs.bender.core.matching.ITypeFilter;
-	import robotlegs.bender.core.matching.TypeMatcher;
+	import robotlegs.bender.extensions.matching.ITypeFilter;
+	import robotlegs.bender.extensions.matching.TypeMatcher;
 
 	public class DefaultMediatorManagerTest
 	{

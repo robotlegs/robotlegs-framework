@@ -12,20 +12,18 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import org.flexunit.assertThat;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.instanceOf;
-	import org.hamcrest.object.isFalse;
-	import org.hamcrest.object.isTrue;
 	import org.hamcrest.object.notNullValue;
 	import org.hamcrest.object.nullValue;
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
 	import robotlegs.bender.extensions.mediatorMap.api.MediatorFactoryEvent;
 	import robotlegs.bender.extensions.mediatorMap.support.CallbackMediator;
-	import robotlegs.bender.framework.guard.support.GrumpyGuard;
-	import robotlegs.bender.framework.guard.support.HappyGuard;
-	import robotlegs.bender.framework.hook.support.CallbackHook;
-	import robotlegs.bender.core.matching.TypeMatcher;
+	import robotlegs.bender.extensions.matching.TypeMatcher;
 	import org.flexunit.asserts.assertEqualsVectorsIgnoringOrder;
-	import robotlegs.bender.core.matching.ITypeFilter;
+	import robotlegs.bender.extensions.matching.ITypeFilter;
+	import robotlegs.bender.framework.impl.guardSupport.GrumpyGuard;
+	import robotlegs.bender.framework.impl.guardSupport.HappyGuard;
+	import robotlegs.bender.framework.impl.hookSupport.CallbackHook;
 
 	public class MediatorFactoryTest
 	{

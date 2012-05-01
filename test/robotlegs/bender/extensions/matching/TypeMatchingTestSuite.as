@@ -5,22 +5,26 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package suites
+package robotlegs.bender.extensions.matching
 {
-	import robotlegs.bender.extensions.ExtensionsTestSuite;
-	import robotlegs.bender.framework.FrameworkTestSuite;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
-	public class EntireTestSuite
+	public class TypeMatchingTestSuite
 	{
 
 		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		public var framework:FrameworkTestSuite;
+		public var typeFilterTest:TypeFilterTest;
 
-		public var extensions:ExtensionsTestSuite;
+		public var typeFilterUsageTest:TypeFilterUsageTest;
+
+		public var typeMatcherTest:TypeMatcherTest;
+
+		public var packageMatcherTest:PackageMatchingTest;
+
+		public var packageFilter_descriptorTest:PackageFilter_descriptorTest;
 	}
 }

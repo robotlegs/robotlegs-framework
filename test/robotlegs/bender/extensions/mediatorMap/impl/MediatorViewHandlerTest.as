@@ -15,8 +15,8 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import org.hamcrest.object.nullValue;
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.mediatorMap.support.CallbackMediator;
-	import robotlegs.bender.core.matching.TypeMatcher;
-	import robotlegs.bender.core.matching.ITypeFilter;
+	import robotlegs.bender.extensions.matching.TypeMatcher;
+	import robotlegs.bender.extensions.matching.ITypeFilter;
 
 	public class MediatorViewHandlerTest
 	{

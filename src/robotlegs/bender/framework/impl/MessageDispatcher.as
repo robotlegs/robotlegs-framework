@@ -8,7 +8,6 @@
 package robotlegs.bender.framework.impl
 {
 	import flash.utils.Dictionary;
-	import robotlegs.bender.framework.impl.safelyCallBack;
 	import robotlegs.bender.framework.api.IMessageDispatcher;
 
 	/**

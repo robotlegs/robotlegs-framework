@@ -10,7 +10,6 @@ package robotlegs.bender.framework.impl
 	import robotlegs.bender.framework.api.ILogTarget;
 	import robotlegs.bender.framework.api.ILogger;
 	import robotlegs.bender.framework.api.LogLevel;
-	import robotlegs.bender.framework.impl.Logger;
 
 	public class LogManager implements ILogTarget
 	{

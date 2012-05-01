@@ -1,6 +1,6 @@
 package robotlegs.bender.extensions.mediatorMap.api
 {
-	import robotlegs.bender.core.matching.ITypeFilter;
+	import robotlegs.bender.extensions.matching.ITypeFilter;
 
 	public class MediatorMappingError extends Error
 	{

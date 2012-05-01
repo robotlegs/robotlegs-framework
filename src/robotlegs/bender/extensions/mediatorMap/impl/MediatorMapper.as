@@ -14,8 +14,8 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMappingConfig;
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMappingFinder;
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorUnmapper;
-	import robotlegs.bender.core.matching.ITypeMatcher;
-	import robotlegs.bender.core.matching.ITypeFilter;
+	import robotlegs.bender.extensions.matching.ITypeMatcher;
+	import robotlegs.bender.extensions.matching.ITypeFilter;
 
 	public class MediatorMapper implements IMediatorMapper, IMediatorMappingFinder, IMediatorUnmapper
 	{

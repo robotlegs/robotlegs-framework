@@ -15,22 +15,19 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import org.flexunit.Assert;
 	import org.flexunit.asserts.*;
 	import org.flexunit.asserts.assertEqualsVectorsIgnoringOrder;
-	import robotlegs.bender.core.matching.TypeMatcher;
-	import robotlegs.bender.extensions.mediatorMap.impl.MediatorMap;
+	import robotlegs.bender.extensions.matching.TypeMatcher;
 	import robotlegs.bender.extensions.mediatorMap.impl.support.MediatorWatcher;
 	import robotlegs.bender.extensions.viewManager.api.IViewHandler;
 	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.extensions.mediatorMap.impl.MediatorFactory;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
 	import org.flexunit.assertThat;
 	import org.hamcrest.object.isTrue;
 	import org.hamcrest.object.equalTo;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorViewHandler;
-	import robotlegs.bender.framework.guard.support.HappyGuard;
-	import robotlegs.bender.extensions.mediatorMap.api.MediatorMappingError;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMappingConfig;
-	
+	import robotlegs.bender.framework.impl.guardSupport.HappyGuard;
+
 	public class MediatorMapTestPreloaded
 	{
 		private var injector:Injector;
