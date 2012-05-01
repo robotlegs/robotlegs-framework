@@ -5,11 +5,13 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.framework.lifecycle
+package robotlegs.bender.framework.lifecycle.impl
 {
 	import org.hamcrest.assertThat;
 	import org.hamcrest.collection.array;
 	import org.hamcrest.object.equalTo;
+	import robotlegs.bender.framework.lifecycle.api.LifecycleEvent;
+	import robotlegs.bender.framework.lifecycle.api.LifecycleState;
 
 	public class LifecycleTest
 	{
@@ -135,23 +137,15 @@ package robotlegs.bender.framework.lifecycle
 		{
 			const actual:Array = [];
 			const expected:Array = [
-				LifecycleEvent.PRE_INITIALIZE,
-				LifecycleEvent.INITIALIZE,
-				LifecycleEvent.POST_INITIALIZE,
-				LifecycleEvent.PRE_SUSPEND,
-				LifecycleEvent.SUSPEND,
-				LifecycleEvent.POST_SUSPEND,
-				LifecycleEvent.PRE_RESUME,
-				LifecycleEvent.RESUME,
-				LifecycleEvent.POST_RESUME,
-				LifecycleEvent.PRE_DESTROY,
-				LifecycleEvent.DESTROY,
-				LifecycleEvent.POST_DESTROY
-			];
-			const listener:Function = function(event:LifecycleEvent):void{
+				LifecycleEvent.PRE_INITIALIZE, LifecycleEvent.INITIALIZE, LifecycleEvent.POST_INITIALIZE,
+				LifecycleEvent.PRE_SUSPEND, LifecycleEvent.SUSPEND, LifecycleEvent.POST_SUSPEND,
+				LifecycleEvent.PRE_RESUME, LifecycleEvent.RESUME, LifecycleEvent.POST_RESUME,
+				LifecycleEvent.PRE_DESTROY, LifecycleEvent.DESTROY, LifecycleEvent.POST_DESTROY];
+			const listener:Function = function(event:LifecycleEvent):void {
 				actual.push(event.type);
 			};
-			for each (var type:String in expected) {
+			for each (var type:String in expected)
+			{
 				lifecycle.addEventListener(type, listener);
 			}
 			lifecycle.initialize();
@@ -159,6 +153,65 @@ package robotlegs.bender.framework.lifecycle
 			lifecycle.resume();
 			lifecycle.destroy();
 			assertThat(actual, array(expected));
+		}
+
+		// ----- Shorthand transition handlers
+
+		[Test(expects="Error")]
+		public function whenHandler_with_more_than_1_argument_throws():void
+		{
+			lifecycle.whenInitializing(function(a:int, b:int):void {
+			});
+		}
+
+		[Test(expects="Error")]
+		public function afterHandler_with_more_than_1_argument_throws():void
+		{
+			lifecycle.afterInitializing(function(a:int, b:int):void {
+			});
+		}
+
+		[Test]
+		public function when_and_afterHandlers_with_single_arguments_receive_event_types():void
+		{
+			const expected:Array = [
+				LifecycleEvent.INITIALIZE, LifecycleEvent.POST_INITIALIZE,
+				LifecycleEvent.SUSPEND, LifecycleEvent.POST_SUSPEND,
+				LifecycleEvent.RESUME, LifecycleEvent.POST_RESUME,
+				LifecycleEvent.DESTROY, LifecycleEvent.POST_DESTROY];
+			const actual:Array = [];
+			const handler:Function = function(type:String):void {
+				actual.push(type);
+			};
+			lifecycle
+				.whenInitializing(handler).afterInitializing(handler)
+				.whenSuspending(handler).afterSuspending(handler)
+				.whenResuming(handler).afterResuming(handler)
+				.whenDestroying(handler).afterDestroying(handler);
+			lifecycle.initialize();
+			lifecycle.suspend();
+			lifecycle.resume();
+			lifecycle.destroy();
+			assertThat(actual, array(expected));
+		}
+
+		[Test]
+		public function when_and_afterHandlers_with_no_arguments_are_called():void
+		{
+			var callCount:int = 0;
+			const handler:Function = function():void {
+				callCount++;
+			};
+			lifecycle
+				.whenInitializing(handler).afterInitializing(handler)
+				.whenSuspending(handler).afterSuspending(handler)
+				.whenResuming(handler).afterResuming(handler)
+				.whenDestroying(handler).afterDestroying(handler);
+			lifecycle.initialize();
+			lifecycle.suspend();
+			lifecycle.resume();
+			lifecycle.destroy();
+			assertThat(callCount, equalTo(8));
 		}
 
 		/*============================================================================*/

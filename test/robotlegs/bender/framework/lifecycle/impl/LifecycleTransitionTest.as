@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.framework.lifecycle
+package robotlegs.bender.framework.lifecycle.impl
 {
 	import flash.events.Event;
 	import flash.utils.setTimeout;
@@ -14,6 +14,8 @@ package robotlegs.bender.framework.lifecycle
 	import org.hamcrest.collection.array;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.instanceOf;
+	import robotlegs.bender.framework.lifecycle.api.LifecycleEvent;
+	import robotlegs.bender.framework.lifecycle.api.LifecycleState;
 
 	public class LifecycleTransitionTest
 	{

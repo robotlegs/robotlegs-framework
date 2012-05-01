@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.framework.lifecycle
+package robotlegs.bender.framework.lifecycle.api
 {
 
 	public class LifecycleState

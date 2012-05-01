@@ -5,12 +5,15 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.framework.lifecycle
+package robotlegs.bender.framework.lifecycle.impl
 {
 	import flash.events.EventDispatcher;
 	import flash.utils.Dictionary;
+	import robotlegs.bender.framework.lifecycle.api.ILifecycle;
+	import robotlegs.bender.framework.lifecycle.api.LifecycleEvent;
+	import robotlegs.bender.framework.lifecycle.api.LifecycleState;
 
-	public class Lifecycle extends EventDispatcher
+	public class Lifecycle extends EventDispatcher implements ILifecycle
 	{
 
 		/*============================================================================*/
@@ -81,6 +84,78 @@ package robotlegs.bender.framework.lifecycle
 			_destroy.enter(callback);
 		}
 
+		public function beforeInitializing(handler:Function):ILifecycle
+		{
+			_initialize.withBeforeHandlers(handler);
+			return this;
+		}
+
+		public function beforeSuspending(handler:Function):ILifecycle
+		{
+			_suspend.withBeforeHandlers(handler);
+			return this;
+		}
+
+		public function beforeResuming(handler:Function):ILifecycle
+		{
+			_resume.withBeforeHandlers(handler);
+			return this;
+		}
+
+		public function beforeDestroying(handler:Function):ILifecycle
+		{
+			_destroy.withBeforeHandlers(handler);
+			return this;
+		}
+
+		public function whenInitializing(handler:Function):ILifecycle
+		{
+			addEventListener(LifecycleEvent.INITIALIZE, createLifecycleListener(handler));
+			return this;
+		}
+
+		public function whenSuspending(handler:Function):ILifecycle
+		{
+			addEventListener(LifecycleEvent.SUSPEND, createLifecycleListener(handler));
+			return this;
+		}
+
+		public function whenResuming(handler:Function):ILifecycle
+		{
+			addEventListener(LifecycleEvent.RESUME, createLifecycleListener(handler));
+			return this;
+		}
+
+		public function whenDestroying(handler:Function):ILifecycle
+		{
+			addEventListener(LifecycleEvent.DESTROY, createLifecycleListener(handler));
+			return this;
+		}
+
+		public function afterInitializing(handler:Function):ILifecycle
+		{
+			addEventListener(LifecycleEvent.POST_INITIALIZE, createLifecycleListener(handler));
+			return this;
+		}
+
+		public function afterSuspending(handler:Function):ILifecycle
+		{
+			addEventListener(LifecycleEvent.POST_SUSPEND, createLifecycleListener(handler));
+			return this;
+		}
+
+		public function afterResuming(handler:Function):ILifecycle
+		{
+			addEventListener(LifecycleEvent.POST_RESUME, createLifecycleListener(handler));
+			return this;
+		}
+
+		public function afterDestroying(handler:Function):ILifecycle
+		{
+			addEventListener(LifecycleEvent.POST_DESTROY, createLifecycleListener(handler));
+			return this;
+		}
+
 		override public function addEventListener(type:String, listener:Function, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = false):void
 		{
 			priority = flipPriority(type, priority);
@@ -137,6 +212,26 @@ package robotlegs.bender.framework.lifecycle
 			return (priority == 0 && _reversedEventTypes[type])
 				? _reversePriority++
 				: priority;
+		}
+
+		private function createLifecycleListener(handler:Function):Function
+		{
+			// When and After handlers can not be asynchronous
+			if (handler.length > 1)
+			{
+				throw new Error("When and After handlers must accept 0-1 arguments");
+			}
+			// A handler that accepts 1 argument is provided with the event type
+			if (handler.length == 1)
+			{
+				return function(event:LifecycleEvent):void {
+					handler(event.type);
+				};
+			}
+			// Or, just call the handler
+			return function(event:LifecycleEvent):void {
+				handler();
+			};
 		}
 	}
 }

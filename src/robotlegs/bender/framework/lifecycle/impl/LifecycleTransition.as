@@ -5,10 +5,11 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.framework.lifecycle
+package robotlegs.bender.framework.lifecycle.impl
 {
 	import robotlegs.bender.core.async.safelyCallBack;
 	import robotlegs.bender.core.messaging.MessageDispatcher;
+	import robotlegs.bender.framework.lifecycle.api.LifecycleEvent;
 
 	public class LifecycleTransition
 	{
