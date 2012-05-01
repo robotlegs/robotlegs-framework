@@ -101,7 +101,7 @@ A before handler must have one of the following signatures:
 - `handler(phase:String):void`
 - `handler(phase:String, callback:Function):void`
 
-The phase will be the state that the lifecycle is attempting to transition into. For example: `initialize`
+For `beforeInitializing()` the `phase` will be `preInitialize` and so on.
 
 #### A before handler can be asynchronous and can block the transition
 
@@ -118,6 +118,8 @@ When and After handlers are executed synchronously and must have one of the foll
 
 - `handler():void`
 - `handler(phase:String):void`
+
+For `whenInitializing()` the `phase` will be `initialize` and so on.
 
 When and After handlers are not passed callbacks.
 
