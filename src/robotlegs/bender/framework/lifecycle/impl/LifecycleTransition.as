@@ -58,7 +58,6 @@ package robotlegs.bender.framework.lifecycle.impl
 
 		public function fromStates(... states):LifecycleTransition
 		{
-			validateLock();
 			for each (var state:String in states)
 				_fromStates.push(state);
 			return this;
@@ -66,7 +65,6 @@ package robotlegs.bender.framework.lifecycle.impl
 
 		public function toStates(transitionState:String, finalState:String):LifecycleTransition
 		{
-			validateLock();
 			_transitionState = transitionState;
 			_finalState = finalState;
 			return this;
@@ -74,7 +72,6 @@ package robotlegs.bender.framework.lifecycle.impl
 
 		public function withEvents(preTransitionEvent:String, transitionEvent:String, postTransitionEvent:String):LifecycleTransition
 		{
-			validateLock();
 			_preTransitionEvent = preTransitionEvent;
 			_transitionEvent = transitionEvent;
 			_postTransitionEvent = postTransitionEvent;
@@ -84,7 +81,6 @@ package robotlegs.bender.framework.lifecycle.impl
 
 		public function inReverse():LifecycleTransition
 		{
-			validateLock();
 			_reverse = true;
 			_lifecycle.addReversedEventTypes(_preTransitionEvent, _transitionEvent, _postTransitionEvent);
 			return this;
@@ -149,25 +145,21 @@ package robotlegs.bender.framework.lifecycle.impl
 				// put lifecycle into final state
 				setState(_finalState);
 
+				// process callback queue (dup and trash for safety)
+				const callbacks:Array = _callbacks.concat();
+				_callbacks.length = 0;
+				for each (var callback:Function in callbacks)
+					safelyCallBack(callback, null, _name);
+
 				// dispatch post transition event
 				dispatch(_postTransitionEvent);
 
-				// process callback queue
-				for each (var callback:Function in _callbacks)
-					safelyCallBack(callback, null, _name);
-				_callbacks.length = 0;
-
-			}, _reverse ? MessageDispatcher.REVERSE : 0); // todo: remove this FLAG nonsense
+			}, _reverse ? MessageDispatcher.REVERSE : 0);
 		}
 
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
-
-		private function validateLock():void
-		{
-			_locked && reportError("State is locked");
-		}
 
 		private function invalidTransition():Boolean
 		{

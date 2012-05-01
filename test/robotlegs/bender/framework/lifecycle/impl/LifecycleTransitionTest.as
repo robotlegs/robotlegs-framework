@@ -114,34 +114,6 @@ package robotlegs.bender.framework.lifecycle.impl
 			assertThat(actual, array(expected));
 		}
 
-		[Test(expects="Error")]
-		public function enter_locks_fromStates():void
-		{
-			transition.enter();
-			transition.fromStates("transition");
-		}
-
-		[Test(expects="Error")]
-		public function enter_locks_toStates():void
-		{
-			transition.enter();
-			transition.toStates("changing", "changed");
-		}
-
-		[Test(expects="Error")]
-		public function enter_locks_events():void
-		{
-			transition.enter();
-			transition.withEvents("preEvent", "event", "postEvent");
-		}
-
-		[Test(expects="Error")]
-		public function enter_locks_reverse():void
-		{
-			transition.enter();
-			transition.inReverse();
-		}
-
 		[Test]
 		public function callback_is_called():void
 		{

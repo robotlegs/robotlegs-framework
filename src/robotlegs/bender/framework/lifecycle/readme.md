@@ -9,9 +9,9 @@ A lifecycle usually refers to a specific instance. You can provide this instance
 
 For most developers, the only lifecycle you are interested in will be the context's lifecycle, which is created by the context itself.
 
-## States
+## Overview
 
-A lifecycle can be in one of the following settled states:
+A lifecycle can be in any of the following settled states:
 
 - `UNINITIALIZED`
 - `ACTIVE`
@@ -39,6 +39,88 @@ Once `DESTROYED` there is no way back.
 
 Invalid transitions can be captured by listening for the LifecycleEvent.ERROR event. If no listener is attached an Error will be thrown.
 
+## Hooking in to transitions
+
+The Lifecycle provides 4 distinct hooks: `before`, `when` and `after` any transition, and a `callback`, passed to the transition function itself, which runs between the _when_ and _after_ hooks.
+
+For clarity, the ordering is:
+
+1. _Before_ transitioning handlers run
+2. If there are no errors, the state is changed. If there are errors the callback passed to the transition is run, and the errors are passed to it, and we go no further
+3. _When_ transitioning handlers run
+4. The _callback_ passed to the transition is run
+5. _After_ transitioning handlers run
+
+A complete list of the process timing hooks:
+
+	beforeInitializing
+	whenIntitializing
+	afterIntializing
+
+	beforeSuspending
+	whenSuspending
+	afterSuspending
+
+	beforeResuming
+	whenResuming
+	afterResuming
+
+	beforeDestroying
+	whenDestroying
+	afterDestroying
+
+Timing hooks can be chained, as they return the same interface that you use to access them.
+
+### Wait, do we really need 4 different hooks?
+
+Each of the 4 hooks provides a particular way to hook into the transition.
+
+- `before` hooks can **block** the transition from happening.
+- `when` hooks are **non-blocking**, and run after the state has changed, but before the callback passed to the transition is run.
+- `after` hooks are **non-blocking**, and run after the callback passed to the transition is run.
+
+The callback passed to the transition can process the errors from the _before_ handlers, and runs whether or not the transition is made. The _when_ and _after_ hooks only run if the transition is successful (i.e. there are no _before_ handler errors).
+
+### Suspend and destroy handlers run backwards
+
+The `initialize` and `resume` transitions run their handlers in the order in which they were added. The `suspend` and `destroy` transitions run their handlers in reverse, so the last handler added to a particular phase, e.g. `whenDestroying`, is run first during that phase.
+
+### _Before, when_ and _after_ hooks persist, callbacks are one-time
+
+A handler added to `beforeSuspending` will be run every time the lifecycle is suspended. A callback passed to `suspend()` will run once only, unless you pass the same callback to the `suspend()` function when you run it again at a later time.
+
+### Before handlers
+
+A lifecycle provides 4 `before` hooks: `beforeInitializing`, `beforeSuspending`, `beforeResuming` and `beforeDestroying`.
+
+Handlers added to these transitions are executed when the transition starts and before any events are dispatched.
+
+A before handler must have one of the following signatures:
+
+- `handler():void`
+- `handler(phase:String):void`
+- `handler(phase:String, callback:Function):void`
+
+The phase will be the state that the lifecycle is attempting to transition into. For example: `initialize`
+
+#### A before handler can be asynchronous and can block the transition
+
+If a handler accepts a callback and calls the callback with an error, the transition will be terminated, and the state will be reverted to the pre-transition state.
+
+For more background on async handlers in Robotlegs 2 see:
+
++ core.async.readme
++ core.messaging.readme
+
+### When and After handlers
+
+When and After handlers are executed synchronously and must have one of the following signatures:
+
+- `handler():void`
+- `handler(phase:String):void`
+
+When and After handlers are not passed callbacks.
+
 ## Lifecycle Events
 
 A lifecycle dispatches the following events:
@@ -60,37 +142,6 @@ A lifecycle dispatches the following events:
 - `POST_DESTROY`
 
 - `ERROR`
-
-## Hooking in to transitions
-
-A lifecycle provides 4 transition hooks: `beforeInitializing`, `beforeSuspending`, `beforeResuming` and `beforeDestroying`.
-
-Handlers added to these transitions are executed when the transition starts and before any events are dispatched.
-
-A before handler must have one of the following signatures:
-
-- `handler():void`
-- `handler(message:Object):void`
-- `handler(message:Object, callback:Function):void`
-
-The message will be the state that the lifecycle is attempting to transition into.
-
-### _Before_ handlers can block the transition
-
-If a handler accepts a callback and calls the callback with an error, the transition will be terminated, and the state will be reverted to the pre-transition state.
-
-For more background on async handlers in Robotlegs 2 see:
-
-+ core.async.readme
-+ core.messaging.readme
-
-### Suspend and destroy handlers & events run backwards
-
-The `initialize` and `resume` transitions run their handlers, and dispatch events, in the order in which they were added.
-
-The `suspend` and `destroy` transitions run their handlers in reverse, so the last handler added to a particular transition, e.g. `beforeDestroying()`, is run first during the transition.
-
-Likewise, listeners for `suspend` and `destroy` transitions are notified in reverse.
 
 ## Dealing with errors
 
@@ -174,10 +225,16 @@ An extension framework - for example an entity system - might have its own lifec
 An example usage, for an imaginary extension which provides a developer console to the application.
 
     context.lifecycle
-			.beforeInitializing( checkEventDispatcherInstalled, checkEmbeddedFonts )
-			.beforeSuspending( grabPauseTime, detachConsole )
-			.beforeResuming( calculatePauseInterval, reattachConsole )
-			.beforeDestroying( offerConsoleDump );
+			.beforeInitializing( checkEventDispatcherInstalled )
+			.beforeInitializing( checkEmbeddedFonts )
+			.whenInitializing( setLocalDateTime )
+			.whenInitializing( setLocalPaths )
+			.whenSuspending( grabPauseTime )
+			.afterSuspending( deactivateConsole )
+			.whenResuming( calculatePauseInterval )
+			.afterResuming( reactivateConsole )
+			.beforeDestroying( offerConsoleDump )
+			.afterDestroying( destroyConsole );
 
 ### For managing your own object's lifecycle
 
