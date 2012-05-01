@@ -195,7 +195,8 @@ package robotlegs.bender.framework.impl
 			_suspend = new LifecycleTransition("suspend", this)
 				.fromStates(LifecycleState.ACTIVE)
 				.toStates(LifecycleState.SUSPENDING, LifecycleState.SUSPENDED)
-				.withEvents(LifecycleEvent.PRE_SUSPEND, LifecycleEvent.SUSPEND, LifecycleEvent.POST_SUSPEND);
+				.withEvents(LifecycleEvent.PRE_SUSPEND, LifecycleEvent.SUSPEND, LifecycleEvent.POST_SUSPEND)
+				.inReverse();
 
 			_resume = new LifecycleTransition("resume", this)
 				.fromStates(LifecycleState.SUSPENDED)
@@ -205,7 +206,8 @@ package robotlegs.bender.framework.impl
 			_destroy = new LifecycleTransition("destroy", this)
 				.fromStates(LifecycleState.SUSPENDED, LifecycleState.ACTIVE)
 				.toStates(LifecycleState.DESTROYING, LifecycleState.DESTROYED)
-				.withEvents(LifecycleEvent.PRE_DESTROY, LifecycleEvent.DESTROY, LifecycleEvent.POST_DESTROY);
+				.withEvents(LifecycleEvent.PRE_DESTROY, LifecycleEvent.DESTROY, LifecycleEvent.POST_DESTROY)
+				.inReverse();
 		}
 
 		private function flipPriority(type:String, priority:int):int

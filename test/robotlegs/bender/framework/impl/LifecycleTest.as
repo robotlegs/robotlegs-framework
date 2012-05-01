@@ -14,7 +14,6 @@ package robotlegs.bender.framework.impl
 	import org.hamcrest.object.equalTo;
 	import robotlegs.bender.framework.api.LifecycleEvent;
 	import robotlegs.bender.framework.api.LifecycleState;
-	import robotlegs.bender.framework.impl.Lifecycle;
 
 	public class LifecycleTest
 	{
@@ -163,14 +162,14 @@ package robotlegs.bender.framework.impl
 		[Test(expects="Error")]
 		public function whenHandler_with_more_than_1_argument_throws():void
 		{
-			lifecycle.whenInitializing(function(a:int, b:int):void {
+			lifecycle.whenInitializing(function(phase:String, callback:Function):void {
 			});
 		}
 
 		[Test(expects="Error")]
 		public function afterHandler_with_more_than_1_argument_throws():void
 		{
-			lifecycle.afterInitializing(function(a:int, b:int):void {
+			lifecycle.afterInitializing(function(phase:String, callback:Function):void {
 			});
 		}
 
@@ -261,6 +260,50 @@ package robotlegs.bender.framework.impl
 			}, 200);
 		}
 
+		// ----- Suspend and Destroy run backwards
+
+		[Test]
+		public function suspend_runs_backwards():void
+		{
+			const actual:Array = [];
+			lifecycle.beforeSuspending(createPusher(actual, "before1"));
+			lifecycle.beforeSuspending(createPusher(actual, "before2"));
+			lifecycle.beforeSuspending(createPusher(actual, "before3"));
+			lifecycle.whenSuspending(createPusher(actual, "when1"));
+			lifecycle.whenSuspending(createPusher(actual, "when2"));
+			lifecycle.whenSuspending(createPusher(actual, "when3"));
+			lifecycle.afterSuspending(createPusher(actual, "after1"));
+			lifecycle.afterSuspending(createPusher(actual, "after2"));
+			lifecycle.afterSuspending(createPusher(actual, "after3"));
+			lifecycle.initialize();
+			lifecycle.suspend();
+			assertThat(actual, array([
+				"before3", "before2", "before1",
+				"when3", "when2", "when1",
+				"after3", "after2", "after1"]));
+		}
+
+		[Test]
+		public function destroy_runs_backwards():void
+		{
+			const actual:Array = [];
+			lifecycle.beforeDestroying(createPusher(actual, "before1"));
+			lifecycle.beforeDestroying(createPusher(actual, "before2"));
+			lifecycle.beforeDestroying(createPusher(actual, "before3"));
+			lifecycle.whenDestroying(createPusher(actual, "when1"));
+			lifecycle.whenDestroying(createPusher(actual, "when2"));
+			lifecycle.whenDestroying(createPusher(actual, "when3"));
+			lifecycle.afterDestroying(createPusher(actual, "after1"));
+			lifecycle.afterDestroying(createPusher(actual, "after2"));
+			lifecycle.afterDestroying(createPusher(actual, "after3"));
+			lifecycle.initialize();
+			lifecycle.destroy();
+			assertThat(actual, array([
+				"before3", "before2", "before1",
+				"when3", "when2", "when1",
+				"after3", "after2", "after1"]));
+		}
+
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
@@ -280,6 +323,13 @@ package robotlegs.bender.framework.impl
 				}
 			}
 			return errorCount;
+		}
+
+		private function createPusher(array:Array, value:Object):Function
+		{
+			return function():void {
+				array.push(value);
+			};
 		}
 	}
 }
