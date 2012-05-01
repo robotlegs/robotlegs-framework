@@ -19,7 +19,6 @@ package robotlegs.bender.extensions.scopedEventDispatcher
 	import robotlegs.bender.extensions.stageSync.StageSyncExtension;
 	import robotlegs.bender.framework.context.api.IContext;
 	import robotlegs.bender.framework.context.impl.Context;
-	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
 
 	public class ScopedEventDispatcherExtensionTest
 	{
@@ -33,9 +32,9 @@ package robotlegs.bender.extensions.scopedEventDispatcher
 		{
 			const name:String = 'global';
 			const context:IContext = new Context();
-			var actual:Object;
+			var actual:Object = null;
 			context.extend(new ScopedEventDispatcherExtension(name));
-			context.addStateHandler(ManagedObject.SELF_INITIALIZE, function():void {
+			context.lifecycle.whenInitializing( function():void {
 				actual = context.injector.getInstance(IEventDispatcher, name);
 			});
 			context.initialize();
@@ -49,7 +48,7 @@ package robotlegs.bender.extensions.scopedEventDispatcher
 			const dispatchers:Array = [];
 			const context:IContext = new Context();
 			context.extend(new ScopedEventDispatcherExtension('global', 'other', 'name'));
-			context.addStateHandler(ManagedObject.SELF_INITIALIZE, function():void {
+			context.lifecycle.whenInitializing( function():void {
 				for each (var name:String in names)
 				{
 					dispatchers.push(context.injector.getInstance(IEventDispatcher, name));

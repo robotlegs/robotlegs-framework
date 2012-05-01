@@ -9,21 +9,20 @@ package robotlegs.bender.framework.context.api
 {
 	import org.hamcrest.Matcher;
 	import org.swiftsuspenders.Injector;
+	import robotlegs.bender.framework.lifecycle.api.ILifecycle;
 	import robotlegs.bender.framework.logging.api.ILogTarget;
 	import robotlegs.bender.framework.logging.api.ILogger;
-	import robotlegs.bender.framework.object.managed.api.IManagedObject;
 
 	public interface IContext
 	{
-		function get injector():Injector;
-
-		function get initializing():Boolean;
-
+		// todo: move
 		function get initialized():Boolean;
 
-		function get destroying():Boolean;
-
 		function get destroyed():Boolean;
+
+		function get injector():Injector;
+
+		function get lifecycle():ILifecycle;
 
 		function get logLevel():uint;
 
@@ -38,16 +37,6 @@ package robotlegs.bender.framework.context.api
 		function configure(... configs):IContext;
 
 		function addConfigHandler(matcher:Matcher, handler:Function):IContext;
-
-		function addObject(object:Object):IContext;
-
-		function addObjectHandler(matcher:Matcher, handler:Function):IContext;
-
-		function getManagedObject(object:Object):IManagedObject;
-
-		function addStateHandler(step:String, handler:Function):IContext;
-
-		function removeStateHandler(step:String, handler:Function):IContext;
 
 		function getLogger(source:Object):ILogger;
 

@@ -14,11 +14,10 @@ package robotlegs.bender.extensions.modularity
 	import robotlegs.bender.framework.context.api.IContextExtension;
 	import robotlegs.bender.framework.logging.api.ILogger;
 	import robotlegs.bender.framework.object.identity.UID;
-	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
 
 	/**
 	 * <p>This extension allows a context to inherit dependencies from a parent context,
-	 * and to expose its dependences to child contexts.</p>
+	 * and to expose its dependencies to child contexts.</p>
 	 *
 	 * <p>It should be installed before context initialization.</p>
 	 */
@@ -68,8 +67,8 @@ package robotlegs.bender.extensions.modularity
 			_context = context;
 			_injector = context.injector;
 			_logger = context.getLogger(this);
-			_context.addStateHandler(ManagedObject.PRE_INITIALIZE, handleContextPreInitialize);
-			_context.addStateHandler(ManagedObject.PRE_DESTROY, handleContextPreDestroy);
+			_context.lifecycle.beforeInitializing(handleContextPreInitialize);
+			_context.lifecycle.beforeDestroying(handleContextPreDestroy);
 		}
 
 		public function toString():String

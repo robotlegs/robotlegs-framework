@@ -12,7 +12,6 @@ package robotlegs.bender.extensions.localEventMap
 	import robotlegs.bender.extensions.eventDispatcher.EventDispatcherExtension;
 	import robotlegs.bender.extensions.localEventMap.api.IEventMap;
 	import robotlegs.bender.framework.context.impl.Context;
-	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
 
 	public class LocalEventMapExtensionTest
 	{
@@ -41,8 +40,8 @@ package robotlegs.bender.extensions.localEventMap
 		[Test]
 		public function localEventMap_is_mapped_into_injector():void
 		{
-			var actual:Object;
-			context.addStateHandler(ManagedObject.SELF_INITIALIZE, function():void {
+			var actual:Object = null;
+			context.lifecycle.whenInitializing(function():void {
 				actual = context.injector.getInstance(IEventMap);
 			});
 			context.initialize();

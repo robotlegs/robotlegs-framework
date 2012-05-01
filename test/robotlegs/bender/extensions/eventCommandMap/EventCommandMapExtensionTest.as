@@ -13,7 +13,6 @@ package robotlegs.bender.extensions.eventCommandMap
 	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
 	import robotlegs.bender.extensions.eventDispatcher.EventDispatcherExtension;
 	import robotlegs.bender.framework.context.impl.Context;
-	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
 
 	public class EventCommandMapExtensionTest
 	{
@@ -42,9 +41,9 @@ package robotlegs.bender.extensions.eventCommandMap
 		[Test]
 		public function eventCommandMap_is_mapped_into_injector():void
 		{
-			var actual:Object;
+			var actual:Object = null;
 			context.extend(EventCommandMapExtension);
-			context.addStateHandler(ManagedObject.SELF_INITIALIZE, function():void {
+			context.lifecycle.whenInitializing( function():void {
 				actual = context.injector.getInstance(IEventCommandMap);
 			});
 			context.initialize();

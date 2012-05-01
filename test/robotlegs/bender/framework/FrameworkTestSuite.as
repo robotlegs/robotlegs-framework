@@ -11,7 +11,6 @@ package robotlegs.bender.framework
 	import robotlegs.bender.framework.guard.GuardTestSuite;
 	import robotlegs.bender.framework.hook.HookTestSuite;
 	import robotlegs.bender.framework.logging.LoggingTestSuite;
-	import robotlegs.bender.framework.object.ObjectTestSuite;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
@@ -29,7 +28,5 @@ package robotlegs.bender.framework
 		public var hook:HookTestSuite;
 
 		public var logging:LoggingTestSuite;
-
-		public var object:ObjectTestSuite
 	}
 }

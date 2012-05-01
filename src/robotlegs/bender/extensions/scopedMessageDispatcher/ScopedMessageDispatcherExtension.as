@@ -12,7 +12,6 @@ package robotlegs.bender.extensions.scopedMessageDispatcher
 	import robotlegs.bender.core.messaging.MessageDispatcher;
 	import robotlegs.bender.framework.context.api.IContext;
 	import robotlegs.bender.framework.context.api.IContextExtension;
-	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
 
 	/**
 	 * This extensions maps a series of named IMessageDispatcher instances
@@ -26,8 +25,6 @@ package robotlegs.bender.extensions.scopedMessageDispatcher
 		/*============================================================================*/
 
 		private var _names:Array;
-
-		private var _context:IContext;
 
 		private var _injector:Injector;
 
@@ -46,9 +43,8 @@ package robotlegs.bender.extensions.scopedMessageDispatcher
 
 		public function extend(context:IContext):void
 		{
-			_context = context;
 			_injector = context.injector;
-			_context.addStateHandler(ManagedObject.SELF_INITIALIZE, handleContextSelfInitialize);
+			context.lifecycle.whenInitializing(handleContextSelfInitialize);
 		}
 
 		/*============================================================================*/

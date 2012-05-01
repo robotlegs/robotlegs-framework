@@ -12,7 +12,6 @@ package robotlegs.bender.extensions.mediatorMap
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMap;
 	import robotlegs.bender.extensions.viewManager.ViewManagerExtension;
 	import robotlegs.bender.framework.context.impl.Context;
-	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
 
 	public class MediatorMapExtensionTest
 	{
@@ -40,9 +39,9 @@ package robotlegs.bender.extensions.mediatorMap
 		[Test]
 		public function mediatorMap_is_mapped_into_injector():void
 		{
-			var actual:Object;
+			var actual:Object = null;
 			context.extend(ViewManagerExtension, MediatorMapExtension);
-			context.addStateHandler(ManagedObject.SELF_INITIALIZE, function():void {
+			context.lifecycle.whenInitializing( function():void {
 				actual = context.injector.getInstance(IMediatorMap);
 			});
 			context.initialize();

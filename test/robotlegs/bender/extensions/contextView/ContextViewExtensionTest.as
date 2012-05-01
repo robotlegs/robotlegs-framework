@@ -8,15 +8,11 @@
 package robotlegs.bender.extensions.contextView
 {
 	import flash.display.DisplayObjectContainer;
-
 	import mx.containers.Canvas;
-
 	import org.flexunit.assertThat;
 	import org.hamcrest.object.equalTo;
-
 	import robotlegs.bender.framework.context.api.IContext;
 	import robotlegs.bender.framework.context.impl.Context;
-	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
 
 	public class ContextViewExtensionTest
 	{
@@ -47,9 +43,9 @@ package robotlegs.bender.extensions.contextView
 		[Test]
 		public function contextView_is_mapped_into_injector():void
 		{
-			var actual:Object;
+			var actual:Object = null;
 			context.extend(ContextViewExtension).configure(contextView);
-			context.addStateHandler(ManagedObject.SELF_INITIALIZE, function():void {
+			context.lifecycle.whenInitializing(function():void {
 				actual = context.injector.getInstance(DisplayObjectContainer);
 			});
 			context.initialize();

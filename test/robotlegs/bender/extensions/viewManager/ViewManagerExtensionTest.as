@@ -11,7 +11,6 @@ package robotlegs.bender.extensions.viewManager
 	import org.hamcrest.object.instanceOf;
 	import robotlegs.bender.extensions.viewManager.api.IViewManager;
 	import robotlegs.bender.framework.context.impl.Context;
-	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
 
 	public class ViewManagerExtensionTest
 	{
@@ -39,9 +38,9 @@ package robotlegs.bender.extensions.viewManager
 		[Test]
 		public function viewManager_is_mapped_into_injector():void
 		{
-			var actual:Object;
+			var actual:Object = null;
 			context.extend(ViewManagerExtension);
-			context.addStateHandler(ManagedObject.SELF_INITIALIZE, function():void {
+			context.lifecycle.whenInitializing(function():void {
 				actual = context.injector.getInstance(IViewManager);
 			});
 			context.initialize();

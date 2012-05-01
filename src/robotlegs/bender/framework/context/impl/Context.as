@@ -10,13 +10,12 @@ package robotlegs.bender.framework.context.impl
 	import org.hamcrest.Matcher;
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.framework.context.api.IContext;
+	import robotlegs.bender.framework.lifecycle.api.ILifecycle;
+	import robotlegs.bender.framework.lifecycle.api.LifecycleState;
+	import robotlegs.bender.framework.lifecycle.impl.Lifecycle;
 	import robotlegs.bender.framework.logging.api.ILogTarget;
 	import robotlegs.bender.framework.logging.api.ILogger;
 	import robotlegs.bender.framework.object.identity.UID;
-	import robotlegs.bender.framework.object.managed.api.IManagedObject;
-	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
-	import robotlegs.bender.framework.object.manager.api.IObjectManager;
-	import robotlegs.bender.framework.object.manager.impl.ObjectManager;
 
 	public class Context implements IContext
 	{
@@ -32,26 +31,6 @@ package robotlegs.bender.framework.context.impl
 			return _injector;
 		}
 
-		public function get initializing():Boolean
-		{
-			return _managedObject.initializing;
-		}
-
-		public function get initialized():Boolean
-		{
-			return _managedObject.initialized;
-		}
-
-		public function get destroying():Boolean
-		{
-			return _managedObject.destroying;
-		}
-
-		public function get destroyed():Boolean
-		{
-			return _managedObject.destroyed;
-		}
-
 		public function get logLevel():uint
 		{
 			return _logManager.logLevel;
@@ -62,21 +41,37 @@ package robotlegs.bender.framework.context.impl
 			_logManager.logLevel = value;
 		}
 
+		private var _lifecycle:Lifecycle;
+
+		public function get lifecycle():ILifecycle
+		{
+			return _lifecycle;
+		}
+
+		// todo: move this into lifecycle
+		public function get initialized():Boolean
+		{
+			return _lifecycle.state != LifecycleState.UNINITIALIZED
+					&& _lifecycle.state != LifecycleState.INITIALIZING;
+		}
+
+		// todo: move this into lifecycle
+		public function get destroyed():Boolean
+		{
+			return _lifecycle.state == LifecycleState.DESTROYED;
+		}
+
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
 		private const _uid:String = UID.create(Context);
 
-		private const _objectManager:IObjectManager = new ObjectManager();
-
 		private const _logManager:LogManager = new LogManager();
 
 		private var _configManager:ConfigManager;
 
 		private var _extensionInstaller:ExtensionInstaller;
-
-		private var _managedObject:IManagedObject;
 
 		private var _logger:ILogger;
 
@@ -89,10 +84,10 @@ package robotlegs.bender.framework.context.impl
 			_injector.map(Injector).toValue(_injector);
 			_injector.map(IContext).toValue(this);
 			_logger = _logManager.getLogger(this);
-			_managedObject = _objectManager.addObject(this);
+			_lifecycle = new Lifecycle(this);
 			_configManager = new ConfigManager(this);
 			_extensionInstaller = new ExtensionInstaller(this);
-			_managedObject.addStateHandler(ManagedObject.SELF_INITIALIZE, handleInitialize);
+			_lifecycle.whenInitializing(_configManager.initialize);
 		}
 
 		/*============================================================================*/
@@ -102,13 +97,13 @@ package robotlegs.bender.framework.context.impl
 		public function initialize():void
 		{
 			_logger.info("Initializing...");
-			_managedObject.initialize(handleInitializeComplete);
+			_lifecycle.initialize(handleInitializeComplete);
 		}
 
 		public function destroy():void
 		{
 			_logger.info("Destroying...");
-			_managedObject.destroy(handleDestroyComplete);
+			_lifecycle.destroy(handleDestroyComplete);
 		}
 
 		public function extend(... extensions):IContext
@@ -135,35 +130,6 @@ package robotlegs.bender.framework.context.impl
 			return this;
 		}
 
-		public function addObject(object:Object):IContext
-		{
-			_objectManager.addObject(object);
-			return this;
-		}
-
-		public function addObjectHandler(matcher:Matcher, handler:Function):IContext
-		{
-			_objectManager.addObjectHandler(matcher, handler);
-			return this;
-		}
-
-		public function getManagedObject(object:Object):IManagedObject
-		{
-			return _objectManager.getManagedObject(object);
-		}
-
-		public function addStateHandler(step:String, handler:Function):IContext
-		{
-			_managedObject.addStateHandler(step, handler);
-			return this;
-		}
-
-		public function removeStateHandler(step:String, handler:Function):IContext
-		{
-			_managedObject.removeStateHandler(step, handler);
-			return this;
-		}
-
 		public function getLogger(source:Object):ILogger
 		{
 			return _logManager.getLogger(source);
@@ -182,11 +148,6 @@ package robotlegs.bender.framework.context.impl
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
-
-		private function handleInitialize():void
-		{
-			_configManager.initialize();
-		}
 
 		private function handleInitializeComplete(error:Object):void
 		{

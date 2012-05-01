@@ -12,7 +12,6 @@ package robotlegs.bender.extensions.scopedEventDispatcher
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.framework.context.api.IContext;
 	import robotlegs.bender.framework.context.api.IContextExtension;
-	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
 
 	/**
 	 * This extensions maps a series of named IEventDispatcher instances
@@ -48,7 +47,7 @@ package robotlegs.bender.extensions.scopedEventDispatcher
 		{
 			_context = context;
 			_injector = context.injector;
-			_context.addStateHandler(ManagedObject.SELF_INITIALIZE, handleContextSelfInitialize);
+			_context.lifecycle.whenInitializing(handleContextSelfInitialize);
 		}
 
 		/*============================================================================*/

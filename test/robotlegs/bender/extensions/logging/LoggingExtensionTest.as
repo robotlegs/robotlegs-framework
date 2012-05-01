@@ -11,7 +11,6 @@ package robotlegs.bender.extensions.logging
 	import org.hamcrest.object.instanceOf;
 	import robotlegs.bender.framework.context.impl.Context;
 	import robotlegs.bender.framework.logging.api.ILogger;
-	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
 
 	public class LoggingExtensionTest
 	{
@@ -40,8 +39,8 @@ package robotlegs.bender.extensions.logging
 		[Test]
 		public function logger_is_mapped_into_injector():void
 		{
-			var actual:Object;
-			context.addStateHandler(ManagedObject.SELF_INITIALIZE, function():void {
+			var actual:Object = null;
+			context.lifecycle.whenInitializing( function():void {
 				actual = context.injector.getInstance(ILogger);
 			});
 			context.initialize();

@@ -12,7 +12,6 @@ package robotlegs.bender.extensions.commandMap
 	import robotlegs.bender.extensions.commandMap.api.ICommandMap;
 	import robotlegs.bender.extensions.eventDispatcher.EventDispatcherExtension;
 	import robotlegs.bender.framework.context.impl.Context;
-	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
 
 	public class CommandMapExtensionTest
 	{
@@ -42,7 +41,7 @@ package robotlegs.bender.extensions.commandMap
 		public function commandMap_is_mapped_into_injector():void
 		{
 			var actual:Object;
-			context.addStateHandler(ManagedObject.SELF_INITIALIZE, function():void {
+			context.lifecycle.whenInitializing( function():void {
 				actual = context.injector.getInstance(ICommandMap);
 			});
 			context.initialize();

@@ -14,7 +14,6 @@ package robotlegs.bender.extensions.eventDispatcher
 	import org.hamcrest.object.instanceOf;
 	import robotlegs.bender.framework.context.api.IContext;
 	import robotlegs.bender.framework.context.impl.Context;
-	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
 
 	public class EventDispatcherExtensionTest
 	{
@@ -44,7 +43,7 @@ package robotlegs.bender.extensions.eventDispatcher
 		{
 			var actual:Object;
 			context.extend(EventDispatcherExtension);
-			context.addStateHandler(ManagedObject.SELF_INITIALIZE, function():void {
+			context.lifecycle.whenInitializing( function():void {
 				actual = context.injector.getInstance(IEventDispatcher);
 			});
 			context.initialize();
@@ -57,7 +56,7 @@ package robotlegs.bender.extensions.eventDispatcher
 			const expected:IEventDispatcher = new EventDispatcher();
 			var actual:Object;
 			context.extend(new EventDispatcherExtension(expected));
-			context.addStateHandler(ManagedObject.SELF_INITIALIZE, function():void {
+			context.lifecycle.whenInitializing( function():void {
 				actual = context.injector.getInstance(IEventDispatcher);
 			});
 			context.initialize();

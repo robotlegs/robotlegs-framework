@@ -13,7 +13,6 @@ package robotlegs.bender.extensions.messageCommandMap
 	import robotlegs.bender.extensions.messageCommandMap.api.IMessageCommandMap;
 	import robotlegs.bender.extensions.messageDispatcher.MessageDispatcherExtension;
 	import robotlegs.bender.framework.context.impl.Context;
-	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
 
 	public class MessageCommandMapExtensionTest
 	{
@@ -42,9 +41,9 @@ package robotlegs.bender.extensions.messageCommandMap
 		[Test]
 		public function messageCommandMap_is_mapped_into_injector():void
 		{
-			var actual:Object;
+			var actual:Object = null;
 			context.extend(MessageCommandMapExtension);
-			context.addStateHandler(ManagedObject.SELF_INITIALIZE, function():void {
+			context.lifecycle.whenInitializing(function():void {
 				actual = context.injector.getInstance(IMessageCommandMap);
 			});
 			context.initialize();

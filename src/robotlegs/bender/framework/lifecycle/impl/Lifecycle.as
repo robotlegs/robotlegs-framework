@@ -8,6 +8,7 @@
 package robotlegs.bender.framework.lifecycle.impl
 {
 	import flash.events.EventDispatcher;
+	import flash.events.IEventDispatcher;
 	import flash.utils.Dictionary;
 	import robotlegs.bender.framework.lifecycle.api.ILifecycle;
 	import robotlegs.bender.framework.lifecycle.api.LifecycleEvent;
@@ -110,7 +111,7 @@ package robotlegs.bender.framework.lifecycle.impl
 
 		public function whenInitializing(handler:Function):ILifecycle
 		{
-			addEventListener(LifecycleEvent.INITIALIZE, createLifecycleListener(handler));
+			addEventListener(LifecycleEvent.INITIALIZE, createLifecycleListener(handler, true));
 			return this;
 		}
 
@@ -128,13 +129,13 @@ package robotlegs.bender.framework.lifecycle.impl
 
 		public function whenDestroying(handler:Function):ILifecycle
 		{
-			addEventListener(LifecycleEvent.DESTROY, createLifecycleListener(handler));
+			addEventListener(LifecycleEvent.DESTROY, createLifecycleListener(handler, true));
 			return this;
 		}
 
 		public function afterInitializing(handler:Function):ILifecycle
 		{
-			addEventListener(LifecycleEvent.POST_INITIALIZE, createLifecycleListener(handler));
+			addEventListener(LifecycleEvent.POST_INITIALIZE, createLifecycleListener(handler, true));
 			return this;
 		}
 
@@ -152,7 +153,7 @@ package robotlegs.bender.framework.lifecycle.impl
 
 		public function afterDestroying(handler:Function):ILifecycle
 		{
-			addEventListener(LifecycleEvent.POST_DESTROY, createLifecycleListener(handler));
+			addEventListener(LifecycleEvent.POST_DESTROY, createLifecycleListener(handler, true));
 			return this;
 		}
 
@@ -214,22 +215,28 @@ package robotlegs.bender.framework.lifecycle.impl
 				: priority;
 		}
 
-		private function createLifecycleListener(handler:Function):Function
+		private function createLifecycleListener(handler:Function, once:Boolean = false):Function
 		{
 			// When and After handlers can not be asynchronous
 			if (handler.length > 1)
 			{
 				throw new Error("When and After handlers must accept 0-1 arguments");
 			}
+
 			// A handler that accepts 1 argument is provided with the event type
 			if (handler.length == 1)
 			{
 				return function(event:LifecycleEvent):void {
+					once && IEventDispatcher(event.target)
+						.removeEventListener(event.type, arguments.callee);
 					handler(event.type);
 				};
 			}
+
 			// Or, just call the handler
 			return function(event:LifecycleEvent):void {
+				once && IEventDispatcher(event.target)
+					.removeEventListener(event.type, arguments.callee);
 				handler();
 			};
 		}
