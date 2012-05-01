@@ -18,7 +18,6 @@ package robotlegs.bender.framework.context.impl
 	import robotlegs.bender.core.objectProcessor.impl.ObjectProcessor;
 	import robotlegs.bender.framework.context.api.IContext;
 	import robotlegs.bender.framework.logging.api.ILogger;
-	import robotlegs.bender.framework.object.identity.UID;
 
 	public class ConfigManager
 	{

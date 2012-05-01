@@ -15,7 +15,6 @@ package robotlegs.bender.framework.context.impl
 	import robotlegs.bender.framework.lifecycle.impl.Lifecycle;
 	import robotlegs.bender.framework.logging.api.ILogTarget;
 	import robotlegs.bender.framework.logging.api.ILogger;
-	import robotlegs.bender.framework.object.identity.UID;
 
 	public class Context implements IContext
 	{

@@ -5,36 +5,32 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.core.lifecycle.impl
+package robotlegs.bender.framework.context.impl
 {
+	import flash.utils.getQualifiedClassName;
 
-	public class LifecycleState
+	public class UID
 	{
 
 		/*============================================================================*/
-		/* Private Properties                                                         */
+		/* Private Static Properties                                                  */
 		/*============================================================================*/
 
-		private var _description:String;
+		private static var i:uint;
 
 		/*============================================================================*/
-		/* Constructor                                                                */
+		/* Public Static Functions                                                    */
 		/*============================================================================*/
 
-		public function LifecycleState(description:String)
+		public static function create(source:* = null):String
 		{
-			_description = description;
-		}
+			if (source is Class)
+				source = getQualifiedClassName(source).split("::").pop();
 
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
-
-		public function toString():String
-		{
-			return '[LifecycleState ' + _description + ']';
+			return (source ? source + '-' : '')
+				+ (i++).toString(16)
+				+ '-'
+				+ (Math.random() * 255).toString(16);
 		}
 	}
-
 }
-

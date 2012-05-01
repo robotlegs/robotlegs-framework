@@ -12,8 +12,8 @@ package robotlegs.bender.extensions.modularity
 	import robotlegs.bender.extensions.modularity.events.ModularContextEvent;
 	import robotlegs.bender.framework.context.api.IContext;
 	import robotlegs.bender.framework.context.api.IContextExtension;
+	import robotlegs.bender.framework.context.impl.UID;
 	import robotlegs.bender.framework.logging.api.ILogger;
-	import robotlegs.bender.framework.object.identity.UID;
 
 	/**
 	 * <p>This extension allows a context to inherit dependencies from a parent context,
