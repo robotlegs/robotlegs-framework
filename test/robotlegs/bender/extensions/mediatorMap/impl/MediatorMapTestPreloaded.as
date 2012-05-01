@@ -26,6 +26,10 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import org.hamcrest.object.isTrue;
 	import org.hamcrest.object.equalTo;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorViewHandler;
+	import robotlegs.bender.framework.guard.support.HappyGuard;
+	import robotlegs.bender.extensions.mediatorMap.api.MediatorMappingError;
+	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
+	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMappingConfig;
 	
 	public class MediatorMapTestPreloaded
 	{
@@ -91,7 +95,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 			instance.handleView(new Sprite(), null);
 
-			var expectedNotifications:Vector.<String> = new <String>['ExampleMediator'];
+			const expectedNotifications:Vector.<String> = new <String>['ExampleMediator'];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
 		}
 
@@ -113,7 +117,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 			instance.handleView(new Sprite(), null);
 
-			var expectedNotifications:Vector.<String> = new <String>['ExampleDisplayObjectMediator'];
+			const expectedNotifications:Vector.<String> = new <String>['ExampleDisplayObjectMediator'];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
 		}
 
@@ -124,7 +128,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 			instance.handleView(new Sprite(), null);
 
-			var expectedNotifications:Vector.<String> = new <String>[];
+			const expectedNotifications:Vector.<String> = new <String>[];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
 		}
 
@@ -135,7 +139,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 			instance.handleView(new Sprite(), null);
 
-			var expectedNotifications:Vector.<String> = new <String>['ExampleMediator'];
+			const expectedNotifications:Vector.<String> = new <String>['ExampleMediator'];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
 		}
 
@@ -152,7 +156,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 			instance.mediate(new Sprite());
 
-			var expectedNotifications:Vector.<String> = new <String>['ExampleMediator'];
+			const expectedNotifications:Vector.<String> = new <String>['ExampleMediator'];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
 		}
 
@@ -164,7 +168,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			view.addChild(new Sprite());
 			instance.mediate(view);
 
-			var expectedNotifications:Vector.<String> = new <String>['ExampleMediator'];
+			const expectedNotifications:Vector.<String> = new <String>['ExampleMediator'];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
 		}
 
@@ -175,7 +179,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			const view:Sprite = new Sprite();
 			instance.mediate(view);
 
-			var expectedNotifications:Vector.<String> = new <String>[];
+			const expectedNotifications:Vector.<String> = new <String>[];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
 		}
 
@@ -188,7 +192,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			instance.mediate(view);
 			instance.unmediate(view);
 
-			var expectedNotifications:Vector.<String> = new <String>['ExampleMediator', 'ExampleMediator destroy'];
+			const expectedNotifications:Vector.<String> = new <String>['ExampleMediator', 'ExampleMediator destroy'];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
 		}
 		
@@ -199,7 +203,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			const notAView:NotAView = new NotAView();
 			instance.mediate(notAView);
 
-			var expectedNotifications:Vector.<String> = new <String>['NotAViewMediator'];
+			const expectedNotifications:Vector.<String> = new <String>['NotAViewMediator'];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
 		}
 		
@@ -220,7 +224,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			instance.mediate(notAView);
 			instance.unmediate(notAView);
 
-			var expectedNotifications:Vector.<String> = new <String>['NotAViewMediator', 'NotAViewMediator destroy'];
+			const expectedNotifications:Vector.<String> = new <String>['NotAViewMediator', 'NotAViewMediator destroy'];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
 		}
 
@@ -240,10 +244,147 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			instance.mediate(view);
 			instance.unmediate(view);
 
-			var expectedNotifications:Vector.<String> = new <String>['ExampleMediator', 'ExampleMediator destroy'];
+			const expectedNotifications:Vector.<String> = new <String>['ExampleMediator', 'ExampleMediator destroy'];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
 		}
+		
+		[Test]
+		public function multiple_mappings_per_matcher_create_mediators():void
+		{
+			instance.map(Sprite).toMediator(ExampleMediator);
+			instance.map(Sprite).toMediator(ExampleMediator2);
+			
+			instance.mediate(new Sprite());
+			const expectedNotifications:Vector.<String> = new <String>['ExampleMediator', 'ExampleMediator2'];
+			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
+		}
+		
+		[Test]
+		public function multiple_mappings_per_matcher_destroy_mediators():void
+		{
+			instance.map(Sprite).toMediator(ExampleMediator);
+			instance.map(Sprite).toMediator(ExampleMediator2);
+			
+			const view:Sprite = new Sprite();
+			
+			instance.mediate(view);
+			instance.unmediate(view);
+			
+			const expectedNotifications:Vector.<String> = new <String>['ExampleMediator', 'ExampleMediator2', 'ExampleMediator destroy', 'ExampleMediator2 destroy'];
+			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
+		}		
 
+		[Test]
+		public function only_one_mediator_created_if_identical_mapping_duplicated():void
+		{
+			instance.map(Sprite).toMediator(ExampleMediator).withGuards(HappyGuard).withHooks(Alpha50PercentHook);
+			instance.map(Sprite).toMediator(ExampleMediator).withGuards(HappyGuard).withHooks(Alpha50PercentHook);
+
+			instance.mediate(new Sprite());
+			const expectedNotifications:Vector.<String> = new <String>['ExampleMediator'];
+			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
+		}
+		
+		[Test]
+		public function removing_a_mapping_that_doesnt_exist_doesnt_throw_an_error():void
+		{
+			instance.unmap(Sprite).fromMediator(ExampleMediator);
+		}
+		
+		[Test(expects="robotlegs.bender.extensions.mediatorMap.api.MediatorMappingError")]
+		public function error_thrown_if_2_mappings_made_with_same_matcher_and_mediator_but_different_guards():void
+		{
+			instance.map(Sprite).toMediator(ExampleMediator).withGuards(HappyGuard).withHooks(Alpha50PercentHook);
+			instance.map(Sprite).toMediator(ExampleMediator).withGuards(OnlyIfViewHasChildrenGuard).withHooks(Alpha50PercentHook);			
+		}
+		
+		[Test(expects="robotlegs.bender.extensions.mediatorMap.api.MediatorMappingError")]
+		public function error_thrown_if_2_mappings_made_with_same_matcher_and_mediator_but_different_hooks():void
+		{
+			instance.map(Sprite).toMediator(ExampleMediator).withGuards(HappyGuard).withHooks(Alpha50PercentHook);
+			instance.map(Sprite).toMediator(ExampleMediator).withGuards(HappyGuard).withHooks(HookWithMediatorAndViewInjectionDrawsRectangle);
+		}
+		
+		[Test(expects="robotlegs.bender.extensions.mediatorMap.api.MediatorMappingError")]
+		public function error_thrown_if_2_mappings_made_with_same_matcher_and_mediator_one_with_one_without_guards():void
+		{
+			instance.map(Sprite).toMediator(ExampleMediator).withGuards(HappyGuard);
+			const mapping:IMediatorMapping = instance.map(Sprite).toMediator(ExampleMediator) as IMediatorMapping;
+			// error only thrown when used sadly			
+			mapping.matcher;			
+		}
+		
+		[Test(expects="robotlegs.bender.extensions.mediatorMap.api.MediatorMappingError")]
+		public function error_thrown_if_2_mappings_made_with_same_matcher_and_mediator_one_with_one_without_hooks():void
+		{
+			instance.map(Sprite).toMediator(ExampleMediator).withHooks(Alpha50PercentHook);
+			const mapping:IMediatorMapping = instance.map(Sprite).toMediator(ExampleMediator) as IMediatorMapping;
+			// error only thrown when used sadly			
+			mapping.matcher;			
+		}
+
+		[Test]
+		public function no_error_thrown_when_guards_and_hooks_are_chained():void
+		{
+			const mappingConfig:IMediatorMappingConfig = instance.map(Sprite).toMediator(ExampleMediator);
+			mappingConfig.withGuards(HappyGuard);
+			mappingConfig.withGuards(OnlyIfViewHasChildrenGuard);
+			mappingConfig.withHooks(Alpha50PercentHook);
+			mappingConfig.withHooks(HookWithMediatorAndViewInjectionDrawsRectangle);
+		}
+		
+		[Test(expects="robotlegs.bender.extensions.mediatorMap.api.MediatorMappingError")]
+		public function error_thrown_if_2_mappings_made_with_same_matcher_and_mediator_one_with_fewer_guards():void
+		{
+			instance.map(Sprite).toMediator(ExampleMediator).withGuards(HappyGuard, OnlyIfViewHasChildrenGuard);
+			const mapping:MediatorMapping = instance.map(Sprite).toMediator(ExampleMediator) as MediatorMapping;
+			mapping.withGuards(HappyGuard);
+			// error only thrown when used sadly			
+			mapping.matcher;			
+		}
+		
+		[Test(expects="robotlegs.bender.extensions.mediatorMap.api.MediatorMappingError")]
+		public function error_thrown_if_2_mappings_made_with_same_matcher_and_mediator_one_with_fewer_hooks():void
+		{
+			instance.map(Sprite).toMediator(ExampleMediator).withHooks(Alpha50PercentHook).withHooks(HookA);
+			const mapping:MediatorMapping = instance.map(Sprite).toMediator(ExampleMediator) as MediatorMapping;
+			mapping.withHooks(HookA);
+			// error only thrown when used sadly			
+			mapping.matcher;			
+		}
+		
+		[Test]
+		public function no_error_thrown_when_2_mappings_with_identical_guards_and_hooks_are_chained():void
+		{
+			const mapping1:MediatorMapping = instance.map(Sprite).toMediator(ExampleMediator) as MediatorMapping;
+			mapping1.withGuards(HappyGuard);
+			mapping1.withGuards(OnlyIfViewHasChildrenGuard);
+			mapping1.withHooks(Alpha50PercentHook);
+			mapping1.withHooks(HookWithMediatorAndViewInjectionDrawsRectangle);
+			
+			const mapping2:MediatorMapping = instance.map(Sprite).toMediator(ExampleMediator) as MediatorMapping;
+			mapping2.withGuards(HappyGuard);
+			mapping2.withGuards(OnlyIfViewHasChildrenGuard);
+			mapping2.withHooks(HookWithMediatorAndViewInjectionDrawsRectangle);
+			mapping2.withHooks(Alpha50PercentHook);
+
+			mapping2.matcher;
+		}
+		
+		[Test]
+		public function mapping_guards_and_hooks_as_array_is_same_as_mapping_as_list():void
+		{
+			const mapping1:MediatorMapping = instance.map(Sprite).toMediator(ExampleMediator) as MediatorMapping;
+			mapping1.withGuards(HappyGuard, OnlyIfViewHasChildrenGuard);
+			mapping1.withHooks(Alpha50PercentHook, HookA);
+			
+			const mapping2:MediatorMapping = instance.map(Sprite).toMediator(ExampleMediator) as MediatorMapping;
+			mapping2.withGuards([HappyGuard, OnlyIfViewHasChildrenGuard]);
+			mapping2.withHooks([Alpha50PercentHook, HookA]);
+			
+			mapping2.matcher;
+		}
+		
 		protected function handleEventTimeout(o:Object):void
 		{
 			Assert.fail("The event never fired");
@@ -277,6 +418,26 @@ class ExampleMediator
 	public function destroy():void
 	{
 		mediatorWatcher.notify('ExampleMediator destroy');
+	}
+}
+
+
+class ExampleMediator2
+{
+	[Inject]
+	public var mediatorWatcher:MediatorWatcher;
+
+	[Inject]
+	public var view:Sprite;
+
+	public function initialize():void
+	{
+		mediatorWatcher.notify('ExampleMediator2');
+	}
+
+	public function destroy():void
+	{
+		mediatorWatcher.notify('ExampleMediator2 destroy');
 	}
 }
 
@@ -330,6 +491,24 @@ class HookWithMediatorAndViewInjectionDrawsRectangle
 		const requiredHeight:Number = mediator.rectangle.height;
 
 		view.graphics.drawRect(0, 0, requiredWidth, requiredHeight);
+	}
+}
+
+class Alpha50PercentHook
+{
+	[Inject]
+	public var view:Sprite;
+	
+	public function hook():void
+	{
+		view.alpha = 0.5;
+	}
+}
+
+class HookA
+{
+	public function hook():void
+	{
 	}
 }
 

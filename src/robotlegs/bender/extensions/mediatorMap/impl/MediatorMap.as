@@ -30,6 +30,8 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		private var _handler:IMediatorViewHandler;
 
 		private var _factory:IMediatorFactory;
+		
+		private const NULL_UNMAPPER:IMediatorUnmapper = new NullMediatorUnmapper();
 
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -58,7 +60,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		public function unmapMatcher(matcher:ITypeMatcher):IMediatorUnmapper
 		{
-			return _mappers[matcher.createTypeFilter().descriptor];
+			return _mappers[matcher.createTypeFilter().descriptor] || NULL_UNMAPPER;
 		}
 
 		public function unmap(type:Class):IMediatorUnmapper

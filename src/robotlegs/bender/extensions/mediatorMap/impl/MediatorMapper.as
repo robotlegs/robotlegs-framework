@@ -46,7 +46,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		public function toMediator(mediatorClass:Class):IMediatorMappingConfig
 		{
-			return _mappings[mediatorClass] ||= createMapping(mediatorClass);
+			return lockedMappingFor(mediatorClass) || createMapping(mediatorClass);
 		}
 
 		public function forMediator(mediatorClass:Class):IMediatorMapping
@@ -78,6 +78,16 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		{
 			const mapping:MediatorMapping = new MediatorMapping(_matcher, mediatorClass);
 			_handler.addMapping(mapping);
+			_mappings[mediatorClass] = mapping;
+			return mapping;
+		}
+		
+		private function lockedMappingFor(mediatorClass:Class):MediatorMapping
+		{
+			const mapping:MediatorMapping = _mappings[mediatorClass];
+			if(mapping)
+				mapping.invalidate();
+
 			return mapping;
 		}
 	}
