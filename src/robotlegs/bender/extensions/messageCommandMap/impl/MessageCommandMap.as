@@ -9,7 +9,7 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 {
 	import flash.utils.Dictionary;
 	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.core.messaging.IMessageDispatcher;
+	import robotlegs.bender.framework.api.IMessageDispatcher;
 	import robotlegs.bender.extensions.commandMap.api.ICommandMap;
 	import robotlegs.bender.extensions.commandMap.api.ICommandTrigger;
 	import robotlegs.bender.extensions.commandMap.dsl.ICommandMapper;

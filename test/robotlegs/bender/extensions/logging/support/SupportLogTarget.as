@@ -7,7 +7,7 @@
 
 package robotlegs.bender.extensions.logging.support
 {
-	import robotlegs.bender.framework.logging.api.ILogTarget;
+	import robotlegs.bender.framework.api.ILogTarget;
 
 	public class SupportLogTarget implements ILogTarget
 	{

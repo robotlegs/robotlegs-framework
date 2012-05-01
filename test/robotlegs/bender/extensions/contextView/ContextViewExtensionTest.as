@@ -11,8 +11,8 @@ package robotlegs.bender.extensions.contextView
 	import mx.containers.Canvas;
 	import org.flexunit.assertThat;
 	import org.hamcrest.object.equalTo;
-	import robotlegs.bender.framework.context.api.IContext;
-	import robotlegs.bender.framework.context.impl.Context;
+	import robotlegs.bender.framework.api.IContext;
+	import robotlegs.bender.framework.impl.Context;
 
 	public class ContextViewExtensionTest
 	{

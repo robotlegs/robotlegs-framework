@@ -15,8 +15,8 @@ package robotlegs.bender.extensions.stageSync
 	import org.fluint.uiImpersonation.UIImpersonator;
 	import org.hamcrest.object.isTrue;
 
-	import robotlegs.bender.framework.context.api.IContext;
-	import robotlegs.bender.framework.context.impl.Context;
+	import robotlegs.bender.framework.api.IContext;
+	import robotlegs.bender.framework.impl.Context;
 
 	public class StageSyncExtensionTest
 	{

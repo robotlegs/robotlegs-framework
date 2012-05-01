@@ -7,11 +7,18 @@
 
 package robotlegs.bender.framework
 {
-	import robotlegs.bender.framework.context.ContextTestSuite;
-	import robotlegs.bender.framework.guard.GuardTestSuite;
-	import robotlegs.bender.framework.hook.HookTestSuite;
-	import robotlegs.bender.framework.lifecycle.LifecycleTestSuite;
-	import robotlegs.bender.framework.logging.LoggingTestSuite;
+	import robotlegs.bender.framework.impl.ApplyHooksTest;
+	import robotlegs.bender.framework.impl.ConfigManagerTest;
+	import robotlegs.bender.framework.impl.ContextTest;
+	import robotlegs.bender.framework.impl.ExtensionInstallerTest;
+	import robotlegs.bender.framework.impl.GuardsApproveTest;
+	import robotlegs.bender.framework.impl.LifecycleTest;
+	import robotlegs.bender.framework.impl.LifecycleTransitionTest;
+	import robotlegs.bender.framework.impl.LogManagerTest;
+	import robotlegs.bender.framework.impl.LoggerTest;
+	import robotlegs.bender.framework.impl.MessageDispatcherTest;
+	import robotlegs.bender.framework.impl.ObjectProcessorTest;
+	import robotlegs.bender.framework.impl.SafelyCallBackTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
@@ -22,15 +29,28 @@ package robotlegs.bender.framework
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		public var context:ContextTestSuite;
+		public var applyHooks:ApplyHooksTest;
 
-		public var guard:GuardTestSuite;
+		public var configManager:ConfigManagerTest;
 
-		public var hook:HookTestSuite;
+		public var context:ContextTest;
 
-		public var logging:LoggingTestSuite;
+		public var extensionInstaller:ExtensionInstallerTest;
 
-		public var lifecycle:LifecycleTestSuite;
+		public var guardsApprove:GuardsApproveTest;
 
+		public var lifecycle:LifecycleTest;
+
+		public var lifecycleTransition:LifecycleTransitionTest;
+
+		public var logger:LoggerTest;
+
+		public var logManager:LogManagerTest;
+
+		public var messageDispatcher:MessageDispatcherTest;
+
+		public var objectProcessor:ObjectProcessorTest;
+
+		public var safelyCallBack:SafelyCallBackTest;
 	}
 }

@@ -12,7 +12,7 @@ package robotlegs.bender.extensions.messageCommandMap
 	import robotlegs.bender.extensions.commandMap.CommandMapExtension;
 	import robotlegs.bender.extensions.messageCommandMap.api.IMessageCommandMap;
 	import robotlegs.bender.extensions.messageDispatcher.MessageDispatcherExtension;
-	import robotlegs.bender.framework.context.impl.Context;
+	import robotlegs.bender.framework.impl.Context;
 
 	public class MessageCommandMapExtensionTest
 	{

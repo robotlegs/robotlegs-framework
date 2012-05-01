@@ -9,8 +9,8 @@ package robotlegs.bender.extensions.commandMap
 {
 	import robotlegs.bender.extensions.commandMap.api.ICommandMap;
 	import robotlegs.bender.extensions.commandMap.impl.CommandMap;
-	import robotlegs.bender.framework.context.api.IContext;
-	import robotlegs.bender.framework.context.api.IContextExtension;
+	import robotlegs.bender.framework.api.IContext;
+	import robotlegs.bender.framework.api.IContextExtension;
 
 	public class CommandMapExtension implements IContextExtension
 	{

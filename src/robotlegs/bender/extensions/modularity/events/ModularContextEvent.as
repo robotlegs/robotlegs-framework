@@ -8,7 +8,7 @@
 package robotlegs.bender.extensions.modularity.events
 {
 	import flash.events.Event;
-	import robotlegs.bender.framework.context.api.IContext;
+	import robotlegs.bender.framework.api.IContext;
 
 	public class ModularContextEvent extends Event
 	{

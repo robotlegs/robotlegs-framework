@@ -21,8 +21,8 @@ package robotlegs.bender.bundles.mvcs
 	import robotlegs.bender.extensions.viewManager.ManualStageObserverExtension;
 	import robotlegs.bender.extensions.viewManager.StageObserverExtension;
 	import robotlegs.bender.extensions.viewManager.ViewManagerExtension;
-	import robotlegs.bender.framework.context.api.IContext;
-	import robotlegs.bender.framework.context.api.IContextExtension;
+	import robotlegs.bender.framework.api.IContext;
+	import robotlegs.bender.framework.api.IContextExtension;
 
 	/**
 	 * For that Classic Robotlegs flavour.

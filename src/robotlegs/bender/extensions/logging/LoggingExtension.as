@@ -8,9 +8,9 @@
 package robotlegs.bender.extensions.logging
 {
 	import robotlegs.bender.extensions.logging.integration.LoggerProvider;
-	import robotlegs.bender.framework.context.api.IContext;
-	import robotlegs.bender.framework.context.api.IContextExtension;
-	import robotlegs.bender.framework.logging.api.ILogger;
+	import robotlegs.bender.framework.api.IContext;
+	import robotlegs.bender.framework.api.IContextExtension;
+	import robotlegs.bender.framework.api.ILogger;
 
 	public class LoggingExtension implements IContextExtension
 	{

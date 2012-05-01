@@ -7,7 +7,6 @@
 
 package suites
 {
-	import robotlegs.bender.core.CoreTestSuite;
 	import robotlegs.bender.extensions.ExtensionsTestSuite;
 	import robotlegs.bender.framework.FrameworkTestSuite;
 	import robotlegs.bender.core.matching.TypeMatchingTestSuite;
@@ -20,8 +19,6 @@ package suites
 		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
-
-		public var core:CoreTestSuite;
 
 		public var framework:FrameworkTestSuite;
 

@@ -13,12 +13,12 @@ package robotlegs.bender.extensions.scopedMessageDispatcher
 	import org.hamcrest.collection.array;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.instanceOf;
-	import robotlegs.bender.core.messaging.IMessageDispatcher;
+	import robotlegs.bender.framework.api.IMessageDispatcher;
 	import robotlegs.bender.extensions.contextView.ContextViewExtension;
 	import robotlegs.bender.extensions.modularity.ModularityExtension;
 	import robotlegs.bender.extensions.stageSync.StageSyncExtension;
-	import robotlegs.bender.framework.context.api.IContext;
-	import robotlegs.bender.framework.context.impl.Context;
+	import robotlegs.bender.framework.api.IContext;
+	import robotlegs.bender.framework.impl.Context;
 
 	public class ScopedMessageDispatcherExtensionTest
 	{

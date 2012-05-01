@@ -17,8 +17,8 @@ package robotlegs.bender.extensions.logging
 	import org.swiftsuspenders.InjectionEvent;
 	import org.swiftsuspenders.MappingEvent;
 	import robotlegs.bender.extensions.logging.support.SupportLogTarget;
-	import robotlegs.bender.framework.context.impl.Context;
-	import robotlegs.bender.framework.logging.api.LogLevel;
+	import robotlegs.bender.framework.impl.Context;
+	import robotlegs.bender.framework.api.LogLevel;
 
 	public class InjectorLoggingExtensionTest
 	{

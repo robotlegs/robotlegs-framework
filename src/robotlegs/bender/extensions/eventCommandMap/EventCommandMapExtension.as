@@ -9,8 +9,8 @@ package robotlegs.bender.extensions.eventCommandMap
 {
 	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
 	import robotlegs.bender.extensions.eventCommandMap.impl.EventCommandMap;
-	import robotlegs.bender.framework.context.api.IContext;
-	import robotlegs.bender.framework.context.api.IContextExtension;
+	import robotlegs.bender.framework.api.IContext;
+	import robotlegs.bender.framework.api.IContextExtension;
 
 	public class EventCommandMapExtension implements IContextExtension
 	{

@@ -26,8 +26,8 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import robotlegs.bender.extensions.eventCommandMap.support.EventInjectedCallbackCommand;
 	import robotlegs.bender.extensions.eventCommandMap.support.EventInjectedCallbackGuard;
 	import robotlegs.bender.extensions.eventCommandMap.support.SupportEvent;
-	import robotlegs.bender.framework.guard.support.GrumpyGuard;
-	import robotlegs.bender.framework.guard.support.HappyGuard;
+	import robotlegs.bender.framework.impl.guardSupport.GrumpyGuard;
+	import robotlegs.bender.framework.impl.guardSupport.HappyGuard;
 
 	public class EventCommandTriggerTest
 	{

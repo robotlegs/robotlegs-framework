@@ -9,8 +9,8 @@ package robotlegs.bender.extensions.localEventMap
 {
 	import robotlegs.bender.extensions.localEventMap.api.IEventMap;
 	import robotlegs.bender.extensions.localEventMap.impl.EventMap;
-	import robotlegs.bender.framework.context.api.IContext;
-	import robotlegs.bender.framework.context.api.IContextExtension;
+	import robotlegs.bender.framework.api.IContext;
+	import robotlegs.bender.framework.api.IContextExtension;
 
 	/**
 	 * todo: extension description

@@ -10,7 +10,7 @@ package robotlegs.bender.extensions.viewManager
 	import org.flexunit.assertThat;
 	import org.hamcrest.object.instanceOf;
 	import robotlegs.bender.extensions.viewManager.api.IViewManager;
-	import robotlegs.bender.framework.context.impl.Context;
+	import robotlegs.bender.framework.impl.Context;
 
 	public class ViewManagerExtensionTest
 	{

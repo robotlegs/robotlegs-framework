@@ -11,7 +11,7 @@ package robotlegs.bender.extensions.commandMap
 	import org.hamcrest.object.instanceOf;
 	import robotlegs.bender.extensions.commandMap.api.ICommandMap;
 	import robotlegs.bender.extensions.eventDispatcher.EventDispatcherExtension;
-	import robotlegs.bender.framework.context.impl.Context;
+	import robotlegs.bender.framework.impl.Context;
 
 	public class CommandMapExtensionTest
 	{

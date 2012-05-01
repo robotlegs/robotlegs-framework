@@ -9,10 +9,10 @@ package robotlegs.bender.extensions.contextView
 {
 	import flash.display.DisplayObjectContainer;
 	import org.hamcrest.object.instanceOf;
-	import robotlegs.bender.framework.context.api.IContext;
-	import robotlegs.bender.framework.context.api.IContextExtension;
-	import robotlegs.bender.framework.context.impl.UID;
-	import robotlegs.bender.framework.logging.api.ILogger;
+	import robotlegs.bender.framework.api.IContext;
+	import robotlegs.bender.framework.api.IContextExtension;
+	import robotlegs.bender.framework.impl.UID;
+	import robotlegs.bender.framework.api.ILogger;
 
 	/**
 	 * <p>This Extension waits for a DisplayObjectContainer to be added as a configuration

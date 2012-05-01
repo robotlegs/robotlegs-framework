@@ -9,12 +9,12 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 {
 	import flash.utils.describeType;
 	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.core.async.safelyCallBack;
-	import robotlegs.bender.core.messaging.IMessageDispatcher;
+	import robotlegs.bender.framework.impl.safelyCallBack;
+	import robotlegs.bender.framework.api.IMessageDispatcher;
 	import robotlegs.bender.extensions.commandMap.api.ICommandMapping;
 	import robotlegs.bender.extensions.commandMap.api.ICommandTrigger;
-	import robotlegs.bender.framework.guard.impl.guardsApprove;
-	import robotlegs.bender.framework.hook.impl.applyHooks;
+	import robotlegs.bender.framework.impl.guardsApprove;
+	import robotlegs.bender.framework.impl.applyHooks;
 
 	public class MessageCommandTrigger implements ICommandTrigger
 	{

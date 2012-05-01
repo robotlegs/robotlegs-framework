@@ -9,8 +9,8 @@ package robotlegs.bender.extensions.logging
 {
 	import org.flexunit.assertThat;
 	import org.hamcrest.object.instanceOf;
-	import robotlegs.bender.framework.context.impl.Context;
-	import robotlegs.bender.framework.logging.api.ILogger;
+	import robotlegs.bender.framework.impl.Context;
+	import robotlegs.bender.framework.api.ILogger;
 
 	public class LoggingExtensionTest
 	{

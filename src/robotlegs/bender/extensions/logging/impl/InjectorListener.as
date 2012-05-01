@@ -10,7 +10,7 @@ package robotlegs.bender.extensions.logging.impl
 	import org.swiftsuspenders.InjectionEvent;
 	import org.swiftsuspenders.Injector;
 	import org.swiftsuspenders.MappingEvent;
-	import robotlegs.bender.framework.logging.api.ILogger;
+	import robotlegs.bender.framework.api.ILogger;
 
 	public class InjectorListener
 	{

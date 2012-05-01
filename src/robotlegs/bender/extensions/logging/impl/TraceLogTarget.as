@@ -7,9 +7,9 @@
 
 package robotlegs.bender.extensions.logging.impl
 {
-	import robotlegs.bender.framework.context.api.IContext;
-	import robotlegs.bender.framework.logging.api.ILogTarget;
-	import robotlegs.bender.framework.logging.api.LogLevel;
+	import robotlegs.bender.framework.api.IContext;
+	import robotlegs.bender.framework.api.ILogTarget;
+	import robotlegs.bender.framework.api.LogLevel;
 
 	public class TraceLogTarget implements ILogTarget
 	{

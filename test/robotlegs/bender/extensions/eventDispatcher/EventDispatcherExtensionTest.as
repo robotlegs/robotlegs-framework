@@ -12,8 +12,8 @@ package robotlegs.bender.extensions.eventDispatcher
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.instanceOf;
-	import robotlegs.bender.framework.context.api.IContext;
-	import robotlegs.bender.framework.context.impl.Context;
+	import robotlegs.bender.framework.api.IContext;
+	import robotlegs.bender.framework.impl.Context;
 
 	public class EventDispatcherExtensionTest
 	{

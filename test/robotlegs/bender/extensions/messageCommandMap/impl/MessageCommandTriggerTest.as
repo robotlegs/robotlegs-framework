@@ -12,8 +12,8 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 	import org.hamcrest.collection.array;
 	import org.hamcrest.object.equalTo;
 	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.core.messaging.IMessageDispatcher;
-	import robotlegs.bender.core.messaging.MessageDispatcher;
+	import robotlegs.bender.framework.api.IMessageDispatcher;
+	import robotlegs.bender.framework.impl.MessageDispatcher;
 	import robotlegs.bender.extensions.commandMap.api.ICommandMap;
 	import robotlegs.bender.extensions.commandMap.impl.CommandMap;
 	import robotlegs.bender.extensions.commandMap.support.CallbackCommand;
@@ -24,8 +24,8 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 	import robotlegs.bender.extensions.messageCommandMap.api.IMessageCommandMap;
 	import robotlegs.bender.extensions.messageCommandMap.support.CallbackConsumingCommand;
 	import robotlegs.bender.extensions.messageCommandMap.support.SupportMessage;
-	import robotlegs.bender.framework.guard.support.GrumpyGuard;
-	import robotlegs.bender.framework.guard.support.HappyGuard;
+	import robotlegs.bender.framework.impl.guardSupport.GrumpyGuard;
+	import robotlegs.bender.framework.impl.guardSupport.HappyGuard;
 
 	public class MessageCommandTriggerTest
 	{

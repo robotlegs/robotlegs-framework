@@ -11,7 +11,7 @@ package robotlegs.bender.extensions.mediatorMap
 	import org.hamcrest.object.instanceOf;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMap;
 	import robotlegs.bender.extensions.viewManager.ViewManagerExtension;
-	import robotlegs.bender.framework.context.impl.Context;
+	import robotlegs.bender.framework.impl.Context;
 
 	public class MediatorMapExtensionTest
 	{

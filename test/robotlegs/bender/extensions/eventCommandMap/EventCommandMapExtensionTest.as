@@ -12,7 +12,7 @@ package robotlegs.bender.extensions.eventCommandMap
 	import robotlegs.bender.extensions.commandMap.CommandMapExtension;
 	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
 	import robotlegs.bender.extensions.eventDispatcher.EventDispatcherExtension;
-	import robotlegs.bender.framework.context.impl.Context;
+	import robotlegs.bender.framework.impl.Context;
 
 	public class EventCommandMapExtensionTest
 	{

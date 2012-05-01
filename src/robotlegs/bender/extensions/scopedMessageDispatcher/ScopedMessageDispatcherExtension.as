@@ -8,10 +8,10 @@
 package robotlegs.bender.extensions.scopedMessageDispatcher
 {
 	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.core.messaging.IMessageDispatcher;
-	import robotlegs.bender.core.messaging.MessageDispatcher;
-	import robotlegs.bender.framework.context.api.IContext;
-	import robotlegs.bender.framework.context.api.IContextExtension;
+	import robotlegs.bender.framework.api.IMessageDispatcher;
+	import robotlegs.bender.framework.impl.MessageDispatcher;
+	import robotlegs.bender.framework.api.IContext;
+	import robotlegs.bender.framework.api.IContextExtension;
 
 	/**
 	 * This extensions maps a series of named IMessageDispatcher instances

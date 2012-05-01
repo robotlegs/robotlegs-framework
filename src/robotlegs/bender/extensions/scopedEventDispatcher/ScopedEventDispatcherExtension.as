@@ -10,8 +10,8 @@ package robotlegs.bender.extensions.scopedEventDispatcher
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
 	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.framework.context.api.IContext;
-	import robotlegs.bender.framework.context.api.IContextExtension;
+	import robotlegs.bender.framework.api.IContext;
+	import robotlegs.bender.framework.api.IContextExtension;
 
 	/**
 	 * This extensions maps a series of named IEventDispatcher instances

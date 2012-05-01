@@ -12,9 +12,9 @@ package robotlegs.bender.mxml
 	import mx.core.IMXMLObject;
 	import org.swiftsuspenders.DescribeTypeReflector;
 	import org.swiftsuspenders.Reflector;
-	import robotlegs.bender.framework.context.api.IContext;
-	import robotlegs.bender.framework.context.api.IContextExtension;
-	import robotlegs.bender.framework.context.impl.Context;
+	import robotlegs.bender.framework.api.IContext;
+	import robotlegs.bender.framework.api.IContextExtension;
+	import robotlegs.bender.framework.impl.Context;
 
 	[DefaultProperty("configs")]
 	public class ContextBuilderTag implements IMXMLObject
