@@ -23,6 +23,7 @@ package org.flexunit.asserts
 	 * 			<code>assertEqualsArraysIgnoringOrder( Array, Array );</code>
 	 *
 	 */
+	// TODO: turn this into a Hamcrest matcher
 	public function assertEqualsArraysIgnoringOrder(... args:Array):void
 	{
 		var message:String;

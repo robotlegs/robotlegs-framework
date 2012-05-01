@@ -22,6 +22,7 @@ package org.flexunit.asserts
 	 * 			<code>assertEqualsVectorsIgnoringOrder( Vector.<T>, Vector.<T> );</code>
 	 *
 	 */
+	// TODO: turn this into a Hamcrest matcher
 	public function assertEqualsVectorsIgnoringOrder(... args):void
 	{
 

@@ -10,16 +10,15 @@ package robotlegs.bender.core.objectProcessor.api
 	import org.hamcrest.Matcher;
 
 	/**
-	 * Object Processor contract
+	 * Object Processor
 	 */
-	public interface IObjectProcessor extends Matcher
+	public interface IObjectProcessor
 	{
 		/**
-		 * Add an object to be processed.
+		 * Process an object.
 		 * @param object The object instance to process.
-		 * @param callback The completion callback function.
 		 */
-		function addObject(object:Object, callback:Function = null):void;
+		function processObject(object:Object):void;
 
 		/**
 		 * Add a handler to process objects that match a given matcher.

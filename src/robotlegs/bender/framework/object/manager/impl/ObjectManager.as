@@ -8,7 +8,6 @@
 package robotlegs.bender.framework.object.manager.impl
 {
 	import flash.utils.Dictionary;
-	import org.hamcrest.Description;
 	import org.hamcrest.Matcher;
 	import robotlegs.bender.core.objectProcessor.api.IObjectProcessor;
 	import robotlegs.bender.core.objectProcessor.impl.ObjectProcessor;
@@ -31,11 +30,6 @@ package robotlegs.bender.framework.object.manager.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function matches(object:Object):Boolean
-		{
-			return _objectProcessor.matches(object);
-		}
-
 		public function addObject(object:Object):IManagedObject
 		{
 			return getManagedObject(object) || createManagedObject(object);
@@ -51,16 +45,6 @@ package robotlegs.bender.framework.object.manager.impl
 			return _managedObjects[object];
 		}
 
-		public function describeTo(description:Description):void
-		{
-			description.appendText("object manager");
-		}
-
-		public function describeMismatch(item:Object, mismatchDescription:Description):void
-		{
-			mismatchDescription.appendText("was ").appendValue(item);
-		}
-
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
@@ -69,7 +53,7 @@ package robotlegs.bender.framework.object.manager.impl
 		{
 			const managedObject:IManagedObject = new ManagedObject(object);
 			_managedObjects[object] = managedObject;
-			_objectProcessor.addObject(object);
+			_objectProcessor.processObject(object);
 			return managedObject;
 		}
 	}

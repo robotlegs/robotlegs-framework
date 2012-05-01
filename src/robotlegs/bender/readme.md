@@ -1,37 +1,38 @@
 # Robotlegs
 
-## Code
+## Core
 
-The codebase is broken down as follows:
+Robotlegs is built on top of a few core building blocks:
 
-### Core
++ A set of conventions for dealing with asynchronous operations
++ An asynchronous message dispatcher
++ A state machine
++ An object processor
 
-The low level stuff:
+## Framework
 
-+ MessageDispatcher
-+ StateMachine
-+ ObjectProcessor
+These core components are composed to form the basic framework:
 
-### Framework
++ An object manager
++ A configuration manager
++ A context
 
-The high level stuff:
+## Extensions
 
-+ ObjectManager
-+ ConfigManager
-+ Context
+Robotlegs also provides a number of built-in extensions:
 
-### Extensions
++ Command map
++ Mediator map
++ View manager
++ And many more
 
-Built-in framework extensions:
+## Bundles
 
-+ ContextViewExtension
-+ StageSyncExtension
-+ ModularityExtension
-+ etc
+These extensions are combined into convenient drop-in bundles:
 
-### Bundles
++ MVCS Bundle
++ And others
 
-Built-in bundles:
+## MXML
 
-+ ClassicRobotlegsBundle
-+ etc
+Apache Flex integration files.

@@ -6,19 +6,19 @@ A selection of built-in bundles.
 
 An extension integrates a single utility or library into a Robotlegs context.
 
-A bundle bundles up a selection of extensions and configurations into a single package.
+A bundle bundles up a selection of extensions and configurations into a single drop-in package.
 
 ## Creating a Bundle
 
-A bundle implements the IContextConfig interface. When included into a context, that context is immediately passed through to the configureContext() method.
+A bundle implements the IContextExtension interface. When included into a context, that context is immediately passed through to the extend() method.
 
-    package robotlegs.bundles.superDuper
+    package robotlegs.bender.bundles.superDuper
     {
-      public class SuperDuperBundle implements IContextConfig
+      public class SuperDuperBundle implements IContextExtension
       {
-        public function configureContext(context:IContext):void
+        public function extend(context:IContext):void
         {
-          context.require(
+          context.extend(
             SuperDuperExtensionA,
             SuperDuperExtensionB,
             SuperDuperExtensionC);
@@ -26,7 +26,7 @@ A bundle implements the IContextConfig interface. When included into a context, 
       }
     }
 
-NOTE: The context instance provided to configureContext() may not be fully initialized.
+NOTE: The context instance passed to extend() may not be fully initialized.
 
 A bundle should do little more than include required extensions.
 

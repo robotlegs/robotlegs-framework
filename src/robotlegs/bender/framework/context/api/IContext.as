@@ -13,7 +13,7 @@ package robotlegs.bender.framework.context.api
 	import robotlegs.bender.framework.logging.api.ILogger;
 	import robotlegs.bender.framework.object.managed.api.IManagedObject;
 
-	public interface IContext extends Matcher
+	public interface IContext
 	{
 		function get injector():Injector;
 

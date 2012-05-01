@@ -63,6 +63,7 @@ package robotlegs.bender.extensions.viewManager.impl
 
 			var result:ContainerBinding = registry.findParentBinding(searchItem);
 
+			// TODO: use a matcher
 			assertEquals("Finds correct nearest interested container view and returns its binding", correctTree, result.container);
 		}
 
@@ -78,6 +79,7 @@ package robotlegs.bender.extensions.viewManager.impl
 
 			var result:ContainerBinding = registry.findParentBinding(searchItem);
 
+			// TODO: use a matcher
 			assertEquals("Binding returns with correct container view", searchTrees[1].children[3], result.container);
 			assertEquals("Binding returns with correct container parent view", searchTrees[1], result.parent.container);
 			assertEquals("Further parents are null", null, result.parent.parent);
@@ -95,6 +97,7 @@ package robotlegs.bender.extensions.viewManager.impl
 
 			var result:ContainerBinding = registry.findParentBinding(searchItem);
 
+			// TODO: use a matcher
 			assertEquals("Binding returns with correct container view", searchTrees[1].children[3], result.container);
 			assertEquals("Binding returns with correct container parent view", searchTrees[1], result.parent.container);
 			assertEquals("Further parents are null", null, result.parent.parent);
@@ -112,6 +115,7 @@ package robotlegs.bender.extensions.viewManager.impl
 
 			var result:ContainerBinding = registry.findParentBinding(searchItem);
 
+			// TODO: use a matcher
 			assertEquals("Binding returns with correct container view", searchTrees[1].children[3].children[2], result.container);
 			assertEquals("Binding returns with correct container parent view", searchTrees[1], result.parent.container);
 			assertEquals("Further parents are null", null, result.parent.parent);
@@ -133,6 +137,7 @@ package robotlegs.bender.extensions.viewManager.impl
 
 			var result:ContainerBinding = registry.findParentBinding(searchItem);
 
+			// TODO: use a matcher
 			assertEquals("Binding returns with correct container view", searchTrees[1].children[3].children[2].children[3], result.container);
 			assertEquals("Binding returns with correct container parent view", searchTrees[1].children[3], result.parent.container);
 			assertEquals("Binding returns with correct container parent parent view", searchTrees[1], result.parent.parent.container);
@@ -155,6 +160,7 @@ package robotlegs.bender.extensions.viewManager.impl
 
 			var result:ContainerBinding = registry.findParentBinding(searchItem);
 
+			// TODO: use a matcher
 			assertEquals("Returns null if not inside an included view", null, result);
 		}
 
@@ -164,6 +170,7 @@ package robotlegs.bender.extensions.viewManager.impl
 			var searchTrees:Vector.<TreeSpriteSupport> = createTrees(1, 1);
 			var expectedBinding:ContainerBinding = registry.addContainer(searchTrees[0]);
 			var expectedRootBindings:Vector.<ContainerBinding> = new <ContainerBinding>[expectedBinding];
+			// TODO: use a matcher
 			assertEqualsVectorsIgnoringOrder("Returns root container view bindings one item", expectedRootBindings, registry.rootBindings);
 		}
 
@@ -183,6 +190,7 @@ package robotlegs.bender.extensions.viewManager.impl
 
 			var expectedRootBindings:Vector.<ContainerBinding> = new <ContainerBinding>[firstExpectedBinding, secondExpectedBinding];
 
+			// TODO: use a matcher
 			assertEqualsVectorsIgnoringOrder("Returns root container view bindings one item", expectedRootBindings, registry.rootBindings);
 		}
 
@@ -203,6 +211,7 @@ package robotlegs.bender.extensions.viewManager.impl
 
 			var expectedRootBindings:Vector.<ContainerBinding> = new <ContainerBinding>[firstExpectedBinding, secondExpectedBinding];
 
+			// TODO: use a matcher
 			assertEqualsVectorsIgnoringOrder("Returns root container view bindings one item", expectedRootBindings, registry.rootBindings);
 		}
 
@@ -263,9 +272,8 @@ package robotlegs.bender.extensions.viewManager.impl
 
 		private function createTrees(tree_depth:uint, tree_width:uint):Vector.<TreeSpriteSupport>
 		{
-			var trees:Vector.<TreeSpriteSupport> = new Vector.<TreeSpriteSupport>();
-			var iLength:uint = tree_width;
-			for (var i:uint = 0; i < iLength; i++)
+			const trees:Vector.<TreeSpriteSupport> = new Vector.<TreeSpriteSupport>();
+			for (var i:uint = 0; i < tree_width; i++)
 			{
 				var nextTree:TreeSpriteSupport = new TreeSpriteSupport(tree_depth, tree_width);
 				trees.push(nextTree);

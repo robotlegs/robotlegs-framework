@@ -7,7 +7,6 @@
 
 package robotlegs.bender.framework.context.impl
 {
-	import org.hamcrest.Description;
 	import org.hamcrest.Matcher;
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.framework.context.api.IContext;
@@ -17,6 +16,7 @@ package robotlegs.bender.framework.context.impl
 	import robotlegs.bender.framework.logging.impl.LogManager;
 	import robotlegs.bender.framework.object.identity.UID;
 	import robotlegs.bender.framework.object.managed.api.IManagedObject;
+	import robotlegs.bender.framework.object.managed.impl.ManagedObject;
 	import robotlegs.bender.framework.object.manager.api.IObjectManager;
 	import robotlegs.bender.framework.object.manager.impl.ObjectManager;
 
@@ -94,6 +94,7 @@ package robotlegs.bender.framework.context.impl
 			_managedObject = _objectManager.addObject(this);
 			_configManager = new ConfigManager(this);
 			_extensionInstaller = new ExtensionInstaller(this);
+			_managedObject.addStateHandler(ManagedObject.SELF_INITIALIZE, handleInitialize);
 		}
 
 		/*============================================================================*/
@@ -153,21 +154,6 @@ package robotlegs.bender.framework.context.impl
 			return _objectManager.getManagedObject(object);
 		}
 
-		public function matches(object:Object):Boolean
-		{
-			return _objectManager.matches(object);
-		}
-
-		public function describeTo(description:Description):void
-		{
-			_objectManager.describeTo(description);
-		}
-
-		public function describeMismatch(item:Object, mismatchDescription:Description):void
-		{
-			_objectManager.describeMismatch(item, mismatchDescription);
-		}
-
 		public function addStateHandler(step:String, handler:Function):IContext
 		{
 			_managedObject.addStateHandler(step, handler);
@@ -198,6 +184,11 @@ package robotlegs.bender.framework.context.impl
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
+
+		private function handleInitialize():void
+		{
+			_configManager.initialize();
+		}
 
 		private function handleInitializeComplete(error:Object):void
 		{
