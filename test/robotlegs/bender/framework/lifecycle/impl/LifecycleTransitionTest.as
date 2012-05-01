@@ -260,7 +260,7 @@ package robotlegs.bender.framework.lifecycle.impl
 			});
 			Async.delayCall(this, function():void {
 				assertThat(callCount, equalTo(1));
-			}, 10);
+			}, 50);
 		}
 	}
 }

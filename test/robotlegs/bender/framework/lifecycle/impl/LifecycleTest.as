@@ -7,6 +7,8 @@
 
 package robotlegs.bender.framework.lifecycle.impl
 {
+	import flash.utils.setTimeout;
+	import org.flexunit.async.Async;
 	import org.hamcrest.assertThat;
 	import org.hamcrest.collection.array;
 	import org.hamcrest.object.equalTo;
@@ -212,6 +214,50 @@ package robotlegs.bender.framework.lifecycle.impl
 			lifecycle.resume();
 			lifecycle.destroy();
 			assertThat(callCount, equalTo(8));
+		}
+
+		[Test]
+		public function before_handlers_are_executed():void
+		{
+			var callCount:int = 0;
+			const handler:Function = function():void {
+				callCount++;
+			};
+			lifecycle
+				.beforeInitializing(handler)
+				.beforeSuspending(handler)
+				.beforeResuming(handler)
+				.beforeDestroying(handler);
+			lifecycle.initialize();
+			lifecycle.suspend();
+			lifecycle.resume();
+			lifecycle.destroy();
+			assertThat(callCount, equalTo(4));
+		}
+
+		[Test(async)]
+		public function async_before_handlers_are_executed():void
+		{
+			var callCount:int = 0;
+			const handler:Function = function(message:Object, callback:Function):void {
+				callCount++;
+				setTimeout(callback, 1);
+			};
+			lifecycle
+				.beforeInitializing(handler)
+				.beforeSuspending(handler)
+				.beforeResuming(handler)
+				.beforeDestroying(handler);
+			lifecycle.initialize(function():void {
+				lifecycle.suspend(function():void {
+					lifecycle.resume(function():void {
+						lifecycle.destroy();
+					})
+				})
+			});
+			Async.delayCall(this, function():void {
+				assertThat(callCount, equalTo(4));
+			}, 200);
 		}
 
 		/*============================================================================*/
