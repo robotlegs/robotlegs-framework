@@ -8,6 +8,9 @@
 package robotlegs.bender.framework.api
 {
 
+	/**
+	 * The Robotlegs log target contract
+	 */
 	public interface ILogTarget
 	{
 		function log(source:Object, level:uint, timestamp:int, message:String, params:Array = null):void;

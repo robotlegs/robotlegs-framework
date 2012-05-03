@@ -187,23 +187,23 @@ package robotlegs.bender.framework.impl
 
 		private function configureTransitions():void
 		{
-			_initialize = new LifecycleTransition("initialize", this)
+			_initialize = new LifecycleTransition(LifecycleEvent.PRE_INITIALIZE, this)
 				.fromStates(LifecycleState.UNINITIALIZED)
 				.toStates(LifecycleState.INITIALIZING, LifecycleState.ACTIVE)
 				.withEvents(LifecycleEvent.PRE_INITIALIZE, LifecycleEvent.INITIALIZE, LifecycleEvent.POST_INITIALIZE);
 
-			_suspend = new LifecycleTransition("suspend", this)
+			_suspend = new LifecycleTransition(LifecycleEvent.PRE_SUSPEND, this)
 				.fromStates(LifecycleState.ACTIVE)
 				.toStates(LifecycleState.SUSPENDING, LifecycleState.SUSPENDED)
 				.withEvents(LifecycleEvent.PRE_SUSPEND, LifecycleEvent.SUSPEND, LifecycleEvent.POST_SUSPEND)
 				.inReverse();
 
-			_resume = new LifecycleTransition("resume", this)
+			_resume = new LifecycleTransition(LifecycleEvent.PRE_RESUME, this)
 				.fromStates(LifecycleState.SUSPENDED)
 				.toStates(LifecycleState.RESUMING, LifecycleState.ACTIVE)
 				.withEvents(LifecycleEvent.PRE_RESUME, LifecycleEvent.RESUME, LifecycleEvent.POST_RESUME);
 
-			_destroy = new LifecycleTransition("destroy", this)
+			_destroy = new LifecycleTransition(LifecycleEvent.PRE_DESTROY, this)
 				.fromStates(LifecycleState.SUSPENDED, LifecycleState.ACTIVE)
 				.toStates(LifecycleState.DESTROYING, LifecycleState.DESTROYED)
 				.withEvents(LifecycleEvent.PRE_DESTROY, LifecycleEvent.DESTROY, LifecycleEvent.POST_DESTROY)

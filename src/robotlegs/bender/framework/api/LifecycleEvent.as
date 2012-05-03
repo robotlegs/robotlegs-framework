@@ -9,6 +9,9 @@ package robotlegs.bender.framework.api
 {
 	import flash.events.Event;
 
+	/**
+	 * Robotlegs object lifecycle event
+	 */
 	public class LifecycleEvent extends Event
 	{
 

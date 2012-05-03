@@ -122,11 +122,11 @@
       <arg line="-window-title 'Robotlegs ${robotlegs.ver.num}'"/>
       <arg line="-main-title 'Robotlegs ${robotlegs.ver.num}'"/>
       <arg line="-footer 'Robotlegs - http://www.robotlegs.org/ - Documentation generated at: ${docgen.time}'"/>
-      <arg line="-package robotlegs.bender.core 'Robotlegs Core'"/>
-      <arg line="-package robotlegs.bender.framework 'Robotlegs Framework'"/>
-      <arg line="-package robotlegs.bender.bundles 'Robotlegs Bundles'"/>
-      <arg line="-package robotlegs.bender.extensions 'Robotlegs Extensions'"/>
-      <arg line="-package robotlegs.bender.mxml 'Robotlegs MXML Integration'"/>
+      <arg line="-package robotlegs.bender.bundles.mvcs 'Classic MVCS Robotlegs bundle'"/>
+      <arg line="-package robotlegs.bender.bundles.shared.configs 'Shared configuration files'"/>
+      <arg line="-package robotlegs.bender.framework.api 'Framework API'"/>
+      <arg line="-package robotlegs.bender.framework.impl 'Framework implementation internals'"/>
+      <arg line="-package robotlegs.bender.mxml 'MXML Integration'"/>
     </java>
     <echo>[asdoc] ASDOC documentation generated successfully</echo>
   </target>
@@ -158,7 +158,7 @@
       </zipfileset>
     </zip>
 <!-- Copy README  -->
-    <copy file="${template.loc}/README.tmpl" tofile="${dist.loc}/README" overwrite="true">
+    <copy file="${template.loc}/README.tmpl" tofile="${dist.loc}/readme.txt" overwrite="true">
       <filterchain>
         <replacetokens>
           <token key="date" value="${touch.time}"/>
@@ -173,18 +173,18 @@
       </filterchain>
     </copy>
 <!-- Copy LICENSE  -->
-    <copy file="LICENSE" tofile="${dist.loc}/LICENSE" overwrite="true"/>
+    <copy file="LICENSE" tofile="${dist.loc}/license.txt" overwrite="true"/>
 <!-- Copy CHANGELOG  -->
-    <copy file="CHANGELOG.textile" tofile="${dist.loc}/CHANGELOG" overwrite="true"/>
+    <copy file="CHANGELOG.textile" tofile="${dist.loc}/changelog.txt" overwrite="true"/>
 <!-- Zip It  -->
     <zip destfile="${dist.loc}/${project.name.versioned}.zip">
       <fileset dir="${dist.loc}"/>
     </zip>
 <!-- Clean Up  -->
     <delete file="${dist.loc}/${project.name.versioned}.swc"/>
-    <delete file="${dist.loc}/README"/>
-    <delete file="${dist.loc}/LICENSE"/>
-    <delete file="${dist.loc}/CHANGELOG"/>
+    <delete file="${dist.loc}/readme.txt"/>
+    <delete file="${dist.loc}/license.txt"/>
+    <delete file="${dist.loc}/changelog.txt"/>
     <delete dir="${dist.loc}/bin"/>
     <delete dir="${dist.loc}/src"/>
     <delete dir="${dist.loc}/libs"/>

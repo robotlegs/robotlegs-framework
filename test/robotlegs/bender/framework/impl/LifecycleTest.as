@@ -266,15 +266,15 @@ package robotlegs.bender.framework.impl
 		public function suspend_runs_backwards():void
 		{
 			const actual:Array = [];
-			lifecycle.beforeSuspending(createPusher(actual, "before1"));
-			lifecycle.beforeSuspending(createPusher(actual, "before2"));
-			lifecycle.beforeSuspending(createPusher(actual, "before3"));
-			lifecycle.whenSuspending(createPusher(actual, "when1"));
-			lifecycle.whenSuspending(createPusher(actual, "when2"));
-			lifecycle.whenSuspending(createPusher(actual, "when3"));
-			lifecycle.afterSuspending(createPusher(actual, "after1"));
-			lifecycle.afterSuspending(createPusher(actual, "after2"));
-			lifecycle.afterSuspending(createPusher(actual, "after3"));
+			lifecycle.beforeSuspending(createValuePusher(actual, "before1"));
+			lifecycle.beforeSuspending(createValuePusher(actual, "before2"));
+			lifecycle.beforeSuspending(createValuePusher(actual, "before3"));
+			lifecycle.whenSuspending(createValuePusher(actual, "when1"));
+			lifecycle.whenSuspending(createValuePusher(actual, "when2"));
+			lifecycle.whenSuspending(createValuePusher(actual, "when3"));
+			lifecycle.afterSuspending(createValuePusher(actual, "after1"));
+			lifecycle.afterSuspending(createValuePusher(actual, "after2"));
+			lifecycle.afterSuspending(createValuePusher(actual, "after3"));
 			lifecycle.initialize();
 			lifecycle.suspend();
 			assertThat(actual, array([
@@ -287,21 +287,52 @@ package robotlegs.bender.framework.impl
 		public function destroy_runs_backwards():void
 		{
 			const actual:Array = [];
-			lifecycle.beforeDestroying(createPusher(actual, "before1"));
-			lifecycle.beforeDestroying(createPusher(actual, "before2"));
-			lifecycle.beforeDestroying(createPusher(actual, "before3"));
-			lifecycle.whenDestroying(createPusher(actual, "when1"));
-			lifecycle.whenDestroying(createPusher(actual, "when2"));
-			lifecycle.whenDestroying(createPusher(actual, "when3"));
-			lifecycle.afterDestroying(createPusher(actual, "after1"));
-			lifecycle.afterDestroying(createPusher(actual, "after2"));
-			lifecycle.afterDestroying(createPusher(actual, "after3"));
+			lifecycle.beforeDestroying(createValuePusher(actual, "before1"));
+			lifecycle.beforeDestroying(createValuePusher(actual, "before2"));
+			lifecycle.beforeDestroying(createValuePusher(actual, "before3"));
+			lifecycle.whenDestroying(createValuePusher(actual, "when1"));
+			lifecycle.whenDestroying(createValuePusher(actual, "when2"));
+			lifecycle.whenDestroying(createValuePusher(actual, "when3"));
+			lifecycle.afterDestroying(createValuePusher(actual, "after1"));
+			lifecycle.afterDestroying(createValuePusher(actual, "after2"));
+			lifecycle.afterDestroying(createValuePusher(actual, "after3"));
 			lifecycle.initialize();
 			lifecycle.destroy();
 			assertThat(actual, array([
 				"before3", "before2", "before1",
 				"when3", "when2", "when1",
 				"after3", "after2", "after1"]));
+		}
+
+		// ----- Before handlers callback message
+
+		[Test]
+		public function beforeHandler_callbacks_are_passed_correct_message():void
+		{
+			const expected:Array = [
+				LifecycleEvent.PRE_INITIALIZE, LifecycleEvent.INITIALIZE, LifecycleEvent.POST_INITIALIZE,
+				LifecycleEvent.PRE_SUSPEND, LifecycleEvent.SUSPEND, LifecycleEvent.POST_SUSPEND,
+				LifecycleEvent.PRE_RESUME, LifecycleEvent.RESUME, LifecycleEvent.POST_RESUME,
+				LifecycleEvent.PRE_DESTROY, LifecycleEvent.DESTROY, LifecycleEvent.POST_DESTROY
+			];
+			const actual:Array = [];
+			lifecycle.beforeInitializing(createMessagePusher(actual));
+			lifecycle.whenInitializing(createMessagePusher(actual));
+			lifecycle.afterInitializing(createMessagePusher(actual));
+			lifecycle.beforeSuspending(createMessagePusher(actual));
+			lifecycle.whenSuspending(createMessagePusher(actual));
+			lifecycle.afterSuspending(createMessagePusher(actual));
+			lifecycle.beforeResuming(createMessagePusher(actual));
+			lifecycle.whenResuming(createMessagePusher(actual));
+			lifecycle.afterResuming(createMessagePusher(actual));
+			lifecycle.beforeDestroying(createMessagePusher(actual));
+			lifecycle.whenDestroying(createMessagePusher(actual));
+			lifecycle.afterDestroying(createMessagePusher(actual));
+			lifecycle.initialize();
+			lifecycle.suspend();
+			lifecycle.resume();
+			lifecycle.destroy();
+			assertThat(actual, array(expected));
 		}
 
 		/*============================================================================*/
@@ -325,10 +356,17 @@ package robotlegs.bender.framework.impl
 			return errorCount;
 		}
 
-		private function createPusher(array:Array, value:Object):Function
+		private function createValuePusher(array:Array, value:Object):Function
 		{
 			return function():void {
 				array.push(value);
+			};
+		}
+
+		private function createMessagePusher(array:Array):Function
+		{
+			return function(message:Object):void {
+				array.push(message);
 			};
 		}
 	}

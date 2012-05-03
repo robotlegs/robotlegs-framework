@@ -17,6 +17,9 @@ package robotlegs.bender.mxml
 	import robotlegs.bender.framework.impl.Context;
 
 	[DefaultProperty("configs")]
+	/**
+	 * Apache Flex context builder tag
+	 */
 	public class ContextBuilderTag implements IMXMLObject
 	{
 

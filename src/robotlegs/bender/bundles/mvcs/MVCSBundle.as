@@ -25,7 +25,7 @@ package robotlegs.bender.bundles.mvcs
 	import robotlegs.bender.framework.api.IContextExtension;
 
 	/**
-	 * For that Classic Robotlegs flavour.
+	 * For that Classic Robotlegs flavour
 	 *
 	 * <p>This bundle installs a number of extensions commonly used in typical Robotlegs
 	 * applications and modules.</p>
