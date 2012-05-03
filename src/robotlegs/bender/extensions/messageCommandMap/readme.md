@@ -25,6 +25,8 @@ This extension requires the following extensions:
 
 ### During Context Construction
 
+_Shaun: Not sure this is still correct?_
+
     _context = new Context(
     	CommandMapExtension,
     	MessageDispatcherExtension,
