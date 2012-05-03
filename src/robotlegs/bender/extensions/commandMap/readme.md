@@ -12,4 +12,4 @@ It is not intended to be used directly.
 
 ### At Runtime
 
-	_context.require(CommandMapExtension);
+	_context.extend(CommandMapExtension);

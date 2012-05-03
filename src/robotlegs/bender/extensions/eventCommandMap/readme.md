@@ -36,7 +36,7 @@ This extension requires the following extensions:
 
 Assuming that the EventDispatcher and CommandMap extensions have already been installed:
 
-	_context.require(EventCommandMapExtension);
+	_context.extend(EventCommandMapExtension);
 
 ## Extension Usage
 

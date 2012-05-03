@@ -34,7 +34,7 @@ This extension requires the following extensions:
 
 Assuming that the MessageDispatcher and CommandMap extensions have already been installed:
 
-	_context.require(MessageCommandMapExtension);
+	_context.extend(MessageCommandMapExtension);
 
 ## Extension Usage
 

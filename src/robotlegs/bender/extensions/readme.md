@@ -96,7 +96,9 @@ The source for an extension should be packaged thusly:
             impl
               SuperDuper
 
-We can clearly spot the API, implementation and integration classes above.
+We can clearly spot the API, implementation and integration classes above. 
+
+The api package should include any classes or interfaces that the typical user would come into contact with. The impl package contains classes that the typical user would not import.
 
 ## Unit Tests
 
@@ -108,6 +110,8 @@ The unit tests for an extension should be packaged thusly:
           superDuper
             SuperDuperExtensionTest
             SuperDuperExtensionTestSuite
+			api
+			  SuperDuperErrorTest
             impl
               SuperDuperTest
             support
