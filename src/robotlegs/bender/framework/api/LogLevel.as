@@ -8,6 +8,9 @@
 package robotlegs.bender.framework.api
 {
 
+	/**
+	 * Robotlegs log level
+	 */
 	public class LogLevel
 	{
 

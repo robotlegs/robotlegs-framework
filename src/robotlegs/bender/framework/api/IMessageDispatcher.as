@@ -9,7 +9,7 @@ package robotlegs.bender.framework.api
 {
 
 	/**
-	 * The IMessageDispatcher contract.
+	 * The Robotlegs message dispatcher contract
 	 */
 	public interface IMessageDispatcher
 	{

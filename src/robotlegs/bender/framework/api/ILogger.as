@@ -8,6 +8,9 @@
 package robotlegs.bender.framework.api
 {
 
+	/**
+	 * The Robotlegs logger contract
+	 */
 	public interface ILogger
 	{
 		function debug(message:*, params:Array = null):void;

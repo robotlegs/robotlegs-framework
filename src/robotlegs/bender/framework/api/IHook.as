@@ -9,9 +9,9 @@ package robotlegs.bender.framework.api
 {
 
 	/**
-	 * A hook is expected to expose a "hook" method.
+	 * A hook is expected to expose a "hook" method
 	 *
-	 * Note: a hook does not need to implement this interface.
+	 * <p>Note: a hook does not need to implement this interface.</p>
 	 */
 	public interface IHook
 	{

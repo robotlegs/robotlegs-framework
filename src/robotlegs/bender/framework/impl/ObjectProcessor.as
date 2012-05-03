@@ -8,12 +8,11 @@
 package robotlegs.bender.framework.impl
 {
 	import org.hamcrest.Matcher;
-	import robotlegs.bender.framework.api.IObjectProcessor;
 
 	/**
-	 * Default IObjectProcessor implementation.
+	 * Robotlegs object processor
 	 */
-	public class ObjectProcessor implements IObjectProcessor
+	public class ObjectProcessor
 	{
 
 		/*============================================================================*/
@@ -27,7 +26,9 @@ package robotlegs.bender.framework.impl
 		/*============================================================================*/
 
 		/**
-		 * @inheritDoc
+		 * Add a handler to process objects that match a given matcher.
+		 * @param matcher The matcher
+		 * @param handler The handler function
 		 */
 		public function addObjectHandler(matcher:Matcher, handler:Function):void
 		{
@@ -35,7 +36,8 @@ package robotlegs.bender.framework.impl
 		}
 
 		/**
-		 * @inheritDoc
+		 * Process an object by running it through registered handlers
+		 * @param object The object instance to process.
 		 */
 		public function processObject(object:Object):void
 		{

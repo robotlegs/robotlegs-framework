@@ -14,7 +14,6 @@ package robotlegs.bender.framework.impl
 	import org.hamcrest.core.not;
 	import org.hamcrest.object.instanceOf;
 	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.framework.api.IObjectProcessor;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.ILogger;
 
@@ -36,7 +35,7 @@ package robotlegs.bender.framework.impl
 
 		private const _uid:String = UID.create(ConfigManager);
 
-		private const _objectProcessor:IObjectProcessor = new ObjectProcessor();
+		private const _objectProcessor:ObjectProcessor = new ObjectProcessor();
 
 		private const _configs:Dictionary = new Dictionary();
 

@@ -13,11 +13,15 @@ package robotlegs.bender.framework.api
 	import robotlegs.bender.framework.api.ILogTarget;
 	import robotlegs.bender.framework.api.ILogger;
 
+	/**
+	 * The Robotlegs context contract
+	 */
 	public interface IContext
 	{
 		// todo: move
 		function get initialized():Boolean;
 
+		// todo: move
 		function get destroyed():Boolean;
 
 		function get injector():Injector;
@@ -40,6 +44,6 @@ package robotlegs.bender.framework.api
 
 		function getLogger(source:Object):ILogger;
 
-		function addLogTarget(target:ILogTarget):void;
+		function addLogTarget(target:ILogTarget):IContext;
 	}
 }

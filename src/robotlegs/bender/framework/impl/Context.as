@@ -133,9 +133,10 @@ package robotlegs.bender.framework.impl
 			return _logManager.getLogger(source);
 		}
 
-		public function addLogTarget(target:ILogTarget):void
+		public function addLogTarget(target:ILogTarget):IContext
 		{
 			_logManager.addLogTarget(target);
+			return this;
 		}
 
 		public function toString():String

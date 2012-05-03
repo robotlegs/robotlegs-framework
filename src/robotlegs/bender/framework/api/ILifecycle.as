@@ -9,6 +9,9 @@ package robotlegs.bender.framework.api
 {
 	import flash.events.IEventDispatcher;
 
+	/**
+	 * The Robotlegs lifecycle contract
+	 */
 	public interface ILifecycle extends IEventDispatcher
 	{
 		function get state():String;

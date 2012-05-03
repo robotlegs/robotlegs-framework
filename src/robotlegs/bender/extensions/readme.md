@@ -22,15 +22,15 @@ http://tom.preston-werner.com/2010/08/23/readme-driven-development.html
 
 If you can't sum up what the extension is and how it can be used in a readme file, then perhaps the scope of your extension is too big. In that case consider breaking it out into smaller, more focused extensions.
 
-## The Extension/Integration Class (IContextConfig)
+## The Extension/Integration Class (IContextExtension)
 
-An extension implements the IContextConfig interface. When included into a context, that context is immediately passed through to the configureContext() method:
+An extension implements the IContextExtension interface. When included into a context, that context is immediately passed through to the extend() method:
 
     package robotlegs.extensions.superDuper
     {
-      public class SuperDuperExtension implements IContextConfig
+      public class SuperDuperExtension implements IContextExtension
       {
-        public function configureContext(context:IContext):void
+        public function extend(context:IContext):void
         {
           trace(this, " is being installed into ", context);
           // BEWARE: the context may not be fully initialized.
@@ -44,7 +44,7 @@ NOTE: The context instance provided to configureContext() may not be fully initi
 
 An extension might simply map a singleton:
 
-    public function configureContext(context:IContext):void
+    public function extend(context:IContext):void
     {
       context.injector.map(ISuperDuper).toSingleton(SuperDuper);
     }
@@ -53,7 +53,7 @@ An extension might simply map a singleton:
 
 An extension can hook into various context lifecycle phases by adding state handlers to that context when the extension is installed:
 
-    public function configureContext(context:IContext):void
+    public function extend(context:IContext):void
     {
       if (context.initialized)
         throw new Error("This extension must be installed prior to context initialization");
@@ -77,9 +77,9 @@ An extension can hook into various context lifecycle phases by adding state hand
 
 For more information on message handling and managed objects see:
 
-1. core.async.readme
-2. core.messageDispatcher.readme
-3. framework.object.managed.readme
+1. readme-async
+2. readme-message-dispatcher
+3. readme-lifecycle
 
 ## Packaging A Robotlegs-Specific Extension
 
