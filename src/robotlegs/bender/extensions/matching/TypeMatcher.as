@@ -91,5 +91,24 @@ package robotlegs.bender.extensions.matching
 		{
 			throw new IllegalOperationError('This TypeMatcher has been sealed and can no longer be configured');
 		}
+		
+		protected function pushValuesToClassVector(values:Array, vector:Vector.<Class>):void
+		{
+			if (values.length == 1
+				&& (values[0] is Array || values[0] is Vector.<Class>))
+			{
+				for each (var type:Class in values[0])
+				{
+					vector.push(type);
+				}
+			}
+			else
+			{
+				for each (type in values)
+				{
+					vector.push(type);
+				}
+			}
+		}
 	}
 }
