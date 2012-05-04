@@ -17,7 +17,7 @@ package robotlegs.bender.extensions.stageSync
 
 	/**
 	 * <p>This Extension waits for a DisplayObjectContainer to be added as a configuration,
-	 * and initializes and destroys the context based on that containers stage presence.</p>
+	 * and initializes and destroys the context based on that container's stage presence.</p>
 	 *
 	 * <p>It should be installed before context initialization.</p>
 	 */

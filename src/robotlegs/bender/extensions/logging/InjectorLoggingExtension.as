@@ -20,7 +20,8 @@ package robotlegs.bender.extensions.logging
 
 		public function extend(context:IContext):void
 		{
-			const listener:InjectorListener = new InjectorListener(context.injector, context.getLogger(this));
+			const listener:InjectorListener = new InjectorListener(
+				context.injector, context.getLogger(this));
 			context.lifecycle.afterDestroying(listener.destroy);
 		}
 	}

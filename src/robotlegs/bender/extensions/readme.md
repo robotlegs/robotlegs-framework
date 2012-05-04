@@ -65,6 +65,7 @@ An extension can hook into various context lifecycle phases by adding state hand
     private function beforeInitializing(phase:String, callback:Function):void
     {
       // `before` handlers can accept a callback as the second argument
+      // note: you *must* eventually call the callback or you will stall initialization
       trace("Doing some things before the context self initializes...");
       setTimeout(callback, 1000);
     }
@@ -77,9 +78,9 @@ An extension can hook into various context lifecycle phases by adding state hand
 
 For more information on message handling and managed objects see:
 
-1. readme-async
-2. readme-message-dispatcher
-3. readme-lifecycle
+1. framework/readme-async
+2. framework/readme-message-dispatcher
+3. framework/readme-lifecycle
 
 ## Packaging A Robotlegs-Specific Extension
 

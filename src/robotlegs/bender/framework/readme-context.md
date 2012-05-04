@@ -2,9 +2,9 @@
 
 A context is a scope. It is core to any application or module built using Robotlegs.
 
-## Creating A Context
+## Creating a Context
 
-To create a new context simply instantiate a new Context and provide some configuration:
+To create a context simply instantiate a new Context and provide some configuration:
 
 	_context = new Context()
         .extend(MVCSBundle)
@@ -17,17 +17,21 @@ Note: you must hold on to that context reference. Failing to do so will result i
 
 In the example above we are installing a bundle, a configuration and a reference to a Display Object Container.
 
-# Extensions
+# Bundles and Extensions
 
-    context.extend(MVCSBundle);
+Most extensions and bundles can be installed as classes:
 
-TODO: expand..
+    _context.extend(MVCSBundle, InjectorLoggingExtension);
+
+Some extensions offer some extra configuration by way of constructor arguments:
+
+    _context.extend(new ScopedEventDispatcherExtension("shared", "local"));
 
 # Configuration
 
 ### Plain Class Configs
 
-    context.configure(MyModuleConfig);
+    _context.configure(MyModuleConfig);
 
 If the context has already been initialized an instance of the supplied class will be instantiated using the context's injector.
 
@@ -43,13 +47,26 @@ Such a config might look like this:
         [PostConstruct]
         public function init():void
         {
-            mediatorMap.map().......
+            mediatorMap.map(SomeView)
+                .toMediator(SomeMediator);
+        }
+    }
+
+Or, if you dislike metadata, like this:
+
+    class MyModuleConfig
+    {
+        [PostConstruct]
+        public function init(mediatorMap:IMediatorMap):void
+        {
+            mediatorMap.map(SomeView)
+                .toMediator(SomeMediator);
         }
     }
 
 ## Plain Object Configs
 
-    context.configure(new MyModuleConfig("hello"));
+    _context.configure(new MyModuleConfig("hello"));
 
 If the context has already been initialized the supplied object will simply be injected into.
 

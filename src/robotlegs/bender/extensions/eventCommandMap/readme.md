@@ -25,16 +25,12 @@ This extension requires the following extensions:
 
 ## Extension Installation
 
-### During Context Construction
-
-    _context = new Context(
+    _context = new Context().extend(
     	CommandMapExtension,
     	EventDispatcherExtension,
 	    EventCommandMapExtension);
 
-### At Runtime
-
-Assuming that the EventDispatcher and CommandMap extensions have already been installed:
+Or, assuming that the EventDispatcher and CommandMap extensions have already been installed:
 
 	_context.extend(EventCommandMapExtension);
 

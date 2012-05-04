@@ -8,7 +8,8 @@ It is not intended to be used directly.
 
 ### During Context Construction
 
-    _context = new Context(CommandMapExtension);
+    _context = new Context()
+        .extend(CommandMapExtension);
 
 ### At Runtime
 

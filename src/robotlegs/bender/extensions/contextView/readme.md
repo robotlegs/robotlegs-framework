@@ -6,7 +6,9 @@ The Context View Extension adds a configuration processor to the context that co
 
 ### During Context Construction
 
-    _context = new Context(ContextViewExtension, this);
+    _context = new Context()
+        .extend(ContextViewExtension)
+        .configure(this);
 
 Note: The extension must be installed before a DisplayObjectContainer is provided or the DisplayObjectContainer will not be processed.
 
