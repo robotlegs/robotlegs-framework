@@ -9,7 +9,6 @@ package robotlegs.bender.extensions.mediatorMap
 {
 	import robotlegs.bender.extensions.mediatorMap.impl.DefaultMediatorManagerTest;
 	import robotlegs.bender.extensions.mediatorMap.impl.MediatorFactoryTest;
-	import robotlegs.bender.extensions.mediatorMap.impl.MediatorMapTest;
 	import robotlegs.bender.extensions.mediatorMap.impl.MediatorViewHandlerTest;
 	import robotlegs.bender.extensions.mediatorMap.impl.MediatorSugarTest;
 	import robotlegs.bender.extensions.mediatorMap.impl.MediatorMapTestPreloaded;
