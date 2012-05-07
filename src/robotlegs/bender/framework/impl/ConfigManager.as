@@ -14,6 +14,7 @@ package robotlegs.bender.framework.impl
 	import org.hamcrest.core.not;
 	import org.hamcrest.object.instanceOf;
 	import org.swiftsuspenders.Injector;
+	import robotlegs.bender.framework.api.IConfig;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.ILogger;
 
@@ -119,7 +120,7 @@ package robotlegs.bender.framework.impl
 			if (_initialized)
 			{
 				_logger.debug("Already initialized. Instantiating config class {0}", [type]);
-				_injector.getInstance(type);
+				processClass(type);
 			}
 			else
 			{
@@ -133,7 +134,7 @@ package robotlegs.bender.framework.impl
 			if (_initialized)
 			{
 				_logger.debug("Already initialized. Injecting into config object {0}", [object]);
-				_injector.injectInto(object);
+				processObject(object);
 			}
 			else
 			{
@@ -149,15 +150,28 @@ package robotlegs.bender.framework.impl
 				if (config is Class)
 				{
 					_logger.debug("Now initializing. Instantiating config class {0}", [config]);
-					_injector.getInstance(config as Class);
+					processClass(config as Class);
 				}
 				else
 				{
 					_logger.debug("Now initializing. Injecting into config object {0}", [config]);
-					_injector.injectInto(config);
+					processObject(config);
 				}
 			}
 			_queue.length = 0;
+		}
+
+		private function processClass(type:Class):void
+		{
+			const config:IConfig = _injector.getInstance(type) as IConfig;
+			config && config.configure();
+		}
+
+		private function processObject(object:Object):void
+		{
+			_injector.injectInto(object);
+			const config:IConfig = object as IConfig;
+			config && config.configure();
 		}
 	}
 }

@@ -13,18 +13,18 @@ package robotlegs.bender.framework.impl
 	import org.hamcrest.object.nullValue;
 	import org.swiftsuspenders.Injector;
 
-	import robotlegs.bender.framework.api.IContext;
-	import robotlegs.bender.framework.impl.ConfigManager;
-	import robotlegs.bender.framework.impl.Context;
-
 	public class ConfigManagerTest
 	{
 
 		/*============================================================================*/
-		/* Private Properties                                                         */
+		/* Public Properties                                                          */
 		/*============================================================================*/
 
 		public var injector:Injector;
+
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
 
 		private var configManager:ConfigManager;
 
@@ -119,8 +119,35 @@ package robotlegs.bender.framework.impl
 			configManager.addConfig(expected);
 			assertThat(actual, equalTo(expected));
 		}
+
+		[Test]
+		public function configure_is_invoked_for_IConfig_object():void
+		{
+			const expected:TypedConfig = new TypedConfig();
+			var actual:Object = null;
+			injector.map(Function, 'callback').toValue(function(config:Object):void {
+				actual = config;
+			});
+			configManager.addConfig(expected);
+			configManager.initialize();
+			assertThat(actual, equalTo(expected));
+		}
+
+		[Test]
+		public function configure_is_invoked_for_IConfig_class():void
+		{
+			var actual:Object = null;
+			injector.map(Function, 'callback').toValue(function(config:Object):void {
+				actual = config;
+			});
+			configManager.addConfig(TypedConfig);
+			configManager.initialize();
+			assertThat(actual, instanceOf(TypedConfig));
+		}
 	}
 }
+
+import robotlegs.bender.framework.api.IConfig;
 
 class PlainConfig
 {
@@ -138,6 +165,26 @@ class PlainConfig
 
 	[PostConstruct]
 	public function init():void
+	{
+		callback(this);
+	}
+}
+
+class TypedConfig implements IConfig
+{
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
+	[Inject(name='callback')]
+	public var callback:Function;
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
+	public function configure():void
 	{
 		callback(this);
 	}
