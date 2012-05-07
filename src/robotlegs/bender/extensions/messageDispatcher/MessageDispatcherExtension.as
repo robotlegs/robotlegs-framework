@@ -7,10 +7,11 @@
 
 package robotlegs.bender.extensions.messageDispatcher
 {
-	import robotlegs.bender.framework.api.IMessageDispatcher;
-	import robotlegs.bender.framework.impl.MessageDispatcher;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IContextExtension;
+	import robotlegs.bender.framework.api.IMessageDispatcher;
+	import robotlegs.bender.framework.impl.MessageDispatcher;
+	import robotlegs.bender.framework.impl.UID;
 
 	public class MessageDispatcherExtension implements IContextExtension
 	{
@@ -18,6 +19,8 @@ package robotlegs.bender.extensions.messageDispatcher
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
+
+		private const _uid:String = UID.create(MessageDispatcherExtension);
 
 		private var _messageDispatcher:IMessageDispatcher;
 
@@ -37,6 +40,11 @@ package robotlegs.bender.extensions.messageDispatcher
 		public function extend(context:IContext):void
 		{
 			context.injector.map(IMessageDispatcher).toValue(_messageDispatcher);
+		}
+
+		public function toString():String
+		{
+			return _uid;
 		}
 	}
 }

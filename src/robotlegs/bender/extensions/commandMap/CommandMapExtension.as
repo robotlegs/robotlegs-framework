@@ -11,9 +11,16 @@ package robotlegs.bender.extensions.commandMap
 	import robotlegs.bender.extensions.commandMap.impl.CommandMap;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IContextExtension;
+	import robotlegs.bender.framework.impl.UID;
 
 	public class CommandMapExtension implements IContextExtension
 	{
+
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
+
+		private const _uid:String = UID.create(CommandMapExtension);
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
@@ -22,6 +29,11 @@ package robotlegs.bender.extensions.commandMap
 		public function extend(context:IContext):void
 		{
 			context.injector.map(ICommandMap).toSingleton(CommandMap);
+		}
+
+		public function toString():String
+		{
+			return _uid;
 		}
 	}
 }

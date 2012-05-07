@@ -10,9 +10,16 @@ package robotlegs.bender.extensions.logging
 	import robotlegs.bender.extensions.logging.impl.InjectorListener;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IContextExtension;
+	import robotlegs.bender.framework.impl.UID;
 
 	public class InjectorLoggingExtension implements IContextExtension
 	{
+
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
+
+		private const _uid:String = UID.create(InjectorLoggingExtension);
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
@@ -23,6 +30,11 @@ package robotlegs.bender.extensions.logging
 			const listener:InjectorListener = new InjectorListener(
 				context.injector, context.getLogger(this));
 			context.lifecycle.afterDestroying(listener.destroy);
+		}
+
+		public function toString():String
+		{
+			return _uid;
 		}
 	}
 }

@@ -11,6 +11,7 @@ package robotlegs.bender.extensions.eventDispatcher
 	import flash.events.IEventDispatcher;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IContextExtension;
+	import robotlegs.bender.framework.impl.UID;
 
 	/**
 	 * This extension maps an IEventDispatcher into a context's injector.
@@ -21,6 +22,8 @@ package robotlegs.bender.extensions.eventDispatcher
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
+
+		private const _uid:String = UID.create(EventDispatcherExtension);
 
 		private var _eventDispatcher:IEventDispatcher;
 
@@ -40,6 +43,11 @@ package robotlegs.bender.extensions.eventDispatcher
 		public function extend(context:IContext):void
 		{
 			context.injector.map(IEventDispatcher).toValue(_eventDispatcher);
+		}
+
+		public function toString():String
+		{
+			return _uid;
 		}
 	}
 }

@@ -8,12 +8,12 @@
 package robotlegs.bender.extensions.viewManager
 {
 	import org.swiftsuspenders.Injector;
-
 	import robotlegs.bender.extensions.viewManager.api.IViewManager;
 	import robotlegs.bender.extensions.viewManager.impl.ContainerRegistry;
 	import robotlegs.bender.extensions.viewManager.impl.ViewManager;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IContextExtension;
+	import robotlegs.bender.framework.impl.UID;
 
 	public class ViewManagerExtension implements IContextExtension
 	{
@@ -28,6 +28,8 @@ package robotlegs.bender.extensions.viewManager
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
+
+		private const _uid:String = UID.create(ViewManagerExtension);
 
 		private var _injector:Injector;
 
@@ -50,6 +52,11 @@ package robotlegs.bender.extensions.viewManager
 
 			context.lifecycle.whenInitializing(handleContextSelfInitialize);
 			context.lifecycle.whenDestroying(handleContextSelfDestroy);
+		}
+
+		public function toString():String
+		{
+			return _uid;
 		}
 
 		/*============================================================================*/

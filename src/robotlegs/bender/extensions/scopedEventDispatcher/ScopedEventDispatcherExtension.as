@@ -12,6 +12,7 @@ package robotlegs.bender.extensions.scopedEventDispatcher
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IContextExtension;
+	import robotlegs.bender.framework.impl.UID;
 
 	/**
 	 * This extensions maps a series of named IEventDispatcher instances
@@ -24,9 +25,9 @@ package robotlegs.bender.extensions.scopedEventDispatcher
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var _names:Array;
+		private const _uid:String = UID.create(ScopedEventDispatcherExtension);
 
-		private var _context:IContext;
+		private var _names:Array;
 
 		private var _injector:Injector;
 
@@ -45,9 +46,13 @@ package robotlegs.bender.extensions.scopedEventDispatcher
 
 		public function extend(context:IContext):void
 		{
-			_context = context;
 			_injector = context.injector;
-			_context.lifecycle.whenInitializing(handleContextSelfInitialize);
+			context.lifecycle.whenInitializing(handleContextSelfInitialize);
+		}
+
+		public function toString():String
+		{
+			return _uid;
 		}
 
 		/*============================================================================*/

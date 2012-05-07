@@ -11,12 +11,19 @@ package robotlegs.bender.extensions.localEventMap
 	import robotlegs.bender.extensions.localEventMap.impl.EventMap;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IContextExtension;
+	import robotlegs.bender.framework.impl.UID;
 
 	/**
-	 * todo: extension description
+	 * This extension creates local EventMaps on request
 	 */
 	public class LocalEventMapExtension implements IContextExtension
 	{
+
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
+
+		private const _uid:String = UID.create(LocalEventMapExtension);
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
@@ -25,6 +32,11 @@ package robotlegs.bender.extensions.localEventMap
 		public function extend(context:IContext):void
 		{
 			context.injector.map(IEventMap).toType(EventMap);
+		}
+
+		public function toString():String
+		{
+			return _uid;
 		}
 	}
 }

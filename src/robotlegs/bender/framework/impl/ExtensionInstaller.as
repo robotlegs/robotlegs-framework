@@ -23,6 +23,8 @@ package robotlegs.bender.framework.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
+		private const _uid:String = UID.create(ExtensionInstaller);
+
 		private const _classes:Dictionary = new Dictionary(true);
 
 		private const _reflector:Reflector = new DescribeTypeReflector();
@@ -64,6 +66,11 @@ package robotlegs.bender.framework.impl
 				_classes[extensionClass] = true;
 				extension.extend(_context);
 			}
+		}
+
+		public function toString():String
+		{
+			return _uid;
 		}
 	}
 }

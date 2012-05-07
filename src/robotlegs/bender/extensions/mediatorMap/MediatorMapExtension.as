@@ -13,10 +13,11 @@ package robotlegs.bender.extensions.mediatorMap
 	import robotlegs.bender.extensions.mediatorMap.impl.DefaultMediatorManager;
 	import robotlegs.bender.extensions.mediatorMap.impl.MediatorFactory;
 	import robotlegs.bender.extensions.mediatorMap.impl.MediatorMap;
+	import robotlegs.bender.extensions.viewManager.api.IViewHandler;
 	import robotlegs.bender.extensions.viewManager.api.IViewManager;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IContextExtension;
-	import robotlegs.bender.extensions.viewManager.api.IViewHandler;
+	import robotlegs.bender.framework.impl.UID;
 
 	public class MediatorMapExtension implements IContextExtension
 	{
@@ -24,6 +25,8 @@ package robotlegs.bender.extensions.mediatorMap
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
+
+		private const _uid:String = UID.create(MediatorMapExtension);
 
 		private var _context:IContext;
 
@@ -45,15 +48,19 @@ package robotlegs.bender.extensions.mediatorMap
 			_injector = context.injector;
 			_injector.map(IMediatorFactory).toSingleton(MediatorFactory);
 			_injector.map(IMediatorMap).toSingleton(MediatorMap);
-			// todo: figure out why this is done as preInitialize
-			_context.lifecycle.beforeInitializing(handleContextPreInitialize);
+			_context.lifecycle.beforeInitializing(beforeInitializing);
+		}
+
+		public function toString():String
+		{
+			return _uid;
 		}
 
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
 
-		private function handleContextPreInitialize():void
+		private function beforeInitializing():void
 		{
 			_mediatorMap = _injector.getInstance(IMediatorMap);
 			_mediatorManager = _injector.getInstance(DefaultMediatorManager);
