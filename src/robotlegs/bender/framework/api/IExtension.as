@@ -11,7 +11,7 @@ package robotlegs.bender.framework.api
 	/**
 	 * The context Extension/Bundle contract
 	 */
-	public interface IContextExtension
+	public interface IExtension
 	{
 		/**
 		 * This method will be called immediately when the extension/bundle is installed.

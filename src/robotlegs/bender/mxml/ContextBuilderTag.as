@@ -13,7 +13,7 @@ package robotlegs.bender.mxml
 	import org.swiftsuspenders.DescribeTypeReflector;
 	import org.swiftsuspenders.Reflector;
 	import robotlegs.bender.framework.api.IContext;
-	import robotlegs.bender.framework.api.IContextExtension;
+	import robotlegs.bender.framework.api.IExtension;
 	import robotlegs.bender.framework.impl.Context;
 
 	[DefaultProperty("configs")]
@@ -89,7 +89,7 @@ package robotlegs.bender.mxml
 
 		private function isExtension(object:Object):Boolean
 		{
-			return (object is IContextExtension) || (object is Class && _reflector.typeImplements(object as Class, IContextExtension));
+			return (object is IExtension) || (object is Class && _reflector.typeImplements(object as Class, IExtension));
 		}
 	}
 }

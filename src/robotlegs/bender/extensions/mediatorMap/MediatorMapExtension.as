@@ -16,10 +16,10 @@ package robotlegs.bender.extensions.mediatorMap
 	import robotlegs.bender.extensions.viewManager.api.IViewHandler;
 	import robotlegs.bender.extensions.viewManager.api.IViewManager;
 	import robotlegs.bender.framework.api.IContext;
-	import robotlegs.bender.framework.api.IContextExtension;
+	import robotlegs.bender.framework.api.IExtension;
 	import robotlegs.bender.framework.impl.UID;
 
-	public class MediatorMapExtension implements IContextExtension
+	public class MediatorMapExtension implements IExtension
 	{
 
 		/*============================================================================*/

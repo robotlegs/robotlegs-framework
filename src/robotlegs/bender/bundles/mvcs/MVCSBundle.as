@@ -22,7 +22,7 @@ package robotlegs.bender.bundles.mvcs
 	import robotlegs.bender.extensions.viewManager.StageObserverExtension;
 	import robotlegs.bender.extensions.viewManager.ViewManagerExtension;
 	import robotlegs.bender.framework.api.IContext;
-	import robotlegs.bender.framework.api.IContextExtension;
+	import robotlegs.bender.framework.api.IExtension;
 
 	/**
 	 * For that Classic Robotlegs flavour
@@ -30,7 +30,7 @@ package robotlegs.bender.bundles.mvcs
 	 * <p>This bundle installs a number of extensions commonly used in typical Robotlegs
 	 * applications and modules.</p>
 	 */
-	public class MVCSBundle implements IContextExtension
+	public class MVCSBundle implements IExtension
 	{
 
 		/*============================================================================*/

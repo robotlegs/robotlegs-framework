@@ -10,13 +10,13 @@ package robotlegs.bender.extensions.eventDispatcher
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
 	import robotlegs.bender.framework.api.IContext;
-	import robotlegs.bender.framework.api.IContextExtension;
+	import robotlegs.bender.framework.api.IExtension;
 	import robotlegs.bender.framework.impl.UID;
 
 	/**
 	 * This extension maps an IEventDispatcher into a context's injector.
 	 */
-	public class EventDispatcherExtension implements IContextExtension
+	public class EventDispatcherExtension implements IExtension
 	{
 
 		/*============================================================================*/

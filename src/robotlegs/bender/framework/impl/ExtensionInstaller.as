@@ -49,7 +49,7 @@ package robotlegs.bender.framework.impl
 
 		/**
 		 * Installs the supplied extension
-		 * @param extension An object or class implementing IContextExtension
+		 * @param extension An object or class implementing IExtension
 		 */
 		public function install(extension:Object):void
 		{

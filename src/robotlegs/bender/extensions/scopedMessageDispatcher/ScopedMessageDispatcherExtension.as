@@ -9,7 +9,7 @@ package robotlegs.bender.extensions.scopedMessageDispatcher
 {
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.framework.api.IContext;
-	import robotlegs.bender.framework.api.IContextExtension;
+	import robotlegs.bender.framework.api.IExtension;
 	import robotlegs.bender.framework.api.IMessageDispatcher;
 	import robotlegs.bender.framework.impl.MessageDispatcher;
 	import robotlegs.bender.framework.impl.UID;
@@ -18,7 +18,7 @@ package robotlegs.bender.extensions.scopedMessageDispatcher
 	 * This extensions maps a series of named IMessageDispatcher instances
 	 * provided those names have not been mapped by a parent context.
 	 */
-	public class ScopedMessageDispatcherExtension implements IContextExtension
+	public class ScopedMessageDispatcherExtension implements IExtension
 	{
 
 		/*============================================================================*/

@@ -11,7 +11,7 @@ package robotlegs.bender.framework.impl
 	import org.hamcrest.core.isA;
 	import org.hamcrest.object.equalTo;
 	import robotlegs.bender.framework.api.IContext;
-	import robotlegs.bender.framework.api.IContextExtension;
+	import robotlegs.bender.framework.api.IExtension;
 	import robotlegs.bender.framework.impl.contextSupport.CallbackExtension;
 	import robotlegs.bender.framework.impl.Context;
 
@@ -48,7 +48,7 @@ package robotlegs.bender.framework.impl
 		public function extensions_are_installed():void
 		{
 			var actual:IContext;
-			const extension:IContextExtension = new CallbackExtension(function(error:Object, context:IContext):void {
+			const extension:IExtension = new CallbackExtension(function(error:Object, context:IContext):void {
 				actual = context;
 			});
 			context.extend(extension);

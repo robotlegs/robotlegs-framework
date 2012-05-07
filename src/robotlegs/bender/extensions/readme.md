@@ -22,13 +22,13 @@ http://tom.preston-werner.com/2010/08/23/readme-driven-development.html
 
 If you can't sum up what the extension is and how it can be used in a readme file, then perhaps the scope of your extension is too big. In that case consider breaking it out into smaller, more focused extensions.
 
-## The Extension/Integration Class (IContextExtension)
+## The Extension/Integration Class (IExtension)
 
-An extension implements the IContextExtension interface. When included into a context, that context is immediately passed through to the extend() method:
+An extension implements the IExtension interface. When included into a context, that context is immediately passed through to the extend() method:
 
     package robotlegs.extensions.superDuper
     {
-      public class SuperDuperExtension implements IContextExtension
+      public class SuperDuperExtension implements IExtension
       {
         public function extend(context:IContext):void
         {

@@ -10,10 +10,10 @@ package robotlegs.bender.extensions.commandMap
 	import robotlegs.bender.extensions.commandMap.api.ICommandMap;
 	import robotlegs.bender.extensions.commandMap.impl.CommandMap;
 	import robotlegs.bender.framework.api.IContext;
-	import robotlegs.bender.framework.api.IContextExtension;
+	import robotlegs.bender.framework.api.IExtension;
 	import robotlegs.bender.framework.impl.UID;
 
-	public class CommandMapExtension implements IContextExtension
+	public class CommandMapExtension implements IExtension
 	{
 
 		/*============================================================================*/

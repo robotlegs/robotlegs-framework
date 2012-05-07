@@ -9,9 +9,9 @@ package robotlegs.bender.framework.impl.contextSupport
 {
 	import robotlegs.bender.framework.impl.safelyCallBack;
 	import robotlegs.bender.framework.api.IContext;
-	import robotlegs.bender.framework.api.IContextExtension;
+	import robotlegs.bender.framework.api.IExtension;
 
-	public class CallbackExtension implements IContextExtension
+	public class CallbackExtension implements IExtension
 	{
 
 		/*============================================================================*/

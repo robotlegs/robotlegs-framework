@@ -11,7 +11,7 @@ package robotlegs.bender.extensions.stageSync
 	import flash.events.Event;
 	import org.hamcrest.object.instanceOf;
 	import robotlegs.bender.framework.api.IContext;
-	import robotlegs.bender.framework.api.IContextExtension;
+	import robotlegs.bender.framework.api.IExtension;
 	import robotlegs.bender.framework.impl.UID;
 	import robotlegs.bender.framework.api.ILogger;
 
@@ -21,7 +21,7 @@ package robotlegs.bender.extensions.stageSync
 	 *
 	 * <p>It should be installed before context initialization.</p>
 	 */
-	public class StageSyncExtension implements IContextExtension
+	public class StageSyncExtension implements IExtension
 	{
 
 		/*============================================================================*/

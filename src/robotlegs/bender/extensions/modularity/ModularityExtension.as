@@ -11,7 +11,7 @@ package robotlegs.bender.extensions.modularity
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.modularity.events.ModularContextEvent;
 	import robotlegs.bender.framework.api.IContext;
-	import robotlegs.bender.framework.api.IContextExtension;
+	import robotlegs.bender.framework.api.IExtension;
 	import robotlegs.bender.framework.impl.UID;
 	import robotlegs.bender.framework.api.ILogger;
 
@@ -21,7 +21,7 @@ package robotlegs.bender.extensions.modularity
 	 *
 	 * <p>It should be installed before context initialization.</p>
 	 */
-	public class ModularityExtension implements IContextExtension
+	public class ModularityExtension implements IExtension
 	{
 
 		/*============================================================================*/

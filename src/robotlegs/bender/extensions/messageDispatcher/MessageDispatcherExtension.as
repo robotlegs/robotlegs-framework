@@ -8,12 +8,12 @@
 package robotlegs.bender.extensions.messageDispatcher
 {
 	import robotlegs.bender.framework.api.IContext;
-	import robotlegs.bender.framework.api.IContextExtension;
+	import robotlegs.bender.framework.api.IExtension;
 	import robotlegs.bender.framework.api.IMessageDispatcher;
 	import robotlegs.bender.framework.impl.MessageDispatcher;
 	import robotlegs.bender.framework.impl.UID;
 
-	public class MessageDispatcherExtension implements IContextExtension
+	public class MessageDispatcherExtension implements IExtension
 	{
 
 		/*============================================================================*/

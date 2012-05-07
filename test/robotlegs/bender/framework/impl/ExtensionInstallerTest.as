@@ -10,7 +10,7 @@ package robotlegs.bender.framework.impl
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.equalTo;
 	import robotlegs.bender.framework.api.IContext;
-	import robotlegs.bender.framework.api.IContextExtension;
+	import robotlegs.bender.framework.api.IExtension;
 	import robotlegs.bender.framework.impl.contextSupport.CallbackExtension;
 	import robotlegs.bender.framework.impl.Context;
 	import robotlegs.bender.framework.impl.ExtensionInstaller;
@@ -69,7 +69,7 @@ package robotlegs.bender.framework.impl
 			const callback:Function = function():void {
 				callCount++;
 			};
-			const extension:IContextExtension = new CallbackExtension(callback);
+			const extension:IExtension = new CallbackExtension(callback);
 			extensionManager.install(extension);
 			extensionManager.install(extension);
 			assertThat(callCount, equalTo(1));

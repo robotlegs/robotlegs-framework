@@ -38,7 +38,7 @@ package robotlegs.bender.framework.api
 
 		/**
 		 * Extends the context with custom extensions
-		 * @param extensions Objects or classes implementing IContextExtension
+		 * @param extensions Objects or classes implementing IExtension
 		 * @return this
 		 */
 		function extend(... extensions):IContext;

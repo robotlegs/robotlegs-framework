@@ -10,10 +10,10 @@ package robotlegs.bender.extensions.eventCommandMap
 	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
 	import robotlegs.bender.extensions.eventCommandMap.impl.EventCommandMap;
 	import robotlegs.bender.framework.api.IContext;
-	import robotlegs.bender.framework.api.IContextExtension;
+	import robotlegs.bender.framework.api.IExtension;
 	import robotlegs.bender.framework.impl.UID;
 
-	public class EventCommandMapExtension implements IContextExtension
+	public class EventCommandMapExtension implements IExtension
 	{
 
 		/*============================================================================*/

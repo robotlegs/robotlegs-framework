@@ -10,7 +10,7 @@ package robotlegs.bender.extensions.contextView
 	import flash.display.DisplayObjectContainer;
 	import org.hamcrest.object.instanceOf;
 	import robotlegs.bender.framework.api.IContext;
-	import robotlegs.bender.framework.api.IContextExtension;
+	import robotlegs.bender.framework.api.IExtension;
 	import robotlegs.bender.framework.impl.UID;
 	import robotlegs.bender.framework.api.ILogger;
 
@@ -20,7 +20,7 @@ package robotlegs.bender.extensions.contextView
 	 *
 	 * <p>It should be installed before context initialization.</p>
 	 */
-	public class ContextViewExtension implements IContextExtension
+	public class ContextViewExtension implements IExtension
 	{
 
 		/*============================================================================*/
