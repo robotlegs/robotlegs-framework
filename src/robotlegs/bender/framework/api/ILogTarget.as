@@ -13,6 +13,15 @@ package robotlegs.bender.framework.api
 	 */
 	public interface ILogTarget
 	{
+		/**
+		 * Captures a log message
+		 *
+		 * @param source The source of the log message
+		 * @param level The log level of the message
+		 * @param timestamp getTimer() timestamp
+		 * @param message The log message
+		 * @param params Message parameters
+		 */
 		function log(source:Object, level:uint, timestamp:int, message:String, params:Array = null):void;
 	}
 }

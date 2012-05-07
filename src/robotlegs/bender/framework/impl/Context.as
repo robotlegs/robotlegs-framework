@@ -11,9 +11,9 @@ package robotlegs.bender.framework.impl
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.ILifecycle;
-	import robotlegs.bender.framework.api.LifecycleState;
 	import robotlegs.bender.framework.api.ILogTarget;
 	import robotlegs.bender.framework.api.ILogger;
+	import robotlegs.bender.framework.api.LifecycleState;
 
 	public class Context implements IContext
 	{
@@ -29,11 +29,17 @@ package robotlegs.bender.framework.impl
 			return _injector;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get logLevel():uint
 		{
 			return _logManager.logLevel;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function set logLevel(value:uint):void
 		{
 			_logManager.logLevel = value;
@@ -41,6 +47,9 @@ package robotlegs.bender.framework.impl
 
 		private var _lifecycle:Lifecycle;
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get lifecycle():ILifecycle
 		{
 			return _lifecycle;
@@ -50,7 +59,7 @@ package robotlegs.bender.framework.impl
 		public function get initialized():Boolean
 		{
 			return _lifecycle.state != LifecycleState.UNINITIALIZED
-					&& _lifecycle.state != LifecycleState.INITIALIZING;
+				&& _lifecycle.state != LifecycleState.INITIALIZING;
 		}
 
 		// todo: move this into lifecycle
@@ -92,18 +101,27 @@ package robotlegs.bender.framework.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function initialize():void
 		{
 			_logger.info("Initializing...");
 			_lifecycle.initialize(handleInitializeComplete);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function destroy():void
 		{
 			_logger.info("Destroying...");
 			_lifecycle.destroy(handleDestroyComplete);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function extend(... extensions):IContext
 		{
 			for each (var extension:Object in extensions)
@@ -113,6 +131,9 @@ package robotlegs.bender.framework.impl
 			return this;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function configure(... configs):IContext
 		{
 			for each (var config:Object in configs)
@@ -122,17 +143,26 @@ package robotlegs.bender.framework.impl
 			return this;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function addConfigHandler(matcher:Matcher, handler:Function):IContext
 		{
 			_configManager.addConfigHandler(matcher, handler);
 			return this;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function getLogger(source:Object):ILogger
 		{
 			return _logManager.getLogger(source);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function addLogTarget(target:ILogTarget):IContext
 		{
 			_logManager.addLogTarget(target);

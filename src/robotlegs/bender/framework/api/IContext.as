@@ -9,9 +9,6 @@ package robotlegs.bender.framework.api
 {
 	import org.hamcrest.Matcher;
 	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.framework.api.ILifecycle;
-	import robotlegs.bender.framework.api.ILogTarget;
-	import robotlegs.bender.framework.api.ILogger;
 
 	/**
 	 * The Robotlegs context contract
@@ -36,14 +33,40 @@ package robotlegs.bender.framework.api
 
 		function destroy():void;
 
+		/**
+		 * Extends the context with custom extensions
+		 * @param extensions Objects or classes implementing IContextExtension
+		 * @return this
+		 */
 		function extend(... extensions):IContext;
-		
+
+		/**
+		 * Configures the context with custom configurations
+		 * @param configs Configuration objects or classes of any type
+		 * @return this
+		 */
 		function configure(... configs):IContext;
 
+		/**
+		 * Adds a custom configuration handler
+		 * @param matcher Pattern to match configurations
+		 * @param handler Handler to process matching configurations
+		 * @return this
+		 */
 		function addConfigHandler(matcher:Matcher, handler:Function):IContext;
 
+		/**
+		 * Retrieves a logger
+		 * @param source Logging source
+		 * @return Logger
+		 */
 		function getLogger(source:Object):ILogger;
 
+		/**
+		 * Adds a custom log target
+		 * @param target Log target
+		 * @return this
+		 */
 		function addLogTarget(target:ILogTarget):IContext;
 	}
 }
