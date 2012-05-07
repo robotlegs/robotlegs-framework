@@ -13,6 +13,9 @@ package robotlegs.bender.framework.impl
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.ILogger;
 
+	/**
+	 * Installs custom extensions into a given context
+	 */
 	public class ExtensionInstaller
 	{
 
@@ -42,6 +45,10 @@ package robotlegs.bender.framework.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * Installs the supplied extension
+		 * @param extension An object or class implementing IContextExtension
+		 */
 		public function install(extension:Object):void
 		{
 			if (extension is Class)

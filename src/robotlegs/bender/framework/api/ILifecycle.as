@@ -18,6 +18,14 @@ package robotlegs.bender.framework.api
 
 		function get target():Object;
 
+		function get initialized():Boolean;
+
+		function get active():Boolean;
+
+		function get suspended():Boolean;
+
+		function get destroyed():Boolean;
+
 		function initialize(callback:Function = null):void;
 
 		function suspend(callback:Function = null):void;

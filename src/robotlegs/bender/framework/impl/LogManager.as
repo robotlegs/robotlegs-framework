@@ -11,6 +11,9 @@ package robotlegs.bender.framework.impl
 	import robotlegs.bender.framework.api.ILogger;
 	import robotlegs.bender.framework.api.LogLevel;
 
+	/**
+	 * The log manager creates loggers and is itself a log target
+	 */
 	public class LogManager implements ILogTarget
 	{
 
@@ -40,17 +43,35 @@ package robotlegs.bender.framework.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * Retrieves a logger for a given source
+		 * @param source Logging source
+		 * @return Logger
+		 */
 		public function getLogger(source:Object):ILogger
 		{
 			return new Logger(source, this);
 		}
 
+		/**
+		 * Adds a custom log target
+		 * @param target Log target
+		 * @return this
+		 */
 		public function addLogTarget(target:ILogTarget):void
 		{
 			_targets.push(target);
 		}
 
-		public function log(source:Object, level:uint, timestamp:int, message:String, params:Array = null):void
+		/**
+		 * @inheritDoc
+		 */
+		public function log(
+			source:Object,
+			level:uint,
+			timestamp:int,
+			message:String,
+			params:Array = null):void
 		{
 			if (level > _logLevel)
 				return;

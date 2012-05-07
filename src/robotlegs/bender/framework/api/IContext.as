@@ -15,23 +15,26 @@ package robotlegs.bender.framework.api
 	 */
 	public interface IContext
 	{
-		// todo: move
-		function get initialized():Boolean;
-
-		// todo: move
-		function get destroyed():Boolean;
-
+		/**
+		 * The context dependency injector
+		 */
 		function get injector():Injector;
 
+		/**
+		 * The context lifecycle
+		 */
 		function get lifecycle():ILifecycle;
 
+		/**
+		 * The current log level
+		 */
 		function get logLevel():uint;
 
+		/**
+		 * Sets the current log level
+		 * @param value The log level. Use a constant from LogLevel
+		 */
 		function set logLevel(value:uint):void;
-
-		function initialize():void;
-
-		function destroy():void;
 
 		/**
 		 * Extends the context with custom extensions
@@ -56,7 +59,7 @@ package robotlegs.bender.framework.api
 		function addConfigHandler(matcher:Matcher, handler:Function):IContext;
 
 		/**
-		 * Retrieves a logger
+		 * Retrieves a logger for a given source
 		 * @param source Logging source
 		 * @return Logger
 		 */

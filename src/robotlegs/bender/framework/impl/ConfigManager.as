@@ -17,6 +17,12 @@ package robotlegs.bender.framework.impl
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.ILogger;
 
+	/**
+	 * The config manager handles configuration files and
+	 * allows the installation of custom configuration handlers.
+	 *
+	 * <p>It is pre-configured to handle plain objects and classes</p>
+	 */
 	public class ConfigManager
 	{
 
@@ -63,6 +69,11 @@ package robotlegs.bender.framework.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * Process a given configuration object by running it through registered handlers.
+		 * <p>If the manager is not initialized the configuration will be queued.</p>
+		 * @param config The configuration object or class
+		 */
 		public function addConfig(config:Object):void
 		{
 			if (!_configs[config])
@@ -72,11 +83,19 @@ package robotlegs.bender.framework.impl
 			}
 		}
 
+		/**
+		 * Adds a custom configuration handlers
+		 * @param matcher Pattern to match configuration objects
+		 * @param handler Handler to process matching configurations
+		 */
 		public function addConfigHandler(matcher:Matcher, handler:Function):void
 		{
 			_objectProcessor.addObjectHandler(matcher, handler);
 		}
 
+		/**
+		 * Processes queued configurations
+		 */
 		public function initialize():void
 		{
 			if (!_initialized)

@@ -49,7 +49,7 @@ package robotlegs.bender.extensions.stageSync
 		{
 			context.extend(StageSyncExtension).configure(contextView);
 			UIImpersonator.addChild(contextView);
-			assertThat(context.initialized, isTrue());
+			assertThat(context.lifecycle.initialized, isTrue());
 		}
 
 		[Test]
@@ -57,7 +57,7 @@ package robotlegs.bender.extensions.stageSync
 		{
 			UIImpersonator.addChild(contextView);
 			context.extend(StageSyncExtension).configure(contextView);
-			assertThat(context.initialized, isTrue());
+			assertThat(context.lifecycle.initialized, isTrue());
 		}
 
 		[Test]
@@ -66,7 +66,7 @@ package robotlegs.bender.extensions.stageSync
 			context.extend(StageSyncExtension).configure(contextView);
 			UIImpersonator.addChild(contextView);
 			UIImpersonator.removeChild(contextView);
-			assertThat(context.destroyed, isTrue());
+			assertThat(context.lifecycle.destroyed, isTrue());
 		}
 	}
 }

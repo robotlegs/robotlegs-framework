@@ -48,7 +48,7 @@ package robotlegs.bender.extensions.contextView
 			context.lifecycle.whenInitializing(function():void {
 				actual = context.injector.getInstance(DisplayObjectContainer);
 			});
-			context.initialize();
+			context.lifecycle.initialize();
 			assertThat(actual, equalTo(contextView));
 		}
 	}

@@ -37,7 +37,7 @@ package robotlegs.bender.extensions.scopedMessageDispatcher
 			context.lifecycle.whenInitializing( function():void {
 				actual = context.injector.getInstance(IMessageDispatcher, name);
 			});
-			context.initialize();
+			context.lifecycle.initialize();
 			assertThat(actual, instanceOf(IMessageDispatcher));
 		}
 
@@ -54,7 +54,7 @@ package robotlegs.bender.extensions.scopedMessageDispatcher
 					dispatchers.push(context.injector.getInstance(IMessageDispatcher, name));
 				}
 			});
-			context.initialize();
+			context.lifecycle.initialize();
 			assertThat(dispatchers.length, equalTo(3));
 		}
 

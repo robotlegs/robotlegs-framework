@@ -96,7 +96,7 @@ package robotlegs.bender.extensions.modularity
 		public function extension_throws_if_context_initialized_with_no_contextView():void
 		{
 			childContext.extend(ModularityExtension);
-			childContext.initialize();
+			childContext.lifecycle.initialize();
 		}
 	}
 }

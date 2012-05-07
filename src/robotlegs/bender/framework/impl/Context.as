@@ -13,7 +13,6 @@ package robotlegs.bender.framework.impl
 	import robotlegs.bender.framework.api.ILifecycle;
 	import robotlegs.bender.framework.api.ILogTarget;
 	import robotlegs.bender.framework.api.ILogger;
-	import robotlegs.bender.framework.api.LifecycleState;
 
 	public class Context implements IContext
 	{
@@ -24,6 +23,9 @@ package robotlegs.bender.framework.impl
 
 		private const _injector:Injector = new Injector();
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get injector():Injector
 		{
 			return _injector;
@@ -55,19 +57,6 @@ package robotlegs.bender.framework.impl
 			return _lifecycle;
 		}
 
-		// todo: move this into lifecycle
-		public function get initialized():Boolean
-		{
-			return _lifecycle.state != LifecycleState.UNINITIALIZED
-				&& _lifecycle.state != LifecycleState.INITIALIZING;
-		}
-
-		// todo: move this into lifecycle
-		public function get destroyed():Boolean
-		{
-			return _lifecycle.state == LifecycleState.DESTROYED;
-		}
-
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
@@ -88,13 +77,7 @@ package robotlegs.bender.framework.impl
 
 		public function Context()
 		{
-			_injector.map(Injector).toValue(_injector);
-			_injector.map(IContext).toValue(this);
-			_logger = _logManager.getLogger(this);
-			_lifecycle = new Lifecycle(this);
-			_configManager = new ConfigManager(this);
-			_extensionInstaller = new ExtensionInstaller(this);
-			_lifecycle.whenInitializing(_configManager.initialize);
+			setup();
 		}
 
 		/*============================================================================*/
@@ -107,7 +90,7 @@ package robotlegs.bender.framework.impl
 		public function initialize():void
 		{
 			_logger.info("Initializing...");
-			_lifecycle.initialize(handleInitializeComplete);
+			_lifecycle.initialize();
 		}
 
 		/**
@@ -116,7 +99,7 @@ package robotlegs.bender.framework.impl
 		public function destroy():void
 		{
 			_logger.info("Destroying...");
-			_lifecycle.destroy(handleDestroyComplete);
+			_lifecycle.destroy();
 		}
 
 		/**
@@ -178,29 +161,39 @@ package robotlegs.bender.framework.impl
 		/* Private Functions                                                          */
 		/*============================================================================*/
 
-		private function handleInitializeComplete(error:Object):void
+		private function setup():void
 		{
-			error && handleError(error);
+			_injector.map(Injector).toValue(_injector);
+			_injector.map(IContext).toValue(this);
+			_logger = _logManager.getLogger(this);
+			_lifecycle = new Lifecycle(this);
+			_configManager = new ConfigManager(this);
+			_extensionInstaller = new ExtensionInstaller(this);
+			_lifecycle.beforeInitializing(beforeInitializing);
+			_lifecycle.whenInitializing(_configManager.initialize);
+			_lifecycle.afterInitializing(afterInitializing);
+			_lifecycle.beforeDestroying(beforeDestroying);
+			_lifecycle.afterDestroying(afterDestroying);
+		}
+
+		private function beforeInitializing():void
+		{
+			_logger.info("Initializing...");
+		}
+
+		private function beforeDestroying():void
+		{
+			_logger.info("Destroying...");
+		}
+
+		private function afterInitializing():void
+		{
 			_logger.info("Initialize complete");
 		}
 
-		private function handleDestroyComplete(error:Object):void
+		private function afterDestroying():void
 		{
-			error && handleError(error);
 			_logger.info("Destroy complete");
-		}
-
-		private function handleError(error:Object):void
-		{
-			_logger.error(error);
-			if (error is Error)
-			{
-				throw error as Error;
-			}
-			else if (error)
-			{
-				throw new Error(error);
-			}
 		}
 	}
 }

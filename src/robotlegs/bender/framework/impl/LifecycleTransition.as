@@ -9,6 +9,9 @@ package robotlegs.bender.framework.impl
 {
 	import robotlegs.bender.framework.api.LifecycleEvent;
 
+	/**
+	 * Handles a lifecycle transition
+	 */
 	public class LifecycleTransition
 	{
 
@@ -37,8 +40,6 @@ package robotlegs.bender.framework.impl
 		private var _postTransitionEvent:String;
 
 		private var _reverse:Boolean;
-
-		private var _locked:Boolean;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -92,9 +93,6 @@ package robotlegs.bender.framework.impl
 
 		public function enter(callback:Function = null):void
 		{
-			// no more configuration beyond this point
-			_locked = true;
-
 			// immediately call back if we have already transitioned, and exit
 			if (_lifecycle.state == _finalState)
 			{

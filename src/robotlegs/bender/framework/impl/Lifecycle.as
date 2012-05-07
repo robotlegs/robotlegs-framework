@@ -35,6 +35,27 @@ package robotlegs.bender.framework.impl
 			return _target;
 		}
 
+		public function get initialized():Boolean
+		{
+			return _state != LifecycleState.UNINITIALIZED
+				&& _state != LifecycleState.INITIALIZING;
+		}
+
+		public function get active():Boolean
+		{
+			return _state == LifecycleState.ACTIVE;
+		}
+
+		public function get suspended():Boolean
+		{
+			return _state == LifecycleState.SUSPENDED;
+		}
+
+		public function get destroyed():Boolean
+		{
+			return _state == LifecycleState.DESTROYED;
+		}
+
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/

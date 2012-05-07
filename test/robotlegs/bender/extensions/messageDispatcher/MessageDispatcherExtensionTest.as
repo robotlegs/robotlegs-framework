@@ -46,7 +46,7 @@ package robotlegs.bender.extensions.messageDispatcher
 			context.lifecycle.whenInitializing(function():void {
 				actual = context.injector.getInstance(IMessageDispatcher);
 			});
-			context.initialize();
+			context.lifecycle.initialize();
 			assertThat(actual, instanceOf(IMessageDispatcher));
 		}
 
@@ -59,7 +59,7 @@ package robotlegs.bender.extensions.messageDispatcher
 			context.lifecycle.whenInitializing(function():void {
 				actual = context.injector.getInstance(IMessageDispatcher);
 			});
-			context.initialize();
+			context.lifecycle.initialize();
 			assertThat(actual, equalTo(expected));
 		}
 	}

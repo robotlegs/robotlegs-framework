@@ -37,7 +37,7 @@ package robotlegs.bender.extensions.scopedEventDispatcher
 			context.lifecycle.whenInitializing( function():void {
 				actual = context.injector.getInstance(IEventDispatcher, name);
 			});
-			context.initialize();
+			context.lifecycle.initialize();
 			assertThat(actual, instanceOf(IEventDispatcher));
 		}
 
@@ -54,7 +54,7 @@ package robotlegs.bender.extensions.scopedEventDispatcher
 					dispatchers.push(context.injector.getInstance(IEventDispatcher, name));
 				}
 			});
-			context.initialize();
+			context.lifecycle.initialize();
 			assertThat(dispatchers.length, equalTo(3));
 		}
 

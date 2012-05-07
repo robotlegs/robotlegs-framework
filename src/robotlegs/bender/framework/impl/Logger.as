@@ -11,6 +11,9 @@ package robotlegs.bender.framework.impl
 	import robotlegs.bender.framework.api.ILogTarget;
 	import robotlegs.bender.framework.api.ILogger;
 
+	/**
+	 * Default Robotlegs logger
+	 */
 	public class Logger implements ILogger
 	{
 
@@ -36,26 +39,41 @@ package robotlegs.bender.framework.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function debug(message:*, params:Array = null):void
 		{
 			_target.log(_source, 32, getTimer(), message, params);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function info(message:*, params:Array = null):void
 		{
 			_target.log(_source, 16, getTimer(), message, params);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function warn(message:*, params:Array = null):void
 		{
 			_target.log(_source, 8, getTimer(), message, params);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function error(message:*, params:Array = null):void
 		{
 			_target.log(_source, 4, getTimer(), message, params);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function fatal(message:*, params:Array = null):void
 		{
 			_target.log(_source, 2, getTimer(), message, params);

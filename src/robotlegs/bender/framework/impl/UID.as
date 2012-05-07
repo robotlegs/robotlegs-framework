@@ -16,19 +16,24 @@ package robotlegs.bender.framework.impl
 		/* Private Static Properties                                                  */
 		/*============================================================================*/
 
-		private static var i:uint;
+		private static var _i:uint;
 
 		/*============================================================================*/
 		/* Public Static Functions                                                    */
 		/*============================================================================*/
 
+		/**
+		 * Generates a UID for a given source object or class
+		 * @param source The source object or class
+		 * @return Generated UID
+		 */
 		public static function create(source:* = null):String
 		{
 			if (source is Class)
 				source = getQualifiedClassName(source).split("::").pop();
 
 			return (source ? source + '-' : '')
-				+ (i++).toString(16)
+				+ (_i++).toString(16)
 				+ '-'
 				+ (Math.random() * 255).toString(16);
 		}
