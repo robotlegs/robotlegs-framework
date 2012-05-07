@@ -15,7 +15,7 @@ To create a context simply instantiate a new Context and provide some configurat
 
 Note: you must hold on to that context reference. Failing to do so will result in the context instance being garbage collected.
 
-In the example above we are installing a bundle, a configuration and a reference to a Display Object Container.
+In the example above we are installing a bundle, a configuration and a reference to a Display Object Container. The Display Object Container will be used as the "contextView".
 
 # Bundles and Extensions
 
@@ -29,7 +29,7 @@ Some extensions offer some extra configuration by way of constructor arguments:
 
 # Configuration
 
-### Plain Class Configs
+## Class Configs
 
     _context.configure(MyModuleConfig);
 
@@ -52,19 +52,35 @@ Such a config might look like this:
         }
     }
 
-Or, if you dislike metadata, like this:
+Or, if you dislike metadata:
 
     class MyModuleConfig
     {
-        [PostConstruct]
-        public function init(mediatorMap:IMediatorMap):void
+        public function MyModuleConfig(mediatorMap:IMediatorMap)
         {
             mediatorMap.map(SomeView)
                 .toMediator(SomeMediator);
         }
     }
 
-## Plain Object Configs
+Note: you will not be able to use the above config as a Flex tag due to the required constructor arguments.
+
+Alternatively, you can implement the optional IConfig interface. If a config implements this interface `configure()` will be invoked after construction/injection:
+
+    class MyModuleConfig implements IConfig
+    {
+        [Inject]
+        public var mediatorMap:IMediatorMap;
+
+        public function configure():void
+        {
+            mediatorMap.map(SomeView)
+                .toMediator(SomeMediator);
+        }
+    }
+
+
+## Object Configs
 
     _context.configure(new MyModuleConfig("hello"));
 
