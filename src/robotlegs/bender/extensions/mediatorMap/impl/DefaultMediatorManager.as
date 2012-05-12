@@ -55,7 +55,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			}
 			catch (error:Error)
 			{
-				// do nothing
+				// Do nothing
 			}
 			return UIComponentClass != null;
 		}
@@ -66,45 +66,45 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		private function onMediatorCreate(event:MediatorFactoryEvent):void
 		{
-			const view:DisplayObject = event.view as DisplayObject;
-			
-			if(event.view && !view)
-				initializeMediator(view, event.mediator);
-			
-			if (!view)
-				return;
+			const mediator:Object = event.mediator;
+			const displayObject:DisplayObject = event.view as DisplayObject;
 
-			view.addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
-
-			if (flexAvailable && (event.view is UIComponentClass) && !event.view['initialized'])
+			if (!displayObject)
 			{
-				view.addEventListener('creationComplete', function(e:Event):void {
-					view.removeEventListener('creationComplete', arguments.callee);
-					// check that we haven't been removed in the meantime
-					if (_factory.getMediator(event.view, event.mapping))
-						initializeMediator(view, event.mediator);
+				// Non-display-object was added, initialize and exit
+				initializeMediator(event.view, mediator);
+				return;
+			}
+
+			// Watch this view for removal
+			displayObject.addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
+
+			// Is this a UIComponent that needs to be initialized?
+			if (flexAvailable && (displayObject is UIComponentClass) && !displayObject['initialized'])
+			{
+				displayObject.addEventListener('creationComplete', function(e:Event):void
+				{
+					displayObject.removeEventListener('creationComplete', arguments.callee);
+					// ensure that we haven't been removed in the meantime
+					if (_factory.getMediator(displayObject, event.mapping))
+						initializeMediator(displayObject, mediator);
 				});
 			}
 			else
 			{
-				initializeMediator(view, event.mediator);
+				initializeMediator(displayObject, mediator);
 			}
 		}
 
 		private function onMediatorRemove(event:MediatorFactoryEvent):void
 		{
-			const view:DisplayObject = event.view as DisplayObject;
+			const displayObject:DisplayObject = event.view as DisplayObject;
 
-			if (view)
-				view.removeEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
-			
-			if(event.mediator)
+			if (displayObject)
+				displayObject.removeEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
+
+			if (event.mediator)
 				destroyMediator(event.mediator);
-			
-			// note: as far as I know, the re-parenting issue does not exist with Flex 4+.
-			// question: should we bother handling re-parenting?
-			// Stray: let's not handle it. People can defend against unwanted hooks running
-			// during reparenting for themselves quite easily.
 		}
 
 		private function onRemovedFromStage(event:Event):void
@@ -112,7 +112,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			_factory.removeMediators(event.target);
 		}
 
-		private function initializeMediator(view:DisplayObject, mediator:Object):void
+		private function initializeMediator(view:Object, mediator:Object):void
 		{
 			if (mediator.hasOwnProperty('viewComponent'))
 				mediator.viewComponent = view;
