@@ -102,7 +102,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 				actual.push(phase);
 			});
 			const mapping:IMediatorMapping = new MediatorMapping(createTypeFilter([Sprite]), SomeMediator);
-			factory.createMediators(view, Sprite, [mapping])
+			factory.createMediators(view, Sprite, [mapping]);
 			factory.removeMediators(view);
 			assertThat(actual, array(expected));
 		}
@@ -122,6 +122,15 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			delayAssertion(function():void {
 				assertThat(mediator.initialized, isTrue());
 			}, 50)
+		}
+
+		[Test]
+		public function mediator_is_given_NonDisplayObject_view():void
+		{
+			const expected:Number = 1.5;
+			const mapping:IMediatorMapping = new MediatorMapping(createTypeFilter([Number]), SomeMediator);
+			const mediator:SomeMediator = factory.createMediators(expected, Number, [mapping])[0];
+			assertThat(mediator.view, equalTo(expected));
 		}
 
 		/*============================================================================*/
