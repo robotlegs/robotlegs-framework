@@ -41,10 +41,23 @@ package robotlegs.bender.extensions.contextView
 		/*============================================================================*/
 
 		[Test]
-		public function contextView_is_mapped_into_injector():void
+		public function displayObjectContainer_is_mapped_into_injector_as_contextView():void
 		{
 			var actual:Object = null;
 			context.extend(ContextViewExtension).configure(contextView);
+			context.lifecycle.whenInitializing(function():void {
+				actual = context.injector.getInstance(DisplayObjectContainer);
+			});
+			context.lifecycle.initialize();
+			assertThat(actual, equalTo(contextView));
+		}
+
+		[Test]
+		public function second_displayObjectContainer_is_ignored():void
+		{
+			var actual:Object = null;
+			const secondView:DisplayObjectContainer = new Canvas();
+			context.extend(ContextViewExtension).configure(contextView, secondView);
 			context.lifecycle.whenInitializing(function():void {
 				actual = context.injector.getInstance(DisplayObjectContainer);
 			});

@@ -9,10 +9,11 @@ package robotlegs.bender.extensions.contextView
 {
 	import flash.display.DisplayObjectContainer;
 	import org.hamcrest.object.instanceOf;
+	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
-	import robotlegs.bender.framework.impl.UID;
 	import robotlegs.bender.framework.api.ILogger;
+	import robotlegs.bender.framework.impl.UID;
 
 	/**
 	 * <p>This Extension waits for a DisplayObjectContainer to be added as a configuration
@@ -29,7 +30,7 @@ package robotlegs.bender.extensions.contextView
 
 		private const _uid:String = UID.create(ContextViewExtension);
 
-		private var _context:IContext;
+		private var _injector:Injector;
 
 		private var _logger:ILogger;
 
@@ -41,9 +42,9 @@ package robotlegs.bender.extensions.contextView
 
 		public function extend(context:IContext):void
 		{
-			_context = context;
+			_injector = context.injector;
 			_logger = context.getLogger(this);
-			_context.addConfigHandler(instanceOf(DisplayObjectContainer), handleContextView);
+			context.addConfigHandler(instanceOf(DisplayObjectContainer), handleContextView);
 		}
 
 		public function toString():String
@@ -57,8 +58,15 @@ package robotlegs.bender.extensions.contextView
 
 		private function handleContextView(view:DisplayObjectContainer):void
 		{
-			_logger.debug("Mapping provided DisplayObjectContainer as contextView...");
-			_context.injector.map(DisplayObjectContainer).toValue(view);
+			if (_injector.satisfiesDirectly(DisplayObjectContainer))
+			{
+				_logger.warn('A contextView has already been mapped, ignoring {0}', [view]);
+			}
+			else
+			{
+				_logger.debug("Mapping {0} as contextView", [view]);
+				_injector.map(DisplayObjectContainer).toValue(view);
+			}
 		}
 	}
 }
