@@ -19,9 +19,9 @@ package robotlegs.bender.extensions.viewManager.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var _registry:ContainerRegistry;
+		private const _filter:RegExp = /^mx\.|^spark\.|^flash\./;
 
-		private var _filter:RegExp = /^mx\.|^spark\.|^flash\./;
+		private var _registry:ContainerRegistry;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -85,6 +85,8 @@ package robotlegs.bender.extensions.viewManager.impl
 		private function onViewAddedToStage(event:Event):void
 		{
 			const view:DisplayObject = event.target as DisplayObject;
+			// Question: would it be worth caching QCNs by view in a weak dictionary,
+			// to avoid getQualifiedClassName() cost?
 			const qcn:String = getQualifiedClassName(view);
 			const filtered:Boolean = _filter.test(qcn);
 			if (filtered)

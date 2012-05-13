@@ -45,14 +45,14 @@ package robotlegs.bender.bundles.mvcs
 				ContextViewExtension,
 				EventDispatcherExtension,
 				ModularityExtension,
-				StageSyncExtension,
 				CommandMapExtension,
 				EventCommandMapExtension,
 				LocalEventMapExtension,
 				ViewManagerExtension,
 				StageObserverExtension,
 				ManualStageObserverExtension,
-				MediatorMapExtension);
+				MediatorMapExtension,
+				StageSyncExtension);
 
 			context.configure(ContextViewListenerConfig);
 		}

@@ -50,8 +50,8 @@ package robotlegs.bender.extensions.viewManager
 			// But you get your own View Manager
 			_injector.map(IViewManager).toSingleton(ViewManager);
 
-			context.lifecycle.whenInitializing(handleContextSelfInitialize);
-			context.lifecycle.whenDestroying(handleContextSelfDestroy);
+			context.lifecycle.whenInitializing(whenInitializing);
+			context.lifecycle.whenDestroying(whenDestroying);
 		}
 
 		public function toString():String
@@ -63,12 +63,12 @@ package robotlegs.bender.extensions.viewManager
 		/* Private Functions                                                          */
 		/*============================================================================*/
 
-		private function handleContextSelfInitialize():void
+		private function whenInitializing():void
 		{
 			_viewManager = _injector.getInstance(IViewManager);
 		}
 
-		private function handleContextSelfDestroy():void
+		private function whenDestroying():void
 		{
 			_viewManager.removeAllHandlers();
 			_injector.unmap(IViewManager);

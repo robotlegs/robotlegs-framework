@@ -7,7 +7,6 @@
 
 package robotlegs.bender.extensions.modularity
 {
-
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
 	public class ModularityExtensionTestSuite

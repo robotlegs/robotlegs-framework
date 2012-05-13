@@ -28,8 +28,6 @@ package robotlegs.bender.extensions.mediatorMap
 
 		private const _uid:String = UID.create(MediatorMapExtension);
 
-		private var _context:IContext;
-
 		private var _injector:Injector;
 
 		private var _mediatorMap:IMediatorMap;
@@ -44,11 +42,10 @@ package robotlegs.bender.extensions.mediatorMap
 
 		public function extend(context:IContext):void
 		{
-			_context = context;
 			_injector = context.injector;
 			_injector.map(IMediatorFactory).toSingleton(MediatorFactory);
 			_injector.map(IMediatorMap).toSingleton(MediatorMap);
-			_context.lifecycle.beforeInitializing(beforeInitializing);
+			context.lifecycle.beforeInitializing(beforeInitializing);
 		}
 
 		public function toString():String

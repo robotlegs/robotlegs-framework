@@ -14,6 +14,8 @@ package robotlegs.bender.extensions.modularity
 	import org.hamcrest.object.equalTo;
 	import robotlegs.bender.extensions.contextView.ContextViewExtension;
 	import robotlegs.bender.extensions.stageSync.StageSyncExtension;
+	import robotlegs.bender.extensions.viewManager.ViewManagerExtension;
+	import robotlegs.bender.extensions.viewManager.api.IViewManager;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.impl.Context;
 
@@ -24,7 +26,7 @@ package robotlegs.bender.extensions.modularity
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var container:UIComponent;
+		private var root:UIComponent;
 
 		private var parentView:UIComponent;
 
@@ -41,21 +43,18 @@ package robotlegs.bender.extensions.modularity
 		[Before(async, ui)]
 		public function setUp():void
 		{
-			container = new UIComponent();
+			root = new UIComponent();
 			parentView = new UIComponent();
 			childView = new UIComponent();
 
 			parentContext = new Context().extend(StageSyncExtension, ContextViewExtension);
 			childContext = new Context().extend(StageSyncExtension, ContextViewExtension);
-
-			container.addChild(parentView);
-			parentView.addChild(childView);
 		}
 
 		[After(async, ui)]
 		public function tearDown():void
 		{
-			UIImpersonator.removeChild(container);
+			UIImpersonator.removeChild(root);
 		}
 
 		/*============================================================================*/
@@ -65,30 +64,33 @@ package robotlegs.bender.extensions.modularity
 		[Test(async, ui)]
 		public function context_inherits_parent_injector():void
 		{
+			UIImpersonator.addChild(root);
 			parentContext.extend(ModularityExtension).configure(parentView);
 			childContext.extend(ModularityExtension).configure(childView);
-
-			UIImpersonator.addChild(container);
+			root.addChild(parentView);
+			parentView.addChild(childView);
 			assertThat(childContext.injector.parentInjector, equalTo(parentContext.injector));
 		}
 
 		[Test(async, ui)]
 		public function context_does_not_inherit_parent_injector_when_not_interested():void
 		{
+			UIImpersonator.addChild(root);
 			parentContext.extend(ModularityExtension).configure(parentView);
 			childContext.extend(new ModularityExtension(false)).configure(childView);
-
-			UIImpersonator.addChild(container);
+			root.addChild(parentView);
+			parentView.addChild(childView);
 			assertThat(childContext.injector.parentInjector, not(parentContext.injector));
 		}
 
 		[Test(async, ui)]
 		public function context_does_not_inherit_parent_injector_when_disallowed_by_parent():void
 		{
+			UIImpersonator.addChild(root);
 			parentContext.extend(new ModularityExtension(true, false)).configure(parentView);
 			childContext.extend(ModularityExtension).configure(childView);
-
-			UIImpersonator.addChild(container);
+			root.addChild(parentView);
+			parentView.addChild(childView);
 			assertThat(childContext.injector.parentInjector, not(parentContext.injector));
 		}
 
@@ -97,6 +99,34 @@ package robotlegs.bender.extensions.modularity
 		{
 			childContext.extend(ModularityExtension);
 			childContext.lifecycle.initialize();
+		}
+
+		[Test]
+		public function child_added_to_viewManager_inherits_injector():void
+		{
+			UIImpersonator.addChild(root);
+			parentContext = new Context().extend(
+				ContextViewExtension,
+				ModularityExtension,
+				ViewManagerExtension,
+				StageSyncExtension)
+				.configure(parentView);
+
+			const viewManager:IViewManager =
+				parentContext.injector.getInstance(IViewManager);
+			viewManager.addContainer(childView);
+
+			childContext = new Context().extend(
+				ContextViewExtension,
+				ModularityExtension,
+				StageSyncExtension)
+				.configure(childView);
+
+			root.addChild(parentView);
+			root.addChild(childView);
+
+			assertThat(childContext.injector.parentInjector,
+				equalTo(parentContext.injector));
 		}
 	}
 }

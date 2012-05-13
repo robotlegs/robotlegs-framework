@@ -8,17 +8,31 @@
 package robotlegs.bender.extensions.viewManager.impl
 {
 	import flash.display.DisplayObjectContainer;
+	import flash.events.EventDispatcher;
 	import robotlegs.bender.extensions.viewManager.api.IViewHandler;
 	import robotlegs.bender.extensions.viewManager.api.IViewManager;
 
-	public class ViewManager implements IViewManager
+	[Event(name="containerAdd", type="robotlegs.bender.extensions.viewManager.impl.ViewManagerEvent")]
+	[Event(name="containerRemove", type="robotlegs.bender.extensions.viewManager.impl.ViewManagerEvent")]
+	[Event(name="handlerAdd", type="robotlegs.bender.extensions.viewManager.impl.ViewManagerEvent")]
+	[Event(name="handlerRemove", type="robotlegs.bender.extensions.viewManager.impl.ViewManagerEvent")]
+	public class ViewManager extends EventDispatcher implements IViewManager
 	{
+
+		/*============================================================================*/
+		/* Public Properties                                                          */
+		/*============================================================================*/
+
+		private const _containers:Vector.<DisplayObjectContainer> = new Vector.<DisplayObjectContainer>;
+
+		public function get containers():Vector.<DisplayObjectContainer>
+		{
+			return _containers;
+		}
 
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
-
-		private const _containers:Vector.<DisplayObjectContainer> = new Vector.<DisplayObjectContainer>;
 
 		private const _handlers:Vector.<IViewHandler> = new Vector.<IViewHandler>;
 
@@ -48,6 +62,7 @@ package robotlegs.bender.extensions.viewManager.impl
 			{
 				_registry.addContainer(container).addHandler(handler);
 			}
+			dispatchEvent(new ViewManagerEvent(ViewManagerEvent.CONTAINER_ADD, container));
 		}
 
 		public function removeContainer(container:DisplayObjectContainer):void
@@ -63,6 +78,7 @@ package robotlegs.bender.extensions.viewManager.impl
 			{
 				binding.removeHandler(handler);
 			}
+			dispatchEvent(new ViewManagerEvent(ViewManagerEvent.CONTAINER_REMOVE, container));
 		}
 
 		public function addViewHandler(handler:IViewHandler):void
@@ -76,6 +92,7 @@ package robotlegs.bender.extensions.viewManager.impl
 			{
 				_registry.addContainer(container).addHandler(handler);
 			}
+			dispatchEvent(new ViewManagerEvent(ViewManagerEvent.HANDLER_ADD, null, handler));
 		}
 
 		public function removeViewHandler(handler:IViewHandler):void
@@ -90,6 +107,7 @@ package robotlegs.bender.extensions.viewManager.impl
 			{
 				_registry.getBinding(container).removeHandler(handler);
 			}
+			dispatchEvent(new ViewManagerEvent(ViewManagerEvent.HANDLER_REMOVE, null, handler));
 		}
 
 		public function removeAllHandlers():void

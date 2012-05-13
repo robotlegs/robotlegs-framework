@@ -5,41 +5,54 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.modularity.events
+package robotlegs.bender.extensions.viewManager.impl
 {
+	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
-	import robotlegs.bender.framework.api.IContext;
+	import robotlegs.bender.extensions.viewManager.api.IViewHandler;
 
-	public class ModularContextEvent extends Event
+	public class ViewManagerEvent extends Event
 	{
 
 		/*============================================================================*/
 		/* Public Static Properties                                                   */
 		/*============================================================================*/
 
-		public static const CONTEXT_ADD:String = "contextAdd";
+		public static const CONTAINER_ADD:String = 'containerAdd';
 
-		public static const CONTEXT_REMOVE:String = "contextRemove";
+		public static const CONTAINER_REMOVE:String = 'containerRemove';
+
+		public static const HANDLER_ADD:String = 'handlerAdd';
+
+		public static const HANDLER_REMOVE:String = 'handlerRemove';
 
 		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		private var _context:IContext;
+		private var _container:DisplayObjectContainer;
 
-		public function get context():IContext
+		public function get container():DisplayObjectContainer
 		{
-			return _context;
+			return _container;
+		}
+
+		private var _handler:IViewHandler;
+
+		public function get handler():IViewHandler
+		{
+			return _handler;
 		}
 
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function ModularContextEvent(type:String, context:IContext)
+		public function ViewManagerEvent(type:String, container:DisplayObjectContainer = null, handler:IViewHandler = null)
 		{
-			super(type, true, true);
-			_context = context;
+			super(type);
+			_container = container;
+			_handler = handler;
 		}
 
 		/*============================================================================*/
@@ -48,12 +61,7 @@ package robotlegs.bender.extensions.modularity.events
 
 		override public function clone():Event
 		{
-			return new ModularContextEvent(type, context);
-		}
-
-		override public function toString():String
-		{
-			return formatToString("ModularContextEvent", "context");
+			return new ViewManagerEvent(type, _container, _handler);
 		}
 	}
 }
