@@ -89,7 +89,6 @@ package robotlegs.bender.framework.impl
 		 */
 		public function initialize():void
 		{
-			_logger.info("Initializing...");
 			_lifecycle.initialize();
 		}
 
@@ -98,7 +97,6 @@ package robotlegs.bender.framework.impl
 		 */
 		public function destroy():void
 		{
-			_logger.info("Destroying...");
 			_lifecycle.destroy();
 		}
 
@@ -170,7 +168,6 @@ package robotlegs.bender.framework.impl
 			_configManager = new ConfigManager(this);
 			_extensionInstaller = new ExtensionInstaller(this);
 			_lifecycle.beforeInitializing(beforeInitializing);
-			_lifecycle.whenInitializing(_configManager.initialize);
 			_lifecycle.afterInitializing(afterInitializing);
 			_lifecycle.beforeDestroying(beforeDestroying);
 			_lifecycle.afterDestroying(afterDestroying);
@@ -181,14 +178,14 @@ package robotlegs.bender.framework.impl
 			_logger.info("Initializing...");
 		}
 
-		private function beforeDestroying():void
-		{
-			_logger.info("Destroying...");
-		}
-
 		private function afterInitializing():void
 		{
 			_logger.info("Initialize complete");
+		}
+
+		private function beforeDestroying():void
+		{
+			_logger.info("Destroying...");
 		}
 
 		private function afterDestroying():void

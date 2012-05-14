@@ -17,6 +17,7 @@ package robotlegs.bender.framework.impl
 	import robotlegs.bender.framework.api.IConfig;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.ILogger;
+	import robotlegs.bender.framework.api.LifecycleEvent;
 
 	/**
 	 * The config manager handles configuration files and
@@ -64,6 +65,10 @@ package robotlegs.bender.framework.impl
 			_logger = context.getLogger(this);
 			addConfigHandler(instanceOf(Class), handleClass);
 			addConfigHandler(plainObjectMatcher, handleObject);
+			// The ConfigManager should process the config queue
+			// at the end of the INITIALIZE phase,
+			// but *before* POST_INITIALIZE, so use low event priority
+			context.lifecycle.addEventListener(LifecycleEvent.INITIALIZE, initialize, false, -100);
 		}
 
 		/*============================================================================*/
@@ -94,18 +99,6 @@ package robotlegs.bender.framework.impl
 			_objectProcessor.addObjectHandler(matcher, handler);
 		}
 
-		/**
-		 * Processes queued configurations
-		 */
-		public function initialize():void
-		{
-			if (!_initialized)
-			{
-				_initialized = true;
-				processQueue();
-			}
-		}
-
 		public function toString():String
 		{
 			return _uid;
@@ -114,6 +107,15 @@ package robotlegs.bender.framework.impl
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
+
+		private function initialize(event:LifecycleEvent):void
+		{
+			if (!_initialized)
+			{
+				_initialized = true;
+				processQueue();
+			}
+		}
 
 		private function handleClass(type:Class):void
 		{

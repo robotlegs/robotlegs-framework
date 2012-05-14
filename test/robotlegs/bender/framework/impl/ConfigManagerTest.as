@@ -8,6 +8,7 @@
 package robotlegs.bender.framework.impl
 {
 	import org.flexunit.assertThat;
+	import org.hamcrest.collection.array;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.instanceOf;
 	import org.hamcrest.object.nullValue;
@@ -17,14 +18,12 @@ package robotlegs.bender.framework.impl
 	{
 
 		/*============================================================================*/
-		/* Public Properties                                                          */
-		/*============================================================================*/
-
-		public var injector:Injector;
-
-		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
+
+		private var context:Context;
+
+		private var injector:Injector;
 
 		private var configManager:ConfigManager;
 
@@ -35,7 +34,7 @@ package robotlegs.bender.framework.impl
 		[Before]
 		public function before():void
 		{
-			var context:Context = new Context();
+			context = new Context();
 			injector = context.injector;
 			configManager = new ConfigManager(context);
 		}
@@ -77,7 +76,7 @@ package robotlegs.bender.framework.impl
 				actual = config;
 			});
 			assertThat(actual, nullValue());
-			configManager.initialize();
+			context.initialize();
 			assertThat(actual, instanceOf(PlainConfig));
 		}
 
@@ -88,7 +87,7 @@ package robotlegs.bender.framework.impl
 			injector.map(Function, 'callback').toValue(function(config:PlainConfig):void {
 				actual = config;
 			});
-			configManager.initialize();
+			context.initialize();
 			configManager.addConfig(PlainConfig);
 			assertThat(actual, instanceOf(PlainConfig));
 		}
@@ -103,7 +102,7 @@ package robotlegs.bender.framework.impl
 				actual = config;
 			});
 			assertThat(actual, nullValue());
-			configManager.initialize();
+			context.initialize();
 			assertThat(actual, equalTo(expected));
 		}
 
@@ -112,7 +111,7 @@ package robotlegs.bender.framework.impl
 		{
 			const expected:PlainConfig = new PlainConfig();
 			var actual:Object = null;
-			configManager.initialize();
+			context.initialize();
 			injector.map(Function, 'callback').toValue(function(config:Object):void {
 				actual = config;
 			});
@@ -129,7 +128,7 @@ package robotlegs.bender.framework.impl
 				actual = config;
 			});
 			configManager.addConfig(expected);
-			configManager.initialize();
+			context.initialize();
 			assertThat(actual, equalTo(expected));
 		}
 
@@ -141,8 +140,26 @@ package robotlegs.bender.framework.impl
 				actual = config;
 			});
 			configManager.addConfig(TypedConfig);
-			configManager.initialize();
+			context.initialize();
 			assertThat(actual, instanceOf(TypedConfig));
+		}
+
+		[Test]
+		public function config_queue_is_processed_after_other_initialize_listeners():void
+		{
+			const actual:Array = [];
+			injector.map(Function, 'callback').toValue(function(config:Object):void {
+				actual.push('config');
+			});
+			configManager.addConfig(TypedConfig);
+			context.lifecycle.whenInitializing(function():void {
+				actual.push('listener1');
+			});
+			context.lifecycle.whenInitializing(function():void {
+				actual.push('listener2');
+			});
+			context.initialize();
+			assertThat(actual, array(['listener1', 'listener2', 'config']));
 		}
 	}
 }
