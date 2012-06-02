@@ -38,5 +38,9 @@ package robotlegs.bender.extensions.logging.integration
 		{
 			return _context.getLogger(targetType);
 		}
+
+		public function destroy():void
+		{
+		}
 	}
 }

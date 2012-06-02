@@ -82,9 +82,7 @@
 		
 		<!-- The Flex SDK to compile against -->
 		<flex.sdk.version>4.5.1.21328</flex.sdk.version>
-		<swiftsuspenders.version>2.0.0-b1</swiftsuspenders.version>
-		<as3commons.version>2.7</as3commons.version>
-		<robotlegs1.version>1.5.2</robotlegs1.version>
+		<swiftsuspenders.version>2.0.0-b4</swiftsuspenders.version>
 		
 		<!-- Unit testing frameworks and dependencies -->
 		<flexunit.version>4.1.0-8</flexunit.version>
@@ -165,24 +163,6 @@
 			<groupId>org.swiftsuspenders</groupId>
 			<artifactId>swiftsuspenders</artifactId>
 			<version>${swiftsuspenders.version}</version>
-			<type>swc</type>
-			<scope>merged</scope>
-		</dependency>
-		
-		<!-- AS3 Commons Logging. The used definitions will be merged in. -->
-		<dependency>
-			<groupId>org.as3commons</groupId>
-	    	<artifactId>as3commons-logging</artifactId>
-	    	<type>swc</type>
-	    	<version>${as3commons.version}</version>
-			<scope>merged</scope>
-		</dependency>
-		
-		<!-- Robotlegs 1 dependency. The used definitions will be merged in. -->
-		<dependency>
-			<groupId>org.robotlegs</groupId>
-			<artifactId>robotlegs-framework</artifactId>
-			<version>${robotlegs1.version}</version>
 			<type>swc</type>
 			<scope>merged</scope>
 		</dependency>

@@ -10,8 +10,8 @@ package robotlegs.bender.mxml
 	import flash.display.DisplayObjectContainer;
 	import flash.utils.setTimeout;
 	import mx.core.IMXMLObject;
-	import org.swiftsuspenders.DescribeTypeReflector;
-	import org.swiftsuspenders.Reflector;
+	import org.swiftsuspenders.reflection.DescribeTypeReflector;
+	import org.swiftsuspenders.reflection.Reflector;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
 	import robotlegs.bender.framework.impl.Context;
