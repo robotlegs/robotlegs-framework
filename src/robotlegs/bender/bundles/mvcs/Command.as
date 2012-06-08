@@ -12,7 +12,7 @@ package robotlegs.bender.bundles.mvcs
 	/**
 	 * Abstract command implementation
 	 *
-	 * <p>Please note: you do not have to extends this class. Any class with an execute method can be used.</p>
+	 * <p>Please note: you do not have to extend this class. Any class with an execute method can be used.</p>
 	 */
 	public class Command implements ICommand
 	{
