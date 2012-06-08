@@ -6,6 +6,7 @@
 	height="200"
 	creationComplete="onCreationComplete()"
 	backgroundColor="#000000"
+	color="#FFFFFF"
 	>
 
 	<fx:Script>
@@ -14,11 +15,6 @@
 			import org.flexunit.listeners.CIListener;
 			import org.flexunit.runner.FlexUnitCore;
 			import suites.EntireTestSuite;
-
-			/*embedded just for fun*/
-			[Bindable]
-			[Embed(source="../build/assets/rl_justlegs.png")]
-			private var Logo:Class;
 
 			private var core:FlexUnitCore;
 
@@ -32,8 +28,8 @@
 		]]>
 	</fx:Script>
 
-	<s:BitmapImage 
-		source="{Logo}"
+	<s:Label
+		text="Robotlegs runner"
 		horizontalCenter="0"
 		verticalCenter="0"
 		/>
