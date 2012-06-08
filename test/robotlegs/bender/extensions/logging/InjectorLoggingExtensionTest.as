@@ -15,7 +15,7 @@ package robotlegs.bender.extensions.logging
 	import org.hamcrest.collection.hasItem;
 	import org.hamcrest.object.instanceOf;
 	import org.swiftsuspenders.InjectionEvent;
-	import org.swiftsuspenders.MappingEvent;
+	import org.swiftsuspenders.mapping.MappingEvent;
 	import robotlegs.bender.extensions.logging.support.SupportLogTarget;
 	import robotlegs.bender.framework.impl.Context;
 	import robotlegs.bender.framework.api.LogLevel;

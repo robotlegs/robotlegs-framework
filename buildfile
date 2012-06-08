@@ -26,7 +26,7 @@ define "robotlegs-framework", :layout => layout do
   ]
 
   compile.using( :compc, :flexsdk => flexsdk, :args => args ).
-    with( _(:lib,"Swiftsuspenders-v2.0.0b5.swc"),
+    with( _(:lib,"Swiftsuspenders-v2.0.0rc1.swc"),
           _(:lib,"hamcrest-as3-flex-1.1.3.swc") )
 
   testrunner = _(:source, :test, :as3, "RobotlegsTest.mxml")

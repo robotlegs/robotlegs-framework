@@ -9,7 +9,7 @@ package robotlegs.bender.extensions.logging.impl
 {
 	import org.swiftsuspenders.InjectionEvent;
 	import org.swiftsuspenders.Injector;
-	import org.swiftsuspenders.MappingEvent;
+	import org.swiftsuspenders.mapping.MappingEvent;
 	import robotlegs.bender.framework.api.ILogger;
 
 	public class InjectorListener
@@ -25,7 +25,7 @@ package robotlegs.bender.extensions.logging.impl
 			InjectionEvent.PRE_CONSTRUCT];
 
 		private static const MAPPING_TYPES:Array = [
-			// MappingEvent.MAPPING_OVERRIDE, // TODO: re-enable on next Swiftsuspenders update
+			MappingEvent.MAPPING_OVERRIDE,
 			MappingEvent.POST_MAPPING_CHANGE,
 			MappingEvent.POST_MAPPING_CREATE,
 			MappingEvent.POST_MAPPING_REMOVE,
