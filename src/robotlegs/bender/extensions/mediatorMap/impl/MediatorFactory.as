@@ -155,7 +155,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 			for each (requiredType in requiredTypes)
 			{
-				if(_injector.map(requiredType))
+				if(_injector.satisfiesDirectly(requiredType))
 					_injector.unmap(requiredType);
 			}
 		}

@@ -102,9 +102,9 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			instance.mapMatcher(new TypeMatcher().anyOf(MovieClip, Sprite)).toMediator(ExampleMediator);
 			instance.handleView(new Sprite(), null);
 
-			assertFalse(injector.satisfies(MovieClip));
-			assertFalse(injector.satisfies(Sprite));
-			assertFalse(injector.satisfies(ExampleMediator));
+			assertFalse(injector.satisfiesDirectly(MovieClip));
+			assertFalse(injector.satisfiesDirectly(Sprite));
+			assertFalse(injector.satisfiesDirectly(ExampleMediator));
 		}
 
 		[Test]
