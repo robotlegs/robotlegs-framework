@@ -6,6 +6,7 @@
 // ------------------------------------------------------------------------------
 package robotlegs.bender.extensions.eventCommandMap.impl {
 	import robotlegs.bender.extensions.commandMap.api.ICommandMapping;
+	import robotlegs.bender.framework.impl.guardsApprove;
 
 	import org.swiftsuspenders.Injector;
 
@@ -19,43 +20,69 @@ package robotlegs.bender.extensions.eventCommandMap.impl {
 		private var _eventClass : Class;
 		private var _event : Event;
 		private var _mappings : Vector.<ICommandMapping>;
+		private var _appliedMappings : Vector.<ICommandMapping>;
+		private var _commands : Vector.<*>;
 		private var _eventConstructor : Class;
+		private var _once : Boolean;
 
 		/*============================================================================*/
 		/* Constructor                                                         */
 		/*============================================================================*/
-		public function EventCommandExecutor(injector : Injector, eventClass : Class) {
+		public function EventCommandExecutor(injector : Injector, eventClass : Class, once : Boolean) {
 			_injector = injector.createChildInjector();
 			_eventClass = eventClass;
+			_once = once;
 		}
 
 		/*============================================================================*/
 		/* Public Functions                                                         */
 		/*============================================================================*/
-		public function execute(event : Event, mappings : Vector.<ICommandMapping>) : void {
+		public function execute() : void {
+			for each ( var command:* in _commands)
+				command.execute();
+			cleanup();
+		}
+
+		private function cleanup() : void {
+			_event = null;
+			_eventConstructor = null;
+			_mappings = null;
+			_appliedMappings = null;
+			_commands = null;
+		}
+
+		public function prepare(event : Event, mappings : Vector.<ICommandMapping>) : Vector.<ICommandMapping> {
 			_event = event;
 			_eventConstructor = _event["constructor"] as Class;
 			_mappings = mappings;
 
-			executeCommands();
+			prepareCommands();
 
-			_eventConstructor = null;
-			_mappings = null;
-			_event = null;
+			return _appliedMappings;
 		}
 
 		/*============================================================================*/
 		/* Private Functions                                                         */
 		/*============================================================================*/
-		private function executeCommands() : void {
+		private function prepareCommands() : void {
 			mapEventForInjection();
-			applyCommandMappings();
+			findApplicableMappings();
+			instantiateCommands();
 			unmapEventAfterInjection();
 		}
 
 		private function mapEventForInjection() : void {
 			mapLooselyTypedEvent();
 			mapStronglyTypedEvent();
+		}
+
+		private function findApplicableMappings() : void {
+			_appliedMappings = new <ICommandMapping>[];
+			var i : int = -1;
+			for each ( var mapping:ICommandMapping in _mappings) {
+				if ( guardsApprove(mapping.guards, _injector) )
+					_appliedMappings[++i] = mapping;
+			}
 		}
 
 		private function mapLooselyTypedEvent() : void {
@@ -67,20 +94,10 @@ package robotlegs.bender.extensions.eventCommandMap.impl {
 				_injector.map(eventType).toValue(_event);
 		}
 
-		private function applyCommandMappings() : void {
-			const commands : Vector.<*> = instantiateCommands();
-			for each ( var command:* in commands)
-				command.execute();
-		}
-
-		private function instantiateCommands() : Vector.<*> {
-			const commands : Vector.<*> = new <*>[];
-
-			const mappings : Vector.<ICommandMapping> = _mappings.concat();
-			for each (var mapping:ICommandMapping in mappings)
-				commands.push(new EventCommandFactory(mapping, _injector).create());
-
-			return commands;
+		private function instantiateCommands() : void {
+			_commands = new <*>[];
+			for each (var mapping:ICommandMapping in _appliedMappings)
+				_commands.push(new EventCommandFactory(mapping, _injector).create());
 		}
 
 		private function unmapEventAfterInjection() : void {

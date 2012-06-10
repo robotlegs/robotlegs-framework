@@ -7,7 +7,6 @@
 package robotlegs.bender.extensions.eventCommandMap.impl {
 	import robotlegs.bender.extensions.commandMap.api.ICommandMapping;
 	import robotlegs.bender.extensions.commandMap.api.ICommandTrigger;
-	import robotlegs.bender.framework.impl.guardsApprove;
 
 	import org.swiftsuspenders.Injector;
 
@@ -35,7 +34,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl {
 			_dispatcher = dispatcher;
 			_type = type;
 			_eventClass = eventClass;
-			_executor = new EventCommandExecutor(injector, eventClass);
+			_executor = new EventCommandExecutor(injector, eventClass, once);
 			_once = once;
 		}
 
@@ -76,25 +75,15 @@ package robotlegs.bender.extensions.eventCommandMap.impl {
 
 		private function handleEvent(event : Event) : void {
 			if (isTriggerEvent(event)) {
-				const applicableMappings : Vector.<ICommandMapping> = findApplicableMappings();
-				_executor.execute(event, applicableMappings);
+				const appliedMappings : Vector.<ICommandMapping> = _executor.prepare( event, _mappings.concat() );
 				if (_once)
-					removeMappings(applicableMappings);
+					removeMappings(appliedMappings);
+				_executor.execute();
 			}
 		}
 
 		private function isTriggerEvent(event : Event) : Boolean {
 			return !_eventClass || event["constructor"] == _eventClass;
-		}
-
-		private function findApplicableMappings() : Vector.<ICommandMapping> {
-			const applicableMappings : Vector.<ICommandMapping> = new <ICommandMapping>[];
-			var i : int = -1;
-			for each (var mapping:ICommandMapping in _mappings)
-				if ( guardsApprove(mapping.guards, _injector) )
-					applicableMappings[++i] = mapping;
-
-			return applicableMappings;
 		}
 
 		private function removeMappings(mappings : Vector.<ICommandMapping>) : void {
