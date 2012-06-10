@@ -18,7 +18,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl {
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
-		private const _mappings : Vector.<ICommandMapping> = new Vector.<ICommandMapping>;
+		private var _mappings : Vector.<ICommandMapping> = new Vector.<ICommandMapping>;
 		private var _dispatcher : IEventDispatcher;
 		private var _injector : Injector;
 		private var _type : String;
@@ -49,7 +49,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl {
 		}
 
 		public function removeMapping(mapping : ICommandMapping) : void {
-			const index : int = _mappings.indexOf(mapping);
+			var index : int = _mappings.indexOf(mapping);
 			if (index != -1) {
 				_mappings.splice(index, 1);
 				if (_mappings.length == 0)
@@ -75,7 +75,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl {
 
 		private function handleEvent(event : Event) : void {
 			if (isTriggerEvent(event)) {
-				const appliedMappings : Vector.<ICommandMapping> = _executor.prepare( event, _mappings.concat() );
+				var appliedMappings : Vector.<ICommandMapping> = _executor.prepare( event, _mappings.concat() );
 				if (_once)
 					removeMappings(appliedMappings);
 				_executor.execute();

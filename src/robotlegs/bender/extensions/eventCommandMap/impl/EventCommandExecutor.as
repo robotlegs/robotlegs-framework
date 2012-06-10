@@ -21,7 +21,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl {
 		private var _event : Event;
 		private var _mappings : Vector.<ICommandMapping>;
 		private var _appliedMappings : Vector.<ICommandMapping>;
-		private var _commands : Vector.<*>;
+		private var _commands : Vector.<Object>;
 		private var _eventConstructor : Class;
 		private var _once : Boolean;
 
@@ -77,7 +77,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl {
 		}
 
 		private function findApplicableMappings() : void {
-			_appliedMappings = new <ICommandMapping>[];
+			_appliedMappings = new Vector.<ICommandMapping>();
 			var i : int = -1;
 			for each ( var mapping:ICommandMapping in _mappings) {
 				if ( guardsApprove(mapping.guards, _injector) )
@@ -91,13 +91,15 @@ package robotlegs.bender.extensions.eventCommandMap.impl {
 
 		private function mapStronglyTypedEvent() : void {
 			if (isStronglyTyped)
-				_injector.map(eventType).toValue(_event);
+				_injector.map(_eventClass || _eventConstructor).toValue(_event);
 		}
 
 		private function instantiateCommands() : void {
-			_commands = new <*>[];
-			for each (var mapping:ICommandMapping in _appliedMappings)
-				_commands.push(new EventCommandFactory(mapping, _injector).create());
+			_commands = new Vector.<Object>();
+			for each (var mapping:ICommandMapping in _appliedMappings) {
+				var factory:EventCommandFactory = new EventCommandFactory(mapping, _injector);
+				_commands.push(factory.create());
+			}
 		}
 
 		private function unmapEventAfterInjection() : void {
@@ -111,11 +113,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl {
 
 		private function unmapStronglyTypedEvent() : void {
 			if (isStronglyTyped)
-				_injector.unmap(eventType);
-		}
-
-		private function get eventType() : Class {
-			return _eventClass || _eventConstructor;
+				_injector.unmap(_eventClass || _eventConstructor);
 		}
 
 		private function get isStronglyTyped() : Boolean {
