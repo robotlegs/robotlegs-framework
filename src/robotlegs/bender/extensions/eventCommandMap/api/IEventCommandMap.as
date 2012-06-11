@@ -13,7 +13,7 @@ package robotlegs.bender.extensions.eventCommandMap.api
 
 	public interface IEventCommandMap
 	{
-		function map(type:String, eventClass:Class = null, once:Boolean = false):ICommandMapper;
+		function map(type:String, eventClass:Class = null):ICommandMapper;
 
 		function unmap(type:String, eventClass:Class = null):ICommandUnmapper;
 

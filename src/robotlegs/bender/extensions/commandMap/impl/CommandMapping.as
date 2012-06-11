@@ -65,12 +65,12 @@ package robotlegs.bender.extensions.commandMap.impl
 			return this;
 		}
 
-		public function get once():Boolean
+		public function get fireOnce():Boolean
 		{
 			return _once;
 		}
 
-		public function fireOnce(value:Boolean = true):ICommandMappingConfig
+		public function once(value:Boolean = true):ICommandMappingConfig
 		{
 			_once = value;
 			return this;

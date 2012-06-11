@@ -47,11 +47,11 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function map(type:String, eventClass:Class = null, once:Boolean = false):ICommandMapper
+		public function map(type:String, eventClass:Class = null):ICommandMapper
 		{
 			const trigger:ICommandTrigger =
 				_triggers[type + eventClass] ||=
-				createTrigger(type, eventClass, once);
+				createTrigger(type, eventClass);
 			return _commandMap.map(trigger);
 		}
 
@@ -69,9 +69,9 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		/* Private Functions                                                          */
 		/*============================================================================*/
 
-		private function createTrigger(type:String, eventClass:Class = null, once:Boolean = false):ICommandTrigger
+		private function createTrigger(type:String, eventClass:Class = null):ICommandTrigger
 		{
-			return new EventCommandTrigger(_injector, _dispatcher, type, eventClass, once);
+			return new EventCommandTrigger(_injector, _dispatcher, type, eventClass);
 		}
 
 		private function getTrigger(type:String, eventClass:Class = null):ICommandTrigger

@@ -180,8 +180,8 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			{
 				executeCount++;
 			});
-			eventCommandMap.map(SupportEvent.TYPE1, SupportEvent, true).toCommand(CallbackCommand);
-			eventCommandMap.map(SupportEvent.TYPE1, SupportEvent, true).toCommand(CallbackCommand2);
+			eventCommandMap.map(SupportEvent.TYPE1, SupportEvent).toCommand(CallbackCommand).once();
+			eventCommandMap.map(SupportEvent.TYPE1, SupportEvent).toCommand(CallbackCommand2).once();
 			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
 			assertThat(executeCount, equalTo(2));
 		}
@@ -193,7 +193,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			{
 				dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
 			});
-			eventCommandMap.map(SupportEvent.TYPE1, null, true).toCommand(CallbackCommand);
+			eventCommandMap.map(SupportEvent.TYPE1, null).toCommand(CallbackCommand).once();
 			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
 			// note: no assertion. we just want to know if an error is thrown
 		}
@@ -206,7 +206,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 				dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE2));
 			});
 			eventCommandMap.map(SupportEvent.TYPE1).toCommand(CallbackCommand);
-			eventCommandMap.map(SupportEvent.TYPE2, null, true).toCommand(CallbackCommand);
+			eventCommandMap.map(SupportEvent.TYPE2, null).toCommand(CallbackCommand).once();
 			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
 			// note: no assertion. we just want to know if an error is thrown
 		}
@@ -308,7 +308,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			{
 				executeCount++;
 			});
-			eventCommandMap.map(SupportEvent.TYPE1, SupportEvent, oneshot).toCommand(CallbackCommand);
+			eventCommandMap.map(SupportEvent.TYPE1, SupportEvent).toCommand(CallbackCommand).once(oneshot);
 			while (totalEvents--)
 			{
 				dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));

@@ -33,8 +33,6 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 
 		private var _eventConstructor:Class;
 
-		private var _once:Boolean;
-
 		private function get isStronglyTyped():Boolean
 		{
 			return _eventConstructor != Event;
@@ -44,23 +42,15 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function EventCommandExecutor(injector:Injector, eventClass:Class, once:Boolean)
+		public function EventCommandExecutor(injector:Injector, eventClass:Class)
 		{
 			_injector = injector.createChildInjector();
 			_eventClass = eventClass;
-			_once = once;
 		}
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
-
-		public function execute():void
-		{
-			for each (var command:* in _commands)
-				command.execute();
-			cleanup();
-		}
 
 		public function prepare(event:Event, mappings:Vector.<ICommandMapping>):Vector.<ICommandMapping>
 		{
@@ -73,18 +63,16 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			return _appliedMappings;
 		}
 
+		public function execute():void
+		{
+			for each (var command:* in _commands)
+				command.execute();
+			cleanup();
+		}
+
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
-
-		private function cleanup():void
-		{
-			_event = null;
-			_eventConstructor = null;
-			_mappings = null;
-			_appliedMappings = null;
-			_commands = null;
-		}
 
 		private function prepareCommands():void
 		{
@@ -147,6 +135,15 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		{
 			if (isStronglyTyped)
 				_injector.unmap(_eventClass || _eventConstructor);
+		}
+
+		private function cleanup():void
+		{
+			_event = null;
+			_eventConstructor = null;
+			_mappings = null;
+			_appliedMappings = null;
+			_commands = null;
 		}
 	}
 }

@@ -75,15 +75,15 @@ package robotlegs.bender.extensions.commandMap.impl
 		[Test]
 		public function mapping_stores_FireOnce():void
 		{
-			mapping.fireOnce();
-			assertThat(mapping.once, isTrue());
+			mapping.once();
+			assertThat(mapping.fireOnce, isTrue());
 		}
 
 		[Test]
 		public function mapping_stores_FireOnce_when_false():void
 		{
-			mapping.fireOnce(false);
-			assertThat(mapping.once, isFalse());
+			mapping.once(false);
+			assertThat(mapping.fireOnce, isFalse());
 		}
 	}
 }

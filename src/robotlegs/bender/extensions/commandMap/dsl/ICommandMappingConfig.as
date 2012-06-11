@@ -14,6 +14,6 @@ package robotlegs.bender.extensions.commandMap.dsl
 
 		function withHooks(... hooks):ICommandMappingConfig;
 
-		function fireOnce(value:Boolean = true):ICommandMappingConfig;
+		function once(value:Boolean = true):ICommandMappingConfig;
 	}
 }

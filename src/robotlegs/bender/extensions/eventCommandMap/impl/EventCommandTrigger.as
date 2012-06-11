@@ -25,28 +25,22 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 
 		private var _dispatcher:IEventDispatcher;
 
-		private var _injector:Injector;
-
 		private var _type:String;
 
 		private var _eventClass:Class;
 
 		private var _executor:EventCommandExecutor;
 
-		private var _once:Boolean;
-
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function EventCommandTrigger(injector:Injector, dispatcher:IEventDispatcher, type:String, eventClass:Class = null, once:Boolean = false)
+		public function EventCommandTrigger(injector:Injector, dispatcher:IEventDispatcher, type:String, eventClass:Class = null)
 		{
-			_injector = injector;
 			_dispatcher = dispatcher;
 			_type = type;
 			_eventClass = eventClass;
-			_executor = new EventCommandExecutor(injector, eventClass, once);
-			_once = once;
+			_executor = new EventCommandExecutor(injector, eventClass);
 		}
 
 		/*============================================================================*/
@@ -96,9 +90,8 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		{
 			if (isTriggerEvent(event))
 			{
-				var appliedMappings:Vector.<ICommandMapping> = _executor.prepare(event, _mappings.concat());
-				if (_once)
-					removeMappings(appliedMappings);
+				const appliedMappings:Vector.<ICommandMapping> = _executor.prepare(event, _mappings.concat());
+				removeFireOnceMappings(appliedMappings);
 				_executor.execute();
 			}
 		}
@@ -108,10 +101,13 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			return !_eventClass || event["constructor"] == _eventClass;
 		}
 
-		private function removeMappings(mappings:Vector.<ICommandMapping>):void
+		private function removeFireOnceMappings(mappings:Vector.<ICommandMapping>):void
 		{
 			for each (var mapping:ICommandMapping in mappings)
-				removeMapping(mapping);
+			{
+				if (mapping.fireOnce)
+					removeMapping(mapping);
+			}
 		}
 	}
 }
