@@ -15,5 +15,7 @@ package robotlegs.bender.extensions.commandMap.api
 		function get guards():Array;
 
 		function get hooks():Array;
+
+		function get once():Boolean;
 	}
 }

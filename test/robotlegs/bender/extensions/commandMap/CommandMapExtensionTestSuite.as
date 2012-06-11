@@ -8,6 +8,7 @@
 package robotlegs.bender.extensions.commandMap
 {
 	import robotlegs.bender.extensions.commandMap.impl.CommandMapTest;
+	import robotlegs.bender.extensions.commandMap.impl.CommandMappingTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
@@ -21,5 +22,7 @@ package robotlegs.bender.extensions.commandMap
 		public var commandMapExtension:CommandMapExtensionTest;
 
 		public var commandMap:CommandMapTest;
+
+		public var commandMappingTest:CommandMappingTest;
 	}
 }

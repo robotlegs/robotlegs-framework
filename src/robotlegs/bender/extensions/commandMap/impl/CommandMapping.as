@@ -33,6 +33,8 @@ package robotlegs.bender.extensions.commandMap.impl
 
 		private var _hooks:Array = [];
 
+		private var _once:Boolean;
+
 		public function get hooks():Array
 		{
 			return _hooks;
@@ -60,6 +62,17 @@ package robotlegs.bender.extensions.commandMap.impl
 		public function withHooks(... hooks):ICommandMappingConfig
 		{
 			_hooks = _hooks.concat.apply(null, hooks);
+			return this;
+		}
+
+		public function get once():Boolean
+		{
+			return _once;
+		}
+
+		public function fireOnce(value:Boolean = true):ICommandMappingConfig
+		{
+			_once = value;
 			return this;
 		}
 	}
