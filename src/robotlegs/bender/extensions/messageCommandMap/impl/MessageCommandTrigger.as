@@ -31,8 +31,6 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 
 		private var _message:Object;
 
-		private var _once:Boolean;
-
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
@@ -40,13 +38,11 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 		public function MessageCommandTrigger(
 			injector:Injector,
 			dispatcher:IMessageDispatcher,
-			message:Object,
-			once:Boolean = false)
+			message:Object)
 		{
 			_injector = injector.createChildInjector();
 			_dispatcher = dispatcher;
 			_message = message;
-			_once = once;
 		}
 
 		/*============================================================================*/
@@ -108,7 +104,7 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 			{
 				if (guardsApprove(mapping.guards, _injector))
 				{
-					_once && removeMapping(mapping);
+					mapping.fireOnce && removeMapping(mapping);
 					_injector.map(mapping.commandClass).asSingleton();
 					const command:Object = _injector.getInstance(mapping.commandClass);
 					const handler:Function = command.execute;

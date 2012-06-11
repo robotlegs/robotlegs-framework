@@ -13,7 +13,7 @@ package robotlegs.bender.extensions.messageCommandMap.api
 
 	public interface IMessageCommandMap
 	{
-		function map(message:Object, once:Boolean = false):ICommandMapper;
+		function map(message:Object):ICommandMapper;
 
 		function unmap(message:Object):ICommandUnmapper;
 

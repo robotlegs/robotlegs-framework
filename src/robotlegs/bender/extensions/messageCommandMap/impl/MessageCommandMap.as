@@ -47,11 +47,11 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function map(message:Object, once:Boolean = false):ICommandMapper
+		public function map(message:Object):ICommandMapper
 		{
 			const trigger:ICommandTrigger =
 				_triggers[message] ||=
-				createTrigger(message, once);
+				createTrigger(message);
 			return _commandMap.map(trigger);
 		}
 
@@ -69,9 +69,9 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 		/* Private Functions                                                          */
 		/*============================================================================*/
 
-		private function createTrigger(message:Object, once:Boolean = false):ICommandTrigger
+		private function createTrigger(message:Object):ICommandTrigger
 		{
-			return new MessageCommandTrigger(_injector, _dispatcher, message, once);
+			return new MessageCommandTrigger(_injector, _dispatcher, message);
 		}
 
 		private function getTrigger(message:Object):ICommandTrigger

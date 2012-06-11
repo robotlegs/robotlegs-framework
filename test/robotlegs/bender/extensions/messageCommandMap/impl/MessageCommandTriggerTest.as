@@ -120,8 +120,8 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 			{
 				executeCount++;
 			});
-			messageCommandMap.map(SupportMessage, true).toCommand(CallbackCommand);
-			messageCommandMap.map(SupportMessage, true).toCommand(CallbackCommand2);
+			messageCommandMap.map(SupportMessage).toCommand(CallbackCommand).once();
+			messageCommandMap.map(SupportMessage).toCommand(CallbackCommand2).once();
 			dispatcher.dispatchMessage(SupportMessage);
 			assertThat(executeCount, equalTo(2));
 		}
@@ -133,7 +133,7 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 			{
 				dispatcher.dispatchMessage(SupportMessage);
 			});
-			messageCommandMap.map(SupportMessage, true).toCommand(CallbackCommand);
+			messageCommandMap.map(SupportMessage).toCommand(CallbackCommand).once();
 			dispatcher.dispatchMessage(SupportMessage);
 			// note: no assertion. we just want to know if an error is thrown
 		}
@@ -146,7 +146,7 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 				dispatcher.dispatchMessage(Sprite);
 			});
 			messageCommandMap.map(SupportMessage).toCommand(CallbackCommand);
-			messageCommandMap.map(Sprite, true).toCommand(CallbackCommand);
+			messageCommandMap.map(Sprite).toCommand(CallbackCommand).once();
 			dispatcher.dispatchMessage(SupportMessage);
 			// note: no assertion. we just want to know if an error is thrown
 		}
@@ -244,7 +244,7 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 			{
 				executeCount++;
 			});
-			messageCommandMap.map(SupportMessage, oneshot).toCommand(CallbackCommand);
+			messageCommandMap.map(SupportMessage).toCommand(CallbackCommand).once(oneshot);
 			while (totalMessages--)
 			{
 				dispatcher.dispatchMessage(SupportMessage);
