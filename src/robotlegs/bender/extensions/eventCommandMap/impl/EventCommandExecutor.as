@@ -10,6 +10,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import flash.events.Event;
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.commandMap.api.ICommandMapping;
+	import robotlegs.bender.extensions.commandMap.api.ICommandTrigger;
 	import robotlegs.bender.framework.impl.guardsApprove;
 
 	public class EventCommandExecutor
@@ -19,131 +20,110 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
+		private var _trigger:ICommandTrigger;
+
+		private var _mappings:Vector.<ICommandMapping>;
+
 		private var _injector:Injector;
 
 		private var _eventClass:Class;
 
-		private var _event:Event;
-
-		private var _mappings:Vector.<ICommandMapping>;
-
-		private var _appliedMappings:Vector.<ICommandMapping>;
-
-		private var _commands:Vector.<Object>;
-
-		private var _eventConstructor:Class;
-
-		private function get isStronglyTyped():Boolean
-		{
-			return _eventConstructor != Event;
-		}
+		private var _factory:EventCommandFactory;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function EventCommandExecutor(injector:Injector, eventClass:Class)
+		public function EventCommandExecutor(
+			trigger:ICommandTrigger,
+			mappings:Vector.<ICommandMapping>,
+			injector:Injector,
+			eventClass:Class)
 		{
+			_trigger = trigger;
+			_mappings = mappings;
 			_injector = injector.createChildInjector();
 			_eventClass = eventClass;
+			_factory = new EventCommandFactory(_injector);
 		}
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function prepare(event:Event, mappings:Vector.<ICommandMapping>):Vector.<ICommandMapping>
+		public function execute(event:Event):void
 		{
-			_event = event;
-			_eventConstructor = _event["constructor"] as Class;
-			_mappings = mappings;
+			const eventConstructor:Class = event["constructor"] as Class;
+			if (isTriggerEvent(eventConstructor))
+			{
+				mapEventForInjection(event, eventConstructor);
+				const approvedMappings:Vector.<ICommandMapping> = findApprovedMappings(_mappings);
+				const commands:Array = createCommands(approvedMappings);
+				unmapEventAfterInjection(eventConstructor);
+				removeFireOnceMappings(approvedMappings);
 
-			prepareCommands();
-
-			return _appliedMappings;
-		}
-
-		public function execute():void
-		{
-			for each (var command:* in _commands)
-				command.execute();
-			cleanup();
+				for each (var command:Object in commands)
+					command.execute();
+			}
 		}
 
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
 
-		private function prepareCommands():void
+		private function isTriggerEvent(eventConstructor:Class):Boolean
 		{
-			mapEventForInjection();
-			findApplicableMappings();
-			instantiateCommands();
-			unmapEventAfterInjection();
+			return !_eventClass || eventConstructor == _eventClass;
 		}
 
-		private function mapEventForInjection():void
+		private function isStronglyTyped(eventConstructor:Class):Boolean
 		{
-			mapLooselyTypedEvent();
-			mapStronglyTypedEvent();
+			return eventConstructor != Event;
 		}
 
-		private function findApplicableMappings():void
+		private function mapEventForInjection(event:Event, eventConstructor:Class):void
 		{
-			_appliedMappings = new Vector.<ICommandMapping>();
-			var i:int = -1;
-			for each (var mapping:ICommandMapping in _mappings)
-			{
-				if (guardsApprove(mapping.guards, _injector))
-					_appliedMappings[++i] = mapping;
-			}
+			_injector.map(Event).toValue(event);
+			if (isStronglyTyped(eventConstructor))
+				_injector.map(_eventClass || eventConstructor).toValue(event);
 		}
 
-		private function mapLooselyTypedEvent():void
-		{
-			_injector.map(Event).toValue(_event);
-		}
-
-		private function mapStronglyTypedEvent():void
-		{
-			if (isStronglyTyped)
-				_injector.map(_eventClass || _eventConstructor).toValue(_event);
-		}
-
-		private function instantiateCommands():void
-		{
-			_commands = new Vector.<Object>();
-			for each (var mapping:ICommandMapping in _appliedMappings)
-			{
-				var factory:EventCommandFactory = new EventCommandFactory(mapping, _injector);
-				_commands.push(factory.create());
-			}
-		}
-
-		private function unmapEventAfterInjection():void
-		{
-			unmapLooselyTypedEvent();
-			unmapStronglyTypedEvent();
-		}
-
-		private function unmapLooselyTypedEvent():void
+		private function unmapEventAfterInjection(eventConstructor:Class):void
 		{
 			_injector.unmap(Event);
+			if (isStronglyTyped(eventConstructor))
+				_injector.unmap(_eventClass || eventConstructor);
 		}
 
-		private function unmapStronglyTypedEvent():void
+		private function findApprovedMappings(mappings:Vector.<ICommandMapping>):Vector.<ICommandMapping>
 		{
-			if (isStronglyTyped)
-				_injector.unmap(_eventClass || _eventConstructor);
+			const approvedMappings:Vector.<ICommandMapping> = new Vector.<ICommandMapping>();
+			var i:int = -1;
+			for each (var mapping:ICommandMapping in mappings)
+			{
+				if (guardsApprove(mapping.guards, _injector))
+					approvedMappings[++i] = mapping;
+			}
+			return approvedMappings;
 		}
 
-		private function cleanup():void
+		private function createCommands(mappings:Vector.<ICommandMapping>):Array
 		{
-			_event = null;
-			_eventConstructor = null;
-			_mappings = null;
-			_appliedMappings = null;
-			_commands = null;
+			const commands:Array = [];
+			for each (var mapping:ICommandMapping in mappings)
+			{
+				commands.push(_factory.create(mapping));
+			}
+			return commands;
+		}
+
+		private function removeFireOnceMappings(mappings:Vector.<ICommandMapping>):void
+		{
+			for each (var mapping:ICommandMapping in mappings)
+			{
+				if (mapping.fireOnce)
+					_trigger.removeMapping(mapping);
+			}
 		}
 	}
 }

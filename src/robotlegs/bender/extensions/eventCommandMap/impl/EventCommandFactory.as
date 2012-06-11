@@ -18,56 +18,31 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var _mapping:ICommandMapping;
-
 		private var _injector:Injector;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function EventCommandFactory(mapping:ICommandMapping, injector:Injector)
+		public function EventCommandFactory(injector:Injector)
 		{
 			_injector = injector;
-			_mapping = mapping;
 		}
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function create():*
+		public function create(mapping:ICommandMapping):Object
 		{
-			var command:*;
+			const commandClass:Class = mapping.commandClass;
 
-			mapCommandForInjection();
-			command = _injector.getInstance(_mapping.commandClass);
-			applyHooks(_mapping.hooks, _injector);
-			unmapCommandAfterInjection();
-
-			cleanUp();
+			_injector.map(commandClass).asSingleton();
+			const command:Object = _injector.getInstance(commandClass);
+			applyHooks(mapping.hooks, _injector);
+			_injector.unmap(commandClass);
 
 			return command;
-		}
-
-		/*============================================================================*/
-		/* Private Functions                                                          */
-		/*============================================================================*/
-
-		private function cleanUp():void
-		{
-			_mapping = null;
-			_injector = null;
-		}
-
-		private function mapCommandForInjection():void
-		{
-			_injector.map(_mapping.commandClass).asSingleton();
-		}
-
-		private function unmapCommandAfterInjection():void
-		{
-			_injector.unmap(_mapping.commandClass);
 		}
 	}
 }

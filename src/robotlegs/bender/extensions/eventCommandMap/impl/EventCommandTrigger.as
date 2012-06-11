@@ -7,7 +7,6 @@
 
 package robotlegs.bender.extensions.eventCommandMap.impl
 {
-	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	import flash.utils.describeType;
 	import org.swiftsuspenders.Injector;
@@ -21,13 +20,11 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var _mappings:Vector.<ICommandMapping> = new Vector.<ICommandMapping>;
+		private const _mappings:Vector.<ICommandMapping> = new Vector.<ICommandMapping>;
 
 		private var _dispatcher:IEventDispatcher;
 
 		private var _type:String;
-
-		private var _eventClass:Class;
 
 		private var _executor:EventCommandExecutor;
 
@@ -35,12 +32,15 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function EventCommandTrigger(injector:Injector, dispatcher:IEventDispatcher, type:String, eventClass:Class = null)
+		public function EventCommandTrigger(
+			injector:Injector,
+			dispatcher:IEventDispatcher,
+			type:String,
+			eventClass:Class = null)
 		{
 			_dispatcher = dispatcher;
 			_type = type;
-			_eventClass = eventClass;
-			_executor = new EventCommandExecutor(injector, eventClass);
+			_executor = new EventCommandExecutor(this, _mappings, injector, eventClass);
 		}
 
 		/*============================================================================*/
@@ -78,36 +78,12 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 
 		private function addListener():void
 		{
-			_dispatcher.addEventListener(_type, handleEvent);
+			_dispatcher.addEventListener(_type, _executor.execute);
 		}
 
 		private function removeListener():void
 		{
-			_dispatcher.removeEventListener(_type, handleEvent);
-		}
-
-		private function handleEvent(event:Event):void
-		{
-			if (isTriggerEvent(event))
-			{
-				const appliedMappings:Vector.<ICommandMapping> = _executor.prepare(event, _mappings.concat());
-				removeFireOnceMappings(appliedMappings);
-				_executor.execute();
-			}
-		}
-
-		private function isTriggerEvent(event:Event):Boolean
-		{
-			return !_eventClass || event["constructor"] == _eventClass;
-		}
-
-		private function removeFireOnceMappings(mappings:Vector.<ICommandMapping>):void
-		{
-			for each (var mapping:ICommandMapping in mappings)
-			{
-				if (mapping.fireOnce)
-					removeMapping(mapping);
-			}
+			_dispatcher.removeEventListener(_type, _executor.execute);
 		}
 	}
 }
