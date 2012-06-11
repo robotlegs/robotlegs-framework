@@ -1,35 +1,44 @@
-// ------------------------------------------------------------------------------
-// Copyright (c) 2011 the original author or authors. All Rights Reserved.
-//
-// NOTICE: You are permitted to use, modify, and distribute this file
-// in accordance with the terms of the license agreement accompanying it.
-// ------------------------------------------------------------------------------
-package robotlegs.bender.extensions.eventCommandMap.impl {
+//------------------------------------------------------------------------------
+//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
+//------------------------------------------------------------------------------
+
+package robotlegs.bender.extensions.eventCommandMap.impl
+{
+	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.commandMap.api.ICommandMapping;
 	import robotlegs.bender.framework.impl.applyHooks;
 
-	import org.swiftsuspenders.Injector;
+	public class EventCommandFactory
+	{
 
-	public class EventCommandFactory {
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
-		private var _mapping : ICommandMapping;
-		private var _injector : Injector;
+
+		private var _mapping:ICommandMapping;
+
+		private var _injector:Injector;
 
 		/*============================================================================*/
-		/* Constructor                                                    */
+		/* Constructor                                                                */
 		/*============================================================================*/
-		public function EventCommandFactory(mapping : ICommandMapping, injector : Injector) {
+
+		public function EventCommandFactory(mapping:ICommandMapping, injector:Injector)
+		{
 			_injector = injector;
 			_mapping = mapping;
 		}
 
 		/*============================================================================*/
-		/* Public Functions                                                         */
+		/* Public Functions                                                           */
 		/*============================================================================*/
-		public function create() : * {
-			var command : *;
+
+		public function create():*
+		{
+			var command:*;
 
 			mapCommandForInjection();
 			command = _injector.getInstance(_mapping.commandClass);
@@ -42,18 +51,22 @@ package robotlegs.bender.extensions.eventCommandMap.impl {
 		}
 
 		/*============================================================================*/
-		/* Private Functions                                                         */
+		/* Private Functions                                                          */
 		/*============================================================================*/
-		private function cleanUp() : void {
+
+		private function cleanUp():void
+		{
 			_mapping = null;
 			_injector = null;
 		}
 
-		private function mapCommandForInjection() : void {
+		private function mapCommandForInjection():void
+		{
 			_injector.map(_mapping.commandClass).asSingleton();
 		}
 
-		private function unmapCommandAfterInjection() : void {
+		private function unmapCommandAfterInjection():void
+		{
 			_injector.unmap(_mapping.commandClass);
 		}
 	}
