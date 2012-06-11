@@ -76,7 +76,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		public function mediate(item:Object):void
 		{
-			const type:Class = item.constructor;
+			const type:Class = item.constructor as Class;
 			_handler.handleItem(item, type);
 		}
 		
