@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -23,6 +23,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import robotlegs.bender.extensions.commandMap.support.SelfReportingCallbackCommand2;
 	import robotlegs.bender.extensions.commandMap.support.SelfReportingCallbackHook;
 	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
+	import robotlegs.bender.extensions.eventCommandMap.support.CascadingCommand;
 	import robotlegs.bender.extensions.eventCommandMap.support.EventInjectedCallbackCommand;
 	import robotlegs.bender.extensions.eventCommandMap.support.EventInjectedCallbackGuard;
 	import robotlegs.bender.extensions.eventCommandMap.support.SupportEvent;
@@ -82,7 +83,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		}
 
 		[Test]
-		public function oneshot_command_executes_once():void
+		public function fireOnce_command_executes_once():void
 		{
 			assertThat(oneshotCommandExecutionCount(5), equalTo(1));
 		}
@@ -295,6 +296,17 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			const event:SupportEvent = new SupportEvent(SupportEvent.TYPE1);
 			dispatcher.dispatchEvent(event);
 			assertThat(injectedEvent, equalTo(event));
+		}
+
+		[Test]
+		public function cascading_events_do_not_throw_unmap_errors():void
+		{
+			injector.map(IEventDispatcher).toValue(dispatcher);
+			injector.map(IEventCommandMap).toValue(eventCommandMap);
+			eventCommandMap
+				.map(CascadingCommand.EVENT_TYPE)
+				.toCommand(CascadingCommand).once();
+			dispatcher.dispatchEvent(new Event(CascadingCommand.EVENT_TYPE));
 		}
 
 		/*============================================================================*/

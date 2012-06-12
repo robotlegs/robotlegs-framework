@@ -8,34 +8,40 @@
 package robotlegs.bender.extensions.eventCommandMap.support
 {
 	import flash.events.Event;
+	import flash.events.IEventDispatcher;
+	import robotlegs.bender.extensions.commandMap.support.NullCommand;
+	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
 
-	public class SupportEvent extends Event
+	public class CascadingCommand
 	{
 
 		/*============================================================================*/
 		/* Public Static Properties                                                   */
 		/*============================================================================*/
 
-		public static const TYPE1:String = 'type1';
-
-		public static const TYPE2:String = 'type2';
+		public static const EVENT_TYPE:String = 'cascadingEvent';
 
 		/*============================================================================*/
-		/* Constructor                                                                */
+		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		public function SupportEvent(type:String)
-		{
-			super(type);
-		}
+		[Inject]
+		public var dispatcher:IEventDispatcher;
+
+		[Inject]
+		public var eventCommandMap:IEventCommandMap;
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		override public function clone():Event
+		public function execute():void
 		{
-			return new SupportEvent(type);
+			eventCommandMap
+				.map(EVENT_TYPE)
+				.toCommand(NullCommand).once();
+
+			dispatcher.dispatchEvent(new Event(EVENT_TYPE));
 		}
 	}
 }
