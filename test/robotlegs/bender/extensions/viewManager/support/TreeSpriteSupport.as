@@ -20,11 +20,9 @@ package robotlegs.bender.extensions.viewManager.support
 
 		protected function populate(tree_depth:uint, tree_width:uint):void
 		{
-			if(tree_depth == 0) return;
+			if (tree_depth == 0) return;
 
-			var iLength:uint = tree_width;
-
-			for (var i:uint = 0; i < iLength; i++)
+			for (var i:uint = 0; i < tree_width; i++)
 			{
 				var child:TreeSpriteSupport = new TreeSpriteSupport(tree_depth-1, tree_width);
 				children.push(child);

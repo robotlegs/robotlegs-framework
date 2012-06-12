@@ -73,7 +73,7 @@ package robotlegs.bender.extensions.commandMap.impl
 		public function unmapTrigger_from_command_removes_mapping():void
 		{
 			commandMap.map(trigger).toCommand(NullCommand);
-			commandMap.unmap(trigger).fromCommand(NullCommand)
+			commandMap.unmap(trigger).fromCommand(NullCommand);
 			assertThat(commandMap.getMapping(trigger).forCommand(NullCommand), nullValue());
 		}
 

@@ -63,7 +63,7 @@ package robotlegs.bender.extensions.scopedMessageDispatcher
 		{
 			const names:Array = ['global', 'other', 'name'];
 			const container:UIComponent = new UIComponent();
-			const parentView:UIComponent = new UIComponent()
+			const parentView:UIComponent = new UIComponent();
 			const childView:UIComponent = new UIComponent();
 
 			const parentContext:IContext = new Context().extend(
@@ -90,8 +90,8 @@ package robotlegs.bender.extensions.scopedMessageDispatcher
 			{
 				const parentDispatcher:IMessageDispatcher = parentContext.injector.getInstance(IMessageDispatcher, name);
 				const childDispatcher:IMessageDispatcher = childContext.injector.getInstance(IMessageDispatcher, name);
-				parentDispatchers.push(parentDispatcher)
-				childDispatchers.push(childDispatcher)
+				parentDispatchers.push(parentDispatcher);
+				childDispatchers.push(childDispatcher);
 			}
 
 			assertThat(childDispatchers, array(parentDispatchers));

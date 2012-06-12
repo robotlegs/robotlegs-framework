@@ -517,7 +517,7 @@ class NotAView
 class NotAViewMediator
 {
 	[Inject]
-	public var notAView:NotAView
+	public var notAView:NotAView;
 
 	[Inject]
 	public var mediatorWatcher:MediatorWatcher;

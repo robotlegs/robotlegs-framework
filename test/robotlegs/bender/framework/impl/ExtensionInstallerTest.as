@@ -81,7 +81,7 @@ package robotlegs.bender.framework.impl
 			var callCount:int;
 			const callback:Function = function():void {
 				callCount++;
-			}
+			};
 			extensionManager.install(new CallbackExtension(callback));
 			extensionManager.install(new CallbackExtension(callback));
 			assertThat(callCount, equalTo(1));

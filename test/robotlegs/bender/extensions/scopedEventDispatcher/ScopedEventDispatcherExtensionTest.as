@@ -90,8 +90,8 @@ package robotlegs.bender.extensions.scopedEventDispatcher
 			{
 				const parentDispatcher:IEventDispatcher = parentContext.injector.getInstance(IEventDispatcher, name);
 				const childDispatcher:IEventDispatcher = childContext.injector.getInstance(IEventDispatcher, name);
-				parentDispatchers.push(parentDispatcher)
-				childDispatchers.push(childDispatcher)
+				parentDispatchers.push(parentDispatcher);
+				childDispatchers.push(childDispatcher);
 			}
 
 			assertThat(childDispatchers, array(parentDispatchers));

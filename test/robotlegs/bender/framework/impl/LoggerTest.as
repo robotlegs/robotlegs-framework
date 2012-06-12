@@ -70,7 +70,7 @@ package robotlegs.bender.framework.impl
 		[Test]
 		public function message_is_passed():void
 		{
-			const expected:String = "hello"
+			const expected:String = "hello";
 			var actual:String;
 			logger = new Logger(source, new CallbackLogTarget(function(result:Object):void {
 				actual = result.message;

@@ -84,7 +84,7 @@ package robotlegs.bender.extensions.viewManager.impl
 			var middle:Sprite = new Sprite();
 			var middle2:Sprite = new Sprite();
 			middle.addChild(middle2);
-			middle2.addChild(expected)
+			middle2.addChild(expected);
 			container.addChild(middle);
 			expected.dispatchEvent(new ConfigureViewEvent(ConfigureViewEvent.CONFIGURE_VIEW));
 			assertThat(actual, equalTo(expected));
