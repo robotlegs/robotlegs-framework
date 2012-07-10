@@ -55,7 +55,7 @@ package robotlegs.bender.framework.impl
 		{
 			if (extension is Class)
 			{
-				_classes[extension] || install(new extension());
+				_classes[extension] || install(new (extension as Class));
 			}
 			else
 			{
