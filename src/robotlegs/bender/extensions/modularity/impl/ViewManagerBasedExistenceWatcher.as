@@ -30,6 +30,8 @@ package robotlegs.bender.extensions.modularity.impl
 
 		private var _viewManager:IViewManager;
 
+		private var _childContext:IContext;
+
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
@@ -76,6 +78,11 @@ package robotlegs.bender.extensions.modularity.impl
 			}
 			_viewManager.removeEventListener(ViewManagerEvent.CONTAINER_ADD, onContainerAdd);
 			_viewManager.removeEventListener(ViewManagerEvent.CONTAINER_REMOVE, onContainerRemove);
+			if (_childContext)
+			{
+				_logger.debug("Unlinking parent injector for child context {0}", [_childContext]);
+				_childContext.injector.parentInjector = null;
+			}
 		}
 
 		private function onContainerAdd(event:ViewManagerEvent):void
@@ -92,9 +99,10 @@ package robotlegs.bender.extensions.modularity.impl
 
 		private function onContextAdd(event:ModularContextEvent):void
 		{
-			_logger.debug("Context existence event caught. Configuring child context {0}", [event.context]);
 			event.stopImmediatePropagation();
-			event.context.injector.parentInjector = _injector;
+			_childContext = event.context;
+			_logger.debug("Context existence event caught. Configuring child context {0}", [_childContext]);
+			_childContext.injector.parentInjector = _injector;
 		}
 	}
 }

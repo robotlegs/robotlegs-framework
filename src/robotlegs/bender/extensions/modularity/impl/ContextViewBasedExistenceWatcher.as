@@ -28,6 +28,8 @@ package robotlegs.bender.extensions.modularity.impl
 
 		private var _contextView:DisplayObjectContainer;
 
+		private var _childContext:IContext;
+
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
@@ -64,13 +66,19 @@ package robotlegs.bender.extensions.modularity.impl
 		{
 			_logger.debug("Removing modular context existence event listener from contextView {0}", [_contextView]);
 			_contextView.removeEventListener(ModularContextEvent.CONTEXT_ADD, onContextAdd);
+			if (_childContext)
+			{
+				_logger.debug("Unlinking parent injector for child context {0}", [_childContext]);
+				_childContext.injector.parentInjector = null;
+			}
 		}
 
 		private function onContextAdd(event:ModularContextEvent):void
 		{
-			_logger.debug("Context existence event caught. Configuring child context {0}", [event.context]);
 			event.stopImmediatePropagation();
-			event.context.injector.parentInjector = _injector;
+			_childContext = event.context;
+			_logger.debug("Context existence event caught. Configuring child context {0}", [_childContext]);
+			_childContext.injector.parentInjector = _injector;
 		}
 	}
 }
