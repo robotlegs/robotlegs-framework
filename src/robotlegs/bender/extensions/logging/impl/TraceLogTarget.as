@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -17,6 +17,8 @@ package robotlegs.bender.extensions.logging.impl
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
+
+		private const _messageParser:LogMessageParser = new LogMessageParser();
 
 		private var _context:IContext;
 
@@ -39,24 +41,7 @@ package robotlegs.bender.extensions.logging.impl
 				+ ' ' + LogLevel.NAME[level]
 				+ ' ' + _context
 				+ ' ' + source
-				+ ' - ' + parseMessage(message, params));
-		}
-
-		/*============================================================================*/
-		/* Private Functions                                                          */
-		/*============================================================================*/
-
-		private function parseMessage(message:String, params:Array):String
-		{
-			if (params)
-			{
-				const numParams:int = params.length;
-				for (var i:int = 0; i < numParams; ++i)
-				{
-					message = message.split("{" + i + "}").join(params[i]);
-				}
-			}
-			return message;
+				+ ' - ' + _messageParser.parseMessage(message, params));
 		}
 	}
 }
