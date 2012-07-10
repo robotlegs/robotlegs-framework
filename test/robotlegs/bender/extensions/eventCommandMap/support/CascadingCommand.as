@@ -9,7 +9,7 @@ package robotlegs.bender.extensions.eventCommandMap.support
 {
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
-	import robotlegs.bender.extensions.commandMap.support.NullCommand;
+	import robotlegs.bender.extensions.commandCenter.support.NullCommand;
 	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
 
 	public class CascadingCommand

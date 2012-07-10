@@ -12,9 +12,9 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import org.hamcrest.object.notNullValue;
 	import org.hamcrest.object.nullValue;
 	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.extensions.commandMap.api.ICommandMap;
-	import robotlegs.bender.extensions.commandMap.impl.CommandMap;
-	import robotlegs.bender.extensions.commandMap.support.NullCommand;
+	import robotlegs.bender.extensions.commandCenter.api.ICommandCenter;
+	import robotlegs.bender.extensions.commandCenter.impl.CommandCenter;
+	import robotlegs.bender.extensions.commandCenter.support.NullCommand;
 	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
 	import robotlegs.bender.extensions.eventCommandMap.support.SupportEvent;
 
@@ -29,7 +29,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 
 		private var dispatcher:EventDispatcher;
 
-		private var commandMap:ICommandMap;
+		private var commandCenter:ICommandCenter;
 
 		private var eventCommandMap:IEventCommandMap;
 
@@ -42,8 +42,8 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		{
 			injector = new Injector();
 			dispatcher = new EventDispatcher();
-			commandMap = new CommandMap();
-			eventCommandMap = new EventCommandMap(injector, dispatcher, commandMap);
+			commandCenter = new CommandCenter();
+			eventCommandMap = new EventCommandMap(injector, dispatcher, commandCenter);
 		}
 
 		/*============================================================================*/

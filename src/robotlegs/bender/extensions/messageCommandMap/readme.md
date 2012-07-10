@@ -26,19 +26,19 @@ This extension requires the following extensions:
 ### During Context Construction
 
     _context = new Context().extend(
-    	CommandMapExtension,
+    	CommandCenterExtension,
     	MessageDispatcherExtension,
 	    MessageCommandMapExtension);
 
 ### At Runtime
 
-Assuming that the MessageDispatcher and CommandMap extensions have already been installed:
+Assuming that the MessageDispatcher and CommandCenter extensions have already been installed:
 
 	_context.extend(MessageCommandMapExtension);
 
 ## Extension Usage
 
-An instance of IMessageCommandMap is mapped into the context during extension installation. This instance can be injected into clients and used as above.
+An instance of IMessageCommandMap is mapped into the context during extension installation. This instance can be injected into clients and used as below.
 
 	[Inject]
     public var messageCommandMap:IMessageCommandMap;

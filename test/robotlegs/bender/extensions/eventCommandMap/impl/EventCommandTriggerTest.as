@@ -14,14 +14,14 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import org.hamcrest.collection.array;
 	import org.hamcrest.object.equalTo;
 	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.extensions.commandMap.api.ICommandMap;
-	import robotlegs.bender.extensions.commandMap.impl.CommandMap;
-	import robotlegs.bender.extensions.commandMap.support.CallbackCommand;
-	import robotlegs.bender.extensions.commandMap.support.CallbackCommand2;
-	import robotlegs.bender.extensions.commandMap.support.NullCommand;
-	import robotlegs.bender.extensions.commandMap.support.SelfReportingCallbackCommand;
-	import robotlegs.bender.extensions.commandMap.support.SelfReportingCallbackCommand2;
-	import robotlegs.bender.extensions.commandMap.support.SelfReportingCallbackHook;
+	import robotlegs.bender.extensions.commandCenter.api.ICommandCenter;
+	import robotlegs.bender.extensions.commandCenter.impl.CommandCenter;
+	import robotlegs.bender.extensions.commandCenter.support.CallbackCommand;
+	import robotlegs.bender.extensions.commandCenter.support.CallbackCommand2;
+	import robotlegs.bender.extensions.commandCenter.support.NullCommand;
+	import robotlegs.bender.extensions.commandCenter.support.SelfReportingCallbackCommand;
+	import robotlegs.bender.extensions.commandCenter.support.SelfReportingCallbackCommand2;
+	import robotlegs.bender.extensions.commandCenter.support.SelfReportingCallbackHook;
 	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
 	import robotlegs.bender.extensions.eventCommandMap.support.CascadingCommand;
 	import robotlegs.bender.extensions.eventCommandMap.support.EventInjectedCallbackCommand;
@@ -41,7 +41,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 
 		private var dispatcher:IEventDispatcher;
 
-		private var commandMap:ICommandMap;
+		private var commandCenter:ICommandCenter;
 
 		private var eventCommandMap:IEventCommandMap;
 
@@ -54,8 +54,8 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		{
 			injector = new Injector();
 			dispatcher = new EventDispatcher();
-			commandMap = new CommandMap();
-			eventCommandMap = new EventCommandMap(injector, dispatcher, commandMap);
+			commandCenter = new CommandCenter();
+			eventCommandMap = new EventCommandMap(injector, dispatcher, commandCenter);
 		}
 
 		/*============================================================================*/
@@ -65,7 +65,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		[Test(expects="Error")]
 		public function mapping_nonCommandClass_to_event_should_throw_error():void
 		{
-			// NOTE: we do this here, not in the CommandMap itself
+			// NOTE: we do this here, not in the CommandCenter itself
 			// Some triggers don't require an execute() method
 			eventCommandMap.map(SupportEvent.TYPE1).toCommand(Object);
 		}

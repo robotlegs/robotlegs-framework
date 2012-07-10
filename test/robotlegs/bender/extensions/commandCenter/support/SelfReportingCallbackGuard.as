@@ -5,24 +5,27 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.bundles.mvcs
+package robotlegs.bender.extensions.commandCenter.support
 {
-	import robotlegs.bender.extensions.commandCenter.api.ICommand;
 
-	/**
-	 * Abstract command implementation
-	 *
-	 * <p>Please note: you do not have to extend this class. Any class with an execute method can be used.</p>
-	 */
-	public class Command implements ICommand
+	public class SelfReportingCallbackGuard
 	{
+
+		/*============================================================================*/
+		/* Public Properties                                                          */
+		/*============================================================================*/
+
+		[Inject(name="approveCallback")]
+		public var callback:Function;
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function execute():void
+		public function approve():Boolean
 		{
+			callback(this);
+			return true;
 		}
 	}
 }

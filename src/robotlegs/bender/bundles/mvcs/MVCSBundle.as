@@ -8,7 +8,7 @@
 package robotlegs.bender.bundles.mvcs
 {
 	import robotlegs.bender.bundles.shared.configs.ContextViewListenerConfig;
-	import robotlegs.bender.extensions.commandMap.CommandMapExtension;
+	import robotlegs.bender.extensions.commandCenter.CommandCenterExtension;
 	import robotlegs.bender.extensions.contextView.ContextViewExtension;
 	import robotlegs.bender.extensions.eventCommandMap.EventCommandMapExtension;
 	import robotlegs.bender.extensions.eventDispatcher.EventDispatcherExtension;
@@ -45,7 +45,7 @@ package robotlegs.bender.bundles.mvcs
 				ContextViewExtension,
 				EventDispatcherExtension,
 				ModularityExtension,
-				CommandMapExtension,
+				CommandCenterExtension,
 				EventCommandMapExtension,
 				LocalEventMapExtension,
 				ViewManagerExtension,

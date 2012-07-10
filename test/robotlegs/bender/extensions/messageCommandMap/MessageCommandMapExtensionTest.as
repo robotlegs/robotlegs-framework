@@ -9,7 +9,7 @@ package robotlegs.bender.extensions.messageCommandMap
 {
 	import org.flexunit.assertThat;
 	import org.hamcrest.object.instanceOf;
-	import robotlegs.bender.extensions.commandMap.CommandMapExtension;
+	import robotlegs.bender.extensions.commandCenter.CommandCenterExtension;
 	import robotlegs.bender.extensions.messageCommandMap.api.IMessageCommandMap;
 	import robotlegs.bender.extensions.messageDispatcher.MessageDispatcherExtension;
 	import robotlegs.bender.framework.impl.Context;
@@ -31,7 +31,7 @@ package robotlegs.bender.extensions.messageCommandMap
 		public function before():void
 		{
 			context = new Context();
-			context.extend(MessageDispatcherExtension, CommandMapExtension);
+			context.extend(MessageDispatcherExtension, CommandCenterExtension);
 		}
 
 		/*============================================================================*/

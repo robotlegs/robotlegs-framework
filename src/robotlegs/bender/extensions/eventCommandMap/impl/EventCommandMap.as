@@ -10,11 +10,11 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import flash.events.IEventDispatcher;
 	import flash.utils.Dictionary;
 	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.extensions.commandMap.api.ICommandMap;
-	import robotlegs.bender.extensions.commandMap.api.ICommandTrigger;
-	import robotlegs.bender.extensions.commandMap.dsl.ICommandMapper;
-	import robotlegs.bender.extensions.commandMap.dsl.ICommandMappingFinder;
-	import robotlegs.bender.extensions.commandMap.dsl.ICommandUnmapper;
+	import robotlegs.bender.extensions.commandCenter.api.ICommandCenter;
+	import robotlegs.bender.extensions.commandCenter.api.ICommandTrigger;
+	import robotlegs.bender.extensions.commandCenter.dsl.ICommandMapper;
+	import robotlegs.bender.extensions.commandCenter.dsl.ICommandMappingFinder;
+	import robotlegs.bender.extensions.commandCenter.dsl.ICommandUnmapper;
 	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
 
 	public class EventCommandMap implements IEventCommandMap
@@ -30,17 +30,20 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 
 		private var _dispatcher:IEventDispatcher;
 
-		private var _commandMap:ICommandMap;
+		private var _commandCenter:ICommandCenter;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function EventCommandMap(injector:Injector, dispatcher:IEventDispatcher, commandMap:ICommandMap)
+		public function EventCommandMap(
+			injector:Injector,
+			dispatcher:IEventDispatcher,
+			commandCenter:ICommandCenter)
 		{
 			_injector = injector;
 			_dispatcher = dispatcher;
-			_commandMap = commandMap;
+			_commandCenter = commandCenter;
 		}
 
 		/*============================================================================*/
@@ -52,17 +55,17 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			const trigger:ICommandTrigger =
 				_triggers[type + eventClass] ||=
 				createTrigger(type, eventClass);
-			return _commandMap.map(trigger);
+			return _commandCenter.map(trigger);
 		}
 
 		public function unmap(type:String, eventClass:Class = null):ICommandUnmapper
 		{
-			return _commandMap.unmap(getTrigger(type, eventClass));
+			return _commandCenter.unmap(getTrigger(type, eventClass));
 		}
 
 		public function getMapping(type:String, eventClass:Class = null):ICommandMappingFinder
 		{
-			return _commandMap.getMapping(getTrigger(type, eventClass));
+			return _commandCenter.getMapping(getTrigger(type, eventClass));
 		}
 
 		/*============================================================================*/

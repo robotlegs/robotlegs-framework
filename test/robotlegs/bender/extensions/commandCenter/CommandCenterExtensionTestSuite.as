@@ -5,24 +5,24 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.bundles.mvcs
+package robotlegs.bender.extensions.commandCenter
 {
-	import robotlegs.bender.extensions.commandCenter.api.ICommand;
+	import robotlegs.bender.extensions.commandCenter.impl.CommandCenterTest;
+	import robotlegs.bender.extensions.commandCenter.impl.CommandMappingTest;
 
-	/**
-	 * Abstract command implementation
-	 *
-	 * <p>Please note: you do not have to extend this class. Any class with an execute method can be used.</p>
-	 */
-	public class Command implements ICommand
+	[RunWith("org.flexunit.runners.Suite")]
+	[Suite]
+	public class CommandCenterExtensionTestSuite
 	{
 
 		/*============================================================================*/
-		/* Public Functions                                                           */
+		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		public function execute():void
-		{
-		}
+		public var commandCenter:CommandCenterTest;
+
+		public var commandCenterExtension:CommandCenterExtensionTest;
+
+		public var commandMappingTest:CommandMappingTest;
 	}
 }

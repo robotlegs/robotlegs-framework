@@ -26,17 +26,17 @@ This extension requires the following extensions:
 ## Extension Installation
 
     _context = new Context().extend(
-    	CommandMapExtension,
+    	CommandCenterExtension,
     	EventDispatcherExtension,
 	    EventCommandMapExtension);
 
-Or, assuming that the EventDispatcher and CommandMap extensions have already been installed:
+Or, assuming that the EventDispatcher and CommandCenter extensions have already been installed:
 
 	_context.extend(EventCommandMapExtension);
 
 ## Extension Usage
 
-An instance of IEventCommandMap is mapped into the context during extension installation. This instance can be injected into clients and used as above.
+An instance of IEventCommandMap is mapped into the context during extension installation. This instance can be injected into clients and used as below.
 
 	[Inject]
 	public var eventCommandMap:IEventCommandMap;

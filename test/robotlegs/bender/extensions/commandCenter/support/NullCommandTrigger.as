@@ -1,30 +1,35 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.eventCommandMap.impl
+package robotlegs.bender.extensions.commandCenter.support
 {
-	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
-	import robotlegs.bender.framework.impl.applyHooks;
+	import robotlegs.bender.extensions.commandCenter.api.ICommandTrigger;
+	import org.swiftsuspenders.Injector;
 
-	public class EventCommandFactory
+	public class NullCommandTrigger implements ICommandTrigger
 	{
 
 		/*============================================================================*/
-		/* Private Properties                                                         */
+		/* Public Properties                                                          */
 		/*============================================================================*/
 
 		private var _injector:Injector;
+
+		public function get injector():Injector
+		{
+			return null;
+		}
 
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function EventCommandFactory(injector:Injector)
+		public function NullCommandTrigger(injector:Injector)
 		{
 			_injector = injector;
 		}
@@ -33,16 +38,12 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function create(mapping:ICommandMapping):Object
+		public function addMapping(mapping:ICommandMapping):void
 		{
-			const commandClass:Class = mapping.commandClass;
+		}
 
-			_injector.map(commandClass).asSingleton();
-			const command:Object = _injector.getInstance(commandClass);
-			applyHooks(mapping.hooks, _injector);
-			_injector.unmap(commandClass);
-
-			return command;
+		public function removeMapping(mapping:ICommandMapping):void
+		{
 		}
 	}
 }

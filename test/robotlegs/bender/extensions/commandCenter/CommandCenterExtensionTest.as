@@ -5,16 +5,15 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.eventCommandMap
+package robotlegs.bender.extensions.commandCenter
 {
 	import org.flexunit.assertThat;
 	import org.hamcrest.object.instanceOf;
-	import robotlegs.bender.extensions.commandCenter.CommandCenterExtension;
-	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
+	import robotlegs.bender.extensions.commandCenter.api.ICommandCenter;
 	import robotlegs.bender.extensions.eventDispatcher.EventDispatcherExtension;
 	import robotlegs.bender.framework.impl.Context;
 
-	public class EventCommandMapExtensionTest
+	public class CommandCenterExtensionTest
 	{
 
 		/*============================================================================*/
@@ -39,15 +38,14 @@ package robotlegs.bender.extensions.eventCommandMap
 		/*============================================================================*/
 
 		[Test]
-		public function eventCommandMap_is_mapped_into_injector():void
+		public function commandMap_is_mapped_into_injector():void
 		{
-			var actual:Object = null;
-			context.extend(EventCommandMapExtension);
+			var actual:Object;
 			context.lifecycle.whenInitializing( function():void {
-				actual = context.injector.getInstance(IEventCommandMap);
+				actual = context.injector.getInstance(ICommandCenter);
 			});
 			context.initialize();
-			assertThat(actual, instanceOf(IEventCommandMap));
+			assertThat(actual, instanceOf(ICommandCenter));
 		}
 	}
 }

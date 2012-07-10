@@ -11,8 +11,8 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.framework.impl.safelyCallBack;
 	import robotlegs.bender.framework.api.IMessageDispatcher;
-	import robotlegs.bender.extensions.commandMap.api.ICommandMapping;
-	import robotlegs.bender.extensions.commandMap.api.ICommandTrigger;
+	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
+	import robotlegs.bender.extensions.commandCenter.api.ICommandTrigger;
 	import robotlegs.bender.framework.impl.guardsApprove;
 	import robotlegs.bender.framework.impl.applyHooks;
 

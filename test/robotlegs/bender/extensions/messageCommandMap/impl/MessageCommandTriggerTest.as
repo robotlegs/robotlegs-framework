@@ -14,13 +14,13 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.framework.api.IMessageDispatcher;
 	import robotlegs.bender.framework.impl.MessageDispatcher;
-	import robotlegs.bender.extensions.commandMap.api.ICommandMap;
-	import robotlegs.bender.extensions.commandMap.impl.CommandMap;
-	import robotlegs.bender.extensions.commandMap.support.CallbackCommand;
-	import robotlegs.bender.extensions.commandMap.support.CallbackCommand2;
-	import robotlegs.bender.extensions.commandMap.support.SelfReportingCallbackCommand;
-	import robotlegs.bender.extensions.commandMap.support.SelfReportingCallbackCommand2;
-	import robotlegs.bender.extensions.commandMap.support.SelfReportingCallbackHook;
+	import robotlegs.bender.extensions.commandCenter.api.ICommandCenter;
+	import robotlegs.bender.extensions.commandCenter.impl.CommandCenter;
+	import robotlegs.bender.extensions.commandCenter.support.CallbackCommand;
+	import robotlegs.bender.extensions.commandCenter.support.CallbackCommand2;
+	import robotlegs.bender.extensions.commandCenter.support.SelfReportingCallbackCommand;
+	import robotlegs.bender.extensions.commandCenter.support.SelfReportingCallbackCommand2;
+	import robotlegs.bender.extensions.commandCenter.support.SelfReportingCallbackHook;
 	import robotlegs.bender.extensions.messageCommandMap.api.IMessageCommandMap;
 	import robotlegs.bender.extensions.messageCommandMap.support.CallbackConsumingCommand;
 	import robotlegs.bender.extensions.messageCommandMap.support.SupportMessage;
@@ -38,7 +38,7 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 
 		private var dispatcher:IMessageDispatcher;
 
-		private var commandMap:ICommandMap;
+		private var commandCenter:ICommandCenter;
 
 		private var messageCommandMap:IMessageCommandMap;
 
@@ -51,8 +51,8 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 		{
 			injector = new Injector();
 			dispatcher = new MessageDispatcher();
-			commandMap = new CommandMap();
-			messageCommandMap = new MessageCommandMap(injector, dispatcher, commandMap);
+			commandCenter = new CommandCenter();
+			messageCommandMap = new MessageCommandMap(injector, dispatcher, commandCenter);
 		}
 
 		/*============================================================================*/
@@ -62,7 +62,7 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 		[Test(expects="Error")]
 		public function mapping_nonCommandClass_should_throw_error():void
 		{
-			// NOTE: we do this here, not in the CommandMap itself
+			// NOTE: we do this here, not in the CommandCenter itself
 			// Some triggers don't require an execute() method
 			messageCommandMap.map(SupportMessage).toCommand(Object);
 		}

@@ -12,9 +12,9 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 	import org.hamcrest.object.nullValue;
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.framework.impl.MessageDispatcher;
-	import robotlegs.bender.extensions.commandMap.api.ICommandMap;
-	import robotlegs.bender.extensions.commandMap.impl.CommandMap;
-	import robotlegs.bender.extensions.commandMap.support.NullCommand;
+	import robotlegs.bender.extensions.commandCenter.api.ICommandCenter;
+	import robotlegs.bender.extensions.commandCenter.impl.CommandCenter;
+	import robotlegs.bender.extensions.commandCenter.support.NullCommand;
 	import robotlegs.bender.extensions.messageCommandMap.api.IMessageCommandMap;
 
 	public class MessageCommandMapTest
@@ -28,7 +28,7 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 
 		private var dispatcher:MessageDispatcher;
 
-		private var commandMap:ICommandMap;
+		private var commandCenter:ICommandCenter;
 
 		private var messageCommandMap:IMessageCommandMap;
 
@@ -43,8 +43,8 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 		{
 			injector = new Injector();
 			dispatcher = new MessageDispatcher();
-			commandMap = new CommandMap();
-			messageCommandMap = new MessageCommandMap(injector, dispatcher, commandMap);
+			commandCenter = new CommandCenter();
+			messageCommandMap = new MessageCommandMap(injector, dispatcher, commandCenter);
 			message = {};
 		}
 
