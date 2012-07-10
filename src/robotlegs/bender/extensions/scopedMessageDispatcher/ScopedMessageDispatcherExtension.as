@@ -47,7 +47,7 @@ package robotlegs.bender.extensions.scopedMessageDispatcher
 		public function extend(context:IContext):void
 		{
 			_injector = context.injector;
-			context.lifecycle.whenInitializing(handleContextSelfInitialize);
+			context.lifecycle.whenInitializing(whenInitializing);
 		}
 
 		public function toString():String
@@ -59,7 +59,7 @@ package robotlegs.bender.extensions.scopedMessageDispatcher
 		/* Private Functions                                                          */
 		/*============================================================================*/
 
-		private function handleContextSelfInitialize():void
+		private function whenInitializing():void
 		{
 			for each (var name:String in _names)
 			{

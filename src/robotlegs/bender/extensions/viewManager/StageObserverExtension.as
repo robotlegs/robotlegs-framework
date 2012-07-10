@@ -42,8 +42,8 @@ package robotlegs.bender.extensions.viewManager
 		{
 			_installCount++;
 			_injector = context.injector;
-			context.lifecycle.whenInitializing(handleContextSelfInitialize);
-			context.lifecycle.whenDestroying(handleContextSelfDestroy);
+			context.lifecycle.whenInitializing(whenInitializing);
+			context.lifecycle.whenDestroying(whenDestroying);
 		}
 
 		public function toString():String
@@ -55,7 +55,7 @@ package robotlegs.bender.extensions.viewManager
 		/* Private Functions                                                          */
 		/*============================================================================*/
 
-		private function handleContextSelfInitialize():void
+		private function whenInitializing():void
 		{
 			if (_stageObserver == null)
 			{
@@ -64,7 +64,7 @@ package robotlegs.bender.extensions.viewManager
 			}
 		}
 
-		private function handleContextSelfDestroy():void
+		private function whenDestroying():void
 		{
 			_installCount--;
 			if (_installCount == 0)
