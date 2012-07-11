@@ -8,6 +8,9 @@
 package robotlegs.bender.framework.api
 {
 
+	/**
+	 * The context Bundle contract
+	 */
 	public interface IBundle extends IExtension
 	{
 	}

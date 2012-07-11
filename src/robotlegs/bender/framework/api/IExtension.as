@@ -9,7 +9,7 @@ package robotlegs.bender.framework.api
 {
 
 	/**
-	 * The context Extension/Bundle contract
+	 * The context Extension contract
 	 */
 	public interface IExtension
 	{
@@ -21,7 +21,7 @@ package robotlegs.bender.framework.api
 		 * can add lifecycle handlers to the context instance to perform synchronized
 		 * initialization.</p>
 		 *
-		 * @param context The context that this bundle/extension is being installed into.
+		 * @param context The context that this extension/bundle is being installed into.
 		 */
 		function extend(context:IContext):void;
 	}
