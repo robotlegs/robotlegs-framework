@@ -12,6 +12,7 @@ package robotlegs.bender.extensions.mediatorMap
 	import robotlegs.bender.extensions.mediatorMap.impl.MediatorViewHandlerTest;
 	import robotlegs.bender.extensions.mediatorMap.impl.MediatorSugarTest;
 	import robotlegs.bender.extensions.mediatorMap.impl.MediatorMapTestPreloaded;
+	import robotlegs.bender.extensions.mediatorMap.impl.MediatorMapMemoryLeakTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
@@ -29,11 +30,13 @@ package robotlegs.bender.extensions.mediatorMap
 		public var mediatorFactory:MediatorFactoryTest;
 
 		public var defaultMediatorManager:DefaultMediatorManagerTest;
-		
+
 		// added by stray recovered from pre-reloaded tests
 		
 		public var mediatorMapTestsOriginal:MediatorMapTestPreloaded;
 		
 		public var mediatorSugarTest:MediatorSugarTest;
+		
+		public var mediatorMapMemoryLeak:MediatorMapMemoryLeakTest;
 	}
 }

@@ -10,6 +10,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import org.flexunit.assertThat;
+	import org.hamcrest.collection.array;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.instanceOf;
 	import org.hamcrest.object.notNullValue;
@@ -198,13 +199,35 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		}
 
 		[Test]
-		public function removeMediator():void
+		public function removeMediators():void
 		{
 			const view:Sprite = new Sprite();
 			const mapping:IMediatorMapping = new MediatorMapping(createTypeFilter([Sprite]), CallbackMediator);
 			factory.createMediators(view, Sprite, [mapping]);
 			factory.removeMediators(view);
 			assertThat(factory.getMediator(view, mapping), nullValue());
+		}
+		
+		[Test]
+		public function removeAllMediators_removes_mediators_for_all_views():void
+		{
+			const view1:Sprite = new Sprite();
+			const view2:Sprite = new Sprite();
+			const mapping1:IMediatorMapping = new MediatorMapping(createTypeFilter([Sprite]), CallbackMediator);
+			const mapping2:IMediatorMapping = new MediatorMapping(createTypeFilter([DisplayObject]), ViewInjectedAsRequestedMediator);
+			
+			factory.createMediators(view1, Sprite, [mapping1, mapping2]);
+			factory.createMediators(view2, Sprite, [mapping1, mapping2]);
+			
+			const mediatorsRemovedForView:Array = [];
+			
+			factory.addEventListener(MediatorFactoryEvent.MEDIATOR_REMOVE, function(event:MediatorFactoryEvent):void {
+				mediatorsRemovedForView.push(event.view);
+			});
+
+			factory.removeAllMediators();
+			
+			assertThat(mediatorsRemovedForView.length, equalTo(4));
 		}
 
 		[Test]

@@ -46,6 +46,8 @@ package robotlegs.bender.extensions.mediatorMap
 			_injector.map(IMediatorFactory).toSingleton(MediatorFactory);
 			_injector.map(IMediatorMap).toSingleton(MediatorMap);
 			context.lifecycle.beforeInitializing(beforeInitializing);
+			context.lifecycle.beforeDestroying(beforeDestroying);
+			context.lifecycle.whenDestroying(whenDestroying);
 		}
 
 		public function toString():String
@@ -65,6 +67,30 @@ package robotlegs.bender.extensions.mediatorMap
 			{
 				_viewManager = _injector.getInstance(IViewManager);
 				_viewManager.addViewHandler(_mediatorMap as IViewHandler);
+			}
+		}
+		
+		private function beforeDestroying():void
+		{
+			var mediatorFactory:IMediatorFactory = _injector.getInstance(IMediatorFactory);
+			mediatorFactory.removeAllMediators();
+			
+			if (_injector.satisfiesDirectly(IViewManager))
+			{
+				_viewManager = _injector.getInstance(IViewManager);
+				_viewManager.removeViewHandler(_mediatorMap as IViewHandler);
+			}
+		}
+		
+		private function whenDestroying():void
+		{
+			if (_injector.satisfiesDirectly(IMediatorMap))
+			{
+				_injector.unmap(IMediatorMap);
+			}
+			if (_injector.satisfiesDirectly(IMediatorFactory))
+			{
+				_injector.unmap(IMediatorFactory);
 			}
 		}
 	}

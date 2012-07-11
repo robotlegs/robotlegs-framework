@@ -21,7 +21,6 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	[Event(name="mediatorRemove", type="robotlegs.bender.extensions.mediatorMap.api.MediatorFactoryEvent")]
 	public class MediatorFactory extends EventDispatcher implements IMediatorFactory
 	{
-
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
@@ -90,6 +89,14 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			delete _mediators[view];
 		}
 		
+		public function removeAllMediators():void
+		{
+			for (var view:Object in _mediators)
+			{
+				removeMediators(view);
+			}
+		}
+		
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
@@ -110,21 +117,6 @@ package robotlegs.bender.extensions.mediatorMap.impl
 				addMediator(mediator, view, mapping);
 			}
 			return mediator;
-		}
-
-		private function removeMediator(view:Object, mapping:IMediatorMapping):void
-		{
-			const mediators:Dictionary = _mediators[view];
-			if (!mediators)
-				return;
-			const mediator:Object = mediators[mapping];
-			if (!mediator)
-				return;
-			delete mediators[mapping];
-			if (hasEventListener(MediatorFactoryEvent.MEDIATOR_REMOVE))
-				dispatchEvent(new MediatorFactoryEvent(
-					MediatorFactoryEvent.MEDIATOR_REMOVE,
-					mediator, view, mapping, this));
 		}
 
 		private function addMediator(mediator:Object, view:Object, mapping:IMediatorMapping):void

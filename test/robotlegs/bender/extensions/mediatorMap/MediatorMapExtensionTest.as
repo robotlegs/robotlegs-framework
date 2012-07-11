@@ -8,6 +8,8 @@
 package robotlegs.bender.extensions.mediatorMap
 {
 	import org.flexunit.assertThat;
+	import org.flexunit.asserts.*;
+	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.instanceOf;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMap;
 	import robotlegs.bender.extensions.viewManager.ViewManagerExtension;
@@ -37,7 +39,7 @@ package robotlegs.bender.extensions.mediatorMap
 		/*============================================================================*/
 
 		[Test]
-		public function mediatorMap_is_mapped_into_injector():void
+		public function mediatorMap_is_mapped_into_injector_on_initialize():void
 		{
 			var actual:Object = null;
 			context.extend(ViewManagerExtension, MediatorMapExtension);
@@ -46,6 +48,17 @@ package robotlegs.bender.extensions.mediatorMap
 			});
 			context.initialize();
 			assertThat(actual, instanceOf(IMediatorMap));
+		}
+		
+		[Test]
+		public function mediatorMap_is_unmapped_from_injector_on_destroy():void
+		{
+			context.extend(ViewManagerExtension, MediatorMapExtension);
+			context.lifecycle.afterDestroying( function():void {
+				assertFalse(context.injector.satisfiesDirectly(IMediatorMap));
+			});
+			context.initialize();
+			context.destroy();
 		}
 	}
 }
