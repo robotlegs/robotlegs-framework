@@ -62,7 +62,7 @@ package robotlegs.bender.extensions.stageSync
 		{
 			if (_contextView)
 			{
-				_logger.warn("Context view has already been set. Ignoring second view instance.");
+				_logger.warn('A contextView has already been set, ignoring {0}', [view]);
 				return;
 			}
 			_contextView = view;
