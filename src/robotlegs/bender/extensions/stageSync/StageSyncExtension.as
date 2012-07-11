@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -12,8 +12,8 @@ package robotlegs.bender.extensions.stageSync
 	import org.hamcrest.object.instanceOf;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
-	import robotlegs.bender.framework.impl.UID;
 	import robotlegs.bender.framework.api.ILogger;
+	import robotlegs.bender.framework.impl.UID;
 
 	/**
 	 * <p>This Extension waits for a DisplayObjectContainer to be added as a configuration,
@@ -44,7 +44,9 @@ package robotlegs.bender.extensions.stageSync
 		{
 			_context = context;
 			_logger = context.getLogger(this);
-			_context.addConfigHandler(instanceOf(DisplayObjectContainer), handleContextView);
+			_context.addConfigHandler(
+				instanceOf(DisplayObjectContainer),
+				handleContextView);
 		}
 
 		public function toString():String
@@ -58,6 +60,11 @@ package robotlegs.bender.extensions.stageSync
 
 		private function handleContextView(view:DisplayObjectContainer):void
 		{
+			if (_contextView)
+			{
+				_logger.warn("Context view has already been set. Ignoring second view instance.");
+				return;
+			}
 			_contextView = view;
 			if (_contextView.stage)
 			{
