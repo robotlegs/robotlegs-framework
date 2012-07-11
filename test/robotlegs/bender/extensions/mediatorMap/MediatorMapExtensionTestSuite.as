@@ -37,6 +37,6 @@ package robotlegs.bender.extensions.mediatorMap
 		
 		public var mediatorSugarTest:MediatorSugarTest;
 		
-		public var mediatorMapMemoryLeak:MediatorMapMemoryLeakTest;
+		//public var mediatorMapMemoryLeak:MediatorMapMemoryLeakTest;
 	}
 }
