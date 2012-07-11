@@ -217,6 +217,7 @@ package robotlegs.bender.framework.impl
 		private function afterDestroying():void
 		{
 			_pin.flush();
+			_injector.teardown();
 			_logger.info("Destroy complete");
 		}
 	}
