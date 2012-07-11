@@ -10,6 +10,8 @@ package robotlegs.bender.framework.api
 
 	/**
 	 * Optional configuration interface
+	 *
+	 * <p>Note: a config does not need to implement this interface.</p>
 	 */
 	public interface IConfig
 	{
