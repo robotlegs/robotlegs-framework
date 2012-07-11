@@ -183,8 +183,7 @@ package robotlegs.bender.framework.impl
 			}).enter(function(error:Error):void {
 				actual = error;
 			});
-			// todo: fix this once the message dispatcher is back to normal
-			assertThat(actual.message, array(expected));
+			assertThat(actual, equalTo(expected));
 		}
 
 		[Test]

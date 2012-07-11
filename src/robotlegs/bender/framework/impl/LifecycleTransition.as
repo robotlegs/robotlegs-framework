@@ -150,7 +150,7 @@ package robotlegs.bender.framework.impl
 				// dispatch post transition event
 				dispatch(_postTransitionEvent);
 
-			}, _reverse ? MessageDispatcher.REVERSE : 0);
+			}, _reverse);
 		}
 
 		/*============================================================================*/

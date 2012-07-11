@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -15,14 +15,6 @@ package robotlegs.bender.framework.impl
 	 */
 	public final class MessageDispatcher implements IMessageDispatcher
 	{
-
-		/*============================================================================*/
-		/* Public Static Properties                                                   */
-		/*============================================================================*/
-
-		public static const HALT_ON_ERROR:uint = 1;
-
-		public static const REVERSE:uint = 2;
 
 		/*============================================================================*/
 		/* Private Properties                                                         */
@@ -85,12 +77,14 @@ package robotlegs.bender.framework.impl
 		/**
 		 * @inheritDoc
 		 */
-		public function dispatchMessage(message:Object, callback:Function = null, flags:uint = 0):void
+		public function dispatchMessage(message:Object, callback:Function = null, reverse:Boolean = false):void
 		{
-			const handlers:Array = _handlers[message];
+			var handlers:Array = _handlers[message];
 			if (handlers)
 			{
-				new MessageRunner(message, handlers, callback, flags).run();
+				handlers = handlers.concat();
+				reverse || handlers.reverse();
+				new MessageRunner(message, handlers, callback).run();
 			}
 			else
 			{
@@ -101,7 +95,6 @@ package robotlegs.bender.framework.impl
 }
 
 import robotlegs.bender.framework.impl.safelyCallBack;
-import robotlegs.bender.framework.impl.MessageDispatcher;
 
 class MessageRunner
 {
@@ -116,22 +109,15 @@ class MessageRunner
 
 	private var _callback:Function;
 
-	private var _halt:Boolean;
-
-	private var _errors:Array;
-
 	/*============================================================================*/
 	/* Constructor                                                                */
 	/*============================================================================*/
 
-	public function MessageRunner(message:Object, handlers:Array, callback:Function, flags:uint)
+	public function MessageRunner(message:Object, handlers:Array, callback:Function)
 	{
 		_message = message;
-		_handlers = handlers.concat();
+		_handlers = handlers;
 		_callback = callback;
-		_halt = Boolean(flags & MessageDispatcher.HALT_ON_ERROR);
-		const reverse:Boolean = Boolean(flags & MessageDispatcher.REVERSE);
-		reverse || _handlers.reverse();
 	}
 
 	/*============================================================================*/
@@ -169,19 +155,12 @@ class MessageRunner
 				handler(_message, function(error:Object = null, msg:Object = null):void
 				{
 					// handler must not invoke the callback more than once
-					if (handled)
-						return;
+					if (handled) return;
 
 					handled = true;
-					if (error && !_halt)
-					{
-						_errors ||= [];
-						_errors.push(error);
-						error = null;
-					}
 					if (error || _handlers.length == 0)
 					{
-						_callback && safelyCallBack(_callback, error || _errors, _message);
+						_callback && safelyCallBack(_callback, error, _message);
 					}
 					else
 					{

@@ -38,8 +38,8 @@ package robotlegs.bender.framework.api
 		 * Dispatches a message into the message flow.
 		 * @param message The interesting message
 		 * @param callback The completion callback function
-		 * @param flags Bitflag
+		 * @param reverse Should handlers be called in reverse order
 		 */
-		function dispatchMessage(message:Object, callback:Function = null, flags:uint = 0):void;
+		function dispatchMessage(message:Object, callback:Function = null, reverse:Boolean = false):void;
 	}
 }

@@ -17,7 +17,6 @@ package robotlegs.bender.framework.impl
 	import robotlegs.bender.framework.impl.safelyCallBackSupport.createAsyncHandler;
 	import robotlegs.bender.framework.impl.safelyCallBackSupport.createCallbackHandlerThatErrors;
 	import robotlegs.bender.framework.impl.safelyCallBackSupport.createHandler;
-	import robotlegs.bender.framework.impl.MessageDispatcher;
 
 	// TODO: extract MessageRunner tests
 	public class MessageDispatcherTest
@@ -280,7 +279,7 @@ package robotlegs.bender.framework.impl
 			dispatcher.dispatchMessage(message, function(error:Object):void {
 				actualError = error;
 			});
-			assertThat(actualError, array(expectedError));
+			assertThat(actualError, equalTo(expectedError));
 		}
 
 		[Test(async)]
@@ -295,7 +294,7 @@ package robotlegs.bender.framework.impl
 				actualError = error;
 			});
 			delayAssertion(function():void {
-				assertThat(actualError, array(expectedError));
+				assertThat(actualError, equalTo(expectedError));
 			});
 		}
 
@@ -337,13 +336,12 @@ package robotlegs.bender.framework.impl
 				const actual:Array = [];
 				const expected:Array = ['handler 1', 'handler 2', 'handler 3', 'handler 4'];
 				reverse && expected.reverse();
-				const flags:uint = reverse ? MessageDispatcher.REVERSE : 0;
 				dispatcher = new MessageDispatcher();
 				dispatcher.addMessageHandler(message, createHandler(actual.push, 'handler 1'));
 				dispatcher.addMessageHandler(message, createHandler(actual.push, 'handler 2'));
 				dispatcher.addMessageHandler(message, createHandler(actual.push, 'handler 3'));
 				dispatcher.addMessageHandler(message, createHandler(actual.push, 'handler 4'));
-				dispatcher.dispatchMessage(message, null, flags);
+				dispatcher.dispatchMessage(message, null, reverse);
 				assertThat("reverse=" + reverse, actual, array(expected));
 			}
 		}
@@ -356,13 +354,12 @@ package robotlegs.bender.framework.impl
 				const actual:Array = [];
 				const expected:Array = ['handler 1', 'handler 2', 'handler 3', 'handler 4'];
 				reverse && expected.reverse();
-				const flags:uint = reverse ? MessageDispatcher.REVERSE : 0;
 				dispatcher = new MessageDispatcher();
 				dispatcher.addMessageHandler(message, createAsyncHandler(actual.push, 'handler 1'));
 				dispatcher.addMessageHandler(message, createAsyncHandler(actual.push, 'handler 2'));
 				dispatcher.addMessageHandler(message, createAsyncHandler(actual.push, 'handler 3'));
 				dispatcher.addMessageHandler(message, createAsyncHandler(actual.push, 'handler 4'));
-				dispatcher.dispatchMessage(message, null, flags);
+				dispatcher.dispatchMessage(message, null, reverse);
 				// gotta close over these otherwise we're just testing the latest twice :)
 				(function(reverse:Boolean, actual:Array, expected:Array):void {
 					delayAssertion(function():void {
@@ -380,13 +377,12 @@ package robotlegs.bender.framework.impl
 				const actual:Array = [];
 				const expected:Array = ['handler 1', 'handler 2', 'handler 3', 'handler 4'];
 				reverse && expected.reverse();
-				const flags:uint = reverse ? MessageDispatcher.REVERSE : 0;
 				dispatcher = new MessageDispatcher();
 				dispatcher.addMessageHandler(message, createAsyncHandler(actual.push, 'handler 1'));
 				dispatcher.addMessageHandler(message, createHandler(actual.push, 'handler 2'));
 				dispatcher.addMessageHandler(message, createAsyncHandler(actual.push, 'handler 3'));
 				dispatcher.addMessageHandler(message, createHandler(actual.push, 'handler 4'));
-				dispatcher.dispatchMessage(message, null, flags);
+				dispatcher.dispatchMessage(message, null, reverse);
 				// gotta close over these otherwise we're just testing the latest twice :)
 				(function(reverse:Boolean, actual:Array, expected:Array):void {
 					delayAssertion(function():void {
@@ -397,7 +393,7 @@ package robotlegs.bender.framework.impl
 		}
 
 		[Test]
-		public function terminated_message_should_not_reach_further_handlers_for_HALT_ON_ERROR():void
+		public function terminated_message_should_not_reach_further_handlers():void
 		{
 			for each (var reverse:Boolean in[false, true])
 			{
@@ -405,21 +401,18 @@ package robotlegs.bender.framework.impl
 				const expected:Array = reverse
 					? ['handler 4', 'handler 3 (with error)']
 					: ['handler 1', 'handler 2', 'handler 3 (with error)'];
-				const flags:uint = reverse
-					? MessageDispatcher.HALT_ON_ERROR | MessageDispatcher.REVERSE
-					: MessageDispatcher.HALT_ON_ERROR;
 				dispatcher = new MessageDispatcher();
 				dispatcher.addMessageHandler(message, createHandler(actual.push, 'handler 1'));
 				dispatcher.addMessageHandler(message, createHandler(actual.push, 'handler 2'));
 				dispatcher.addMessageHandler(message, createCallbackHandlerThatErrors(actual.push, 'handler 3 (with error)'));
 				dispatcher.addMessageHandler(message, createHandler(actual.push, 'handler 4'));
-				dispatcher.dispatchMessage(message, null, flags);
+				dispatcher.dispatchMessage(message, null, reverse);
 				assertThat("reverse=" + reverse, actual, array(expected));
 			}
 		}
 
 		[Test(async)]
-		public function terminated_async_message_should_not_reach_further_handlers_for_HALT_ON_ERROR():void
+		public function terminated_async_message_should_not_reach_further_handlers():void
 		{
 			for each (var reverse:Boolean in[false, true])
 			{
@@ -427,15 +420,12 @@ package robotlegs.bender.framework.impl
 				const expected:Array = reverse
 					? ['handler 4', 'handler 3 (with error)']
 					: ['handler 1', 'handler 2', 'handler 3 (with error)'];
-				const flags:uint = reverse
-					? MessageDispatcher.HALT_ON_ERROR | MessageDispatcher.REVERSE
-					: MessageDispatcher.HALT_ON_ERROR;
 				dispatcher = new MessageDispatcher();
 				dispatcher.addMessageHandler(message, createAsyncHandler(actual.push, 'handler 1'));
 				dispatcher.addMessageHandler(message, createAsyncHandler(actual.push, 'handler 2'));
 				dispatcher.addMessageHandler(message, createCallbackHandlerThatErrors(actual.push, 'handler 3 (with error)'));
 				dispatcher.addMessageHandler(message, createAsyncHandler(actual.push, 'handler 4'));
-				dispatcher.dispatchMessage(message, null, flags);
+				dispatcher.dispatchMessage(message, null, reverse);
 				// gotta close over these otherwise we're just testing the latest twice :)
 				(function(reverse:Boolean, actual:Array, expected:Array):void {
 					delayAssertion(function():void {
@@ -456,40 +446,6 @@ package robotlegs.bender.framework.impl
 			dispatcher.addMessageHandler(message, handler);
 			dispatcher.dispatchMessage(message);
 			assertThat(callbackCount, equalTo(1));
-		}
-
-		[Test]
-		public function continueOnError_ensures_all_handlers_are_called():void
-		{
-			const expected:Array = ['handler1', 'handler2'];
-			const actual:Array = [];
-			dispatcher.addMessageHandler(message, function(msg:Object, callback:Function):void {
-				actual.push('handler1');
-				callback('error');
-			});
-			dispatcher.addMessageHandler(message, function(msg:Object, callback:Function):void {
-				actual.push('handler2');
-				callback('error');
-			});
-			dispatcher.dispatchMessage(message);
-			assertThat(actual, array(expected));
-		}
-
-		[Test]
-		public function continueOnError_collects_all_errors():void
-		{
-			const expected:Array = ['error1', 'error2'];
-			var actual:Object = null;
-			dispatcher.addMessageHandler(message, function(msg:Object, callback:Function):void {
-				callback('error1');
-			});
-			dispatcher.addMessageHandler(message, function(msg:Object, callback:Function):void {
-				callback('error2');
-			});
-			dispatcher.dispatchMessage(message, function(error:Object):void {
-				actual = error;
-			});
-			assertThat(actual, array(expected));
 		}
 
 		/*============================================================================*/
