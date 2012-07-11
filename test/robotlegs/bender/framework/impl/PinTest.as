@@ -7,23 +7,15 @@
 
 package robotlegs.bender.framework.impl
 {
-	import org.flexunit.assertThat;
-	import org.hamcrest.core.isA;
-	import org.hamcrest.object.equalTo;
-	import org.hamcrest.object.strictlyEqualTo;
-	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.framework.api.IContext;
-	import robotlegs.bender.framework.api.IExtension;
-	import robotlegs.bender.framework.impl.contextSupport.CallbackExtension;
 
-	public class ContextTest
+	public class PinTest
 	{
 
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var context:IContext;
+		private var pin:Pin;
 
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
@@ -32,7 +24,7 @@ package robotlegs.bender.framework.impl
 		[Before]
 		public function before():void
 		{
-			context = new Context();
+			pin = new Pin();
 		}
 
 		/*============================================================================*/
@@ -40,40 +32,24 @@ package robotlegs.bender.framework.impl
 		/*============================================================================*/
 
 		[Test]
-		public function can_instantiate():void
-		{
-			assertThat(context, isA(IContext));
-		}
-
-		[Test]
-		public function extensions_are_installed():void
-		{
-			var actual:IContext = null;
-			const extension:IExtension = new CallbackExtension(
-				function(error:Object, context:IContext):void {
-					actual = context;
-				});
-			context.extend(extension);
-			assertThat(actual, equalTo(context));
-		}
-
-		[Test]
-		public function injector_is_mapped_into_itself():void
-		{
-			const injector:Injector = context.injector.getInstance(Injector);
-			assertThat(injector, strictlyEqualTo(context.injector));
-		}
-
-		[Test]
 		public function detain_is_pretty_much_untestable():void
 		{
-			context.detain({}, {});
+			// note: this *can* be tested - it's just really, really gross
+			pin.detain({});
 		}
 
 		[Test]
 		public function release_is_pretty_much_untestable():void
 		{
-			context.release({}, {});
+			// note: this *can* be tested - it's just really, really gross
+			pin.release({});
+		}
+
+		[Test]
+		public function flush_is_pretty_much_untestable():void
+		{
+			// note: this *can* be tested - it's just really, really gross
+			pin.flush();
 		}
 	}
 }

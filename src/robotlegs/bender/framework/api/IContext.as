@@ -71,5 +71,19 @@ package robotlegs.bender.framework.api
 		 * @return this
 		 */
 		function addLogTarget(target:ILogTarget):IContext;
+
+		/**
+		 * Pins instances in memory
+		 * @param instances Instances to pin
+		 * @return this
+		 */
+		function detain(... instances):IContext;
+
+		/**
+		 * Unpins instances from memory
+		 * @param instances Instances to unpin
+		 * @return this
+		 */
+		function release(... instances):IContext;
 	}
 }

@@ -18,6 +18,7 @@ package robotlegs.bender.framework
 	import robotlegs.bender.framework.impl.LoggerTest;
 	import robotlegs.bender.framework.impl.MessageDispatcherTest;
 	import robotlegs.bender.framework.impl.ObjectProcessorTest;
+	import robotlegs.bender.framework.impl.PinTest;
 	import robotlegs.bender.framework.impl.SafelyCallBackTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
@@ -52,5 +53,7 @@ package robotlegs.bender.framework
 		public var objectProcessor:ObjectProcessorTest;
 
 		public var safelyCallBack:SafelyCallBackTest;
+
+		public var pin:PinTest;
 	}
 }

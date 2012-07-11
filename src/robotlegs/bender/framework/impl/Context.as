@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -64,6 +64,8 @@ package robotlegs.bender.framework.impl
 		private const _uid:String = UID.create(Context);
 
 		private const _logManager:LogManager = new LogManager();
+
+		private const _pin:Pin = new Pin();
 
 		private var _configManager:ConfigManager;
 
@@ -150,6 +152,30 @@ package robotlegs.bender.framework.impl
 			return this;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
+		public function detain(... instances):IContext
+		{
+			for each (var instance:Object in instances)
+			{
+				_pin.detain(instance);
+			}
+			return this;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function release(... instances):IContext
+		{
+			for each (var instance:Object in instances)
+			{
+				_pin.release(instance);
+			}
+			return this;
+		}
+
 		public function toString():String
 		{
 			return _uid;
@@ -190,6 +216,7 @@ package robotlegs.bender.framework.impl
 
 		private function afterDestroying():void
 		{
+			_pin.flush();
 			_logger.info("Destroy complete");
 		}
 	}
