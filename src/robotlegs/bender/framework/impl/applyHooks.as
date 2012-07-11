@@ -29,21 +29,18 @@ package robotlegs.bender.framework.impl
 	{
 		for each (var hook:Object in hooks)
 		{
+			if (hook is Function)
+			{
+				(hook as Function)();
+				continue;
+			}
 			if (hook is Class)
 			{
 				hook = injector
 					? injector.getInstance(hook as Class)
-					: new hook();
-				hook.hook();
+					: new (hook as Class);
 			}
-			else if (hook is Function)
-			{
-				hook();
-			}
-			else
-			{
-				hook.hook();
-			}
+			hook.hook();
 		}
 	}
 }

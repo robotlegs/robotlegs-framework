@@ -36,7 +36,7 @@ package robotlegs.bender.framework.impl
 		{
 			if (guard is Function)
 			{
-				if (guard() == true)
+				if ((guard as Function)())
 					continue;
 				return false;
 			}
@@ -44,7 +44,7 @@ package robotlegs.bender.framework.impl
 			{
 				guard = injector
 					? injector.getInstance(guard as Class)
-					: new guard();
+					: new (guard as Class);
 			}
 			if (guard.approve() == false)
 				return false;
