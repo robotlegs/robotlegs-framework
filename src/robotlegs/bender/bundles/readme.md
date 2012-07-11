@@ -10,11 +10,11 @@ A bundle bundles up a selection of extensions and configurations into a single d
 
 ## Creating a Bundle
 
-A bundle implements the IExtension interface. When included into a context, that context is immediately passed through to the extend() method.
+A bundle implements the IBundle interface. When included into a context, that context is immediately passed through to the extend() method.
 
     package robotlegs.bender.bundles.superDuper
     {
-      public class SuperDuperBundle implements IExtension
+      public class SuperDuperBundle implements IBundle
       {
         public function extend(context:IContext):void
         {
