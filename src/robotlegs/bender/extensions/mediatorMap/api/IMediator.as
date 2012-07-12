@@ -10,8 +10,6 @@ package robotlegs.bender.extensions.mediatorMap.api
 
 	public interface IMediator
 	{
-		function set viewComponent(view:Object):void;
-
 		function initialize():void;
 
 		function destroy():void;
