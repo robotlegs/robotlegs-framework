@@ -34,9 +34,9 @@ package robotlegs.bender.framework.impl
 
 		public function flush():void
 		{
-			for each (var key:* in _instances)
+			for (var instance:Object in _instances)
 			{
-				delete _instances[key];
+				delete _instances[instance];
 			}
 		}
 	}
