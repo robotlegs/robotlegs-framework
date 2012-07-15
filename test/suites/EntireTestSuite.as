@@ -22,7 +22,5 @@ package suites
 		public var framework:FrameworkTestSuite;
 
 		public var extensions:ExtensionsTestSuite;
-	
-		public var mockingSpeed:MockingSpeedTestSuite;
 	}
 }
