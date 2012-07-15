@@ -1,0 +1,145 @@
+//------------------------------------------------------------------------------
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
+//------------------------------------------------------------------------------
+
+package robotlegs.bender.extensions.viewProcessorMap.impl
+{
+	import org.swiftsuspenders.errors.InjectorInterfaceConstructionError;
+	import org.swiftsuspenders.Injector;
+	import robotlegs.bender.extensions.matching.ITypeFilter;
+	import robotlegs.bender.extensions.viewProcessorMap.api.ViewProcessorMapError;
+	import robotlegs.bender.extensions.viewProcessorMap.dsl.IViewProcessorMapping;
+	import robotlegs.bender.framework.impl.applyHooks;
+	import robotlegs.bender.framework.impl.guardsApprove;
+	import flash.utils.Dictionary;
+	import flash.display.DisplayObject;
+	import flash.events.Event;
+	
+	public class ViewProcessorFactory
+	{
+		private var _injector:Injector;
+		
+		private var _listenersByView:Dictionary = new Dictionary(true);
+	
+		public function ViewProcessorFactory(injector:Injector)
+		{
+			_injector = injector;
+		}
+	
+		public function runProcessors(view:Object, type:Class, processorMappings:Array):void
+		{
+			createRemovedListener(view, type, processorMappings);
+			
+			var filter:ITypeFilter;
+			
+			for each (var mapping:IViewProcessorMapping in processorMappings)
+			{
+				filter = mapping.matcher;
+				mapTypeForFilterBinding(filter, type, view);
+				runProcess(view, type, mapping);
+				unmapTypeForFilterBinding(filter, type, view);
+			}			
+		}
+		
+		public function runUnprocessors(view:Object, type:Class, processorMappings:Array):void
+		{
+			for each (var mapping:IViewProcessorMapping in processorMappings)
+			{
+				// ?? Is this correct - will assume that people are implementing something sensible in their processors.
+				mapping.processor ||= createProcessor(mapping.processorClass);
+				mapping.processor.unprocess(view, type);
+			}			
+		}
+		
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
+
+		private function runProcess(view:Object, type:Class, mapping:IViewProcessorMapping):void
+		{
+			if (guardsApprove(mapping.guards, _injector))
+			{
+				mapping.processor ||= createProcessor(mapping.processorClass);
+				mapping.processor.process(view, type);
+				applyHooks(mapping.hooks, _injector);
+			}
+		}
+
+		private function createProcessor(processorClass:Class):Object
+		{
+			if(!_injector.satisfiesDirectly(processorClass))
+			{
+				_injector.map(processorClass).asSingleton();
+			}
+			
+			try
+			{
+				return _injector.getInstance(processorClass);
+			}
+			catch(error:InjectorInterfaceConstructionError)
+			{
+				var errorMsg:String = "The view processor " 
+										+ processorClass 
+										+ " has not been mapped in the injector, "
+										+ "and it is not possible to instantiate an interface. "
+										+ "Please map a concrete type against this interface.";
+				throw(new ViewProcessorMapError(errorMsg));
+			}
+			return null;
+		}
+		
+		private function mapTypeForFilterBinding(filter:ITypeFilter, type:Class, view:Object):void
+		{
+			var requiredType:Class;
+			const requiredTypes:Vector.<Class> = requiredTypesFor(filter, type);
+
+			for each (requiredType in requiredTypes)
+			{
+				_injector.map(requiredType).toValue(view);
+			}
+		}
+
+		private function unmapTypeForFilterBinding(filter:ITypeFilter, type:Class, view:Object):void
+		{
+			var requiredType:Class;
+			const requiredTypes:Vector.<Class> = requiredTypesFor(filter, type);
+
+			for each (requiredType in requiredTypes)
+			{
+				if(_injector.satisfiesDirectly(requiredType))
+					_injector.unmap(requiredType);
+			}
+		}
+		
+		private function requiredTypesFor(filter:ITypeFilter, type:Class):Vector.<Class>
+		{
+			const requiredTypes:Vector.<Class> = filter.allOfTypes.concat(filter.anyOfTypes);
+
+			if(requiredTypes.indexOf(type) == -1)
+				requiredTypes.push(type);
+			
+			return requiredTypes;
+		}
+		
+		private function createRemovedListener(view:Object, type:Class, processorMappings:Array):void
+		{
+			if(_listenersByView[view])
+				return;
+				
+			if(view is DisplayObject)
+			{
+				const handler:Function = function(e:Event):void { 
+						runUnprocessors(view, type, processorMappings);
+						(view as DisplayObject).removeEventListener(Event.REMOVED_FROM_STAGE, handler);
+						delete _listenersByView[view];
+					}
+			
+				_listenersByView[view] = handler;
+				(view as DisplayObject).addEventListener(Event.REMOVED_FROM_STAGE, handler);
+			}
+		}
+	}
+}

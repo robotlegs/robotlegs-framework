@@ -22,6 +22,7 @@ package robotlegs.bender.extensions
 	import robotlegs.bender.extensions.scopedMessageDispatcher.ScopedMessageDispatcherExtensionTestSuite;
 	import robotlegs.bender.extensions.stageSync.StageSyncExtensionTestSuite;
 	import robotlegs.bender.extensions.viewManager.ViewManagerExtensionTestSuite;
+	import robotlegs.bender.extensions.viewProcessorMap.ViewProcessorMapExtensionTestSuite;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
@@ -59,6 +60,8 @@ package robotlegs.bender.extensions
 		public var stageSyncExtension:StageSyncExtensionTestSuite;
 
 		public var viewManagerExtension:ViewManagerExtensionTestSuite;
+			
+		public var viewProcessorMapExtension:ViewProcessorMapExtensionTestSuite;
 
 		public var matching:TypeMatchingTestSuite;
 	}

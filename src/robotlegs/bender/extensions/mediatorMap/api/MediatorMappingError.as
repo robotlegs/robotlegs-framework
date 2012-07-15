@@ -4,7 +4,6 @@ package robotlegs.bender.extensions.mediatorMap.api
 
 	public class MediatorMappingError extends Error
 	{
-	
 		public function MediatorMappingError(message:String, typeFilter:ITypeFilter, mediatorClass:Class)
 		{
 			super(message);

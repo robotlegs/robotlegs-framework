@@ -5,24 +5,25 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package suites
+package robotlegs.bender.extensions.viewProcessorMap
 {
-	import robotlegs.bender.extensions.ExtensionsTestSuite;
-	import robotlegs.bender.framework.FrameworkTestSuite;
-
+	import robotlegs.bender.extensions.viewProcessorMap.impl.ViewInjectionProcessorTest;
+	import robotlegs.bender.extensions.viewProcessorMap.impl.ViewProcessorMapTest;
+	import robotlegs.bender.extensions.viewProcessorMap.impl.ViewProcessorFactoryTest;
+	
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
-	public class EntireTestSuite
+	public class ViewProcessorMapExtensionTestSuite
 	{
-
 		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		public var framework:FrameworkTestSuite;
+		public var viewProcessorMap:ViewProcessorMapTest;
+		
+		public var viewProcessorFactory:ViewProcessorFactoryTest;
 
-		public var extensions:ExtensionsTestSuite;
-	
-		public var mockingSpeed:MockingSpeedTestSuite;
+		public var viewInjector:ViewInjectionProcessorTest;
+
 	}
 }

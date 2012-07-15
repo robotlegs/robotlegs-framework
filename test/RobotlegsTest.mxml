@@ -23,7 +23,8 @@
 				core = new FlexUnitCore();
 				core.addListener(new CIListener());
 				core.addListener(new TraceListener());
-				core.run(EntireTestSuite);
+				StageAccessor.stage = systemManager.stage;
+                core.run(EntireTestSuite);
 			}
 		]]>
 	</fx:Script>
