@@ -6,16 +6,17 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 	import robotlegs.bender.extensions.viewProcessorMap.dsl.IViewProcessorMapping;
 	import robotlegs.bender.extensions.viewProcessorMap.dsl.IViewProcessorMappingConfig;
 	import robotlegs.bender.extensions.viewProcessorMap.dsl.IViewProcessorUnmapper;
+	import robotlegs.bender.extensions.viewProcessorMap.impl.IViewProcessorViewHandler;
 
 	public class ViewProcessorMapper implements IViewProcessorMapper, IViewProcessorUnmapper
 	{
-		private var _handler:ViewProcessorViewHandler;
+		private var _handler:IViewProcessorViewHandler;
 	
 		private var _matcher:ITypeFilter;
 		
 		private const _mappings:Dictionary = new Dictionary();
 	
-		public function ViewProcessorMapper(matcher:ITypeFilter, handler:ViewProcessorViewHandler)
+		public function ViewProcessorMapper(matcher:ITypeFilter, handler:IViewProcessorViewHandler)
 		{
 			_handler = handler;
 			_matcher = matcher;

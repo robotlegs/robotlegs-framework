@@ -30,6 +30,8 @@ package robotlegs.bender.extensions.viewProcessorMap
 		public var fastPropertyInjector:FastPropertyInjectorTest;
 		
 		public var propertyValueInjector:PropertyValueInjectorTest;
+		
+		public var viewProcessMapExtension:ViewProcessorMapExtensionTest;
 
 	}
 }

@@ -18,7 +18,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 	import flash.display.DisplayObject;
 	import flash.events.Event;
 	
-	public class ViewProcessorFactory
+	public class ViewProcessorFactory implements IViewProcessorFactory
 	{
 		private var _injector:Injector;
 		
@@ -52,6 +52,18 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 				mapping.processor ||= createProcessor(mapping.processorClass);
 				mapping.processor.unprocess(view, type);
 			}			
+		}
+		
+		public function runAllUnprocessors():void
+		{
+			for each (var removalHandlers:Array in _listenersByView)
+			{
+				const iLength:uint = removalHandlers.length;
+				for (var i:uint = 0; i < iLength; i++)
+				{
+					removalHandlers[i](null);
+				}
+			}
 		}
 		
 		/*============================================================================*/
@@ -126,19 +138,33 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		
 		private function createRemovedListener(view:Object, type:Class, processorMappings:Array):void
 		{
-			if(_listenersByView[view])
-				return;
-				
+			trace("ViewProcessorFactory::createRemovedListener()");
 			if(view is DisplayObject)
 			{
+				_listenersByView[view] ||= [];
+								
 				const handler:Function = function(e:Event):void { 
+						trace("ViewProcessorFactory::handler()" + view);
 						runUnprocessors(view, type, processorMappings);
 						(view as DisplayObject).removeEventListener(Event.REMOVED_FROM_STAGE, handler);
-						delete _listenersByView[view];
+						removeHandlerFromView(view, handler);
 					}
 			
-				_listenersByView[view] = handler;
-				(view as DisplayObject).addEventListener(Event.REMOVED_FROM_STAGE, handler);
+				_listenersByView[view].push(handler);
+				(view as DisplayObject).addEventListener(Event.REMOVED_FROM_STAGE, handler, false, 0, true);
+			}
+		}
+
+		private function removeHandlerFromView(view:Object, handler:Function):void
+		{
+			if(_listenersByView[view] && (_listenersByView[view].length > 0))
+			{
+				const handlerIndex:uint = _listenersByView[view].indexOf(handler);
+				_listenersByView[view].splice(handlerIndex, 1);
+				if(_listenersByView[view].length == 0)
+				{
+					delete _listenersByView[view];
+				}
 			}
 		}
 	}

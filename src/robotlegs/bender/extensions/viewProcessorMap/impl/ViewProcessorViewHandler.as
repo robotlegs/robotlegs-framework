@@ -12,7 +12,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 	import flash.display.DisplayObject;
 	import robotlegs.bender.extensions.viewProcessorMap.dsl.IViewProcessorMapping;
 
-	public class ViewProcessorViewHandler
+	public class ViewProcessorViewHandler implements IViewProcessorViewHandler
 	{
 
 		/*============================================================================*/
@@ -23,13 +23,13 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 
 		private var _knownMappings:Dictionary = new Dictionary(true);
 		
-		private var _factory:ViewProcessorFactory;
+		private var _factory:IViewProcessorFactory;
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function ViewProcessorViewHandler(factory:ViewProcessorFactory):void
+		public function ViewProcessorViewHandler(factory:IViewProcessorFactory):void
 		{
 			_factory = factory;
 		}

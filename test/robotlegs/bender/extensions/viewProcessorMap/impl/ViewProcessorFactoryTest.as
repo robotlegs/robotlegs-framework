@@ -20,6 +20,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 	import flash.events.IEventDispatcher;
 	import robotlegs.bender.extensions.viewProcessorMap.support.ITrackingProcessor;
 	import robotlegs.bender.extensions.viewProcessorMap.api.ViewProcessorMapError;
+	import org.flexunit.asserts.assertEqualsArraysIgnoringOrder;
 
 	public class ViewProcessorFactoryTest
 	{
@@ -73,6 +74,32 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		}
 		
 		[Test]
+		public function runUnprocessOnExistingProcessor():void
+		{
+			const mappings:Array = [];
+			mappings.push( new ViewProcessorMapping(new TypeMatcher().allOf(Sprite).createTypeFilter(), trackingProcessor));
+						
+			viewProcessorFactory.runProcessors(view, Sprite, mappings);
+			viewProcessorFactory.runUnprocessors(view, Sprite, mappings);
+			assertThat(trackingProcessor.unprocessedViews, array([view]));
+		}
+		
+		[Test]
+		public function runUnprocessOnMultipleProcessors():void
+		{
+			const mappings:Array = [];
+			mappings.push( new ViewProcessorMapping(new TypeMatcher().allOf(Sprite).createTypeFilter(), trackingProcessor));
+			
+			const trackingProcessor2:TrackingProcessor = new TrackingProcessor();
+			mappings.push( new ViewProcessorMapping(new TypeMatcher().allOf(Sprite).createTypeFilter(), trackingProcessor2));
+
+			viewProcessorFactory.runProcessors(view, Sprite, mappings);
+			viewProcessorFactory.runUnprocessors(view, Sprite, mappings);
+			assertThat( trackingProcessor.processedViews, array([view]) );
+			assertThat( trackingProcessor2.processedViews, array([view]) );
+		}
+		
+		[Test]
 		public function getsProcessorFromInjectorWhereMapped():void
 		{
 			const mappings:Array = [];
@@ -114,5 +141,31 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			viewProcessorFactory.runProcessors(view, Sprite, mappings);
 		}
 		
+		[Test]
+		public function runAllUnprocessors_runs_all_unprocessors_for_all_views():void
+		{
+			const trackingProcessor2:TrackingProcessor = new TrackingProcessor();
+			
+			const mapping:ViewProcessorMapping =  new ViewProcessorMapping(new TypeMatcher().allOf(Sprite).createTypeFilter(), trackingProcessor);
+			const mappingA:ViewProcessorMapping = new ViewProcessorMapping(new TypeMatcher().allOf(SpriteA).createTypeFilter(), trackingProcessor2);
+			
+			const viewA:SpriteA = new SpriteA();
+			
+			viewProcessorFactory.runProcessors(view, Sprite, [mapping]);
+			viewProcessorFactory.runProcessors(viewA, SpriteA, [mapping, mappingA]);
+			
+			viewProcessorFactory.runAllUnprocessors();
+			
+			assertEqualsArraysIgnoringOrder('trackingProcessor unprocessed all views', trackingProcessor.unprocessedViews, [view, viewA]);
+			assertEqualsArraysIgnoringOrder('trackingProcessor2 unprocessed all views', trackingProcessor2.unprocessedViews, [viewA]);
+		}
+		
 	}
+}
+
+import flash.display.Sprite;
+
+class SpriteA extends Sprite
+{
+	
 }

@@ -15,9 +15,9 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 	{
 		private const _mappers:Dictionary = new Dictionary();
 		
-		private var _factory:ViewProcessorFactory;
+		private var _factory:IViewProcessorFactory;
 		
-		private var _handler:ViewProcessorViewHandler;
+		private var _handler:IViewProcessorViewHandler;
 		
 		private const NULL_UNMAPPER:IViewProcessorUnmapper = new NullViewProcessorUnmapper();
 		
