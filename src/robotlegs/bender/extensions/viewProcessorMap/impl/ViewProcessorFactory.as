@@ -17,6 +17,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 	import flash.utils.Dictionary;
 	import flash.display.DisplayObject;
 	import flash.events.Event;
+	import org.swiftsuspenders.dependencyproviders.ClassProvider;
 	
 	public class ViewProcessorFactory implements IViewProcessorFactory
 	{
@@ -26,7 +27,9 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 	
 		public function ViewProcessorFactory(injector:Injector)
 		{
+			// TODO Child injector here
 			_injector = injector;
+			_injector.fallbackProvider = ClassProvider;
 		}
 	
 		public function runProcessors(view:Object, type:Class, processorMappings:Array):void
@@ -82,7 +85,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		
 		private function createProcessor(processorClass:Class):Object
 		{
-			if(!_injector.satisfiesDirectly(processorClass))
+			if(!_injector.hasMapping(processorClass))
 			{
 				_injector.map(processorClass).asSingleton();
 			}

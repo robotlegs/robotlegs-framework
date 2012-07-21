@@ -239,7 +239,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		{
 			viewProcessorMap.map(Sprite).toProcess(trackingProcessor);
 			viewProcessorMap.handleView(matchingView, Sprite);
-			assertThat(injector.satisfiesDirectly(Sprite), isFalse());
+			assertThat(injector.hasMapping(Sprite), isFalse());
 		}
 		
 		[Test]

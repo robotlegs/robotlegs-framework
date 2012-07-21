@@ -6,10 +6,11 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 	import robotlegs.bender.extensions.viewProcessorMap.dsl.IViewProcessorUnmapper;
 	import flash.display.DisplayObject;
 	import robotlegs.bender.extensions.matching.ITypeMatcher;
-	import robotlegs.bender.extensions.viewProcessorMap.impl.ViewProcessorMapping;
 	import robotlegs.bender.extensions.matching.TypeMatcher;
 	import flash.utils.Dictionary;
 	import robotlegs.bender.extensions.viewProcessorMap.impl.NullViewProcessorUnmapper;
+	import robotlegs.bender.extensions.viewProcessorMap.impl.IViewProcessorViewHandler;
+	import robotlegs.bender.extensions.viewProcessorMap.impl.IViewProcessorFactory;
 
 	public class ViewProcessorMap implements IViewProcessorMap, IViewHandler
 	{
@@ -21,7 +22,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		
 		private const NULL_UNMAPPER:IViewProcessorUnmapper = new NullViewProcessorUnmapper();
 		
-		public function ViewProcessorMap(factory:ViewProcessorFactory, handler:ViewProcessorViewHandler = null)
+		public function ViewProcessorMap(factory:IViewProcessorFactory, handler:IViewProcessorViewHandler = null)
 		{
 			_factory = factory;
 			_handler = handler || new ViewProcessorViewHandler(_factory); 

@@ -55,7 +55,7 @@ package robotlegs.bender.extensions.mediatorMap
 		{
 			context.extend(ViewManagerExtension, MediatorMapExtension);
 			context.lifecycle.afterDestroying( function():void {
-				assertFalse(context.injector.satisfiesDirectly(IMediatorMap));
+				assertFalse(context.injector.hasMapping(IMediatorMap));
 			});
 			context.initialize();
 			context.destroy();

@@ -110,7 +110,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			
 			if (guardsApprove(mapping.guards, _injector))
 			{
-				mediator = _injector.getInstance(mapping.mediatorClass);
+				mediator = _injector.instantiateUnmapped(mapping.mediatorClass);
 				_injector.map(mapping.mediatorClass).toValue(mediator);
 				applyHooks(mapping.hooks, _injector);
 				_injector.unmap(mapping.mediatorClass);

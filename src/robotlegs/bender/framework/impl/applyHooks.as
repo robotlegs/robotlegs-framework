@@ -37,7 +37,7 @@ package robotlegs.bender.framework.impl
 			if (hook is Class)
 			{
 				hook = injector
-					? injector.getInstance(hook as Class)
+					? injector.instantiateUnmapped(hook as Class)
 					: new (hook as Class);
 			}
 			hook.hook();

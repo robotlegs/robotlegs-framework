@@ -27,7 +27,7 @@ package robotlegs.bender.extensions.viewProcessorMap.utils
 			{
 				return;
 			}
-			const mediator:* = injector.getInstance(_mediatorClass);
+			const mediator:* = injector.instantiateUnmapped(_mediatorClass);
 			_createdMediatorsByView[view] = mediator;
 			initializeMediator(view, mediator);
 		}

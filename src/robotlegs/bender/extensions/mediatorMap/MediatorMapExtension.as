@@ -62,7 +62,7 @@ package robotlegs.bender.extensions.mediatorMap
 		private function beforeInitializing():void
 		{
 			_mediatorMap = _injector.getInstance(IMediatorMap);
-			_mediatorManager = _injector.getInstance(DefaultMediatorManager);
+			_mediatorManager = _injector.instantiateUnmapped(DefaultMediatorManager);
 			if (_injector.satisfiesDirectly(IViewManager))
 			{
 				_viewManager = _injector.getInstance(IViewManager);
