@@ -18,6 +18,7 @@ package robotlegs.bender.extensions.modularity
 	import robotlegs.bender.extensions.viewManager.api.IViewManager;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.impl.Context;
+	import StageAccessor;
 
 	public class ModularityExtensionTest
 	{
@@ -54,7 +55,7 @@ package robotlegs.bender.extensions.modularity
 		[After(async, ui)]
 		public function tearDown():void
 		{
-			UIImpersonator.removeChild(root);
+			StageAccessor.removeChild(root);
 		}
 
 		/*============================================================================*/
@@ -64,7 +65,7 @@ package robotlegs.bender.extensions.modularity
 		[Test(async, ui)]
 		public function context_inherits_parent_injector():void
 		{
-			UIImpersonator.addChild(root);
+			StageAccessor.addChild(root);
 			parentContext.extend(ModularityExtension).configure(parentView);
 			childContext.extend(ModularityExtension).configure(childView);
 			root.addChild(parentView);
@@ -75,7 +76,7 @@ package robotlegs.bender.extensions.modularity
 		[Test(async, ui)]
 		public function context_does_not_inherit_parent_injector_when_not_interested():void
 		{
-			UIImpersonator.addChild(root);
+			StageAccessor.addChild(root);
 			parentContext.extend(ModularityExtension).configure(parentView);
 			childContext.extend(new ModularityExtension(false)).configure(childView);
 			root.addChild(parentView);
@@ -86,7 +87,7 @@ package robotlegs.bender.extensions.modularity
 		[Test(async, ui)]
 		public function context_does_not_inherit_parent_injector_when_disallowed_by_parent():void
 		{
-			UIImpersonator.addChild(root);
+			StageAccessor.addChild(root);
 			parentContext.extend(new ModularityExtension(true, false)).configure(parentView);
 			childContext.extend(ModularityExtension).configure(childView);
 			root.addChild(parentView);
@@ -104,7 +105,7 @@ package robotlegs.bender.extensions.modularity
 		[Test]
 		public function child_added_to_viewManager_inherits_injector():void
 		{
-			UIImpersonator.addChild(root);
+			StageAccessor.addChild(root);
 			parentContext = new Context().extend(
 				ContextViewExtension,
 				ModularityExtension,

@@ -58,7 +58,7 @@ package robotlegs.bender.extensions.contextView
 
 		private function handleContextView(view:DisplayObjectContainer):void
 		{
-			if (_injector.satisfiesDirectly(DisplayObjectContainer))
+			if (_injector.hasDirectMapping(DisplayObjectContainer))
 			{
 				_logger.warn('A contextView has already been mapped, ignoring {0}', [view]);
 			}

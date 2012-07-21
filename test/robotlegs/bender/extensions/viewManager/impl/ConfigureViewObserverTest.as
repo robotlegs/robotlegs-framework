@@ -41,14 +41,14 @@ package robotlegs.bender.extensions.viewManager.impl
 			container2 = new UIComponent();
 			registry = new ContainerRegistry();
 			observer = new ManualStageObserver(registry);
-			UIImpersonator.addChild(container);
-			UIImpersonator.addChild(container2);
+			StageAccessor.addChild(container);
+			StageAccessor.addChild(container2);
 		}
 
 		[After(async, ui)]
 		public function after():void
 		{
-			UIImpersonator.removeChild(container);
+			StageAccessor.removeChild(container);
 			observer.destroy();
 		}
 

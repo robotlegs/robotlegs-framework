@@ -84,6 +84,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			{
 				displayObject.addEventListener('creationComplete', function(e:Event):void
 				{
+					trace("onMediatorCreate");
 					displayObject.removeEventListener('creationComplete', arguments.callee);
 					// ensure that we haven't been removed in the meantime
 					if (_factory.getMediator(displayObject, event.mapping))

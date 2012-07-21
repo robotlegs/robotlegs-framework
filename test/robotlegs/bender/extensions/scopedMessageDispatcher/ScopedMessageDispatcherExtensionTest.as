@@ -83,7 +83,7 @@ package robotlegs.bender.extensions.scopedMessageDispatcher
 
 			container.addChild(parentView);
 			parentView.addChild(childView);
-			UIImpersonator.addChild(container);
+			StageAccessor.addChild(container);
 
 			const parentDispatchers:Array = [];
 			const childDispatchers:Array = [];
@@ -96,7 +96,7 @@ package robotlegs.bender.extensions.scopedMessageDispatcher
 			}
 
 			assertThat(childDispatchers, array(parentDispatchers));
-			UIImpersonator.removeChild(container);
+			StageAccessor.removeChild(container);
 		}
 		
 		public function getFromInjector(injector:Injector, type:Class, name:String = ""):IMessageDispatcher

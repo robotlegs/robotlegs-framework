@@ -23,6 +23,11 @@ package
 				container.removeChild(child);
 		}
 		
+		public static function removeAllChildren():void
+		{
+			refresh();
+		}
+		
 		public static function refresh():void
 		{
 			if(container && stage.contains(container))

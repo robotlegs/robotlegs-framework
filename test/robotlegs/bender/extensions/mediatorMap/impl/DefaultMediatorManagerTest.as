@@ -25,6 +25,8 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import utils.traceAndSkipTest;
 	import robotlegs.bender.extensions.matching.ITypeFilter;
 	import robotlegs.bender.extensions.matching.TypeMatcher;
+	import StageAccessor;
+	import flash.events.Event;
 
 	public class DefaultMediatorManagerTest
 	{
@@ -52,7 +54,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			factory = new MediatorFactory(injector);
 			manager = new DefaultMediatorManager(factory);
 			container = new UIComponent();
-			UIImpersonator.addChild(container);
+			StageAccessor.addChild(container);
 		}
 
 		/*============================================================================*/
@@ -110,18 +112,17 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		[Test(async, ui)]
 		public function mediator_for_UIComponent_is_only_initialized_after_creationComplete():void
 		{
-			// early exit for as3 only test environments
-			if(!checkFlex()) 
-				return traceAndSkipTest('mediator_for_UIComponent_is_only_initialized_after_creationComplete - flex not available');
-			
 			const view:UIComponent = new UIComponent();
 			const mapping:IMediatorMapping = new MediatorMapping(createTypeFilter([UIComponent]), SomeMediator);
 			const mediator:SomeMediator = factory.createMediators(view, Sprite, [mapping])[0];
 			assertThat(mediator.initialized, isFalse());
-			container.addChild(view);
-			delayAssertion(function():void {
+			const checkMediatorInitialized:Function = function(e:Event):void
+			{
+				trace("DefaultMediatorManagerTest::checkMediatorInitialized()");
 				assertThat(mediator.initialized, isTrue());
-			}, 50)
+			}
+			view.addEventListener('creationComplete', checkMediatorInitialized);
+			container.addChild(view);
 		}
 
 		[Test]
