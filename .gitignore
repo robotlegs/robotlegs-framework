@@ -12,6 +12,8 @@
 /dist/*
 /target
 /lib/asunit3/*
+/test_old/*
+/src_old/*
 
 .actionScriptProperties
 .flexProperties
