@@ -19,6 +19,8 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 	import robotlegs.bender.extensions.mediatorMap.impl.support.MediatorWatcher;
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.viewProcessorMap.utils.MediatorCreator;
+	import org.fluint.uiImpersonation.UIImpersonator;
+	import mx.core.UIComponent;
 
 	public class ViewProcessorMediatorsTest
 	{
@@ -30,6 +32,8 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		
 		private var matchingView:Sprite;
 		
+		private var container:UIComponent;
+		
 		[Before]
 		public function setUp():void
 		{
@@ -39,6 +43,8 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			mediatorWatcher = new MediatorWatcher();
 			injector.map(MediatorWatcher).toValue(mediatorWatcher);
 			matchingView = new Sprite();
+			container = new UIComponent();
+			UIImpersonator.addChild(container);
 		}
 
 		[After]
@@ -101,15 +107,15 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
 		}
 		
-		[Test(async)]
+		[Test(async,ui)]
 		public function automatically_unprocesses_when_view_leaves_stage():void
 		{
 			instance.map(Sprite).toProcess(new MediatorCreator(ExampleMediator));
-			StageAccessor.addChild(matchingView);
+			container.addChild(matchingView);
 			instance.process(matchingView);
 			var asyncHandler:Function = Async.asyncHandler( this, checkMediatorsDestroyed, 500 );
 			matchingView.addEventListener(Event.REMOVED_FROM_STAGE, asyncHandler);
-			StageAccessor.removeChild(matchingView);
+			container.removeChild(matchingView);
 		}
 		
 		private function checkMediatorsDestroyed(e:Event, params:Object):void

@@ -26,8 +26,9 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 	import robotlegs.bender.extensions.viewProcessorMap.dsl.IViewProcessorMapping;
 	import flash.events.IEventDispatcher;
 	import flash.events.Event;
+	import org.fluint.uiImpersonation.UIImpersonator;
+	import mx.core.UIComponent;
 	
-
 	public class ViewProcessorMapTest
 	{
 		/*============================================================================*/
@@ -42,6 +43,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		private var matchingView:Sprite;
 		private var nonMatchingView:Shape;
 		private var factory:ViewProcessorFactory;
+		private var container:UIComponent;
 		
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
@@ -58,6 +60,8 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			trackingProcessor2 = new TrackingProcessor();
 			matchingView = new Sprite();
 			nonMatchingView = new Shape();
+			container = new UIComponent();
+			UIImpersonator.addChild(container);
 		}
 
 		/*============================================================================*/
@@ -418,11 +422,11 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		public function automatically_unprocesses_when_view_leaves_stage():void
 		{
 			viewProcessorMap.map(Sprite).toProcess(trackingProcessor);
-			StageAccessor.addChild(matchingView);
+			container.addChild(matchingView);
 			viewProcessorMap.process(matchingView);
 			var asyncHandler:Function = Async.asyncHandler( this, checkUnprocessorsRan, 500 );
 			matchingView.addEventListener(Event.REMOVED_FROM_STAGE, asyncHandler);
-			StageAccessor.removeChild(matchingView);
+			container.removeChild(matchingView);
 		}
 	
 		private function checkUnprocessorsRan(e:Event, params:Object):void

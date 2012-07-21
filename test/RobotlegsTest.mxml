@@ -23,7 +23,6 @@
 				core = new FlexUnitCore();
 				core.addListener(new CIListener());
 				core.addListener(new TraceListener());
-				StageAccessor.stage = systemManager.stage;
                 core.run(EntireTestSuite);
 			}
 		]]>

@@ -55,7 +55,7 @@ package robotlegs.bender.extensions.modularity
 		[After(async, ui)]
 		public function tearDown():void
 		{
-			StageAccessor.removeChild(root);
+			UIImpersonator.removeChild(root);
 		}
 
 		/*============================================================================*/
@@ -65,7 +65,7 @@ package robotlegs.bender.extensions.modularity
 		[Test(async, ui)]
 		public function context_inherits_parent_injector():void
 		{
-			StageAccessor.addChild(root);
+			UIImpersonator.addChild(root);
 			parentContext.extend(ModularityExtension).configure(parentView);
 			childContext.extend(ModularityExtension).configure(childView);
 			root.addChild(parentView);
@@ -76,7 +76,7 @@ package robotlegs.bender.extensions.modularity
 		[Test(async, ui)]
 		public function context_does_not_inherit_parent_injector_when_not_interested():void
 		{
-			StageAccessor.addChild(root);
+			UIImpersonator.addChild(root);
 			parentContext.extend(ModularityExtension).configure(parentView);
 			childContext.extend(new ModularityExtension(false)).configure(childView);
 			root.addChild(parentView);
@@ -87,7 +87,7 @@ package robotlegs.bender.extensions.modularity
 		[Test(async, ui)]
 		public function context_does_not_inherit_parent_injector_when_disallowed_by_parent():void
 		{
-			StageAccessor.addChild(root);
+			UIImpersonator.addChild(root);
 			parentContext.extend(new ModularityExtension(true, false)).configure(parentView);
 			childContext.extend(ModularityExtension).configure(childView);
 			root.addChild(parentView);
@@ -105,7 +105,7 @@ package robotlegs.bender.extensions.modularity
 		[Test]
 		public function child_added_to_viewManager_inherits_injector():void
 		{
-			StageAccessor.addChild(root);
+			UIImpersonator.addChild(root);
 			parentContext = new Context().extend(
 				ContextViewExtension,
 				ModularityExtension,
