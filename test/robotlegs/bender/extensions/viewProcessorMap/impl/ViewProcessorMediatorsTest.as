@@ -143,7 +143,6 @@ class ExampleMediator
 	}
 }
 
-
 class ExampleMediator2
 {
 	[Inject]
