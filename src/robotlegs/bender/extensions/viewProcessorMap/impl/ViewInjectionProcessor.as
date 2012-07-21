@@ -5,30 +5,23 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 	import flash.events.IEventDispatcher;
 
 	public class ViewInjectionProcessor
-	{
-		private var _injector:Injector;
-		
+	{		
 		private const _injectedObjects:Dictionary = new Dictionary(true);
-		
-		public function ViewInjectionProcessor(injector:Injector)
+			
+		public function process(view:Object, type:Class, injector:Injector):void
 		{
-			_injector = injector;
-		}
-	
-		public function process(view:Object, type:Class):void
-		{
-			_injectedObjects[view] || injectAndRemember(view);
+			_injectedObjects[view] || injectAndRemember(view, injector);
 		}
 		
-		public function unprocess(view:Object, type:Class):void
+		public function unprocess(view:Object, type:Class, injector:Injector):void
 		{
 			// assumption is that teardown is not wanted.
 			// if you *do* want teardown, copy this class
 		}
 		
-		private function injectAndRemember(view:Object):void
+		private function injectAndRemember(view:Object, injector:Injector):void
 		{
-			_injector.injectInto(view);
+			injector.injectInto(view);
 			_injectedObjects[view] = view;
 		}
 	}

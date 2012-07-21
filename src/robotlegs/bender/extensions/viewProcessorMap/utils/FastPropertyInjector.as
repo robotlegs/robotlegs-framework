@@ -11,9 +11,6 @@ package robotlegs.bender.extensions.viewProcessorMap.utils
 	
 	public class FastPropertyInjector
 	{
-		[Inject]
-		public var injector:Injector;
-
 		private var _propertyTypesByName:Object;
 
 		public function FastPropertyInjector(propertyTypesByName:Object)
@@ -21,7 +18,7 @@ package robotlegs.bender.extensions.viewProcessorMap.utils
 			_propertyTypesByName = propertyTypesByName;
 		}
 		
-		public function process(view:Object, type:Class):void
+		public function process(view:Object, type:Class, injector:Injector):void
 		{
 			for (var propName:String in _propertyTypesByName)
 			{
@@ -29,7 +26,7 @@ package robotlegs.bender.extensions.viewProcessorMap.utils
 			}
 		}
 		
-		public function unprocess(view:Object, type:Class):void
+		public function unprocess(view:Object, type:Class, injector:Injector):void
 		{
 			
 		}

@@ -9,6 +9,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 {
 	import flash.display.Sprite;
 	import org.flexunit.assertThat;
+	import org.flexunit.async.Async;
 	import org.hamcrest.collection.array;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.instanceOf;
@@ -57,7 +58,6 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			trackingProcessor2 = new TrackingProcessor();
 			matchingView = new Sprite();
 			nonMatchingView = new Shape();
-			StageAccessor.refresh();
 		}
 
 		/*============================================================================*/
@@ -414,14 +414,30 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			assertThat(matchingView.height, equalTo(0));			
 		}
 		
-		[Test]
+		[Test(async)]
 		public function automatically_unprocesses_when_view_leaves_stage():void
 		{
 			viewProcessorMap.map(Sprite).toProcess(trackingProcessor);
 			StageAccessor.addChild(matchingView);
 			viewProcessorMap.process(matchingView);
+			var asyncHandler:Function = Async.asyncHandler( this, checkUnprocessorsRan, 500 );
+			matchingView.addEventListener(Event.REMOVED_FROM_STAGE, asyncHandler);
 			StageAccessor.removeChild(matchingView);
+		}
+	
+		private function checkUnprocessorsRan(e:Event, params:Object):void
+		{
 			assertThatProcessorHasUnprocessedThese(trackingProcessor, [matchingView]);
+		}
+		
+		[Test]
+		public function hooks_run_before_process():void
+		{
+			const timingTracker:Array = [];
+			injector.map(Array, 'timingTracker').toValue(timingTracker);
+			viewProcessorMap.map(Sprite).toProcess(Processor).withHooks(HookA);
+			viewProcessorMap.process(matchingView);
+			assertThat(timingTracker, array([HookA, Processor]));
 		}
 		
 		
@@ -495,7 +511,26 @@ class Alpha50PercentHook
 
 class HookA
 {
-	public function HookA()
+	[Inject(name='timingTracker')]
+	public var timingTracker:Array;
+	
+	public function hook():void
+	{
+		timingTracker.push(HookA);
+	}
+}
+
+class Processor
+{
+	[Inject(name='timingTracker')]
+	public var timingTracker:Array;
+	
+	public function process(view:*, type:Class, injector:*):void
+	{
+		timingTracker.push(Processor);
+	}
+	
+	public function unprocess(view:*, type:Class, injector:*):void
 	{
 		
 	}

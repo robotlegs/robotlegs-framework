@@ -55,17 +55,52 @@ Guards and hooks can be passed as arrays or just a list of classes.
 
 Guards and hooks will be injected with the view (these injections are then cleaned up so that views are not generally available for injection).
 
+The guards and hooks run prior to the `process` method on the processor. Processors are NOT automatically made available for injection to hooks.
+
+In the case where you need access to the processor in a hook, pass a class rather than an instance as the process, which will then be used as a singleton and mapped for injection, and inject against the processor class (or interface) in your hook.
+
 For more information on guards and hooks check out: 
 
 1. robotlegs.bender.framework.readme-guards
 2. robotlegs.bender.framework.readme-hooks
 
-### Creating processors
+## Utility processors provided
+
+## ViewInjectionProcessor
+
+Injects view by passing it to the injector, where it will be inspected and then injected. You can access this via either of the following:
+
+	map(SomeType).forInjection();
+	map(SomeType).toProcess(ViewInjectionProcessor);
+
+## FastPropertyInjector
+
+Allows injection of properties (by the injector), without describing the object type. You provide names and types of injection points in the configuration object passed to the constructor.
+
+	map(ViewThatIsTooExpensiveToInspect).toProcess(new FastPropertyInjector({gravity:Gravity, bounce:Bounce}));
+
+## PropertyValueInjector
+
+Allows injection of values directly, using only property names, so that the injector is never consulted.
+
+	map(ViewNeedingQuickParams).toProcess(new PropertyValueInjector({gravity:9.8, bounce:4}));
+	
+## MediatorCreator
+
+Allows you to use mediators via the viewProcessorMap - for example in the case where you want to minimise the size of the framework within your application.
+
+	map(ViewNeedingMediator).toProcess(new MediatorCreator(SomeMediator));
+	
+The mediator class passed should implement `set viewComponent`, `initialize` and `destroy` methods as required (only those provided will be called).
+
+A difference between the mediatorMap and the viewProcessorMap: in the mediatorMap, mediators can be injected into hooks. In the viewProcessorMap they aren't mapped for injection at all.
+
+### Creating custom processors
 
 Processors need to implement two methods:
 
-	process(view:ISkinnable, class:Class):void;
-	unprocess(view:ISkinnable, class:Class):void;
+	process(view:ISkinnable, class:Class, injector:Injector):void;
+	unprocess(view:ISkinnable, class:Class, injector:Injector):void;
 	
 These methods are checked by duck typing, rather than forcing you to implement an interface, so that you can use stricter typing on the view argument passed. The class is passed to avoid you having to re-inspect the object (in most cases the viewProcessorMap will already have obtained this information).
 	
@@ -74,6 +109,10 @@ In many cases, `unprocess` will simply be an empty function, but some processes 
 Where a processor is mapped as a class, a singleton instance will be instantiated via the injector.
 
 In most cases, processors shouldn't be stateful with respect to the views that they handle, other than in keeping a (weak) cache of which objects have already been processed, both for the purposes of unprocessing and for not re-processing the same object.
+
+The injector passed is an instance of the local injector for the map. If your processor doesn't need access to the injector and you want to avoid importing it, simply type this 3rd argument `Object` or `*`.
+
+You may wish to use a childInjector for local mappings within the process.
 
 ### Removing mappings
 

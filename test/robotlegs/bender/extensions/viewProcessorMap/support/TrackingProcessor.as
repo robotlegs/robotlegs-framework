@@ -1,16 +1,18 @@
 package robotlegs.bender.extensions.viewProcessorMap.support
 {
+	import org.swiftsuspenders.Injector;
+	
 	public class TrackingProcessor implements ITrackingProcessor
 	{
 		private const _processedViews:Array = [];
 		private const _unprocessedViews:Array = [];
 
-		public function process(view:Object, type:Class):void
+		public function process(view:Object, type:Class, injector:Injector):void
 		{
 			_processedViews.push(view);
 		}
 
-		public function unprocess(view:Object, type:Class):void
+		public function unprocess(view:Object, type:Class, injector:Injector):void
 		{
 			_unprocessedViews.push(view);
 		}

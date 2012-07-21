@@ -12,6 +12,8 @@ package robotlegs.bender.extensions.viewProcessorMap
 	import robotlegs.bender.extensions.viewProcessorMap.impl.ViewProcessorFactoryTest;
 	import robotlegs.bender.extensions.viewProcessorMap.utils.FastPropertyInjectorTest;
 	import robotlegs.bender.extensions.viewProcessorMap.utils.PropertyValueInjectorTest;
+	import robotlegs.bender.extensions.viewProcessorMap.impl.ViewProcessorMediatorsTest;
+	import robotlegs.bender.extensions.viewProcessorMap.impl.ViewProcessorMappingTest;
 	
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
@@ -32,6 +34,10 @@ package robotlegs.bender.extensions.viewProcessorMap
 		public var propertyValueInjector:PropertyValueInjectorTest;
 		
 		public var viewProcessMapExtension:ViewProcessorMapExtensionTest;
+		
+		public var viewProcessorMediators:ViewProcessorMediatorsTest;
+		
+		public var viewProcessorMapping:ViewProcessorMappingTest;
 
 	}
 }

@@ -27,7 +27,6 @@ package robotlegs.bender.extensions.viewProcessorMap.utils
 			const config:Object = {number:Number, string:String};
 			instance = new FastPropertyInjector(config);
 			injector = new Injector();
-			instance.injector = injector;
 		}
 
 		[After]
@@ -50,7 +49,7 @@ package robotlegs.bender.extensions.viewProcessorMap.utils
 			injector.map(String).toValue(STRING_VALUE);
 			
 			const view:ViewToBeInjected = new ViewToBeInjected();
-			instance.process(view, ViewToBeInjected);
+			instance.process(view, ViewToBeInjected, injector);
 			
 			assertThat(view.number, equalTo(NUMBER_VALUE));
 			assertThat(view.string, equalTo(STRING_VALUE));

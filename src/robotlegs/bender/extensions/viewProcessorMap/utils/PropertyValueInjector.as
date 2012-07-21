@@ -7,6 +7,8 @@
 
 package robotlegs.bender.extensions.viewProcessorMap.utils
 {
+	import org.swiftsuspenders.Injector;
+	
 	public class PropertyValueInjector
 	{
 		private var _valuesByPropertyName:Object;
@@ -16,7 +18,7 @@ package robotlegs.bender.extensions.viewProcessorMap.utils
 			_valuesByPropertyName = valuesByPropertyName;
 		}
 		
-		public function process(view:Object, type:Class):void
+		public function process(view:Object, type:Class, injector:Injector):void
 		{
 			for (var propName:String in _valuesByPropertyName)
 			{
@@ -24,7 +26,7 @@ package robotlegs.bender.extensions.viewProcessorMap.utils
 			}
 		}
 		
-		public function unprocess(view:Object, type:Class):void
+		public function unprocess(view:Object, type:Class, injector:Injector):void
 		{
 			
 		}

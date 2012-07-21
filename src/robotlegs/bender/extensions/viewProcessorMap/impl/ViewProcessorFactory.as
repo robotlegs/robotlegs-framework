@@ -50,7 +50,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			{
 				// ?? Is this correct - will assume that people are implementing something sensible in their processors.
 				mapping.processor ||= createProcessor(mapping.processorClass);
-				mapping.processor.unprocess(view, type);
+				mapping.processor.unprocess(view, type, _injector);
 			}			
 		}
 		
@@ -75,11 +75,11 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			if (guardsApprove(mapping.guards, _injector))
 			{
 				mapping.processor ||= createProcessor(mapping.processorClass);
-				mapping.processor.process(view, type);
 				applyHooks(mapping.hooks, _injector);
+				mapping.processor.process(view, type, _injector);
 			}
 		}
-
+		
 		private function createProcessor(processorClass:Class):Object
 		{
 			if(!_injector.satisfiesDirectly(processorClass))
@@ -138,13 +138,11 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		
 		private function createRemovedListener(view:Object, type:Class, processorMappings:Array):void
 		{
-			trace("ViewProcessorFactory::createRemovedListener()");
 			if(view is DisplayObject)
 			{
 				_listenersByView[view] ||= [];
 								
 				const handler:Function = function(e:Event):void { 
-						trace("ViewProcessorFactory::handler()" + view);
 						runUnprocessors(view, type, processorMappings);
 						(view as DisplayObject).removeEventListener(Event.REMOVED_FROM_STAGE, handler);
 						removeHandlerFromView(view, handler);

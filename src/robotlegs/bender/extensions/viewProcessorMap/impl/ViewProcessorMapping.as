@@ -89,6 +89,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			else
 			{
 				_processor = processor;
+				_processorClass = _processor.constructor;
 			}
 		}
 		

@@ -40,8 +40,9 @@ package robotlegs.bender.extensions.viewProcessorMap.utils
 		[Test]
 		public function process_properties_are_injected():void
 		{
+			var noInjector:* = null;
 			const view:ViewToBeInjected = new ViewToBeInjected();
-			instance.process(view, ViewToBeInjected);
+			instance.process(view, ViewToBeInjected, noInjector);
 
 			assertThat(view.number, equalTo(NUMBER_VALUE));
 			assertThat(view.string, equalTo(STRING_VALUE));

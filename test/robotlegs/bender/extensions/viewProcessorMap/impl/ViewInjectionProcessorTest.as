@@ -34,7 +34,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		public function before():void
 		{
 			injector = new Injector();
-			viewInjector = new ViewInjectionProcessor(injector);
+			viewInjector = new ViewInjectionProcessor();
 			injectionValue = mapSpriteForInjection();
 			view = new ViewWithInjection();
 		}
@@ -46,26 +46,26 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		[Test]
 		public function processFulfillsInjectionsWhenClassPassed():void
 		{
-			viewInjector.process(view, ViewWithInjection);
+			viewInjector.process(view, ViewWithInjection, injector);
 			assertThat(view.injectedSprite, equalTo(injectionValue));
 		}
 		
 		[Test]
 		public function processFulfillsInjectionsWhenClassNotPassed():void
 		{
-			viewInjector.process(view, null);
+			viewInjector.process(view, null, injector);
 			assertThat(view.injectedSprite, equalTo(injectionValue));
 		}
 		
 		[Test]
 		public function processDoesNotRerunInjections():void
 		{
-			viewInjector.process(view, ViewWithInjection);
+			viewInjector.process(view, ViewWithInjection, injector);
 			
 			injector.unmap(Sprite);
 			injector.map(Sprite).toValue(new Sprite());
 			
-			viewInjector.process(view, ViewWithInjection);
+			viewInjector.process(view, ViewWithInjection, injector);
 			
 			assertThat(view.injectedSprite, equalTo(injectionValue));
 		}	
