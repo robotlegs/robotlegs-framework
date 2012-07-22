@@ -308,7 +308,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			instance.map(Sprite).toMediator(ExampleMediator).withGuards(HappyGuard);
 			const mapping:IMediatorMapping = instance.map(Sprite).toMediator(ExampleMediator) as IMediatorMapping;
 			// error only thrown when used sadly			
-			mapping.matcher;			
+			mapping.validate();			
 		}
 		
 		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
@@ -317,7 +317,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			instance.map(Sprite).toMediator(ExampleMediator).withHooks(Alpha50PercentHook);
 			const mapping:IMediatorMapping = instance.map(Sprite).toMediator(ExampleMediator) as IMediatorMapping;
 			// error only thrown when used sadly			
-			mapping.matcher;			
+			mapping.validate();			
 		}
 
 		[Test]
@@ -337,7 +337,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			const mapping:MediatorMapping = instance.map(Sprite).toMediator(ExampleMediator) as MediatorMapping;
 			mapping.withGuards(HappyGuard);
 			// error only thrown when used sadly			
-			mapping.matcher;			
+			mapping.validate();			
 		}
 		
 		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
@@ -347,7 +347,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			const mapping:MediatorMapping = instance.map(Sprite).toMediator(ExampleMediator) as MediatorMapping;
 			mapping.withHooks(HookA);
 			// error only thrown when used sadly			
-			mapping.matcher;			
+			mapping.validate();			
 		}
 		
 		[Test]
@@ -365,7 +365,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			mapping2.withHooks(HookWithMediatorAndViewInjectionDrawsRectangle);
 			mapping2.withHooks(Alpha50PercentHook);
 
-			mapping2.matcher;
+			mapping2.validate();
 		}
 		
 		[Test]
@@ -379,7 +379,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			mapping2.withGuards([HappyGuard, OnlyIfViewHasChildrenGuard]);
 			mapping2.withHooks([Alpha50PercentHook, HookA]);
 			
-			mapping2.matcher;
+			mapping2.validate();
 		}
 		
 		protected function handleEventTimeout(o:Object):void

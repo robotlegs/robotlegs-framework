@@ -73,6 +73,28 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			assertThat(createdMediator, nullValue());
 		}
 		
+		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
+		public function error_thrown_if_2_mappings_made_with_same_matcher_and_mediator_one_with_fewer_guards():void
+		{
+			const mapping:MediatorMapping = new MediatorMapping(createTypeFilter([Sprite]), CallbackMediator); 
+			mapping.withGuards(GuardA, GuardB);
+			mapping.invalidate();
+			mapping.withGuards(GuardA);
+			handler.addMapping(mapping);
+			handler.handleView(new Sprite(), Sprite);
+		}
+		
+		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
+		public function error_thrown_if_2_mappings_made_with_same_matcher_and_mediator_one_with_fewer_hooks():void
+		{
+			const mapping:MediatorMapping = new MediatorMapping(createTypeFilter([Sprite]), CallbackMediator); 
+			mapping.withHooks(HookA, HookB);
+			mapping.invalidate();
+			mapping.withHooks(HookA);
+			handler.addMapping(mapping);
+			handler.handleView(new Sprite(), Sprite);
+		}
+		
 		/* 
 			PRIVATE
 		*/
@@ -89,5 +111,35 @@ package robotlegs.bender.extensions.mediatorMap.impl
 				
 			return matcher.createTypeFilter();
 		}
+	}
+}
+
+class GuardA
+{
+	public function approve():Boolean
+	{
+		return true;
+	}
+}
+
+class GuardB
+{
+	public function approve():Boolean
+	{
+		return true;
+	}
+}
+
+class HookA
+{
+	public function hook():void
+	{
+	}
+}
+
+class HookB
+{
+	public function hook():void
+	{
 	}
 }

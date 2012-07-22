@@ -25,7 +25,6 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		public function get matcher():ITypeFilter
 		{
-			validate();
 			return _matcher;
 		}
 
@@ -89,7 +88,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			_hooks = [];
 		}
 		
-		private function validate():void
+		public function validate():void
 		{
 			if(!_validator)
 			{
