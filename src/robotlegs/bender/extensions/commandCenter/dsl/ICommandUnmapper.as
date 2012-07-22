@@ -11,5 +11,7 @@ package robotlegs.bender.extensions.commandCenter.dsl
 	public interface ICommandUnmapper
 	{
 		function fromCommand(commandClass:Class):void;
+		
+		function fromAll():void;
 	}
 }

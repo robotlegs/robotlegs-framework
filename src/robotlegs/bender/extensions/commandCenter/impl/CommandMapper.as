@@ -49,6 +49,15 @@ package robotlegs.bender.extensions.commandCenter.impl
 			mapping && _trigger.removeMapping(mapping);
 			delete _mappings[commandClass];
 		}
+		
+		public function fromAll():void
+		{
+			for each (var mapping:ICommandMapping in _mappings)
+			{
+				_trigger.removeMapping(mapping);
+				delete _mappings[mapping.commandClass];
+			}
+		}
 
 		/*============================================================================*/
 		/* Private Functions                                                          */

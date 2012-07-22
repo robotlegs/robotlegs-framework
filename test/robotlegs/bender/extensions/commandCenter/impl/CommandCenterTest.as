@@ -18,6 +18,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 	import robotlegs.bender.extensions.commandCenter.support.CallbackCommandTrigger;
 	import robotlegs.bender.extensions.commandCenter.support.NullCommand;
 	import robotlegs.bender.extensions.commandCenter.support.NullCommandTrigger;
+	import robotlegs.bender.extensions.commandCenter.support.CallbackCommand;
 
 	public class CommandCenterTest
 	{
@@ -57,24 +58,48 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/*============================================================================*/
 
 		[Test]
-		public function mapTrigger_creates_mapper():void
+		public function map_trigger_creates_mapper():void
 		{
 			assertThat(commandCenter.map(trigger), notNullValue());
 		}
 
 		[Test]
-		public function mapTrigger_to_command_stores_mapping():void
+		public function map_trigger_to_command_stores_mapping():void
 		{
 			const mapping:* = commandCenter.map(trigger).toCommand(NullCommand);
 			assertThat(commandCenter.map(trigger).toCommand(NullCommand), equalTo(mapping));
 		}
 
 		[Test]
-		public function unmapTrigger_from_command_removes_mapping():void
+		public function unmap_trigger_from_command_removes_mapping():void
 		{
 			const mapping:* = commandCenter.map(trigger).toCommand(NullCommand);
 			commandCenter.unmap(trigger).fromCommand(NullCommand);
 			assertThat(commandCenter.map(trigger).toCommand(NullCommand), not(equalTo(mapping)));
+		}
+		
+		[Test]
+		public function unmap_trigger_from_command_removes_only_specified_mapping():void
+		{
+			const mapping1:* = commandCenter.map(trigger).toCommand(NullCommand);
+			const mapping2:* = commandCenter.map(trigger).toCommand(CallbackCommand);
+			
+			commandCenter.unmap(trigger).fromCommand(NullCommand);
+			
+			assertThat(commandCenter.map(trigger).toCommand(CallbackCommand), equalTo(mapping2));
+			assertThat(commandCenter.map(trigger).toCommand(NullCommand), not(equalTo(mapping1)));
+		}
+		
+		[Test]
+		public function unmap_trigger_from_all_removes_all_mappings():void
+		{
+			const mapping1:* = commandCenter.map(trigger).toCommand(NullCommand);
+			const mapping2:* = commandCenter.map(trigger).toCommand(CallbackCommand);
+			
+			commandCenter.unmap(trigger).fromAll();
+			
+			assertThat(commandCenter.map(trigger).toCommand(NullCommand), not(equalTo(mapping1)));
+			assertThat(commandCenter.map(trigger).toCommand(CallbackCommand), not(equalTo(mapping2)));
 		}
 
 		[Test]

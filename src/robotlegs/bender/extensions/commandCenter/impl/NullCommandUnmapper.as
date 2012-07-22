@@ -19,6 +19,11 @@ package robotlegs.bender.extensions.commandCenter.impl
 		public function fromCommand(commandClass:Class):void
 		{
 			
+		}
+		
+		public function fromAll():void
+		{
+			
 		}		
 	}
 }
