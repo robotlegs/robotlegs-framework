@@ -1,9 +1,8 @@
-package robotlegs.bender.extensions.mediatorMap.impl
+package robotlegs.bender.framework.impl
 {
-	import robotlegs.bender.extensions.matching.ITypeFilter;
-	import robotlegs.bender.extensions.mediatorMap.api.MediatorMappingError;
+	import robotlegs.bender.framework.api.MappingConfigError;
 	
-	public class MediatorMappingValidator
+	public class MappingConfigValidator
 	{
 		private const CANT_CHANGE_GUARDS_AND_HOOKS:String = "You can't change the guards and hooks on an existing mapping. Unmap first.";
 		private const STORED_ERROR_EXPLANATION:String = " The stacktrace for this error was stored at the time when you duplicated the mapping - you may have failed to add guards and hooks that were already present.";
@@ -11,34 +10,34 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		private var _guards:Array;
 		private var _hooks:Array;
 	
-		private var _matcher:ITypeFilter;
-		private var _mediatorClass:Class;
-		private var _storedError:MediatorMappingError;
+		private var _trigger:*;
+		private var _action:*;
+		private var _storedError:MappingConfigError;
 		private var _valid:Boolean = false;
 
-		public function MediatorMappingValidator(guards:Array, hooks:Array, matcher:ITypeFilter, mediatorClass:Class)
+		public function MappingConfigValidator(guards:Array, hooks:Array, trigger:*, action:*)
 		{
 			_guards = guards;
 			_hooks = hooks;
 			
-			_matcher = matcher;
-			_mediatorClass = mediatorClass;
+			_trigger = trigger;
+			_action = action;
 			
 			super();
 		}
 	
-		internal function get valid():Boolean
+		public function get valid():Boolean
 		{
 			return _valid;
 		}
 		
-		internal function invalidate():void
+		public function invalidate():void
 		{
 			_valid = false;
-			_storedError = new MediatorMappingError( CANT_CHANGE_GUARDS_AND_HOOKS + STORED_ERROR_EXPLANATION, _matcher, _mediatorClass);
+			_storedError = new MappingConfigError( CANT_CHANGE_GUARDS_AND_HOOKS + STORED_ERROR_EXPLANATION, _trigger, _action);
 		}
 		
-		internal function validate(guards:Array, hooks:Array):void
+		public function validate(guards:Array, hooks:Array):void
 		{
 			if( ( !arraysMatch(_guards, guards)) || ( !arraysMatch(_hooks, hooks)))
 				throwStoredError() || throwMappingError();
@@ -47,13 +46,13 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			_storedError = null;
 		}
 		
-		internal function checkGuards(guards:Array):void
+		public function checkGuards(guards:Array):void
 		{
 			if(changesContent(_guards, guards))
 				throwMappingError();
 		}
 		
-		internal function checkHooks(hooks:Array):void
+		public function checkHooks(hooks:Array):void
 		{
 			if(changesContent(_hooks, hooks))
 				throwMappingError();
@@ -109,7 +108,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		
 		private function throwMappingError():void
 		{
-			throw(new MediatorMappingError( CANT_CHANGE_GUARDS_AND_HOOKS, _matcher, _mediatorClass));
+			throw(new MappingConfigError( CANT_CHANGE_GUARDS_AND_HOOKS, _trigger, _action));
 		}
 		
 		private function throwStoredError():Boolean

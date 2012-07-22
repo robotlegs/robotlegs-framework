@@ -288,21 +288,21 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			instance.unmap(Sprite).fromMediator(ExampleMediator);
 		}
 		
-		[Test(expects="robotlegs.bender.extensions.mediatorMap.api.MediatorMappingError")]
+		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
 		public function error_thrown_if_2_mappings_made_with_same_matcher_and_mediator_but_different_guards():void
 		{
 			instance.map(Sprite).toMediator(ExampleMediator).withGuards(HappyGuard).withHooks(Alpha50PercentHook);
 			instance.map(Sprite).toMediator(ExampleMediator).withGuards(OnlyIfViewHasChildrenGuard).withHooks(Alpha50PercentHook);			
 		}
 		
-		[Test(expects="robotlegs.bender.extensions.mediatorMap.api.MediatorMappingError")]
+		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
 		public function error_thrown_if_2_mappings_made_with_same_matcher_and_mediator_but_different_hooks():void
 		{
 			instance.map(Sprite).toMediator(ExampleMediator).withGuards(HappyGuard).withHooks(Alpha50PercentHook);
 			instance.map(Sprite).toMediator(ExampleMediator).withGuards(HappyGuard).withHooks(HookWithMediatorAndViewInjectionDrawsRectangle);
 		}
 		
-		[Test(expects="robotlegs.bender.extensions.mediatorMap.api.MediatorMappingError")]
+		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
 		public function error_thrown_if_2_mappings_made_with_same_matcher_and_mediator_one_with_one_without_guards():void
 		{
 			instance.map(Sprite).toMediator(ExampleMediator).withGuards(HappyGuard);
@@ -311,7 +311,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			mapping.matcher;			
 		}
 		
-		[Test(expects="robotlegs.bender.extensions.mediatorMap.api.MediatorMappingError")]
+		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
 		public function error_thrown_if_2_mappings_made_with_same_matcher_and_mediator_one_with_one_without_hooks():void
 		{
 			instance.map(Sprite).toMediator(ExampleMediator).withHooks(Alpha50PercentHook);
@@ -330,7 +330,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			mappingConfig.withHooks(HookWithMediatorAndViewInjectionDrawsRectangle);
 		}
 		
-		[Test(expects="robotlegs.bender.extensions.mediatorMap.api.MediatorMappingError")]
+		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
 		public function error_thrown_if_2_mappings_made_with_same_matcher_and_mediator_one_with_fewer_guards():void
 		{
 			instance.map(Sprite).toMediator(ExampleMediator).withGuards(HappyGuard, OnlyIfViewHasChildrenGuard);
@@ -340,7 +340,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			mapping.matcher;			
 		}
 		
-		[Test(expects="robotlegs.bender.extensions.mediatorMap.api.MediatorMappingError")]
+		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
 		public function error_thrown_if_2_mappings_made_with_same_matcher_and_mediator_one_with_fewer_hooks():void
 		{
 			instance.map(Sprite).toMediator(ExampleMediator).withHooks(Alpha50PercentHook).withHooks(HookA);
