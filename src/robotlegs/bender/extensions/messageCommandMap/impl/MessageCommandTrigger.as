@@ -15,6 +15,7 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 	import robotlegs.bender.extensions.commandCenter.api.ICommandTrigger;
 	import robotlegs.bender.framework.impl.guardsApprove;
 	import robotlegs.bender.framework.impl.applyHooks;
+	import robotlegs.bender.extensions.commandCenter.impl.CommandMapping;
 
 	public class MessageCommandTrigger implements ICommandTrigger
 	{
@@ -102,6 +103,8 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 			var mapping:ICommandMapping;
 			while (mapping = mappings.pop())
 			{
+				// ?? what to do about this casting - ?
+				CommandMapping(mapping).validate();
 				if (guardsApprove(mapping.guards, _injector))
 				{
 					mapping.fireOnce && removeMapping(mapping);

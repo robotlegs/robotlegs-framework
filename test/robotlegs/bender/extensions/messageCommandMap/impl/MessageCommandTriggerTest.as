@@ -26,6 +26,9 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 	import robotlegs.bender.extensions.messageCommandMap.support.SupportMessage;
 	import robotlegs.bender.framework.impl.guardSupport.GrumpyGuard;
 	import robotlegs.bender.framework.impl.guardSupport.HappyGuard;
+	import robotlegs.bender.extensions.commandCenter.support.NullCommand;
+	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
+	import robotlegs.bender.extensions.commandCenter.dsl.ICommandMappingConfig;
 
 	public class MessageCommandTriggerTest
 	{
@@ -233,6 +236,30 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 			assertThat(callCount, equalTo(0));
 		}
 
+		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
+		public function incomplete_copy_guard_mapping_throws_mapping_error_when_triggered():void
+		{
+			messageCommandMap.map(SupportMessage).toCommand(NullCommand).withGuards(GuardA, GuardB);
+			
+			const mapping:ICommandMappingConfig = messageCommandMap.map(SupportMessage).toCommand(NullCommand);
+			mapping.withGuards(GuardA);
+			
+			const mappings:Vector.<ICommandMapping> = new <ICommandMapping>[ICommandMapping(mapping)];
+			dispatcher.dispatchMessage(SupportMessage);
+		}
+		
+		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
+		public function incomplete_copy_hook_mapping_throws_mapping_error_when_triggered():void
+		{
+			messageCommandMap.map(SupportMessage).toCommand(NullCommand).withHooks(HookA, HookB);
+			
+			const mapping:ICommandMappingConfig = messageCommandMap.map(SupportMessage).toCommand(NullCommand);
+			mapping.withHooks(HookA);
+			
+			const mappings:Vector.<ICommandMapping> = new <ICommandMapping>[ICommandMapping(mapping)];
+			dispatcher.dispatchMessage(SupportMessage);
+		}
+
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
@@ -287,5 +314,35 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 			dispatcher.dispatchMessage(SupportMessage);
 			return executionCount;
 		}
+	}
+}
+
+class GuardA
+{
+	public function approve():Boolean
+	{
+		return true;
+	}
+}
+
+class GuardB
+{
+	public function approve():Boolean
+	{
+		return true;
+	}
+}
+
+class HookA
+{
+	public function hook():void
+	{
+	}
+}
+
+class HookB
+{
+	public function hook():void
+	{
 	}
 }
