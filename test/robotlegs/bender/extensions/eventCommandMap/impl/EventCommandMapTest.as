@@ -18,6 +18,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
 	import robotlegs.bender.extensions.eventCommandMap.support.SupportEvent;
 	import robotlegs.bender.extensions.commandCenter.api.CommandMappingError;
+	import robotlegs.bender.framework.api.MappingConfigError;
 
 	public class EventCommandMapTest
 	{
@@ -89,6 +90,8 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			eventCommandMap.map(SupportEvent.TYPE1).toCommand(NullCommand).withHooks(HookA, HookC);
 			eventCommandMap.map(SupportEvent.TYPE1).toCommand(NullCommand).withHooks(HookB);
 		}
+		
+		// Testing of the ommission style of error is done in the ... as expecting async errors is gnarly
 	}
 }
 

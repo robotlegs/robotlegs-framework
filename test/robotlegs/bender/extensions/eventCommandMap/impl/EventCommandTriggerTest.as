@@ -308,7 +308,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 				.toCommand(CascadingCommand).once();
 			dispatcher.dispatchEvent(new Event(CascadingCommand.EVENT_TYPE));
 		}
-
+		
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/

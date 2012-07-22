@@ -12,6 +12,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandTrigger;
 	import robotlegs.bender.framework.impl.guardsApprove;
+	import robotlegs.bender.extensions.commandCenter.impl.CommandMapping;
 
 	public class EventCommandExecutor
 	{
@@ -112,6 +113,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			const commands:Array = [];
 			for each (var mapping:ICommandMapping in mappings)
 			{
+				CommandMapping(mapping).validate();
 				commands.push(_factory.create(mapping));
 			}
 			return commands;

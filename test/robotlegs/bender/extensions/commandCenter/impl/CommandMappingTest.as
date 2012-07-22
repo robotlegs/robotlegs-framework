@@ -90,7 +90,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 		public function different_guard_mapping_throws_mapping_error():void
 		{
 			mapping.withGuards(GuardA, GuardB);
-			mapping.lock();
+			mapping.invalidate();
 			mapping.withGuards(GuardA, GuardC);
 		}
 		
@@ -98,7 +98,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 		public function different_hook_mapping_throws_mapping_error():void
 		{
 			mapping.withHooks(HookA, HookC);
-			mapping.lock();
+			mapping.invalidate();
 			mapping.withHooks(HookB);
 		}
 		
@@ -106,7 +106,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 		public function consistent_hook_mapping_doesnt_throw_error():void
 		{
 			mapping.withHooks(HookA, HookC);
-			mapping.lock();
+			mapping.invalidate();
 			mapping.withHooks(HookA);
 		}
 		
@@ -114,15 +114,33 @@ package robotlegs.bender.extensions.commandCenter.impl
 		public function consistent_guard_mapping_doesnt_throw_error():void
 		{
 			mapping.withGuards(GuardA, GuardB);
-			mapping.lock();
+			mapping.invalidate();
 			mapping.withGuards(GuardA);
 		}
 		
 		[Test(expects="robotlegs.bender.extensions.commandCenter.api.CommandMappingError")]
 		public function changing_once_after_lock_throws_error():void
 		{
-			mapping.lock();
+			mapping.invalidate();
 			mapping.once();
+		}
+		
+		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
+		public function consistent_guard_mapping_with_ommission_throws_when_commandClass_retrieved():void
+		{
+			mapping.withGuards(GuardA, GuardB);
+			mapping.invalidate();
+			mapping.withGuards(GuardA);
+			mapping.validate();
+		}
+		
+		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
+		public function consistent_hook_mapping_with_ommission_throws_when_commandClass_retrieved():void
+		{
+			mapping.withGuards(HookA, HookB);
+			mapping.invalidate();
+			mapping.withGuards(HookB);
+			mapping.validate();
 		}
 	}
 }

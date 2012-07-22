@@ -73,7 +73,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 			if(!mapping) 
 				return null;
 			
-			mapping.lock();
+			mapping.invalidate();
 			return mapping;
 		}
 	}

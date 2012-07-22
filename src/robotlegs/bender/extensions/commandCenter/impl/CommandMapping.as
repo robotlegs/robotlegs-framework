@@ -64,7 +64,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		public function withHooks(... hooks):ICommandMappingConfig
 		{
-			_locked && _validator.checkHooks(hooks);
+			_validator && _validator.checkHooks(hooks);
 			_hooks = _hooks.concat.apply(null, hooks);
 			return this;
 		}
@@ -76,20 +76,12 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		public function once(value:Boolean = true):ICommandMappingConfig
 		{
-			_locked && (!_once) && throwMappingError("You attempted to change an existing mapping for " 
+			_validator && (!_once) && throwMappingError("You attempted to change an existing mapping for " 
 											+ _commandClass + " by setting once(). Please unmap first.");
 			_once = value;
 			return this;
 		}
-		
-		private var _locked:Boolean = false;
-		
-		public function lock():void
-		{
-			_locked = true;
-			_validator || createValidator();
-		}
-		
+				
 		private function throwMappingError(msg:String):void
 		{
 			throw new CommandMappingError(msg)
@@ -106,7 +98,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 			_hooks = [];
 		}
 		
-		private function validate():void
+		public function validate():void
 		{
 			if(!_validator)
 			{
