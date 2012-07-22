@@ -85,5 +85,90 @@ package robotlegs.bender.extensions.commandCenter.impl
 			mapping.once(false);
 			assertThat(mapping.fireOnce, isFalse());
 		}
+		
+		[Test(expects="robotlegs.bender.extensions.commandCenter.api.CommandMappingError")]
+		public function different_guard_mapping_throws_mapping_error():void
+		{
+			mapping.withGuards(GuardA, GuardB);
+			mapping.lock();
+			mapping.withGuards(GuardA, GuardC);
+		}
+		
+		[Test(expects="robotlegs.bender.extensions.commandCenter.api.CommandMappingError")]
+		public function different_hook_mapping_throws_mapping_error():void
+		{
+			mapping.withHooks(HookA, HookC);
+			mapping.lock();
+			mapping.withHooks(HookB);
+		}
+		
+		[Test]
+		public function consistent_hook_mapping_doesnt_throw_error():void
+		{
+			mapping.withHooks(HookA, HookC);
+			mapping.lock();
+			mapping.withHooks(HookA);
+		}
+		
+		[Test]
+		public function consistent_guard_mapping_doesnt_throw_error():void
+		{
+			mapping.withGuards(GuardA, GuardB);
+			mapping.lock();
+			mapping.withGuards(GuardA);
+		}
+		
+		[Test(expects="robotlegs.bender.extensions.commandCenter.api.CommandMappingError")]
+		public function changing_once_after_lock_throws_error():void
+		{
+			mapping.lock();
+			mapping.once();
+		}
+	}
+}
+
+
+class GuardA
+{
+	public function approve():Boolean
+	{
+		return true;
+	}
+}
+
+class GuardB
+{
+	public function approve():Boolean
+	{
+		return true;
+	}
+}
+
+class GuardC
+{
+	public function approve():Boolean
+	{
+		return true;
+	}
+}
+
+class HookA
+{
+	public function hook():void
+	{
+	}
+}
+
+class HookB
+{
+	public function hook():void
+	{
+	}
+}
+
+class HookC
+{
+	public function hook():void
+	{
 	}
 }

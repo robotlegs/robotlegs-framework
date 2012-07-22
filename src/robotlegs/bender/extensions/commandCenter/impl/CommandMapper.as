@@ -41,7 +41,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		public function toCommand(commandClass:Class):ICommandMappingConfig
 		{
-			return _mappings[commandClass] ||= createMapping(commandClass);
+			return locked(_mappings[commandClass]) || createMapping(commandClass);
 		}
 
 		public function forCommand(commandClass:Class):ICommandMappingConfig
@@ -64,6 +64,16 @@ package robotlegs.bender.extensions.commandCenter.impl
 		{
 			const mapping:CommandMapping = new CommandMapping(commandClass);
 			_trigger.addMapping(mapping);
+			_mappings[commandClass] = mapping;
+			return mapping;
+		}
+		
+		private function locked(mapping:CommandMapping):CommandMapping
+		{
+			if(!mapping) 
+				return null;
+			
+			mapping.lock();
 			return mapping;
 		}
 	}

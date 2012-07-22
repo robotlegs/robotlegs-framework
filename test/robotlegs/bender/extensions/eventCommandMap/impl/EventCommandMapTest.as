@@ -17,6 +17,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import robotlegs.bender.extensions.commandCenter.support.NullCommand;
 	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
 	import robotlegs.bender.extensions.eventCommandMap.support.SupportEvent;
+	import robotlegs.bender.extensions.commandCenter.api.CommandMappingError;
 
 	public class EventCommandMapTest
 	{
@@ -32,6 +33,8 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		private var commandCenter:ICommandCenter;
 
 		private var eventCommandMap:IEventCommandMap;
+		
+		private var errorImport:CommandMappingError;
 
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
@@ -70,5 +73,64 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			eventCommandMap.unmap(SupportEvent.TYPE1).fromCommand(NullCommand);
 			assertThat(eventCommandMap.getMapping(SupportEvent.TYPE1).forCommand(NullCommand), nullValue());
 		}
+		
+		[Test(expects="robotlegs.bender.extensions.commandCenter.api.CommandMappingError")]
+		public function different_guard_mapping_throws_mapping_error():void
+		{
+			eventCommandMap.map(SupportEvent.TYPE1).toCommand(NullCommand).withGuards(GuardA, GuardB);
+			eventCommandMap.map(SupportEvent.TYPE1).toCommand(NullCommand).withGuards(GuardA, GuardC);
+		}
+		
+		[Test(expects="robotlegs.bender.extensions.commandCenter.api.CommandMappingError")]
+		public function different_hook_mapping_throws_mapping_error():void
+		{
+			eventCommandMap.map(SupportEvent.TYPE1).toCommand(NullCommand).withHooks(HookA, HookC);
+			eventCommandMap.map(SupportEvent.TYPE1).toCommand(NullCommand).withHooks(HookB);
+		}
+	}
+}
+
+class GuardA
+{
+	public function approve():Boolean
+	{
+		return true;
+	}
+}
+
+class GuardB
+{
+	public function approve():Boolean
+	{
+		return true;
+	}
+}
+
+class GuardC
+{
+	public function approve():Boolean
+	{
+		return true;
+	}
+}
+
+class HookA
+{
+	public function hook():void
+	{
+	}
+}
+
+class HookB
+{
+	public function hook():void
+	{
+	}
+}
+
+class HookC
+{
+	public function hook():void
+	{
 	}
 }
