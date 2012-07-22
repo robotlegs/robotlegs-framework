@@ -86,7 +86,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 			assertThat(mapping.fireOnce, isFalse());
 		}
 		
-		[Test(expects="robotlegs.bender.extensions.commandCenter.api.CommandMappingError")]
+		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
 		public function different_guard_mapping_throws_mapping_error():void
 		{
 			mapping.withGuards(GuardA, GuardB);
@@ -94,7 +94,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 			mapping.withGuards(GuardA, GuardC);
 		}
 		
-		[Test(expects="robotlegs.bender.extensions.commandCenter.api.CommandMappingError")]
+		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
 		public function different_hook_mapping_throws_mapping_error():void
 		{
 			mapping.withHooks(HookA, HookC);

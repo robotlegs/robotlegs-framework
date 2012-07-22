@@ -10,6 +10,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 	import robotlegs.bender.extensions.commandCenter.dsl.ICommandMappingConfig;
 	import robotlegs.bender.extensions.commandCenter.api.CommandMappingError;
+	import robotlegs.bender.framework.impl.MappingConfigValidator;
 
 	public class CommandMapping implements ICommandMapping, ICommandMappingConfig
 	{
@@ -56,14 +57,14 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		public function withGuards(... guards):ICommandMappingConfig
 		{
-			_locked && validate(guards, _guards);
+			_validator && _validator.checkGuards(guards);
 			_guards = _guards.concat.apply(null, guards);
 			return this;
 		}
 
 		public function withHooks(... hooks):ICommandMappingConfig
 		{
-			_locked && validate(hooks, _hooks);
+			_locked && _validator.checkHooks(hooks);
 			_hooks = _hooks.concat.apply(null, hooks);
 			return this;
 		}
@@ -86,17 +87,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 		public function lock():void
 		{
 			_locked = true;
-		}
-		
-		private function validate(provided:*, existing:Array):void
-		{
-			provided = [].concat.apply(null, provided);
-			const iLength:uint = provided.length;
-			for (var i:uint = 0; i < iLength; i++)
-			{
-				if(existing.indexOf(provided[i]) == -1)
-					throwMappingError(configChangeMessage(provided[i]));
-			}
+			_validator || createValidator();
 		}
 		
 		private function throwMappingError(msg:String):void
@@ -104,10 +95,34 @@ package robotlegs.bender.extensions.commandCenter.impl
 			throw new CommandMappingError(msg)
 		}
 		
-		private function configChangeMessage(item:Object):String
+		internal function invalidate():void
 		{
-			return "You attempted to change an existing mapping for " + _commandClass.toString 
-					+ " by adding " + item.toString() + ". Please unmap first.";
+			if(_validator)
+				_validator.invalidate();
+			else
+				createValidator();
+
+			_guards = [];
+			_hooks = [];
+		}
+		
+		private function validate():void
+		{
+			if(!_validator)
+			{
+				createValidator();
+			}
+			else if(!_validator.valid)
+			{
+				_validator.validate(_guards, _hooks);
+			}
+		}
+		
+		private var _validator:MappingConfigValidator;
+		
+		private function createValidator():void
+		{
+			_validator = new MappingConfigValidator(_guards.slice(), _hooks.slice(), null, _commandClass);
 		}
 	}
 }

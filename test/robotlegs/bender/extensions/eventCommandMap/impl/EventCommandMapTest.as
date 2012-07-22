@@ -74,14 +74,16 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			assertThat(eventCommandMap.getMapping(SupportEvent.TYPE1).forCommand(NullCommand), nullValue());
 		}
 		
-		[Test(expects="robotlegs.bender.extensions.commandCenter.api.CommandMappingError")]
+		// Duplicating these tests from commandMapping at this level to keep it honest!
+		
+		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
 		public function different_guard_mapping_throws_mapping_error():void
 		{
 			eventCommandMap.map(SupportEvent.TYPE1).toCommand(NullCommand).withGuards(GuardA, GuardB);
 			eventCommandMap.map(SupportEvent.TYPE1).toCommand(NullCommand).withGuards(GuardA, GuardC);
 		}
 		
-		[Test(expects="robotlegs.bender.extensions.commandCenter.api.CommandMappingError")]
+		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
 		public function different_hook_mapping_throws_mapping_error():void
 		{
 			eventCommandMap.map(SupportEvent.TYPE1).toCommand(NullCommand).withHooks(HookA, HookC);
