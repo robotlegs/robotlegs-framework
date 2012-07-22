@@ -103,8 +103,7 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 			var mapping:ICommandMapping;
 			while (mapping = mappings.pop())
 			{
-				// ?? what to do about this casting - ?
-				CommandMapping(mapping).validate();
+				mapping.validate();
 				if (guardsApprove(mapping.guards, _injector))
 				{
 					mapping.fireOnce && removeMapping(mapping);

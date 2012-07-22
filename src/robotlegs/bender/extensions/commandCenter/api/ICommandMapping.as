@@ -17,5 +17,7 @@ package robotlegs.bender.extensions.commandCenter.api
 		function get hooks():Array;
 
 		function get fireOnce():Boolean;
+		
+		function validate():void;
 	}
 }

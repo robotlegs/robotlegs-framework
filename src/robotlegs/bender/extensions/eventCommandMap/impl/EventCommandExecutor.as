@@ -113,7 +113,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			const commands:Array = [];
 			for each (var mapping:ICommandMapping in mappings)
 			{
-				CommandMapping(mapping).validate();
+				mapping.validate();
 				commands.push(_factory.create(mapping));
 			}
 			return commands;
