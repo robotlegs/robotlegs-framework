@@ -22,6 +22,8 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/*============================================================================*/
 
 		private const _mappers:Dictionary = new Dictionary();
+		
+		private const NULL_UNMAPPER:ICommandUnmapper = new NullCommandUnmapper();
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
@@ -34,7 +36,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		public function unmap(trigger:ICommandTrigger):ICommandUnmapper
 		{
-			return _mappers[trigger];
+			return _mappers[trigger] || NULL_UNMAPPER;
 		}
 
 		public function getMapping(trigger:ICommandTrigger):ICommandMappingFinder

@@ -91,7 +91,13 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			eventCommandMap.map(SupportEvent.TYPE1).toCommand(NullCommand).withHooks(HookB);
 		}
 		
-		// Testing of the ommission style of error is done in the ... as expecting async errors is gnarly
+		// Testing of the ommission style of error is done in the Executor... as expecting async errors is gnarly
+	
+		[Test]
+		public function robust_to_unmapping_non_existent_mappings():void
+		{
+			eventCommandMap.unmap(SupportEvent.TYPE1).fromCommand(NullCommand);
+		}
 	}
 }
 

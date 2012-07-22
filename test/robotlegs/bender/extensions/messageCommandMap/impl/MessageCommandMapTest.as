@@ -72,5 +72,11 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 			messageCommandMap.unmap(message).fromCommand(NullCommand);
 			assertThat(messageCommandMap.getMapping(message).forCommand(NullCommand), nullValue());
 		}
+		
+		[Test]
+		public function robust_to_unmapping_non_existent_mappings():void
+		{
+			messageCommandMap.unmap(message).fromCommand(NullCommand);
+		}
 	}
 }

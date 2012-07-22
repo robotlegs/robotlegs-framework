@@ -31,7 +31,7 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 		private var _dispatcher:IMessageDispatcher;
 
 		private var _commandCenter:ICommandCenter;
-
+		
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
