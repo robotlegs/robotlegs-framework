@@ -8,9 +8,9 @@
 package robotlegs.bender.extensions.commandCenter.impl
 {
 	import org.hamcrest.assertThat;
+	import org.hamcrest.core.not;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.notNullValue;
-	import org.hamcrest.object.nullValue;
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandCenter;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
@@ -65,16 +65,16 @@ package robotlegs.bender.extensions.commandCenter.impl
 		[Test]
 		public function mapTrigger_to_command_stores_mapping():void
 		{
-			commandCenter.map(trigger).toCommand(NullCommand);
-			assertThat(commandCenter.getMapping(trigger).forCommand(NullCommand), notNullValue());
+			const mapping:* = commandCenter.map(trigger).toCommand(NullCommand);
+			assertThat(commandCenter.map(trigger).toCommand(NullCommand), equalTo(mapping));
 		}
 
 		[Test]
 		public function unmapTrigger_from_command_removes_mapping():void
 		{
-			commandCenter.map(trigger).toCommand(NullCommand);
+			const mapping:* = commandCenter.map(trigger).toCommand(NullCommand);
 			commandCenter.unmap(trigger).fromCommand(NullCommand);
-			assertThat(commandCenter.getMapping(trigger).forCommand(NullCommand), nullValue());
+			assertThat(commandCenter.map(trigger).toCommand(NullCommand), not(equalTo(mapping)));
 		}
 
 		[Test]
@@ -108,4 +108,3 @@ package robotlegs.bender.extensions.commandCenter.impl
 		}
 	}
 }
-

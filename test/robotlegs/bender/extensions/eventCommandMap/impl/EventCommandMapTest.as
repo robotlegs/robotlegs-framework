@@ -9,15 +9,16 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 {
 	import flash.events.EventDispatcher;
 	import org.hamcrest.assertThat;
+	import org.hamcrest.core.not;
+	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.notNullValue;
-	import org.hamcrest.object.nullValue;
 	import org.swiftsuspenders.Injector;
+	import robotlegs.bender.extensions.commandCenter.api.CommandMappingError;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandCenter;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandCenter;
 	import robotlegs.bender.extensions.commandCenter.support.NullCommand;
 	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
 	import robotlegs.bender.extensions.eventCommandMap.support.SupportEvent;
-	import robotlegs.bender.extensions.commandCenter.api.CommandMappingError;
 	import robotlegs.bender.framework.api.MappingConfigError;
 
 	public class EventCommandMapTest
@@ -63,16 +64,16 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		[Test]
 		public function mapEvent_to_command_stores_mapping():void
 		{
-			eventCommandMap.map(SupportEvent.TYPE1).toCommand(NullCommand);
-			assertThat(eventCommandMap.getMapping(SupportEvent.TYPE1).forCommand(NullCommand), notNullValue());
+			const mapping:* = eventCommandMap.map(SupportEvent.TYPE1).toCommand(NullCommand);
+			assertThat(eventCommandMap.map(SupportEvent.TYPE1).toCommand(NullCommand), equalTo(mapping));
 		}
 
 		[Test]
 		public function unmapEvent_from_command_removes_mapping():void
 		{
-			eventCommandMap.map(SupportEvent.TYPE1).toCommand(NullCommand);
+			const mapping:* = eventCommandMap.map(SupportEvent.TYPE1).toCommand(NullCommand);
 			eventCommandMap.unmap(SupportEvent.TYPE1).fromCommand(NullCommand);
-			assertThat(eventCommandMap.getMapping(SupportEvent.TYPE1).forCommand(NullCommand), nullValue());
+			assertThat(eventCommandMap.map(SupportEvent.TYPE1).toCommand(NullCommand), not(equalTo(mapping)));
 		}
 		
 		// Duplicating these tests from commandMapping at this level to keep it honest!

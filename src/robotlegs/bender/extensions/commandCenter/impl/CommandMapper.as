@@ -11,11 +11,10 @@ package robotlegs.bender.extensions.commandCenter.impl
 	import robotlegs.bender.extensions.commandCenter.dsl.ICommandMapper;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 	import robotlegs.bender.extensions.commandCenter.dsl.ICommandMappingConfig;
-	import robotlegs.bender.extensions.commandCenter.dsl.ICommandMappingFinder;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandTrigger;
 	import robotlegs.bender.extensions.commandCenter.dsl.ICommandUnmapper;
 
-	public class CommandMapper implements ICommandMapper, ICommandMappingFinder, ICommandUnmapper
+	public class CommandMapper implements ICommandMapper, ICommandUnmapper
 	{
 
 		/*============================================================================*/
@@ -42,11 +41,6 @@ package robotlegs.bender.extensions.commandCenter.impl
 		public function toCommand(commandClass:Class):ICommandMappingConfig
 		{
 			return locked(_mappings[commandClass]) || createMapping(commandClass);
-		}
-
-		public function forCommand(commandClass:Class):ICommandMappingConfig
-		{
-			return _mappings[commandClass];
 		}
 
 		public function fromCommand(commandClass:Class):void

@@ -8,8 +8,9 @@
 package robotlegs.bender.extensions.messageCommandMap.impl
 {
 	import org.flexunit.assertThat;
+	import org.hamcrest.core.not;
+	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.notNullValue;
-	import org.hamcrest.object.nullValue;
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.framework.impl.MessageDispatcher;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandCenter;
@@ -61,16 +62,16 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 		[Test]
 		public function mapMessage_to_command_stores_mapping():void
 		{
-			messageCommandMap.map(message).toCommand(NullCommand);
-			assertThat(messageCommandMap.getMapping(message).forCommand(NullCommand), notNullValue());
+			const mapping:* = messageCommandMap.map(message).toCommand(NullCommand);
+			assertThat(messageCommandMap.map(message).toCommand(NullCommand), equalTo(mapping));
 		}
 
 		[Test]
 		public function unmapMessage_from_command_removes_mapping():void
 		{
-			messageCommandMap.map(message).toCommand(NullCommand);
+			const mapping:* = messageCommandMap.map(message).toCommand(NullCommand);
 			messageCommandMap.unmap(message).fromCommand(NullCommand);
-			assertThat(messageCommandMap.getMapping(message).forCommand(NullCommand), nullValue());
+			assertThat(messageCommandMap.map(message).toCommand(NullCommand), not(equalTo(mapping)));
 		}
 		
 		[Test]

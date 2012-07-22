@@ -13,7 +13,6 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 	import robotlegs.bender.extensions.commandCenter.api.ICommandCenter;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandTrigger;
 	import robotlegs.bender.extensions.commandCenter.dsl.ICommandMapper;
-	import robotlegs.bender.extensions.commandCenter.dsl.ICommandMappingFinder;
 	import robotlegs.bender.extensions.commandCenter.dsl.ICommandUnmapper;
 	import robotlegs.bender.extensions.messageCommandMap.api.IMessageCommandMap;
 
@@ -61,11 +60,6 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 		public function unmap(message:Object):ICommandUnmapper
 		{
 			return _commandCenter.unmap(getTrigger(message));
-		}
-
-		public function getMapping(message:Object):ICommandMappingFinder
-		{
-			return _commandCenter.getMapping(getTrigger(message));
 		}
 
 		/*============================================================================*/

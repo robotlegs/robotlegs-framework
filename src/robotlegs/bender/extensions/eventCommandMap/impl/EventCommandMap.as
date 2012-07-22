@@ -13,7 +13,6 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import robotlegs.bender.extensions.commandCenter.api.ICommandCenter;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandTrigger;
 	import robotlegs.bender.extensions.commandCenter.dsl.ICommandMapper;
-	import robotlegs.bender.extensions.commandCenter.dsl.ICommandMappingFinder;
 	import robotlegs.bender.extensions.commandCenter.dsl.ICommandUnmapper;
 	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
 
@@ -63,10 +62,6 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			return _commandCenter.unmap(getTrigger(type, eventClass));
 		}
 
-		public function getMapping(type:String, eventClass:Class = null):ICommandMappingFinder
-		{
-			return _commandCenter.getMapping(getTrigger(type, eventClass));
-		}
 
 		/*============================================================================*/
 		/* Private Functions                                                          */

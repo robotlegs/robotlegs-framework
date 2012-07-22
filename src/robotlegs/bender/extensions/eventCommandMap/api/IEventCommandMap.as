@@ -8,7 +8,6 @@
 package robotlegs.bender.extensions.eventCommandMap.api
 {
 	import robotlegs.bender.extensions.commandCenter.dsl.ICommandMapper;
-	import robotlegs.bender.extensions.commandCenter.dsl.ICommandMappingFinder;
 	import robotlegs.bender.extensions.commandCenter.dsl.ICommandUnmapper;
 
 	public interface IEventCommandMap
@@ -16,7 +15,5 @@ package robotlegs.bender.extensions.eventCommandMap.api
 		function map(type:String, eventClass:Class = null):ICommandMapper;
 
 		function unmap(type:String, eventClass:Class = null):ICommandUnmapper;
-
-		function getMapping(type:String, eventClass:Class = null):ICommandMappingFinder;
 	}
 }

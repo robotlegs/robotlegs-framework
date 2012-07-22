@@ -10,7 +10,6 @@ package robotlegs.bender.extensions.commandCenter.impl
 	import flash.utils.Dictionary;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandCenter;
 	import robotlegs.bender.extensions.commandCenter.dsl.ICommandMapper;
-	import robotlegs.bender.extensions.commandCenter.dsl.ICommandMappingFinder;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandTrigger;
 	import robotlegs.bender.extensions.commandCenter.dsl.ICommandUnmapper;
 
@@ -37,11 +36,6 @@ package robotlegs.bender.extensions.commandCenter.impl
 		public function unmap(trigger:ICommandTrigger):ICommandUnmapper
 		{
 			return _mappers[trigger] || NULL_UNMAPPER;
-		}
-
-		public function getMapping(trigger:ICommandTrigger):ICommandMappingFinder
-		{
-			return _mappers[trigger];
 		}
 	}
 }

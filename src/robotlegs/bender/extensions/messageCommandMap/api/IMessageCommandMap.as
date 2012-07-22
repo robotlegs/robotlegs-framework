@@ -8,7 +8,6 @@
 package robotlegs.bender.extensions.messageCommandMap.api
 {
 	import robotlegs.bender.extensions.commandCenter.dsl.ICommandMapper;
-	import robotlegs.bender.extensions.commandCenter.dsl.ICommandMappingFinder;
 	import robotlegs.bender.extensions.commandCenter.dsl.ICommandUnmapper;
 
 	public interface IMessageCommandMap
@@ -16,7 +15,5 @@ package robotlegs.bender.extensions.messageCommandMap.api
 		function map(message:Object):ICommandMapper;
 
 		function unmap(message:Object):ICommandUnmapper;
-
-		function getMapping(message:Object):ICommandMappingFinder;
 	}
 }
