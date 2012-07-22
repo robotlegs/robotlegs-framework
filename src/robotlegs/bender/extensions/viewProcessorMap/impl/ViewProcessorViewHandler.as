@@ -91,6 +91,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 				_knownMappings[type] = false;
 				for each (mapping in _mappings)
 				{
+					mapping.validate();
 					if (mapping.matcher.matches(view))
 					{
 						_knownMappings[type] ||= [];

@@ -265,36 +265,36 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			viewProcessorMap.unmap(Sprite).fromProcess(trackingProcessor);
 		}
 		
-		[Test(expects="robotlegs.bender.extensions.viewProcessorMap.api.ViewProcessorMappingError")]
+		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
 		public function error_thrown_if_2_mappings_made_with_same_matcher_and_processor_but_different_guards():void
 		{
 			viewProcessorMap.map(Sprite).toProcess(TrackingProcessor).withGuards(HappyGuard).withHooks(Alpha50PercentHook);
 			viewProcessorMap.map(Sprite).toProcess(TrackingProcessor).withGuards(OnlyIfViewHasChildrenGuard).withHooks(Alpha50PercentHook);			
 		}
 		
-		[Test(expects="robotlegs.bender.extensions.viewProcessorMap.api.ViewProcessorMappingError")]
+		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
 		public function error_thrown_if_2_mappings_made_with_same_matcher_and_processor_but_different_hooks():void
 		{
 			viewProcessorMap.map(Sprite).toProcess(TrackingProcessor).withGuards(HappyGuard).withHooks(Alpha50PercentHook);
 			viewProcessorMap.map(Sprite).toProcess(TrackingProcessor).withGuards(HappyGuard).withHooks(HookWithViewInjectionDrawsRectangle);
 		}
 		
-		[Test(expects="robotlegs.bender.extensions.viewProcessorMap.api.ViewProcessorMappingError")]
+		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
 		public function error_thrown_if_2_mappings_made_with_same_matcher_and_processor_one_with_one_without_guards():void
 		{
 			viewProcessorMap.map(Sprite).toProcess(TrackingProcessor).withGuards(HappyGuard);
 			const mapping:IViewProcessorMapping = viewProcessorMap.map(Sprite).toProcess(TrackingProcessor) as IViewProcessorMapping;
 			// error only thrown when used sadly			
-			mapping.matcher;			
+			mapping.validate();			
 		}
 		
-		[Test(expects="robotlegs.bender.extensions.viewProcessorMap.api.ViewProcessorMappingError")]
+		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
 		public function error_thrown_if_2_mappings_made_with_same_matcher_and_processor_one_with_one_without_hooks():void
 		{
 			viewProcessorMap.map(Sprite).toProcess(TrackingProcessor).withHooks(Alpha50PercentHook);
 			const mapping:IViewProcessorMapping = viewProcessorMap.map(Sprite).toProcess(TrackingProcessor) as IViewProcessorMapping;
 			// error only thrown when used sadly			
-			mapping.matcher;			
+			mapping.validate();			
 		}
 
 		[Test]
@@ -307,24 +307,24 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			mappingConfig.withHooks(HookWithViewInjectionDrawsRectangle);
 		}
 		
-		[Test(expects="robotlegs.bender.extensions.viewProcessorMap.api.ViewProcessorMappingError")]
+		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
 		public function error_thrown_if_2_mappings_made_with_same_matcher_and_processor_one_with_fewer_guards():void
 		{
 			viewProcessorMap.map(Sprite).toProcess(TrackingProcessor).withGuards(HappyGuard, OnlyIfViewHasChildrenGuard);
 			const mapping:ViewProcessorMapping = viewProcessorMap.map(Sprite).toProcess(TrackingProcessor) as ViewProcessorMapping;
 			mapping.withGuards(HappyGuard);
 			// error only thrown when used sadly			
-			mapping.matcher;			
+			mapping.validate();			
 		}
 		
-		[Test(expects="robotlegs.bender.extensions.viewProcessorMap.api.ViewProcessorMappingError")]
+		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
 		public function error_thrown_if_2_mappings_made_with_same_matcher_and_processor_one_with_fewer_hooks():void
 		{
 			viewProcessorMap.map(Sprite).toProcess(TrackingProcessor).withHooks(Alpha50PercentHook).withHooks(HookA);
 			const mapping:ViewProcessorMapping = viewProcessorMap.map(Sprite).toProcess(TrackingProcessor) as ViewProcessorMapping;
 			mapping.withHooks(HookA);
 			// error only thrown when used sadly			
-			mapping.matcher;			
+			mapping.validate();			
 		}
 		
 		[Test]
@@ -342,7 +342,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			mapping2.withHooks(HookWithViewInjectionDrawsRectangle);
 			mapping2.withHooks(Alpha50PercentHook);
 
-			mapping2.matcher;
+			mapping2.validate();
 		}
 		
 		[Test]
@@ -356,7 +356,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			mapping2.withGuards([HappyGuard, OnlyIfViewHasChildrenGuard]);
 			mapping2.withHooks([Alpha50PercentHook, HookA]);
 			
-			mapping2.matcher;
+			mapping2.validate();
 		}
 		
 		[Test]
@@ -440,6 +440,13 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			assertThat(timingTracker, array([HookA, Processor]));
 		}
 		
+		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
+		public function runProcessors_throws_if_mapping_doesnt_validate():void
+		{
+			viewProcessorMap.map(Sprite).toProcess(Processor).withGuards(GuardA, GuardB);
+			viewProcessorMap.map(Sprite).toProcess(Processor).withGuards(GuardA);
+			viewProcessorMap.process(matchingView);
+		}
 		
 		// protected functions
 		
@@ -533,5 +540,21 @@ class Processor
 	public function unprocess(view:*, type:Class, injector:*):void
 	{
 		
+	}
+}
+
+class GuardA
+{
+	public function approve():Boolean
+	{
+		return true;
+	}
+}
+
+class GuardB
+{
+	public function approve():Boolean
+	{
+		return true;
 	}
 }

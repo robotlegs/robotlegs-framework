@@ -3,12 +3,12 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 	import robotlegs.bender.extensions.viewProcessorMap.dsl.IViewProcessorMapping;
 	import robotlegs.bender.extensions.viewProcessorMap.dsl.IViewProcessorMappingConfig;
 	import robotlegs.bender.extensions.matching.ITypeFilter;
-	import robotlegs.bender.extensions.viewProcessorMap.impl.ViewProcessorMappingValidator;
+	import robotlegs.bender.framework.impl.MappingConfigValidator;
 
 	public class ViewProcessorMapping implements IViewProcessorMapping, IViewProcessorMappingConfig
 	{
 		private var _locked:Boolean = false;
-		private var _validator:ViewProcessorMappingValidator;
+		private var _validator:MappingConfigValidator;
 	
 		public function ViewProcessorMapping(matcher:ITypeFilter, processor:Object)
 		{
@@ -25,7 +25,6 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 
 		public function get matcher():ITypeFilter
 		{
-			validate();
 			return _matcher;
 		}
 
@@ -104,7 +103,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			_hooks = [];
 		}
 		
-		private function validate():void
+		public function validate():void
 		{
 			if(!_validator)
 			{
@@ -119,7 +118,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		private function createValidator():void
 		{
 			const useProcessor:Object = _processor ? _processor : _processorClass;
-			_validator = new ViewProcessorMappingValidator(_guards.slice(), _hooks.slice(), _matcher, useProcessor);
+			_validator = new MappingConfigValidator(_guards.slice(), _hooks.slice(), _matcher, useProcessor);
 		}
 	
 	}

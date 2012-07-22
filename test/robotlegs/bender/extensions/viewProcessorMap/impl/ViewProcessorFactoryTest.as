@@ -159,7 +159,6 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			assertEqualsArraysIgnoringOrder('trackingProcessor unprocessed all views', trackingProcessor.unprocessedViews, [view, viewA]);
 			assertEqualsArraysIgnoringOrder('trackingProcessor2 unprocessed all views', trackingProcessor2.unprocessedViews, [viewA]);
 		}
-		
 	}
 }
 

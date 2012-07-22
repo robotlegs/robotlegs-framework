@@ -15,5 +15,7 @@ package robotlegs.bender.extensions.viewProcessorMap.dsl
 		function get guards():Array;
 
 		function get hooks():Array;
+		
+		function validate():void;
 	}
 }
