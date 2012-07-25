@@ -200,5 +200,4 @@ class CommandB
 	{
 		reportingFunc(CommandB);
 	}
-	
 }
