@@ -81,6 +81,18 @@ package robotlegs.bender.extensions.commandCenter.impl
 			_once = value;
 			return this;
 		}
+		
+		private var _next:ICommandMapping;
+		
+		public function get next():ICommandMapping
+		{
+			return _next;
+		}
+		
+		public function set next(value:ICommandMapping):void
+		{
+			_next = value;
+		}
 				
 		private function throwMappingError(msg:String):void
 		{

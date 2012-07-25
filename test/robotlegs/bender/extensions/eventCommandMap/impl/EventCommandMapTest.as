@@ -10,6 +10,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import flash.events.EventDispatcher;
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.not;
+	import org.hamcrest.collection.array;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.notNullValue;
 	import org.swiftsuspenders.Injector;
@@ -37,6 +38,8 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		private var eventCommandMap:IEventCommandMap;
 		
 		private var errorImport:CommandMappingError;
+		
+		private var reportedExecutions:Array;
 
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
@@ -45,7 +48,9 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		[Before]
 		public function before():void
 		{
+			reportedExecutions = [];
 			injector = new Injector();
+			injector.map(Function, "reportingFunction").toValue(reportingFunction);
 			dispatcher = new EventDispatcher();
 			commandCenter = new CommandCenter();
 			eventCommandMap = new EventCommandMap(injector, dispatcher, commandCenter);
@@ -99,29 +104,56 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		{
 			eventCommandMap.unmap(SupportEvent.TYPE1).fromCommand(NullCommand);
 		}
+		
+		[Test]
+		public function execution_sequence_is_guard_command_guard_command_for_multiple_mappings_to_same_event():void
+		{
+			eventCommandMap.map(SupportEvent.TYPE1).toCommand(CommandA).withGuards(GuardA);
+			eventCommandMap.map(SupportEvent.TYPE1).toCommand(CommandB).withGuards(GuardB);
+			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
+			const expectedOrder:Array = [GuardA, CommandA, GuardB, CommandB];
+			assertThat(reportedExecutions, array(expectedOrder));
+		}
+		
+		protected function reportingFunction(item:Object):void
+		{
+			reportedExecutions.push(item);
+		}
 	}
 }
 
 class GuardA
 {
+	[Inject(name="reportingFunction")]
+	public var reportingFunc:Function;
+	
 	public function approve():Boolean
 	{
+		reportingFunc(GuardA);
 		return true;
 	}
 }
 
 class GuardB
 {
+	[Inject(name="reportingFunction")]
+	public var reportingFunc:Function;
+	
 	public function approve():Boolean
 	{
+		reportingFunc(GuardB);
 		return true;
 	}
 }
 
 class GuardC
 {
+	[Inject(name="reportingFunction")]
+	public var reportingFunc:Function;
+	
 	public function approve():Boolean
 	{
+		reportingFunc(GuardC);
 		return true;
 	}
 }
@@ -145,4 +177,28 @@ class HookC
 	public function hook():void
 	{
 	}
+}
+
+class CommandA
+{
+	[Inject(name="reportingFunction")]
+	public var reportingFunc:Function;
+	
+	public function execute():void
+	{
+		reportingFunc(CommandA);
+	}
+	
+}
+
+class CommandB
+{
+	[Inject(name="reportingFunction")]
+	public var reportingFunc:Function;
+	
+	public function execute():void
+	{
+		reportingFunc(CommandB);
+	}
+	
 }

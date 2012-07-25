@@ -10,6 +10,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 	import robotlegs.bender.framework.impl.applyHooks;
+	import robotlegs.bender.framework.impl.guardsApprove;
 
 	public class EventCommandFactory
 	{
@@ -35,14 +36,17 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 
 		public function create(mapping:ICommandMapping):Object
 		{
-			const commandClass:Class = mapping.commandClass;
+			if(guardsApprove(mapping.guards, _injector))
+			{
+				const commandClass:Class = mapping.commandClass;
+				_injector.map(commandClass).asSingleton();
+				const command:Object = _injector.getInstance(commandClass);
+				applyHooks(mapping.hooks, _injector);
+				_injector.unmap(commandClass);
 
-			_injector.map(commandClass).asSingleton();
-			const command:Object = _injector.getInstance(commandClass);
-			applyHooks(mapping.hooks, _injector);
-			_injector.unmap(commandClass);
-
-			return command;
+				return command;
+			}
+			return null;
 		}
 	}
 }

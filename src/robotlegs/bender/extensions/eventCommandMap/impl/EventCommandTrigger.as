@@ -12,6 +12,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandTrigger;
+	import robotlegs.bender.extensions.commandCenter.impl.CommandMappingList;
 
 	public class EventCommandTrigger implements ICommandTrigger
 	{
@@ -21,6 +22,8 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		/*============================================================================*/
 
 		private const _mappings:Vector.<ICommandMapping> = new Vector.<ICommandMapping>;
+
+		private const _mappingList:CommandMappingList = new CommandMappingList();
 
 		private var _dispatcher:IEventDispatcher;
 
@@ -40,7 +43,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		{
 			_dispatcher = dispatcher;
 			_type = type;
-			_executor = new EventCommandExecutor(this, _mappings, injector, eventClass);
+			_executor = new EventCommandExecutor(this, _mappingList, injector, eventClass);
 		}
 
 		/*============================================================================*/
@@ -50,20 +53,23 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		public function addMapping(mapping:ICommandMapping):void
 		{
 			verifyCommandClass(mapping);
-			_mappings.push(mapping);
-			if (_mappings.length == 1)
+			if(_mappingList.tail)
+			{
+				_mappingList.tail.next = mapping;
+			}
+			else
+			{
+				_mappingList.head = mapping;
 				addListener();
+			}
 		}
 
 		public function removeMapping(mapping:ICommandMapping):void
 		{
-			var index:int = _mappings.indexOf(mapping);
-			if (index != -1)
-			{
-				_mappings.splice(index, 1);
-				if (_mappings.length == 0)
-					removeListener();
-			}
+			_mappingList.remove(mapping);
+			
+			if(!_mappingList.head)
+				removeListener();
 		}
 
 		/*============================================================================*/

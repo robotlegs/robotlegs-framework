@@ -13,6 +13,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import robotlegs.bender.extensions.commandCenter.api.ICommandTrigger;
 	import robotlegs.bender.framework.impl.guardsApprove;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandMapping;
+	import robotlegs.bender.extensions.commandCenter.impl.CommandMappingList;
 
 	public class EventCommandExecutor
 	{
@@ -24,6 +25,8 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		private var _trigger:ICommandTrigger;
 
 		private var _mappings:Vector.<ICommandMapping>;
+		
+		private var _mappingList:CommandMappingList;
 
 		private var _injector:Injector;
 
@@ -37,12 +40,12 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 
 		public function EventCommandExecutor(
 			trigger:ICommandTrigger,
-			mappings:Vector.<ICommandMapping>,
+			mappingList:CommandMappingList,
 			injector:Injector,
 			eventClass:Class)
 		{
 			_trigger = trigger;
-			_mappings = mappings;
+			_mappingList = mappingList;
 			_injector = injector.createChildInjector();
 			_eventClass = eventClass;
 			_factory = new EventCommandFactory(_injector);
@@ -57,14 +60,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			const eventConstructor:Class = event["constructor"] as Class;
 			if (isTriggerEvent(eventConstructor))
 			{
-				mapEventForInjection(event, eventConstructor);
-				const approvedMappings:Vector.<ICommandMapping> = findApprovedMappings(_mappings);
-				const commands:Array = createCommands(approvedMappings);
-				unmapEventAfterInjection(eventConstructor);
-				removeFireOnceMappings(approvedMappings);
-
-				for each (var command:Object in commands)
-					command.execute();
+				runCommands(event, eventConstructor);
 			}
 		}
 
@@ -96,36 +92,28 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 				_injector.unmap(_eventClass || eventConstructor);
 		}
 
-		private function findApprovedMappings(mappings:Vector.<ICommandMapping>):Vector.<ICommandMapping>
+		private function runCommands(event:Event, eventConstructor:Class):void
 		{
-			const approvedMappings:Vector.<ICommandMapping> = new Vector.<ICommandMapping>();
-			var i:int = -1;
-			for each (var mapping:ICommandMapping in mappings)
-			{
-				if (guardsApprove(mapping.guards, _injector))
-					approvedMappings[++i] = mapping;
-			}
-			return approvedMappings;
-		}
-
-		private function createCommands(mappings:Vector.<ICommandMapping>):Array
-		{
-			const commands:Array = [];
-			for each (var mapping:ICommandMapping in mappings)
+			var command:Object;
+			
+			for(var mapping:ICommandMapping = _mappingList.head; mapping; mapping = mapping.next)
 			{
 				mapping.validate();
-				commands.push(_factory.create(mapping));
+				mapEventForInjection(event, eventConstructor);
+				command = _factory.create(mapping);
+				unmapEventAfterInjection(eventConstructor);
+				if(command)
+				{
+					removeFireOnceMapping(mapping);
+					command.execute();
+				}
 			}
-			return commands;
 		}
 
-		private function removeFireOnceMappings(mappings:Vector.<ICommandMapping>):void
+		private function removeFireOnceMapping(mapping:ICommandMapping):void
 		{
-			for each (var mapping:ICommandMapping in mappings)
-			{
-				if (mapping.fireOnce)
-					_trigger.removeMapping(mapping);
-			}
+			if (mapping.fireOnce)
+				_trigger.removeMapping(mapping);
 		}
 	}
 }

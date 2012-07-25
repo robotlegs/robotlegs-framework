@@ -17,6 +17,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import robotlegs.bender.extensions.eventCommandMap.support.SupportEvent;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 	import robotlegs.bender.extensions.commandCenter.dsl.ICommandMappingConfig;
+	import robotlegs.bender.extensions.commandCenter.impl.CommandMappingList;
 
 	public class EventCommandExecutorTest
 	{
@@ -58,10 +59,11 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			const mapping:ICommandMappingConfig = eventCommandMap.map(SupportEvent.TYPE1).toCommand(NullCommand);
 			mapping.withGuards(GuardA);
 			
-			const mappings:Vector.<ICommandMapping> = new <ICommandMapping>[ICommandMapping(mapping)];
+			const mappingsList:CommandMappingList = new CommandMappingList();
+			mappingsList.head = ICommandMapping(mapping);
 			
 			const trigger:EventCommandTrigger = new EventCommandTrigger(injector, dispatcher, SupportEvent.TYPE1);
-			const executor:EventCommandExecutor = new EventCommandExecutor(trigger, mappings, injector, null);
+			const executor:EventCommandExecutor = new EventCommandExecutor(trigger, mappingsList, injector, null);
 						
 			executor.execute(new SupportEvent(SupportEvent.TYPE1));
 		}
@@ -73,11 +75,12 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			
 			const mapping:ICommandMappingConfig = eventCommandMap.map(SupportEvent.TYPE1).toCommand(NullCommand);
 			mapping.withHooks(HookA);
-			
-			const mappings:Vector.<ICommandMapping> = new <ICommandMapping>[ICommandMapping(mapping)];
+
+			const mappingsList:CommandMappingList = new CommandMappingList();
+			mappingsList.head = ICommandMapping(mapping);
 			
 			const trigger:EventCommandTrigger = new EventCommandTrigger(injector, dispatcher, SupportEvent.TYPE1);
-			const executor:EventCommandExecutor = new EventCommandExecutor(trigger, mappings, injector, null);
+			const executor:EventCommandExecutor = new EventCommandExecutor(trigger, mappingsList, injector, null);
 						
 			executor.execute(new SupportEvent(SupportEvent.TYPE1));
 		}
