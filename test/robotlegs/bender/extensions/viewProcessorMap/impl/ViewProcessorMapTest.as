@@ -8,8 +8,10 @@
 package robotlegs.bender.extensions.viewProcessorMap.impl
 {
 	import flash.display.Sprite;
+	import mx.core.UIComponent;
 	import org.flexunit.assertThat;
 	import org.flexunit.async.Async;
+	import org.fluint.uiImpersonation.UIImpersonator;
 	import org.hamcrest.collection.array;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.instanceOf;
@@ -22,7 +24,6 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 	import robotlegs.bender.extensions.viewManager.api.IViewHandler;
 	import robotlegs.bender.extensions.viewProcessorMap.dsl.IViewProcessorMappingConfig;
 	import robotlegs.bender.framework.impl.guardSupport.HappyGuard;
-	import robotlegs.bender.extensions.viewProcessorMap.impl.ViewProcessorMapping;
 	import robotlegs.bender.extensions.viewProcessorMap.dsl.IViewProcessorMapping;
 	import flash.events.IEventDispatcher;
 	import flash.events.Event;
@@ -34,15 +35,16 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
+		private const spriteMatcher:TypeMatcher = new TypeMatcher().allOf(Sprite);
 		private var viewProcessorMap:ViewProcessorMap;
 		private var trackingProcessor:TrackingProcessor;
 		private var trackingProcessor2:TrackingProcessor;
 		private var injector:Injector;
-		private const spriteMatcher:TypeMatcher = new TypeMatcher().allOf(Sprite);
 		private var matchingView:Sprite;
 		private var nonMatchingView:Shape;
 		private var factory:ViewProcessorFactory;
-		
+		private var container:UIComponent;
+
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
 		/*============================================================================*/
@@ -50,6 +52,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		[Before]
 		public function before():void
 		{
+			container = new UIComponent();
 			injector = new Injector();
 			injector.map(Injector).toValue(injector);
 			factory = new ViewProcessorFactory(injector);
@@ -58,6 +61,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			trackingProcessor2 = new TrackingProcessor();
 			matchingView = new Sprite();
 			nonMatchingView = new Shape();
+			UIImpersonator.addChild(container);
 		}
 
 		/*============================================================================*/
@@ -418,11 +422,11 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		public function automatically_unprocesses_when_view_leaves_stage():void
 		{
 			viewProcessorMap.map(Sprite).toProcess(trackingProcessor);
-			StageAccessor.addChild(matchingView);
+			container.addChild(matchingView);
 			viewProcessorMap.process(matchingView);
 			var asyncHandler:Function = Async.asyncHandler( this, checkUnprocessorsRan, 500 );
 			matchingView.addEventListener(Event.REMOVED_FROM_STAGE, asyncHandler);
-			StageAccessor.removeChild(matchingView);
+			container.removeChild(matchingView);
 		}
 	
 		private function checkUnprocessorsRan(e:Event, params:Object):void

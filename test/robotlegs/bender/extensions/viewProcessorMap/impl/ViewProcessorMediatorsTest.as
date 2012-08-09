@@ -7,14 +7,16 @@
 
 package robotlegs.bender.extensions.viewProcessorMap.impl
 {
-	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import org.flexunit.Assert;
-	import org.flexunit.asserts.*;
+	import mx.core.UIComponent;
 	import org.flexunit.async.Async;
 	import org.flexunit.asserts.assertEqualsVectorsIgnoringOrder;
+	import org.fluint.uiImpersonation.UIImpersonator;
+	import org.hamcrest.assertThat;
+	import org.hamcrest.object.isFalse;
+	import org.hamcrest.object.isTrue;
 	import robotlegs.bender.extensions.matching.TypeMatcher;
 	import robotlegs.bender.extensions.mediatorMap.impl.support.MediatorWatcher;
 	import org.swiftsuspenders.Injector;
@@ -29,16 +31,22 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		private var mediatorWatcher:MediatorWatcher;
 		
 		private var matchingView:Sprite;
+
+		private var container:UIComponent;
 		
-		[Before]
+		[Before(async, ui)]
 		public function setUp():void
 		{
+			container = new UIComponent();
+
 			injector = new Injector();
 			instance = new ViewProcessorMap(new ViewProcessorFactory(injector));
 
 			mediatorWatcher = new MediatorWatcher();
 			injector.map(MediatorWatcher).toValue(mediatorWatcher);
 			matchingView = new Sprite();
+
+			UIImpersonator.addChild(container);
 		}
 
 		[After]
@@ -52,7 +60,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		[Test]
 		public function test_failure_seen():void
 		{
-			assertTrue(true);
+			assertThat(true, isTrue());
 		}
 
 		[Test]
@@ -72,9 +80,9 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			instance.mapMatcher(new TypeMatcher().anyOf(MovieClip, Sprite)).toProcess(new MediatorCreator(ExampleMediator));
 			instance.handleView(new Sprite(), null);
 
-			assertFalse(injector.satisfiesDirectly(MovieClip));
-			assertFalse(injector.satisfiesDirectly(Sprite));
-			assertFalse(injector.satisfiesDirectly(ExampleMediator));
+			assertThat(injector.satisfiesDirectly(MovieClip), isFalse());
+			assertThat(injector.satisfiesDirectly(Sprite), isFalse());
+			assertThat(injector.satisfiesDirectly(ExampleMediator), isFalse());
 		}
 
 		[Test]
@@ -105,11 +113,11 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		public function automatically_unprocesses_when_view_leaves_stage():void
 		{
 			instance.map(Sprite).toProcess(new MediatorCreator(ExampleMediator));
-			StageAccessor.addChild(matchingView);
+			container.addChild(matchingView);
 			instance.process(matchingView);
 			var asyncHandler:Function = Async.asyncHandler( this, checkMediatorsDestroyed, 500 );
 			matchingView.addEventListener(Event.REMOVED_FROM_STAGE, asyncHandler);
-			StageAccessor.removeChild(matchingView);
+			container.removeChild(matchingView);
 		}
 		
 		private function checkMediatorsDestroyed(e:Event, params:Object):void
@@ -120,7 +128,6 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 	}
 }
 
-import flash.display.DisplayObject;
 import flash.display.Sprite;
 import robotlegs.bender.extensions.mediatorMap.impl.support.MediatorWatcher;
 
