@@ -17,6 +17,8 @@ Note: you must hold on to that context reference. Failing to do so will result i
 
 In the example above we are installing a bundle, a configuration and a reference to a Display Object Container. The Display Object Container will be used as the "contextView".
 
+The "contextView" should be provided as the final configuration as it may trigger context initialization.
+
 # Bundles and Extensions
 
 Most extensions and bundles can be installed as classes:

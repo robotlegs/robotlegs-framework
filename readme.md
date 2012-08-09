@@ -25,9 +25,14 @@ Plain ActionScript:
 
     _context = new Context()
         .extend(MVCSBundle)
-        .configure(MyAppConfig, this);
+        .configure(MyAppConfig, SomeOtherConfig)
+        .configure(this);
 
-Note: We pass the instance "this" through to the context. It will be used as the "contextView" which is required by many of the view related extensions. It must be installed after the bundle or it won't be processed. Also, you must hold on to the context instance or it will be garbage collected.
+Note: We pass the instance "this" through to the context. It will be used as the "contextView" which is required by many of the view related extensions. It must be installed after the bundle or it won't be processed. Also, it should be added as the final configuration as it may trigger context initialization.
+
+Note: You must hold on to the context instance or it will be garbage collected.
+
+
 
 Flex:
 
