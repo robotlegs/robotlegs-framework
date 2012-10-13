@@ -62,7 +62,6 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			return _commandCenter.unmap(getTrigger(type, eventClass));
 		}
 
-
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/

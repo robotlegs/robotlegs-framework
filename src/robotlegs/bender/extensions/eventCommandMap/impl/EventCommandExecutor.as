@@ -11,8 +11,6 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandTrigger;
-	import robotlegs.bender.framework.impl.guardsApprove;
-	import robotlegs.bender.extensions.commandCenter.impl.CommandMapping;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandMappingList;
 
 	public class EventCommandExecutor
@@ -24,8 +22,6 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 
 		private var _trigger:ICommandTrigger;
 
-		private var _mappings:Vector.<ICommandMapping>;
-		
 		private var _mappingList:CommandMappingList;
 
 		private var _injector:Injector;

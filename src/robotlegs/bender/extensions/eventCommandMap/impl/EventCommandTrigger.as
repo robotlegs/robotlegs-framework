@@ -21,8 +21,6 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private const _mappings:Vector.<ICommandMapping> = new Vector.<ICommandMapping>;
-
 		private const _mappingList:CommandMappingList = new CommandMappingList();
 
 		private var _dispatcher:IEventDispatcher;
@@ -53,7 +51,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		public function addMapping(mapping:ICommandMapping):void
 		{
 			verifyCommandClass(mapping);
-			if(_mappingList.tail)
+			if (_mappingList.tail)
 			{
 				_mappingList.tail.next = mapping;
 			}
@@ -67,8 +65,8 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		public function removeMapping(mapping:ICommandMapping):void
 		{
 			_mappingList.remove(mapping);
-			
-			if(!_mappingList.head)
+
+			if (!_mappingList.head)
 				removeListener();
 		}
 
