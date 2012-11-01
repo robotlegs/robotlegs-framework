@@ -80,9 +80,9 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			instance.mapMatcher(new TypeMatcher().anyOf(MovieClip, Sprite)).toProcess(new MediatorCreator(ExampleMediator));
 			instance.handleView(new Sprite(), null);
 
-			assertThat(injector.satisfiesDirectly(MovieClip), isFalse());
-			assertThat(injector.satisfiesDirectly(Sprite), isFalse());
-			assertThat(injector.satisfiesDirectly(ExampleMediator), isFalse());
+			assertThat(injector.hasDirectMapping(MovieClip), isFalse());
+			assertThat(injector.hasDirectMapping(Sprite), isFalse());
+			assertThat(injector.hasDirectMapping(ExampleMediator), isFalse());
 		}
 
 		[Test]

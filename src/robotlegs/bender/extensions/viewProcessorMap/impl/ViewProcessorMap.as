@@ -1,14 +1,13 @@
 package robotlegs.bender.extensions.viewProcessorMap.impl
 {
-	import robotlegs.bender.extensions.viewProcessorMap.api.IViewProcessorMap;
+	import flash.display.DisplayObject;
+	import flash.utils.Dictionary;
+	import robotlegs.bender.extensions.matching.ITypeMatcher;
+	import robotlegs.bender.extensions.matching.TypeMatcher;
 	import robotlegs.bender.extensions.viewManager.api.IViewHandler;
+	import robotlegs.bender.extensions.viewProcessorMap.api.IViewProcessorMap;
 	import robotlegs.bender.extensions.viewProcessorMap.dsl.IViewProcessorMapper;
 	import robotlegs.bender.extensions.viewProcessorMap.dsl.IViewProcessorUnmapper;
-	import flash.display.DisplayObject;
-	import robotlegs.bender.extensions.matching.ITypeMatcher;
-	import robotlegs.bender.extensions.viewProcessorMap.impl.ViewProcessorMapping;
-	import robotlegs.bender.extensions.matching.TypeMatcher;
-	import flash.utils.Dictionary;
 	import robotlegs.bender.extensions.viewProcessorMap.impl.NullViewProcessorUnmapper;
 
 	public class ViewProcessorMap implements IViewProcessorMap, IViewHandler

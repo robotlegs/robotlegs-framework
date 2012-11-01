@@ -13,7 +13,7 @@ package robotlegs.bender.extensions.scopedEventDispatcher
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
 	import robotlegs.bender.framework.impl.UID;
-
+	
 	/**
 	 * This extensions maps a series of named IEventDispatcher instances
 	 * provided those names have not been mapped by a parent context.

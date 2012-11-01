@@ -19,6 +19,7 @@ package robotlegs.bender.extensions.scopedEventDispatcher
 	import robotlegs.bender.extensions.stageSync.StageSyncExtension;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.impl.Context;
+	import org.swiftsuspenders.Injector;
 
 	public class ScopedEventDispatcherExtensionTest
 	{
@@ -88,14 +89,23 @@ package robotlegs.bender.extensions.scopedEventDispatcher
 			const childDispatchers:Array = [];
 			for each (var name:String in names)
 			{
-				const parentDispatcher:IEventDispatcher = parentContext.injector.getInstance(IEventDispatcher, name);
-				const childDispatcher:IEventDispatcher = childContext.injector.getInstance(IEventDispatcher, name);
+				const parentDispatcher:IEventDispatcher = getFromInjector(parentContext.injector, IEventDispatcher, name);
+				const childDispatcher:IEventDispatcher = getFromInjector(childContext.injector, IEventDispatcher, name)
 				parentDispatchers.push(parentDispatcher);
 				childDispatchers.push(childDispatcher);
 			}
 
 			assertThat(childDispatchers, array(parentDispatchers));
 			UIImpersonator.removeChild(container);
+		}
+		
+		public function getFromInjector(injector:Injector, type:Class, name:String = ""):IEventDispatcher
+		{
+			if(injector.hasMapping(type, name))
+			{
+				return injector.getInstance(type, name);
+			}
+			return null;
 		}
 	}
 }

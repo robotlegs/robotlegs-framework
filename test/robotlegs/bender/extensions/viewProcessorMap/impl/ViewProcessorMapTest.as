@@ -27,6 +27,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 	import robotlegs.bender.extensions.viewProcessorMap.dsl.IViewProcessorMapping;
 	import flash.events.IEventDispatcher;
 	import flash.events.Event;
+	import robotlegs.bender.extensions.viewProcessorMap.support.Processor;
 	
 
 	public class ViewProcessorMapTest
@@ -243,7 +244,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		{
 			viewProcessorMap.map(Sprite).toProcess(trackingProcessor);
 			viewProcessorMap.handleView(matchingView, Sprite);
-			assertThat(injector.satisfiesDirectly(Sprite), isFalse());
+			assertThat(injector.hasMapping(Sprite), isFalse());
 		}
 		
 		[Test]
@@ -456,7 +457,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		
 		protected function fromInjector(type:Class):Object
 		{
-			if(!injector.satisfiesDirectly(type))
+			if(!injector.hasDirectMapping(type))
 			{
 				injector.map(type).asSingleton();
 			}
@@ -532,22 +533,6 @@ class HookA
 	public function hook():void
 	{
 		timingTracker.push(HookA);
-	}
-}
-
-class Processor
-{
-	[Inject(name='timingTracker')]
-	public var timingTracker:Array;
-	
-	public function process(view:*, type:Class, injector:*):void
-	{
-		timingTracker.push(Processor);
-	}
-	
-	public function unprocess(view:*, type:Class, injector:*):void
-	{
-		
 	}
 }
 

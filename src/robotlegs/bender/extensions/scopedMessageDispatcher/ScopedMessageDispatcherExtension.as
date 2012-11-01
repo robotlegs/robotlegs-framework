@@ -63,7 +63,7 @@ package robotlegs.bender.extensions.scopedMessageDispatcher
 		{
 			for each (var name:String in _names)
 			{
-				if (!_injector.satisfies(IMessageDispatcher, name))
+				if (!_injector.hasMapping(IMessageDispatcher, name))
 				{
 					_injector
 						.map(IMessageDispatcher, name)

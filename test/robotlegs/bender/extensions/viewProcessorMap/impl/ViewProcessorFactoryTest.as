@@ -129,7 +129,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			mappings.push( new ViewProcessorMapping(new TypeMatcher().allOf(Sprite).createTypeFilter(), TrackingProcessor));
 						
 			viewProcessorFactory.runProcessors(view, Sprite, mappings);
-			assertThat( injector.satisfiesDirectly(TrackingProcessor), isTrue() );				
+			assertThat( injector.hasDirectMapping(TrackingProcessor), isTrue() );				
 		}
 		
 		[Test(expects='robotlegs.bender.extensions.viewProcessorMap.api.ViewProcessorMapError')]

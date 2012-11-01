@@ -9,6 +9,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 {
 	import org.swiftsuspenders.errors.InjectorInterfaceConstructionError;
 	import org.swiftsuspenders.Injector;
+	import org.swiftsuspenders.dependencyproviders.FreshInstanceProvider;
 	import robotlegs.bender.extensions.matching.ITypeFilter;
 	import robotlegs.bender.extensions.viewProcessorMap.api.ViewProcessorMapError;
 	import robotlegs.bender.extensions.viewProcessorMap.dsl.IViewProcessorMapping;
@@ -82,7 +83,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		
 		private function createProcessor(processorClass:Class):Object
 		{
-			if(!_injector.satisfiesDirectly(processorClass))
+			if(!_injector.hasMapping(processorClass))
 			{
 				_injector.map(processorClass).asSingleton();
 			}
@@ -121,7 +122,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 
 			for each (requiredType in requiredTypes)
 			{
-				if(_injector.satisfiesDirectly(requiredType))
+				if(_injector.hasDirectMapping(requiredType))
 					_injector.unmap(requiredType);
 			}
 		}

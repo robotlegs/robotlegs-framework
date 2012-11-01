@@ -27,7 +27,7 @@ project_model :model do |m|
   m.compiler_gem_name     = 'sprout-flex4sdk-tool'
   m.compiler_gem_version  = '>= 4.0.0'
   m.library_path          << 'lib/hamcrest-as3-flex-1.1.3.swc'
-  m.library_path          << 'lib/Swiftsuspenders-v2.0.0rc3stray.swc'
+  m.library_path          << 'lib/Swiftsuspenders-v2.0.0rc3stray1.swc'
   m.library_path          << 'lib/mockolate-0.12.2-flex.swc'
   m.library_path          << 'lib/corelib.swc/corelib.swc' 
   m.support_dir           = 'support'    
