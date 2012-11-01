@@ -25,6 +25,8 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		private static var UIComponentClass:Class;
 
 		private static const flexAvailable:Boolean = checkFlex();
+		
+		private static const CREATION_COMPLETE:String = "creationComplete";
 
 		/*============================================================================*/
 		/* Private Properties                                                         */
@@ -82,9 +84,9 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			// Is this a UIComponent that needs to be initialized?
 			if (flexAvailable && (displayObject is UIComponentClass) && !displayObject['initialized'])
 			{
-				displayObject.addEventListener('creationComplete', function(e:Event):void
+				displayObject.addEventListener(CREATION_COMPLETE, function(e:Event):void
 				{
-					displayObject.removeEventListener('creationComplete', arguments.callee);
+					displayObject.removeEventListener(CREATION_COMPLETE, arguments.callee);
 					// ensure that we haven't been removed in the meantime
 					if (_factory.getMediator(displayObject, event.mapping))
 						initializeMediator(displayObject, mediator);
