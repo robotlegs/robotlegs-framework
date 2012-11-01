@@ -456,6 +456,10 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		
 		protected function fromInjector(type:Class):Object
 		{
+			if(!injector.satisfiesDirectly(type))
+			{
+				injector.map(type).asSingleton();
+			}
 			return injector.getInstance(type);
 		}
 		

@@ -21,7 +21,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		
 		private const NULL_UNMAPPER:IViewProcessorUnmapper = new NullViewProcessorUnmapper();
 		
-		public function ViewProcessorMap(factory:ViewProcessorFactory, handler:ViewProcessorViewHandler = null)
+		public function ViewProcessorMap(factory:IViewProcessorFactory, handler:IViewProcessorViewHandler = null)
 		{
 			_factory = factory;
 			_handler = handler || new ViewProcessorViewHandler(_factory); 

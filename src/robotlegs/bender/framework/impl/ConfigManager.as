@@ -165,7 +165,7 @@ package robotlegs.bender.framework.impl
 
 		private function processClass(type:Class):void
 		{
-			const config:IConfig = _injector.getInstance(type) as IConfig;
+			const config:IConfig = _injector.instantiateUnmapped(type) as IConfig;
 			config && config.configure();
 		}
 
