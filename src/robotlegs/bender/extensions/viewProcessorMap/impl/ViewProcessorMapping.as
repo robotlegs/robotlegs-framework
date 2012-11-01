@@ -7,7 +7,6 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 
 	public class ViewProcessorMapping implements IViewProcessorMapping, IViewProcessorMappingConfig
 	{
-		private var _locked:Boolean = false;
 		private var _validator:MappingConfigValidator;
 	
 		public function ViewProcessorMapping(matcher:ITypeFilter, processor:Object)
