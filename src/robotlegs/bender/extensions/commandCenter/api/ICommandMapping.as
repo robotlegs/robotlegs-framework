@@ -17,7 +17,8 @@ package robotlegs.bender.extensions.commandCenter.api
 		function get hooks():Array;
 
 		function get fireOnce():Boolean;
-		
+
+		// ss: this makes me sad :((((
 		function validate():void;
 		
 		function get next():ICommandMapping;

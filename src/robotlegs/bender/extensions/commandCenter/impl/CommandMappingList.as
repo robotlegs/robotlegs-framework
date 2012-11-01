@@ -33,6 +33,11 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		public function get tail():ICommandMapping
 		{
+			// expensive getters make me nervous
+			// granted, the way it is currently used
+			// (in EventCommandTrigger#addMapping) is safe,
+			// it might be better to put this class under test
+			// and give it an add method
 			if (!_head) return null;
 
 			var theTail:ICommandMapping = _head;
