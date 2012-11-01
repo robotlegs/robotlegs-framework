@@ -14,7 +14,6 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 	public class MediatorMapping implements IMediatorMapping, IMediatorMappingConfig
 	{
-		private var _locked:Boolean = false;
 		private var _validator:MappingConfigValidator;
 		
 		/*============================================================================*/
