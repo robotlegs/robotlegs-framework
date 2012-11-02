@@ -382,6 +382,15 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			mapping2.validate();
 		}
 		
+		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
+		public function error_thrown_on_mediate_if_2_mappings_made_with_same_matcher_and_mediator_one_with_one_without_guards():void
+		{
+			instance.map(Sprite).toMediator(ExampleMediator).withGuards(HappyGuard);
+			instance.mediate(new Sprite());
+			instance.map(Sprite).toMediator(ExampleMediator);
+			instance.mediate(new Sprite());
+		}
+		
 		protected function handleEventTimeout(o:Object):void
 		{
 			Assert.fail("The event never fired");
