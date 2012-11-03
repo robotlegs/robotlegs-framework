@@ -77,7 +77,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			_knownMappings = new Dictionary(true);
 		}
 		
-		private function getInterestedMappingsFor(view:Object, type:Class):Array
+		private function getInterestedMappingsFor(item:Object, type:Class):Array
 		{
 			var mapping:IMediatorMapping;
 
@@ -92,7 +92,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 				for each (mapping in _mappings)
 				{
 					mapping.validate();
-					if (mapping.matcher.matches(view))
+					if (mapping.matcher.matches(item))
 					{
 						_knownMappings[type] ||= [];
 						_knownMappings[type].push(mapping);

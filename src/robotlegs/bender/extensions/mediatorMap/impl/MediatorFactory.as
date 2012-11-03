@@ -42,12 +42,12 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function getMediator(view:Object, mapping:IMediatorMapping):Object
+		public function getMediator(item:Object, mapping:IMediatorMapping):Object
 		{
-			return _mediators[view] ? _mediators[view][mapping] : null;
+			return _mediators[item] ? _mediators[item][mapping] : null;
 		}
 		
-		public function createMediators(view:Object, type:Class, mappings:Array):Array
+		public function createMediators(item:Object, type:Class, mappings:Array):Array
 		{
 			const createdMediators:Array = [];
 			var filter:ITypeFilter;
@@ -55,14 +55,14 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			for each (var mapping:IMediatorMapping in mappings)
 			{
 				mapping.validate();
-				mediator = getMediator(view, mapping);
+				mediator = getMediator(item, mapping);
 
 				if (!mediator)
 				{
 					filter = mapping.matcher;
-					mapTypeForFilterBinding(filter, type, view);
-					mediator = createMediator(view, mapping);
-					unmapTypeForFilterBinding(filter, type, view)
+					mapTypeForFilterBinding(filter, type, item);
+					mediator = createMediator(item, mapping);
+					unmapTypeForFilterBinding(filter, type, item)
 				}
 				
 				if(mediator)
@@ -71,9 +71,9 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			return createdMediators;
 		}
 		
-		public function removeMediators(view:Object):void
+		public function removeMediators(item:Object):void
 		{
-			const mediators:Dictionary = _mediators[view];
+			const mediators:Dictionary = _mediators[item];
 			if (!mediators)
 				return;
 			
@@ -83,18 +83,18 @@ package robotlegs.bender.extensions.mediatorMap.impl
 				{
 					dispatchEvent(new MediatorFactoryEvent(
 						MediatorFactoryEvent.MEDIATOR_REMOVE,
-						mediators[mapping], view, mapping as IMediatorMapping, this));
+						mediators[mapping], item, mapping as IMediatorMapping, this));
 				}
 			}
 			
-			delete _mediators[view];
+			delete _mediators[item];
 		}
 		
 		public function removeAllMediators():void
 		{
-			for (var view:Object in _mediators)
+			for (var item:Object in _mediators)
 			{
-				removeMediators(view);
+				removeMediators(item);
 			}
 		}
 		
@@ -102,9 +102,9 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		/* Private Functions                                                          */
 		/*============================================================================*/
 
-		private function createMediator(view:Object, mapping:IMediatorMapping):Object
+		private function createMediator(item:Object, mapping:IMediatorMapping):Object
 		{
-			var mediator:Object = getMediator(view, mapping);
+			var mediator:Object = getMediator(item, mapping);
 
 			if (mediator)
 				return mediator;
@@ -115,33 +115,33 @@ package robotlegs.bender.extensions.mediatorMap.impl
 				mediator = _injector.getInstance(mapping.mediatorClass);
 				applyHooks(mapping.hooks, _injector);
 				_injector.unmap(mapping.mediatorClass);
-				addMediator(mediator, view, mapping);
+				addMediator(mediator, item, mapping);
 			}
 			return mediator;
 		}
 
-		private function addMediator(mediator:Object, view:Object, mapping:IMediatorMapping):void
+		private function addMediator(mediator:Object, item:Object, mapping:IMediatorMapping):void
 		{
-			_mediators[view] ||= new Dictionary();
-			_mediators[view][mapping] = mediator;
+			_mediators[item] ||= new Dictionary();
+			_mediators[item][mapping] = mediator;
 			if (hasEventListener(MediatorFactoryEvent.MEDIATOR_CREATE))
 				dispatchEvent(new MediatorFactoryEvent(
 					MediatorFactoryEvent.MEDIATOR_CREATE,
-					mediator, view, mapping, this));
+					mediator, item, mapping, this));
 		}
 		
-		private function mapTypeForFilterBinding(filter:ITypeFilter, type:Class, view:Object):void
+		private function mapTypeForFilterBinding(filter:ITypeFilter, type:Class, item:Object):void
 		{
 			var requiredType:Class;
 			const requiredTypes:Vector.<Class> = requiredTypesFor(filter, type);
 
 			for each (requiredType in requiredTypes)
 			{
-				_injector.map(requiredType).toValue(view);
+				_injector.map(requiredType).toValue(item);
 			}
 		}
 
-		private function unmapTypeForFilterBinding(filter:ITypeFilter, type:Class, view:Object):void
+		private function unmapTypeForFilterBinding(filter:ITypeFilter, type:Class, item:Object):void
 		{
 			var requiredType:Class;
 			const requiredTypes:Vector.<Class> = requiredTypesFor(filter, type);

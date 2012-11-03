@@ -89,7 +89,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		/* Private Functions                                                          */
 		/*============================================================================*/
 
-		private function createMapper(matcher:ITypeMatcher, viewType:Class = null):IMediatorMapper
+		private function createMapper(matcher:ITypeMatcher):IMediatorMapper
 		{
 			return new MediatorMapper(matcher.createTypeFilter(), _handler);
 		}

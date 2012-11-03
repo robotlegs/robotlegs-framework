@@ -71,16 +71,16 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		}
 
 		[Test]
-		public function view_is_injected_as_exact_type_into_mediator():void
+		public function mediatedItem_is_injected_as_exact_type_into_mediator():void
 		{
 			const expected:Sprite = new Sprite();
 			const mapping:IMediatorMapping = new MediatorMapping(createTypeFilter([Sprite]), ViewInjectedMediator);
 			const mediator:ViewInjectedMediator = factory.createMediators(expected, Sprite, [mapping])[0];
-			assertThat(mediator.view, equalTo(expected));
+			assertThat(mediator.mediatedItem, equalTo(expected));
 		}
 
 		[Test]
-		public function view_is_injected_as_requested_type_into_mediator():void
+		public function mediatedItem_is_injected_as_requested_type_into_mediator():void
 		{
 			const expected:Sprite = new Sprite();
 
@@ -90,7 +90,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			const mediator:ViewInjectedAsRequestedMediator =
 				factory.createMediators(expected, Sprite, [mapping])[0];
 			
-			assertThat(mediator.view, equalTo(expected));
+			assertThat(mediator.mediatedItem, equalTo(expected));
 		}
 
 		[Test]
@@ -100,24 +100,24 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		}
 
 		[Test]
-		public function hook_receives_mediator_and_view():void
+		public function hook_receives_mediator_and_mediatedItem():void
 		{
-			const view:Sprite = new Sprite();
+			const mediatedItem:Sprite = new Sprite();
 			var injectedMediator:Object;
 			var injectedView:Object;
 			injector.map(Function, 'callback').toValue(function(hook:MediatorHook):void {
 				injectedMediator = hook.mediator;
-				injectedView = hook.view;
+				injectedView = hook.mediatedItem;
 			});
 			const mapping:MediatorMapping =
 				new MediatorMapping(createTypeFilter([Sprite]), ViewInjectedMediator);
 
 			mapping.withHooks(MediatorHook);
 
-			factory.createMediators(view, Sprite, [mapping]);
+			factory.createMediators(mediatedItem, Sprite, [mapping]);
 
 			assertThat(injectedMediator, instanceOf(ViewInjectedMediator));
-			assertThat(injectedView, equalTo(view));
+			assertThat(injectedView, equalTo(mediatedItem));
 		}
 
 		[Test]
@@ -151,27 +151,27 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		}
 
 		[Test]
-		public function same_mediators_are_returned_for_mappings_and_view():void
+		public function same_mediators_are_returned_for_mappings_and_mediatedItem():void
 		{
-			const view:Sprite = new Sprite();
+			const mediatedItem:Sprite = new Sprite();
 			const mapping1:MediatorMapping =
 				new MediatorMapping(createTypeFilter([Sprite]), ViewInjectedMediator);
 			const mapping2:MediatorMapping =
 				new MediatorMapping(createTypeFilter([DisplayObject]), ViewInjectedAsRequestedMediator);
-			const mediators1:Array = factory.createMediators(view, Sprite, [mapping1, mapping2]);
-			const mediators2:Array = factory.createMediators(view, Sprite, [mapping1, mapping2]);
+			const mediators1:Array = factory.createMediators(mediatedItem, Sprite, [mapping1, mapping2]);
+			const mediators2:Array = factory.createMediators(mediatedItem, Sprite, [mapping1, mapping2]);
 			assertEqualsVectorsIgnoringOrder(mediators1, mediators2);
 		}
 		
 		[Test]
-		public function expected_number_of_mediators_are_returned_for_mappings_and_view():void
+		public function expected_number_of_mediators_are_returned_for_mappings_and_mediatedItem():void
 		{
-			const view:Sprite = new Sprite();
+			const mediatedItem:Sprite = new Sprite();
 			const mapping1:MediatorMapping =
 				new MediatorMapping(createTypeFilter([Sprite]), ViewInjectedMediator);
 			const mapping2:MediatorMapping =
 				new MediatorMapping(createTypeFilter([DisplayObject]), ViewInjectedAsRequestedMediator);
-			const mediators:Array = factory.createMediators(view, Sprite, [mapping1, mapping2]);
+			const mediators:Array = factory.createMediators(mediatedItem, Sprite, [mapping1, mapping2]);
 			assertThat(mediators.length, equalTo(2));
 		}
 
@@ -182,47 +182,47 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			factory.addEventListener(MediatorFactoryEvent.MEDIATOR_CREATE, function(event:MediatorFactoryEvent):void {
 				callCount++;
 			});
-			const view:Sprite = new Sprite();
+			const mediatedItem:Sprite = new Sprite();
 			const mapping:IMediatorMapping = new MediatorMapping(createTypeFilter([Sprite]), CallbackMediator);
-			factory.createMediators(view, Sprite, [mapping]);
-			factory.createMediators(view, Sprite, [mapping]);
+			factory.createMediators(mediatedItem, Sprite, [mapping]);
+			factory.createMediators(mediatedItem, Sprite, [mapping]);
 			assertThat(callCount, equalTo(1));
 		}
 
 		[Test]
 		public function getMediator():void
 		{
-			const view:Sprite = new Sprite();
+			const mediatedItem:Sprite = new Sprite();
 			const mapping:IMediatorMapping = new MediatorMapping(createTypeFilter([Sprite]), CallbackMediator);
-			factory.createMediators(view, Sprite, [mapping]);
-			assertThat(factory.getMediator(view, mapping), notNullValue());
+			factory.createMediators(mediatedItem, Sprite, [mapping]);
+			assertThat(factory.getMediator(mediatedItem, mapping), notNullValue());
 		}
 
 		[Test]
 		public function removeMediators():void
 		{
-			const view:Sprite = new Sprite();
+			const mediatedItem:Sprite = new Sprite();
 			const mapping:IMediatorMapping = new MediatorMapping(createTypeFilter([Sprite]), CallbackMediator);
-			factory.createMediators(view, Sprite, [mapping]);
-			factory.removeMediators(view);
-			assertThat(factory.getMediator(view, mapping), nullValue());
+			factory.createMediators(mediatedItem, Sprite, [mapping]);
+			factory.removeMediators(mediatedItem);
+			assertThat(factory.getMediator(mediatedItem, mapping), nullValue());
 		}
 		
 		[Test]
-		public function removeAllMediators_removes_mediators_for_all_views():void
+		public function removeAllMediators_removes_mediators_for_all_mediatedItems():void
 		{
-			const view1:Sprite = new Sprite();
-			const view2:Sprite = new Sprite();
+			const mediatedItem1:Sprite = new Sprite();
+			const mediatedItem2:Sprite = new Sprite();
 			const mapping1:IMediatorMapping = new MediatorMapping(createTypeFilter([Sprite]), CallbackMediator);
 			const mapping2:IMediatorMapping = new MediatorMapping(createTypeFilter([DisplayObject]), ViewInjectedAsRequestedMediator);
 			
-			factory.createMediators(view1, Sprite, [mapping1, mapping2]);
-			factory.createMediators(view2, Sprite, [mapping1, mapping2]);
+			factory.createMediators(mediatedItem1, Sprite, [mapping1, mapping2]);
+			factory.createMediators(mediatedItem2, Sprite, [mapping1, mapping2]);
 			
 			const mediatorsRemovedForView:Array = [];
 			
 			factory.addEventListener(MediatorFactoryEvent.MEDIATOR_REMOVE, function(event:MediatorFactoryEvent):void {
-				mediatorsRemovedForView.push(event.view);
+				mediatorsRemovedForView.push(event.mediatedItem);
 			});
 
 			factory.removeAllMediators();
@@ -237,11 +237,11 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			factory.addEventListener(MediatorFactoryEvent.MEDIATOR_REMOVE, function(event:MediatorFactoryEvent):void {
 				callCount++;
 			});
-			const view:Sprite = new Sprite();
+			const mediatedItem:Sprite = new Sprite();
 			const mapping:IMediatorMapping = new MediatorMapping(createTypeFilter([Sprite]), CallbackMediator);
-			factory.createMediators(view, Sprite, [mapping]);
-			factory.removeMediators(view);
-			factory.removeMediators(view);
+			factory.createMediators(mediatedItem, Sprite, [mapping]);
+			factory.removeMediators(mediatedItem);
+			factory.removeMediators(mediatedItem);
 			assertThat(callCount, equalTo(1));
 		}
 
@@ -306,7 +306,7 @@ class ViewInjectedMediator
 	/*============================================================================*/
 
 	[Inject]
-	public var view:Sprite;
+	public var mediatedItem:Sprite;
 }
 
 class ViewInjectedAsRequestedMediator
@@ -317,7 +317,7 @@ class ViewInjectedAsRequestedMediator
 	/*============================================================================*/
 
 	[Inject]
-	public var view:DisplayObject;
+	public var mediatedItem:DisplayObject;
 }
 
 class MediatorHook
@@ -328,7 +328,7 @@ class MediatorHook
 	/*============================================================================*/
 
 	[Inject]
-	public var view:Sprite;
+	public var mediatedItem:Sprite;
 
 	[Inject]
 	public var mediator:ViewInjectedMediator;

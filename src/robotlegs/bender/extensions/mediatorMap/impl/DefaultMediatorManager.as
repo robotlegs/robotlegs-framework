@@ -69,12 +69,12 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		private function onMediatorCreate(event:MediatorFactoryEvent):void
 		{
 			const mediator:Object = event.mediator;
-			const displayObject:DisplayObject = event.view as DisplayObject;
+			const displayObject:DisplayObject = event.mediatedItem as DisplayObject;
 
 			if (!displayObject)
 			{
 				// Non-display-object was added, initialize and exit
-				initializeMediator(event.view, mediator);
+				initializeMediator(event.mediatedItem, mediator);
 				return;
 			}
 
@@ -100,7 +100,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		private function onMediatorRemove(event:MediatorFactoryEvent):void
 		{
-			const displayObject:DisplayObject = event.view as DisplayObject;
+			const displayObject:DisplayObject = event.mediatedItem as DisplayObject;
 
 			if (displayObject)
 				displayObject.removeEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
@@ -114,10 +114,10 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			_factory.removeMediators(event.target);
 		}
 
-		private function initializeMediator(view:Object, mediator:Object):void
+		private function initializeMediator(mediatedItem:Object, mediator:Object):void
 		{
 			if (mediator.hasOwnProperty('viewComponent'))
-				mediator.viewComponent = view;
+				mediator.viewComponent = mediatedItem;
 
 			if (mediator.hasOwnProperty('initialize'))
 				mediator.initialize();

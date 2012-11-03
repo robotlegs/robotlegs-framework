@@ -31,11 +31,11 @@ package robotlegs.bender.extensions.mediatorMap.api
 			return _mediator;
 		}
 
-		private var _view:Object;
+		private var _mediatedItem:Object;
 
-		public function get view():Object
+		public function get mediatedItem():Object
 		{
-			return _view;
+			return _mediatedItem;
 		}
 
 		private var _mapping:IMediatorMapping;
@@ -59,13 +59,13 @@ package robotlegs.bender.extensions.mediatorMap.api
 		public function MediatorFactoryEvent(
 			type:String,
 			mediator:Object,
-			view:Object,
+			mediatedItem:Object,
 			mapping:IMediatorMapping,
 			factory:IMediatorFactory)
 		{
 			super(type);
 			_mediator = mediator;
-			_view = view;
+			_mediatedItem = mediatedItem;
 			_mapping = mapping;
 			_factory = factory;
 		}
@@ -76,7 +76,7 @@ package robotlegs.bender.extensions.mediatorMap.api
 
 		override public function clone():Event
 		{
-			return new MediatorFactoryEvent(type, _mediator, _view, _mapping, _factory);
+			return new MediatorFactoryEvent(type, _mediator, _mediatedItem, _mapping, _factory);
 		}
 	}
 }
