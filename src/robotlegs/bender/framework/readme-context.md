@@ -10,7 +10,7 @@ To create a context simply instantiate a new Context and provide some configurat
         .extend(MVCSBundle)
         .configure(
             MyModuleConfig,
-            view
+            new ContextView(view)
         );
 
 Note: you must hold on to that context reference. Failing to do so will result in the context instance being garbage collected.

@@ -1,6 +1,6 @@
 # ContextView
 
-The Context View Extension adds a configuration processor to the context that consumes a DisplayObjectContainer and maps it into the context. Many extensions require a DisplayObjectContainer to be present in order to function correctly.
+The Context View Extension adds a configuration processor to the context that consumes a ContextView object and maps the provided view as a DisplayObjectContainer into the context. Many extensions require a DisplayObjectContainer to be present in order to function correctly.
 
 ## Installation
 
@@ -8,8 +8,8 @@ The Context View Extension adds a configuration processor to the context that co
 
     _context = new Context()
         .extend(ContextViewExtension)
-        .configure(this);
+        .configure(new ContextView(this));
 
-Note: The extension must be installed before a DisplayObjectContainer is provided or the DisplayObjectContainer will not be processed.
+Note: The extension must be installed before the ContextView is provided or it will not be processed.
 
-In the example above we provide the instance "this" to use as the Context View. We assume that "this" is a valid DisplayObjectContainer.
+In the example above we provide the instance "this" to use as the view. We assume that "this" is a valid DisplayObjectContainer.
