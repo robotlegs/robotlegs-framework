@@ -7,7 +7,6 @@
 
 package robotlegs.bender.extensions.contextView
 {
-	import flash.display.DisplayObjectContainer;
 	import org.hamcrest.object.instanceOf;
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.framework.api.IContext;
@@ -16,8 +15,8 @@ package robotlegs.bender.extensions.contextView
 	import robotlegs.bender.framework.impl.UID;
 
 	/**
-	 * <p>This Extension waits for a DisplayObjectContainer to be added as a configuration
-	 * and maps that container into the context's injector.</p>
+	 * <p>This Extension waits for a ContextView to be added as a configuration
+	 * and maps it into the context's injector.</p>
 	 *
 	 * <p>It should be installed before context initialization.</p>
 	 */
@@ -38,13 +37,12 @@ package robotlegs.bender.extensions.contextView
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		// todo: accept contextView via constructor and use that if provided
-
 		public function extend(context:IContext):void
 		{
 			_injector = context.injector;
 			_logger = context.getLogger(this);
-			context.addConfigHandler(instanceOf(DisplayObjectContainer), handleContextView);
+			context.addConfigHandler(instanceOf(ContextView), handleContextView);
+			context.lifecycle.beforeInitializing(beforeInitializing);
 		}
 
 		public function toString():String
@@ -56,16 +54,24 @@ package robotlegs.bender.extensions.contextView
 		/* Private Functions                                                          */
 		/*============================================================================*/
 
-		private function handleContextView(view:DisplayObjectContainer):void
+		private function handleContextView(contextView:ContextView):void
 		{
-			if (_injector.hasDirectMapping(DisplayObjectContainer))
+			if (_injector.hasDirectMapping(ContextView))
 			{
-				_logger.warn('A contextView has already been mapped, ignoring {0}', [view]);
+				_logger.warn('A contextView has already been installed, ignoring {0}', [contextView.view]);
 			}
 			else
 			{
-				_logger.debug("Mapping {0} as contextView", [view]);
-				_injector.map(DisplayObjectContainer).toValue(view);
+				_logger.debug("Mapping {0} as contextView", [contextView.view]);
+				_injector.map(ContextView).toValue(contextView);
+			}
+		}
+
+		private function beforeInitializing():void
+		{
+			if (!_injector.hasDirectMapping(ContextView))
+			{
+				throw( new Error("A ContextView must be installed if you install the ContextViewExtension."));
 			}
 		}
 	}

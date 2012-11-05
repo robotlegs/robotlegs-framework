@@ -12,6 +12,8 @@ package robotlegs.bender.mxml
 	import mx.core.IMXMLObject;
 	import org.swiftsuspenders.reflection.DescribeTypeReflector;
 	import org.swiftsuspenders.reflection.Reflector;
+
+	import robotlegs.bender.extensions.contextView.ContextView;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
 	import robotlegs.bender.framework.impl.Context;
@@ -83,7 +85,7 @@ package robotlegs.bender.mxml
 					: _context.configure(config);
 			}
 
-			_contextView && _context.configure(_contextView);
+			_contextView && _context.configure(new ContextView(_contextView));
 			_configs.length = 0;
 		}
 

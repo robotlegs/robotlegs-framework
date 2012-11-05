@@ -73,7 +73,6 @@ package robotlegs.bender.extensions.viewManager.impl
 
 		private function removeContainerListener(container:DisplayObjectContainer):void
 		{
-			// Release the container listener
 			container.removeEventListener(ConfigureViewEvent.CONFIGURE_VIEW, onConfigureView);
 		}
 

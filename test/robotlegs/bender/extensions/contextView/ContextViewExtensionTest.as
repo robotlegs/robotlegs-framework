@@ -23,7 +23,7 @@ package robotlegs.bender.extensions.contextView
 
 		private var context:IContext;
 
-		private var contextView:DisplayObjectContainer;
+		private var view:DisplayObjectContainer;
 
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
@@ -33,7 +33,7 @@ package robotlegs.bender.extensions.contextView
 		public function before():void
 		{
 			context = new Context();
-			contextView = new Canvas();
+			view = new Canvas();
 		}
 
 		/*============================================================================*/
@@ -41,28 +41,35 @@ package robotlegs.bender.extensions.contextView
 		/*============================================================================*/
 
 		[Test]
-		public function displayObjectContainer_is_mapped_into_injector_as_contextView():void
+		public function contextView_is_mapped():void
 		{
-			var actual:Object = null;
-			context.extend(ContextViewExtension).configure(contextView);
+			var actual:ContextView = null;
+			context.extend(ContextViewExtension).configure(new ContextView(view));
 			context.lifecycle.whenInitializing(function():void {
-				actual = context.injector.getInstance(DisplayObjectContainer);
+				actual = context.injector.getInstance(ContextView);
 			});
 			context.lifecycle.initialize();
-			assertThat(actual, equalTo(contextView));
+			assertThat(actual.view, equalTo(view));
 		}
 
 		[Test]
 		public function second_displayObjectContainer_is_ignored():void
 		{
-			var actual:Object = null;
+			var actual:ContextView = null;
 			const secondView:DisplayObjectContainer = new Canvas();
-			context.extend(ContextViewExtension).configure(contextView, secondView);
+			context.extend(ContextViewExtension).configure(new ContextView(view), new ContextView(secondView));
 			context.lifecycle.whenInitializing(function():void {
-				actual = context.injector.getInstance(DisplayObjectContainer);
+				actual = context.injector.getInstance(ContextView);
 			});
 			context.lifecycle.initialize();
-			assertThat(actual, equalTo(contextView));
+			assertThat(actual.view, equalTo(view));
+		}
+
+		[Test(expects="Error")]
+		public function extension_throws_if_context_initialized_with_no_contextView():void
+		{
+			context.extend(ContextViewExtension);
+			context.lifecycle.initialize();
 		}
 	}
 }
