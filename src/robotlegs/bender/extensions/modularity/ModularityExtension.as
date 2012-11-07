@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -7,8 +7,8 @@
 
 package robotlegs.bender.extensions.modularity
 {
-	import flash.display.DisplayObjectContainer;
 	import org.swiftsuspenders.Injector;
+	import robotlegs.bender.extensions.contextView.ContextView;
 	import robotlegs.bender.extensions.modularity.impl.ContextViewBasedExistenceWatcher;
 	import robotlegs.bender.extensions.modularity.impl.ModularContextEvent;
 	import robotlegs.bender.extensions.modularity.impl.ViewManagerBasedExistenceWatcher;
@@ -50,8 +50,8 @@ package robotlegs.bender.extensions.modularity
 		/**
 		 * Modularity
 		 *
-		 * @param inherit Should this context inherit dependencies?
-		 * @param expose Should this context expose its dependencies?
+		 * @param inherit Should this context inherit dependencies from a parent context?
+		 * @param expose Should this context expose its dependencies to child contexts?
 		 */
 		public function ModularityExtension(inherit:Boolean = true, expose:Boolean = true)
 		{
@@ -82,22 +82,26 @@ package robotlegs.bender.extensions.modularity
 
 		private function beforeInitializing():void
 		{
+			checkForContextView();
 			_inherit && broadcastContextExistence();
 			_expose && createContextWatcher();
 		}
 
+		private function checkForContextView():void
+		{
+			if (!_injector.hasDirectMapping(ContextView))
+			{
+				const message:String = "Context has no contextView, and ModularityExtension doesn't allow this";
+				_logger.fatal(message);
+				throw(new Error(message));
+			}
+		}
+
 		private function broadcastContextExistence():void
 		{
-			if (_injector.hasDirectMapping(DisplayObjectContainer))
-			{
-				_logger.debug("Context configured to inherit. Broadcasting existence event...");
-				const contextView:DisplayObjectContainer = _injector.getInstance(DisplayObjectContainer);
-				contextView.dispatchEvent(new ModularContextEvent(ModularContextEvent.CONTEXT_ADD, _context));
-			}
-			else
-			{
-				_logger.warn("Context has been configured to inherit dependencies but has no way to do so");
-			}
+			_logger.debug("Context configured to inherit. Broadcasting existence event...");
+			const contextView:ContextView = _injector.getInstance(ContextView);
+			contextView.view.dispatchEvent(new ModularContextEvent(ModularContextEvent.CONTEXT_ADD, _context));
 		}
 
 		private function createContextWatcher():void
@@ -108,16 +112,11 @@ package robotlegs.bender.extensions.modularity
 				const viewManager:IViewManager = _injector.getInstance(IViewManager);
 				new ViewManagerBasedExistenceWatcher(_context, viewManager);
 			}
-			else if (_injector.hasDirectMapping(DisplayObjectContainer))
-			{
-				_logger.debug("Context has a ContextView. Configuring context view based context existence watcher...");
-				const contextView:DisplayObjectContainer = _injector.getInstance(DisplayObjectContainer);
-				new ContextViewBasedExistenceWatcher(_context, contextView);
-			}
 			else
 			{
-				_logger.warn("Context has been configured to expose its dependencies but has no way to do so");
-				throw( new Error("Context has no contextView, and ModularityExtension doesn't allow this"));
+				_logger.debug("Context has a ContextView. Configuring context view based context existence watcher...");
+				const contextView:ContextView = _injector.getInstance(ContextView);
+				new ContextViewBasedExistenceWatcher(_context, contextView.view);
 			}
 		}
 	}

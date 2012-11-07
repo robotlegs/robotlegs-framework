@@ -7,12 +7,14 @@
 
 package robotlegs.bender.bundles.shared.configs
 {
-	import flash.display.DisplayObjectContainer;
+	import robotlegs.bender.extensions.contextView.ContextView;
 	import robotlegs.bender.extensions.viewManager.api.IViewManager;
 
 	/**
-	 * This simple configuration adds the mapped DisplayObjectContainer ("contextView")
-	 * to the viewManager.
+	 * This configuration file adds the ContextView to the viewManager.
+	 *
+	 * It requires the ViewManagerExtension, ContextViewExtension
+	 * and a ContextView have been installed.
 	 */
 	public class ContextViewListenerConfig
 	{
@@ -22,7 +24,7 @@ package robotlegs.bender.bundles.shared.configs
 		/*============================================================================*/
 
 		[Inject]
-		public var contextView:DisplayObjectContainer;
+		public var contextView:ContextView;
 
 		[Inject]
 		public var viewManager:IViewManager;
@@ -34,7 +36,7 @@ package robotlegs.bender.bundles.shared.configs
 		[PostConstruct]
 		public function init():void
 		{
-			viewManager.addContainer(contextView);
+			viewManager.addContainer(contextView.view);
 		}
 	}
 }

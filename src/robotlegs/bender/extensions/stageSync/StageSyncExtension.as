@@ -10,14 +10,16 @@ package robotlegs.bender.extensions.stageSync
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
 	import org.hamcrest.object.instanceOf;
+
+	import robotlegs.bender.extensions.contextView.ContextView;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
 	import robotlegs.bender.framework.api.ILogger;
 	import robotlegs.bender.framework.impl.UID;
 
 	/**
-	 * <p>This Extension waits for a DisplayObjectContainer to be added as a configuration,
-	 * and initializes and destroys the context based on that container's stage presence.</p>
+	 * <p>This Extension waits for a ContextView to be added as a configuration,
+	 * and initializes and destroys the context based on the contextView's stage presence.</p>
 	 *
 	 * <p>It should be installed before context initialization.</p>
 	 */
@@ -45,7 +47,7 @@ package robotlegs.bender.extensions.stageSync
 			_context = context;
 			_logger = context.getLogger(this);
 			_context.addConfigHandler(
-				instanceOf(DisplayObjectContainer),
+				instanceOf(ContextView),
 				handleContextView);
 		}
 
@@ -58,14 +60,14 @@ package robotlegs.bender.extensions.stageSync
 		/* Private Functions                                                          */
 		/*============================================================================*/
 
-		private function handleContextView(view:DisplayObjectContainer):void
+		private function handleContextView(contextView:ContextView):void
 		{
 			if (_contextView)
 			{
-				_logger.warn('A contextView has already been set, ignoring {0}', [view]);
+				_logger.warn('A contextView has already been installed, ignoring {0}', [contextView.view]);
 				return;
 			}
-			_contextView = view;
+			_contextView = contextView.view;
 			if (_contextView.stage)
 			{
 				initializeContext();
