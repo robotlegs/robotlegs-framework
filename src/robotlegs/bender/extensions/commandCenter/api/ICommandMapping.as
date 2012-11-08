@@ -18,8 +18,6 @@ package robotlegs.bender.extensions.commandCenter.api
 
 		function get fireOnce():Boolean;
 		
-		function validate():void;
-		
 		function get next():ICommandMapping;
 		
 		function set next(value:ICommandMapping):void;

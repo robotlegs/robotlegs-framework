@@ -1,37 +1,24 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.commandCenter.support
 {
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandTrigger;
-	import org.swiftsuspenders.Injector;
 
 	public class NullCommandTrigger implements ICommandTrigger
 	{
 
 		/*============================================================================*/
-		/* Public Properties                                                          */
-		/*============================================================================*/
-
-		private var _injector:Injector;
-
-		public function get injector():Injector
-		{
-			return null;
-		}
-
-		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function NullCommandTrigger(injector:Injector)
+		public function NullCommandTrigger()
 		{
-			_injector = injector;
 		}
 
 		/*============================================================================*/

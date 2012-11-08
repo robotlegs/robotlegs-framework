@@ -29,6 +29,8 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 
 		private var _executor:EventCommandExecutor;
 
+		private var _eventClass:Class;
+
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
@@ -41,6 +43,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		{
 			_dispatcher = dispatcher;
 			_type = type;
+			_eventClass = eventClass;
 			_executor = new EventCommandExecutor(this, _mappingList, injector, eventClass);
 		}
 
@@ -70,6 +73,11 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 				removeListener();
 		}
 
+		public function toString():String
+		{
+			return _eventClass + " with selector '" + _type + "'";
+		}
+
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
@@ -89,5 +97,6 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		{
 			_dispatcher.removeEventListener(_type, _executor.execute);
 		}
+
 	}
 }

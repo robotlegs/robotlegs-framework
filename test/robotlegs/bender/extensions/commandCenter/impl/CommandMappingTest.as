@@ -12,7 +12,6 @@ package robotlegs.bender.extensions.commandCenter.impl
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.isFalse;
 	import org.hamcrest.object.isTrue;
-
 	import robotlegs.bender.extensions.commandCenter.support.NullCommand;
 
 	public class CommandMappingTest
@@ -24,6 +23,8 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		private var mapping:CommandMapping;
 
+		private var commandClass:Class;
+
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
 		/*============================================================================*/
@@ -31,7 +32,8 @@ package robotlegs.bender.extensions.commandCenter.impl
 		[Before]
 		public function before():void
 		{
-			mapping = new CommandMapping(NullCommand);
+			commandClass = NullCommand;
+			mapping = new CommandMapping(commandClass);
 		}
 
 		/*============================================================================*/
@@ -41,7 +43,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 		[Test]
 		public function mapping_stores_Command():void
 		{
-			assertThat(mapping.commandClass, equalTo(NullCommand));
+			assertThat(mapping.commandClass, equalTo(commandClass));
 		}
 
 		[Test]
@@ -85,108 +87,5 @@ package robotlegs.bender.extensions.commandCenter.impl
 			mapping.once(false);
 			assertThat(mapping.fireOnce, isFalse());
 		}
-		
-		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
-		public function different_guard_mapping_throws_mapping_error():void
-		{
-			mapping.withGuards(GuardA, GuardB);
-			mapping.invalidate();
-			mapping.withGuards(GuardA, GuardC);
-		}
-		
-		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
-		public function different_hook_mapping_throws_mapping_error():void
-		{
-			mapping.withHooks(HookA, HookC);
-			mapping.invalidate();
-			mapping.withHooks(HookB);
-		}
-		
-		[Test]
-		public function consistent_hook_mapping_doesnt_throw_error():void
-		{
-			mapping.withHooks(HookA, HookC);
-			mapping.invalidate();
-			mapping.withHooks(HookA);
-		}
-		
-		[Test]
-		public function consistent_guard_mapping_doesnt_throw_error():void
-		{
-			mapping.withGuards(GuardA, GuardB);
-			mapping.invalidate();
-			mapping.withGuards(GuardA);
-		}
-		
-		[Test(expects="robotlegs.bender.extensions.commandCenter.api.CommandMappingError")]
-		public function changing_once_after_lock_throws_error():void
-		{
-			mapping.invalidate();
-			mapping.once();
-		}
-		
-		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
-		public function consistent_guard_mapping_with_ommission_throws_when_commandClass_retrieved():void
-		{
-			mapping.withGuards(GuardA, GuardB);
-			mapping.invalidate();
-			mapping.withGuards(GuardA);
-			mapping.validate();
-		}
-		
-		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
-		public function consistent_hook_mapping_with_ommission_throws_when_commandClass_retrieved():void
-		{
-			mapping.withGuards(HookA, HookB);
-			mapping.invalidate();
-			mapping.withGuards(HookB);
-			mapping.validate();
-		}
-	}
-}
-
-
-class GuardA
-{
-	public function approve():Boolean
-	{
-		return true;
-	}
-}
-
-class GuardB
-{
-	public function approve():Boolean
-	{
-		return true;
-	}
-}
-
-class GuardC
-{
-	public function approve():Boolean
-	{
-		return true;
-	}
-}
-
-class HookA
-{
-	public function hook():void
-	{
-	}
-}
-
-class HookB
-{
-	public function hook():void
-	{
-	}
-}
-
-class HookC
-{
-	public function hook():void
-	{
 	}
 }

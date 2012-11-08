@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -9,15 +9,13 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 {
 	import org.flexunit.assertThat;
 	import org.hamcrest.collection.array;
-	import org.hamcrest.core.not;
 	import org.hamcrest.object.equalTo;
-	import org.hamcrest.object.notNullValue;
+	import org.hamcrest.object.instanceOf;
 	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.framework.impl.MessageDispatcher;
-	import robotlegs.bender.extensions.commandCenter.api.ICommandCenter;
+	import robotlegs.bender.extensions.commandCenter.dsl.ICommandMapper;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandCenter;
-	import robotlegs.bender.extensions.commandCenter.support.NullCommand;
 	import robotlegs.bender.extensions.messageCommandMap.api.IMessageCommandMap;
+	import robotlegs.bender.framework.impl.MessageDispatcher;
 
 	public class MessageCommandMapTest
 	{
@@ -26,18 +24,14 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var injector:Injector;
-
 		private var dispatcher:MessageDispatcher;
-
-		private var commandCenter:ICommandCenter;
 
 		private var messageCommandMap:IMessageCommandMap;
 
 		private var message:Object;
-		
+
 		private var reportedExecutions:Array;
-		
+
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
 		/*============================================================================*/
@@ -45,12 +39,11 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 		[Before]
 		public function before():void
 		{
-			reportedExecutions = [];
-			injector = new Injector();
+			const injector:Injector = new Injector();
 			injector.map(Function, "reportingFunction").toValue(reportingFunction);
+			reportedExecutions = [];
 			dispatcher = new MessageDispatcher();
-			commandCenter = new CommandCenter();
-			messageCommandMap = new MessageCommandMap(injector, dispatcher, commandCenter);
+			messageCommandMap = new MessageCommandMap(injector, dispatcher, new CommandCenter());
 			message = {};
 		}
 
@@ -59,42 +52,40 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 		/*============================================================================*/
 
 		[Test]
-		public function mapMessage_creates_mapper():void
+		public function map_creates_mapper():void
 		{
-			assertThat(messageCommandMap.map(message), notNullValue());
+			assertThat(messageCommandMap.map(message), instanceOf(ICommandMapper));
 		}
 
 		[Test]
-		public function mapMessage_to_command_stores_mapping():void
+		public function map_to_identical_message_returns_same_mapper():void
 		{
-			const mapping:* = messageCommandMap.map(message).toCommand(NullCommand);
-			assertThat(messageCommandMap.map(message).toCommand(NullCommand), equalTo(mapping));
+			const mapper:Object = messageCommandMap.map(message);
+			assertThat(messageCommandMap.map(message), equalTo(mapper));
 		}
 
 		[Test]
-		public function unmapMessage_from_command_removes_mapping():void
+		public function unmap_returns_mapper():void
 		{
-			const mapping:* = messageCommandMap.map(message).toCommand(NullCommand);
-			messageCommandMap.unmap(message).fromCommand(NullCommand);
-			assertThat(messageCommandMap.map(message).toCommand(NullCommand), not(equalTo(mapping)));
+			const mapper:Object = messageCommandMap.map(message);
+			assertThat(messageCommandMap.unmap(message), equalTo(mapper));
 		}
-		
-		[Test]
-		public function robust_to_unmapping_non_existent_mappings():void
-		{
-			messageCommandMap.unmap(message).fromCommand(NullCommand);
-		}
-		
+
 		[Test]
 		public function execution_sequence_is_guard_command_guard_command_for_multiple_mappings_to_same_message():void
 		{
+			// TODO: move into trigger tests
 			messageCommandMap.map(message).toCommand(CommandA).withGuards(GuardA);
 			messageCommandMap.map(message).toCommand(CommandB).withGuards(GuardB);
 			dispatcher.dispatchMessage(message);
 			const expectedOrder:Array = [GuardA, CommandA, GuardB, CommandB];
 			assertThat(reportedExecutions, array(expectedOrder));
 		}
-		
+
+		/*============================================================================*/
+		/* Protected Functions                                                        */
+		/*============================================================================*/
+
 		protected function reportingFunction(item:Object):void
 		{
 			reportedExecutions.push(item);
@@ -104,9 +95,18 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 
 class GuardA
 {
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
 	[Inject(name="reportingFunction")]
 	public var reportingFunc:Function;
-	
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
 	public function approve():Boolean
 	{
 		reportingFunc(GuardA);
@@ -116,9 +116,18 @@ class GuardA
 
 class GuardB
 {
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
 	[Inject(name="reportingFunction")]
 	public var reportingFunc:Function;
-	
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
 	public function approve():Boolean
 	{
 		reportingFunc(GuardB);
@@ -128,21 +137,38 @@ class GuardB
 
 class CommandA
 {
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
 	[Inject(name="reportingFunction")]
 	public var reportingFunc:Function;
-	
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
 	public function execute():void
 	{
 		reportingFunc(CommandA);
 	}
-	
 }
 
 class CommandB
 {
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
 	[Inject(name="reportingFunction")]
 	public var reportingFunc:Function;
-	
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
 	public function execute():void
 	{
 		reportingFunc(CommandB);

@@ -94,7 +94,6 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			
 			for(var mapping:ICommandMapping = _mappingList.head; mapping; mapping = mapping.next)
 			{
-				mapping.validate();
 				mapEventForInjection(event, eventConstructor);
 				command = _factory.create(mapping);
 				unmapEventAfterInjection(eventConstructor);

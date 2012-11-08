@@ -177,8 +177,8 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 		[Test]
 		public function command_is_injected_into_hook():void
 		{
-			var executedCommand:SelfReportingCallbackCommand;
-			var injectedCommand:SelfReportingCallbackCommand;
+			var executedCommand:SelfReportingCallbackCommand = null;
+			var injectedCommand:SelfReportingCallbackCommand = null;
 			injector.map(Function, 'executeCallback').toValue(function(command:SelfReportingCallbackCommand):void {
 				executedCommand = command;
 			});
@@ -236,37 +236,13 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 			assertThat(callCount, equalTo(0));
 		}
 
-		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
-		public function incomplete_copy_guard_mapping_throws_mapping_error_when_triggered():void
-		{
-			messageCommandMap.map(SupportMessage).toCommand(NullCommand).withGuards(GuardA, GuardB);
-			
-			const mapping:ICommandMappingConfig = messageCommandMap.map(SupportMessage).toCommand(NullCommand);
-			mapping.withGuards(GuardA);
-			
-			const mappings:Vector.<ICommandMapping> = new <ICommandMapping>[ICommandMapping(mapping)];
-			dispatcher.dispatchMessage(SupportMessage);
-		}
-		
-		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
-		public function incomplete_copy_hook_mapping_throws_mapping_error_when_triggered():void
-		{
-			messageCommandMap.map(SupportMessage).toCommand(NullCommand).withHooks(HookA, HookB);
-			
-			const mapping:ICommandMappingConfig = messageCommandMap.map(SupportMessage).toCommand(NullCommand);
-			mapping.withHooks(HookA);
-			
-			const mappings:Vector.<ICommandMapping> = new <ICommandMapping>[ICommandMapping(mapping)];
-			dispatcher.dispatchMessage(SupportMessage);
-		}
-
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
 
 		private function commandExecutionCount(totalMessages:int = 1, oneshot:Boolean = false):uint
 		{
-			var executeCount:uint;
+			var executeCount:uint = 0;
 			injector.map(Function, 'executeCallback').toValue(function():void
 			{
 				executeCount++;
@@ -286,7 +262,7 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 
 		private function hookCallCount(... hooks):uint
 		{
-			var hookCallCount:uint;
+			var hookCallCount:uint = 0;
 			injector.map(Function, 'executeCallback').toValue(function(command:SelfReportingCallbackCommand):void {
 			});
 			injector.map(Function, 'hookCallback').toValue(function(hook:SelfReportingCallbackHook):void {
@@ -302,7 +278,7 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 
 		private function commandExecutionCountWithGuards(... guards):uint
 		{
-			var executionCount:uint;
+			var executionCount:uint = 0;
 			injector.map(Function, 'executeCallback').toValue(function():void
 			{
 				executionCount++;
@@ -314,35 +290,5 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 			dispatcher.dispatchMessage(SupportMessage);
 			return executionCount;
 		}
-	}
-}
-
-class GuardA
-{
-	public function approve():Boolean
-	{
-		return true;
-	}
-}
-
-class GuardB
-{
-	public function approve():Boolean
-	{
-		return true;
-	}
-}
-
-class HookA
-{
-	public function hook():void
-	{
-	}
-}
-
-class HookB
-{
-	public function hook():void
-	{
 	}
 }

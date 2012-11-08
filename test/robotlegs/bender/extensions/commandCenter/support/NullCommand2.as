@@ -5,21 +5,18 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.commandCenter.impl
+package robotlegs.bender.extensions.commandCenter.support
 {
-	import robotlegs.bender.extensions.commandCenter.dsl.ICommandUnmapper;
 
-	public class NullCommandUnmapper implements ICommandUnmapper
+	public class NullCommand2
 	{
-		
-		public function fromCommand(commandClass:Class):void
+
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
+
+		public function execute():void
 		{
-			
 		}
-		
-		public function fromAll():void
-		{
-			
-		}		
 	}
 }

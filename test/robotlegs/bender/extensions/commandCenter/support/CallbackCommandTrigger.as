@@ -9,21 +9,9 @@ package robotlegs.bender.extensions.commandCenter.support
 {
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandTrigger;
-	import org.swiftsuspenders.Injector;
 
 	public class CallbackCommandTrigger implements ICommandTrigger
 	{
-
-		/*============================================================================*/
-		/* Public Properties                                                          */
-		/*============================================================================*/
-
-		private var _injector:Injector;
-
-		public function get injector():Injector
-		{
-			return _injector;
-		}
 
 		/*============================================================================*/
 		/* Private Properties                                                         */
@@ -37,9 +25,8 @@ package robotlegs.bender.extensions.commandCenter.support
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function CallbackCommandTrigger(injector:Injector, registerCallback:Function = null, unregisterCallback:Function = null)
+		public function CallbackCommandTrigger(registerCallback:Function = null, unregisterCallback:Function = null)
 		{
-			_injector = injector;
 			_registerCallback = registerCallback;
 			_unregisterCallback = unregisterCallback;
 		}

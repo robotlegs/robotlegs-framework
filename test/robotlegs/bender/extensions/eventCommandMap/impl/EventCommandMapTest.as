@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -7,20 +7,19 @@
 
 package robotlegs.bender.extensions.eventCommandMap.impl
 {
+	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import org.hamcrest.assertThat;
-	import org.hamcrest.core.not;
 	import org.hamcrest.collection.array;
+	import org.hamcrest.core.not;
 	import org.hamcrest.object.equalTo;
-	import org.hamcrest.object.notNullValue;
+	import org.hamcrest.object.instanceOf;
 	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.extensions.commandCenter.api.CommandMappingError;
-	import robotlegs.bender.extensions.commandCenter.api.ICommandCenter;
+	import robotlegs.bender.extensions.commandCenter.dsl.ICommandMapper;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandCenter;
 	import robotlegs.bender.extensions.commandCenter.support.NullCommand;
 	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
 	import robotlegs.bender.extensions.eventCommandMap.support.SupportEvent;
-	import robotlegs.bender.framework.api.MappingConfigError;
 
 	public class EventCommandMapTest
 	{
@@ -29,16 +28,10 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var injector:Injector;
-
 		private var dispatcher:EventDispatcher;
 
-		private var commandCenter:ICommandCenter;
-
 		private var eventCommandMap:IEventCommandMap;
-		
-		private var errorImport:CommandMappingError;
-		
+
 		private var reportedExecutions:Array;
 
 		/*============================================================================*/
@@ -48,12 +41,11 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		[Before]
 		public function before():void
 		{
-			reportedExecutions = [];
-			injector = new Injector();
+			const injector:Injector = new Injector();
 			injector.map(Function, "reportingFunction").toValue(reportingFunction);
+			reportedExecutions = [];
 			dispatcher = new EventDispatcher();
-			commandCenter = new CommandCenter();
-			eventCommandMap = new EventCommandMap(injector, dispatcher, commandCenter);
+			eventCommandMap = new EventCommandMap(injector, dispatcher, new CommandCenter());
 		}
 
 		/*============================================================================*/
@@ -61,61 +53,61 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		/*============================================================================*/
 
 		[Test]
-		public function mapEvent_creates_mapper():void
+		public function map_creates_mapper():void
 		{
-			assertThat(eventCommandMap.map(SupportEvent.TYPE1, SupportEvent), notNullValue());
+			assertThat(eventCommandMap.map(SupportEvent.TYPE1, SupportEvent), instanceOf(ICommandMapper));
 		}
 
 		[Test]
-		public function mapEvent_to_command_stores_mapping():void
+		public function map_to_identical_Type_and_Event_returns_same_mapper():void
 		{
-			const mapping:* = eventCommandMap.map(SupportEvent.TYPE1).toCommand(NullCommand);
-			assertThat(eventCommandMap.map(SupportEvent.TYPE1).toCommand(NullCommand), equalTo(mapping));
+			const mapper:Object = eventCommandMap.map(SupportEvent.TYPE1, SupportEvent);
+			assertThat(eventCommandMap.map(SupportEvent.TYPE1, SupportEvent), equalTo(mapper));
 		}
 
 		[Test]
-		public function unmapEvent_from_command_removes_mapping():void
+		public function map_to_identical_Type_but_different_Event_returns_different_mapper():void
 		{
-			const mapping:* = eventCommandMap.map(SupportEvent.TYPE1).toCommand(NullCommand);
-			eventCommandMap.unmap(SupportEvent.TYPE1).fromCommand(NullCommand);
-			assertThat(eventCommandMap.map(SupportEvent.TYPE1).toCommand(NullCommand), not(equalTo(mapping)));
+			const mapper:Object = eventCommandMap.map(SupportEvent.TYPE1, SupportEvent);
+			assertThat(eventCommandMap.map(SupportEvent.TYPE1, Event), not(equalTo(mapper)));
 		}
-		
-		// Duplicating these tests from commandMapping at this level to keep it honest!
-		
-		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
-		public function different_guard_mapping_throws_mapping_error():void
+
+		[Test]
+		public function map_to_different_Type_but_identical_Event_returns_different_mapper():void
 		{
-			eventCommandMap.map(SupportEvent.TYPE1).toCommand(NullCommand).withGuards(GuardA, GuardB);
-			eventCommandMap.map(SupportEvent.TYPE1).toCommand(NullCommand).withGuards(GuardA, GuardC);
+			const mapper:Object = eventCommandMap.map(SupportEvent.TYPE1, SupportEvent);
+			assertThat(eventCommandMap.map(SupportEvent.TYPE2, SupportEvent), not(equalTo(mapper)));
 		}
-		
-		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
-		public function different_hook_mapping_throws_mapping_error():void
+
+		[Test]
+		public function unmap_returns_mapper():void
 		{
-			eventCommandMap.map(SupportEvent.TYPE1).toCommand(NullCommand).withHooks(HookA, HookC);
-			eventCommandMap.map(SupportEvent.TYPE1).toCommand(NullCommand).withHooks(HookB);
+			const mapper:Object = eventCommandMap.map(SupportEvent.TYPE1, SupportEvent);
+			assertThat(eventCommandMap.unmap(SupportEvent.TYPE1, SupportEvent), equalTo(mapper));
 		}
-		
-		// Testing of the ommission style of error is done in the Executor... as expecting async errors is gnarly
-	
+
 		[Test]
 		public function robust_to_unmapping_non_existent_mappings():void
 		{
 			eventCommandMap.unmap(SupportEvent.TYPE1).fromCommand(NullCommand);
 		}
-		
+
 		[Test]
 		public function execution_sequence_is_guard_command_guard_command_for_multiple_mappings_to_same_event():void
 		{
+			// TODO: move into trigger tests
 			eventCommandMap.map(SupportEvent.TYPE1).toCommand(CommandA).withGuards(GuardA);
 			eventCommandMap.map(SupportEvent.TYPE1).toCommand(CommandB).withGuards(GuardB);
 			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
 			const expectedOrder:Array = [GuardA, CommandA, GuardB, CommandB];
 			assertThat(reportedExecutions, array(expectedOrder));
 		}
-		
-		protected function reportingFunction(item:Object):void
+
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
+
+		private function reportingFunction(item:Object):void
 		{
 			reportedExecutions.push(item);
 		}
@@ -124,9 +116,18 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 
 class GuardA
 {
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
 	[Inject(name="reportingFunction")]
 	public var reportingFunc:Function;
-	
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
 	public function approve():Boolean
 	{
 		reportingFunc(GuardA);
@@ -136,9 +137,18 @@ class GuardA
 
 class GuardB
 {
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
 	[Inject(name="reportingFunction")]
 	public var reportingFunc:Function;
-	
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
 	public function approve():Boolean
 	{
 		reportingFunc(GuardB);
@@ -148,9 +158,18 @@ class GuardB
 
 class GuardC
 {
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
 	[Inject(name="reportingFunction")]
 	public var reportingFunc:Function;
-	
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
 	public function approve():Boolean
 	{
 		reportingFunc(GuardC);
@@ -158,44 +177,40 @@ class GuardC
 	}
 }
 
-class HookA
-{
-	public function hook():void
-	{
-	}
-}
-
-class HookB
-{
-	public function hook():void
-	{
-	}
-}
-
-class HookC
-{
-	public function hook():void
-	{
-	}
-}
-
 class CommandA
 {
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
 	[Inject(name="reportingFunction")]
 	public var reportingFunc:Function;
-	
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
 	public function execute():void
 	{
 		reportingFunc(CommandA);
 	}
-	
 }
 
 class CommandB
 {
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
 	[Inject(name="reportingFunction")]
 	public var reportingFunc:Function;
-	
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
 	public function execute():void
 	{
 		reportingFunc(CommandB);

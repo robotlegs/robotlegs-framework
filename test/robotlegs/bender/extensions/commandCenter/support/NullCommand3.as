@@ -5,18 +5,18 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.commandCenter.api
+package robotlegs.bender.extensions.commandCenter.support
 {
 
-	public class CommandMappingError extends Error
+	public class NullCommand3
 	{
-	
-		public function CommandMappingError(message:String)
+
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
+
+		public function execute():void
 		{
-			super(message);
 		}
-	
 	}
-
 }
-
