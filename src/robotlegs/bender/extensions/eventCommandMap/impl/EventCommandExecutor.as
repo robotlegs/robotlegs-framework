@@ -12,6 +12,8 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandTrigger;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandMappingList;
+	import robotlegs.bender.framework.impl.applyHooks;
+	import robotlegs.bender.framework.impl.guardsApprove;
 
 	public class EventCommandExecutor
 	{
@@ -28,8 +30,6 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 
 		private var _eventClass:Class;
 
-		private var _factory:EventCommandFactory;
-
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
@@ -44,7 +44,6 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			_mappingList = mappingList;
 			_injector = injector.createChildInjector();
 			_eventClass = eventClass;
-			_factory = new EventCommandFactory(_injector);
 		}
 
 		/*============================================================================*/
@@ -54,62 +53,41 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		public function execute(event:Event):void
 		{
 			const eventConstructor:Class = event["constructor"] as Class;
-			if (isTriggerEvent(eventConstructor))
+			if (_eventClass && eventConstructor != _eventClass)
 			{
-				runCommands(event, eventConstructor);
+				return;
 			}
-		}
 
-		/*============================================================================*/
-		/* Private Functions                                                          */
-		/*============================================================================*/
-
-		private function isTriggerEvent(eventConstructor:Class):Boolean
-		{
-			return !_eventClass || eventConstructor == _eventClass;
-		}
-
-		private function isStronglyTyped(eventConstructor:Class):Boolean
-		{
-			return eventConstructor != Event;
-		}
-
-		private function mapEventForInjection(event:Event, eventConstructor:Class):void
-		{
-			_injector.map(Event).toValue(event);
-			if (isStronglyTyped(eventConstructor))
-				_injector.map(_eventClass || eventConstructor).toValue(event);
-		}
-
-		private function unmapEventAfterInjection(eventConstructor:Class):void
-		{
-			_injector.unmap(Event);
-			if (isStronglyTyped(eventConstructor))
-				_injector.unmap(_eventClass || eventConstructor);
-		}
-
-		private function runCommands(event:Event, eventConstructor:Class):void
-		{
-			var command:Object;
-			
-			for(var mapping:ICommandMapping = _mappingList.head; mapping; mapping = mapping.next)
+			for (var mapping:ICommandMapping = _mappingList.head; mapping; mapping = mapping.next)
 			{
+				var command:Object;
+
+				// ss: I don't like that we have to do this work at execution time
 				mapping.validate();
-				mapEventForInjection(event, eventConstructor);
-				command = _factory.create(mapping);
-				unmapEventAfterInjection(eventConstructor);
-				if(command)
+
+				_injector.map(Event).toValue(event);
+				if (eventConstructor != Event)
+					_injector.map(_eventClass || eventConstructor).toValue(event);
+
+				if (guardsApprove(mapping.guards, _injector))
 				{
-					removeFireOnceMapping(mapping);
+					const commandClass:Class = mapping.commandClass;
+					_injector.map(commandClass).asSingleton();
+					command = _injector.getInstance(commandClass);
+					applyHooks(mapping.hooks, _injector);
+					_injector.unmap(commandClass);
+				}
+
+				_injector.unmap(Event);
+				if (eventConstructor != Event)
+					_injector.unmap(_eventClass || eventConstructor);
+
+				if (command)
+				{
+					mapping.fireOnce && _trigger.removeMapping(mapping);
 					command.execute();
 				}
 			}
-		}
-
-		private function removeFireOnceMapping(mapping:ICommandMapping):void
-		{
-			if (mapping.fireOnce)
-				_trigger.removeMapping(mapping);
 		}
 	}
 }
