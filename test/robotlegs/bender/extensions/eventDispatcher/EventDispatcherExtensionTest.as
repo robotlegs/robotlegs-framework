@@ -42,7 +42,7 @@ package robotlegs.bender.extensions.eventDispatcher
 		public function an_EventDispatcher_is_mapped_into_injector():void
 		{
 			var actual:Object = null;
-			context.extend(EventDispatcherExtension);
+			context.install(EventDispatcherExtension);
 			context.lifecycle.whenInitializing( function():void {
 				actual = context.injector.getInstance(IEventDispatcher);
 			});
@@ -55,7 +55,7 @@ package robotlegs.bender.extensions.eventDispatcher
 		{
 			const expected:IEventDispatcher = new EventDispatcher();
 			var actual:Object = null;
-			context.extend(new EventDispatcherExtension(expected));
+			context.install(new EventDispatcherExtension(expected));
 			context.lifecycle.whenInitializing( function():void {
 				actual = context.injector.getInstance(IEventDispatcher);
 			});

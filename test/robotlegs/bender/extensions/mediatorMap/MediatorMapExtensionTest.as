@@ -42,7 +42,7 @@ package robotlegs.bender.extensions.mediatorMap
 		public function mediatorMap_is_mapped_into_injector_on_initialize():void
 		{
 			var actual:Object = null;
-			context.extend(ViewManagerExtension, MediatorMapExtension);
+			context.install(ViewManagerExtension, MediatorMapExtension);
 			context.lifecycle.whenInitializing( function():void {
 				actual = context.injector.getInstance(IMediatorMap);
 			});
@@ -53,7 +53,7 @@ package robotlegs.bender.extensions.mediatorMap
 		[Test]
 		public function mediatorMap_is_unmapped_from_injector_on_destroy():void
 		{
-			context.extend(ViewManagerExtension, MediatorMapExtension);
+			context.install(ViewManagerExtension, MediatorMapExtension);
 			context.lifecycle.afterDestroying( function():void {
 				assertFalse(context.injector.hasMapping(IMediatorMap));
 			});

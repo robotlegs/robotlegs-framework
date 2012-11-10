@@ -7,12 +7,12 @@ The message dispatcher extension simply maps a shared message dispatcher into a 
 ## Extension Installation
 
     _context = new Context()
-        .extend(MessageDispatcherExtension);
+        .install(MessageDispatcherExtension);
 
 You can provide the dispatcher instance you wish to use manually if you so desire:
 
     _context = new Context()
-        .extend(new MessageDispatcherExtension(dispatcher));
+        .install(new MessageDispatcherExtension(dispatcher));
 
 ## Extension Usage
 

@@ -81,7 +81,7 @@ package robotlegs.bender.mxml
 			for each (var config:Object in _configs)
 			{
 				isExtension(config)
-					? _context.extend(config)
+					? _context.install(config)
 					: _context.configure(config);
 			}
 

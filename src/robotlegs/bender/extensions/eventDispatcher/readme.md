@@ -7,12 +7,12 @@ The event dispatcher extension simply maps a shared event dispatcher into a cont
 ## Extension Installation
 
     _context = new Context()
-        .extend(EventDispatcherExtension);
+        .install(EventDispatcherExtension);
 
 You can provide the dispatcher instance you wish to use manually if you so desire:
 
     _context = new Context()
-        .extend(new EventDispatcherExtension(dispatcher));
+        .install(new EventDispatcherExtension(dispatcher));
 
 ## Extension Usage
 

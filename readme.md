@@ -24,14 +24,15 @@ To create a Robotlegs application or module you need to instantiate a Context. A
 Plain ActionScript:
 
     _context = new Context()
-        .extend(MVCSBundle)
+        .install(MVCSBundle)
         .configure(MyAppConfig, SomeOtherConfig)
         .configure(new ContextView(this));
 
-Note: We pass the instance "this" through as the "contextView" which is required by many of the view related extensions. It must be installed after the bundle or it won't be processed. Also, it should be added as the final configuration as it may trigger context initialization.
+We install the MVCSBundle, which in turn installs a number of commonly used Extensions, and then add some custom application configurations.
+
+We pass the instance "this" through as the "contextView" which is required by many of the view related extensions. It must be installed after the bundle or it won't be processed. Also, it should be added as the final configuration as it may trigger context initialization.
 
 Note: You must hold on to the context instance or it will be garbage collected.
-
 
 Flex:
 

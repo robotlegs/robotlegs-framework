@@ -44,14 +44,14 @@ For more information on guards and hooks check out:
 
 ## Note: strictly one mapping per-event-per-command
 
-You can only make one mapping per event-command pair. You should do your complete mapping in one chain, or keep a reference to the part of the chain where you need to stop. (At a minimum this should be to the `ICommandMapping` returned from `toCommand` as calling `toCommand` a second time will lock the mapping).
+You can only make one mapping per event-command pair. You should do your complete mapping in one chain.
 
-So - the following will explode:
+So - the following will issue a warning:
 
 	eventCommandMap.map(SomeEvent.STARTED).toCommand(SomeCommand);
-	eventCommandMap.map(SomeEvent.STARTED).toCommand(SomeCommand).once();
-	
-If your mappings are completely identical, no error will be thrown. If the mappings differ in guards, hooks or the use of `once`, an error will be thrown as soon as possible. In the case that you add a guard or hook that wasn't previously present, the error will be synchronous. In the case that you miss out a guard or hook that was previously present, the error will be thrown the first time the mapping is next used.
+	eventCommandMap.map(SomeEvent.STARTED).toCommand(SomeCommand); // warning
+
+If you intend to change a mapping you should unmap first.
 
 # Event Command Map Extension
 
@@ -64,14 +64,14 @@ This extension requires the following extensions:
 
 ## Extension Installation
 
-    _context = new Context().extend(
+    _context = new Context().install(
     	CommandCenterExtension,
     	EventDispatcherExtension,
 	    EventCommandMapExtension);
 
 Or, assuming that the EventDispatcher and CommandCenter extensions have already been installed:
 
-	_context.extend(EventCommandMapExtension);
+	_context.install(EventCommandMapExtension);
 
 ## Extension Usage
 

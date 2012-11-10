@@ -39,7 +39,7 @@ package robotlegs.bender.extensions.viewManager
 		public function viewManager_is_mapped_into_injector():void
 		{
 			var actual:Object = null;
-			context.extend(ViewManagerExtension);
+			context.install(ViewManagerExtension);
 			context.lifecycle.whenInitializing(function():void {
 				actual = context.injector.getInstance(IViewManager);
 			});

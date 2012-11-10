@@ -7,11 +7,10 @@ A context is a scope. It is core to any application or module built using Robotl
 To create a context simply instantiate a new Context and provide some configuration:
 
 	_context = new Context()
-        .extend(MVCSBundle)
+        .install(MVCSBundle)
         .configure(
             MyModuleConfig,
-            new ContextView(view)
-        );
+            new ContextView(view));
 
 Note: you must hold on to that context reference. Failing to do so will result in the context instance being garbage collected.
 
@@ -23,11 +22,11 @@ The "contextView" should be provided as the final configuration as it may trigge
 
 Most extensions and bundles can be installed as classes:
 
-    _context.extend(MVCSBundle, InjectorLoggingExtension);
+    _context.install(MVCSBundle, InjectorLoggingExtension);
 
 Some extensions offer some extra configuration by way of constructor arguments:
 
-    _context.extend(new ScopedEventDispatcherExtension("shared", "local"));
+    _context.install(new ScopedEventDispatcherExtension("shared", "local"));
 
 # Configuration
 

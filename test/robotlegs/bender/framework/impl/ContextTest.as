@@ -53,7 +53,7 @@ package robotlegs.bender.framework.impl
 				function(error:Object, context:IContext):void {
 					actual = context;
 				});
-			context.extend(extension);
+			context.install(extension);
 			assertThat(actual, equalTo(context));
 		}
 

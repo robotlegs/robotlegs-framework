@@ -6,7 +6,7 @@ The view processor map provides automagic processing of mapped views landing on 
 
 ## Extension Installation
 
-	context.extend( ViewProcessorMapExtension );
+	context.install( ViewProcessorMapExtension );
 	
 ### Default access to the map is by injecting against the `IViewProcessorMap` interface
 

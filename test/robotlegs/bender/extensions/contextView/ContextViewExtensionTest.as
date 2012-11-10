@@ -44,7 +44,7 @@ package robotlegs.bender.extensions.contextView
 		public function contextView_is_mapped():void
 		{
 			var actual:ContextView = null;
-			context.extend(ContextViewExtension).configure(new ContextView(view));
+			context.install(ContextViewExtension).configure(new ContextView(view));
 			context.lifecycle.whenInitializing(function():void {
 				actual = context.injector.getInstance(ContextView);
 			});
@@ -57,7 +57,7 @@ package robotlegs.bender.extensions.contextView
 		{
 			var actual:ContextView = null;
 			const secondView:DisplayObjectContainer = new Canvas();
-			context.extend(ContextViewExtension).configure(new ContextView(view), new ContextView(secondView));
+			context.install(ContextViewExtension).configure(new ContextView(view), new ContextView(secondView));
 			context.lifecycle.whenInitializing(function():void {
 				actual = context.injector.getInstance(ContextView);
 			});
@@ -68,7 +68,7 @@ package robotlegs.bender.extensions.contextView
 		[Test(expects="Error")]
 		public function extension_throws_if_context_initialized_with_no_contextView():void
 		{
-			context.extend(ContextViewExtension);
+			context.install(ContextViewExtension);
 			context.lifecycle.initialize();
 		}
 	}

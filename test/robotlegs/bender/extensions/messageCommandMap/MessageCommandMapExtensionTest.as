@@ -31,7 +31,7 @@ package robotlegs.bender.extensions.messageCommandMap
 		public function before():void
 		{
 			context = new Context();
-			context.extend(MessageDispatcherExtension, CommandCenterExtension);
+			context.install(MessageDispatcherExtension, CommandCenterExtension);
 		}
 
 		/*============================================================================*/
@@ -42,7 +42,7 @@ package robotlegs.bender.extensions.messageCommandMap
 		public function messageCommandMap_is_mapped_into_injector():void
 		{
 			var actual:Object = null;
-			context.extend(MessageCommandMapExtension);
+			context.install(MessageCommandMapExtension);
 			context.lifecycle.whenInitializing(function():void {
 				actual = context.injector.getInstance(IMessageCommandMap);
 			});

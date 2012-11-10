@@ -18,7 +18,7 @@ A bundle implements the IBundle interface. When included into a context, that co
       {
         public function extend(context:IContext):void
         {
-          context.extend(
+          context.install(
             SuperDuperExtensionA,
             SuperDuperExtensionB,
             SuperDuperExtensionC);

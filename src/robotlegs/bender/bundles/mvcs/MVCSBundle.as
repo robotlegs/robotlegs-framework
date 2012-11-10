@@ -39,7 +39,7 @@ package robotlegs.bender.bundles.mvcs
 
 		public function extend(context:IContext):void
 		{
-			context.extend(
+			context.install(
 				LoggingExtension,
 				TraceLoggingExtension,
 				ContextViewExtension,

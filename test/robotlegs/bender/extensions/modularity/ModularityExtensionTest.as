@@ -49,8 +49,8 @@ package robotlegs.bender.extensions.modularity
 			parentView = new UIComponent();
 			childView = new UIComponent();
 
-			parentContext = new Context().extend(StageSyncExtension, ContextViewExtension);
-			childContext = new Context().extend(StageSyncExtension, ContextViewExtension);
+			parentContext = new Context().install(StageSyncExtension, ContextViewExtension);
+			childContext = new Context().install(StageSyncExtension, ContextViewExtension);
 		}
 
 		[After(async, ui)]
@@ -67,8 +67,8 @@ package robotlegs.bender.extensions.modularity
 		public function context_inherits_parent_injector():void
 		{
 			UIImpersonator.addChild(root);
-			parentContext.extend(ModularityExtension).configure(new ContextView(parentView));
-			childContext.extend(ModularityExtension).configure(new ContextView(childView));
+			parentContext.install(ModularityExtension).configure(new ContextView(parentView));
+			childContext.install(ModularityExtension).configure(new ContextView(childView));
 			root.addChild(parentView);
 			parentView.addChild(childView);
 			assertThat(childContext.injector.parentInjector, equalTo(parentContext.injector));
@@ -78,8 +78,8 @@ package robotlegs.bender.extensions.modularity
 		public function context_does_not_inherit_parent_injector_when_not_interested():void
 		{
 			UIImpersonator.addChild(root);
-			parentContext.extend(ModularityExtension).configure(new ContextView(parentView));
-			childContext.extend(new ModularityExtension(false)).configure(new ContextView(childView));
+			parentContext.install(ModularityExtension).configure(new ContextView(parentView));
+			childContext.install(new ModularityExtension(false)).configure(new ContextView(childView));
 			root.addChild(parentView);
 			parentView.addChild(childView);
 			assertThat(childContext.injector.parentInjector, not(parentContext.injector));
@@ -89,8 +89,8 @@ package robotlegs.bender.extensions.modularity
 		public function context_does_not_inherit_parent_injector_when_disallowed_by_parent():void
 		{
 			UIImpersonator.addChild(root);
-			parentContext.extend(new ModularityExtension(true, false)).configure(new ContextView(parentView));
-			childContext.extend(ModularityExtension).configure(new ContextView(childView));
+			parentContext.install(new ModularityExtension(true, false)).configure(new ContextView(parentView));
+			childContext.install(ModularityExtension).configure(new ContextView(childView));
 			root.addChild(parentView);
 			parentView.addChild(childView);
 			assertThat(childContext.injector.parentInjector, not(parentContext.injector));
@@ -99,7 +99,7 @@ package robotlegs.bender.extensions.modularity
 		[Test(expects="Error")]
 		public function extension_throws_if_context_initialized_with_no_contextView():void
 		{
-			childContext.extend(ModularityExtension);
+			childContext.install(ModularityExtension);
 			childContext.lifecycle.initialize();
 		}
 
@@ -107,7 +107,7 @@ package robotlegs.bender.extensions.modularity
 		public function child_added_to_viewManager_inherits_injector():void
 		{
 			UIImpersonator.addChild(root);
-			parentContext = new Context().extend(
+			parentContext = new Context().install(
 				ContextViewExtension,
 				ModularityExtension,
 				ViewManagerExtension,
@@ -118,7 +118,7 @@ package robotlegs.bender.extensions.modularity
 				parentContext.injector.getInstance(IViewManager);
 			viewManager.addContainer(childView);
 
-			childContext = new Context().extend(
+			childContext = new Context().install(
 				ContextViewExtension,
 				ModularityExtension,
 				StageSyncExtension)

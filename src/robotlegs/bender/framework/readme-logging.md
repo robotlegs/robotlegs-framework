@@ -18,7 +18,7 @@ To set the log level to DEBUG and add a simple trace logging target do the follo
 Or you can use the provided extension (already included in the MVCS bundle):
 
     context.logLevel = LogLevel.DEBUG;
-    context.extend(TraceLoggingExtension);
+    context.install(TraceLoggingExtension);
 
 You can make your own custom log targets by implementing the ILogTarget interface.
 

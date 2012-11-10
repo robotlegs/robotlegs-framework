@@ -30,7 +30,7 @@ package robotlegs.bender.extensions.commandCenter
 		public function before():void
 		{
 			context = new Context();
-			context.extend(EventDispatcherExtension, CommandCenterExtension);
+			context.install(EventDispatcherExtension, CommandCenterExtension);
 		}
 
 		/*============================================================================*/

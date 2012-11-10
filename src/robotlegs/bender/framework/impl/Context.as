@@ -105,7 +105,7 @@ package robotlegs.bender.framework.impl
 		/**
 		 * @inheritDoc
 		 */
-		public function extend(... extensions):IContext
+		public function install(... extensions):IContext
 		{
 			for each (var extension:Object in extensions)
 			{

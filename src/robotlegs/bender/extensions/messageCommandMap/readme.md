@@ -64,7 +64,7 @@ This extension requires the following extensions:
 
 ### During Context Construction
 
-    _context = new Context().extend(
+    _context = new Context().install(
     	CommandCenterExtension,
     	MessageDispatcherExtension,
 	    MessageCommandMapExtension);
@@ -73,7 +73,7 @@ This extension requires the following extensions:
 
 Assuming that the MessageDispatcher and CommandCenter extensions have already been installed:
 
-	_context.extend(MessageCommandMapExtension);
+	_context.install(MessageCommandMapExtension);
 
 ## Extension Usage
 

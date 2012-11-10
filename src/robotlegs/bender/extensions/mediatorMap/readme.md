@@ -6,7 +6,7 @@ The mediator map provides automagic mediator creation for mapped views landing o
 
 ## Extension Installation
 
-	context.extend(MediatorMapExtension);
+	context.install(MediatorMapExtension);
 	
 ### Default access to the map is by injecting against the `IMediatorMap` interface
 

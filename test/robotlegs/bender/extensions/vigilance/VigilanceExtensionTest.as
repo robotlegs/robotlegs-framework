@@ -7,6 +7,8 @@
 
 package robotlegs.bender.extensions.vigilance
 {
+	import org.swiftsuspenders.Injector;
+	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.ILogger;
 	import robotlegs.bender.framework.impl.Context;
 
@@ -19,6 +21,8 @@ package robotlegs.bender.extensions.vigilance
 
 		private var logger:ILogger;
 
+		private var injector:Injector;
+
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
 		/*============================================================================*/
@@ -26,9 +30,9 @@ package robotlegs.bender.extensions.vigilance
 		[Before]
 		public function before():void
 		{
-			logger = new Context()
-				.extend(VigilanceExtension)
-				.getLogger(this);
+			const context:IContext = new Context().install(VigilanceExtension);
+			logger = context.getLogger(this);
+			injector = context.injector;
 		}
 
 		/*============================================================================*/
@@ -63,6 +67,17 @@ package robotlegs.bender.extensions.vigilance
 		public function extension_throws_for_FATAL():void
 		{
 			logger.fatal("");
+		}
+
+		// [Test(expects="org.swiftsuspenders.errors.InjectorError")]
+		public function extension_throws_for_injector_MAPPING_override():void
+		{
+			// FlexUnit doesn't seem to be catching this error
+			// and instead allows the error to break the test.
+			// So commenting this out for now
+			// TODO: investigate
+			injector.map(String).toValue("string");
+			injector.map(String).toValue("string");
 		}
 	}
 }

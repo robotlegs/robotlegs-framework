@@ -34,7 +34,7 @@ package robotlegs.bender.extensions.scopedEventDispatcher
 			const name:String = 'global';
 			const context:IContext = new Context();
 			var actual:Object = null;
-			context.extend(new ScopedEventDispatcherExtension(name));
+			context.install(new ScopedEventDispatcherExtension(name));
 			context.lifecycle.whenInitializing( function():void {
 				actual = context.injector.getInstance(IEventDispatcher, name);
 			});
@@ -48,7 +48,7 @@ package robotlegs.bender.extensions.scopedEventDispatcher
 			const names:Array = ['global', 'other', 'name'];
 			const dispatchers:Array = [];
 			const context:IContext = new Context();
-			context.extend(new ScopedEventDispatcherExtension('global', 'other', 'name'));
+			context.install(new ScopedEventDispatcherExtension('global', 'other', 'name'));
 			context.lifecycle.whenInitializing( function():void {
 				for each (var name:String in names)
 				{
@@ -67,14 +67,14 @@ package robotlegs.bender.extensions.scopedEventDispatcher
 			const parentView:UIComponent = new UIComponent();
 			const childView:UIComponent = new UIComponent();
 
-			const parentContext:IContext = new Context().extend(
+			const parentContext:IContext = new Context().install(
 				ModularityExtension,
 				StageSyncExtension,
 				ContextViewExtension,
 				new ScopedEventDispatcherExtension('global', 'other', 'name'))
 				.configure(parentView);
 
-			const childContext:IContext = new Context().extend(
+			const childContext:IContext = new Context().install(
 				ModularityExtension,
 				StageSyncExtension,
 				ContextViewExtension,

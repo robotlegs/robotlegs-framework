@@ -38,7 +38,7 @@ package robotlegs.bender.extensions.logging
 		{
 			context = new Context();
 			context.logLevel = LogLevel.DEBUG;
-			context.extend(InjectorLoggingExtension);
+			context.install(InjectorLoggingExtension);
 		}
 
 		/*============================================================================*/

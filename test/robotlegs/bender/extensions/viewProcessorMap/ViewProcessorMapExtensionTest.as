@@ -42,7 +42,7 @@ package robotlegs.bender.extensions.viewProcessorMap
 		public function viewProcessorMap_is_mapped_into_injector_on_initialize():void
 		{
 			var actual:Object = null;
-			context.extend(ViewManagerExtension, ViewProcessorMapExtension);
+			context.install(ViewManagerExtension, ViewProcessorMapExtension);
 			context.lifecycle.whenInitializing( function():void {
 				actual = context.injector.getInstance(IViewProcessorMap);
 			});
@@ -53,7 +53,7 @@ package robotlegs.bender.extensions.viewProcessorMap
 		[Test]
 		public function viewProcessorMap_is_unmapped_from_injector_on_destroy():void
 		{
-			context.extend(ViewManagerExtension, ViewProcessorMapExtension);
+			context.install(ViewManagerExtension, ViewProcessorMapExtension);
 			context.lifecycle.afterDestroying( function():void {
 				assertFalse(context.injector.satisfiesDirectly(IViewProcessorMap));
 			});

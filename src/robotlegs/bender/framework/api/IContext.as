@@ -37,11 +37,11 @@ package robotlegs.bender.framework.api
 		function set logLevel(value:uint):void;
 
 		/**
-		 * Extends the context with custom extensions or bundles
+		 * Installs custom extensions or bundles into the context
 		 * @param extensions Objects or classes implementing IExtension or IBundle
 		 * @return this
 		 */
-		function extend(... extensions):IContext;
+		function install(... extensions):IContext;
 
 		/**
 		 * Configures the context with custom configurations

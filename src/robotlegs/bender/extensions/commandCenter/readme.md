@@ -9,8 +9,8 @@ It is not intended to be used directly. It is included in the MVCS Bundle.
 ### During Context Construction
 
     _context = new Context()
-        .extend(CommandCenterExtension);
+        .install(CommandCenterExtension);
 
 ### At Runtime
 
-	_context.extend(CommandCenterExtension);
+	_context.install(CommandCenterExtension);

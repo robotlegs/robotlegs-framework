@@ -7,7 +7,7 @@ The Context View Extension adds a configuration processor to the context that co
 ### During Context Construction
 
     _context = new Context()
-        .extend(ContextViewExtension)
+        .install(ContextViewExtension)
         .configure(new ContextView(this));
 
 Note: The extension must be installed before the ContextView is provided or it will not be processed.
