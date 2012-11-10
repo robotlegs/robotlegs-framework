@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -7,15 +7,14 @@
 
 package robotlegs.bender.extensions.mediatorMap.impl
 {
+	import robotlegs.bender.extensions.matching.ITypeFilter;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMappingConfig;
-	import robotlegs.bender.extensions.matching.ITypeFilter;
 	import robotlegs.bender.framework.impl.MappingConfigValidator;
 
 	public class MediatorMapping implements IMediatorMapping, IMediatorMappingConfig
 	{
-		private var _validator:MappingConfigValidator;
-		
+
 		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
@@ -49,6 +48,12 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		}
 
 		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
+
+		private var _validator:MappingConfigValidator;
+
+		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
@@ -75,10 +80,26 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			_hooks = _hooks.concat.apply(null, hooks);
 			return this;
 		}
-		
+
+		public function validate():void
+		{
+			if (!_validator)
+			{
+				createValidator();
+			}
+			else if (!_validator.valid)
+			{
+				_validator.validate(_guards, _hooks);
+			}
+		}
+
+		/*============================================================================*/
+		/* Internal Functions                                                         */
+		/*============================================================================*/
+
 		internal function invalidate():void
 		{
-			if(_validator)
+			if (_validator)
 				_validator.invalidate();
 			else
 				createValidator();
@@ -86,19 +107,11 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			_guards = [];
 			_hooks = [];
 		}
-		
-		public function validate():void
-		{
-			if(!_validator)
-			{
-				createValidator();
-			}
-			else if(!_validator.valid)
-			{
-				_validator.validate(_guards, _hooks);
-			}
-		}
-		
+
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
+
 		private function createValidator():void
 		{
 			_validator = new MappingConfigValidator(_guards.slice(), _hooks.slice(), _matcher, _mediatorClass);

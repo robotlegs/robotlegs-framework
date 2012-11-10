@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -10,10 +10,10 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import flash.events.EventDispatcher;
 	import flash.utils.Dictionary;
 	import org.swiftsuspenders.Injector;
+	import robotlegs.bender.extensions.matching.ITypeFilter;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
 	import robotlegs.bender.extensions.mediatorMap.api.MediatorFactoryEvent;
-	import robotlegs.bender.extensions.matching.ITypeFilter;
 	import robotlegs.bender.framework.impl.applyHooks;
 	import robotlegs.bender.framework.impl.guardsApprove;
 
@@ -21,6 +21,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	[Event(name="mediatorRemove", type="robotlegs.bender.extensions.mediatorMap.api.MediatorFactoryEvent")]
 	public class MediatorFactory extends EventDispatcher implements IMediatorFactory
 	{
+
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
@@ -46,7 +47,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		{
 			return _mediators[item] ? _mediators[item][mapping] : null;
 		}
-		
+
 		public function createMediators(item:Object, type:Class, mappings:Array):Array
 		{
 			const createdMediators:Array = [];
@@ -64,19 +65,19 @@ package robotlegs.bender.extensions.mediatorMap.impl
 					mediator = createMediator(item, mapping);
 					unmapTypeForFilterBinding(filter, type, item)
 				}
-				
-				if(mediator)
+
+				if (mediator)
 					createdMediators.push(mediator);
 			}
 			return createdMediators;
 		}
-		
+
 		public function removeMediators(item:Object):void
 		{
 			const mediators:Dictionary = _mediators[item];
 			if (!mediators)
 				return;
-			
+
 			if (hasEventListener(MediatorFactoryEvent.MEDIATOR_REMOVE))
 			{
 				for (var mapping:Object in mediators)
@@ -86,10 +87,10 @@ package robotlegs.bender.extensions.mediatorMap.impl
 						mediators[mapping], item, mapping as IMediatorMapping, this));
 				}
 			}
-			
+
 			delete _mediators[item];
 		}
-		
+
 		public function removeAllMediators():void
 		{
 			for (var item:Object in _mediators)
@@ -97,7 +98,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 				removeMediators(item);
 			}
 		}
-		
+
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
@@ -108,7 +109,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 			if (mediator)
 				return mediator;
-			
+
 			if (guardsApprove(mapping.guards, _injector))
 			{
 				_injector.map(mapping.mediatorClass).asSingleton();
@@ -129,7 +130,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 					MediatorFactoryEvent.MEDIATOR_CREATE,
 					mediator, item, mapping, this));
 		}
-		
+
 		private function mapTypeForFilterBinding(filter:ITypeFilter, type:Class, item:Object):void
 		{
 			var requiredType:Class;
@@ -148,18 +149,18 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 			for each (requiredType in requiredTypes)
 			{
-				if(_injector.satisfiesDirectly(requiredType))
+				if (_injector.satisfiesDirectly(requiredType))
 					_injector.unmap(requiredType);
 			}
 		}
-		
+
 		private function requiredTypesFor(filter:ITypeFilter, type:Class):Vector.<Class>
 		{
 			const requiredTypes:Vector.<Class> = filter.allOfTypes.concat(filter.anyOfTypes);
 
-			if(requiredTypes.indexOf(type) == -1)
+			if (requiredTypes.indexOf(type) == -1)
 				requiredTypes.push(type);
-			
+
 			return requiredTypes;
 		}
 	}

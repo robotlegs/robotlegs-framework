@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -8,14 +8,14 @@
 package robotlegs.bender.extensions.mediatorMap.impl
 {
 	import flash.utils.Dictionary;
+	import robotlegs.bender.extensions.matching.ITypeFilter;
+	import robotlegs.bender.extensions.matching.ITypeMatcher;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorViewHandler;
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMapper;
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMappingConfig;
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMappingFinder;
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorUnmapper;
-	import robotlegs.bender.extensions.matching.ITypeMatcher;
-	import robotlegs.bender.extensions.matching.ITypeFilter;
 
 	public class MediatorMapper implements IMediatorMapper, IMediatorMappingFinder, IMediatorUnmapper
 	{
@@ -81,11 +81,11 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			_mappings[mediatorClass] = mapping;
 			return mapping;
 		}
-		
+
 		private function lockedMappingFor(mediatorClass:Class):MediatorMapping
 		{
 			const mapping:MediatorMapping = _mappings[mediatorClass];
-			if(mapping)
+			if (mapping)
 				mapping.invalidate();
 
 			return mapping;

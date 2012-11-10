@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -7,20 +7,21 @@
 
 package robotlegs.bender.extensions.mediatorMap.impl
 {
+	import flash.display.DisplayObject;
 	import flash.utils.Dictionary;
+	import robotlegs.bender.extensions.matching.ITypeMatcher;
+	import robotlegs.bender.extensions.matching.TypeMatcher;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMap;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorViewHandler;
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMapper;
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMappingFinder;
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorUnmapper;
-	import robotlegs.bender.extensions.matching.ITypeMatcher;
-	import robotlegs.bender.extensions.matching.TypeMatcher;
-	import flash.display.DisplayObject;
 	import robotlegs.bender.extensions.viewManager.api.IViewHandler;
 
 	public class MediatorMap implements IMediatorMap, IViewHandler
 	{
+
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
@@ -30,7 +31,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		private var _handler:IMediatorViewHandler;
 
 		private var _factory:IMediatorFactory;
-		
+
 		private const NULL_UNMAPPER:IMediatorUnmapper = new NullMediatorUnmapper();
 
 		/*============================================================================*/
@@ -79,7 +80,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			const type:Class = item.constructor as Class;
 			_handler.handleItem(item, type);
 		}
-		
+
 		public function unmediate(item:Object):void
 		{
 			_factory.removeMediators(item);

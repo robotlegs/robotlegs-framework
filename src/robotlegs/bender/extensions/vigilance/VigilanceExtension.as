@@ -49,7 +49,7 @@ package robotlegs.bender.extensions.vigilance
 		private function mappingOverrideHandler(event:MappingEvent):void
 		{
 			throw new InjectorError("Injector mapping override for type " +
-					event.mappedType + " with name " + event.mappedName);
+				event.mappedType + " with name " + event.mappedName);
 		}
 	}
 }

@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -15,7 +15,7 @@ package robotlegs.bender.framework.impl
 
 	/**
 	 * <p>A guard can be a function, object or class.</p>
-	 * 
+	 *
 	 * <p>When a function is provided it is expected to return a Boolean when called.</p>
 	 *
 	 * <p>When an object is provided it is expected to expose an "approve" method

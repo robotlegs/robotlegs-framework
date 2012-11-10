@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -9,13 +9,13 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 {
 	import flash.utils.describeType;
 	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.framework.impl.safelyCallBack;
-	import robotlegs.bender.framework.api.IMessageDispatcher;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandTrigger;
-	import robotlegs.bender.framework.impl.guardsApprove;
-	import robotlegs.bender.framework.impl.applyHooks;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandMapping;
+	import robotlegs.bender.framework.api.IMessageDispatcher;
+	import robotlegs.bender.framework.impl.applyHooks;
+	import robotlegs.bender.framework.impl.guardsApprove;
+	import robotlegs.bender.framework.impl.safelyCallBack;
 
 	public class MessageCommandTrigger implements ICommandTrigger
 	{

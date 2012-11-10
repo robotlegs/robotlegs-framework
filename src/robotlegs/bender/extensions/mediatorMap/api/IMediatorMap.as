@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -7,11 +7,11 @@
 
 package robotlegs.bender.extensions.mediatorMap.api
 {
+	import robotlegs.bender.extensions.matching.ITypeMatcher;
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMapper;
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMappingFinder;
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorUnmapper;
 	import robotlegs.bender.extensions.viewManager.api.IViewHandler;
-	import robotlegs.bender.extensions.matching.ITypeMatcher;
 
 	public interface IMediatorMap
 	{
@@ -29,7 +29,7 @@ package robotlegs.bender.extensions.mediatorMap.api
 		 * @return the mapper so that you can continue the mapping.
 		 */
 		function map(type:Class):IMediatorMapper;
-		
+
 		/**
 		 * Removes a mapping that was made against a matcher.
 		 * No error will be thrown if there isn't a mapping to remove.
@@ -45,13 +45,13 @@ package robotlegs.bender.extensions.mediatorMap.api
 		 * @return the unmapper so that you can continue the unmapping.
 		 */
 		function unmap(type:Class):IMediatorUnmapper;
-		
+
 		/**
 		 * Mediates an item directly. If the item matches any mapped matchers or types then it will be mediated according to those mappings.
 		 * @param item The item to create mediators for.
 		 */
 		function mediate(item:Object):void;
-		
+
 		/**
 		 * Removes the mediators for an item if there are any.
 		 * @param item The item to remove mediators for.

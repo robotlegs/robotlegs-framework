@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -7,12 +7,12 @@
 
 package robotlegs.bender.extensions.mediatorMap.impl
 {
+	import flash.display.DisplayObject;
 	import flash.utils.Dictionary;
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorViewHandler;
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
 	import robotlegs.bender.extensions.matching.ITypeFilter;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
-	import flash.display.DisplayObject;
+	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
+	import robotlegs.bender.extensions.mediatorMap.api.IMediatorViewHandler;
 
 	public class MediatorViewHandler implements IMediatorViewHandler
 	{
@@ -24,17 +24,21 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		private const _mappings:Array = [];
 
 		private var _knownMappings:Dictionary = new Dictionary(true);
-		
+
 		private var _factory:IMediatorFactory;
 
 		/*============================================================================*/
-		/* Public Functions                                                           */
+		/* Constructor                                                                */
 		/*============================================================================*/
 
 		public function MediatorViewHandler(factory:IMediatorFactory):void
 		{
 			_factory = factory;
 		}
+
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
 
 		public function addMapping(mapping:IMediatorMapping):void
 		{
@@ -57,17 +61,17 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		public function handleView(view:DisplayObject, type:Class):void
 		{
 			const interestedMappings:Array = getInterestedMappingsFor(view, type);
-			if(interestedMappings)
+			if (interestedMappings)
 				_factory.createMediators(view, type, interestedMappings);
 		}
-		
+
 		public function handleItem(item:Object, type:Class):void
 		{
 			const interestedMappings:Array = getInterestedMappingsFor(item, type);
-			if(interestedMappings)
+			if (interestedMappings)
 				_factory.createMediators(item, type, interestedMappings);
 		}
-		
+
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
@@ -76,7 +80,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		{
 			_knownMappings = new Dictionary(true);
 		}
-		
+
 		private function getInterestedMappingsFor(item:Object, type:Class):Array
 		{
 			var mapping:IMediatorMapping;
@@ -84,7 +88,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			// we've seen this type before and nobody was interested
 			if (_knownMappings[type] === false)
 				return null;
-			
+
 			// we haven't seen this type before
 			if (_knownMappings[type] == undefined)
 			{
@@ -106,6 +110,5 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			// these mappings really do care
 			return _knownMappings[type] as Array;
 		}
-		
 	}
 }

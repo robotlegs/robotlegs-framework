@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -7,44 +7,57 @@
 
 package robotlegs.bender.extensions.viewProcessorMap.impl
 {
-	import org.swiftsuspenders.errors.InjectorInterfaceConstructionError;
+	import flash.display.DisplayObject;
+	import flash.events.Event;
+	import flash.utils.Dictionary;
 	import org.swiftsuspenders.Injector;
 	import org.swiftsuspenders.dependencyproviders.FreshInstanceProvider;
+	import org.swiftsuspenders.errors.InjectorInterfaceConstructionError;
 	import robotlegs.bender.extensions.matching.ITypeFilter;
 	import robotlegs.bender.extensions.viewProcessorMap.api.ViewProcessorMapError;
 	import robotlegs.bender.extensions.viewProcessorMap.dsl.IViewProcessorMapping;
 	import robotlegs.bender.framework.impl.applyHooks;
 	import robotlegs.bender.framework.impl.guardsApprove;
-	import flash.utils.Dictionary;
-	import flash.display.DisplayObject;
-	import flash.events.Event;
-	
+
 	public class ViewProcessorFactory implements IViewProcessorFactory
 	{
+
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
+
 		private var _injector:Injector;
-		
+
 		private var _listenersByView:Dictionary = new Dictionary(true);
-	
+
+		/*============================================================================*/
+		/* Constructor                                                                */
+		/*============================================================================*/
+
 		public function ViewProcessorFactory(injector:Injector)
 		{
 			_injector = injector;
 		}
-	
+
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
+
 		public function runProcessors(view:Object, type:Class, processorMappings:Array):void
 		{
 			createRemovedListener(view, type, processorMappings);
-			
+
 			var filter:ITypeFilter;
-			
+
 			for each (var mapping:IViewProcessorMapping in processorMappings)
 			{
 				filter = mapping.matcher;
 				mapTypeForFilterBinding(filter, type, view);
 				runProcess(view, type, mapping);
 				unmapTypeForFilterBinding(filter, type, view);
-			}			
+			}
 		}
-		
+
 		public function runUnprocessors(view:Object, type:Class, processorMappings:Array):void
 		{
 			for each (var mapping:IViewProcessorMapping in processorMappings)
@@ -52,9 +65,9 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 				// ?? Is this correct - will assume that people are implementing something sensible in their processors.
 				mapping.processor ||= createProcessor(mapping.processorClass);
 				mapping.processor.unprocess(view, type, _injector);
-			}			
+			}
 		}
-		
+
 		public function runAllUnprocessors():void
 		{
 			for each (var removalHandlers:Array in _listenersByView)
@@ -66,7 +79,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 				}
 			}
 		}
-		
+
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
@@ -80,30 +93,30 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 				mapping.processor.process(view, type, _injector);
 			}
 		}
-		
+
 		private function createProcessor(processorClass:Class):Object
 		{
-			if(!_injector.hasMapping(processorClass))
+			if (!_injector.hasMapping(processorClass))
 			{
 				_injector.map(processorClass).asSingleton();
 			}
-			
+
 			try
 			{
 				return _injector.getInstance(processorClass);
 			}
-			catch(error:InjectorInterfaceConstructionError)
+			catch (error:InjectorInterfaceConstructionError)
 			{
-				var errorMsg:String = "The view processor " 
-										+ processorClass 
-										+ " has not been mapped in the injector, "
-										+ "and it is not possible to instantiate an interface. "
-										+ "Please map a concrete type against this interface.";
+				var errorMsg:String = "The view processor "
+					+ processorClass
+					+ " has not been mapped in the injector, "
+					+ "and it is not possible to instantiate an interface. "
+					+ "Please map a concrete type against this interface.";
 				throw(new ViewProcessorMapError(errorMsg));
 			}
 			return null;
 		}
-		
+
 		private function mapTypeForFilterBinding(filter:ITypeFilter, type:Class, view:Object):void
 		{
 			var requiredType:Class;
@@ -122,33 +135,33 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 
 			for each (requiredType in requiredTypes)
 			{
-				if(_injector.hasDirectMapping(requiredType))
+				if (_injector.hasDirectMapping(requiredType))
 					_injector.unmap(requiredType);
 			}
 		}
-		
+
 		private function requiredTypesFor(filter:ITypeFilter, type:Class):Vector.<Class>
 		{
 			const requiredTypes:Vector.<Class> = filter.allOfTypes.concat(filter.anyOfTypes);
 
-			if(requiredTypes.indexOf(type) == -1)
+			if (requiredTypes.indexOf(type) == -1)
 				requiredTypes.push(type);
-			
+
 			return requiredTypes;
 		}
-		
+
 		private function createRemovedListener(view:Object, type:Class, processorMappings:Array):void
 		{
-			if(view is DisplayObject)
+			if (view is DisplayObject)
 			{
 				_listenersByView[view] ||= [];
-								
-				const handler:Function = function(e:Event):void { 
-						runUnprocessors(view, type, processorMappings);
-						(view as DisplayObject).removeEventListener(Event.REMOVED_FROM_STAGE, handler);
-						removeHandlerFromView(view, handler);
-					}
-			
+
+				const handler:Function = function(e:Event):void {
+					runUnprocessors(view, type, processorMappings);
+					(view as DisplayObject).removeEventListener(Event.REMOVED_FROM_STAGE, handler);
+					removeHandlerFromView(view, handler);
+				}
+
 				_listenersByView[view].push(handler);
 				(view as DisplayObject).addEventListener(Event.REMOVED_FROM_STAGE, handler, false, 0, true);
 			}
@@ -156,11 +169,11 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 
 		private function removeHandlerFromView(view:Object, handler:Function):void
 		{
-			if(_listenersByView[view] && (_listenersByView[view].length > 0))
+			if (_listenersByView[view] && (_listenersByView[view].length > 0))
 			{
 				const handlerIndex:uint = _listenersByView[view].indexOf(handler);
 				_listenersByView[view].splice(handlerIndex, 1);
-				if(_listenersByView[view].length == 0)
+				if (_listenersByView[view].length == 0)
 				{
 					delete _listenersByView[view];
 				}
