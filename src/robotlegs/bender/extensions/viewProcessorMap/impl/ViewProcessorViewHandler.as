@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -8,8 +8,6 @@
 package robotlegs.bender.extensions.viewProcessorMap.impl
 {
 	import flash.utils.Dictionary;
-	import robotlegs.bender.extensions.matching.ITypeFilter;
-	import flash.display.DisplayObject;
 	import robotlegs.bender.extensions.viewProcessorMap.dsl.IViewProcessorMapping;
 
 	public class ViewProcessorViewHandler implements IViewProcessorViewHandler
@@ -22,17 +20,21 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		private const _mappings:Array = [];
 
 		private var _knownMappings:Dictionary = new Dictionary(true);
-		
+
 		private var _factory:IViewProcessorFactory;
 
 		/*============================================================================*/
-		/* Public Functions                                                           */
+		/* Constructor                                                                */
 		/*============================================================================*/
 
 		public function ViewProcessorViewHandler(factory:IViewProcessorFactory):void
 		{
 			_factory = factory;
 		}
+
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
 
 		public function addMapping(mapping:IViewProcessorMapping):void
 		{
@@ -55,19 +57,17 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		public function processItem(item:Object, type:Class):void
 		{
 			const interestedMappings:Array = getInterestedMappingsFor(item, type);
-			if(interestedMappings)
+			if (interestedMappings)
 				_factory.runProcessors(item, type, interestedMappings);
 		}
-		
+
 		public function unprocessItem(item:Object, type:Class):void
 		{
 			const interestedMappings:Array = getInterestedMappingsFor(item, type);
-			if(interestedMappings)
+			if (interestedMappings)
 				_factory.runUnprocessors(item, type, interestedMappings);
 		}
-		
-		
-		
+
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
@@ -76,7 +76,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		{
 			_knownMappings = new Dictionary(true);
 		}
-		
+
 		private function getInterestedMappingsFor(view:Object, type:Class):Array
 		{
 			var mapping:IViewProcessorMapping;
@@ -84,14 +84,13 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			// we've seen this type before and nobody was interested
 			if (_knownMappings[type] === false)
 				return null;
-			
+
 			// we haven't seen this type before
 			if (_knownMappings[type] == undefined)
 			{
 				_knownMappings[type] = false;
 				for each (mapping in _mappings)
 				{
-					mapping.validate();
 					if (mapping.matcher.matches(view))
 					{
 						_knownMappings[type] ||= [];
@@ -106,6 +105,5 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			// these mappings really do care
 			return _knownMappings[type] as Array;
 		}
-		
 	}
 }

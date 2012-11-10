@@ -10,6 +10,7 @@ package robotlegs.bender.extensions.viewProcessorMap
 	import robotlegs.bender.extensions.viewProcessorMap.impl.ViewInjectionProcessorTest;
 	import robotlegs.bender.extensions.viewProcessorMap.impl.ViewProcessorMapTest;
 	import robotlegs.bender.extensions.viewProcessorMap.impl.ViewProcessorFactoryTest;
+	import robotlegs.bender.extensions.viewProcessorMap.impl.ViewProcessorMapperTest;
 	import robotlegs.bender.extensions.viewProcessorMap.utils.FastPropertyInjectorTest;
 	import robotlegs.bender.extensions.viewProcessorMap.utils.PropertyValueInjectorTest;
 	import robotlegs.bender.extensions.viewProcessorMap.impl.ViewProcessorMediatorsTest;
@@ -38,6 +39,8 @@ package robotlegs.bender.extensions.viewProcessorMap
 		public var viewProcessorMediators:ViewProcessorMediatorsTest;
 		
 		public var viewProcessorMapping:ViewProcessorMappingTest;
+
+		public var viewProcessorMapper:ViewProcessorMapperTest;
 
 	}
 }

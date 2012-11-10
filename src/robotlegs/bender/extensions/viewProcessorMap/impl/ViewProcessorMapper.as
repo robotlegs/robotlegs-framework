@@ -1,3 +1,10 @@
+//------------------------------------------------------------------------------
+//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
+//------------------------------------------------------------------------------
+
 package robotlegs.bender.extensions.viewProcessorMap.impl
 {
 	import flash.utils.Dictionary;
@@ -6,29 +13,44 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 	import robotlegs.bender.extensions.viewProcessorMap.dsl.IViewProcessorMapping;
 	import robotlegs.bender.extensions.viewProcessorMap.dsl.IViewProcessorMappingConfig;
 	import robotlegs.bender.extensions.viewProcessorMap.dsl.IViewProcessorUnmapper;
-	import robotlegs.bender.extensions.viewProcessorMap.impl.IViewProcessorViewHandler;
+	import robotlegs.bender.framework.api.ILogger;
 
 	public class ViewProcessorMapper implements IViewProcessorMapper, IViewProcessorUnmapper
 	{
-		private var _handler:IViewProcessorViewHandler;
-	
-		private var _matcher:ITypeFilter;
-		
+
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
+
 		private const _mappings:Dictionary = new Dictionary();
-	
-		public function ViewProcessorMapper(matcher:ITypeFilter, handler:IViewProcessorViewHandler)
+
+		private var _handler:IViewProcessorViewHandler;
+
+		private var _matcher:ITypeFilter;
+
+		private var _logger:ILogger;
+
+		/*============================================================================*/
+		/* Constructor                                                                */
+		/*============================================================================*/
+
+		public function ViewProcessorMapper(matcher:ITypeFilter, handler:IViewProcessorViewHandler, logger:ILogger = null)
 		{
 			_handler = handler;
 			_matcher = matcher;
+			_logger = logger;
 		}
-		
-		//---------------------------------------
-		// IViewProcessorMapper Implementation
-		//---------------------------------------
+
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
 
 		public function toProcess(processClassOrInstance:*):IViewProcessorMappingConfig
 		{
-			return lockedMappingFor(processClassOrInstance) || createMapping(processClassOrInstance);
+			const mapping:IViewProcessorMapping = _mappings[processClassOrInstance];
+			return mapping
+				? overwriteMapping(mapping, processClassOrInstance)
+				: createMapping(processClassOrInstance);
 		}
 
 		public function toInjection():IViewProcessorMappingConfig
@@ -41,20 +63,15 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			return toProcess(NullProcessor);
 		}
 
-		//---------------------------------------
-		// IViewProcessorUnmapper Implementation
-		//---------------------------------------
-
 		public function fromProcess(processorClassOrInstance:*):void
 		{
 			const mapping:IViewProcessorMapping = _mappings[processorClassOrInstance];
-			delete _mappings[processorClassOrInstance];
-			_handler.removeMapping(mapping);
+			mapping && deleteMapping(mapping);
 		}
 
-		public function fromProcesses():void
+		public function fromAll():void
 		{
-			for(var processor:Object in _mappings)
+			for (var processor:Object in _mappings)
 			{
 				fromProcess(processor);
 			}
@@ -69,22 +86,36 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		{
 			fromProcess(ViewInjectionProcessor);
 		}
-		
+
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
+
 		private function createMapping(processor:Object):ViewProcessorMapping
 		{
 			const mapping:ViewProcessorMapping = new ViewProcessorMapping(_matcher, processor);
 			_handler.addMapping(mapping);
 			_mappings[processor] = mapping;
+			_logger && _logger.debug('{0} mapped to {1}', [_matcher, mapping]);
 			return mapping;
 		}
 
-		private function lockedMappingFor(processorClassOrInstance:*):ViewProcessorMapping
+		private function deleteMapping(mapping:IViewProcessorMapping):void
 		{
-			const mapping:ViewProcessorMapping = _mappings[processorClassOrInstance];
-			if(mapping)
-				mapping.invalidate();
+			_handler.removeMapping(mapping);
+			delete _mappings[mapping.processor];
+			_logger && _logger.debug('{0} unmapped from {1}', [_matcher, mapping]);
+		}
 
-			return mapping;
+		private function overwriteMapping(mapping:IViewProcessorMapping,
+			processClassOrInstance:*):IViewProcessorMappingConfig
+		{
+			_logger && _logger.warn('{0} is already mapped to {1}.\n' +
+				'If you have overridden this mapping intentionally you can use "unmap()" ' +
+				'prior to your replacement mapping in order to avoid seeing this message.\n',
+				[_matcher, mapping]);
+			deleteMapping(mapping);
+			return createMapping(processClassOrInstance);
 		}
 	}
 }

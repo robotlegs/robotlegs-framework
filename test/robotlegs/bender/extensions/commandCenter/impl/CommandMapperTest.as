@@ -127,6 +127,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 		[Test]
 		public function toCommand_warns_when_overwritten():void
 		{
+			// TODO: use mocking
 			var warning:Array = [];
 			const logger:ILogger = new CallbackLogger(function(level:uint, params:Array):void {
 				if (level == LogLevel.WARN)

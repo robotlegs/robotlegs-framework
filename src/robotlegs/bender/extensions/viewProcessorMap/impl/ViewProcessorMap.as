@@ -1,3 +1,10 @@
+//------------------------------------------------------------------------------
+//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
+//------------------------------------------------------------------------------
+
 package robotlegs.bender.extensions.viewProcessorMap.impl
 {
 	import flash.display.DisplayObject;
@@ -8,27 +15,35 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 	import robotlegs.bender.extensions.viewProcessorMap.api.IViewProcessorMap;
 	import robotlegs.bender.extensions.viewProcessorMap.dsl.IViewProcessorMapper;
 	import robotlegs.bender.extensions.viewProcessorMap.dsl.IViewProcessorUnmapper;
-	import robotlegs.bender.extensions.viewProcessorMap.impl.NullViewProcessorUnmapper;
 
 	public class ViewProcessorMap implements IViewProcessorMap, IViewHandler
 	{
+
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
+
 		private const _mappers:Dictionary = new Dictionary();
-		
+
 		private var _factory:IViewProcessorFactory;
-		
+
 		private var _handler:IViewProcessorViewHandler;
-		
+
 		private const NULL_UNMAPPER:IViewProcessorUnmapper = new NullViewProcessorUnmapper();
-		
+
+		/*============================================================================*/
+		/* Constructor                                                                */
+		/*============================================================================*/
+
 		public function ViewProcessorMap(factory:IViewProcessorFactory, handler:IViewProcessorViewHandler = null)
 		{
 			_factory = factory;
-			_handler = handler || new ViewProcessorViewHandler(_factory); 
+			_handler = handler || new ViewProcessorViewHandler(_factory);
 		}
 
-		//---------------------------------------
-		// IViewProcessorMap Implementation
-		//---------------------------------------
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
 
 		public function mapMatcher(matcher:ITypeMatcher):IViewProcessorMapper
 		{
@@ -40,7 +55,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			const matcher:ITypeMatcher = new TypeMatcher().allOf(type);
 			return mapMatcher(matcher);
 		}
-		
+
 		public function unmapMatcher(matcher:ITypeMatcher):IViewProcessorUnmapper
 		{
 			return _mappers[matcher.createTypeFilter().descriptor] || NULL_UNMAPPER;
@@ -64,25 +79,19 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			_handler.unprocessItem(item, type);
 		}
 
-		//---------------------------------------
-		// IViewHandler Implementation
-		//---------------------------------------
-
 		public function handleView(view:DisplayObject, type:Class):void
 		{
 			_handler.processItem(view, type);
 		}
-		
+
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
-		
-		private function createMapper(matcher:ITypeMatcher, viewType:Class = null):IViewProcessorMapper
+
+		private function createMapper(matcher:ITypeMatcher):IViewProcessorMapper
 		{
 			return new ViewProcessorMapper(matcher.createTypeFilter(), _handler);
 		}
-		
-	
 	}
 
 }

@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -7,7 +7,10 @@
 
 package robotlegs.bender.extensions.viewProcessorMap.impl
 {
+	import flash.display.Shape;
 	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.IEventDispatcher;
 	import mx.core.UIComponent;
 	import org.flexunit.assertThat;
 	import org.flexunit.async.Async;
@@ -17,33 +20,38 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 	import org.hamcrest.object.instanceOf;
 	import org.hamcrest.object.isFalse;
 	import org.swiftsuspenders.Injector;
-	import flash.display.Shape;
-	import robotlegs.bender.extensions.viewProcessorMap.support.TrackingProcessor;
 	import robotlegs.bender.extensions.matching.TypeMatcher;
-	import robotlegs.bender.extensions.viewProcessorMap.support.TrackingProcessor2;
 	import robotlegs.bender.extensions.viewManager.api.IViewHandler;
-	import robotlegs.bender.extensions.viewProcessorMap.dsl.IViewProcessorMappingConfig;
-	import robotlegs.bender.framework.impl.guardSupport.HappyGuard;
-	import robotlegs.bender.extensions.viewProcessorMap.dsl.IViewProcessorMapping;
-	import flash.events.IEventDispatcher;
-	import flash.events.Event;
 	import robotlegs.bender.extensions.viewProcessorMap.support.Processor;
-	
+	import robotlegs.bender.extensions.viewProcessorMap.support.TrackingProcessor;
+	import robotlegs.bender.extensions.viewProcessorMap.support.TrackingProcessor2;
 
 	public class ViewProcessorMapTest
 	{
+
+		// TODO: extract processing tests into own tests
+		// TODO: add actual ViewProcessorMap tests
+
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
 		private const spriteMatcher:TypeMatcher = new TypeMatcher().allOf(Sprite);
+
 		private var viewProcessorMap:ViewProcessorMap;
+
 		private var trackingProcessor:TrackingProcessor;
+
 		private var trackingProcessor2:TrackingProcessor;
+
 		private var injector:Injector;
+
 		private var matchingView:Sprite;
+
 		private var nonMatchingView:Shape;
+
 		private var factory:ViewProcessorFactory;
+
 		private var container:UIComponent;
 
 		/*============================================================================*/
@@ -68,49 +76,49 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		/*============================================================================*/
 		/* Tests                                                                      */
 		/*============================================================================*/
-		
+
 		[Test]
 		public function implements_IViewHandler():void
 		{
 			assertThat(viewProcessorMap, instanceOf(IViewHandler));
 		}
-		
+
 		[Test]
 		public function process_passes_mapped_views_to_processor_instance_process_with_mapping_by_type():void
 		{
 			viewProcessorMap.map(Sprite).toProcess(trackingProcessor);
 			viewProcessorMap.process(matchingView);
 			viewProcessorMap.process(nonMatchingView);
-			assertThatProcessorHasProcessedThese( trackingProcessor, [matchingView] );
+			assertThatProcessorHasProcessedThese(trackingProcessor, [matchingView]);
 		}
-		
+
 		[Test]
 		public function process_passes_mapped_views_to_processor_instance_process_with_mapping_by_matcher():void
 		{
 			viewProcessorMap.mapMatcher(spriteMatcher).toProcess(trackingProcessor);
 			viewProcessorMap.process(matchingView);
 			viewProcessorMap.process(nonMatchingView);
-			assertThatProcessorHasProcessedThese( trackingProcessor, [matchingView] );
+			assertThatProcessorHasProcessedThese(trackingProcessor, [matchingView]);
 		}
-		
+
 		[Test]
 		public function process_passes_mapped_views_to_processor_class_process_with_mapping_by_type():void
 		{
 			viewProcessorMap.map(Sprite).toProcess(TrackingProcessor);
 			viewProcessorMap.process(matchingView);
 			viewProcessorMap.process(nonMatchingView);
-			assertThatProcessorHasProcessedThese( fromInjector(TrackingProcessor), [matchingView]);
+			assertThatProcessorHasProcessedThese(fromInjector(TrackingProcessor), [matchingView]);
 		}
-		
+
 		[Test]
 		public function process_passes_mapped_views_to_processor_class_process_with_mapping_by_matcher():void
 		{
 			viewProcessorMap.mapMatcher(spriteMatcher).toProcess(TrackingProcessor);
 			viewProcessorMap.process(matchingView);
 			viewProcessorMap.process(nonMatchingView);
-			assertThatProcessorHasProcessedThese( fromInjector(TrackingProcessor), [matchingView] );
+			assertThatProcessorHasProcessedThese(fromInjector(TrackingProcessor), [matchingView]);
 		}
-		
+
 		[Test]
 		public function mapping_one_matcher_to_multiple_processes_by_class_all_processes_run():void
 		{
@@ -118,10 +126,10 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			viewProcessorMap.mapMatcher(spriteMatcher).toProcess(TrackingProcessor2);
 			viewProcessorMap.process(matchingView);
 			viewProcessorMap.process(nonMatchingView);
-			assertThatProcessorHasProcessedThese( fromInjector(TrackingProcessor), [matchingView] );
-			assertThatProcessorHasProcessedThese( fromInjector(TrackingProcessor2), [matchingView] );
+			assertThatProcessorHasProcessedThese(fromInjector(TrackingProcessor), [matchingView]);
+			assertThatProcessorHasProcessedThese(fromInjector(TrackingProcessor2), [matchingView]);
 		}
-		
+
 		[Test]
 		public function mapping_one_matcher_to_multiple_processes_by_instance_all_processes_run():void
 		{
@@ -129,10 +137,10 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			viewProcessorMap.mapMatcher(spriteMatcher).toProcess(trackingProcessor2);
 			viewProcessorMap.process(matchingView);
 			viewProcessorMap.process(nonMatchingView);
-			assertThatProcessorHasProcessedThese( trackingProcessor, [matchingView] );
-			assertThatProcessorHasProcessedThese( trackingProcessor2, [matchingView] );
+			assertThatProcessorHasProcessedThese(trackingProcessor, [matchingView]);
+			assertThatProcessorHasProcessedThese(trackingProcessor2, [matchingView]);
 		}
-		
+
 		[Test]
 		public function duplicate_identical_mappings_by_class_dont_repeat_processes():void
 		{
@@ -140,9 +148,9 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			viewProcessorMap.mapMatcher(spriteMatcher).toProcess(TrackingProcessor);
 			viewProcessorMap.process(matchingView);
 			viewProcessorMap.process(nonMatchingView);
-			assertThatProcessorHasProcessedThese( fromInjector(TrackingProcessor), [matchingView] );
+			assertThatProcessorHasProcessedThese(fromInjector(TrackingProcessor), [matchingView]);
 		}
-		
+
 		[Test]
 		public function duplicate_identical_mappings_by_instance_dont_repeat_processes():void
 		{
@@ -150,27 +158,27 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			viewProcessorMap.mapMatcher(spriteMatcher).toProcess(trackingProcessor);
 			viewProcessorMap.process(matchingView);
 			viewProcessorMap.process(nonMatchingView);
-			assertThatProcessorHasProcessedThese( trackingProcessor, [matchingView] );
+			assertThatProcessorHasProcessedThese(trackingProcessor, [matchingView]);
 		}
-		
+
 		[Test]
 		public function unprocess_passes_mapped_views_to_processor_instance_unprocess_with_mapping_by_type():void
 		{
 			viewProcessorMap.map(Sprite).toProcess(trackingProcessor);
 			viewProcessorMap.unprocess(matchingView);
 			viewProcessorMap.unprocess(nonMatchingView);
-			assertThatProcessorHasUnprocessedThese( trackingProcessor, [matchingView] );
+			assertThatProcessorHasUnprocessedThese(trackingProcessor, [matchingView]);
 		}
-		
+
 		[Test]
 		public function unprocess_passes_mapped_views_to_processor_instance_unprocess_with_mapping_by_matcher():void
 		{
 			viewProcessorMap.mapMatcher(spriteMatcher).toProcess(trackingProcessor);
 			viewProcessorMap.unprocess(matchingView);
 			viewProcessorMap.unprocess(nonMatchingView);
-			assertThatProcessorHasUnprocessedThese( trackingProcessor, [matchingView] );
+			assertThatProcessorHasUnprocessedThese(trackingProcessor, [matchingView]);
 		}
-		
+
 		[Test]
 		public function unmapping_matcher_from_single_processor_stops_further_processing():void
 		{
@@ -178,9 +186,9 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			viewProcessorMap.process(matchingView);
 			viewProcessorMap.unmapMatcher(spriteMatcher).fromProcess(trackingProcessor);
 			viewProcessorMap.process(matchingView);
-			assertThatProcessorHasProcessedThese( trackingProcessor, [matchingView] );
+			assertThatProcessorHasProcessedThese(trackingProcessor, [matchingView]);
 		}
-		
+
 		[Test]
 		public function unmapping_type_from_single_processor_stops_further_processing():void
 		{
@@ -188,9 +196,9 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			viewProcessorMap.process(matchingView);
 			viewProcessorMap.unmap(Sprite).fromProcess(trackingProcessor);
 			viewProcessorMap.process(matchingView);
-			assertThatProcessorHasProcessedThese( trackingProcessor, [matchingView] );
+			assertThatProcessorHasProcessedThese(trackingProcessor, [matchingView]);
 		}
-		
+
 		[Test]
 		public function unmapping_from_single_processor_keeps_other_processors_intact():void
 		{
@@ -198,30 +206,30 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			viewProcessorMap.map(Sprite).toProcess(trackingProcessor2);
 			viewProcessorMap.unmap(Sprite).fromProcess(trackingProcessor);
 			viewProcessorMap.process(matchingView);
-			assertThatProcessorHasProcessedThese( trackingProcessor, [] );
-			assertThatProcessorHasProcessedThese( trackingProcessor2, [matchingView] );
+			assertThatProcessorHasProcessedThese(trackingProcessor, []);
+			assertThatProcessorHasProcessedThese(trackingProcessor2, [matchingView]);
 		}
-		
+
 		[Test]
 		public function unmapping_from_all_processes_removes_all_processes():void
 		{
 			viewProcessorMap.map(Sprite).toProcess(TrackingProcessor);
 			viewProcessorMap.map(Sprite).toProcess(trackingProcessor2);
-			viewProcessorMap.unmap(Sprite).fromProcesses();
+			viewProcessorMap.unmap(Sprite).fromAll();
 			viewProcessorMap.process(matchingView);
-			assertThatProcessorHasProcessedThese( fromInjector(TrackingProcessor), [] );
-			assertThatProcessorHasProcessedThese( trackingProcessor2, [] );
+			assertThatProcessorHasProcessedThese(fromInjector(TrackingProcessor), []);
+			assertThatProcessorHasProcessedThese(trackingProcessor2, []);
 		}
-		
+
 		[Test]
 		public function handleItem_passes_mapped_views_to_processor_instance_process_with_mapping_by_type():void
 		{
 			viewProcessorMap.map(Sprite).toProcess(trackingProcessor);
 			viewProcessorMap.handleView(matchingView, Sprite);
 			viewProcessorMap.handleView(nonMatchingView, Shape);
-			assertThatProcessorHasProcessedThese( trackingProcessor, [matchingView] );
+			assertThatProcessorHasProcessedThese(trackingProcessor, [matchingView]);
 		}
-		
+
 		[Test]
 		public function a_hook_runs_and_receives_injection_of_view():void
 		{
@@ -238,7 +246,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			assertThat(matchingView.width, equalTo(expectedViewWidth));
 			assertThat(matchingView.height, equalTo(expectedViewHeight));
 		}
-		
+
 		[Test]
 		public function doesnt_leave_view_mapping_lying_around():void
 		{
@@ -246,14 +254,14 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			viewProcessorMap.handleView(matchingView, Sprite);
 			assertThat(injector.hasMapping(Sprite), isFalse());
 		}
-		
+
 		[Test]
 		public function process_runs_if_guard_allows_it():void
 		{
 			viewProcessorMap.map(Sprite).toProcess(trackingProcessor).withGuards(OnlyIfViewHasChildrenGuard);
 			matchingView.addChild(new Sprite());
 			viewProcessorMap.process(matchingView);
-			assertThatProcessorHasProcessedThese( trackingProcessor, [matchingView] );
+			assertThatProcessorHasProcessedThese(trackingProcessor, [matchingView]);
 		}
 
 		[Test]
@@ -261,122 +269,28 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		{
 			viewProcessorMap.map(Sprite).toProcess(trackingProcessor).withGuards(OnlyIfViewHasChildrenGuard);
 			viewProcessorMap.process(matchingView);
-			assertThatProcessorHasProcessedThese( trackingProcessor, [] );
+			assertThatProcessorHasProcessedThese(trackingProcessor, []);
 		}
-		
+
 		[Test]
 		public function removing_a_mapping_that_doesnt_exist_doesnt_throw_an_error():void
 		{
 			viewProcessorMap.unmap(Sprite).fromProcess(trackingProcessor);
 		}
-		
-		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
-		public function error_thrown_if_2_mappings_made_with_same_matcher_and_processor_but_different_guards():void
-		{
-			viewProcessorMap.map(Sprite).toProcess(TrackingProcessor).withGuards(HappyGuard).withHooks(Alpha50PercentHook);
-			viewProcessorMap.map(Sprite).toProcess(TrackingProcessor).withGuards(OnlyIfViewHasChildrenGuard).withHooks(Alpha50PercentHook);			
-		}
-		
-		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
-		public function error_thrown_if_2_mappings_made_with_same_matcher_and_processor_but_different_hooks():void
-		{
-			viewProcessorMap.map(Sprite).toProcess(TrackingProcessor).withGuards(HappyGuard).withHooks(Alpha50PercentHook);
-			viewProcessorMap.map(Sprite).toProcess(TrackingProcessor).withGuards(HappyGuard).withHooks(HookWithViewInjectionDrawsRectangle);
-		}
-		
-		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
-		public function error_thrown_if_2_mappings_made_with_same_matcher_and_processor_one_with_one_without_guards():void
-		{
-			viewProcessorMap.map(Sprite).toProcess(TrackingProcessor).withGuards(HappyGuard);
-			const mapping:IViewProcessorMapping = viewProcessorMap.map(Sprite).toProcess(TrackingProcessor) as IViewProcessorMapping;
-			// error only thrown when used sadly			
-			mapping.validate();			
-		}
-		
-		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
-		public function error_thrown_if_2_mappings_made_with_same_matcher_and_processor_one_with_one_without_hooks():void
-		{
-			viewProcessorMap.map(Sprite).toProcess(TrackingProcessor).withHooks(Alpha50PercentHook);
-			const mapping:IViewProcessorMapping = viewProcessorMap.map(Sprite).toProcess(TrackingProcessor) as IViewProcessorMapping;
-			// error only thrown when used sadly			
-			mapping.validate();			
-		}
 
-		[Test]
-		public function no_error_thrown_when_guards_and_hooks_are_chained():void
-		{
-			const mappingConfig:IViewProcessorMappingConfig = viewProcessorMap.map(Sprite).toProcess(TrackingProcessor);
-			mappingConfig.withGuards(HappyGuard);
-			mappingConfig.withGuards(OnlyIfViewHasChildrenGuard);
-			mappingConfig.withHooks(Alpha50PercentHook);
-			mappingConfig.withHooks(HookWithViewInjectionDrawsRectangle);
-		}
-		
-		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
-		public function error_thrown_if_2_mappings_made_with_same_matcher_and_processor_one_with_fewer_guards():void
-		{
-			viewProcessorMap.map(Sprite).toProcess(TrackingProcessor).withGuards(HappyGuard, OnlyIfViewHasChildrenGuard);
-			const mapping:ViewProcessorMapping = viewProcessorMap.map(Sprite).toProcess(TrackingProcessor) as ViewProcessorMapping;
-			mapping.withGuards(HappyGuard);
-			// error only thrown when used sadly			
-			mapping.validate();			
-		}
-		
-		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
-		public function error_thrown_if_2_mappings_made_with_same_matcher_and_processor_one_with_fewer_hooks():void
-		{
-			viewProcessorMap.map(Sprite).toProcess(TrackingProcessor).withHooks(Alpha50PercentHook).withHooks(HookA);
-			const mapping:ViewProcessorMapping = viewProcessorMap.map(Sprite).toProcess(TrackingProcessor) as ViewProcessorMapping;
-			mapping.withHooks(HookA);
-			// error only thrown when used sadly			
-			mapping.validate();			
-		}
-		
-		[Test]
-		public function no_error_thrown_when_2_mappings_with_identical_guards_and_hooks_are_chained():void
-		{
-			const mapping1:ViewProcessorMapping = viewProcessorMap.map(Sprite).toProcess(TrackingProcessor) as ViewProcessorMapping;
-			mapping1.withGuards(HappyGuard);
-			mapping1.withGuards(OnlyIfViewHasChildrenGuard);
-			mapping1.withHooks(Alpha50PercentHook);
-			mapping1.withHooks(HookWithViewInjectionDrawsRectangle);
-			
-			const mapping2:ViewProcessorMapping = viewProcessorMap.map(Sprite).toProcess(TrackingProcessor) as ViewProcessorMapping;
-			mapping2.withGuards(HappyGuard);
-			mapping2.withGuards(OnlyIfViewHasChildrenGuard);
-			mapping2.withHooks(HookWithViewInjectionDrawsRectangle);
-			mapping2.withHooks(Alpha50PercentHook);
-
-			mapping2.validate();
-		}
-		
-		[Test]
-		public function mapping_guards_and_hooks_as_array_is_same_as_mapping_as_list():void
-		{
-			const mapping1:ViewProcessorMapping = viewProcessorMap.map(Sprite).toProcess(TrackingProcessor) as ViewProcessorMapping;
-			mapping1.withGuards(HappyGuard, OnlyIfViewHasChildrenGuard);
-			mapping1.withHooks(Alpha50PercentHook, HookA);
-			
-			const mapping2:ViewProcessorMapping = viewProcessorMap.map(Sprite).toProcess(TrackingProcessor) as ViewProcessorMapping;
-			mapping2.withGuards([HappyGuard, OnlyIfViewHasChildrenGuard]);
-			mapping2.withHooks([Alpha50PercentHook, HookA]);
-			
-			mapping2.validate();
-		}
-		
 		[Test]
 		public function mapping_for_injection_results_in_view_being_injected():void
 		{
 			const expectedInjectionValue:Sprite = new Sprite();
-			
+
 			injector.map(IEventDispatcher).toValue(expectedInjectionValue);
-			
+
 			viewProcessorMap.map(Sprite).toInjection();
 			const viewNeedingInjection:ViewNeedingInjection = new ViewNeedingInjection();
 			viewProcessorMap.process(viewNeedingInjection);
 			assertThat(viewNeedingInjection.injectedValue, equalTo(expectedInjectionValue));
 		}
-		
+
 		[Test]
 		public function unmapping_for_injection_results_in_view_not_being_injected():void
 		{
@@ -386,7 +300,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			viewProcessorMap.process(viewNeedingInjection);
 			assertThat(viewNeedingInjection.injectedValue, equalTo(null));
 		}
-		
+
 		[Test]
 		public function mapping_to_no_process_still_applies_hooks():void
 		{
@@ -401,9 +315,9 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			viewProcessorMap.process(matchingView);
 
 			assertThat(matchingView.width, equalTo(expectedViewWidth));
-			assertThat(matchingView.height, equalTo(expectedViewHeight));			
+			assertThat(matchingView.height, equalTo(expectedViewHeight));
 		}
-		
+
 		[Test]
 		public function unmapping_from_no_process_does_not_apply_hooks():void
 		{
@@ -416,25 +330,20 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			viewProcessorMap.process(matchingView);
 
 			assertThat(matchingView.width, equalTo(0));
-			assertThat(matchingView.height, equalTo(0));			
+			assertThat(matchingView.height, equalTo(0));
 		}
-		
+
 		[Test(async)]
 		public function automatically_unprocesses_when_view_leaves_stage():void
 		{
 			viewProcessorMap.map(Sprite).toProcess(trackingProcessor);
 			container.addChild(matchingView);
 			viewProcessorMap.process(matchingView);
-			var asyncHandler:Function = Async.asyncHandler( this, checkUnprocessorsRan, 500 );
+			var asyncHandler:Function = Async.asyncHandler(this, checkUnprocessorsRan, 500);
 			matchingView.addEventListener(Event.REMOVED_FROM_STAGE, asyncHandler);
 			container.removeChild(matchingView);
 		}
-	
-		private function checkUnprocessorsRan(e:Event, params:Object):void
-		{
-			assertThatProcessorHasUnprocessedThese(trackingProcessor, [matchingView]);
-		}
-		
+
 		[Test]
 		public function hooks_run_before_process():void
 		{
@@ -444,26 +353,20 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			viewProcessorMap.process(matchingView);
 			assertThat(timingTracker, array([HookA, Processor]));
 		}
-		
-		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
-		public function runProcessors_throws_if_mapping_doesnt_validate():void
-		{
-			viewProcessorMap.map(Sprite).toProcess(Processor).withGuards(GuardA, GuardB);
-			viewProcessorMap.map(Sprite).toProcess(Processor).withGuards(GuardA);
-			viewProcessorMap.process(matchingView);
-		}
-		
-		// protected functions
-		
+
+		/*============================================================================*/
+		/* Protected Functions                                                        */
+		/*============================================================================*/
+
 		protected function fromInjector(type:Class):Object
 		{
-			if(!injector.hasDirectMapping(type))
+			if (!injector.hasDirectMapping(type))
 			{
 				injector.map(type).asSingleton();
 			}
 			return injector.getInstance(type);
 		}
-		
+
 		protected function assertThatProcessorHasProcessedThese(processor:Object, expected:Array):void
 		{
 			assertThat(processor.processedViews, array(expected));
@@ -474,6 +377,14 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			assertThat(processor.unprocessedViews, array(expected));
 		}
 
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
+
+		private function checkUnprocessorsRan(e:Event, params:Object):void
+		{
+			assertThatProcessorHasUnprocessedThese(trackingProcessor, [matchingView]);
+		}
 	}
 }
 
@@ -482,14 +393,28 @@ import flash.events.IEventDispatcher;
 
 class ViewNeedingInjection extends Sprite
 {
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
 	[Inject]
 	public var injectedValue:IEventDispatcher;
 }
 
 class OnlyIfViewHasChildrenGuard
 {
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
 	[Inject]
 	public var view:Sprite;
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
 
 	public function approve():Boolean
 	{
@@ -499,55 +424,46 @@ class OnlyIfViewHasChildrenGuard
 
 class HookWithViewInjectionDrawsRectangle
 {
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
 	[Inject]
 	public var view:Sprite;
 
 	[Inject(name="rectWidth")]
 	public var rectWidth:Number;
-	
+
 	[Inject(name="rectHeight")]
 	public var rectHeight:Number;
-	
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
 	public function hook():void
 	{
 		view.graphics.drawRect(0, 0, rectWidth, rectHeight);
 	}
 }
 
-class Alpha50PercentHook
-{
-	[Inject]
-	public var view:Sprite;
-	
-	public function hook():void
-	{
-		view.alpha = 0.5;
-	}
-}
-
 class HookA
 {
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
 	[Inject(name='timingTracker')]
 	public var timingTracker:Array;
-	
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
 	public function hook():void
 	{
 		timingTracker.push(HookA);
-	}
-}
-
-class GuardA
-{
-	public function approve():Boolean
-	{
-		return true;
-	}
-}
-
-class GuardB
-{
-	public function approve():Boolean
-	{
-		return true;
 	}
 }

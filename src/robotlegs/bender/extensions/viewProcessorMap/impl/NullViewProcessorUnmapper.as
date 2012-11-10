@@ -13,7 +13,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			
 		}
 
-		public function fromProcesses():void
+		public function fromAll():void
 		{
 			
 		}
