@@ -7,6 +7,7 @@
 
 package robotlegs.bender.extensions.eventCommandMap
 {
+	import robotlegs.bender.extensions.eventCommandMap.impl.EventCommandExecutorTest;
 	import robotlegs.bender.extensions.eventCommandMap.impl.EventCommandMapTest;
 	import robotlegs.bender.extensions.eventCommandMap.impl.EventCommandTriggerTest;
 
@@ -24,5 +25,7 @@ package robotlegs.bender.extensions.eventCommandMap
 		public var eventCommandMap:EventCommandMapTest;
 
 		public var eventCommandTrigger:EventCommandTriggerTest;
+
+		public var eventExecutor:EventCommandExecutorTest;
 	}
 }

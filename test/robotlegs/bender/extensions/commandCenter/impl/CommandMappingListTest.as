@@ -5,48 +5,38 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.eventCommandMap.impl
+package robotlegs.bender.extensions.commandCenter.impl
 {
-	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
-	import robotlegs.bender.framework.impl.applyHooks;
-	import robotlegs.bender.framework.impl.guardsApprove;
+	import org.hamcrest.assertThat;
+	import org.hamcrest.object.nullValue;
 
-	public class EventCommandFactory
+	public class CommandMappingListTest
 	{
 
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var _injector:Injector;
+		private var list:CommandMappingList;
 
 		/*============================================================================*/
-		/* Constructor                                                                */
+		/* Test Setup and Teardown                                                    */
 		/*============================================================================*/
 
-		public function EventCommandFactory(injector:Injector)
+		[Before]
+		public function before():void
 		{
-			_injector = injector;
+			list = new CommandMappingList();
 		}
 
 		/*============================================================================*/
-		/* Public Functions                                                           */
+		/* Tests                                                                      */
 		/*============================================================================*/
 
-		public function create(mapping:ICommandMapping):Object
+		[Test]
+		public function empty_list_has_no_head():void
 		{
-			if(guardsApprove(mapping.guards, _injector))
-			{
-				const commandClass:Class = mapping.commandClass;
-				_injector.map(commandClass).asSingleton();
-				const command:Object = _injector.getInstance(commandClass);
-				applyHooks(mapping.hooks, _injector);
-				_injector.unmap(commandClass);
-
-				return command;
-			}
-			return null;
+			assertThat(list.head, nullValue());
 		}
 	}
 }

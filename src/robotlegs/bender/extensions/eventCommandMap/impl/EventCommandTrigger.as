@@ -54,6 +54,10 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		public function addMapping(mapping:ICommandMapping):void
 		{
 			verifyCommandClass(mapping);
+
+			// _mappings.head || addListener();
+			// _mappings.add(mapping);
+
 			if (_mappingList.tail)
 			{
 				_mappingList.tail.next = mapping;
@@ -67,6 +71,9 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 
 		public function removeMapping(mapping:ICommandMapping):void
 		{
+			// _mappings.remove(mapping);
+			// _mappings.head || removeListener();
+
 			_mappingList.remove(mapping);
 
 			if (!_mappingList.head)
@@ -100,3 +107,4 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 
 	}
 }
+

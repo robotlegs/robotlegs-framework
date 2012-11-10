@@ -162,17 +162,8 @@ package robotlegs.bender.framework.impl
 			assertThat(actual, array(['listener1', 'listener2', 'config']));
 		}
 
-		[Test]
-		public function injector_allows_mappings_inside_PostConstruct():void
-		{
-			configManager.addConfig(MappingConfig);
-			configManager.addConfig(ChildConfig);
-			context.initialize();
-		}
 	}
 }
-
-import org.swiftsuspenders.Injector;
 
 import robotlegs.bender.framework.api.IConfig;
 
@@ -215,23 +206,4 @@ class TypedConfig implements IConfig
 	{
 		callback(this);
 	}
-}
-
-class MappingConfig
-{
-	[PostConstruct]
-	public function init(injector:Injector):void
-	{
-		injector.map(SomeSingleton).asSingleton();
-	}
-}
-
-class SomeSingleton
-{
-}
-
-class ChildConfig
-{
-	[Inject]
-	public var someSingleton:SomeSingleton
 }
