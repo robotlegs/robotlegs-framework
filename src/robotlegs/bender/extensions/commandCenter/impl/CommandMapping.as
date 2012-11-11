@@ -38,6 +38,13 @@ package robotlegs.bender.extensions.commandCenter.impl
 			return _hooks;
 		}
 
+		private var _fireOnce:Boolean;
+
+		public function get fireOnce():Boolean
+		{
+			return _fireOnce;
+		}
+
 		private var _next:ICommandMapping;
 
 		public function get next():ICommandMapping
@@ -50,11 +57,16 @@ package robotlegs.bender.extensions.commandCenter.impl
 			_next = value;
 		}
 
-		private var _fireOnce:Boolean;
+		private var _previous:ICommandMapping;
 
-		public function get fireOnce():Boolean
+		public function get previous():ICommandMapping
 		{
-			return _fireOnce;
+			return _previous;
+		}
+
+		public function set previous(value:ICommandMapping):void
+		{
+			_previous = value;
 		}
 
 		/*============================================================================*/

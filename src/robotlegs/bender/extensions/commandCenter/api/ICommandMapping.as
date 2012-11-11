@@ -21,5 +21,9 @@ package robotlegs.bender.extensions.commandCenter.api
 		function get next():ICommandMapping;
 
 		function set next(value:ICommandMapping):void;
+
+		function get previous():ICommandMapping;
+
+		function set previous(value:ICommandMapping):void;
 	}
 }

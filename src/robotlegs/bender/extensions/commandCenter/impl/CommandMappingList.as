@@ -16,51 +16,55 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		protected var _head:ICommandMapping;
+		private var _head:ICommandMapping;
 
 		public function get head():ICommandMapping
 		{
 			return _head;
 		}
 
-		public function set head(value:ICommandMapping):void
-		{
-			if (value !== _head)
-			{
-				_head = value;
-			}
-		}
+		private var _tail:ICommandMapping;
 
 		public function get tail():ICommandMapping
 		{
-			if (!_head) return null;
-
-			var theTail:ICommandMapping = _head;
-			while (theTail.next)
-			{
-				theTail = theTail.next
-			}
-			return theTail;
+			return _tail;
 		}
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function remove(item:ICommandMapping):void
+		public function add(node:ICommandMapping):void
 		{
-			var link:ICommandMapping = _head;
-			if (link == item)
+			if (_tail)
 			{
-				_head = item.next;
+				_tail.next = node;
+				node.previous = _tail;
+				_tail = node;
 			}
-			while (link)
+			else
 			{
-				if (link.next == item)
-				{
-					link.next = item.next;
-				}
-				link = link.next;
+				_head = _tail = node;
+			}
+		}
+
+		public function remove(node:ICommandMapping):void
+		{
+			if (node == _head)
+			{
+				_head = _head.next;
+			}
+			if (node == _tail)
+			{
+				_tail = _tail.previous;
+			}
+			if (node.previous)
+			{
+				node.previous.next = node.next;
+			}
+			if (node.next)
+			{
+				node.next.previous = node.previous;
 			}
 		}
 	}

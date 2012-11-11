@@ -24,6 +24,7 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
+
 		private const _mappings:Vector.<ICommandMapping> = new Vector.<ICommandMapping>;
 
 		private var _injector:Injector;

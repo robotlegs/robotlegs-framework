@@ -21,7 +21,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private const _mappingList:CommandMappingList = new CommandMappingList();
+		private const _mappings:CommandMappingList = new CommandMappingList();
 
 		private var _dispatcher:IEventDispatcher;
 
@@ -44,7 +44,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			_dispatcher = dispatcher;
 			_type = type;
 			_eventClass = eventClass;
-			_executor = new EventCommandExecutor(this, _mappingList, injector, eventClass);
+			_executor = new EventCommandExecutor(this, _mappings, injector, eventClass);
 		}
 
 		/*============================================================================*/
@@ -54,30 +54,14 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		public function addMapping(mapping:ICommandMapping):void
 		{
 			verifyCommandClass(mapping);
-
-			// _mappings.head || addListener();
-			// _mappings.add(mapping);
-
-			if (_mappingList.tail)
-			{
-				_mappingList.tail.next = mapping;
-			}
-			else
-			{
-				_mappingList.head = mapping;
-				addListener();
-			}
+			_mappings.head || addListener();
+			_mappings.add(mapping);
 		}
 
 		public function removeMapping(mapping:ICommandMapping):void
 		{
-			// _mappings.remove(mapping);
-			// _mappings.head || removeListener();
-
-			_mappingList.remove(mapping);
-
-			if (!_mappingList.head)
-				removeListener();
+			_mappings.remove(mapping);
+			_mappings.head || removeListener();
 		}
 
 		public function toString():String
