@@ -12,7 +12,7 @@ package robotlegs.bender.extensions
 	import robotlegs.bender.extensions.eventCommandMap.EventCommandMapExtensionTestSuite;
 	import robotlegs.bender.extensions.eventDispatcher.EventDispatcherExtensionTestSuite;
 	import robotlegs.bender.extensions.localEventMap.LocalEventMapExtensionTestSuite;
-	import robotlegs.bender.extensions.logging.LoggingExtensionTestSuite;
+	import robotlegs.bender.extensions.enhancedLogging.EnhancedLoggingExtensionTestSuite;
 	import robotlegs.bender.extensions.matching.TypeMatchingTestSuite;
 	import robotlegs.bender.extensions.mediatorMap.MediatorMapExtensionTestSuite;
 	import robotlegs.bender.extensions.messageCommandMap.MessageCommandMapExtensionTestSuite;
@@ -44,7 +44,7 @@ package robotlegs.bender.extensions
 
 		public var localEventMapExtension:LocalEventMapExtensionTestSuite;
 
-		public var loggingExtension:LoggingExtensionTestSuite;
+		public var loggingExtension:EnhancedLoggingExtensionTestSuite;
 
 		public var mediatorMapExtension:MediatorMapExtensionTestSuite;
 

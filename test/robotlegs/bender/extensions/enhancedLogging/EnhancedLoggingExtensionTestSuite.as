@@ -5,20 +5,25 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.logging
+package robotlegs.bender.extensions.enhancedLogging
 {
+	import robotlegs.bender.extensions.enhancedLogging.impl.TraceLogTargetTest;
 
-	public class TraceLoggingExtensionTest
+	[RunWith("org.flexunit.runners.Suite")]
+	[Suite]
+	public class EnhancedLoggingExtensionTestSuite
 	{
 
 		/*============================================================================*/
-		/* Tests                                                                      */
+		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		[Test]
-		public function test():void
-		{
-			// todo: how to test?
-		}
+		public var loggingExtension:InjectableLoggerExtensionTest;
+
+		public var traceLoggingExtension:TraceLoggingExtensionTest;
+
+		public var traceLogTarget:TraceLogTargetTest;
+
+		public var injectorLoggingExtension:InjectorActivityLoggingExtensionTest;
 	}
 }

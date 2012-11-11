@@ -1,50 +1,46 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.logging
+package robotlegs.bender.extensions.enhancedLogging.integration
 {
-	import org.flexunit.assertThat;
-	import org.hamcrest.object.instanceOf;
-	import robotlegs.bender.framework.impl.Context;
-	import robotlegs.bender.framework.api.ILogger;
+	import flash.utils.Dictionary;
+	import org.swiftsuspenders.Injector;
+	import org.swiftsuspenders.dependencyproviders.DependencyProvider;
+	import robotlegs.bender.framework.api.IContext;
 
-	public class LoggingExtensionTest
+	public class LoggerProvider implements DependencyProvider
 	{
 
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var context:Context;
+		private var _context:IContext;
 
 		/*============================================================================*/
-		/* Test Setup and Teardown                                                    */
+		/* Constructor                                                                */
 		/*============================================================================*/
 
-		[Before]
-		public function before():void
+		public function LoggerProvider(context:IContext)
 		{
-			context = new Context();
-			context.install(LoggingExtension);
+			_context = context;
 		}
 
 		/*============================================================================*/
-		/* Tests                                                                      */
+		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		[Test]
-		public function logger_is_mapped_into_injector():void
+		public function apply(targetType:Class, activeInjector:Injector, injectParameters:Dictionary):Object
 		{
-			var actual:Object = null;
-			context.lifecycle.whenInitializing( function():void {
-				actual = context.injector.getInstance(ILogger);
-			});
-			context.initialize();
-			assertThat(actual, instanceOf(ILogger));
+			return _context.getLogger(targetType);
+		}
+
+		public function destroy():void
+		{
 		}
 	}
 }

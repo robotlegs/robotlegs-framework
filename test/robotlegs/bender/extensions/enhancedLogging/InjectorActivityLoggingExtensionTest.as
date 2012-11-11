@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.logging
+package robotlegs.bender.extensions.enhancedLogging
 {
 	import flash.display.Sprite;
 	import org.hamcrest.Matcher;
@@ -16,11 +16,11 @@ package robotlegs.bender.extensions.logging
 	import org.hamcrest.object.instanceOf;
 	import org.swiftsuspenders.InjectionEvent;
 	import org.swiftsuspenders.mapping.MappingEvent;
-	import robotlegs.bender.extensions.logging.support.SupportLogTarget;
+	import robotlegs.bender.extensions.enhancedLogging.support.SupportLogTarget;
 	import robotlegs.bender.framework.impl.Context;
 	import robotlegs.bender.framework.api.LogLevel;
 
-	public class InjectorLoggingExtensionTest
+	public class InjectorActivityLoggingExtensionTest
 	{
 
 		/*============================================================================*/
@@ -38,7 +38,7 @@ package robotlegs.bender.extensions.logging
 		{
 			context = new Context();
 			context.logLevel = LogLevel.DEBUG;
-			context.install(InjectorLoggingExtension);
+			context.install(InjectorActivityLoggingExtension);
 		}
 
 		/*============================================================================*/

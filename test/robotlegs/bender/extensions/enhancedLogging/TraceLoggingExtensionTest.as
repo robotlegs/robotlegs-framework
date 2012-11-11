@@ -5,10 +5,10 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.logging.impl
+package robotlegs.bender.extensions.enhancedLogging
 {
 
-	public class TraceLogTargetTest
+	public class TraceLoggingExtensionTest
 	{
 
 		/*============================================================================*/

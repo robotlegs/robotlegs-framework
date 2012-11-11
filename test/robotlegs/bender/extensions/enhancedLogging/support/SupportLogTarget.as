@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.logging.support
+package robotlegs.bender.extensions.enhancedLogging.support
 {
 	import robotlegs.bender.framework.api.ILogTarget;
 

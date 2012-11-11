@@ -5,21 +5,21 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.logging
+package robotlegs.bender.extensions.enhancedLogging
 {
-	import robotlegs.bender.extensions.logging.impl.TraceLogTarget;
+	import robotlegs.bender.extensions.enhancedLogging.impl.InjectorListener;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
 	import robotlegs.bender.framework.impl.UID;
 
-	public class TraceLoggingExtension implements IExtension
+	public class InjectorActivityLoggingExtension implements IExtension
 	{
 
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private const _uid:String = UID.create(TraceLoggingExtension);
+		private const _uid:String = UID.create(InjectorActivityLoggingExtension);
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
@@ -27,7 +27,9 @@ package robotlegs.bender.extensions.logging
 
 		public function extend(context:IContext):void
 		{
-			context.addLogTarget(new TraceLogTarget(context));
+			const listener:InjectorListener = new InjectorListener(
+				context.injector, context.getLogger(this));
+			context.lifecycle.afterDestroying(listener.destroy);
 		}
 
 		public function toString():String
