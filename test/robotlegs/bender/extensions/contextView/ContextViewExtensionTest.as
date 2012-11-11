@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -9,10 +9,13 @@ package robotlegs.bender.extensions.contextView
 {
 	import flash.display.DisplayObjectContainer;
 	import mx.containers.Canvas;
-	import org.flexunit.assertThat;
+	import org.hamcrest.assertThat;
 	import org.hamcrest.object.equalTo;
+	import org.hamcrest.object.isTrue;
 	import robotlegs.bender.framework.api.IContext;
+	import robotlegs.bender.framework.api.LogLevel;
 	import robotlegs.bender.framework.impl.Context;
+	import robotlegs.bender.framework.impl.loggingSupport.CallbackLogTarget;
 
 	public class ContextViewExtensionTest
 	{
@@ -65,11 +68,21 @@ package robotlegs.bender.extensions.contextView
 			assertThat(actual.view, equalTo(view));
 		}
 
-		[Test(expects="Error")]
-		public function extension_throws_if_context_initialized_with_no_contextView():void
+		[Test]
+		public function extension_logs_error_when_context_initialized_with_no_contextView():void
 		{
+			var errorLogged:Boolean = false;
+			const logTarget:CallbackLogTarget = new CallbackLogTarget(
+				function(log:Object):void {
+					if (log.source['constructor'] == ContextViewExtension && log.level == LogLevel.ERROR)
+					{
+						errorLogged = true;
+					}
+				});
 			context.install(ContextViewExtension);
+			context.addLogTarget(logTarget);
 			context.lifecycle.initialize();
+			assertThat(errorLogged, isTrue());
 		}
 	}
 }

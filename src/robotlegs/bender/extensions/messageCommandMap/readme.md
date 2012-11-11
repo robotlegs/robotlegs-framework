@@ -42,14 +42,14 @@ For more information on guards and hooks check out:
 
 ## Note: strictly one mapping per-message-per-command
 
-You can only make one mapping per message-command pair. You should do your complete mapping in one chain, or keep a reference to the part of the chain where you need to stop. (At a minimum this should be to the `ICommandMapping` returned from `toCommand` as calling `toCommand` a second time will lock the mapping).
+You can only make one mapping per message-command pair. You should do your complete mapping in one chain.
 
-So - the following will explode:
+So - the following will issue a warning:
 
 	messageCommandMap.map(SignOutMessage).toCommand(SomeCommand);
-	messageCommandMap.map(SignOutMessage).toCommand(SomeCommand).once();
+	messageCommandMap.map(SignOutMessage).toCommand(SomeCommand); // warning
 
-If your mappings are completely identical, no error will be thrown. If the mappings differ in guards, hooks or the use of `once`, an error will be thrown as soon as possible. In the case that you add a guard or hook that wasn't previously present, the error will be synchronous. In the case that you miss out a guard or hook that was previously present, the error will be thrown the first time the mapping is next used.
+If you intend to change a mapping you should unmap it first.
 
 # Message Command Map Extension
 

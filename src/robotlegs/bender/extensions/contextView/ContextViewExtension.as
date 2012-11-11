@@ -63,7 +63,7 @@ package robotlegs.bender.extensions.contextView
 		{
 			if (!_injector.hasDirectMapping(ContextView))
 			{
-				throw(new Error("A ContextView must be installed if you install the ContextViewExtension."));
+				_logger.error("A ContextView must be installed if you install the ContextViewExtension.");
 			}
 		}
 	}

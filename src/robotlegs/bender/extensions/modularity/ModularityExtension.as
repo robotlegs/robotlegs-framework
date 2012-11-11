@@ -74,18 +74,14 @@ package robotlegs.bender.extensions.modularity
 
 		private function beforeInitializing():void
 		{
-			checkForContextView();
-			_inherit && broadcastContextExistence();
-			_expose && createContextWatcher();
-		}
-
-		private function checkForContextView():void
-		{
-			if (!_injector.hasDirectMapping(ContextView))
+			if (_injector.hasDirectMapping(ContextView))
 			{
-				const message:String = "Context has no contextView, and ModularityExtension doesn't allow this";
-				_logger.fatal(message);
-				throw(new Error(message));
+				_inherit && broadcastContextExistence();
+				_expose && createContextWatcher();
+			}
+			else
+			{
+				_logger.error("Context has no ContextView, and ModularityExtension doesn't allow this.");
 			}
 		}
 

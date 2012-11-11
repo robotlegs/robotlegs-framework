@@ -51,7 +51,7 @@ So - the following will issue a warning:
 	eventCommandMap.map(SomeEvent.STARTED).toCommand(SomeCommand);
 	eventCommandMap.map(SomeEvent.STARTED).toCommand(SomeCommand); // warning
 
-If you intend to change a mapping you should unmap first.
+If you intend to change a mapping you should unmap it first.
 
 # Event Command Map Extension
 

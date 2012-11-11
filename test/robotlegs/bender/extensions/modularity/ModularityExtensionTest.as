@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -12,6 +12,7 @@ package robotlegs.bender.extensions.modularity
 	import org.fluint.uiImpersonation.UIImpersonator;
 	import org.hamcrest.core.not;
 	import org.hamcrest.object.equalTo;
+	import org.hamcrest.object.isTrue;
 
 	import robotlegs.bender.extensions.contextView.ContextView;
 	import robotlegs.bender.extensions.contextView.ContextViewExtension;
@@ -19,7 +20,9 @@ package robotlegs.bender.extensions.modularity
 	import robotlegs.bender.extensions.viewManager.ViewManagerExtension;
 	import robotlegs.bender.extensions.viewManager.api.IViewManager;
 	import robotlegs.bender.framework.api.IContext;
+	import robotlegs.bender.framework.api.LogLevel;
 	import robotlegs.bender.framework.impl.Context;
+	import robotlegs.bender.framework.impl.loggingSupport.CallbackLogTarget;
 
 	public class ModularityExtensionTest
 	{
@@ -38,6 +41,8 @@ package robotlegs.bender.extensions.modularity
 
 		private var childContext:IContext;
 
+		private var rootAddedToStage:Boolean;
+
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
 		/*============================================================================*/
@@ -45,6 +50,7 @@ package robotlegs.bender.extensions.modularity
 		[Before(async, ui)]
 		public function setUp():void
 		{
+			rootAddedToStage = false;
 			root = new UIComponent();
 			parentView = new UIComponent();
 			childView = new UIComponent();
@@ -56,7 +62,7 @@ package robotlegs.bender.extensions.modularity
 		[After(async, ui)]
 		public function tearDown():void
 		{
-			UIImpersonator.removeChild(root);
+			rootAddedToStage && UIImpersonator.removeChild(root);
 		}
 
 		/*============================================================================*/
@@ -66,7 +72,7 @@ package robotlegs.bender.extensions.modularity
 		[Test(async, ui)]
 		public function context_inherits_parent_injector():void
 		{
-			UIImpersonator.addChild(root);
+			addRootToStage();
 			parentContext.install(ModularityExtension).configure(new ContextView(parentView));
 			childContext.install(ModularityExtension).configure(new ContextView(childView));
 			root.addChild(parentView);
@@ -77,7 +83,7 @@ package robotlegs.bender.extensions.modularity
 		[Test(async, ui)]
 		public function context_does_not_inherit_parent_injector_when_not_interested():void
 		{
-			UIImpersonator.addChild(root);
+			addRootToStage();
 			parentContext.install(ModularityExtension).configure(new ContextView(parentView));
 			childContext.install(new ModularityExtension(false)).configure(new ContextView(childView));
 			root.addChild(parentView);
@@ -88,7 +94,7 @@ package robotlegs.bender.extensions.modularity
 		[Test(async, ui)]
 		public function context_does_not_inherit_parent_injector_when_disallowed_by_parent():void
 		{
-			UIImpersonator.addChild(root);
+			addRootToStage();
 			parentContext.install(new ModularityExtension(true, false)).configure(new ContextView(parentView));
 			childContext.install(ModularityExtension).configure(new ContextView(childView));
 			root.addChild(parentView);
@@ -96,17 +102,28 @@ package robotlegs.bender.extensions.modularity
 			assertThat(childContext.injector.parentInjector, not(parentContext.injector));
 		}
 
-		[Test(expects="Error")]
-		public function extension_throws_if_context_initialized_with_no_contextView():void
+		[Test]
+		public function extension_logs_error_when_context_initialized_with_no_contextView():void
 		{
+			var errorLogged:Boolean = false;
+			const logTarget:CallbackLogTarget = new CallbackLogTarget(
+				function(log:Object):void {
+					if (log.source['constructor'] == ModularityExtension && log.level == LogLevel.ERROR)
+					{
+						errorLogged = true;
+					}
+				});
 			childContext.install(ModularityExtension);
+			childContext.addLogTarget(logTarget);
 			childContext.lifecycle.initialize();
+			assertThat(errorLogged, isTrue());
+
 		}
 
 		[Test(async, ui)]
 		public function child_added_to_viewManager_inherits_injector():void
 		{
-			UIImpersonator.addChild(root);
+			addRootToStage();
 			parentContext = new Context().install(
 				ContextViewExtension,
 				ModularityExtension,
@@ -129,6 +146,16 @@ package robotlegs.bender.extensions.modularity
 
 			assertThat(childContext.injector.parentInjector,
 				equalTo(parentContext.injector));
+		}
+
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
+
+		private function addRootToStage():void
+		{
+			rootAddedToStage = true;
+			UIImpersonator.addChild(root);
 		}
 	}
 }
