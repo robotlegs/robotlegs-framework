@@ -7,9 +7,9 @@
 
 package robotlegs.bender.bundles.mvcs
 {
-	import robotlegs.bender.bundles.shared.configs.ContextViewListenerConfig;
 	import robotlegs.bender.extensions.commandCenter.CommandCenterExtension;
 	import robotlegs.bender.extensions.contextView.ContextViewExtension;
+	import robotlegs.bender.extensions.contextView.ContextViewListenerConfig;
 	import robotlegs.bender.extensions.enhancedLogging.InjectableLoggerExtension;
 	import robotlegs.bender.extensions.enhancedLogging.TraceLoggingExtension;
 	import robotlegs.bender.extensions.eventCommandMap.EventCommandMapExtension;

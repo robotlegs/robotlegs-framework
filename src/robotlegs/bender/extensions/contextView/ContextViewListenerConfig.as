@@ -5,9 +5,8 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.bundles.shared.configs
+package robotlegs.bender.extensions.contextView
 {
-	import robotlegs.bender.extensions.contextView.ContextView;
 	import robotlegs.bender.extensions.viewManager.api.IViewManager;
 
 	/**
