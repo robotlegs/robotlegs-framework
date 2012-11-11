@@ -55,7 +55,6 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			var mediator:Object;
 			for each (var mapping:IMediatorMapping in mappings)
 			{
-				mapping.validate();
 				mediator = getMediator(item, mapping);
 
 				if (!mediator)

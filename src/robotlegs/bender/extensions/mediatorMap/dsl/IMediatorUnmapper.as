@@ -12,6 +12,6 @@ package robotlegs.bender.extensions.mediatorMap.dsl
 	{
 		function fromMediator(mediatorClass:Class):void;
 
-		function fromMediators():void;
+		function fromAll():void;
 	}
 }

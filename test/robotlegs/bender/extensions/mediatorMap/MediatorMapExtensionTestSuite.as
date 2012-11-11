@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -9,10 +9,12 @@ package robotlegs.bender.extensions.mediatorMap
 {
 	import robotlegs.bender.extensions.mediatorMap.impl.DefaultMediatorManagerTest;
 	import robotlegs.bender.extensions.mediatorMap.impl.MediatorFactoryTest;
-	import robotlegs.bender.extensions.mediatorMap.impl.MediatorViewHandlerTest;
-	import robotlegs.bender.extensions.mediatorMap.impl.MediatorSugarTest;
-	import robotlegs.bender.extensions.mediatorMap.impl.MediatorMapTestPreloaded;
 	import robotlegs.bender.extensions.mediatorMap.impl.MediatorMapMemoryLeakTest;
+	import robotlegs.bender.extensions.mediatorMap.impl.MediatorMapTest;
+	import robotlegs.bender.extensions.mediatorMap.impl.MediatorMapTestPreloaded;
+	import robotlegs.bender.extensions.mediatorMap.impl.MediatorMapperTest;
+	import robotlegs.bender.extensions.mediatorMap.impl.MediatorSugarTest;
+	import robotlegs.bender.extensions.mediatorMap.impl.MediatorViewHandlerTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
@@ -25,6 +27,10 @@ package robotlegs.bender.extensions.mediatorMap
 
 		public var mediatorMapExtension:MediatorMapExtensionTest;
 
+		public var mediatorMap:MediatorMapTest;
+
+		public var mediatorMapper:MediatorMapperTest;
+
 		public var mediatorHandler:MediatorViewHandlerTest;
 
 		public var mediatorFactory:MediatorFactoryTest;
@@ -32,11 +38,11 @@ package robotlegs.bender.extensions.mediatorMap
 		public var defaultMediatorManager:DefaultMediatorManagerTest;
 
 		// added by stray recovered from pre-reloaded tests
-		
+
 		public var mediatorMapTestsOriginal:MediatorMapTestPreloaded;
-		
+
 		public var mediatorSugarTest:MediatorSugarTest;
-		
+
 		//public var mediatorMapMemoryLeak:MediatorMapMemoryLeakTest;
 	}
 }

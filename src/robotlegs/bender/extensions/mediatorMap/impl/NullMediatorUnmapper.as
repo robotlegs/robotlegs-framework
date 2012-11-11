@@ -20,7 +20,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		{
 		}
 
-		public function fromMediators():void
+		public function fromAll():void
 		{
 		}
 	}

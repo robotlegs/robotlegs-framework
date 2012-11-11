@@ -9,15 +9,14 @@ package robotlegs.bender.extensions.mediatorMap.impl
 {
 	import flash.utils.Dictionary;
 	import robotlegs.bender.extensions.matching.ITypeFilter;
-	import robotlegs.bender.extensions.matching.ITypeMatcher;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorViewHandler;
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMapper;
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMappingConfig;
-	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMappingFinder;
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorUnmapper;
+	import robotlegs.bender.framework.api.ILogger;
 
-	public class MediatorMapper implements IMediatorMapper, IMediatorMappingFinder, IMediatorUnmapper
+	public class MediatorMapper implements IMediatorMapper, IMediatorUnmapper
 	{
 
 		/*============================================================================*/
@@ -26,18 +25,21 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		private const _mappings:Dictionary = new Dictionary();
 
-		private var _matcher:ITypeFilter;
+		private var _typeFilter:ITypeFilter;
 
 		private var _handler:IMediatorViewHandler;
+
+		private var _logger:ILogger;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function MediatorMapper(matcher:ITypeFilter, handler:IMediatorViewHandler)
+		public function MediatorMapper(typeFilter:ITypeFilter, handler:IMediatorViewHandler, logger:ILogger = null)
 		{
-			_matcher = matcher;
+			_typeFilter = typeFilter;
 			_handler = handler;
+			_logger = logger;
 		}
 
 		/*============================================================================*/
@@ -46,27 +48,23 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		public function toMediator(mediatorClass:Class):IMediatorMappingConfig
 		{
-			return lockedMappingFor(mediatorClass) || createMapping(mediatorClass);
-		}
-
-		public function forMediator(mediatorClass:Class):IMediatorMapping
-		{
-			return _mappings[mediatorClass];
+			const mapping:IMediatorMapping = _mappings[mediatorClass];
+			return mapping
+				? overwriteMapping(mapping)
+				: createMapping(mediatorClass);
 		}
 
 		public function fromMediator(mediatorClass:Class):void
 		{
 			const mapping:IMediatorMapping = _mappings[mediatorClass];
-			delete _mappings[mediatorClass];
-			_handler.removeMapping(mapping);
+			mapping && deleteMapping(mapping);
 		}
 
-		public function fromMediators():void
+		public function fromAll():void
 		{
 			for each (var mapping:IMediatorMapping in _mappings)
 			{
-				delete _mappings[mapping.mediatorClass];
-				_handler.removeMapping(mapping);
+				deleteMapping(mapping);
 			}
 		}
 
@@ -76,19 +74,28 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		private function createMapping(mediatorClass:Class):MediatorMapping
 		{
-			const mapping:MediatorMapping = new MediatorMapping(_matcher, mediatorClass);
+			const mapping:MediatorMapping = new MediatorMapping(_typeFilter, mediatorClass);
 			_handler.addMapping(mapping);
 			_mappings[mediatorClass] = mapping;
+			_logger && _logger.debug('{0} mapped to {1}', [_typeFilter, mapping]);
 			return mapping;
 		}
 
-		private function lockedMappingFor(mediatorClass:Class):MediatorMapping
+		private function deleteMapping(mapping:IMediatorMapping):void
 		{
-			const mapping:MediatorMapping = _mappings[mediatorClass];
-			if (mapping)
-				mapping.invalidate();
+			_handler.removeMapping(mapping);
+			delete _mappings[mapping.mediatorClass];
+			_logger && _logger.debug('{0} unmapped from {1}', [_typeFilter, mapping]);
+		}
 
-			return mapping;
+		private function overwriteMapping(mapping:IMediatorMapping):IMediatorMappingConfig
+		{
+			_logger && _logger.warn('{0} already mapped to {1}\n' +
+				'If you have overridden this mapping intentionally you can use "unmap()" ' +
+				'prior to your replacement mapping in order to avoid seeing this message.\n',
+				[_typeFilter, mapping]);
+			deleteMapping(mapping);
+			return createMapping(mapping.mediatorClass);
 		}
 	}
 }

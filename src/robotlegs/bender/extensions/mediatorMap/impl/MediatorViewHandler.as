@@ -95,7 +95,6 @@ package robotlegs.bender.extensions.mediatorMap.impl
 				_knownMappings[type] = false;
 				for each (mapping in _mappings)
 				{
-					mapping.validate();
 					if (mapping.matcher.matches(item))
 					{
 						_knownMappings[type] ||= [];

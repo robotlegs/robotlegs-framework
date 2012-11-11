@@ -1,16 +1,14 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.mediatorMap.dsl
+package robotlegs.bender.extensions.mediatorMap.support
 {
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
 
-	public interface IMediatorMappingFinder
+	public class NullMediator2
 	{
-		function forMediator(mediatorClass:Class):IMediatorMapping;
 	}
 }

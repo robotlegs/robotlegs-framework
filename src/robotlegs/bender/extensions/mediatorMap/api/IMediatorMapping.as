@@ -18,7 +18,5 @@ package robotlegs.bender.extensions.mediatorMap.api
 		function get guards():Array;
 
 		function get hooks():Array;
-
-		function validate():void;
 	}
 }

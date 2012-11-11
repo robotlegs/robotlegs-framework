@@ -10,7 +10,6 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import robotlegs.bender.extensions.matching.ITypeFilter;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMappingConfig;
-	import robotlegs.bender.framework.impl.MappingConfigValidator;
 
 	public class MediatorMapping implements IMediatorMapping, IMediatorMappingConfig
 	{
@@ -48,12 +47,6 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		}
 
 		/*============================================================================*/
-		/* Private Properties                                                         */
-		/*============================================================================*/
-
-		private var _validator:MappingConfigValidator;
-
-		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
@@ -69,52 +62,14 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		public function withGuards(... guards):IMediatorMappingConfig
 		{
-			_validator && _validator.checkGuards(guards);
 			_guards = _guards.concat.apply(null, guards);
 			return this;
 		}
 
 		public function withHooks(... hooks):IMediatorMappingConfig
 		{
-			_validator && _validator.checkHooks(hooks);
 			_hooks = _hooks.concat.apply(null, hooks);
 			return this;
-		}
-
-		public function validate():void
-		{
-			if (!_validator)
-			{
-				createValidator();
-			}
-			else if (!_validator.valid)
-			{
-				_validator.validate(_guards, _hooks);
-			}
-		}
-
-		/*============================================================================*/
-		/* Internal Functions                                                         */
-		/*============================================================================*/
-
-		internal function invalidate():void
-		{
-			if (_validator)
-				_validator.invalidate();
-			else
-				createValidator();
-
-			_guards = [];
-			_hooks = [];
-		}
-
-		/*============================================================================*/
-		/* Private Functions                                                          */
-		/*============================================================================*/
-
-		private function createValidator():void
-		{
-			_validator = new MappingConfigValidator(_guards.slice(), _hooks.slice(), _matcher, _mediatorClass);
 		}
 	}
 }

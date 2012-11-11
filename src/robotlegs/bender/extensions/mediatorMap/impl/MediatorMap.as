@@ -15,7 +15,6 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMap;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorViewHandler;
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMapper;
-	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMappingFinder;
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorUnmapper;
 	import robotlegs.bender.extensions.viewManager.api.IViewHandler;
 
@@ -55,8 +54,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		public function map(type:Class):IMediatorMapper
 		{
-			const matcher:ITypeMatcher = new TypeMatcher().allOf(type);
-			return mapMatcher(matcher);
+			return mapMatcher(new TypeMatcher().allOf(type));
 		}
 
 		public function unmapMatcher(matcher:ITypeMatcher):IMediatorUnmapper
@@ -66,8 +64,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		public function unmap(type:Class):IMediatorUnmapper
 		{
-			const matcher:ITypeMatcher = new TypeMatcher().allOf(type);
-			return unmapMatcher(matcher);
+			return unmapMatcher(new TypeMatcher().allOf(type));
 		}
 
 		public function handleView(view:DisplayObject, type:Class):void
@@ -77,8 +74,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		public function mediate(item:Object):void
 		{
-			const type:Class = item.constructor as Class;
-			_handler.handleItem(item, type);
+			_handler.handleItem(item, item.constructor as Class);
 		}
 
 		public function unmediate(item:Object):void

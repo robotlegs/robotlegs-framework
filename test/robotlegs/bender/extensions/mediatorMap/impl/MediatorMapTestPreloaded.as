@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.mediatorMap.impl
@@ -13,34 +13,45 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import flash.events.Event;
 	import flash.geom.Rectangle;
 	import org.flexunit.Assert;
-	import org.flexunit.asserts.*;
 	import org.flexunit.asserts.assertEqualsVectorsIgnoringOrder;
+	import org.hamcrest.assertThat;
+	import org.hamcrest.object.equalTo;
+	import org.hamcrest.object.instanceOf;
+	import org.hamcrest.object.isFalse;
+	import org.hamcrest.object.isTrue;
+	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.matching.TypeMatcher;
+	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
+	import robotlegs.bender.extensions.mediatorMap.api.IMediatorViewHandler;
 	import robotlegs.bender.extensions.mediatorMap.impl.support.MediatorWatcher;
 	import robotlegs.bender.extensions.viewManager.api.IViewHandler;
-	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
-	import org.flexunit.assertThat;
-	import org.hamcrest.object.isTrue;
-	import org.hamcrest.object.equalTo;
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorViewHandler;
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
-	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMappingConfig;
 	import robotlegs.bender.framework.impl.guardSupport.HappyGuard;
 
 	public class MediatorMapTestPreloaded
 	{
+
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
+
+		// TODO: refactor tests so that we're testing at the right levels of abstraction
+		// and testing actual implementations
+
 		private var injector:Injector;
 
 		private var instance:MediatorMap;
-		
+
 		private var handler:IMediatorViewHandler;
-		
+
 		private var factory:IMediatorFactory;
-		
+
 		private var mediatorWatcher:MediatorWatcher;
-		
+
 		private var mediatorManager:DefaultMediatorManager;
+
+		/*============================================================================*/
+		/* Test Setup and Teardown                                                    */
+		/*============================================================================*/
 
 		[Before]
 		public function setUp():void
@@ -60,6 +71,10 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		{
 			instance = null;
 		}
+
+		/*============================================================================*/
+		/* Tests                                                                      */
+		/*============================================================================*/
 
 		[Test]
 		public function a_hook_runs_and_receives_injections_of_view_and_mediator():void
@@ -102,9 +117,9 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			instance.mapMatcher(new TypeMatcher().anyOf(MovieClip, Sprite)).toMediator(ExampleMediator);
 			instance.handleView(new Sprite(), null);
 
-			assertFalse(injector.satisfiesDirectly(MovieClip));
-			assertFalse(injector.satisfiesDirectly(Sprite));
-			assertFalse(injector.satisfiesDirectly(ExampleMediator));
+			assertThat(injector.satisfiesDirectly(MovieClip), isFalse());
+			assertThat(injector.satisfiesDirectly(Sprite), isFalse());
+			assertThat(injector.satisfiesDirectly(ExampleMediator), isFalse());
 		}
 
 		[Test]
@@ -143,7 +158,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		[Test]
 		public function implements_IViewHandler():void
 		{
-			assertTrue("instance is IViewHandler", instance is IViewHandler);
+			assertThat(instance, instanceOf(IViewHandler));
 		}
 
 		[Test]
@@ -192,7 +207,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			const expectedNotifications:Vector.<String> = new <String>['ExampleMediator', 'ExampleMediator destroy'];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
 		}
-		
+
 		[Test]
 		public function mediator_is_created_for_non_view_object():void
 		{
@@ -203,16 +218,16 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			const expectedNotifications:Vector.<String> = new <String>['NotAViewMediator'];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
 		}
-		
+
 		[Test]
 		public function non_view_object_injected_into_mediator_correctly():void
 		{
 			instance.map(NotAView).toMediator(NotAViewMediator);
 			const notAView:NotAView = new NotAView();
 			instance.mediate(notAView);
-			assertEquals('NotAViewMediator', notAView.mediatorName);
+			assertThat(notAView.mediatorName, equalTo('NotAViewMediator'));
 		}
-		
+
 		[Test]
 		public function mediator_is_destroyed_for_non_view_object():void
 		{
@@ -223,12 +238,6 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 			const expectedNotifications:Vector.<String> = new <String>['NotAViewMediator', 'NotAViewMediator destroy'];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
-		}
-
-		[Test(async)]
-		public function test_failure_seen():void
-		{
-			assertTrue(true);
 		}
 
 		[Test]
@@ -244,32 +253,32 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			const expectedNotifications:Vector.<String> = new <String>['ExampleMediator', 'ExampleMediator destroy'];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
 		}
-		
+
 		[Test]
 		public function multiple_mappings_per_matcher_create_mediators():void
 		{
 			instance.map(Sprite).toMediator(ExampleMediator);
 			instance.map(Sprite).toMediator(ExampleMediator2);
-			
+
 			instance.mediate(new Sprite());
 			const expectedNotifications:Vector.<String> = new <String>['ExampleMediator', 'ExampleMediator2'];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
 		}
-		
+
 		[Test]
 		public function multiple_mappings_per_matcher_destroy_mediators():void
 		{
 			instance.map(Sprite).toMediator(ExampleMediator);
 			instance.map(Sprite).toMediator(ExampleMediator2);
-			
+
 			const view:Sprite = new Sprite();
-			
+
 			instance.mediate(view);
 			instance.unmediate(view);
-			
+
 			const expectedNotifications:Vector.<String> = new <String>['ExampleMediator', 'ExampleMediator2', 'ExampleMediator destroy', 'ExampleMediator2 destroy'];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
-		}		
+		}
 
 		[Test]
 		public function only_one_mediator_created_if_identical_mapping_duplicated():void
@@ -281,116 +290,17 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			const expectedNotifications:Vector.<String> = new <String>['ExampleMediator'];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
 		}
-		
+
 		[Test]
 		public function removing_a_mapping_that_doesnt_exist_doesnt_throw_an_error():void
 		{
 			instance.unmap(Sprite).fromMediator(ExampleMediator);
 		}
-		
-		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
-		public function error_thrown_if_2_mappings_made_with_same_matcher_and_mediator_but_different_guards():void
-		{
-			instance.map(Sprite).toMediator(ExampleMediator).withGuards(HappyGuard).withHooks(Alpha50PercentHook);
-			instance.map(Sprite).toMediator(ExampleMediator).withGuards(OnlyIfViewHasChildrenGuard).withHooks(Alpha50PercentHook);			
-		}
-		
-		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
-		public function error_thrown_if_2_mappings_made_with_same_matcher_and_mediator_but_different_hooks():void
-		{
-			instance.map(Sprite).toMediator(ExampleMediator).withGuards(HappyGuard).withHooks(Alpha50PercentHook);
-			instance.map(Sprite).toMediator(ExampleMediator).withGuards(HappyGuard).withHooks(HookWithMediatorAndViewInjectionDrawsRectangle);
-		}
-		
-		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
-		public function error_thrown_if_2_mappings_made_with_same_matcher_and_mediator_one_with_one_without_guards():void
-		{
-			instance.map(Sprite).toMediator(ExampleMediator).withGuards(HappyGuard);
-			const mapping:IMediatorMapping = instance.map(Sprite).toMediator(ExampleMediator) as IMediatorMapping;
-			// error only thrown when used sadly			
-			mapping.validate();			
-		}
-		
-		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
-		public function error_thrown_if_2_mappings_made_with_same_matcher_and_mediator_one_with_one_without_hooks():void
-		{
-			instance.map(Sprite).toMediator(ExampleMediator).withHooks(Alpha50PercentHook);
-			const mapping:IMediatorMapping = instance.map(Sprite).toMediator(ExampleMediator) as IMediatorMapping;
-			// error only thrown when used sadly			
-			mapping.validate();			
-		}
 
-		[Test]
-		public function no_error_thrown_when_guards_and_hooks_are_chained():void
-		{
-			const mappingConfig:IMediatorMappingConfig = instance.map(Sprite).toMediator(ExampleMediator);
-			mappingConfig.withGuards(HappyGuard);
-			mappingConfig.withGuards(OnlyIfViewHasChildrenGuard);
-			mappingConfig.withHooks(Alpha50PercentHook);
-			mappingConfig.withHooks(HookWithMediatorAndViewInjectionDrawsRectangle);
-		}
-		
-		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
-		public function error_thrown_if_2_mappings_made_with_same_matcher_and_mediator_one_with_fewer_guards():void
-		{
-			instance.map(Sprite).toMediator(ExampleMediator).withGuards(HappyGuard, OnlyIfViewHasChildrenGuard);
-			const mapping:MediatorMapping = instance.map(Sprite).toMediator(ExampleMediator) as MediatorMapping;
-			mapping.withGuards(HappyGuard);
-			// error only thrown when used sadly			
-			mapping.validate();			
-		}
-		
-		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
-		public function error_thrown_if_2_mappings_made_with_same_matcher_and_mediator_one_with_fewer_hooks():void
-		{
-			instance.map(Sprite).toMediator(ExampleMediator).withHooks(Alpha50PercentHook).withHooks(HookA);
-			const mapping:MediatorMapping = instance.map(Sprite).toMediator(ExampleMediator) as MediatorMapping;
-			mapping.withHooks(HookA);
-			// error only thrown when used sadly			
-			mapping.validate();			
-		}
-		
-		[Test]
-		public function no_error_thrown_when_2_mappings_with_identical_guards_and_hooks_are_chained():void
-		{
-			const mapping1:MediatorMapping = instance.map(Sprite).toMediator(ExampleMediator) as MediatorMapping;
-			mapping1.withGuards(HappyGuard);
-			mapping1.withGuards(OnlyIfViewHasChildrenGuard);
-			mapping1.withHooks(Alpha50PercentHook);
-			mapping1.withHooks(HookWithMediatorAndViewInjectionDrawsRectangle);
-			
-			const mapping2:MediatorMapping = instance.map(Sprite).toMediator(ExampleMediator) as MediatorMapping;
-			mapping2.withGuards(HappyGuard);
-			mapping2.withGuards(OnlyIfViewHasChildrenGuard);
-			mapping2.withHooks(HookWithMediatorAndViewInjectionDrawsRectangle);
-			mapping2.withHooks(Alpha50PercentHook);
+		/*============================================================================*/
+		/* Protected Functions                                                        */
+		/*============================================================================*/
 
-			mapping2.validate();
-		}
-		
-		[Test]
-		public function mapping_guards_and_hooks_as_array_is_same_as_mapping_as_list():void
-		{
-			const mapping1:MediatorMapping = instance.map(Sprite).toMediator(ExampleMediator) as MediatorMapping;
-			mapping1.withGuards(HappyGuard, OnlyIfViewHasChildrenGuard);
-			mapping1.withHooks(Alpha50PercentHook, HookA);
-			
-			const mapping2:MediatorMapping = instance.map(Sprite).toMediator(ExampleMediator) as MediatorMapping;
-			mapping2.withGuards([HappyGuard, OnlyIfViewHasChildrenGuard]);
-			mapping2.withHooks([Alpha50PercentHook, HookA]);
-			
-			mapping2.validate();
-		}
-		
-		[Test(expects="robotlegs.bender.framework.api.MappingConfigError")]
-		public function error_thrown_on_mediate_if_2_mappings_made_with_same_matcher_and_mediator_one_with_one_without_guards():void
-		{
-			instance.map(Sprite).toMediator(ExampleMediator).withGuards(HappyGuard);
-			instance.mediate(new Sprite());
-			instance.map(Sprite).toMediator(ExampleMediator);
-			instance.mediate(new Sprite());
-		}
-		
 		protected function handleEventTimeout(o:Object):void
 		{
 			Assert.fail("The event never fired");
@@ -410,11 +320,20 @@ import robotlegs.bender.extensions.mediatorMap.impl.support.MediatorWatcher;
 
 class ExampleMediator
 {
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
 	[Inject]
 	public var mediatorWatcher:MediatorWatcher;
 
 	[Inject]
 	public var view:Sprite;
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
 
 	public function initialize():void
 	{
@@ -427,14 +346,22 @@ class ExampleMediator
 	}
 }
 
-
 class ExampleMediator2
 {
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
 	[Inject]
 	public var mediatorWatcher:MediatorWatcher;
 
 	[Inject]
 	public var view:Sprite;
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
 
 	public function initialize():void
 	{
@@ -449,11 +376,20 @@ class ExampleMediator2
 
 class ExampleDisplayObjectMediator
 {
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
 	[Inject]
 	public var mediatorWatcher:MediatorWatcher;
 
 	[Inject]
 	public var view:DisplayObject;
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
 
 	public function initialize():void
 	{
@@ -463,8 +399,17 @@ class ExampleDisplayObjectMediator
 
 class RectangleMediator
 {
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
 	[Inject]
 	public var rectangle:Rectangle;
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
 
 	public function initialize():void
 	{
@@ -474,8 +419,17 @@ class RectangleMediator
 
 class OnlyIfViewHasChildrenGuard
 {
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
 	[Inject]
 	public var view:Sprite;
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
 
 	public function approve():Boolean
 	{
@@ -485,11 +439,20 @@ class OnlyIfViewHasChildrenGuard
 
 class HookWithMediatorAndViewInjectionDrawsRectangle
 {
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
 	[Inject]
 	public var mediator:RectangleMediator;
 
 	[Inject]
 	public var view:Sprite;
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
 
 	public function hook():void
 	{
@@ -502,9 +465,18 @@ class HookWithMediatorAndViewInjectionDrawsRectangle
 
 class Alpha50PercentHook
 {
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
 	[Inject]
 	public var view:Sprite;
-	
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
 	public function hook():void
 	{
 		view.alpha = 0.5;
@@ -513,6 +485,11 @@ class Alpha50PercentHook
 
 class HookA
 {
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
 	public function hook():void
 	{
 	}
@@ -520,17 +497,31 @@ class HookA
 
 class NotAView
 {
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
 	public var mediatorName:String;
 }
 
 class NotAViewMediator
 {
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
 	[Inject]
 	public var notAView:NotAView;
 
 	[Inject]
 	public var mediatorWatcher:MediatorWatcher;
-	
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
 	public function initialize():void
 	{
 		notAView.mediatorName = 'NotAViewMediator';
