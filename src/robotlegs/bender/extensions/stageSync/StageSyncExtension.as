@@ -14,7 +14,6 @@ package robotlegs.bender.extensions.stageSync
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
 	import robotlegs.bender.framework.api.ILogger;
-	import robotlegs.bender.framework.impl.UID;
 
 	/**
 	 * <p>This Extension waits for a ContextView to be added as a configuration,
@@ -28,8 +27,6 @@ package robotlegs.bender.extensions.stageSync
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
-
-		private const _uid:String = UID.create(StageSyncExtension);
 
 		private var _context:IContext;
 
@@ -48,11 +45,6 @@ package robotlegs.bender.extensions.stageSync
 			_context.addConfigHandler(
 				instanceOf(ContextView),
 				handleContextView);
-		}
-
-		public function toString():String
-		{
-			return _uid;
 		}
 
 		/*============================================================================*/

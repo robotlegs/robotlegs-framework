@@ -13,7 +13,6 @@ package robotlegs.bender.extensions.modularity.impl
 	import robotlegs.bender.extensions.viewManager.impl.ViewManagerEvent;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.ILogger;
-	import robotlegs.bender.framework.impl.UID;
 
 	public class ViewManagerBasedExistenceWatcher
 	{
@@ -21,8 +20,6 @@ package robotlegs.bender.extensions.modularity.impl
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
-
-		private const _uid:String = UID.create(ViewManagerBasedExistenceWatcher);
 
 		private var _logger:ILogger;
 
@@ -43,15 +40,6 @@ package robotlegs.bender.extensions.modularity.impl
 			_viewManager = viewManager;
 			context.lifecycle.whenDestroying(destroy);
 			init();
-		}
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
-
-		public function toString():String
-		{
-			return _uid;
 		}
 
 		/*============================================================================*/

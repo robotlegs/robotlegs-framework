@@ -13,7 +13,6 @@ package robotlegs.bender.extensions.commandCenter.impl
 	import robotlegs.bender.extensions.commandCenter.dsl.ICommandMapper;
 	import robotlegs.bender.extensions.commandCenter.dsl.ICommandUnmapper;
 	import robotlegs.bender.framework.api.ILogger;
-	import robotlegs.bender.framework.impl.UID;
 
 	public class CommandCenter implements ICommandCenter
 	{
@@ -33,8 +32,6 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private const _uid:String = UID.create(CommandCenter);
-
 		private const _mappers:Dictionary = new Dictionary();
 
 		private const NULL_UNMAPPER:ICommandUnmapper = new NullCommandUnmapper();
@@ -52,11 +49,6 @@ package robotlegs.bender.extensions.commandCenter.impl
 		public function unmap(trigger:ICommandTrigger):ICommandUnmapper
 		{
 			return _mappers[trigger] || NULL_UNMAPPER;
-		}
-
-		public function toString():String
-		{
-			return _uid;
 		}
 	}
 }

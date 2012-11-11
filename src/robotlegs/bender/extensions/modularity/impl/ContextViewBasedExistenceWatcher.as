@@ -11,7 +11,6 @@ package robotlegs.bender.extensions.modularity.impl
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.ILogger;
-	import robotlegs.bender.framework.impl.UID;
 
 	public class ContextViewBasedExistenceWatcher
 	{
@@ -19,8 +18,6 @@ package robotlegs.bender.extensions.modularity.impl
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
-
-		private const _uid:String = UID.create(ContextViewBasedExistenceWatcher);
 
 		private var _logger:ILogger;
 
@@ -41,15 +38,6 @@ package robotlegs.bender.extensions.modularity.impl
 			_contextView = contextView;
 			context.lifecycle.whenDestroying(destroy);
 			init();
-		}
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
-
-		public function toString():String
-		{
-			return _uid;
 		}
 
 		/*============================================================================*/

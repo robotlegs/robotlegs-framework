@@ -16,7 +16,6 @@ package robotlegs.bender.extensions.modularity
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
 	import robotlegs.bender.framework.api.ILogger;
-	import robotlegs.bender.framework.impl.UID;
 
 	/**
 	 * This extension allows a context to inherit dependencies from a parent context,
@@ -30,8 +29,6 @@ package robotlegs.bender.extensions.modularity
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
-
-		private const _uid:String = UID.create(ModularityExtension);
 
 		private var _context:IContext;
 
@@ -69,11 +66,6 @@ package robotlegs.bender.extensions.modularity
 			_injector = context.injector;
 			_logger = context.getLogger(this);
 			_context.lifecycle.beforeInitializing(beforeInitializing);
-		}
-
-		public function toString():String
-		{
-			return _uid;
 		}
 
 		/*============================================================================*/

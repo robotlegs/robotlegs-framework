@@ -17,7 +17,6 @@ package robotlegs.bender.extensions.mediatorMap
 	import robotlegs.bender.extensions.viewManager.api.IViewManager;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
-	import robotlegs.bender.framework.impl.UID;
 
 	public class MediatorMapExtension implements IExtension
 	{
@@ -25,8 +24,6 @@ package robotlegs.bender.extensions.mediatorMap
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
-
-		private const _uid:String = UID.create(MediatorMapExtension);
 
 		private var _injector:Injector;
 
@@ -48,11 +45,6 @@ package robotlegs.bender.extensions.mediatorMap
 			context.lifecycle.beforeInitializing(beforeInitializing);
 			context.lifecycle.beforeDestroying(beforeDestroying);
 			context.lifecycle.whenDestroying(whenDestroying);
-		}
-
-		public function toString():String
-		{
-			return _uid;
 		}
 
 		/*============================================================================*/

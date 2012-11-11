@@ -12,7 +12,6 @@ package robotlegs.bender.extensions.viewManager
 	import robotlegs.bender.extensions.viewManager.impl.ManualStageObserver;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
-	import robotlegs.bender.framework.impl.UID;
 
 	public class ManualStageObserverExtension implements IExtension
 	{
@@ -30,8 +29,6 @@ package robotlegs.bender.extensions.viewManager
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private const _uid:String = UID.create(ManualStageObserverExtension);
-
 		private var _injector:Injector;
 
 		/*============================================================================*/
@@ -44,11 +41,6 @@ package robotlegs.bender.extensions.viewManager
 			_injector = context.injector;
 			context.lifecycle.whenInitializing(whenInitializing);
 			context.lifecycle.whenDestroying(whenDestroying);
-		}
-
-		public function toString():String
-		{
-			return _uid;
 		}
 
 		/*============================================================================*/

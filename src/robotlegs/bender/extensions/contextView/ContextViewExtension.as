@@ -12,7 +12,6 @@ package robotlegs.bender.extensions.contextView
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
 	import robotlegs.bender.framework.api.ILogger;
-	import robotlegs.bender.framework.impl.UID;
 
 	/**
 	 * <p>This Extension waits for a ContextView to be added as a configuration
@@ -26,8 +25,6 @@ package robotlegs.bender.extensions.contextView
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
-
-		private const _uid:String = UID.create(ContextViewExtension);
 
 		private var _injector:Injector;
 
@@ -43,11 +40,6 @@ package robotlegs.bender.extensions.contextView
 			_logger = context.getLogger(this);
 			context.addConfigHandler(instanceOf(ContextView), handleContextView);
 			context.lifecycle.beforeInitializing(beforeInitializing);
-		}
-
-		public function toString():String
-		{
-			return _uid;
 		}
 
 		/*============================================================================*/

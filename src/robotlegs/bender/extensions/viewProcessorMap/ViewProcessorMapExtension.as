@@ -12,12 +12,10 @@ package robotlegs.bender.extensions.viewProcessorMap
 	import robotlegs.bender.extensions.viewManager.api.IViewManager;
 	import robotlegs.bender.extensions.viewProcessorMap.api.IViewProcessorMap;
 	import robotlegs.bender.extensions.viewProcessorMap.impl.IViewProcessorFactory;
-	import robotlegs.bender.extensions.viewProcessorMap.impl.IViewProcessorFactory;
 	import robotlegs.bender.extensions.viewProcessorMap.impl.ViewProcessorFactory;
 	import robotlegs.bender.extensions.viewProcessorMap.impl.ViewProcessorMap;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
-	import robotlegs.bender.framework.impl.UID;
 
 	public class ViewProcessorMapExtension implements IExtension
 	{
@@ -25,8 +23,6 @@ package robotlegs.bender.extensions.viewProcessorMap
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
-
-		private const _uid:String = UID.create(ViewProcessorMapExtension);
 
 		private var _injector:Injector;
 
@@ -48,11 +44,6 @@ package robotlegs.bender.extensions.viewProcessorMap
 			context.lifecycle.beforeInitializing(beforeInitializing);
 			context.lifecycle.beforeDestroying(beforeDestroying);
 			context.lifecycle.whenDestroying(whenDestroying);
-		}
-
-		public function toString():String
-		{
-			return _uid;
 		}
 
 		/*============================================================================*/

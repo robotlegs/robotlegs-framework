@@ -11,16 +11,9 @@ package robotlegs.bender.extensions.commandCenter
 	import robotlegs.bender.extensions.commandCenter.impl.CommandCenter;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
-	import robotlegs.bender.framework.impl.UID;
 
 	public class CommandCenterExtension implements IExtension
 	{
-
-		/*============================================================================*/
-		/* Private Properties                                                         */
-		/*============================================================================*/
-
-		private const _uid:String = UID.create(CommandCenterExtension);
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
@@ -36,11 +29,6 @@ package robotlegs.bender.extensions.commandCenter
 				const commandCenter:CommandCenter = context.injector.getInstance(ICommandCenter);
 				commandCenter.logger = context.getLogger(commandCenter);
 			});
-		}
-
-		public function toString():String
-		{
-			return _uid;
 		}
 	}
 }

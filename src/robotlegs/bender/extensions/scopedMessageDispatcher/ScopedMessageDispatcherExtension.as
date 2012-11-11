@@ -12,7 +12,6 @@ package robotlegs.bender.extensions.scopedMessageDispatcher
 	import robotlegs.bender.framework.api.IExtension;
 	import robotlegs.bender.framework.api.IMessageDispatcher;
 	import robotlegs.bender.framework.impl.MessageDispatcher;
-	import robotlegs.bender.framework.impl.UID;
 
 	/**
 	 * This extensions maps a series of named IMessageDispatcher instances
@@ -24,8 +23,6 @@ package robotlegs.bender.extensions.scopedMessageDispatcher
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
-
-		private const _uid:String = UID.create(ScopedMessageDispatcherExtension);
 
 		private var _names:Array;
 
@@ -48,11 +45,6 @@ package robotlegs.bender.extensions.scopedMessageDispatcher
 		{
 			_injector = context.injector;
 			context.lifecycle.whenInitializing(whenInitializing);
-		}
-
-		public function toString():String
-		{
-			return _uid;
 		}
 
 		/*============================================================================*/

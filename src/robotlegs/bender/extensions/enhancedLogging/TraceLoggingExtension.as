@@ -10,16 +10,9 @@ package robotlegs.bender.extensions.enhancedLogging
 	import robotlegs.bender.extensions.enhancedLogging.impl.TraceLogTarget;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
-	import robotlegs.bender.framework.impl.UID;
 
 	public class TraceLoggingExtension implements IExtension
 	{
-
-		/*============================================================================*/
-		/* Private Properties                                                         */
-		/*============================================================================*/
-
-		private const _uid:String = UID.create(TraceLoggingExtension);
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
@@ -28,11 +21,6 @@ package robotlegs.bender.extensions.enhancedLogging
 		public function extend(context:IContext):void
 		{
 			context.addLogTarget(new TraceLogTarget(context));
-		}
-
-		public function toString():String
-		{
-			return _uid;
 		}
 	}
 }

@@ -11,16 +11,9 @@ package robotlegs.bender.extensions.eventCommandMap
 	import robotlegs.bender.extensions.eventCommandMap.impl.EventCommandMap;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
-	import robotlegs.bender.framework.impl.UID;
 
 	public class EventCommandMapExtension implements IExtension
 	{
-
-		/*============================================================================*/
-		/* Private Properties                                                         */
-		/*============================================================================*/
-
-		private const _uid:String = UID.create(EventCommandMapExtension);
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
@@ -31,9 +24,5 @@ package robotlegs.bender.extensions.eventCommandMap
 			context.injector.map(IEventCommandMap).toSingleton(EventCommandMap);
 		}
 
-		public function toString():String
-		{
-			return _uid;
-		}
 	}
 }

@@ -41,8 +41,6 @@ package robotlegs.bender.framework.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private const _uid:String = UID.create(ConfigManager);
-
 		private const _objectProcessor:ObjectProcessor = new ObjectProcessor();
 
 		private const _configs:Dictionary = new Dictionary();
@@ -97,11 +95,6 @@ package robotlegs.bender.framework.impl
 		public function addConfigHandler(matcher:Matcher, handler:Function):void
 		{
 			_objectProcessor.addObjectHandler(matcher, handler);
-		}
-
-		public function toString():String
-		{
-			return _uid;
 		}
 
 		/*============================================================================*/

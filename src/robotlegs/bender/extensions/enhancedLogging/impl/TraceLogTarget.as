@@ -41,7 +41,7 @@ package robotlegs.bender.extensions.enhancedLogging.impl
 				+ ' ' + LogLevel.NAME[level]
 				+ ' ' + _context
 				+ ' ' + source
-				+ ' - ' + _messageParser.parseMessage(message, params));
+				+ ' ' + _messageParser.parseMessage(message, params));
 		}
 	}
 }
