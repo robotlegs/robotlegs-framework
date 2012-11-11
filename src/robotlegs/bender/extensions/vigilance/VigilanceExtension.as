@@ -38,7 +38,7 @@ package robotlegs.bender.extensions.vigilance
 		{
 			if (level <= LogLevel.WARN)
 			{
-				throw new Error(_messageParser.parseMessage(message, params));
+				throw new VigilantError(_messageParser.parseMessage(message, params));
 			}
 		}
 

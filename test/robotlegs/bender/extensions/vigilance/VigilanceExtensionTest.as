@@ -51,19 +51,19 @@ package robotlegs.bender.extensions.vigilance
 			logger.info("");
 		}
 
-		[Test(expects="Error")]
+		[Test(expects="robotlegs.bender.extensions.vigilance.VigilantError")]
 		public function extension_throws_for_WARNING():void
 		{
 			logger.warn("");
 		}
 
-		[Test(expects="Error")]
+		[Test(expects="robotlegs.bender.extensions.vigilance.VigilantError")]
 		public function extension_throws_for_ERROR():void
 		{
 			logger.error("");
 		}
 
-		[Test(expects="Error")]
+		[Test(expects="robotlegs.bender.extensions.vigilance.VigilantError")]
 		public function extension_throws_for_FATAL():void
 		{
 			logger.fatal("");
