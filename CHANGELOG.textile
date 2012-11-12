@@ -1,5 +1,9 @@
 h2. Robotlegs Framework Changelog:
 
+h3. v2.0.0b1
+
+Robotlegs 2 public beta
+
 h3. v1.5.2
 
 Fixed: https://github.com/robotlegs/robotlegs-framework/issues/25

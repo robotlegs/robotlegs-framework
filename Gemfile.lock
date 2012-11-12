@@ -23,7 +23,7 @@ GEM
       rubyforge (= 2.0.3)
       rubyzip (= 0.9.4)
       xml-simple (= 1.0.12)
-    buildr-as3 (0.2.30.pre)
+    buildr-as3 (0.2.32.pre)
       buildr (>= 1.4.6)
     diff-lcs (1.1.2)
     highline (1.5.1)
@@ -54,5 +54,5 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  buildr-as3 (= 0.2.30.pre)
+  buildr-as3 (= 0.2.32.pre)
   rjb (= 1.3.3)

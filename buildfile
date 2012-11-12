@@ -34,7 +34,7 @@ define "robotlegs-framework", :layout => layout do
 
   test.compile.using( :main => testrunner, :args => [] ).
     with( FlexUnit4.swcs("4.1.0-8", "4.1.0.16076", :flex),
-          _(:lib,"mockolate-0.12.2-flex.swc"),
+          _(:lib,"mockolate-0.12.4-flex.swc"),
           _(:lib,"hamcrest-as3-flex-1.1.3.swc") )
 
   doc_title = "Robotlegs v#{THIS_VERSION}"
