@@ -37,7 +37,7 @@ package robotlegs.bender.extensions.localEventMap.impl
 		public function runBeforeEachTest():void
 		{
 			eventDispatcher = new EventDispatcher();
-			eventMap = new EventMap(eventDispatcher);
+			eventMap = new EventMap();
 		}
 
 		[After]

@@ -14,18 +14,12 @@ package robotlegs.bender.extensions.localEventMap.impl
 	/**
 	 * An abstract <code>IEventMap</code> implementation
 	 */
-	// TODO: review
 	public class EventMap implements IEventMap
 	{
 
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
-
-		/**
-		 * The <code>IEventDispatcher</code>
-		 */
-		private var _eventDispatcher:IEventDispatcher;
 
 		/**
 		 * @private
@@ -48,12 +42,9 @@ package robotlegs.bender.extensions.localEventMap.impl
 
 		/**
 		 * Creates a new <code>EventMap</code> object
-		 *
-		 * @param eventDispatcher An <code>IEventDispatcher</code> to treat as a bus
 		 */
-		public function EventMap(eventDispatcher:IEventDispatcher)
+		public function EventMap()
 		{
-			_eventDispatcher = eventDispatcher;
 		}
 
 		/*============================================================================*/
