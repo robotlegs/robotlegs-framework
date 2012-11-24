@@ -68,13 +68,16 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 				if (eventConstructor != Event)
 					_injector.map(_eventClass || eventConstructor).toValue(event);
 
-				if (guardsApprove(mapping.guards, _injector))
+				if (mapping.guards.length == 0 || guardsApprove(mapping.guards, _injector))
 				{
 					const commandClass:Class = mapping.commandClass;
-					_injector.map(commandClass).asSingleton();
-					command = _injector.getInstance(commandClass);
-					applyHooks(mapping.hooks, _injector);
-					_injector.unmap(commandClass);
+					command = _injector.instantiateUnmapped(commandClass);
+					if (mapping.hooks.length > 0)
+					{
+						_injector.map(commandClass).toValue(command);
+						applyHooks(mapping.hooks, _injector);
+						_injector.unmap(commandClass);
+					}
 				}
 
 				_injector.unmap(Event);
