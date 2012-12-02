@@ -9,14 +9,29 @@ package robotlegs.bender.extensions.mediatorMap.api
 {
 	import robotlegs.bender.extensions.matching.ITypeFilter;
 
+	/**
+	 * Represents a Mediator mapping
+	 */
 	public interface IMediatorMapping
 	{
+		/**
+		 * The matcher for this mapping
+		 */
 		function get matcher():ITypeFilter;
 
+		/**
+		 * The concrete mediator class
+		 */
 		function get mediatorClass():Class;
 
+		/**
+		 * A list of guards to check before allowing mediator creation
+		 */
 		function get guards():Array;
 
+		/**
+		 * A list of hooks to run before creating a mediator
+		 */
 		function get hooks():Array;
 	}
 }

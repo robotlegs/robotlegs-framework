@@ -8,7 +8,9 @@
 package robotlegs.bender.extensions.matching
 {
 
-	// TODO: should be in API
+	/**
+	 * Type Matcher Error
+	 */
 	public class TypeMatcherError extends Error
 	{
 
@@ -18,10 +20,16 @@ package robotlegs.bender.extensions.matching
 
 		public static const EMPTY_MATCHER:String = "An empty matcher will create a filter which matches nothing. You should specify at least one condition for the filter.";
 
+		public static const SEALED_MATCHER:String = "This matcher has been sealed and can no longer be configured.";
+
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * Creates a Type Matcher Error
+		 * @param message The error message
+		 */
 		public function TypeMatcherError(message:String)
 		{
 			super(message);

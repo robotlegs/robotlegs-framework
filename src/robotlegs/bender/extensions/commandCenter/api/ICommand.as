@@ -8,8 +8,17 @@
 package robotlegs.bender.extensions.commandCenter.api
 {
 
+	/**
+	 * Abstract command implementation
+	 *
+	 * <p>Please note: you do not have to implement this interface.
+	 * Any class with an execute method can be used.</p>
+	 */
 	public interface ICommand
 	{
+		/**
+		 * Command execution hook.
+		 */
 		function execute():void;
 	}
 }

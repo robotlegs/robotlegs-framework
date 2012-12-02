@@ -8,12 +8,24 @@
 package robotlegs.bender.extensions.viewProcessorMap.impl
 {
 
+	/**
+	 * @private
+	 */
 	public interface IViewProcessorFactory
 	{
+		/**
+		 * @private
+		 */
 		function runProcessors(view:Object, type:Class, processorMappings:Array):void;
 
+		/**
+		 * @private
+		 */
 		function runUnprocessors(view:Object, type:Class, processorMappings:Array):void;
 
+		/**
+		 * @private
+		 */
 		function runAllUnprocessors():void;
 	}
 }

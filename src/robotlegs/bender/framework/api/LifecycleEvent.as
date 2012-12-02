@@ -55,6 +55,10 @@ package robotlegs.bender.framework.api
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * Creates a Lifecycle Event
+		 * @param type The event type
+		 */
 		function LifecycleEvent(type:String)
 		{
 			super(type);
@@ -64,6 +68,9 @@ package robotlegs.bender.framework.api
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		override public function clone():Event
 		{
 			const event:LifecycleEvent = new LifecycleEvent(type);

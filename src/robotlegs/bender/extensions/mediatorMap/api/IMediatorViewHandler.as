@@ -9,12 +9,24 @@ package robotlegs.bender.extensions.mediatorMap.api
 {
 	import robotlegs.bender.extensions.viewManager.api.IViewHandler;
 
+	/**
+	 * @private
+	 */
 	public interface IMediatorViewHandler extends IViewHandler
 	{
+		/**
+		 * @private
+		 */
 		function addMapping(mapping:IMediatorMapping):void;
 
+		/**
+		 * @private
+		 */
 		function removeMapping(mapping:IMediatorMapping):void;
 
+		/**
+		 * @private
+		 */
 		function handleItem(item:Object, type:Class):void;
 	}
 }

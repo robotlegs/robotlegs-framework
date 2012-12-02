@@ -10,6 +10,10 @@ package robotlegs.bender.extensions.viewManager.impl
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
 
+	/**
+	 * Container existence event
+	 * @private
+	 */
 	public class ContainerRegistryEvent extends Event
 	{
 
@@ -31,6 +35,9 @@ package robotlegs.bender.extensions.viewManager.impl
 
 		private var _container:DisplayObjectContainer;
 
+		/**
+		 * The container associated with this event
+		 */
 		public function get container():DisplayObjectContainer
 		{
 			return _container;
@@ -40,6 +47,11 @@ package robotlegs.bender.extensions.viewManager.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * Creates a new container existence event
+		 * @param type The event type
+		 * @param container The container associated with this event
+		 */
 		public function ContainerRegistryEvent(type:String, container:DisplayObjectContainer)
 		{
 			super(type);
@@ -50,6 +62,9 @@ package robotlegs.bender.extensions.viewManager.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		override public function clone():Event
 		{
 			return new ContainerRegistryEvent(type, _container);

@@ -16,6 +16,9 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 	import robotlegs.bender.extensions.messageCommandMap.api.IMessageCommandMap;
 	import robotlegs.bender.framework.api.IMessageDispatcher;
 
+	/**
+	 * @private
+	 */
 	public class MessageCommandMap implements IMessageCommandMap
 	{
 
@@ -35,6 +38,9 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * @private
+		 */
 		public function MessageCommandMap(
 			injector:Injector,
 			dispatcher:IMessageDispatcher,
@@ -49,6 +55,9 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function map(message:Object):ICommandMapper
 		{
 			const trigger:ICommandTrigger =
@@ -57,6 +66,9 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 			return _commandCenter.map(trigger);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function unmap(message:Object):ICommandUnmapper
 		{
 			return _commandCenter.unmap(getTrigger(message));

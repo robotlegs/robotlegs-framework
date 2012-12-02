@@ -8,10 +8,20 @@
 package robotlegs.bender.extensions.mediatorMap.dsl
 {
 
+	/**
+	 * Unmaps a Mediator
+	 */
 	public interface IMediatorUnmapper
 	{
+		/**
+		 * Unmaps a mediator from this matcher
+		 * @param mediatorClass Mediator to unmap
+		 */
 		function fromMediator(mediatorClass:Class):void;
 
+		/**
+		 * Unmaps all mediator mappings for this matcher
+		 */
 		function fromAll():void;
 	}
 }

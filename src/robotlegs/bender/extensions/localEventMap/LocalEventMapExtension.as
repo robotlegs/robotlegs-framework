@@ -13,7 +13,8 @@ package robotlegs.bender.extensions.localEventMap
 	import robotlegs.bender.framework.api.IExtension;
 
 	/**
-	 * This extension creates local EventMaps on request
+	 * An Event Map keeps track of listeners and provides the ability
+	 * to unregister all listeners with a single method call.
 	 */
 	public class LocalEventMapExtension implements IExtension
 	{
@@ -22,6 +23,9 @@ package robotlegs.bender.extensions.localEventMap
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function extend(context:IContext):void
 		{
 			context.injector.map(IEventMap).toType(EventMap);

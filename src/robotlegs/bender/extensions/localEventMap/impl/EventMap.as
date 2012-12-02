@@ -12,7 +12,7 @@ package robotlegs.bender.extensions.localEventMap.impl
 	import robotlegs.bender.extensions.localEventMap.api.IEventMap;
 
 	/**
-	 * An abstract <code>IEventMap</code> implementation
+	 * @private
 	 */
 	public class EventMap implements IEventMap
 	{
@@ -21,47 +21,18 @@ package robotlegs.bender.extensions.localEventMap.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		/**
-		 * @private
-		 */
 		private const _listeners:Vector.<EventMapConfig> = new Vector.<EventMapConfig>();
 
-		/**
-		 * @private
-		 */
 		private const _suspendedListeners:Vector.<EventMapConfig> = new Vector.<EventMapConfig>();
 
-		/**
-		 * @private
-		 */
 		private var _suspended:Boolean = false;
-
-		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
-
-		/**
-		 * Creates a new <code>EventMap</code> object
-		 */
-		public function EventMap()
-		{
-		}
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
 		/**
-		 * The same as calling <code>addEventListener</code> directly on the <code>IEventDispatcher</code>,
-		 * but keeps a list of listeners for easy (usually automatic) removal.
-		 *
-		 * @param dispatcher The <code>IEventDispatcher</code> to listen to
-		 * @param eventString The <code>Event</code> type to listen for
-		 * @param listener The <code>Event</code> handler
-		 * @param eventClass Optional Event class for a stronger mapping. Defaults to <code>flash.events.Event</code>.
-		 * @param useCapture
-		 * @param priority
-		 * @param useWeakReference
+		 * @inheritDoc
 		 */
 		public function mapListener(
 			dispatcher:IEventDispatcher,
@@ -122,14 +93,7 @@ package robotlegs.bender.extensions.localEventMap.impl
 		}
 
 		/**
-		 * The same as calling <code>removeEventListener</code> directly on the <code>IEventDispatcher</code>,
-		 * but updates our local list of listeners.
-		 *
-		 * @param dispatcher The <code>IEventDispatcher</code>
-		 * @param eventString The <code>Event</code> type
-		 * @param listener The <code>Event</code> handler
-		 * @param eventClass Optional Event class for a stronger mapping. Defaults to <code>flash.events.Event</code>.
-		 * @param useCapture
+		 * @inheritDoc
 		 */
 		public function unmapListener(
 			dispatcher:IEventDispatcher,
@@ -165,7 +129,7 @@ package robotlegs.bender.extensions.localEventMap.impl
 		}
 
 		/**
-		 * Removes all listeners registered through <code>mapListener</code>
+		 * @inheritDoc
 		 */
 		public function unmapListeners():void
 		{
@@ -183,6 +147,9 @@ package robotlegs.bender.extensions.localEventMap.impl
 			}
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function suspend():void
 		{
 			if (_suspended)
@@ -200,6 +167,9 @@ package robotlegs.bender.extensions.localEventMap.impl
 			}
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function resume():void
 		{
 			if (!_suspended)

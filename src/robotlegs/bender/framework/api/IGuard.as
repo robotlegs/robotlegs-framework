@@ -11,10 +11,15 @@ package robotlegs.bender.framework.api
 	/**
 	 * A guard is expected to expose an "approve" method that returns a boolean
 	 *
-	 * <p>Note: a guard does not need to implement this interface.</p>
+	 * <p>Note: a guard does not need to implement this interface.
+	 * Any object that exposes an "approve" method can be used as a guard.</p>
 	 */
 	public interface IGuard
 	{
+		/**
+		 * Does this guard approve of this action?
+		 * @return Approval
+		 */
 		function approve():Boolean;
 	}
 }

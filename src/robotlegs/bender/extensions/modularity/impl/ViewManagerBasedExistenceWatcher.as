@@ -14,6 +14,9 @@ package robotlegs.bender.extensions.modularity.impl
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.ILogger;
 
+	/**
+	 * @private
+	 */
 	public class ViewManagerBasedExistenceWatcher
 	{
 
@@ -33,6 +36,9 @@ package robotlegs.bender.extensions.modularity.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * @private
+		 */
 		public function ViewManagerBasedExistenceWatcher(context:IContext, viewManager:IViewManager)
 		{
 			_logger = context.getLogger(this);

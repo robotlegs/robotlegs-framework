@@ -14,6 +14,9 @@ package robotlegs.bender.extensions.commandCenter.impl
 	import robotlegs.bender.extensions.commandCenter.dsl.ICommandUnmapper;
 	import robotlegs.bender.framework.api.ILogger;
 
+	/**
+	 * @private
+	 */
 	public class CommandCenter implements ICommandCenter
 	{
 
@@ -23,6 +26,9 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		private var _logger:ILogger;
 
+		/**
+		 * @private
+		 */
 		public function set logger(value:ILogger):void
 		{
 			_logger = value;
@@ -40,12 +46,18 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function map(trigger:ICommandTrigger):ICommandMapper
 		{
 			return _mappers[trigger]
 				|| (_mappers[trigger] = new CommandMapper(trigger, _logger));
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function unmap(trigger:ICommandTrigger):ICommandUnmapper
 		{
 			return _mappers[trigger] || NULL_UNMAPPER;

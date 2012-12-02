@@ -8,8 +8,16 @@
 package robotlegs.bender.extensions.commandCenter.dsl
 {
 
+	/**
+	 * Maps Commands to triggers
+	 */
 	public interface ICommandMapper
 	{
+		/**
+		 * Creates a command mapping
+		 * @param commandClass The Command Class to map
+		 * @return Mapping configurator
+		 */
 		function toCommand(commandClass:Class):ICommandMappingConfig;
 	}
 }

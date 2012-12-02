@@ -30,11 +30,17 @@ package robotlegs.bender.mxml
 
 		private var _configs:Array = [];
 
+		/**
+		 * Configs, extensions or bundles
+		 */
 		public function get configs():Array
 		{
 			return _configs;
 		}
 
+		/**
+		 * Configs, extensions or bundles
+		 */
 		public function set configs(value:Array):void
 		{
 			_configs = value;
@@ -42,6 +48,10 @@ package robotlegs.bender.mxml
 
 		private var _contextView:DisplayObjectContainer;
 
+		/**
+		 * The context view
+		 * @param value
+		 */
 		public function set contextView(value:DisplayObjectContainer):void
 		{
 			_contextView = value;
@@ -49,6 +59,9 @@ package robotlegs.bender.mxml
 
 		private const _context:IContext = new Context();
 
+		/**
+		 * The context associated with this builder
+		 */
 		public function get context():IContext
 		{
 			return _context;
@@ -64,6 +77,9 @@ package robotlegs.bender.mxml
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function initialized(document:Object, id:String):void
 		{
 			_contextView ||= document as DisplayObjectContainer;

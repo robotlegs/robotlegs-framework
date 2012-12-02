@@ -8,8 +8,15 @@
 package robotlegs.bender.extensions.matching
 {
 
+	/**
+	 * Type Matcher Factory
+	 */
 	public interface ITypeMatcherFactory extends ITypeMatcher
 	{
+		/**
+		 * Creates a clone of this matcher
+		 * @return The clone
+		 */
 		function clone():TypeMatcher;
 	}
 }

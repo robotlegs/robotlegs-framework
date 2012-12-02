@@ -9,7 +9,7 @@ package robotlegs.bender.framework.api
 {
 
 	/**
-	 * The context Extension contract
+	 * An extension integrates a library into a Context
 	 */
 	public interface IExtension
 	{

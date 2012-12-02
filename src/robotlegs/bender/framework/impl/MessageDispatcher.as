@@ -23,14 +23,6 @@ package robotlegs.bender.framework.impl
 		private const _handlers:Dictionary = new Dictionary();
 
 		/*============================================================================*/
-		/* Constructor                                                                */
-		/*============================================================================*/
-
-		public function MessageDispatcher()
-		{
-		}
-
-		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
@@ -113,6 +105,9 @@ class MessageRunner
 	/* Constructor                                                                */
 	/*============================================================================*/
 
+	/**
+	 * @private
+	 */
 	public function MessageRunner(message:Object, handlers:Array, callback:Function)
 	{
 		_message = message;
@@ -124,6 +119,9 @@ class MessageRunner
 	/* Public Functions                                                           */
 	/*============================================================================*/
 
+	/**
+	 * @private
+	 */
 	public function run():void
 	{
 		next();

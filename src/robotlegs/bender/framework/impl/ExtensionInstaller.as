@@ -15,6 +15,8 @@ package robotlegs.bender.framework.impl
 
 	/**
 	 * Installs custom extensions into a given context
+	 *
+	 * @private
 	 */
 	public class ExtensionInstaller
 	{
@@ -35,6 +37,9 @@ package robotlegs.bender.framework.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * @private
+		 */
 		public function ExtensionInstaller(context:IContext)
 		{
 			_context = context;

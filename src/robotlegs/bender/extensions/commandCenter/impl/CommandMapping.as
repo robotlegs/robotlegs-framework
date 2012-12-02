@@ -10,6 +10,9 @@ package robotlegs.bender.extensions.commandCenter.impl
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 	import robotlegs.bender.extensions.commandCenter.dsl.ICommandMappingConfig;
 
+	/**
+	 * @private
+	 */
 	public class CommandMapping implements ICommandMapping, ICommandMappingConfig
 	{
 
@@ -19,6 +22,9 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		private var _commandClass:Class;
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get commandClass():Class
 		{
 			return _commandClass;
@@ -26,6 +32,9 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		private var _guards:Array = [];
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get guards():Array
 		{
 			return _guards;
@@ -33,6 +42,9 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		private var _hooks:Array = [];
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get hooks():Array
 		{
 			return _hooks;
@@ -40,6 +52,9 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		private var _fireOnce:Boolean;
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get fireOnce():Boolean
 		{
 			return _fireOnce;
@@ -47,11 +62,17 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		private var _next:ICommandMapping;
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get next():ICommandMapping
 		{
 			return _next;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function set next(value:ICommandMapping):void
 		{
 			_next = value;
@@ -59,11 +80,17 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		private var _previous:ICommandMapping;
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get previous():ICommandMapping
 		{
 			return _previous;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function set previous(value:ICommandMapping):void
 		{
 			_previous = value;
@@ -73,6 +100,10 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * Creates a Command Mapping
+		 * @param commandClass The concrete Command class
+		 */
 		public function CommandMapping(commandClass:Class)
 		{
 			_commandClass = commandClass;
@@ -82,18 +113,27 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function withGuards(... guards):ICommandMappingConfig
 		{
 			_guards = _guards.concat.apply(null, guards);
 			return this;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function withHooks(... hooks):ICommandMappingConfig
 		{
 			_hooks = _hooks.concat.apply(null, hooks);
 			return this;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function once(value:Boolean = true):ICommandMappingConfig
 		{
 			_fireOnce = value;

@@ -14,6 +14,9 @@ package robotlegs.bender.extensions.viewManager
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
 
+	/**
+	 * This extension install a View Manager into the context
+	 */
 	public class ViewManagerExtension implements IExtension
 	{
 
@@ -36,6 +39,9 @@ package robotlegs.bender.extensions.viewManager
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function extend(context:IContext):void
 		{
 			_injector = context.injector;

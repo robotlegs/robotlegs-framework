@@ -10,6 +10,9 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 	import flash.utils.Dictionary;
 	import robotlegs.bender.extensions.viewProcessorMap.dsl.IViewProcessorMapping;
 
+	/**
+	 * @private
+	 */
 	public class ViewProcessorViewHandler implements IViewProcessorViewHandler
 	{
 
@@ -27,6 +30,9 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * @private
+		 */
 		public function ViewProcessorViewHandler(factory:IViewProcessorFactory):void
 		{
 			_factory = factory;
@@ -36,6 +42,9 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function addMapping(mapping:IViewProcessorMapping):void
 		{
 			const index:int = _mappings.indexOf(mapping);
@@ -45,6 +54,9 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			flushCache();
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function removeMapping(mapping:IViewProcessorMapping):void
 		{
 			const index:int = _mappings.indexOf(mapping);
@@ -54,6 +66,9 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			flushCache();
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function processItem(item:Object, type:Class):void
 		{
 			const interestedMappings:Array = getInterestedMappingsFor(item, type);
@@ -61,6 +76,9 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 				_factory.runProcessors(item, type, interestedMappings);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function unprocessItem(item:Object, type:Class):void
 		{
 			const interestedMappings:Array = getInterestedMappingsFor(item, type);

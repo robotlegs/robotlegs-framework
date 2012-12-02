@@ -13,6 +13,9 @@ package robotlegs.bender.extensions.viewManager
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
 
+	/**
+	 * This extension install a manual Stage Observer
+	 */
 	public class ManualStageObserverExtension implements IExtension
 	{
 
@@ -35,6 +38,9 @@ package robotlegs.bender.extensions.viewManager
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function extend(context:IContext):void
 		{
 			_installCount++;

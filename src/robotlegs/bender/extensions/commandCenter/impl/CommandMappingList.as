@@ -9,6 +9,9 @@ package robotlegs.bender.extensions.commandCenter.impl
 {
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 
+	/**
+	 * @private
+	 */
 	public class CommandMappingList
 	{
 
@@ -18,6 +21,9 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		private var _head:ICommandMapping;
 
+		/**
+		 * @private
+		 */
 		public function get head():ICommandMapping
 		{
 			return _head;
@@ -25,6 +31,9 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		private var _tail:ICommandMapping;
 
+		/**
+		 * @private
+		 */
 		public function get tail():ICommandMapping
 		{
 			return _tail;
@@ -34,6 +43,9 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @private
+		 */
 		public function add(node:ICommandMapping):void
 		{
 			if (_tail)
@@ -48,6 +60,9 @@ package robotlegs.bender.extensions.commandCenter.impl
 			}
 		}
 
+		/**
+		 * @private
+		 */
 		public function remove(node:ICommandMapping):void
 		{
 			if (node == _head)

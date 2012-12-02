@@ -9,6 +9,9 @@ package robotlegs.bender.extensions.viewManager.impl
 {
 	import flash.events.Event;
 
+	/**
+	 * @private
+	 */
 	public class ContainerBindingEvent extends Event
 	{
 
@@ -22,6 +25,9 @@ package robotlegs.bender.extensions.viewManager.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * @private
+		 */
 		public function ContainerBindingEvent(type:String)
 		{
 			super(type);
@@ -31,6 +37,9 @@ package robotlegs.bender.extensions.viewManager.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		override public function clone():Event
 		{
 			return new ContainerBindingEvent(type);

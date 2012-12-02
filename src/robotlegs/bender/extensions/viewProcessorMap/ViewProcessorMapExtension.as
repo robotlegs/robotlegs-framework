@@ -17,6 +17,9 @@ package robotlegs.bender.extensions.viewProcessorMap
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
 
+	/**
+	 * This extension install a View Processor Map into a context
+	 */
 	public class ViewProcessorMapExtension implements IExtension
 	{
 
@@ -36,6 +39,9 @@ package robotlegs.bender.extensions.viewProcessorMap
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function extend(context:IContext):void
 		{
 			_injector = context.injector;

@@ -8,8 +8,15 @@
 package robotlegs.bender.extensions.matching
 {
 
+	/**
+	 * Type matcher interface
+	 */
 	public interface ITypeMatcher
 	{
+		/**
+		 * Creates a Type Filter for this Type Matcher
+		 * @return The Type Filter
+		 */
 		function createTypeFilter():ITypeFilter;
 	}
 }

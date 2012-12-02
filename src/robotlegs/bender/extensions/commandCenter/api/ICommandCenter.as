@@ -10,10 +10,23 @@ package robotlegs.bender.extensions.commandCenter.api
 	import robotlegs.bender.extensions.commandCenter.dsl.ICommandMapper;
 	import robotlegs.bender.extensions.commandCenter.dsl.ICommandUnmapper;
 
+	/**
+	 * Creates command mappings for triggers
+	 */
 	public interface ICommandCenter
 	{
+		/**
+		 * Maps a trigger
+		 * @param trigger The trigger to map
+		 * @return Command Mapper
+		 */
 		function map(trigger:ICommandTrigger):ICommandMapper;
 
+		/**
+		 * Unmaps a trigger
+		 * @param trigger The trigger to unmap
+		 * @return Command Unmapper
+		 */
 		function unmap(trigger:ICommandTrigger):ICommandUnmapper;
 	}
 }

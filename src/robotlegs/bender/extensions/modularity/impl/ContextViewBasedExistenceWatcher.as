@@ -12,6 +12,9 @@ package robotlegs.bender.extensions.modularity.impl
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.ILogger;
 
+	/**
+	 * @private
+	 */
 	public class ContextViewBasedExistenceWatcher
 	{
 
@@ -31,6 +34,9 @@ package robotlegs.bender.extensions.modularity.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * @private
+		 */
 		public function ContextViewBasedExistenceWatcher(context:IContext, contextView:DisplayObjectContainer)
 		{
 			_logger = context.getLogger(this);

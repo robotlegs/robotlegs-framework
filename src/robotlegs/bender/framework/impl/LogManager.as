@@ -13,6 +13,8 @@ package robotlegs.bender.framework.impl
 
 	/**
 	 * The log manager creates loggers and is itself a log target
+	 *
+	 * @private
 	 */
 	public class LogManager implements ILogTarget
 	{
@@ -23,11 +25,17 @@ package robotlegs.bender.framework.impl
 
 		private var _logLevel:uint = LogLevel.INFO;
 
+		/**
+		 * The current log level
+		 */
 		public function get logLevel():uint
 		{
 			return _logLevel;
 		}
 
+		/**
+		 * Sets the current log level
+		 */
 		public function set logLevel(value:uint):void
 		{
 			_logLevel = value;

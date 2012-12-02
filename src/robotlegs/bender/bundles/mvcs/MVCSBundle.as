@@ -27,8 +27,8 @@ package robotlegs.bender.bundles.mvcs
 	/**
 	 * For that Classic Robotlegs flavour
 	 *
-	 * <p>This bundle installs a number of extensions commonly used in typical Robotlegs
-	 * applications and modules.</p>
+	 * <p>This bundle installs a number of extensions commonly used
+	 * in typical Robotlegs applications and modules.</p>
 	 */
 	public class MVCSBundle implements IBundle
 	{
@@ -37,6 +37,9 @@ package robotlegs.bender.bundles.mvcs
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function extend(context:IContext):void
 		{
 			context.install(

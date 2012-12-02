@@ -11,6 +11,9 @@ package robotlegs.bender.extensions.viewProcessorMap.api
 	import robotlegs.bender.extensions.viewProcessorMap.dsl.IViewProcessorMapper;
 	import robotlegs.bender.extensions.viewProcessorMap.dsl.IViewProcessorUnmapper;
 
+	/**
+	 * The View Processor Map allows you to bind views to processors
+	 */
 	public interface IViewProcessorMap
 	{
 		/**

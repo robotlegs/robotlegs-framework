@@ -32,6 +32,9 @@ package robotlegs.bender.bundles.mvcs
 
 		private var _viewComponent:Object;
 
+		/**
+		 * @private
+		 */
 		public function set viewComponent(view:Object):void
 		{
 			_viewComponent = view;
@@ -41,10 +44,16 @@ package robotlegs.bender.bundles.mvcs
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function initialize():void
 		{
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function destroy():void
 		{
 			eventMap.unmapListeners();

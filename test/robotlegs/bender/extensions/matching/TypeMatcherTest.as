@@ -159,8 +159,8 @@ package robotlegs.bender.extensions.matching
 			assertTrue("Failing test", true);
 		}
 
-		[Test(expects='flash.errors.IllegalOperationError')]
-		public function throws_IllegalOperationError_if_allOf_changed_after_filter_requested():void
+		[Test(expects='robotlegs.bender.extensions.matching.TypeMatcherError')]
+		public function throws_TypeMatcherError_if_allOf_changed_after_filter_requested():void
 		{
 			instance.anyOf(ANY_OF);
 			instance.createTypeFilter();
@@ -168,8 +168,8 @@ package robotlegs.bender.extensions.matching
 			instance.allOf(ALL_OF);
 		}
 
-		[Test(expects='flash.errors.IllegalOperationError')]
-		public function throws_IllegalOperationError_if_allOf_changed_after_lock():void
+		[Test(expects='robotlegs.bender.extensions.matching.TypeMatcherError')]
+		public function throws_TypeMatcherError_if_allOf_changed_after_lock():void
 		{
 			instance.anyOf(ANY_OF);
 			instance.lock();
@@ -177,8 +177,8 @@ package robotlegs.bender.extensions.matching
 			instance.allOf(ALL_OF);
 		}
 
-		[Test(expects='flash.errors.IllegalOperationError')]
-		public function throws_IllegalOperationError_if_anyOf_changed_after_filter_requested():void
+		[Test(expects='robotlegs.bender.extensions.matching.TypeMatcherError')]
+		public function throws_TypeMatcherError_if_anyOf_changed_after_filter_requested():void
 		{
 			instance.noneOf(NONE_OF);
 			instance.createTypeFilter();
@@ -186,8 +186,8 @@ package robotlegs.bender.extensions.matching
 			instance.anyOf(ALL_OF);
 		}
 
-		[Test(expects='flash.errors.IllegalOperationError')]
-		public function throws_IllegalOperationError_if_anyOf_changed_after_lock():void
+		[Test(expects='robotlegs.bender.extensions.matching.TypeMatcherError')]
+		public function throws_TypeMatcherError_if_anyOf_changed_after_lock():void
 		{
 			instance.noneOf(NONE_OF);
 			instance.lock();
@@ -195,8 +195,8 @@ package robotlegs.bender.extensions.matching
 			instance.anyOf(ALL_OF);
 		}
 
-		[Test(expects='flash.errors.IllegalOperationError')]
-		public function throws_IllegalOperationError_if_noneOf_changed_after_filter_requested():void
+		[Test(expects='robotlegs.bender.extensions.matching.TypeMatcherError')]
+		public function throws_TypeMatcherError_if_noneOf_changed_after_filter_requested():void
 		{
 			instance.allOf(ALL_OF);
 			instance.createTypeFilter();
@@ -204,8 +204,8 @@ package robotlegs.bender.extensions.matching
 			instance.noneOf(ALL_OF);
 		}
 
-		[Test(expects='flash.errors.IllegalOperationError')]
-		public function throws_IllegalOperationError_if_noneOf_changed_after_lock():void
+		[Test(expects='robotlegs.bender.extensions.matching.TypeMatcherError')]
+		public function throws_TypeMatcherError_if_noneOf_changed_after_lock():void
 		{
 			instance.allOf(ALL_OF);
 			instance.lock();

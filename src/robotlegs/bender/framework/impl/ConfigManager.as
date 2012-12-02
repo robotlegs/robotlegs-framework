@@ -24,6 +24,8 @@ package robotlegs.bender.framework.impl
 	 * allows the installation of custom configuration handlers.
 	 *
 	 * <p>It is pre-configured to handle plain objects and classes</p>
+	 *
+	 * @private
 	 */
 	public class ConfigManager
 	{
@@ -57,6 +59,9 @@ package robotlegs.bender.framework.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * @private
+		 */
 		public function ConfigManager(context:IContext)
 		{
 			_injector = context.injector;

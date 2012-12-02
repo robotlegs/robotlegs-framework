@@ -8,10 +8,23 @@
 package robotlegs.bender.extensions.mediatorMap.dsl
 {
 
+	/**
+	 * Configures a mediator mapping
+	 */
 	public interface IMediatorMappingConfig
 	{
+		/**
+		 * Guards to check before allowing a mediator to be created
+		 * @param guards Guards
+		 * @return Self
+		 */
 		function withGuards(... guards):IMediatorMappingConfig;
 
+		/**
+		 * Hooks to run before a mediator is created
+		 * @param hooks Hooks
+		 * @return Self
+		 */
 		function withHooks(... hooks):IMediatorMappingConfig;
 	}
 }

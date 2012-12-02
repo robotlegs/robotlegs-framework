@@ -19,6 +19,9 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 	[Event(name="mediatorCreate", type="robotlegs.bender.extensions.mediatorMap.api.MediatorFactoryEvent")]
 	[Event(name="mediatorRemove", type="robotlegs.bender.extensions.mediatorMap.api.MediatorFactoryEvent")]
+	/**
+	 * @private
+	 */
 	public class MediatorFactory extends EventDispatcher implements IMediatorFactory
 	{
 
@@ -34,6 +37,9 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * @private
+		 */
 		public function MediatorFactory(injector:Injector)
 		{
 			_injector = injector;
@@ -43,11 +49,17 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function getMediator(item:Object, mapping:IMediatorMapping):Object
 		{
 			return _mediators[item] ? _mediators[item][mapping] : null;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function createMediators(item:Object, type:Class, mappings:Array):Array
 		{
 			const createdMediators:Array = [];
@@ -71,6 +83,9 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			return createdMediators;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function removeMediators(item:Object):void
 		{
 			const mediators:Dictionary = _mediators[item];
@@ -90,6 +105,9 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			delete _mediators[item];
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function removeAllMediators():void
 		{
 			for (var item:Object in _mediators)

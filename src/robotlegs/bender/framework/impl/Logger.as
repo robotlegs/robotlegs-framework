@@ -13,6 +13,8 @@ package robotlegs.bender.framework.impl
 
 	/**
 	 * Default Robotlegs logger
+	 *
+	 * @private
 	 */
 	public class Logger implements ILogger
 	{
@@ -29,6 +31,11 @@ package robotlegs.bender.framework.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * Creates a new logger
+		 * @param source The log source object
+		 * @param target The log target
+		 */
 		public function Logger(source:Object, target:ILogTarget)
 		{
 			_source = source;

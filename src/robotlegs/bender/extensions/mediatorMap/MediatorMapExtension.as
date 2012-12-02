@@ -18,6 +18,9 @@ package robotlegs.bender.extensions.mediatorMap
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
 
+	/**
+	 * This extension installs a shared IMediatorMap into the context
+	 */
 	public class MediatorMapExtension implements IExtension
 	{
 
@@ -37,6 +40,9 @@ package robotlegs.bender.extensions.mediatorMap
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function extend(context:IContext):void
 		{
 			_injector = context.injector;

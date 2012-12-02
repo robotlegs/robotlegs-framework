@@ -12,6 +12,10 @@ package robotlegs.bender.extensions.commandCenter
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
 
+	/**
+	 * A low level extension that provides common command mapping functionality
+	 * for use in concrete command mapping extensions
+	 */
 	public class CommandCenterExtension implements IExtension
 	{
 
@@ -19,6 +23,9 @@ package robotlegs.bender.extensions.commandCenter
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function extend(context:IContext):void
 		{
 			context.injector.map(ICommandCenter).toSingleton(CommandCenter);

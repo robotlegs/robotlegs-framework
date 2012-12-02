@@ -10,6 +10,10 @@ package robotlegs.bender.extensions.viewManager.impl
 	import flash.display.DisplayObject;
 	import flash.events.Event;
 
+	/**
+	 * View Configuration Event
+	 * @private
+	 */
 	public class ConfigureViewEvent extends Event
 	{
 
@@ -25,6 +29,9 @@ package robotlegs.bender.extensions.viewManager.impl
 
 		private var _view:DisplayObject;
 
+		/**
+		 * The view instance associated with this event
+		 */
 		public function get view():DisplayObject
 		{
 			return _view;
@@ -34,6 +41,11 @@ package robotlegs.bender.extensions.viewManager.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * Creates a view configuration event
+		 * @param type The event type
+		 * @param view The associated view instance
+		 */
 		public function ConfigureViewEvent(type:String, view:DisplayObject = null)
 		{
 			super(type, true, true);
@@ -44,6 +56,9 @@ package robotlegs.bender.extensions.viewManager.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		override public function clone():Event
 		{
 			return new ConfigureViewEvent(type, _view);

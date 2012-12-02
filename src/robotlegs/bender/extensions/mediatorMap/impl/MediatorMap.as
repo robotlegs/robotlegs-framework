@@ -18,6 +18,9 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorUnmapper;
 	import robotlegs.bender.extensions.viewManager.api.IViewHandler;
 
+	/**
+	 * @private
+	 */
 	public class MediatorMap implements IMediatorMap, IViewHandler
 	{
 
@@ -37,6 +40,9 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * @private
+		 */
 		public function MediatorMap(factory:IMediatorFactory, handler:IMediatorViewHandler = null)
 		{
 			_factory = factory;
@@ -47,36 +53,57 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function mapMatcher(matcher:ITypeMatcher):IMediatorMapper
 		{
 			return _mappers[matcher.createTypeFilter().descriptor] ||= createMapper(matcher);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function map(type:Class):IMediatorMapper
 		{
 			return mapMatcher(new TypeMatcher().allOf(type));
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function unmapMatcher(matcher:ITypeMatcher):IMediatorUnmapper
 		{
 			return _mappers[matcher.createTypeFilter().descriptor] || NULL_UNMAPPER;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function unmap(type:Class):IMediatorUnmapper
 		{
 			return unmapMatcher(new TypeMatcher().allOf(type));
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function handleView(view:DisplayObject, type:Class):void
 		{
 			_handler.handleView(view, type);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function mediate(item:Object):void
 		{
 			_handler.handleItem(item, item.constructor as Class);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function unmediate(item:Object):void
 		{
 			_factory.removeMediators(item);

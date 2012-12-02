@@ -38,6 +38,9 @@ package robotlegs.bender.extensions.stageSync
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function extend(context:IContext):void
 		{
 			_context = context;

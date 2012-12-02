@@ -9,6 +9,9 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 {
 	import robotlegs.bender.extensions.viewProcessorMap.dsl.IViewProcessorUnmapper;
 
+	/**
+	 * @private
+	 */
 	public class NullViewProcessorUnmapper implements IViewProcessorUnmapper
 	{
 
@@ -16,24 +19,32 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @private
+		 */
 		public function fromProcess(processorClassOrInstance:*):void
 		{
-
 		}
 
+		/**
+		 * @private
+		 */
 		public function fromAll():void
 		{
-
 		}
 
+		/**
+		 * @private
+		 */
 		public function fromNoProcess():void
 		{
-
 		}
 
+		/**
+		 * @private
+		 */
 		public function fromInjection():void
 		{
-
 		}
 	}
 }

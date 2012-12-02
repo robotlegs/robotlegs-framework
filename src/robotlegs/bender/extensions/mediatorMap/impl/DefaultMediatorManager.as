@@ -15,6 +15,9 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
 	import robotlegs.bender.extensions.mediatorMap.api.MediatorFactoryEvent;
 
+	/**
+	 * @private
+	 */
 	public class DefaultMediatorManager
 	{
 
@@ -38,6 +41,9 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * @private
+		 */
 		public function DefaultMediatorManager(factory:IMediatorFactory)
 		{
 			_factory = factory;

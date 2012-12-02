@@ -10,6 +10,9 @@ package robotlegs.bender.extensions.viewManager.impl
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 
+	/**
+	 * @private
+	 */
 	public class ManualStageObserver
 	{
 
@@ -23,6 +26,9 @@ package robotlegs.bender.extensions.viewManager.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * @private
+		 */
 		public function ManualStageObserver(containerRegistry:ContainerRegistry)
 		{
 			_registry = containerRegistry;
@@ -40,6 +46,9 @@ package robotlegs.bender.extensions.viewManager.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @private
+		 */
 		public function destroy():void
 		{
 			_registry.removeEventListener(ContainerRegistryEvent.CONTAINER_ADD, onContainerAdd);

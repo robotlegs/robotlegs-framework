@@ -12,6 +12,14 @@ package robotlegs.bender.extensions.enhancedLogging
 	import robotlegs.bender.framework.api.IExtension;
 	import robotlegs.bender.framework.api.ILogger;
 
+	/**
+	 * Allows you to [Inject] unique loggers into your objects.
+	 *
+	 * <code>
+	 *     [Inject]
+	 *     public var logger:ILogger;
+	 * </code>
+	 */
 	public class InjectableLoggerExtension implements IExtension
 	{
 
@@ -19,6 +27,9 @@ package robotlegs.bender.extensions.enhancedLogging
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function extend(context:IContext):void
 		{
 			context.injector.map(ILogger).toProvider(new LoggerProvider(context));

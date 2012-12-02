@@ -16,6 +16,9 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorUnmapper;
 	import robotlegs.bender.framework.api.ILogger;
 
+	/**
+	 * @private
+	 */
 	public class MediatorMapper implements IMediatorMapper, IMediatorUnmapper
 	{
 
@@ -35,6 +38,9 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * @private
+		 */
 		public function MediatorMapper(typeFilter:ITypeFilter, handler:IMediatorViewHandler, logger:ILogger = null)
 		{
 			_typeFilter = typeFilter;
@@ -46,6 +52,9 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function toMediator(mediatorClass:Class):IMediatorMappingConfig
 		{
 			const mapping:IMediatorMapping = _mappings[mediatorClass];
@@ -54,12 +63,18 @@ package robotlegs.bender.extensions.mediatorMap.impl
 				: createMapping(mediatorClass);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function fromMediator(mediatorClass:Class):void
 		{
 			const mapping:IMediatorMapping = _mappings[mediatorClass];
 			mapping && deleteMapping(mapping);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function fromAll():void
 		{
 			for each (var mapping:IMediatorMapping in _mappings)

@@ -8,6 +8,9 @@
 package robotlegs.bender.extensions.enhancedLogging.impl
 {
 
+	/**
+	 * @private
+	 */
 	public class LogMessageParser
 	{
 
@@ -15,6 +18,12 @@ package robotlegs.bender.extensions.enhancedLogging.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * Parse a parametrized message
+		 * @param message The message string
+		 * @param params The parameter values
+		 * @return The parsed message
+		 */
 		public function parseMessage(message:String, params:Array):String
 		{
 			if (params)

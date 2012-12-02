@@ -60,6 +60,9 @@ package robotlegs.bender.extensions.modularity
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function extend(context:IContext):void
 		{
 			_context = context;

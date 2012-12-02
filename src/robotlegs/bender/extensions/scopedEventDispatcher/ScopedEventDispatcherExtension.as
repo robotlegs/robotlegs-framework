@@ -32,6 +32,14 @@ package robotlegs.bender.extensions.scopedEventDispatcher
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * Creates a Scoped Event Dispatcher Extension
+		 *
+		 * <p>Note: Names that have already been registered with a parent context
+		 * will not be mapped into this context Injector and will instead be inherited.</p>
+		 *
+		 * @param names A list of IEventDispatcher names to map into the Injector
+		 */
 		public function ScopedEventDispatcherExtension(... names)
 		{
 			_names = (names.length > 0) ? names : ["global"];
@@ -41,6 +49,9 @@ package robotlegs.bender.extensions.scopedEventDispatcher
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function extend(context:IContext):void
 		{
 			_injector = context.injector;

@@ -15,6 +15,9 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 	import robotlegs.bender.extensions.viewProcessorMap.dsl.IViewProcessorUnmapper;
 	import robotlegs.bender.framework.api.ILogger;
 
+	/**
+	 * @private
+	 */
 	public class ViewProcessorMapper implements IViewProcessorMapper, IViewProcessorUnmapper
 	{
 
@@ -34,6 +37,9 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * @private
+		 */
 		public function ViewProcessorMapper(matcher:ITypeFilter, handler:IViewProcessorViewHandler, logger:ILogger = null)
 		{
 			_handler = handler;
@@ -45,6 +51,9 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function toProcess(processClassOrInstance:*):IViewProcessorMappingConfig
 		{
 			const mapping:IViewProcessorMapping = _mappings[processClassOrInstance];
@@ -53,22 +62,34 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 				: createMapping(processClassOrInstance);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function toInjection():IViewProcessorMappingConfig
 		{
 			return toProcess(ViewInjectionProcessor);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function toNoProcess():IViewProcessorMappingConfig
 		{
 			return toProcess(NullProcessor);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function fromProcess(processorClassOrInstance:*):void
 		{
 			const mapping:IViewProcessorMapping = _mappings[processorClassOrInstance];
 			mapping && deleteMapping(mapping);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function fromAll():void
 		{
 			for (var processor:Object in _mappings)
@@ -77,11 +98,17 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			}
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function fromNoProcess():void
 		{
 			fromProcess(NullProcessor);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function fromInjection():void
 		{
 			fromProcess(ViewInjectionProcessor);

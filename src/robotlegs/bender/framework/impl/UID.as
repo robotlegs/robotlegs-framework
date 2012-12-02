@@ -9,6 +9,9 @@ package robotlegs.bender.framework.impl
 {
 	import flash.utils.getQualifiedClassName;
 
+	/**
+	 * Utility for generating unique object IDs
+	 */
 	public class UID
 	{
 

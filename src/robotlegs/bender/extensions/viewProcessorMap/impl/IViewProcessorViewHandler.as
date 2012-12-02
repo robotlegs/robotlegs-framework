@@ -9,14 +9,29 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 {
 	import robotlegs.bender.extensions.viewProcessorMap.dsl.IViewProcessorMapping;
 
+	/**
+	 * @private
+	 */
 	public interface IViewProcessorViewHandler
 	{
+		/**
+		 * @private
+		 */
 		function addMapping(mapping:IViewProcessorMapping):void;
 
+		/**
+		 * @private
+		 */
 		function removeMapping(mapping:IViewProcessorMapping):void;
 
+		/**
+		 * @private
+		 */
 		function processItem(item:Object, type:Class):void;
 
+		/**
+		 * @private
+		 */
 		function unprocessItem(item:Object, type:Class):void;
 	}
 }

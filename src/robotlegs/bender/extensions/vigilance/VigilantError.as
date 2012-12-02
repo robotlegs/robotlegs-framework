@@ -8,6 +8,9 @@
 package robotlegs.bender.extensions.vigilance
 {
 
+	/**
+	 * Vigilant Error
+	 */
 	public class VigilantError extends Error
 	{
 
@@ -15,6 +18,10 @@ package robotlegs.bender.extensions.vigilance
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * Creates a Vigilant Error
+		 * @param message The error message
+		 */
 		public function VigilantError(message:String)
 		{
 			super(message);

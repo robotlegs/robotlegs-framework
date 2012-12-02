@@ -15,6 +15,9 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import robotlegs.bender.framework.impl.applyHooks;
 	import robotlegs.bender.framework.impl.guardsApprove;
 
+	/**
+	 * @private
+	 */
 	public class EventCommandExecutor
 	{
 
@@ -34,6 +37,9 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * @private
+		 */
 		public function EventCommandExecutor(
 			trigger:ICommandTrigger,
 			mappings:CommandMappingList,
@@ -50,6 +56,10 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * Constructs and executes mapped Commands
+		 * @param event The event that triggered this execution
+		 */
 		public function execute(event:Event):void
 		{
 			// Note: this class is not nicely factored, but we do need speed here,

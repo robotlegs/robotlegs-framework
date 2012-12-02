@@ -16,6 +16,9 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import robotlegs.bender.extensions.commandCenter.dsl.ICommandUnmapper;
 	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
 
+	/**
+	 * @private
+	 */
 	public class EventCommandMap implements IEventCommandMap
 	{
 
@@ -35,6 +38,9 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * @private
+		 */
 		public function EventCommandMap(
 			injector:Injector,
 			dispatcher:IEventDispatcher,
@@ -49,6 +55,9 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function map(type:String, eventClass:Class = null):ICommandMapper
 		{
 			const trigger:ICommandTrigger =
@@ -57,6 +66,9 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			return _commandCenter.map(trigger);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function unmap(type:String, eventClass:Class = null):ICommandUnmapper
 		{
 			return _commandCenter.unmap(getTrigger(type, eventClass));

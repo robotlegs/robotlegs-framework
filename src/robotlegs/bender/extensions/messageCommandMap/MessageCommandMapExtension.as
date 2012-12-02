@@ -12,6 +12,9 @@ package robotlegs.bender.extensions.messageCommandMap
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
 
+	/**
+	 * The Message Command Map allows you to bind Messages to Commands
+	 */
 	public class MessageCommandMapExtension implements IExtension
 	{
 
@@ -19,6 +22,9 @@ package robotlegs.bender.extensions.messageCommandMap
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function extend(context:IContext):void
 		{
 			context.injector.map(IMessageCommandMap).toSingleton(MessageCommandMap);

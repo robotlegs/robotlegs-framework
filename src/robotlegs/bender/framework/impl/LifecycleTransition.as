@@ -11,6 +11,8 @@ package robotlegs.bender.framework.impl
 
 	/**
 	 * Handles a lifecycle transition
+	 *
+	 * @private
 	 */
 	public class LifecycleTransition
 	{
@@ -45,6 +47,11 @@ package robotlegs.bender.framework.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * Creates a lifecycle transition
+		 * @param name The name of the transition
+		 * @param lifecycle The associated lifecycle instance
+		 */
 		public function LifecycleTransition(name:String, lifecycle:Lifecycle)
 		{
 			_name = name;
@@ -55,6 +62,11 @@ package robotlegs.bender.framework.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * States that this transition is allowed to enter from
+		 * @param states Allowed states
+		 * @return Self
+		 */
 		public function fromStates(... states):LifecycleTransition
 		{
 			for each (var state:String in states)
@@ -62,6 +74,12 @@ package robotlegs.bender.framework.impl
 			return this;
 		}
 
+		/**
+		 * The states that this transition applies
+		 * @param transitionState The state that the target is put into during the transition
+		 * @param finalState The state that the target is put into after the transition
+		 * @return
+		 */
 		public function toStates(transitionState:String, finalState:String):LifecycleTransition
 		{
 			_transitionState = transitionState;
@@ -69,6 +87,13 @@ package robotlegs.bender.framework.impl
 			return this;
 		}
 
+		/**
+		 * The events that the lifecycle will dispatch
+		 * @param preTransitionEvent
+		 * @param transitionEvent
+		 * @param postTransitionEvent
+		 * @return Self
+		 */
 		public function withEvents(preTransitionEvent:String, transitionEvent:String, postTransitionEvent:String):LifecycleTransition
 		{
 			_preTransitionEvent = preTransitionEvent;
@@ -78,6 +103,10 @@ package robotlegs.bender.framework.impl
 			return this;
 		}
 
+		/**
+		 * Reverse the dispatch order of this transition
+		 * @return Self
+		 */
 		public function inReverse():LifecycleTransition
 		{
 			_reverse = true;
@@ -85,12 +114,21 @@ package robotlegs.bender.framework.impl
 			return this;
 		}
 
+		/**
+		 * A handler to run before the transition runs
+		 * @param handler Possibly asynchronous before handler
+		 * @return Self
+		 */
 		public function addBeforeHandler(handler:Function):LifecycleTransition
 		{
 			_dispatcher.addMessageHandler(_name, handler);
 			return this;
 		}
 
+		/**
+		 * Attempts to enter the transition
+		 * @param callback Completion callback
+		 */
 		public function enter(callback:Function = null):void
 		{
 			// immediately call back if we have already transitioned, and exit

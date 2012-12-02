@@ -9,6 +9,9 @@ package robotlegs.bender.extensions.contextView
 {
 	import flash.display.DisplayObjectContainer;
 
+	/**
+	 * The Context View represents the root DisplayObjectContainer for a Context
+	 */
 	public class ContextView
 	{
 
@@ -18,6 +21,9 @@ package robotlegs.bender.extensions.contextView
 
 		private var _view:DisplayObjectContainer;
 
+		/**
+		 * The root DisplayObjectContainer for this Context
+		 */
 		public function get view():DisplayObjectContainer
 		{
 			return _view;
@@ -27,6 +33,10 @@ package robotlegs.bender.extensions.contextView
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * The Context View represents the root DisplayObjectContainer for a Context
+		 * @param view The root DisplayObjectContainer for this Context
+		 */
 		public function ContextView(view:DisplayObjectContainer)
 		{
 			_view = view;

@@ -9,6 +9,9 @@ package robotlegs.bender.extensions.matching
 {
 	import flash.utils.getQualifiedClassName;
 
+	/**
+	 * @private
+	 */
 	public class TypeFilter implements ITypeFilter
 	{
 
@@ -16,11 +19,11 @@ package robotlegs.bender.extensions.matching
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		// TODO: Discuss whether we should return a slice here instead
-		// of references to actual vectors. Overhead vs encapsulation.
-
 		protected var _allOfTypes:Vector.<Class>;
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get allOfTypes():Vector.<Class>
 		{
 			return _allOfTypes;
@@ -28,29 +31,41 @@ package robotlegs.bender.extensions.matching
 
 		protected var _anyOfTypes:Vector.<Class>;
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get anyOfTypes():Vector.<Class>
 		{
 			return _anyOfTypes;
 		}
 
-		protected var _descriptor:String;
-
-		public function get descriptor():String
-		{
-			return _descriptor ||= createDescriptor();
-		}
-
 		protected var _noneOfTypes:Vector.<Class>;
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get noneOfTypes():Vector.<Class>
 		{
 			return _noneOfTypes;
+		}
+
+		protected var _descriptor:String;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get descriptor():String
+		{
+			return _descriptor ||= createDescriptor();
 		}
 
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * @private
+		 */
 		public function TypeFilter(allOf:Vector.<Class>, anyOf:Vector.<Class>, noneOf:Vector.<Class>)
 		{
 			if (!allOf || !anyOf || !noneOf)
@@ -64,6 +79,9 @@ package robotlegs.bender.extensions.matching
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function matches(item:*):Boolean
 		{
 			var i:uint = _allOfTypes.length;

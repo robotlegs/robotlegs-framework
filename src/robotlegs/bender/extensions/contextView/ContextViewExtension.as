@@ -34,6 +34,9 @@ package robotlegs.bender.extensions.contextView
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function extend(context:IContext):void
 		{
 			_injector = context.injector;

@@ -11,12 +11,20 @@ package robotlegs.bender.extensions.enhancedLogging
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
 
+	/**
+	 * This extension logs messages for all Injector actions.
+	 *
+	 * Warning: this extension will degrade the performance of your application.
+	 */
 	public class InjectorActivityLoggingExtension implements IExtension
 	{
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function extend(context:IContext):void
 		{
 			const listener:InjectorListener = new InjectorListener(

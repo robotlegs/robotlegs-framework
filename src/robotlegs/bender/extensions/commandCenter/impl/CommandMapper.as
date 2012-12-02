@@ -15,6 +15,9 @@ package robotlegs.bender.extensions.commandCenter.impl
 	import robotlegs.bender.extensions.commandCenter.dsl.ICommandUnmapper;
 	import robotlegs.bender.framework.api.ILogger;
 
+	/**
+	 * @private
+	 */
 	public class CommandMapper implements ICommandMapper, ICommandUnmapper
 	{
 
@@ -32,6 +35,11 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * Creates a Command Mapper
+		 * @param trigger Trigger
+		 * @param logger Logger
+		 */
 		public function CommandMapper(trigger:ICommandTrigger, logger:ILogger = null)
 		{
 			_trigger = trigger;
@@ -42,6 +50,9 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function toCommand(commandClass:Class):ICommandMappingConfig
 		{
 			const mapping:ICommandMapping = _mappings[commandClass];
@@ -50,12 +61,18 @@ package robotlegs.bender.extensions.commandCenter.impl
 				: createMapping(commandClass);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function fromCommand(commandClass:Class):void
 		{
 			const mapping:ICommandMapping = _mappings[commandClass];
 			mapping && deleteMapping(mapping);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function fromAll():void
 		{
 			for each (var mapping:ICommandMapping in _mappings)

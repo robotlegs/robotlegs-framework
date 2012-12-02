@@ -8,10 +8,21 @@
 package robotlegs.bender.extensions.commandCenter.api
 {
 
+	/**
+	 * Represents a command trigger
+	 */
 	public interface ICommandTrigger
 	{
+		/**
+		 * Adds a mapping to this trigger
+		 * @param mapping The Command Mapping to add
+		 */
 		function addMapping(mapping:ICommandMapping):void;
 
+		/**
+		 * Removes a mapping from this trigger
+		 * @param mapping The Command Mapping to remove
+		 */
 		function removeMapping(mapping:ICommandMapping):void;
 	}
 }

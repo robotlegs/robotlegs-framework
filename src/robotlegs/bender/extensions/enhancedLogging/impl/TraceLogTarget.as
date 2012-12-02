@@ -11,6 +11,10 @@ package robotlegs.bender.extensions.enhancedLogging.impl
 	import robotlegs.bender.framework.api.ILogTarget;
 	import robotlegs.bender.framework.api.LogLevel;
 
+	/**
+	 * A simple trace logger
+	 * @private
+	 */
 	public class TraceLogTarget implements ILogTarget
 	{
 
@@ -26,6 +30,10 @@ package robotlegs.bender.extensions.enhancedLogging.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * Creates a Trace Log Target
+		 * @param context Context
+		 */
 		public function TraceLogTarget(context:IContext)
 		{
 			_context = context;
@@ -35,6 +43,9 @@ package robotlegs.bender.extensions.enhancedLogging.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function log(source:Object, level:uint, timestamp:int, message:String, params:Array = null):void
 		{
 			trace(timestamp // (START + timestamp)

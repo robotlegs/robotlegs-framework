@@ -8,6 +8,9 @@
 package robotlegs.bender.extensions.viewProcessorMap.dsl
 {
 
+	/**
+	 * Maps a matcher to a process
+	 */
 	public interface IViewProcessorMapper
 	{
 		/**

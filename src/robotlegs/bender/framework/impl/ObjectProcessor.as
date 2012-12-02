@@ -11,6 +11,8 @@ package robotlegs.bender.framework.impl
 
 	/**
 	 * Robotlegs object processor
+	 *
+	 * @private
 	 */
 	public class ObjectProcessor
 	{
@@ -66,6 +68,9 @@ class ObjectHandler
 	/* Constructor                                                                */
 	/*============================================================================*/
 
+	/**
+	 * @private
+	 */
 	public function ObjectHandler(matcher:Matcher, handler:Function)
 	{
 		_matcher = matcher;
@@ -76,6 +81,9 @@ class ObjectHandler
 	/* Public Functions                                                           */
 	/*============================================================================*/
 
+	/**
+	 * @private
+	 */
 	public function handle(object:Object):void
 	{
 		_matcher.matches(object) && _handler(object);

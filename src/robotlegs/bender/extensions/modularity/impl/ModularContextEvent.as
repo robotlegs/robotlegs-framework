@@ -10,6 +10,10 @@ package robotlegs.bender.extensions.modularity.impl
 	import flash.events.Event;
 	import robotlegs.bender.framework.api.IContext;
 
+	/**
+	 * Module Context Event
+	 * @private
+	 */
 	public class ModularContextEvent extends Event
 	{
 
@@ -27,6 +31,9 @@ package robotlegs.bender.extensions.modularity.impl
 
 		private var _context:IContext;
 
+		/**
+		 * The context associated with this event
+		 */
 		public function get context():IContext
 		{
 			return _context;
@@ -36,6 +43,11 @@ package robotlegs.bender.extensions.modularity.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * Creates a Module Context Event
+		 * @param type The event type
+		 * @param context The associated context
+		 */
 		public function ModularContextEvent(type:String, context:IContext)
 		{
 			super(type, true, true);
@@ -46,6 +58,9 @@ package robotlegs.bender.extensions.modularity.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		override public function clone():Event
 		{
 			return new ModularContextEvent(type, context);

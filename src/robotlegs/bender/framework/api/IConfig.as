@@ -9,7 +9,7 @@ package robotlegs.bender.framework.api
 {
 
 	/**
-	 * Optional configuration interface
+	 * Optional application configuration interface
 	 *
 	 * <p>Note: a config does not need to implement this interface.</p>
 	 */

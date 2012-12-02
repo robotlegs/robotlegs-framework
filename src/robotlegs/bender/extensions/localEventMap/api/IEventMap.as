@@ -10,7 +10,8 @@ package robotlegs.bender.extensions.localEventMap.api
 	import flash.events.IEventDispatcher;
 
 	/**
-	 * The Robotlegs IEventMap contract
+	 * The Event Map keeps track of listeners and provides the ability
+	 * to unregister all listeners with a single method call.
 	 */
 	public interface IEventMap
 	{

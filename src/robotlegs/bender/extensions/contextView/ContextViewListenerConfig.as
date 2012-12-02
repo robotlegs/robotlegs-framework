@@ -33,6 +33,9 @@ package robotlegs.bender.extensions.contextView
 		/*============================================================================*/
 
 		[PostConstruct]
+		/**
+		 * Adds the Context View to the View Manager at startup
+		 */
 		public function init():void
 		{
 			viewManager.addContainer(contextView.view);

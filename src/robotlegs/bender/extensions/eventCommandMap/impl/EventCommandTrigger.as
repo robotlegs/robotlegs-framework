@@ -14,6 +14,9 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import robotlegs.bender.extensions.commandCenter.api.ICommandTrigger;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandMappingList;
 
+	/**
+	 * @private
+	 */
 	public class EventCommandTrigger implements ICommandTrigger
 	{
 
@@ -35,6 +38,9 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * @private
+		 */
 		public function EventCommandTrigger(
 			injector:Injector,
 			dispatcher:IEventDispatcher,
@@ -51,6 +57,9 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function addMapping(mapping:ICommandMapping):void
 		{
 			verifyCommandClass(mapping);
@@ -58,6 +67,9 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			_mappings.add(mapping);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function removeMapping(mapping:ICommandMapping):void
 		{
 			_mappings.remove(mapping);

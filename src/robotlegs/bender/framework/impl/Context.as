@@ -14,6 +14,9 @@ package robotlegs.bender.framework.impl
 	import robotlegs.bender.framework.api.ILogTarget;
 	import robotlegs.bender.framework.api.ILogger;
 
+	/**
+	 * The core Robotlegs Context implementation
+	 */
 	public class Context implements IContext
 	{
 
@@ -77,6 +80,9 @@ package robotlegs.bender.framework.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * Creates a new Context
+		 */
 		public function Context()
 		{
 			setup();
@@ -185,6 +191,9 @@ package robotlegs.bender.framework.impl
 		/* Private Functions                                                          */
 		/*============================================================================*/
 
+		/**
+		 * Configures mandatory context dependencies
+		 */
 		private function setup():void
 		{
 			_injector.map(Injector).toValue(_injector);

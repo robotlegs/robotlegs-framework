@@ -9,6 +9,10 @@ package robotlegs.bender.extensions.mediatorMap.api
 {
 	import flash.events.Event;
 
+	/**
+	 * Mediator Existence Event
+	 * @private
+	 */
 	public class MediatorFactoryEvent extends Event
 	{
 
@@ -26,6 +30,9 @@ package robotlegs.bender.extensions.mediatorMap.api
 
 		private var _mediator:Object;
 
+		/**
+		 * The mediator instance associated with this event
+		 */
 		public function get mediator():Object
 		{
 			return _mediator;
@@ -33,6 +40,9 @@ package robotlegs.bender.extensions.mediatorMap.api
 
 		private var _mediatedItem:Object;
 
+		/**
+		 * The mediated item associated with this event
+		 */
 		public function get mediatedItem():Object
 		{
 			return _mediatedItem;
@@ -40,6 +50,9 @@ package robotlegs.bender.extensions.mediatorMap.api
 
 		private var _mapping:IMediatorMapping;
 
+		/**
+		 * The mediator mapping associated with this event
+		 */
 		public function get mapping():IMediatorMapping
 		{
 			return _mapping;
@@ -47,6 +60,9 @@ package robotlegs.bender.extensions.mediatorMap.api
 
 		private var _factory:IMediatorFactory;
 
+		/**
+		 * The mediator factory associated with this event
+		 */
 		public function get factory():IMediatorFactory
 		{
 			return _factory;
@@ -56,6 +72,14 @@ package robotlegs.bender.extensions.mediatorMap.api
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * Creates a Mediator Existence Event
+		 * @param type
+		 * @param mediator
+		 * @param mediatedItem
+		 * @param mapping
+		 * @param factory
+		 */
 		public function MediatorFactoryEvent(
 			type:String,
 			mediator:Object,
@@ -74,6 +98,9 @@ package robotlegs.bender.extensions.mediatorMap.api
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		override public function clone():Event
 		{
 			return new MediatorFactoryEvent(type, _mediator, _mediatedItem, _mapping, _factory);

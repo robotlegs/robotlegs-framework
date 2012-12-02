@@ -12,6 +12,9 @@ package robotlegs.bender.extensions.enhancedLogging.impl
 	import org.swiftsuspenders.mapping.MappingEvent;
 	import robotlegs.bender.framework.api.ILogger;
 
+	/**
+	 * @private
+	 */
 	public class InjectorListener
 	{
 
@@ -44,6 +47,11 @@ package robotlegs.bender.extensions.enhancedLogging.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * Creates an Injector Listener
+		 * @param injector Injector
+		 * @param logger Logger
+		 */
 		public function InjectorListener(injector:Injector, logger:ILogger)
 		{
 			_injector = injector;
@@ -55,6 +63,9 @@ package robotlegs.bender.extensions.enhancedLogging.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * Destroys this listener
+		 */
 		public function destroy():void
 		{
 			var type:String;

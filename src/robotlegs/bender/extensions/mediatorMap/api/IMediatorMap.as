@@ -11,6 +11,9 @@ package robotlegs.bender.extensions.mediatorMap.api
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMapper;
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorUnmapper;
 
+	/**
+	 * The Mediator Map allows you to bind Mediators to objects
+	 */
 	public interface IMediatorMap
 	{
 		/**
