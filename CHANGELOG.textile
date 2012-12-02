@@ -1,5 +1,10 @@
 h2. Robotlegs Framework Changelog:
 
+h3. v2.0.0b2
+
+Asdocs
+EventCommandMap optimisations
+
 h3. v2.0.0b1
 
 Robotlegs 2 public beta
