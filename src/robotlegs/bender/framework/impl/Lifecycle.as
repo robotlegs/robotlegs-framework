@@ -14,6 +14,20 @@ package robotlegs.bender.framework.impl
 	import robotlegs.bender.framework.api.LifecycleEvent;
 	import robotlegs.bender.framework.api.LifecycleState;
 
+	[Event(name="destroy", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="error", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="initialize", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="postDestroy", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="postInitialize", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="postResume", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="postSuspend", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="preDestroy", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="preInitialize", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="preResume", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="preSuspend", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="resume", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="stateChange", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="suspend", type="robotlegs.bender.framework.api.LifecycleEvent")]
 	/**
 	 * Default object lifecycle
 	 *
@@ -28,6 +42,7 @@ package robotlegs.bender.framework.impl
 
 		private var _state:String = LifecycleState.UNINITIALIZED;
 
+		[Bindable("stateChange")]
 		/**
 		 * @inheritDoc
 		 */
@@ -279,13 +294,15 @@ package robotlegs.bender.framework.impl
 			if (_state == state)
 				return;
 			_state = state;
-			// todo: dispatch LifecycleEvent.STATE_CHANGE
+			dispatchEvent(new LifecycleEvent(LifecycleEvent.STATE_CHANGE));
 		}
 
 		internal function addReversedEventTypes(... types):void
 		{
 			for each (var type:String in types)
+			{
 				_reversedEventTypes[type] = true;
+			}
 		}
 
 		/*============================================================================*/

@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -13,7 +13,6 @@ package robotlegs.bender.framework.impl
 	import org.hamcrest.collection.array;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.isTrue;
-
 	import robotlegs.bender.framework.api.LifecycleEvent;
 	import robotlegs.bender.framework.api.LifecycleState;
 
@@ -320,8 +319,7 @@ package robotlegs.bender.framework.impl
 				LifecycleEvent.PRE_INITIALIZE, LifecycleEvent.INITIALIZE, LifecycleEvent.POST_INITIALIZE,
 				LifecycleEvent.PRE_SUSPEND, LifecycleEvent.SUSPEND, LifecycleEvent.POST_SUSPEND,
 				LifecycleEvent.PRE_RESUME, LifecycleEvent.RESUME, LifecycleEvent.POST_RESUME,
-				LifecycleEvent.PRE_DESTROY, LifecycleEvent.DESTROY, LifecycleEvent.POST_DESTROY
-			];
+				LifecycleEvent.PRE_DESTROY, LifecycleEvent.DESTROY, LifecycleEvent.POST_DESTROY];
 			const actual:Array = [];
 			lifecycle.beforeInitializing(createMessagePusher(actual));
 			lifecycle.whenInitializing(createMessagePusher(actual));
@@ -342,11 +340,24 @@ package robotlegs.bender.framework.impl
 			assertThat(actual, array(expected));
 		}
 
+		// ----- StateChange Event
+
+		[Test]
+		public function stateChange_triggers_event():void
+		{
+			var event:LifecycleEvent = null;
+			lifecycle.addEventListener(LifecycleEvent.STATE_CHANGE, function(e:LifecycleEvent):void {
+				event = e;
+			});
+			lifecycle.initialize();
+			assertThat(event.type, equalTo(LifecycleEvent.STATE_CHANGE));
+		}
+
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
 
-		private static function methodErrorCount(methods:Array):int
+		private function methodErrorCount(methods:Array):int
 		{
 			var errorCount:int = 0;
 			for each (var method:Function in methods)

@@ -21,6 +21,8 @@ package robotlegs.bender.framework.api
 
 		public static const ERROR:String = "error";
 
+		public static const STATE_CHANGE:String = "stateChange";
+
 		public static const PRE_INITIALIZE:String = "preInitialize";
 
 		public static const INITIALIZE:String = "initialize";
