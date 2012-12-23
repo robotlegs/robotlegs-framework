@@ -51,6 +51,23 @@ package robotlegs.bender.framework.api
 		function configure(... configs):IContext;
 
 		/**
+		 * Adds an uninitialized context as a child
+		 *
+		 * <p>This sets up an injection chain.</p>
+		 *
+		 * @param child The context to add as a child
+		 * @return this
+		 */
+		function addChild(child:IContext):IContext;
+
+		/**
+		 * Removes a child context from this context
+		 * @param child The child context to remove
+		 * @return this
+		 */
+		function removeChild(child:IContext):IContext;
+
+		/**
 		 * Adds a custom configuration handler
 		 * @param matcher Pattern to match configurations
 		 * @param handler Handler to process matching configurations

@@ -8,13 +8,19 @@
 package robotlegs.bender.framework.impl
 {
 	import org.flexunit.assertThat;
+	import org.hamcrest.collection.array;
 	import org.hamcrest.core.isA;
 	import org.hamcrest.object.equalTo;
+	import org.hamcrest.object.nullValue;
 	import org.hamcrest.object.strictlyEqualTo;
+	import org.hamcrest.text.containsString;
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
+	import robotlegs.bender.framework.api.LogLevel;
 	import robotlegs.bender.framework.impl.contextSupport.CallbackExtension;
+	import robotlegs.bender.framework.impl.loggingSupport.CallbackLogTarget;
+	import robotlegs.bender.framework.impl.loggingSupport.LogParams;
 
 	public class ContextTest
 	{
@@ -74,6 +80,52 @@ package robotlegs.bender.framework.impl
 		public function release_is_pretty_much_untestable():void
 		{
 			context.release({}, {});
+		}
+
+		[Test]
+		public function addChild_sets_child_parentInjector():void
+		{
+			const child:Context = new Context();
+			context.addChild(child);
+			assertThat(child.injector.parentInjector, equalTo(context.injector));
+		}
+
+		[Test]
+		public function addChild_logs_warning_unless_child_is_uninitialized():void
+		{
+			var warning:LogParams = null;
+			context.addLogTarget(new CallbackLogTarget(
+				function(log:LogParams):void {
+					(log.level == LogLevel.WARN) && (warning = log);
+				}));
+			const child:Context = new Context();
+			child.initialize();
+			context.addChild(child);
+			assertThat(warning.message, containsString("must be uninitialized"));
+			assertThat(warning.params, array(child));
+		}
+
+		[Test]
+		public function removeChild_logs_warning_if_child_is_NOT_a_child():void
+		{
+			var warning:LogParams = null;
+			context.addLogTarget(new CallbackLogTarget(
+				function(log:LogParams):void {
+					(log.level == LogLevel.WARN) && (warning = log);
+				}));
+			const child:Context = new Context();
+			context.removeChild(child);
+			assertThat(warning.message, containsString("must be a child"));
+			assertThat(warning.params, array(child, context));
+		}
+
+		[Test]
+		public function removesChild_clears_child_parentInjector():void
+		{
+			const child:Context = new Context();
+			context.addChild(child);
+			context.removeChild(child);
+			assertThat(child.injector.parentInjector, nullValue());
 		}
 	}
 }

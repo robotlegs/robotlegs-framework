@@ -13,6 +13,7 @@ package robotlegs.bender.framework.impl
 	import robotlegs.bender.framework.api.ILifecycle;
 	import robotlegs.bender.framework.api.ILogTarget;
 	import robotlegs.bender.framework.api.ILogger;
+	import robotlegs.bender.framework.api.LifecycleState;
 
 	/**
 	 * The core Robotlegs Context implementation
@@ -129,6 +130,34 @@ package robotlegs.bender.framework.impl
 			{
 				_configManager.addConfig(config);
 			}
+			return this;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function addChild(child:IContext):IContext
+		{
+			_logger.info("Adding child context {0}", [child]);
+			if (child.lifecycle.state != LifecycleState.UNINITIALIZED)
+			{
+				_logger.warn("Child context {0} must be uninitialized", [child]);
+			}
+			child.injector.parentInjector = injector;
+			return this;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function removeChild(child:IContext):IContext
+		{
+			_logger.info("Removing child context {0}", [child]);
+			if (child.injector.parentInjector != injector)
+			{
+				_logger.warn("Child context {0} must be a child of {1}", [child, this]);
+			}
+			child.injector.parentInjector = null;
 			return this;
 		}
 

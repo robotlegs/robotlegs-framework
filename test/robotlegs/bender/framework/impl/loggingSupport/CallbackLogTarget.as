@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -33,12 +33,7 @@ package robotlegs.bender.framework.impl.loggingSupport
 
 		public function log(source:Object, level:uint, timestamp:int, message:String, params:Array = null):void
 		{
-			_callback && _callback({
-					source: source,
-					level: level,
-					timestamp: timestamp,
-					message: message,
-					params: params});
+			_callback && _callback(new LogParams(source, level, timestamp, message, params));
 		}
 	}
 }
