@@ -40,8 +40,8 @@ package robotlegs.bender.extensions.commandCenter
 		[Test]
 		public function commandMap_is_mapped_into_injector():void
 		{
-			var actual:Object;
-			context.lifecycle.whenInitializing( function():void {
+			var actual:Object = null;
+			context.whenInitializing( function():void {
 				actual = context.injector.getInstance(ICommandCenter);
 			});
 			context.initialize();

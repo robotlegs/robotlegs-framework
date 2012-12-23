@@ -48,9 +48,9 @@ package robotlegs.bender.extensions.mediatorMap
 			_injector = context.injector;
 			_injector.map(IMediatorFactory).toSingleton(MediatorFactory);
 			_injector.map(IMediatorMap).toSingleton(MediatorMap);
-			context.lifecycle.beforeInitializing(beforeInitializing);
-			context.lifecycle.beforeDestroying(beforeDestroying);
-			context.lifecycle.whenDestroying(whenDestroying);
+			context.beforeInitializing(beforeInitializing);
+			context.beforeDestroying(beforeDestroying);
+			context.whenDestroying(whenDestroying);
 		}
 
 		/*============================================================================*/

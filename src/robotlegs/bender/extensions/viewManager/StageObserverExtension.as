@@ -45,8 +45,8 @@ package robotlegs.bender.extensions.viewManager
 		{
 			_installCount++;
 			_injector = context.injector;
-			context.lifecycle.whenInitializing(whenInitializing);
-			context.lifecycle.whenDestroying(whenDestroying);
+			context.whenInitializing(whenInitializing);
+			context.whenDestroying(whenDestroying);
 		}
 
 		/*============================================================================*/

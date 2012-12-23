@@ -55,7 +55,7 @@ package robotlegs.bender.extensions.scopedEventDispatcher
 		public function extend(context:IContext):void
 		{
 			_injector = context.injector;
-			context.lifecycle.whenInitializing(whenInitializing);
+			context.whenInitializing(whenInitializing);
 		}
 
 		/*============================================================================*/

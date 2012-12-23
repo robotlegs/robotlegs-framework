@@ -47,9 +47,9 @@ package robotlegs.bender.extensions.viewProcessorMap
 			_injector = context.injector;
 			_injector.map(IViewProcessorFactory).toValue(new ViewProcessorFactory(_injector.createChildInjector()));
 			_injector.map(IViewProcessorMap).toSingleton(ViewProcessorMap);
-			context.lifecycle.beforeInitializing(beforeInitializing);
-			context.lifecycle.beforeDestroying(beforeDestroying);
-			context.lifecycle.whenDestroying(whenDestroying);
+			context.beforeInitializing(beforeInitializing);
+			context.beforeDestroying(beforeDestroying);
+			context.whenDestroying(whenDestroying);
 		}
 
 		/*============================================================================*/

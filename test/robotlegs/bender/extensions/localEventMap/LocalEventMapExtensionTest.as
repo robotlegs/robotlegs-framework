@@ -41,7 +41,7 @@ package robotlegs.bender.extensions.localEventMap
 		public function localEventMap_is_mapped_into_injector():void
 		{
 			var actual:Object = null;
-			context.lifecycle.whenInitializing(function():void {
+			context.whenInitializing(function():void {
 				actual = context.injector.getInstance(IEventMap);
 			});
 			context.initialize();

@@ -53,8 +53,8 @@ package robotlegs.bender.extensions.viewManager
 			// But you get your own View Manager
 			_injector.map(IViewManager).toSingleton(ViewManager);
 
-			context.lifecycle.whenInitializing(whenInitializing);
-			context.lifecycle.whenDestroying(whenDestroying);
+			context.whenInitializing(whenInitializing);
+			context.whenDestroying(whenDestroying);
 		}
 
 		/*============================================================================*/

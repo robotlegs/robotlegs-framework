@@ -43,7 +43,7 @@ package robotlegs.bender.extensions.messageCommandMap
 		{
 			var actual:Object = null;
 			context.install(MessageCommandMapExtension);
-			context.lifecycle.whenInitializing(function():void {
+			context.whenInitializing(function():void {
 				actual = context.injector.getInstance(IMessageCommandMap);
 			});
 			context.initialize();

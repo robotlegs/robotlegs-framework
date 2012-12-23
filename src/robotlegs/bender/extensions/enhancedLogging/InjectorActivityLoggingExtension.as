@@ -29,7 +29,7 @@ package robotlegs.bender.extensions.enhancedLogging
 		{
 			const listener:InjectorListener = new InjectorListener(
 				context.injector, context.getLogger(this));
-			context.lifecycle.afterDestroying(listener.destroy);
+			context.afterDestroying(listener.destroy);
 		}
 
 	}

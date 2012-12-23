@@ -42,7 +42,7 @@ package robotlegs.bender.extensions.contextView
 			_injector = context.injector;
 			_logger = context.getLogger(this);
 			context.addConfigHandler(instanceOf(ContextView), handleContextView);
-			context.lifecycle.beforeInitializing(beforeInitializing);
+			context.beforeInitializing(beforeInitializing);
 		}
 
 		/*============================================================================*/

@@ -7,23 +7,32 @@
 
 package robotlegs.bender.framework.api
 {
+	import flash.events.IEventDispatcher;
 	import org.hamcrest.Matcher;
 	import org.swiftsuspenders.Injector;
 
+	[Event(name="destroy", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="initialize", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="postDestroy", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="postInitialize", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="postResume", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="postSuspend", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="preDestroy", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="preInitialize", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="preResume", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="preSuspend", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="resume", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="stateChange", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="suspend", type="robotlegs.bender.framework.api.LifecycleEvent")]
 	/**
 	 * The Robotlegs context contract
 	 */
-	public interface IContext
+	public interface IContext extends IEventDispatcher
 	{
 		/**
 		 * The context dependency injector
 		 */
 		function get injector():Injector;
-
-		/**
-		 * The context lifecycle
-		 */
-		function get lifecycle():ILifecycle;
 
 		/**
 		 * The current log level
@@ -35,6 +44,36 @@ package robotlegs.bender.framework.api
 		 * @param value The log level. Use a constant from LogLevel
 		 */
 		function set logLevel(value:uint):void;
+
+		/**
+		 * The current lifecycle state
+		 */
+		function get state():String;
+
+		/**
+		 * Is this context uninitialized?
+		 */
+		function get uninitialized():Boolean;
+
+		/**
+		 * Is this context initialized?
+		 */
+		function get initialized():Boolean;
+
+		/**
+		 * Is this context active?
+		 */
+		function get active():Boolean;
+
+		/**
+		 * Is this context suspended?
+		 */
+		function get suspended():Boolean;
+
+		/**
+		 * Has this context been destroyed?
+		 */
+		function get destroyed():Boolean;
 
 		/**
 		 * Installs custom extensions or bundles into the context
@@ -102,5 +141,141 @@ package robotlegs.bender.framework.api
 		 * @return this
 		 */
 		function release(... instances):IContext;
+
+		/**
+		 * Initializes this context
+		 * @param callback Initialization callback
+		 */
+		function initialize(callback:Function = null):void;
+
+		/**
+		 * Suspends this context
+		 * @param callback Suspension callback
+		 */
+		function suspend(callback:Function = null):void;
+
+		/**
+		 * Resumes a suspended context
+		 * @param callback Resumption callback
+		 */
+		function resume(callback:Function = null):void;
+
+		/**
+		 * Destroys an active context
+		 * @param callback Destruction callback
+		 */
+		function destroy(callback:Function = null):void;
+
+		/**
+		 * A handler to run before the context is initialized
+		 *
+		 * <p>The handler can be asynchronous. See: readme-async</p>
+		 *
+		 * @param handler Pre-initialize handler
+		 * @return this
+		 */
+		function beforeInitializing(handler:Function):IContext;
+
+		/**
+		 * A handler to run during initialization
+		 *
+		 * <p>Note: The handler must be synchronous.</p>
+		 * @param handler Initialization handler
+		 * @return this
+		 */
+		function whenInitializing(handler:Function):IContext;
+
+		/**
+		 * A handler to run after initialization
+		 *
+		 * <p>Note: The handler must be synchronous.</p>
+		 * @param handler Post-initialize handler
+		 * @return this
+		 */
+		function afterInitializing(handler:Function):IContext;
+
+		/**
+		 * A handler to run before the target object is suspended
+		 *
+		 * <p>The handler can be asynchronous. See: readme-async</p>
+		 *
+		 * @param handler Pre-suspend handler
+		 * @return this
+		 */
+		function beforeSuspending(handler:Function):IContext;
+
+		/**
+		 * A handler to run during suspension
+		 *
+		 * <p>Note: The handler must be synchronous.</p>
+		 * @param handler Suspension handler
+		 * @return this
+		 */
+		function whenSuspending(handler:Function):IContext;
+
+		/**
+		 * A handler to run after suspension
+		 *
+		 * <p>Note: The handler must be synchronous.</p>
+		 * @param handler Post-suspend handler
+		 * @return this
+		 */
+		function afterSuspending(handler:Function):IContext;
+
+		/**
+		 * A handler to run before the context is resumed
+		 *
+		 * <p>The handler can be asynchronous. See: readme-async</p>
+		 *
+		 * @param handler Pre-resume handler
+		 * @return this
+		 */
+		function beforeResuming(handler:Function):IContext;
+
+		/**
+		 * A handler to run during resumption
+		 *
+		 * <p>Note: The handler must be synchronous.</p>
+		 * @param handler Resumption handler
+		 * @return this
+		 */
+		function whenResuming(handler:Function):IContext;
+
+		/**
+		 * A handler to run after resumption
+		 *
+		 * <p>Note: The handler must be synchronous.</p>
+		 * @param handler Post-resume handler
+		 * @return Self
+		 */
+		function afterResuming(handler:Function):IContext;
+
+		/**
+		 * A handler to run before the context is destroyed
+		 *
+		 * <p>The handler can be asynchronous. See: readme-async</p>
+		 *
+		 * @param handler Pre-destroy handler
+		 * @return this
+		 */
+		function beforeDestroying(handler:Function):IContext;
+
+		/**
+		 * A handler to run during destruction
+		 *
+		 * <p>Note: The handler must be synchronous.</p>
+		 * @param handler Destruction handler
+		 * @return this
+		 */
+		function whenDestroying(handler:Function):IContext;
+
+		/**
+		 * A handler to run after destruction
+		 *
+		 * <p>Note: The handler must be synchronous.</p>
+		 * @param handler Post-destroy handler
+		 * @return this
+		 */
+		function afterDestroying(handler:Function):IContext;
 	}
 }

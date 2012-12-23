@@ -68,7 +68,7 @@ package robotlegs.bender.extensions.modularity
 			_context = context;
 			_injector = context.injector;
 			_logger = context.getLogger(this);
-			_context.lifecycle.beforeInitializing(beforeInitializing);
+			_context.beforeInitializing(beforeInitializing);
 		}
 
 		/*============================================================================*/

@@ -43,10 +43,10 @@ package robotlegs.bender.extensions.messageDispatcher
 		{
 			var actual:Object = null;
 			context.install(MessageDispatcherExtension);
-			context.lifecycle.whenInitializing(function():void {
+			context.whenInitializing(function():void {
 				actual = context.injector.getInstance(IMessageDispatcher);
 			});
-			context.lifecycle.initialize();
+			context.initialize();
 			assertThat(actual, instanceOf(IMessageDispatcher));
 		}
 
@@ -56,10 +56,10 @@ package robotlegs.bender.extensions.messageDispatcher
 			const expected:IMessageDispatcher = new MessageDispatcher();
 			var actual:Object = null;
 			context.install(new MessageDispatcherExtension(expected));
-			context.lifecycle.whenInitializing(function():void {
+			context.whenInitializing(function():void {
 				actual = context.injector.getInstance(IMessageDispatcher);
 			});
-			context.lifecycle.initialize();
+			context.initialize();
 			assertThat(actual, equalTo(expected));
 		}
 	}

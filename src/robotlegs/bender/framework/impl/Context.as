@@ -7,18 +7,30 @@
 
 package robotlegs.bender.framework.impl
 {
+	import flash.events.EventDispatcher;
 	import org.hamcrest.Matcher;
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.framework.api.IContext;
-	import robotlegs.bender.framework.api.ILifecycle;
 	import robotlegs.bender.framework.api.ILogTarget;
 	import robotlegs.bender.framework.api.ILogger;
-	import robotlegs.bender.framework.api.LifecycleState;
 
+	[Event(name="destroy", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="initialize", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="postDestroy", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="postInitialize", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="postResume", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="postSuspend", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="preDestroy", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="preInitialize", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="preResume", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="preSuspend", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="resume", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="stateChange", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="suspend", type="robotlegs.bender.framework.api.LifecycleEvent")]
 	/**
 	 * The core Robotlegs Context implementation
 	 */
-	public class Context implements IContext
+	public class Context extends EventDispatcher implements IContext
 	{
 
 		/*============================================================================*/
@@ -51,14 +63,53 @@ package robotlegs.bender.framework.impl
 			_logManager.logLevel = value;
 		}
 
-		private var _lifecycle:Lifecycle;
+		[Bindable("stateChange")]
+		/**
+		 * @inheritDoc
+		 */
+		public function get state():String
+		{
+			return _lifecycle.state;
+		}
 
 		/**
 		 * @inheritDoc
 		 */
-		public function get lifecycle():ILifecycle
+		public function get uninitialized():Boolean
 		{
-			return _lifecycle;
+			return _lifecycle.uninitialized;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get initialized():Boolean
+		{
+			return _lifecycle.initialized;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get active():Boolean
+		{
+			return _lifecycle.active;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get suspended():Boolean
+		{
+			return _lifecycle.suspended;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get destroyed():Boolean
+		{
+			return _lifecycle.destroyed;
 		}
 
 		/*============================================================================*/
@@ -70,6 +121,8 @@ package robotlegs.bender.framework.impl
 		private const _logManager:LogManager = new LogManager();
 
 		private const _pin:Pin = new Pin();
+
+		private var _lifecycle:Lifecycle;
 
 		private var _configManager:ConfigManager;
 
@@ -96,17 +149,141 @@ package robotlegs.bender.framework.impl
 		/**
 		 * @inheritDoc
 		 */
-		public function initialize():void
+		public function initialize(callback:Function = null):void
 		{
-			_lifecycle.initialize();
+			_lifecycle.initialize(callback);
 		}
 
 		/**
 		 * @inheritDoc
 		 */
-		public function destroy():void
+		public function suspend(callback:Function = null):void
 		{
-			_lifecycle.destroy();
+			_lifecycle.suspend(callback);
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function resume(callback:Function = null):void
+		{
+			_lifecycle.resume(callback);
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function destroy(callback:Function = null):void
+		{
+			_lifecycle.destroy(callback);
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function beforeInitializing(handler:Function):IContext
+		{
+			_lifecycle.beforeInitializing(handler);
+			return this;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function whenInitializing(handler:Function):IContext
+		{
+			_lifecycle.whenInitializing(handler);
+			return this;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function afterInitializing(handler:Function):IContext
+		{
+			_lifecycle.afterInitializing(handler);
+			return this;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function beforeSuspending(handler:Function):IContext
+		{
+			_lifecycle.beforeSuspending(handler);
+			return this;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function whenSuspending(handler:Function):IContext
+		{
+			_lifecycle.whenSuspending(handler);
+			return this;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function afterSuspending(handler:Function):IContext
+		{
+			_lifecycle.afterSuspending(handler);
+			return this;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function beforeResuming(handler:Function):IContext
+		{
+			_lifecycle.beforeResuming(handler);
+			return this;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function whenResuming(handler:Function):IContext
+		{
+			_lifecycle.whenResuming(handler);
+			return this;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function afterResuming(handler:Function):IContext
+		{
+			_lifecycle.afterResuming(handler);
+			return this;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function beforeDestroying(handler:Function):IContext
+		{
+			_lifecycle.beforeDestroying(handler);
+			return this;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function whenDestroying(handler:Function):IContext
+		{
+			_lifecycle.whenDestroying(handler);
+			return this;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function afterDestroying(handler:Function):IContext
+		{
+			_lifecycle.afterDestroying(handler);
+			return this;
 		}
 
 		/**
@@ -139,7 +316,7 @@ package robotlegs.bender.framework.impl
 		public function addChild(child:IContext):IContext
 		{
 			_logger.info("Adding child context {0}", [child]);
-			if (child.lifecycle.state != LifecycleState.UNINITIALIZED)
+			if (!child.uninitialized)
 			{
 				_logger.warn("Child context {0} must be uninitialized", [child]);
 			}
@@ -211,7 +388,10 @@ package robotlegs.bender.framework.impl
 			return this;
 		}
 
-		public function toString():String
+		/**
+		 * @inheritDoc
+		 */
+		override public function toString():String
 		{
 			return _uid;
 		}
@@ -231,28 +411,28 @@ package robotlegs.bender.framework.impl
 			_lifecycle = new Lifecycle(this);
 			_configManager = new ConfigManager(this);
 			_extensionInstaller = new ExtensionInstaller(this);
-			_lifecycle.beforeInitializing(beforeInitializing);
-			_lifecycle.afterInitializing(afterInitializing);
-			_lifecycle.beforeDestroying(beforeDestroying);
-			_lifecycle.afterDestroying(afterDestroying);
+			beforeInitializing(beforeInitializingCallback);
+			afterInitializing(afterInitializingCallback);
+			beforeDestroying(beforeDestroyingCallback);
+			afterDestroying(afterDestroyingCallback);
 		}
 
-		private function beforeInitializing():void
+		private function beforeInitializingCallback():void
 		{
 			_logger.info("Initializing...");
 		}
 
-		private function afterInitializing():void
+		private function afterInitializingCallback():void
 		{
 			_logger.info("Initialize complete");
 		}
 
-		private function beforeDestroying():void
+		private function beforeDestroyingCallback():void
 		{
 			_logger.info("Destroying...");
 		}
 
-		private function afterDestroying():void
+		private function afterDestroyingCallback():void
 		{
 			_pin.flush();
 			_injector.teardown();

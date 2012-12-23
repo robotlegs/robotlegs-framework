@@ -71,7 +71,7 @@ package robotlegs.bender.framework.impl
 			// The ConfigManager should process the config queue
 			// at the end of the INITIALIZE phase,
 			// but *before* POST_INITIALIZE, so use low event priority
-			context.lifecycle.addEventListener(LifecycleEvent.INITIALIZE, initialize, false, -100);
+			context.addEventListener(LifecycleEvent.INITIALIZE, initialize, false, -100);
 		}
 
 		/*============================================================================*/

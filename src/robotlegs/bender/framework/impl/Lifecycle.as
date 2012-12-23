@@ -7,6 +7,7 @@
 
 package robotlegs.bender.framework.impl
 {
+	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
 	import flash.utils.Dictionary;
@@ -33,7 +34,7 @@ package robotlegs.bender.framework.impl
 	 *
 	 * @private
 	 */
-	public class Lifecycle extends EventDispatcher implements ILifecycle
+	public class Lifecycle implements ILifecycle
 	{
 
 		/*============================================================================*/
@@ -118,6 +119,8 @@ package robotlegs.bender.framework.impl
 
 		private var _destroy:LifecycleTransition;
 
+		private var _dispatcher:IEventDispatcher;
+
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
@@ -129,6 +132,7 @@ package robotlegs.bender.framework.impl
 		public function Lifecycle(target:Object)
 		{
 			_target = target;
+			_dispatcher = target as IEventDispatcher || new EventDispatcher(this);
 			configureTransitions();
 		}
 
@@ -279,10 +283,42 @@ package robotlegs.bender.framework.impl
 		/**
 		 * @inheritDoc
 		 */
-		override public function addEventListener(type:String, listener:Function, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = false):void
+		public function addEventListener(type:String, listener:Function, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = false):void
 		{
 			priority = flipPriority(type, priority);
-			super.addEventListener(type, listener, useCapture, priority, useWeakReference);
+			_dispatcher.addEventListener(type, listener, useCapture, priority, useWeakReference);
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function removeEventListener(type:String, listener:Function, useCapture:Boolean = false):void
+		{
+			_dispatcher.removeEventListener(type, listener, useCapture);
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function dispatchEvent(event:Event):Boolean
+		{
+			return _dispatcher.dispatchEvent(event);
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function hasEventListener(type:String):Boolean
+		{
+			return _dispatcher.hasEventListener(type);
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function willTrigger(type:String):Boolean
+		{
+			return _dispatcher.willTrigger(type);
 		}
 
 		/*============================================================================*/

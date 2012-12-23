@@ -11,12 +11,14 @@ package robotlegs.bender.framework.impl
 	import org.hamcrest.collection.array;
 	import org.hamcrest.core.isA;
 	import org.hamcrest.object.equalTo;
+	import org.hamcrest.object.isTrue;
 	import org.hamcrest.object.nullValue;
 	import org.hamcrest.object.strictlyEqualTo;
 	import org.hamcrest.text.containsString;
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
+	import robotlegs.bender.framework.api.LifecycleEvent;
 	import robotlegs.bender.framework.api.LogLevel;
 	import robotlegs.bender.framework.impl.contextSupport.CallbackExtension;
 	import robotlegs.bender.framework.impl.loggingSupport.CallbackLogTarget;
@@ -126,6 +128,39 @@ package robotlegs.bender.framework.impl
 			context.addChild(child);
 			context.removeChild(child);
 			assertThat(child.injector.parentInjector, nullValue());
+		}
+
+		[Test]
+		public function lifecycleEvents_are_propagated():void
+		{
+			const actual:Array = [];
+			const expected:Array = [LifecycleEvent.PRE_INITIALIZE, LifecycleEvent.INITIALIZE, LifecycleEvent.POST_INITIALIZE,
+				LifecycleEvent.PRE_SUSPEND, LifecycleEvent.SUSPEND, LifecycleEvent.POST_SUSPEND,
+				LifecycleEvent.PRE_RESUME, LifecycleEvent.RESUME, LifecycleEvent.POST_RESUME,
+				LifecycleEvent.PRE_DESTROY, LifecycleEvent.DESTROY, LifecycleEvent.POST_DESTROY];
+			function handler(event:LifecycleEvent):void {
+				actual.push(event.type);
+			}
+			for each (var type:String in expected)
+			{
+				context.addEventListener(type, handler);
+			}
+			context.initialize();
+			context.suspend();
+			context.resume();
+			context.destroy();
+			assertThat(actual, array(expected));
+		}
+
+		[Test]
+		public function lifecycleStateChangeEvent_is_propagated():void
+		{
+			var called:Boolean = false;
+			context.addEventListener(LifecycleEvent.STATE_CHANGE, function(event:LifecycleEvent):void {
+				called = true;
+			});
+			context.initialize();
+			assertThat(called, isTrue());
 		}
 	}
 }

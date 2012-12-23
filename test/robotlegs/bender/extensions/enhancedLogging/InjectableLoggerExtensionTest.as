@@ -40,7 +40,7 @@ package robotlegs.bender.extensions.enhancedLogging
 		public function logger_is_mapped_into_injector():void
 		{
 			var actual:Object = null;
-			context.lifecycle.whenInitializing( function():void {
+			context.whenInitializing( function():void {
 				actual = context.injector.getInstance(ILogger);
 			});
 			context.initialize();

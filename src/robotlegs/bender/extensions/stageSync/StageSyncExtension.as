@@ -82,7 +82,7 @@ package robotlegs.bender.extensions.stageSync
 		private function initializeContext():void
 		{
 			_logger.debug("Context view is now on stage. Initializing context...");
-			_context.lifecycle.initialize();
+			_context.initialize();
 			_contextView.addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
 		}
 
@@ -90,7 +90,7 @@ package robotlegs.bender.extensions.stageSync
 		{
 			_logger.debug("Context view has left the stage. Destroying context...");
 			_contextView.removeEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
-			_context.lifecycle.destroy();
+			_context.destroy();
 		}
 	}
 }

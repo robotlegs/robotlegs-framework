@@ -35,10 +35,10 @@ package robotlegs.bender.extensions.scopedEventDispatcher
 			const context:IContext = new Context();
 			var actual:Object = null;
 			context.install(new ScopedEventDispatcherExtension(name));
-			context.lifecycle.whenInitializing( function():void {
+			context.whenInitializing( function():void {
 				actual = context.injector.getInstance(IEventDispatcher, name);
 			});
-			context.lifecycle.initialize();
+			context.initialize();
 			assertThat(actual, instanceOf(IEventDispatcher));
 		}
 
@@ -49,13 +49,13 @@ package robotlegs.bender.extensions.scopedEventDispatcher
 			const dispatchers:Array = [];
 			const context:IContext = new Context();
 			context.install(new ScopedEventDispatcherExtension('global', 'other', 'name'));
-			context.lifecycle.whenInitializing( function():void {
+			context.whenInitializing( function():void {
 				for each (var name:String in names)
 				{
 					dispatchers.push(context.injector.getInstance(IEventDispatcher, name));
 				}
 			});
-			context.lifecycle.initialize();
+			context.initialize();
 			assertThat(dispatchers.length, equalTo(3));
 		}
 

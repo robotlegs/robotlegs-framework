@@ -40,7 +40,7 @@ package robotlegs.bender.extensions.viewManager
 		{
 			var actual:Object = null;
 			context.install(ViewManagerExtension);
-			context.lifecycle.whenInitializing(function():void {
+			context.whenInitializing(function():void {
 				actual = context.injector.getInstance(IViewManager);
 			});
 			context.initialize();

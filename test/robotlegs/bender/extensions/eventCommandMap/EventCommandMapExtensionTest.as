@@ -43,7 +43,7 @@ package robotlegs.bender.extensions.eventCommandMap
 		{
 			var actual:Object = null;
 			context.install(EventCommandMapExtension);
-			context.lifecycle.whenInitializing( function():void {
+			context.whenInitializing( function():void {
 				actual = context.injector.getInstance(IEventCommandMap);
 			});
 			context.initialize();

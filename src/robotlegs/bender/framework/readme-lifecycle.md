@@ -183,7 +183,7 @@ A lifecycle manages the validity of transitions - so both `initialize` and `dest
 
 	private function addContextLifecycleHooks():void
 	{
-		context.lifecycle
+		context
 			.beforeSuspending(deactivateExtension)
 			.beforeResuming(activateExtension)
 	}
@@ -226,8 +226,7 @@ An extension framework - for example an entity system - might have its own lifec
 
 An example usage, for an imaginary extension which provides a developer console to the application.
 
-    context.lifecycle
-			.beforeInitializing( checkEventDispatcherInstalled )
+    _context.beforeInitializing( checkEventDispatcherInstalled )
 			.beforeInitializing( checkEmbeddedFonts )
 			.whenInitializing( setLocalDateTime )
 			.whenInitializing( setLocalPaths )

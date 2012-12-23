@@ -58,8 +58,8 @@ An extension can hook into various context lifecycle phases by adding state hand
       if (context.initialized)
         throw new Error("This extension must be installed prior to context initialization");
       
-      context.lifecycle.beforeInitializing(beforeInitializing);
-      context.lifecycle.afterInitializing(afterInitializing);
+      context.beforeInitializing(beforeInitializing);
+      context.afterInitializing(afterInitializing);
     }
 
     private function beforeInitializing(phase:String, callback:Function):void

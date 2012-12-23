@@ -41,7 +41,7 @@ package robotlegs.bender.extensions.modularity.impl
 			_logger = context.getLogger(this);
 			_contextView = contextView;
 			_parentContext = context;
-			_parentContext.lifecycle.whenDestroying(destroy);
+			_parentContext.whenDestroying(destroy);
 			init();
 		}
 

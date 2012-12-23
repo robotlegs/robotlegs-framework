@@ -48,10 +48,10 @@ package robotlegs.bender.extensions.contextView
 		{
 			var actual:ContextView = null;
 			context.install(ContextViewExtension).configure(new ContextView(view));
-			context.lifecycle.whenInitializing(function():void {
+			context.whenInitializing(function():void {
 				actual = context.injector.getInstance(ContextView);
 			});
-			context.lifecycle.initialize();
+			context.initialize();
 			assertThat(actual.view, equalTo(view));
 		}
 
@@ -61,10 +61,10 @@ package robotlegs.bender.extensions.contextView
 			var actual:ContextView = null;
 			const secondView:DisplayObjectContainer = new Canvas();
 			context.install(ContextViewExtension).configure(new ContextView(view), new ContextView(secondView));
-			context.lifecycle.whenInitializing(function():void {
+			context.whenInitializing(function():void {
 				actual = context.injector.getInstance(ContextView);
 			});
-			context.lifecycle.initialize();
+			context.initialize();
 			assertThat(actual.view, equalTo(view));
 		}
 
@@ -81,7 +81,7 @@ package robotlegs.bender.extensions.contextView
 				});
 			context.install(ContextViewExtension);
 			context.addLogTarget(logTarget);
-			context.lifecycle.initialize();
+			context.initialize();
 			assertThat(errorLogged, isTrue());
 		}
 	}

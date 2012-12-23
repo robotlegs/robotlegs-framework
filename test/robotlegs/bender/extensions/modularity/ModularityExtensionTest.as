@@ -115,7 +115,7 @@ package robotlegs.bender.extensions.modularity
 				});
 			childContext.install(ModularityExtension);
 			childContext.addLogTarget(logTarget);
-			childContext.lifecycle.initialize();
+			childContext.initialize();
 			assertThat(errorLogged, isTrue());
 
 		}

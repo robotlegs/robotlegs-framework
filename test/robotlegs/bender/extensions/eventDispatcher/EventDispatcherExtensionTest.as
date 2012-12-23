@@ -43,10 +43,10 @@ package robotlegs.bender.extensions.eventDispatcher
 		{
 			var actual:Object = null;
 			context.install(EventDispatcherExtension);
-			context.lifecycle.whenInitializing( function():void {
+			context.whenInitializing( function():void {
 				actual = context.injector.getInstance(IEventDispatcher);
 			});
-			context.lifecycle.initialize();
+			context.initialize();
 			assertThat(actual, instanceOf(IEventDispatcher));
 		}
 
@@ -56,10 +56,10 @@ package robotlegs.bender.extensions.eventDispatcher
 			const expected:IEventDispatcher = new EventDispatcher();
 			var actual:Object = null;
 			context.install(new EventDispatcherExtension(expected));
-			context.lifecycle.whenInitializing( function():void {
+			context.whenInitializing( function():void {
 				actual = context.injector.getInstance(IEventDispatcher);
 			});
-			context.lifecycle.initialize();
+			context.initialize();
 			assertThat(actual, equalTo(expected));
 		}
 	}

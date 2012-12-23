@@ -222,8 +222,7 @@ package robotlegs.bender.framework.impl
 			// dispatch error event if a listener exists, or throw
 			if (_lifecycle.hasEventListener(LifecycleEvent.ERROR))
 			{
-				const event:LifecycleEvent = new LifecycleEvent(LifecycleEvent.ERROR);
-				event.error = error;
+				const event:LifecycleEvent = new LifecycleEvent(LifecycleEvent.ERROR, error);
 				_lifecycle.dispatchEvent(event);
 				// process callback queue
 				if (callbacks)

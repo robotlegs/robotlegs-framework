@@ -35,10 +35,10 @@ package robotlegs.bender.extensions.scopedMessageDispatcher
 			const context:IContext = new Context();
 			var actual:Object = null;
 			context.install(new ScopedMessageDispatcherExtension(name));
-			context.lifecycle.whenInitializing( function():void {
+			context.whenInitializing( function():void {
 				actual = context.injector.getInstance(IMessageDispatcher, name);
 			});
-			context.lifecycle.initialize();
+			context.initialize();
 			assertThat(actual, instanceOf(IMessageDispatcher));
 		}
 
@@ -49,13 +49,13 @@ package robotlegs.bender.extensions.scopedMessageDispatcher
 			const dispatchers:Array = [];
 			const context:IContext = new Context();
 			context.install(new ScopedMessageDispatcherExtension('global', 'other', 'name'));
-			context.lifecycle.whenInitializing( function():void {
+			context.whenInitializing( function():void {
 				for each (var name:String in names)
 				{
 					dispatchers.push(context.injector.getInstance(IMessageDispatcher, name));
 				}
 			});
-			context.lifecycle.initialize();
+			context.initialize();
 			assertThat(dispatchers.length, equalTo(3));
 		}
 

@@ -152,10 +152,10 @@ package robotlegs.bender.framework.impl
 				actual.push('config');
 			});
 			configManager.addConfig(TypedConfig);
-			context.lifecycle.whenInitializing(function():void {
+			context.whenInitializing(function():void {
 				actual.push('listener1');
 			});
-			context.lifecycle.whenInitializing(function():void {
+			context.whenInitializing(function():void {
 				actual.push('listener2');
 			});
 			context.initialize();

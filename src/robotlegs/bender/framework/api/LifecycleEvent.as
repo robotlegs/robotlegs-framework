@@ -19,7 +19,7 @@ package robotlegs.bender.framework.api
 		/* Public Static Properties                                                   */
 		/*============================================================================*/
 
-		public static const ERROR:String = "error";
+		public static const ERROR:String = "_error";
 
 		public static const STATE_CHANGE:String = "stateChange";
 
@@ -51,7 +51,12 @@ package robotlegs.bender.framework.api
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		public var error:Error;
+		private var _error:Error;
+
+		public function get error():Error
+		{
+			return _error;
+		}
 
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -60,10 +65,12 @@ package robotlegs.bender.framework.api
 		/**
 		 * Creates a Lifecycle Event
 		 * @param type The event type
+		 * @param error Optional error
 		 */
-		function LifecycleEvent(type:String)
+		function LifecycleEvent(type:String, error:Error = null)
 		{
 			super(type);
+			_error = error;
 		}
 
 		/*============================================================================*/
@@ -75,9 +82,7 @@ package robotlegs.bender.framework.api
 		 */
 		override public function clone():Event
 		{
-			const event:LifecycleEvent = new LifecycleEvent(type);
-			event.error = error;
-			return event;
+			return new LifecycleEvent(type, error);
 		}
 	}
 }
