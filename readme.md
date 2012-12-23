@@ -128,6 +128,10 @@ Whilst Robotlegs can be used for Flex 3 & 4 and plain ActionScript projects, the
 
 ant package
 
+## Using Maven
+
+See: Maven-README
+
 ## Using Ruby on OSX
 
 - Install XCode 3 or 4
