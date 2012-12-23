@@ -16,10 +16,12 @@ package robotlegs.bender.framework.impl
 	import org.hamcrest.object.strictlyEqualTo;
 	import org.hamcrest.text.containsString;
 	import org.swiftsuspenders.Injector;
+	import robotlegs.bender.framework.api.IConfig;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
 	import robotlegs.bender.framework.api.LifecycleEvent;
 	import robotlegs.bender.framework.api.LogLevel;
+	import robotlegs.bender.framework.impl.contextSupport.CallbackConfig;
 	import robotlegs.bender.framework.impl.contextSupport.CallbackExtension;
 	import robotlegs.bender.framework.impl.loggingSupport.CallbackLogTarget;
 	import robotlegs.bender.framework.impl.loggingSupport.LogParams;
@@ -63,6 +65,19 @@ package robotlegs.bender.framework.impl
 				});
 			context.install(extension);
 			assertThat(actual, equalTo(context));
+		}
+
+		[Test]
+		public function configs_are_installed():void
+		{
+			var installed:Boolean = false;
+			const config:IConfig = new CallbackConfig(
+				function():void {
+					installed = true;
+				});
+			context.configure(config);
+			context.initialize();
+			assertThat(installed, isTrue());
 		}
 
 		[Test]
