@@ -23,6 +23,7 @@ package robotlegs.bender.bundles.mvcs
 	import robotlegs.bender.extensions.viewManager.ViewManagerExtension;
 	import robotlegs.bender.framework.api.IBundle;
 	import robotlegs.bender.framework.api.IContext;
+	import robotlegs.bender.framework.api.LogLevel;
 
 	/**
 	 * For that Classic Robotlegs flavour
@@ -42,6 +43,8 @@ package robotlegs.bender.bundles.mvcs
 		 */
 		public function extend(context:IContext):void
 		{
+			context.logLevel = LogLevel.DEBUG;
+
 			context.install(
 				TraceLoggingExtension,
 				InjectableLoggerExtension,
