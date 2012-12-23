@@ -1,5 +1,18 @@
 h2. Robotlegs Framework Changelog:
 
+h3. v2.0.0b3
+
+*Lifecycle*
+Important: The lifecycle getter has been removed from the Context. Instead, the Lifecycle API methods have been added to the Context directly.
+
+So, context.lifecycle.whenInitializing(callback) is now simply context.whenInitializing(callback)
+
+Adds Vigilance Extension to MVCS Bundle
+MVCS Bundle sets the LogLevel to DEBUG
+Lifecycle dispatches stateChange event
+Adds uninitialized getter to ILifecycle
+Adds addChild() and removeChild() to IContext
+
 h3. v2.0.0b2
 
 Asdocs
