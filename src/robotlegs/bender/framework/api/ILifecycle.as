@@ -25,6 +25,11 @@ package robotlegs.bender.framework.api
 		function get target():Object;
 
 		/**
+		 * Is this object uninitialized?
+		 */
+		function get uninitialized():Boolean;
+
+		/**
 		 * Is this object initialized?
 		 */
 		function get initialized():Boolean;

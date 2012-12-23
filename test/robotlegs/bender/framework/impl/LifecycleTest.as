@@ -12,6 +12,8 @@ package robotlegs.bender.framework.impl
 	import org.hamcrest.assertThat;
 	import org.hamcrest.collection.array;
 	import org.hamcrest.object.equalTo;
+	import org.hamcrest.object.isTrue;
+
 	import robotlegs.bender.framework.api.LifecycleEvent;
 	import robotlegs.bender.framework.api.LifecycleState;
 
@@ -33,7 +35,7 @@ package robotlegs.bender.framework.impl
 		[Before]
 		public function before():void
 		{
-			target = new Object();
+			target = {};
 			lifecycle = new Lifecycle(target);
 		}
 
@@ -45,6 +47,7 @@ package robotlegs.bender.framework.impl
 		public function lifecycle_starts_uninitialized():void
 		{
 			assertThat(lifecycle.state, equalTo(LifecycleState.UNINITIALIZED));
+			assertThat(lifecycle.uninitialized, isTrue());
 		}
 
 		[Test]
@@ -60,6 +63,7 @@ package robotlegs.bender.framework.impl
 		{
 			lifecycle.initialize();
 			assertThat(lifecycle.state, equalTo(LifecycleState.ACTIVE));
+			assertThat(lifecycle.active, isTrue());
 		}
 
 		[Test]
@@ -68,6 +72,7 @@ package robotlegs.bender.framework.impl
 			lifecycle.initialize();
 			lifecycle.suspend();
 			assertThat(lifecycle.state, equalTo(LifecycleState.SUSPENDED));
+			assertThat(lifecycle.suspended, isTrue());
 		}
 
 		[Test]
@@ -77,6 +82,7 @@ package robotlegs.bender.framework.impl
 			lifecycle.suspend();
 			lifecycle.resume();
 			assertThat(lifecycle.state, equalTo(LifecycleState.ACTIVE));
+			assertThat(lifecycle.active, isTrue());
 		}
 
 		[Test]
@@ -85,6 +91,7 @@ package robotlegs.bender.framework.impl
 			lifecycle.initialize();
 			lifecycle.destroy();
 			assertThat(lifecycle.state, equalTo(LifecycleState.DESTROYED));
+			assertThat(lifecycle.destroyed, isTrue());
 		}
 
 		[Test]
@@ -339,7 +346,7 @@ package robotlegs.bender.framework.impl
 		/* Private Functions                                                          */
 		/*============================================================================*/
 
-		private function methodErrorCount(methods:Array):int
+		private static function methodErrorCount(methods:Array):int
 		{
 			var errorCount:int = 0;
 			for each (var method:Function in methods)

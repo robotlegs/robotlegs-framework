@@ -49,6 +49,14 @@ package robotlegs.bender.framework.impl
 		/**
 		 * @inheritDoc
 		 */
+		public function get uninitialized():Boolean
+		{
+			return _state == LifecycleState.UNINITIALIZED;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
 		public function get initialized():Boolean
 		{
 			return _state != LifecycleState.UNINITIALIZED
