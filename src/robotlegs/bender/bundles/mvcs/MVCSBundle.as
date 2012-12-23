@@ -21,6 +21,7 @@ package robotlegs.bender.bundles.mvcs
 	import robotlegs.bender.extensions.viewManager.ManualStageObserverExtension;
 	import robotlegs.bender.extensions.viewManager.StageObserverExtension;
 	import robotlegs.bender.extensions.viewManager.ViewManagerExtension;
+	import robotlegs.bender.extensions.vigilance.VigilanceExtension;
 	import robotlegs.bender.framework.api.IBundle;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.LogLevel;
@@ -47,6 +48,7 @@ package robotlegs.bender.bundles.mvcs
 
 			context.install(
 				TraceLoggingExtension,
+				VigilanceExtension,
 				InjectableLoggerExtension,
 				ContextViewExtension,
 				EventDispatcherExtension,
