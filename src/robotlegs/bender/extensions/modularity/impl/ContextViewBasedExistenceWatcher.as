@@ -68,10 +68,14 @@ package robotlegs.bender.extensions.modularity.impl
 
 		private function onContextAdd(event:ModularContextEvent):void
 		{
-			event.stopImmediatePropagation();
-			_childContext = event.context;
-			_logger.debug("Context existence event caught. Configuring child context {0}", [_childContext]);
-			_parentContext.addChild(_childContext);
+			// We might catch out own existence event, so ignore that
+			if (event.context != _parentContext)
+			{
+				event.stopImmediatePropagation();
+				_childContext = event.context;
+				_logger.debug("Context existence event caught. Configuring child context {0}", [_childContext]);
+				_parentContext.addChild(_childContext);
+			}
 		}
 	}
 }

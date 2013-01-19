@@ -7,6 +7,9 @@
 
 package robotlegs.bender.extensions.modularity
 {
+	import flash.display.DisplayObjectContainer;
+	import flash.events.Event;
+	import org.hamcrest.object.instanceOf;
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.contextView.ContextView;
 	import robotlegs.bender.extensions.modularity.impl.ContextViewBasedExistenceWatcher;
@@ -40,6 +43,8 @@ package robotlegs.bender.extensions.modularity
 
 		private var _expose:Boolean;
 
+		private var _contextView:DisplayObjectContainer;
+
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
@@ -68,6 +73,7 @@ package robotlegs.bender.extensions.modularity
 			_context = context;
 			_injector = context.injector;
 			_logger = context.getLogger(this);
+			_context.addConfigHandler(instanceOf(ContextView), handleContextView);
 			_context.beforeInitializing(beforeInitializing);
 		}
 
@@ -77,25 +83,17 @@ package robotlegs.bender.extensions.modularity
 
 		private function beforeInitializing():void
 		{
-			if (_injector.hasDirectMapping(ContextView))
-			{
-				_inherit && broadcastContextExistence();
-				_expose && createContextWatcher();
-			}
-			else
-			{
-				_logger.error("Context has no ContextView, and ModularityExtension doesn't allow this.");
-			}
+			_contextView || _logger.error("Context has no ContextView, and ModularityExtension doesn't allow this.");
 		}
 
-		private function broadcastContextExistence():void
+		private function handleContextView(contextView:ContextView):void
 		{
-			_logger.debug("Context configured to inherit. Broadcasting existence event...");
-			const contextView:ContextView = _injector.getInstance(ContextView);
-			contextView.view.dispatchEvent(new ModularContextEvent(ModularContextEvent.CONTEXT_ADD, _context));
+			_contextView = contextView.view;
+			_expose && configureExistenceWatcher();
+			_inherit && configureExistenceBroadcaster();
 		}
 
-		private function createContextWatcher():void
+		private function configureExistenceWatcher():void
 		{
 			if (_injector.hasDirectMapping(IViewManager))
 			{
@@ -106,9 +104,34 @@ package robotlegs.bender.extensions.modularity
 			else
 			{
 				_logger.debug("Context has a ContextView. Configuring context view based context existence watcher...");
-				const contextView:ContextView = _injector.getInstance(ContextView);
-				new ContextViewBasedExistenceWatcher(_context, contextView.view);
+				new ContextViewBasedExistenceWatcher(_context, _contextView);
 			}
+		}
+
+		private function configureExistenceBroadcaster():void
+		{
+			if (_contextView.stage)
+			{
+				broadcastContextExistence();
+			}
+			else
+			{
+				_logger.debug("Context view is not yet on stage. Waiting...");
+				_contextView.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			}
+		}
+
+		private function onAddedToStage(event:Event):void
+		{
+			_logger.debug("Context view is now on stage. Continuing...");
+			_contextView.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			broadcastContextExistence();
+		}
+
+		private function broadcastContextExistence():void
+		{
+			_logger.debug("Context configured to inherit. Broadcasting existence event...");
+			_contextView.dispatchEvent(new ModularContextEvent(ModularContextEvent.CONTEXT_ADD, _context));
 		}
 	}
 }
