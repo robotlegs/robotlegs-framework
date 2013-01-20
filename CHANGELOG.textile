@@ -1,5 +1,11 @@
 h2. Robotlegs Framework Changelog:
 
+h4. v2.0.0b4
+
+Modularity timing fix.
+
+Introduces StageCrawler Extension. This extension scans for view components that are already on stage when the context initializes.
+
 h3. v2.0.0b3
 
 *Lifecycle*
