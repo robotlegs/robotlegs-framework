@@ -10,6 +10,7 @@ package robotlegs.bender.extensions.viewManager
 	import robotlegs.bender.extensions.viewManager.impl.ConfigureViewObserverTest;
 	import robotlegs.bender.extensions.viewManager.impl.ContainerBindingTest;
 	import robotlegs.bender.extensions.viewManager.impl.ContainerRegistryTest;
+	import robotlegs.bender.extensions.viewManager.impl.StageCrawlerTest;
 	import robotlegs.bender.extensions.viewManager.impl.StageObserverTest;
 	import robotlegs.bender.extensions.viewManager.impl.ViewManagerTest;
 
@@ -31,6 +32,8 @@ package robotlegs.bender.extensions.viewManager
 		public var containerRegistry:ContainerRegistryTest;
 
 		public var stageObserver:StageObserverTest;
+
+		public var stageCrawler:StageCrawlerTest;
 
 		public var viewManager:ViewManagerTest;
 	}

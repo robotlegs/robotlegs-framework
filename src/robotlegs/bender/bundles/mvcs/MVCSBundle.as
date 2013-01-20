@@ -19,6 +19,7 @@ package robotlegs.bender.bundles.mvcs
 	import robotlegs.bender.extensions.modularity.ModularityExtension;
 	import robotlegs.bender.extensions.stageSync.StageSyncExtension;
 	import robotlegs.bender.extensions.viewManager.ManualStageObserverExtension;
+	import robotlegs.bender.extensions.viewManager.StageCrawlerExtension;
 	import robotlegs.bender.extensions.viewManager.StageObserverExtension;
 	import robotlegs.bender.extensions.viewManager.ViewManagerExtension;
 	import robotlegs.bender.extensions.vigilance.VigilanceExtension;
@@ -60,6 +61,7 @@ package robotlegs.bender.bundles.mvcs
 				StageObserverExtension,
 				ManualStageObserverExtension,
 				MediatorMapExtension,
+				StageCrawlerExtension,
 				StageSyncExtension);
 
 			context.configure(ContextViewListenerConfig);

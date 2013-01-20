@@ -12,6 +12,7 @@ package robotlegs.bender.extensions.viewManager
 	import robotlegs.bender.extensions.viewManager.impl.StageObserver;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
+	import robotlegs.bender.framework.api.ILogger;
 
 	/**
 	 * This extension install an automatic Stage Observer
@@ -34,6 +35,8 @@ package robotlegs.bender.extensions.viewManager
 
 		private var _injector:Injector;
 
+		private var _logger:ILogger;
+
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
@@ -45,6 +48,7 @@ package robotlegs.bender.extensions.viewManager
 		{
 			_installCount++;
 			_injector = context.injector;
+			_logger = context.getLogger(this);
 			context.whenInitializing(whenInitializing);
 			context.whenDestroying(whenDestroying);
 		}
@@ -55,9 +59,11 @@ package robotlegs.bender.extensions.viewManager
 
 		private function whenInitializing():void
 		{
-			if (_stageObserver == null)
+			// Hark, an actual Singleton!
+			if (!_stageObserver)
 			{
 				const containerRegistry:ContainerRegistry = _injector.getInstance(ContainerRegistry);
+				_logger.debug("Creating genuine StageObserver Singleton");
 				_stageObserver = new StageObserver(containerRegistry);
 			}
 		}
@@ -67,6 +73,7 @@ package robotlegs.bender.extensions.viewManager
 			_installCount--;
 			if (_installCount == 0)
 			{
+				_logger.debug("Destroying genuine StageObserver Singleton");
 				_stageObserver.destroy();
 				_stageObserver = null;
 			}

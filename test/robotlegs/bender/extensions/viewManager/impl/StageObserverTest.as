@@ -51,6 +51,7 @@ package robotlegs.bender.extensions.viewManager.impl
 		public function after():void
 		{
 			UIImpersonator.removeChild(container);
+			UIImpersonator.removeChild(container2);
 			observer.destroy();
 		}
 
@@ -62,7 +63,7 @@ package robotlegs.bender.extensions.viewManager.impl
 		public function view_is_handled_when_added_to_container():void
 		{
 			const expected:SupportView = new SupportView();
-			var actual:DisplayObject;
+			var actual:DisplayObject = null;
 			registry
 				.addContainer(container)
 				.addHandler(new CallbackViewHandler(function(view:DisplayObject, type:Class):void {
@@ -76,7 +77,7 @@ package robotlegs.bender.extensions.viewManager.impl
 		public function view_is_handled_when_added_somewhere_inside_container():void
 		{
 			const expected:SupportView = new SupportView();
-			var actual:DisplayObject;
+			var actual:DisplayObject = null;
 			registry
 				.addContainer(container)
 				.addHandler(new CallbackViewHandler(function(view:DisplayObject, type:Class):void {
@@ -148,7 +149,7 @@ package robotlegs.bender.extensions.viewManager.impl
 		public function root_container_is_handled_when_added_to_stage():void
 		{
 			const expected:SupportContainer = new SupportContainer();
-			var actual:DisplayObject;
+			var actual:DisplayObject = null;
 			registry
 				.addContainer(expected)
 				.addHandler(new CallbackViewHandler(function(view:DisplayObject, type:Class):void {
