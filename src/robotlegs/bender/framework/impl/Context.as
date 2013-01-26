@@ -27,6 +27,8 @@ package robotlegs.bender.framework.impl
 	[Event(name="resume", type="robotlegs.bender.framework.api.LifecycleEvent")]
 	[Event(name="stateChange", type="robotlegs.bender.framework.api.LifecycleEvent")]
 	[Event(name="suspend", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="detain", type="robotlegs.bender.framework.api.PinEvent")]
+	[Event(name="release", type="robotlegs.bender.framework.api.PinEvent")]
 	/**
 	 * The core Robotlegs Context implementation
 	 */
@@ -120,7 +122,7 @@ package robotlegs.bender.framework.impl
 
 		private const _logManager:LogManager = new LogManager();
 
-		private const _pin:Pin = new Pin();
+		private var _pin:Pin;
 
 		private var _lifecycle:Lifecycle;
 
@@ -408,6 +410,7 @@ package robotlegs.bender.framework.impl
 			_injector.map(Injector).toValue(_injector);
 			_injector.map(IContext).toValue(this);
 			_logger = _logManager.getLogger(this);
+			_pin = new Pin(this);
 			_lifecycle = new Lifecycle(this);
 			_configManager = new ConfigManager(this);
 			_extensionInstaller = new ExtensionInstaller(this);
@@ -434,7 +437,7 @@ package robotlegs.bender.framework.impl
 
 		private function afterDestroyingCallback():void
 		{
-			_pin.flush();
+			_pin.releaseAll();
 			_injector.teardown();
 			_logger.info("Destroy complete");
 		}

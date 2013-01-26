@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -7,7 +7,9 @@
 
 package robotlegs.bender.framework.impl
 {
+	import flash.events.IEventDispatcher;
 	import flash.utils.Dictionary;
+	import robotlegs.bender.framework.api.PinEvent;
 
 	/**
 	 * Pins objects in memory
@@ -23,6 +25,17 @@ package robotlegs.bender.framework.impl
 
 		private const _instances:Dictionary = new Dictionary(false);
 
+		private var _dispatcher:IEventDispatcher;
+
+		/*============================================================================*/
+		/* Constructor                                                                */
+		/*============================================================================*/
+
+		public function Pin(dispatcher:IEventDispatcher)
+		{
+			_dispatcher = dispatcher;
+		}
+
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
@@ -33,7 +46,11 @@ package robotlegs.bender.framework.impl
 		 */
 		public function detain(instance:Object):void
 		{
-			_instances[instance] = true;
+			if (!_instances[instance])
+			{
+				_instances[instance] = true;
+				_dispatcher.dispatchEvent(new PinEvent(PinEvent.DETAIN, instance));
+			}
 		}
 
 		/**
@@ -42,17 +59,21 @@ package robotlegs.bender.framework.impl
 		 */
 		public function release(instance:Object):void
 		{
-			delete _instances[instance];
+			if (_instances[instance])
+			{
+				delete _instances[instance];
+				_dispatcher.dispatchEvent(new PinEvent(PinEvent.RELEASE, instance));
+			}
 		}
 
 		/**
 		 * Removes all pins
 		 */
-		public function flush():void
+		public function releaseAll():void
 		{
 			for (var instance:Object in _instances)
 			{
-				delete _instances[instance];
+				release(instance);
 			}
 		}
 	}

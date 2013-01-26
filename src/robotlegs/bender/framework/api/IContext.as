@@ -24,6 +24,8 @@ package robotlegs.bender.framework.api
 	[Event(name="resume", type="robotlegs.bender.framework.api.LifecycleEvent")]
 	[Event(name="stateChange", type="robotlegs.bender.framework.api.LifecycleEvent")]
 	[Event(name="suspend", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="detain", type="robotlegs.bender.framework.api.PinEvent")]
+	[Event(name="release", type="robotlegs.bender.framework.api.PinEvent")]
 	/**
 	 * The Robotlegs context contract
 	 */
