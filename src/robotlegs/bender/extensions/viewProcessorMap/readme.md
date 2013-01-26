@@ -33,7 +33,7 @@ You map either a specific type or a TypeMatcher to the class or instance of proc
 	
 #### Shortcut method for the most common case: injection by inspection
 
-	viewProcessorMap.map(SomeType).forInjection();
+	viewProcessorMap.map(SomeType).toInjection();
 	
 #### Type / Package Matching
 
@@ -70,7 +70,7 @@ For more information on guards and hooks check out:
 
 Injects view by passing it to the injector, where it will be inspected and then injected. You can access this via either of the following:
 
-	map(SomeType).forInjection();
+	map(SomeType).toInjection();
 	map(SomeType).toProcess(ViewInjectionProcessor);
 
 ## FastPropertyInjector

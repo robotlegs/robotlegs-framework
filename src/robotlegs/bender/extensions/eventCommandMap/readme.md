@@ -33,7 +33,7 @@ You can optionally add guards and hooks:
 		.withGuards(NotOnTuesdays)
 		.withHooks(UpdateLog);
 	
-Guards and hooks can be passed as arrays or just a list of classes.	
+Guards and hooks can be passed as lists of classes, objects or function references.
 
 Guards will be injected with the event that fired, and hooks can be injected with both the event and the command (these injections are then cleaned up so that events and commands are not generally available for injection).
 

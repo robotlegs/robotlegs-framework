@@ -105,6 +105,45 @@ Mediators should observe one of the following forms:
 3. Don't follow this convention, and use the `[PostConstruct]` metadata tag to ensure your initialization function is run
 	- note that this approach is not tailored for views extending Flex UIComponent, where initialization should be deferred until after creationComplete, so you will need to either provide for this in your implementation or use one of the methods above.	
 
+#### Example Mediators
+
+A mediator that extends the MVCS Mediator might look like this:
+
+    public class UserProfileMediator extends Mediator
+    {
+        [Inject]
+        public var view:UserProfileView;
+
+        override public function initialize():void
+        {
+            // Redispatch the event to the framework
+            addViewListener(UserEvent.SIGN_IN, dispatch);
+        }
+    }
+
+You do not have to extend the MVCS mediator:
+
+    public class UserProfileMediator
+    {
+        [Inject]
+        public var view:UserProfileView;
+
+        [Inject]
+        public var dispatcher:IEventDispatcher;
+
+        public function initialize():void
+        {
+            view.addEventListener(UserEvent.SIGN_IN, dispatcher.dispatch);
+        }
+
+        public function destroy():void
+        {
+            view.removeEventListener(UserEvent.SIGN_IN, dispatcher.dispatch);
+        }
+    }
+
+Notice that we could not use the handy "addViewListener" sugar. Also, we now need to manually clean up any listeners we have attached.
+
 ### Mediator base class provides some useful functionality
 
 Mediator base class provides the following internal API, used for managing listeners and dispatching events.

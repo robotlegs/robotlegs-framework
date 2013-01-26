@@ -65,8 +65,9 @@ Or, if you dislike metadata:
     }
 
 Note: you will not be able to use the above config as a Flex tag due to the required constructor arguments.
+Note: the two forms above can cause problems if you have any circular dependencies.
 
-Alternatively, you can implement the optional IConfig interface. If a config implements this interface `configure()` will be invoked after construction/injection:
+Preferably, you can implement the IConfig interface. If a config implements this interface `configure()` will be invoked after construction/injection:
 
     class MyModuleConfig implements IConfig
     {

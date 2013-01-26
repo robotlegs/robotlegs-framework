@@ -1,6 +1,6 @@
-# WARNING
+# NOTE
 
-Robotlegs 2 is under active development. Developers are encouraged to download the stable Robotlegs 1 release from: http://www.robotlegs.org/
+Robotlegs 2 is currently in Beta. You can download the Robotlegs 1 release from: http://www.robotlegs.org/
 
 The source for Robotlegs 1 can be found in the version1 branch:
 
@@ -14,6 +14,7 @@ Robotlegs is an ActionScript application framework for Flash and Flex. It offers
 + Module management
 + Command management
 + View management
++ Plug-and-play extensions
 
 # Quickstart
 
@@ -28,7 +29,7 @@ Plain ActionScript:
         .configure(MyAppConfig, SomeOtherConfig)
         .configure(new ContextView(this));
 
-We install the MVCSBundle, which in turn installs a number of commonly used Extensions, and then add some custom application configurations.
+We install the MVCSBundle, which in turn installs a number of commonly used Extensions. We then add some custom application configurations.
 
 We pass the instance "this" through as the "contextView" which is required by many of the view related extensions. It must be installed after the bundle or it won't be processed. Also, it should be added as the final configuration as it may trigger context initialization.
 
@@ -47,50 +48,87 @@ Note: In Flex we don't need to manually provide a "contextView" as the builder c
 
 ## Application & Module Configuration
 
-A simple configuration might look something like this:
+A simple application configuration file might look something like this:
 
-    public class MyAppConfig
+    public class MyAppConfig implements IConfig
     {
-        public function MyAppConfig(mediatorMap:IMediatorMap)
-        {
-            mediatorMap.mapType(SomeView).toMediator(SomeMediator);
-        }
-    }
+        [Inject]
+        public var injector:Injector;
 
-The configuration file above is a plain class. An instance of this class will be created automatically when the context initializes. Notice that we are using constructor injection to gain access to the mediator map inside our constructor.
-
-WARNING: The config above will not work when using declarative configuration in Flex. For Flex configs that you intend to add directly to the ContextBuilder you have to use setter injection.. Read on.
-
-If you want to use setter injection you must use a [PostConstruct] tag in your config to ensure that all your dependencies have been injected before you start interacting with them:
-
-    public class MyAppConfig
-    {
         [Inject]
         public var mediatorMap:IMediatorMap;
 
-        [PostConstruct]
-        public function init():void
+        [Inject]
+        public var commandMap:IEventCommandMap;
+
+        [Inject]
+        public var contextView:ContextView;
+
+        public function configure():void
         {
-            // OK, ready to rock
-            mediatorMap.mapView(SomeView).toMediator(SomeMediator);
+            injector.map(UserModel).asSingleton();
+
+            mediatorMap.map(UserProfileView).toMediator(UserProfileMediator);
+
+            commandMap.map(UserEvent.SIGN_IN).toCommand(UserSignInCommand);
+
+            // The "view" property is a DisplayObjectContainer reference.
+            // If this was a Flex application we would need to cast it
+            // as an IVisualElementContainer and call addElement().
+            contextView.view.addChild(new MainView());
         }
     }
 
-Dependencies supplied via setter injection are not available until *after* construction, and attempting to access them will result in Null Pointer exceptions. This is *wrong*:
+The configuration file above implements IConfig. An instance of this class will be created automatically when the context initializes.
 
-    public class MyErroneousAppConfig
+We Inject the utilities that we want to configure, and add our Main View to the Context View.
+
+For more info see: robotlegs.bender.framework.readme-context
+
+### An Example Mediator
+
+The mediator we mapped above might look like this:
+
+    public class UserProfileMediator extends Mediator
     {
         [Inject]
-        public var mediatorMap:IMediatorMap;
+        public var view:UserProfileView;
 
-        public function MyErroneousAppConfig()
+        override public function initialize():void
         {
-            // ERROR: the mediatorMap property will not have been set yet!
-            mediatorMap.mapView(SomeView).toMediator(SomeMediator);
+            // Redispatch the event to the framework
+            addViewListener(UserEvent.SIGN_IN, dispatch);
         }
     }
 
-# Reading The Source
+The view that caused this mediator to be created is available for Injection.
+
+For more info see: robotlegs.bender.extensions.mediatorMap.readme
+
+### An Example Command
+
+The command we mapped above might look like this:
+
+    public class UserSignInCommand extends Command
+    {
+        [Inject]
+        public var event:UserEvent;
+
+        [Inject]
+        public var model:UserModel;
+
+        override public function execute():void
+        {
+            if (event.username == "bob")
+                model.signedIn = true;
+        }
+    }
+
+The event that triggered this command is available for Injection.
+
+For more info see: robotlegs.bender.extensions.eventCommandMap.readme
+
+# Further Documentation
 
 Start here:
 
@@ -124,15 +162,17 @@ Robotlegs 2 is a complete rewrite of the Robotlegs framework. It features:
 
 Whilst Robotlegs can be used for Flex 3 & 4 and plain ActionScript projects, the library must be built with the Flex 4.6 SDK or above.
 
-## Using ANT
+## Building with ANT
+
+Copy the "user.properties.eg" file to "user.properties" and edit it to point to your local Flex SDK. Then run:
 
 ant package
 
-## Using Maven
+## Building with Maven
 
 See: Maven-README
 
-## Using Ruby on OSX
+## Building with Buildr on OSX
 
 - Install XCode 3 or 4
 - check RubyGems version
@@ -161,5 +201,3 @@ See: Maven-README
     $ open reports/flexunit4/html/index.html
     
 [Example output of this process](https://gist.github.com/1336238)
-
-
