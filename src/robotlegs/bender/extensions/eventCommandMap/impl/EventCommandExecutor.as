@@ -72,7 +72,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 
 			for (var mapping:ICommandMapping = _mappings.head; mapping; mapping = mapping.next)
 			{
-				var command:Object;
+				var command:Object = null;
 
 				_injector.map(Event).toValue(event);
 				if (eventConstructor != Event)

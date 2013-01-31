@@ -311,6 +311,16 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			assertThat(reportedExecutions, array(expectedOrder));
 		}
 
+		[Test]
+		public function previously_constructed_command_does_not_slip_through_the_loop():void
+		{
+			eventCommandMap.map(SupportEvent.TYPE1).toCommand(CommandA).withGuards(HappyGuard);
+			eventCommandMap.map(SupportEvent.TYPE1).toCommand(CommandB).withGuards(GrumpyGuard);
+			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
+			const expectedOrder:Array = [CommandA];
+			assertThat(reportedExecutions, array(expectedOrder));
+		}
+
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
