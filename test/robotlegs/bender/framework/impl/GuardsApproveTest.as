@@ -11,12 +11,10 @@ package robotlegs.bender.framework.impl
 	import org.hamcrest.object.isFalse;
 	import org.hamcrest.object.isTrue;
 	import org.swiftsuspenders.Injector;
-	import org.swiftsuspenders.dependencyproviders.FreshInstanceProvider;
 	import robotlegs.bender.framework.impl.guardSupport.BossGuard;
 	import robotlegs.bender.framework.impl.guardSupport.GrumpyGuard;
 	import robotlegs.bender.framework.impl.guardSupport.HappyGuard;
 	import robotlegs.bender.framework.impl.guardSupport.JustTheMiddleManGuard;
-	import robotlegs.bender.framework.impl.guardsApprove;
 
 	public class GuardsApproveTest
 	{

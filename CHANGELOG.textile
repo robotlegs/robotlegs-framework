@@ -1,6 +1,10 @@
 h2. Robotlegs Framework Changelog:
 
-h4. v2.0.0b4
+h3. v2.0.0b5
+
+Switches back to official Swiftsuspenders build
+
+h3. v2.0.0b4
 
 Modularity timing fix.
 

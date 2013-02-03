@@ -11,7 +11,6 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 	import flash.events.Event;
 	import flash.utils.Dictionary;
 	import org.swiftsuspenders.Injector;
-	import org.swiftsuspenders.dependencyproviders.FreshInstanceProvider;
 	import org.swiftsuspenders.errors.InjectorInterfaceConstructionError;
 	import robotlegs.bender.extensions.matching.ITypeFilter;
 	import robotlegs.bender.extensions.viewProcessorMap.api.ViewProcessorMapError;
