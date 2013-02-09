@@ -25,9 +25,7 @@ package robotlegs.bender.extensions.modularity.impl
 
 		private var _contextView:DisplayObjectContainer;
 
-		private var _parentContext:IContext;
-
-		private var _childContext:IContext;
+		private var _context:IContext;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -40,8 +38,8 @@ package robotlegs.bender.extensions.modularity.impl
 		{
 			_logger = context.getLogger(this);
 			_contextView = contextView;
-			_parentContext = context;
-			_parentContext.whenDestroying(destroy);
+			_context = context;
+			_context.whenDestroying(destroy);
 			init();
 		}
 
@@ -59,22 +57,16 @@ package robotlegs.bender.extensions.modularity.impl
 		{
 			_logger.debug("Removing modular context existence event listener from contextView {0}", [_contextView]);
 			_contextView.removeEventListener(ModularContextEvent.CONTEXT_ADD, onContextAdd);
-			if (_childContext)
-			{
-				_logger.debug("Unlinking parent injector for child context {0}", [_childContext]);
-				_parentContext.removeChild(_childContext);
-			}
 		}
 
 		private function onContextAdd(event:ModularContextEvent):void
 		{
 			// We might catch out own existence event, so ignore that
-			if (event.context != _parentContext)
+			if (event.context != _context)
 			{
 				event.stopImmediatePropagation();
-				_childContext = event.context;
-				_logger.debug("Context existence event caught. Configuring child context {0}", [_childContext]);
-				_parentContext.addChild(_childContext);
+				_logger.debug("Context existence event caught. Configuring child context {0}", [event.context]);
+				_context.addChild(event.context);
 			}
 		}
 	}

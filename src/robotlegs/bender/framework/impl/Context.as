@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -13,8 +13,10 @@ package robotlegs.bender.framework.impl
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.ILogTarget;
 	import robotlegs.bender.framework.api.ILogger;
+	import robotlegs.bender.framework.api.LifecycleEvent;
 
 	[Event(name="destroy", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="detain", type="robotlegs.bender.framework.api.PinEvent")]
 	[Event(name="initialize", type="robotlegs.bender.framework.api.LifecycleEvent")]
 	[Event(name="postDestroy", type="robotlegs.bender.framework.api.LifecycleEvent")]
 	[Event(name="postInitialize", type="robotlegs.bender.framework.api.LifecycleEvent")]
@@ -24,11 +26,10 @@ package robotlegs.bender.framework.impl
 	[Event(name="preInitialize", type="robotlegs.bender.framework.api.LifecycleEvent")]
 	[Event(name="preResume", type="robotlegs.bender.framework.api.LifecycleEvent")]
 	[Event(name="preSuspend", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="release", type="robotlegs.bender.framework.api.PinEvent")]
 	[Event(name="resume", type="robotlegs.bender.framework.api.LifecycleEvent")]
 	[Event(name="stateChange", type="robotlegs.bender.framework.api.LifecycleEvent")]
 	[Event(name="suspend", type="robotlegs.bender.framework.api.LifecycleEvent")]
-	[Event(name="detain", type="robotlegs.bender.framework.api.PinEvent")]
-	[Event(name="release", type="robotlegs.bender.framework.api.PinEvent")]
 	/**
 	 * The core Robotlegs Context implementation
 	 */
@@ -121,6 +122,8 @@ package robotlegs.bender.framework.impl
 		private const _uid:String = UID.create(Context);
 
 		private const _logManager:LogManager = new LogManager();
+
+		private const _children:Array = [];
 
 		private var _pin:Pin;
 
@@ -317,12 +320,21 @@ package robotlegs.bender.framework.impl
 		 */
 		public function addChild(child:IContext):IContext
 		{
-			_logger.info("Adding child context {0}", [child]);
-			if (!child.uninitialized)
+			if (_children.indexOf(child) == -1)
 			{
-				_logger.warn("Child context {0} must be uninitialized", [child]);
+				_logger.info("Adding child context {0}", [child]);
+				if (!child.uninitialized)
+				{
+					_logger.warn("Child context {0} must be uninitialized", [child]);
+				}
+				if (child.injector.parentInjector)
+				{
+					_logger.warn("Child context {0} must not have a parent Injector", [child]);
+				}
+				_children.push(child);
+				child.injector.parentInjector = injector;
+				child.addEventListener(LifecycleEvent.POST_DESTROY, onChildDestroy);
 			}
-			child.injector.parentInjector = injector;
 			return this;
 		}
 
@@ -331,12 +343,18 @@ package robotlegs.bender.framework.impl
 		 */
 		public function removeChild(child:IContext):IContext
 		{
-			_logger.info("Removing child context {0}", [child]);
-			if (child.injector.parentInjector != injector)
+			const childIndex:int = _children.indexOf(child);
+			if (childIndex > -1)
+			{
+				_logger.info("Removing child context {0}", [child]);
+				_children.splice(childIndex, 1);
+				child.injector.parentInjector = null;
+				child.removeEventListener(LifecycleEvent.POST_DESTROY, onChildDestroy);
+			}
+			else
 			{
 				_logger.warn("Child context {0} must be a child of {1}", [child, this]);
 			}
-			child.injector.parentInjector = null;
 			return this;
 		}
 
@@ -439,7 +457,23 @@ package robotlegs.bender.framework.impl
 		{
 			_pin.releaseAll();
 			_injector.teardown();
+			removeChildren();
 			_logger.info("Destroy complete");
 		}
+
+		private function onChildDestroy(event:LifecycleEvent):void
+		{
+			removeChild(event.target as IContext);
+		}
+
+		private function removeChildren():void
+		{
+			for each(var child:IContext in _children.concat())
+			{
+				removeChild(child);
+			}
+			_children.splice(0);
+		}
+
 	}
 }

@@ -10,6 +10,7 @@ package robotlegs.bender.framework.impl
 	import org.flexunit.assertThat;
 	import org.hamcrest.collection.array;
 	import org.hamcrest.core.isA;
+	import org.hamcrest.core.not;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.isTrue;
 	import org.hamcrest.object.nullValue;
@@ -123,6 +124,21 @@ package robotlegs.bender.framework.impl
 		}
 
 		[Test]
+		public function addChild_logs_warning_if_child_parentInjector_is_already_set():void
+		{
+			var warning:LogParams = null;
+			context.addLogTarget(new CallbackLogTarget(
+				function(log:LogParams):void {
+					(log.level == LogLevel.WARN) && (warning = log);
+				}));
+			const child:Context = new Context();
+			child.injector.parentInjector = new Injector();
+			context.addChild(child);
+			assertThat(warning.message, containsString("must not have a parent Injector"));
+			assertThat(warning.params, array(child));
+		}
+
+		[Test]
 		public function removeChild_logs_warning_if_child_is_NOT_a_child():void
 		{
 			var warning:LogParams = null;
@@ -143,6 +159,45 @@ package robotlegs.bender.framework.impl
 			context.addChild(child);
 			context.removeChild(child);
 			assertThat(child.injector.parentInjector, nullValue());
+		}
+
+		[Test]
+		public function child_is_removed_when_child_is_destroyed():void
+		{
+			const child:Context = new Context();
+			context.addChild(child);
+			child.initialize();
+			child.destroy();
+			assertThat(child.injector.parentInjector, nullValue());
+		}
+
+		[Test]
+		public function children_are_removed_when_parent_is_destroyed():void
+		{
+			const child1:Context = new Context();
+			const child2:Context = new Context();
+			context.addChild(child1);
+			context.addChild(child2);
+			context.initialize();
+			context.destroy();
+			assertThat(child1.injector.parentInjector, nullValue());
+			assertThat(child2.injector.parentInjector, nullValue());
+		}
+
+		[Test]
+		public function removed_child_is_not_removed_again_when_destroyed():void
+		{
+			var warning:LogParams = null;
+			context.addLogTarget(new CallbackLogTarget(
+					function(log:LogParams):void {
+						(log.level == LogLevel.WARN) && (warning = log);
+					}));
+			const child:Context = new Context();
+			context.addChild(child);
+			child.initialize();
+			context.removeChild(child);
+			child.destroy();
+			assertThat(warning, nullValue());
 		}
 
 		[Test]

@@ -23,8 +23,6 @@ package robotlegs.bender.extensions.modularity.impl
 
 		public static const CONTEXT_ADD:String = "contextAdd";
 
-		public static const CONTEXT_REMOVE:String = "contextRemove";
-
 		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
