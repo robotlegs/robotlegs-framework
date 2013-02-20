@@ -13,8 +13,8 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import org.flexunit.async.Async;
 	import org.fluint.uiImpersonation.UIImpersonator;
 	import org.hamcrest.collection.array;
+	import org.hamcrest.core.not;
 	import org.hamcrest.object.equalTo;
-	import org.hamcrest.object.instanceOf;
 	import org.hamcrest.object.isFalse;
 	import org.hamcrest.object.isTrue;
 	import org.hamcrest.object.nullValue;
@@ -68,6 +68,18 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			factory.createMediators(view, Sprite, [mapping]);
 			container.removeChild(view);
 			assertThat(factory.getMediator(view, mapping), nullValue());
+		}
+
+		[Test(async, ui)]
+		public function mediator_is_NOT_removed_when_view_leaves_stage_if_autoRemove_is_false():void
+		{
+			const view:Sprite = new Sprite();
+			const mapping:IMediatorMapping = new MediatorMapping(createTypeFilter([Sprite]), CallbackMediator)
+				.autoRemove(false) as IMediatorMapping;
+			container.addChild(view);
+			factory.createMediators(view, Sprite, [mapping]);
+			container.removeChild(view);
+			assertThat(factory.getMediator(view, mapping), not(nullValue()));
 		}
 
 		[Test]

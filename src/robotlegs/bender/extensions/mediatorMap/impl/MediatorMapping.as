@@ -61,6 +61,16 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			return _hooks;
 		}
 
+		private var _autoRemoveEnabled:Boolean = true;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get autoRemoveEnabled():Boolean
+		{
+			return _autoRemoveEnabled;
+		}
+
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
@@ -93,6 +103,15 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		public function withHooks(... hooks):IMediatorMappingConfig
 		{
 			_hooks = _hooks.concat.apply(null, hooks);
+			return this;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function autoRemove(value:Boolean = true):IMediatorMappingConfig
+		{
+			_autoRemoveEnabled = value;
 			return this;
 		}
 	}

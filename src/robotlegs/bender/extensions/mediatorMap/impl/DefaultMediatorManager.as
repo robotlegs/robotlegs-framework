@@ -9,10 +9,8 @@ package robotlegs.bender.extensions.mediatorMap.impl
 {
 	import flash.display.DisplayObject;
 	import flash.events.Event;
-	import flash.utils.Dictionary;
 	import flash.utils.getDefinitionByName;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
 	import robotlegs.bender.extensions.mediatorMap.api.MediatorFactoryEvent;
 
 	/**
@@ -84,8 +82,11 @@ package robotlegs.bender.extensions.mediatorMap.impl
 				return;
 			}
 
-			// Watch this view for removal
-			displayObject.addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
+			if (event.mapping.autoRemoveEnabled)
+			{
+				// Watch this view for removal
+				displayObject.addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
+			}
 
 			// Is this a UIComponent that needs to be initialized?
 			if (flexAvailable && (displayObject is UIComponentClass) && !displayObject['initialized'])

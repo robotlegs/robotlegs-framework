@@ -26,5 +26,16 @@ package robotlegs.bender.extensions.mediatorMap.dsl
 		 * @return Self
 		 */
 		function withHooks(... hooks):IMediatorMappingConfig;
+
+		/**
+		 * Should the mediator be removed when the mediated item looses scope?
+		 *
+		 * <p>Usually this would be when the mediated item is a Display Object
+		 * and it leaves the stage.</p>
+		 *
+		 * @param value Boolean
+		 * @return Self
+		 */
+		function autoRemove(value:Boolean = true):IMediatorMappingConfig;
 	}
 }

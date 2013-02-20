@@ -33,5 +33,10 @@ package robotlegs.bender.extensions.mediatorMap.api
 		 * A list of hooks to run before creating a mediator
 		 */
 		function get hooks():Array;
+
+		/**
+		 * Should the mediator be removed when the mediated item looses scope?
+		 */
+		function get autoRemoveEnabled():Boolean;
 	}
 }
