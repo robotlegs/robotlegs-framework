@@ -103,8 +103,8 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		public function hook_receives_mediator_and_mediatedItem():void
 		{
 			const mediatedItem:Sprite = new Sprite();
-			var injectedMediator:Object;
-			var injectedView:Object;
+			var injectedMediator:Object = null;
+			var injectedView:Object = null;
 			injector.map(Function, 'callback').toValue(function(hook:MediatorHook):void {
 				injectedMediator = hook.mediator;
 				injectedView = hook.mediatedItem;
@@ -178,7 +178,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		[Test]
 		public function creating_mediator_fires_event_once():void
 		{
-			var callCount:int;
+			var callCount:int = 0;
 			factory.addEventListener(MediatorFactoryEvent.MEDIATOR_CREATE, function(event:MediatorFactoryEvent):void {
 				callCount++;
 			});
@@ -233,7 +233,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		[Test]
 		public function removeMediator_fires_event_once():void
 		{
-			var callCount:int;
+			var callCount:int = 0;
 			factory.addEventListener(MediatorFactoryEvent.MEDIATOR_REMOVE, function(event:MediatorFactoryEvent):void {
 				callCount++;
 			});
@@ -251,7 +251,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		private function hookCallCount(... hooks):uint
 		{
-			var hookCallCount:uint;
+			var hookCallCount:int = 0;
 			injector.map(Function, 'hookCallback').toValue(function():void {
 				hookCallCount++;
 			});

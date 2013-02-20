@@ -51,14 +51,6 @@ package robotlegs.bender.extensions.viewManager.impl
 			return _container;
 		}
 
-		/**
-		 * @private
-		 */
-		public function get numHandlers():uint
-		{
-			return _handlers.length;
-		}
-
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/

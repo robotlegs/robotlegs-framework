@@ -174,7 +174,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 					runUnprocessors(view, type, processorMappings);
 					(view as DisplayObject).removeEventListener(Event.REMOVED_FROM_STAGE, handler);
 					removeHandlerFromView(view, handler);
-				}
+				};
 
 				_listenersByView[view].push(handler);
 				(view as DisplayObject).addEventListener(Event.REMOVED_FROM_STAGE, handler, false, 0, true);

@@ -63,8 +63,8 @@ package robotlegs.bender.extensions.viewManager.impl
 		{
 			const expectedView:Sprite = new Sprite();
 			const expectedType:Class = Sprite;
-			var actualView:DisplayObject;
-			var actualType:Class;
+			var actualView:DisplayObject = null;
+			var actualType:Class = null;
 			binding.addHandler(new CallbackViewHandler(function(view:DisplayObject, type:Class):void {
 				actualView = view;
 				actualType = type;

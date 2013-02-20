@@ -60,7 +60,7 @@ package robotlegs.bender.extensions.viewManager.impl
 		public function view_is_handled_when_event_is_dispatched():void
 		{
 			const expected:Sprite = new Sprite();
-			var actual:DisplayObject;
+			var actual:DisplayObject = null;
 			registry
 				.addContainer(container)
 				.addHandler(new CallbackViewHandler(function(view:DisplayObject, type:Class):void {
@@ -75,7 +75,7 @@ package robotlegs.bender.extensions.viewManager.impl
 		public function view_is_handled_when_added_somewhere_inside_container():void
 		{
 			const expected:Sprite = new Sprite();
-			var actual:DisplayObject;
+			var actual:DisplayObject = null;
 			registry
 				.addContainer(container)
 				.addHandler(new CallbackViewHandler(function(view:DisplayObject, type:Class):void {

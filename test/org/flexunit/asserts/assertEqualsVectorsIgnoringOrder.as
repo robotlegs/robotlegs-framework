@@ -13,7 +13,7 @@ package org.flexunit.asserts
 	/**
 	 * Custom assert for FlexUnit for comparing vectors
 	 *
-	 * @param rest
+	 * @param args
 	 * 			Must be passed at least 2 arguments of type Vector to compare for equality.
 	 * 			If three arguments are passed, the first argument must be a String
 	 * 			and will be used as the error message.

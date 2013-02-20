@@ -9,11 +9,8 @@ package robotlegs.bender.framework.impl
 {
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.equalTo;
-	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
 	import robotlegs.bender.framework.impl.contextSupport.CallbackExtension;
-	import robotlegs.bender.framework.impl.Context;
-	import robotlegs.bender.framework.impl.ExtensionInstaller;
 
 	public class ExtensionInstallerTest
 	{
@@ -22,9 +19,7 @@ package robotlegs.bender.framework.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var context:IContext;
-
-		private var extensionManager:ExtensionInstaller;
+		private var installer:ExtensionInstaller;
 
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
@@ -33,8 +28,7 @@ package robotlegs.bender.framework.impl
 		[Before]
 		public function before():void
 		{
-			context = new Context();
-			extensionManager = new ExtensionInstaller(context);
+			installer = new ExtensionInstaller(new Context());
 		}
 
 		/*============================================================================*/
@@ -44,8 +38,8 @@ package robotlegs.bender.framework.impl
 		[Test]
 		public function extension_instance_is_installed():void
 		{
-			var callCount:int;
-			extensionManager.install(new CallbackExtension(function():void {
+			var callCount:int = 0;
+			installer.install(new CallbackExtension(function():void {
 				callCount++;
 			}));
 			assertThat(callCount, equalTo(1));
@@ -54,36 +48,36 @@ package robotlegs.bender.framework.impl
 		[Test]
 		public function extension_class_is_installed():void
 		{
-			var callCount:int;
+			var callCount:int = 0;
 			CallbackExtension.staticCallback = function():void {
 				callCount++;
 			};
-			extensionManager.install(CallbackExtension);
+			installer.install(CallbackExtension);
 			assertThat(callCount, equalTo(1));
 		}
 
 		[Test]
 		public function extension_is_installed_once_for_same_instance():void
 		{
-			var callCount:int;
+			var callCount:int = 0;
 			const callback:Function = function():void {
 				callCount++;
 			};
 			const extension:IExtension = new CallbackExtension(callback);
-			extensionManager.install(extension);
-			extensionManager.install(extension);
+			installer.install(extension);
+			installer.install(extension);
 			assertThat(callCount, equalTo(1));
 		}
 
 		[Test]
 		public function extension_is_installed_once_for_same_class():void
 		{
-			var callCount:int;
+			var callCount:int = 0;
 			const callback:Function = function():void {
 				callCount++;
 			};
-			extensionManager.install(new CallbackExtension(callback));
-			extensionManager.install(new CallbackExtension(callback));
+			installer.install(new CallbackExtension(callback));
+			installer.install(new CallbackExtension(callback));
 			assertThat(callCount, equalTo(1));
 		}
 	}

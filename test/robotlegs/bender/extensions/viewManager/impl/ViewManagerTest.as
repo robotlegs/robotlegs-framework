@@ -28,8 +28,6 @@ package robotlegs.bender.extensions.viewManager.impl
 
 		private var viewManager:ViewManager;
 
-		private var registry:ContainerRegistry;
-
 		private var stageObserver:StageObserver;
 
 		/*============================================================================*/
@@ -40,7 +38,7 @@ package robotlegs.bender.extensions.viewManager.impl
 		public function before():void
 		{
 			container = new UIComponent();
-			registry = new ContainerRegistry();
+			const registry:ContainerRegistry = new ContainerRegistry();
 			viewManager = new ViewManager(registry);
 			stageObserver = new StageObserver(registry);
 			UIImpersonator.addChild(container);
@@ -77,7 +75,7 @@ package robotlegs.bender.extensions.viewManager.impl
 		public function handler_is_called():void
 		{
 			const expected:SupportView = new SupportView();
-			var actual:DisplayObject;
+			var actual:DisplayObject = null;
 			viewManager.addContainer(container);
 			viewManager.addViewHandler(new CallbackViewHandler(function(view:DisplayObject, type:Class):void {
 				actual = view;

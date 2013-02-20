@@ -14,7 +14,6 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.framework.api.IMessageDispatcher;
 	import robotlegs.bender.framework.impl.MessageDispatcher;
-	import robotlegs.bender.extensions.commandCenter.api.ICommandCenter;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandCenter;
 	import robotlegs.bender.extensions.commandCenter.support.CallbackCommand;
 	import robotlegs.bender.extensions.commandCenter.support.CallbackCommand2;
@@ -26,9 +25,6 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 	import robotlegs.bender.extensions.messageCommandMap.support.SupportMessage;
 	import robotlegs.bender.framework.impl.guardSupport.GrumpyGuard;
 	import robotlegs.bender.framework.impl.guardSupport.HappyGuard;
-	import robotlegs.bender.extensions.commandCenter.support.NullCommand;
-	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
-	import robotlegs.bender.extensions.commandCenter.dsl.ICommandMappingConfig;
 
 	public class MessageCommandTriggerTest
 	{
@@ -41,8 +37,6 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 
 		private var dispatcher:IMessageDispatcher;
 
-		private var commandCenter:ICommandCenter;
-
 		private var messageCommandMap:IMessageCommandMap;
 
 		/*============================================================================*/
@@ -54,8 +48,7 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 		{
 			injector = new Injector();
 			dispatcher = new MessageDispatcher();
-			commandCenter = new CommandCenter();
-			messageCommandMap = new MessageCommandMap(injector, dispatcher, commandCenter);
+			messageCommandMap = new MessageCommandMap(injector, dispatcher, new CommandCenter());
 		}
 
 		/*============================================================================*/
@@ -91,7 +84,7 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 		[Test]
 		public function command_does_not_execute_when_incorrect_message_dispatched():void
 		{
-			var executeCount:uint;
+			var executeCount:int = 0;
 			injector.map(Function, 'executeCallback').toValue(function():void
 			{
 				executeCount++;
@@ -104,7 +97,7 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 		[Test]
 		public function command_does_not_execute_after_message_unmapped():void
 		{
-			var executeCount:uint;
+			var executeCount:int = 0;
 			injector.map(Function, 'executeCallback').toValue(function():void
 			{
 				executeCount++;
@@ -118,7 +111,7 @@ package robotlegs.bender.extensions.messageCommandMap.impl
 		[Test]
 		public function oneshot_mappings_should_not_bork_stacked_mappings():void
 		{
-			var executeCount:uint;
+			var executeCount:int = 0;
 			injector.map(Function, 'executeCallback').toValue(function():void
 			{
 				executeCount++;

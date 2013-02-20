@@ -13,8 +13,6 @@ package robotlegs.bender.extensions.mediatorMap.impl.support
 
 		protected const _notifications:Vector.<String> = new Vector.<String>();
 
-		protected const _mediatorsReceived:Array = [];
-
 		public function get notifications():Vector.<String>
 		{
 			return _notifications;
@@ -23,16 +21,6 @@ package robotlegs.bender.extensions.mediatorMap.impl.support
 		public function notify(message:String):void
 		{
 			_notifications.push(message);
-		}
-
-		public function trackMediator(mediator:*):void
-		{
-			_mediatorsReceived.push(mediator);
-		}
-
-		public function get trackedMediators():Array
-		{
-			return _mediatorsReceived;
 		}
 	}
 }

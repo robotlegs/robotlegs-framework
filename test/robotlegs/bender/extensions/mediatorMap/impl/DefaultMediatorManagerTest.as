@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -19,12 +19,12 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import org.hamcrest.object.isTrue;
 	import org.hamcrest.object.nullValue;
 	import org.swiftsuspenders.Injector;
+	import robotlegs.bender.extensions.matching.ITypeFilter;
+	import robotlegs.bender.extensions.matching.TypeMatcher;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
 	import robotlegs.bender.extensions.mediatorMap.support.CallbackMediator;
 	import utils.checkFlex;
 	import utils.traceAndSkipTest;
-	import robotlegs.bender.extensions.matching.ITypeFilter;
-	import robotlegs.bender.extensions.matching.TypeMatcher;
 
 	public class DefaultMediatorManagerTest
 	{
@@ -53,6 +53,13 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			manager = new DefaultMediatorManager(factory);
 			container = new UIComponent();
 			UIImpersonator.addChild(container);
+		}
+
+		[After(async, ui)]
+		public function tearDown():void
+		{
+			UIImpersonator.removeChild(container);
+			manager = null;
 		}
 
 		/*============================================================================*/
@@ -123,9 +130,9 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		public function mediator_for_UIComponent_is_only_initialized_after_creationComplete():void
 		{
 			// early exit for as3 only test environments
-			if(!checkFlex()) 
+			if (!checkFlex())
 				return traceAndSkipTest('mediator_for_UIComponent_is_only_initialized_after_creationComplete - flex not available');
-			
+
 			const view:UIComponent = new UIComponent();
 			const mapping:IMediatorMapping = new MediatorMapping(createTypeFilter([UIComponent]), SomeMediator);
 			const mediator:SomeMediator = factory.createMediators(view, Sprite, [mapping])[0];
@@ -153,17 +160,17 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		{
 			Async.delayCall(this, closure, delay);
 		}
-		
+
 		private function createTypeFilter(allOf:Array, anyOf:Array = null, noneOf:Array = null):ITypeFilter
 		{
 			const matcher:TypeMatcher = new TypeMatcher();
-			if(allOf)
+			if (allOf)
 				matcher.allOf(allOf);
-			if(anyOf)
+			if (anyOf)
 				matcher.anyOf(anyOf);
-			if(noneOf)
+			if (noneOf)
 				matcher.noneOf(noneOf);
-				
+
 			return matcher.createTypeFilter();
 		}
 	}

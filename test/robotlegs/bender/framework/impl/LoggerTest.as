@@ -43,7 +43,7 @@ package robotlegs.bender.framework.impl
 		public function source_is_passed():void
 		{
 			const expected:Object = source;
-			var actual:Object;
+			var actual:Object = null;
 			logger = new Logger(source, new CallbackLogTarget(function(result:Object):void {
 				actual = result.source;
 			}));
@@ -71,7 +71,7 @@ package robotlegs.bender.framework.impl
 		public function message_is_passed():void
 		{
 			const expected:String = "hello";
-			var actual:String;
+			var actual:String = null;
 			logger = new Logger(source, new CallbackLogTarget(function(result:Object):void {
 				actual = result.message;
 			}));
@@ -83,7 +83,7 @@ package robotlegs.bender.framework.impl
 		public function params_are_passed():void
 		{
 			const expected:Array = [1, 2, 3];
-			var actual:Array;
+			var actual:Array = null;
 			logger = new Logger(source, new CallbackLogTarget(function(result:Object):void {
 				actual = result.params;
 			}));

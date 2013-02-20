@@ -86,21 +86,21 @@ package robotlegs.bender.extensions.matching
 		}
 
 		[Test(expects="ArgumentError")]
-		public function initalising_with_allOf_null_throws_error():void
+		public function initialising_with_allOf_null_throws_error():void
 		{
-			var nullFilter:TypeFilter = new TypeFilter(null, ANY_OF, NONE_OF);
+			new TypeFilter(null, ANY_OF, NONE_OF);
 		}
 
 		[Test(expects="ArgumentError")]
-		public function initalising_with_anyOf_null_throws_error():void
+		public function initialising_with_anyOf_null_throws_error():void
 		{
-			var nullFilter:TypeFilter = new TypeFilter(ALL_OF, null, NONE_OF);
+			new TypeFilter(ALL_OF, null, NONE_OF);
 		}
 
 		[Test(expects="ArgumentError")]
-		public function initalising_with_noneOf_null_throws_error():void
+		public function initialising_with_noneOf_null_throws_error():void
 		{
-			var nullFilter:TypeFilter = new TypeFilter(ALL_OF, ANY_OF, null);
+			new TypeFilter(ALL_OF, ANY_OF, null);
 		}
 
 		[Test]

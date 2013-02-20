@@ -90,7 +90,7 @@ package robotlegs.bender.extensions.scopedEventDispatcher
 			for each (var name:String in names)
 			{
 				const parentDispatcher:IEventDispatcher = getFromInjector(parentContext.injector, IEventDispatcher, name);
-				const childDispatcher:IEventDispatcher = getFromInjector(childContext.injector, IEventDispatcher, name)
+				const childDispatcher:IEventDispatcher = getFromInjector(childContext.injector, IEventDispatcher, name);
 				parentDispatchers.push(parentDispatcher);
 				childDispatchers.push(childDispatcher);
 			}

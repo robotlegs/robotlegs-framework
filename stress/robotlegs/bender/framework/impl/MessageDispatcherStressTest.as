@@ -40,7 +40,7 @@ package robotlegs.bender.framework.impl
 		public function before():void
 		{
 			dispatcher = new MessageDispatcher();
-			message = new Object();
+			message = {};
 		}
 
 		[After(async, timeout="250")]

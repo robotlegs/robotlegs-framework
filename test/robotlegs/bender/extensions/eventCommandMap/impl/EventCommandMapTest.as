@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -27,8 +27,6 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var dispatcher:EventDispatcher;
-
 		private var eventCommandMap:IEventCommandMap;
 
 		private var mapper:ICommandMapper;
@@ -40,9 +38,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		[Before]
 		public function before():void
 		{
-			const injector:Injector = new Injector();
-			dispatcher = new EventDispatcher();
-			eventCommandMap = new EventCommandMap(injector, dispatcher, new CommandCenter());
+			eventCommandMap = new EventCommandMap(new Injector(), new EventDispatcher(), new CommandCenter());
 		}
 
 		/*============================================================================*/

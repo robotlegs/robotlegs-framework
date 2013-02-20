@@ -28,8 +28,6 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		private var injector:Injector;
 
-		private var factory:MediatorFactory;
-
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
 		/*============================================================================*/
@@ -38,8 +36,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		public function before():void
 		{
 			injector = new Injector();
-			factory = new MediatorFactory(injector);
-			handler = new MediatorViewHandler(factory);
+			handler = new MediatorViewHandler(new MediatorFactory(injector));
 		}
 
 		/*============================================================================*/

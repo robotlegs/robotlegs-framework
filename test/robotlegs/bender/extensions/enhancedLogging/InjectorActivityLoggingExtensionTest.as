@@ -73,7 +73,7 @@ package robotlegs.bender.extensions.enhancedLogging
 			assertThat(getLog(), hasItem(expected));
 		}
 
-		// [Test] - wait for resolution of https://github.com/tschneidereit/SwiftSuspenders/issues/71
+		[Test]
 		public function no_logging_after_context_is_destroyed():void
 		{
 			context.initialize();

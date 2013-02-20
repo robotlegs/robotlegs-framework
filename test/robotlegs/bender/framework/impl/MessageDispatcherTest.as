@@ -38,7 +38,7 @@ package robotlegs.bender.framework.impl
 		public function before():void
 		{
 			dispatcher = new MessageDispatcher();
-			message = new Object();
+			message = {};
 		}
 
 		/*============================================================================*/
@@ -141,7 +141,7 @@ package robotlegs.bender.framework.impl
 		[Test]
 		public function handler_handles_message():void
 		{
-			var actualMessage:Object;
+			var actualMessage:Object = null;
 			dispatcher.addMessageHandler(message, function(msg:Object):void {
 				actualMessage = msg;
 			});
@@ -169,7 +169,7 @@ package robotlegs.bender.framework.impl
 		[Test]
 		public function message_is_handled_by_handler_multiple_times():void
 		{
-			var handleCount:int;
+			var handleCount:int = 0;
 			dispatcher.addMessageHandler(message, function():void {
 				handleCount++;
 			});
@@ -182,7 +182,7 @@ package robotlegs.bender.framework.impl
 		[Test]
 		public function handler_does_not_handle_the_wrong_message():void
 		{
-			var handled:Boolean;
+			var handled:Boolean = false;
 			dispatcher.addMessageHandler(message, function():void {
 				handled = true;
 			});
@@ -193,7 +193,7 @@ package robotlegs.bender.framework.impl
 		[Test]
 		public function handler_with_callback_handles_message():void
 		{
-			var actualMessage:Object;
+			var actualMessage:Object = null;
 			dispatcher.addMessageHandler(message, function(msg:Object, callback:Function):void {
 				actualMessage = msg;
 				callback();
@@ -219,7 +219,7 @@ package robotlegs.bender.framework.impl
 		[Test]
 		public function callback_is_called_once():void
 		{
-			var callbackCount:int;
+			var callbackCount:int = 0;
 			dispatcher.dispatchMessage(message, function():void {
 				callbackCount++;
 			});
@@ -229,7 +229,7 @@ package robotlegs.bender.framework.impl
 		[Test(async)]
 		public function callback_is_called_once_after_sync_handler():void
 		{
-			var callbackCount:int;
+			var callbackCount:int = 0;
 			dispatcher.addMessageHandler(message, createHandler());
 			dispatcher.dispatchMessage(message, function():void {
 				callbackCount++;
@@ -242,7 +242,7 @@ package robotlegs.bender.framework.impl
 		[Test(async)]
 		public function callback_is_called_once_after_async_handler():void
 		{
-			var callbackCount:int;
+			var callbackCount:int = 0;
 			dispatcher.addMessageHandler(message, createAsyncHandler());
 			dispatcher.dispatchMessage(message, function():void {
 				callbackCount++;
@@ -255,7 +255,7 @@ package robotlegs.bender.framework.impl
 		[Test(async)]
 		public function callback_is_called_once_after_sync_and_async_handlers():void
 		{
-			var callbackCount:int;
+			var callbackCount:int = 0;
 			dispatcher.addMessageHandler(message, createAsyncHandler());
 			dispatcher.addMessageHandler(message, createHandler());
 			dispatcher.addMessageHandler(message, createAsyncHandler());
@@ -272,7 +272,7 @@ package robotlegs.bender.framework.impl
 		public function handler_passes_error_to_callback():void
 		{
 			const expectedError:Object = "Error";
-			var actualError:Object;
+			var actualError:Object = null;
 			dispatcher.addMessageHandler(message, function(msg:Object, callback:Function):void {
 				callback(expectedError);
 			});
@@ -286,7 +286,7 @@ package robotlegs.bender.framework.impl
 		public function async_handler_passes_error_to_callback():void
 		{
 			const expectedError:Object = "Error";
-			var actualError:Object;
+			var actualError:Object = null;
 			dispatcher.addMessageHandler(message, function(msg:Object, callback:Function):void {
 				setTimeout(callback, 5, expectedError);
 			});
@@ -301,7 +301,7 @@ package robotlegs.bender.framework.impl
 		[Test]
 		public function handler_that_calls_back_more_than_once_is_ignored():void
 		{
-			var callbackCount:int;
+			var callbackCount:int = 0;
 			dispatcher.addMessageHandler(message, function(msg:Object, callback:Function):void {
 				callback();
 				callback();
@@ -315,7 +315,7 @@ package robotlegs.bender.framework.impl
 		[Test(async)]
 		public function async_handler_that_calls_back_more_than_once_is_ignored():void
 		{
-			var callbackCount:int;
+			var callbackCount:int = 0;
 			dispatcher.addMessageHandler(message, function(msg:Object, callback:Function):void {
 				callback();
 				callback();

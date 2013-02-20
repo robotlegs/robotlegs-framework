@@ -34,8 +34,6 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 
 		private var trigger:EventCommandTrigger;
 
-		private var injector:Injector;
-
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
 		/*============================================================================*/
@@ -43,8 +41,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		[Before]
 		public function before():void
 		{
-			injector = new Injector();
-			trigger = new EventCommandTrigger(injector, dispatcher, null, null);
+			trigger = new EventCommandTrigger(new Injector(), dispatcher, null, null);
 		}
 
 		/*============================================================================*/

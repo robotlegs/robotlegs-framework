@@ -37,7 +37,7 @@ package robotlegs.bender.framework.impl
 		[Before]
 		public function before():void
 		{
-			const target:Object = new Object();
+			const target:Object = {};
 			lifecycle = new Lifecycle(target);
 			transition = new LifecycleTransition("test", lifecycle);
 		}

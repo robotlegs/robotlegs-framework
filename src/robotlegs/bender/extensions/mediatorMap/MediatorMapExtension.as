@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -48,9 +48,10 @@ package robotlegs.bender.extensions.mediatorMap
 			_injector = context.injector;
 			_injector.map(IMediatorFactory).toSingleton(MediatorFactory);
 			_injector.map(IMediatorMap).toSingleton(MediatorMap);
-			context.beforeInitializing(beforeInitializing);
-			context.beforeDestroying(beforeDestroying);
-			context.whenDestroying(whenDestroying);
+			context.beforeInitializing(beforeInitializing)
+				.beforeDestroying(beforeDestroying)
+				.whenDestroying(whenDestroying)
+				.afterDestroying(afterDestroying);
 		}
 
 		/*============================================================================*/
@@ -90,6 +91,14 @@ package robotlegs.bender.extensions.mediatorMap
 			{
 				_injector.unmap(IMediatorFactory);
 			}
+		}
+
+		private function afterDestroying():void
+		{
+			_injector = null;
+			_mediatorMap = null;
+			_viewManager = null;
+			_mediatorManager = null;
 		}
 	}
 }

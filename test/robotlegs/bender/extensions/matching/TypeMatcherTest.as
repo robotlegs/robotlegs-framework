@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -10,15 +10,13 @@ package robotlegs.bender.extensions.matching
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
-	import flash.errors.IllegalOperationError;
 	import flash.events.IEventDispatcher;
 	import flash.utils.ByteArray;
 	import flash.utils.IDataInput;
-	import org.flexunit.asserts.*;
+	import org.flexunit.asserts.assertEqualsVectorsIgnoringOrder;
 	import org.hamcrest.Matcher;
-	import robotlegs.bender.extensions.matching.ITypeFilter;
-	import robotlegs.bender.extensions.matching.ITypeMatcher;
-	import robotlegs.bender.extensions.matching.support.*;
+	import org.hamcrest.assertThat;
+	import org.hamcrest.object.instanceOf;
 
 	public class TypeMatcherTest
 	{
@@ -66,13 +64,13 @@ package robotlegs.bender.extensions.matching
 		[Test]
 		public function can_be_instantiated():void
 		{
-			assertTrue("instance is TypeMatcher", instance is TypeMatcher);
+			assertThat(instance, instanceOf(TypeMatcher));
 		}
 
 		[Test]
 		public function implements_ITypeMatcher():void
 		{
-			assertTrue("Implements ITypeMatcher", instance is ITypeMatcher);
+			assertThat(instance, instanceOf(ITypeMatcher));
 		}
 
 		[Test]
@@ -153,12 +151,6 @@ package robotlegs.bender.extensions.matching
 			assertMatchesTypeFilter(expectedFilter, instance.createTypeFilter());
 		}
 
-		[Test]
-		public function test_failure_seen():void
-		{
-			assertTrue("Failing test", true);
-		}
-
 		[Test(expects='robotlegs.bender.extensions.matching.TypeMatcherError')]
 		public function throws_TypeMatcherError_if_allOf_changed_after_filter_requested():void
 		{
@@ -230,12 +222,6 @@ package robotlegs.bender.extensions.matching
 		}
 
 		[Test]
-		public function is_hamcrest_matcher():void
-		{
-			instance is Matcher;
-		}
-
-		[Test]
 		public function clone_returns_open_copy_when_not_locked():void
 		{
 			instance.allOf(ALL_OF).anyOf(ANY_OF);
@@ -254,14 +240,6 @@ package robotlegs.bender.extensions.matching
 			clone.noneOf(NONE_OF);
 			const expectedFilter:TypeFilter = new TypeFilter(ALL_OF, ANY_OF, NONE_OF);
 			assertMatchesTypeFilter(expectedFilter, clone.createTypeFilter());
-		}
-
-		/*============================================================================*/
-		/* Public Functions                                                           */
-		/*============================================================================*/
-
-		public function testDSL():void
-		{
 		}
 
 		/*============================================================================*/

@@ -56,7 +56,7 @@ package robotlegs.bender.framework.impl
 		public function callback_receives_error():void
 		{
 			const expected:Object = new Error("Something went hideously wrong.");
-			var actual:Object;
+			var actual:Object = null;
 			const callback:Function = function(error:Object):void {
 				actual = error;
 			};
@@ -68,7 +68,7 @@ package robotlegs.bender.framework.impl
 		public function callback_receives_message():void
 		{
 			const expected:Object = "message";
-			var actual:Object;
+			var actual:Object = null;
 			const callback:Function = function(error:Object, message:Object):void {
 				actual = message;
 			};

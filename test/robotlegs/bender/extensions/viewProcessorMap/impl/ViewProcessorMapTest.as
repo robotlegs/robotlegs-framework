@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -29,12 +29,12 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 	public class ViewProcessorMapTest
 	{
 
-		// TODO: extract processing tests into own tests
-		// TODO: add actual ViewProcessorMap tests
-
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
+
+		// TODO: extract processing tests into own tests
+		// TODO: add actual ViewProcessorMap tests
 
 		private const spriteMatcher:TypeMatcher = new TypeMatcher().allOf(Sprite);
 
@@ -50,8 +50,6 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 
 		private var nonMatchingView:Shape;
 
-		private var factory:ViewProcessorFactory;
-
 		private var container:UIComponent;
 
 		/*============================================================================*/
@@ -64,13 +62,18 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			container = new UIComponent();
 			injector = new Injector();
 			injector.map(Injector).toValue(injector);
-			factory = new ViewProcessorFactory(injector);
-			viewProcessorMap = new ViewProcessorMap(factory);
+			viewProcessorMap = new ViewProcessorMap(new ViewProcessorFactory(injector));
 			trackingProcessor = new TrackingProcessor();
 			trackingProcessor2 = new TrackingProcessor();
 			matchingView = new Sprite();
 			nonMatchingView = new Shape();
 			UIImpersonator.addChild(container);
+		}
+
+		[After]
+		public function after():void
+		{
+			UIImpersonator.removeChild(container);
 		}
 
 		/*============================================================================*/
@@ -142,7 +145,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		}
 
 		[Test]
-		public function duplicate_identical_mappings_by_class_dont_repeat_processes():void
+		public function duplicate_identical_mappings_by_class_do_not_repeat_processes():void
 		{
 			viewProcessorMap.mapMatcher(spriteMatcher).toProcess(TrackingProcessor);
 			viewProcessorMap.mapMatcher(spriteMatcher).toProcess(TrackingProcessor);
@@ -152,7 +155,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		}
 
 		[Test]
-		public function duplicate_identical_mappings_by_instance_dont_repeat_processes():void
+		public function duplicate_identical_mappings_by_instance_do_not_repeat_processes():void
 		{
 			viewProcessorMap.mapMatcher(spriteMatcher).toProcess(trackingProcessor);
 			viewProcessorMap.mapMatcher(spriteMatcher).toProcess(trackingProcessor);
@@ -248,7 +251,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		}
 
 		[Test]
-		public function doesnt_leave_view_mapping_lying_around():void
+		public function does_not_leave_view_mapping_lying_around():void
 		{
 			viewProcessorMap.map(Sprite).toProcess(trackingProcessor);
 			viewProcessorMap.handleView(matchingView, Sprite);
@@ -273,7 +276,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		}
 
 		[Test]
-		public function removing_a_mapping_that_doesnt_exist_doesnt_throw_an_error():void
+		public function removing_a_mapping_that_does_not_exist_does_not_throw_an_error():void
 		{
 			viewProcessorMap.unmap(Sprite).fromProcess(trackingProcessor);
 		}
