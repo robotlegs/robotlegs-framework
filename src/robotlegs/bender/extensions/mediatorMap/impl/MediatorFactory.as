@@ -127,12 +127,16 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			if (mediator)
 				return mediator;
 
-			if (guardsApprove(mapping.guards, _injector))
+			if (mapping.guards.length == 0 || guardsApprove(mapping.guards, _injector))
 			{
-				_injector.map(mapping.mediatorClass).asSingleton();
-				mediator = _injector.getInstance(mapping.mediatorClass);
-				applyHooks(mapping.hooks, _injector);
-				_injector.unmap(mapping.mediatorClass);
+				const mediatorClass:Class = mapping.mediatorClass;
+				mediator = _injector.instantiateUnmapped(mediatorClass);
+				if (mapping.hooks.length > 0)
+				{
+					_injector.map(mediatorClass).toValue(mediator);
+					applyHooks(mapping.hooks, _injector);
+					_injector.unmap(mediatorClass);
+				}
 				addMediator(mediator, item, mapping);
 			}
 			return mediator;
