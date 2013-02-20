@@ -2,7 +2,12 @@ h2. Robotlegs Framework Changelog:
 
 h3. v2.0.0b5
 
-Switches back to official Swiftsuspenders build
+Fixes #109 (mediator autoRemove)
+Fixes #110 (Event Command Map bug)
+Fixes #112 (Modularity issues)
+Fixes #113 (naughty PreDestroy)
+Detain and Release events dispatched by context (Issue #104)
+Switches back to official Swiftsuspenders build (v2.0.0rc2)
 
 h3. v2.0.0b4
 
