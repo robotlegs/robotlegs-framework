@@ -8,6 +8,8 @@
 package robotlegs.bender.extensions.viewProcessorMap
 {
 	import org.swiftsuspenders.Injector;
+
+	import robotlegs.bender.extensions.utils.ensureContextUninitialized;
 	import robotlegs.bender.extensions.viewManager.api.IViewHandler;
 	import robotlegs.bender.extensions.viewManager.api.IViewManager;
 	import robotlegs.bender.extensions.viewProcessorMap.api.IViewProcessorMap;
@@ -44,6 +46,7 @@ package robotlegs.bender.extensions.viewProcessorMap
 		 */
 		public function extend(context:IContext):void
 		{
+			ensureContextUninitialized(context, this);
 			_injector = context.injector;
 			_injector.map(IViewProcessorFactory).toValue(new ViewProcessorFactory(_injector.createChildInjector()));
 			_injector.map(IViewProcessorMap).toSingleton(ViewProcessorMap);

@@ -9,6 +9,7 @@ package robotlegs.bender.extensions.commandCenter
 {
 	import robotlegs.bender.extensions.commandCenter.api.ICommandCenter;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandCenter;
+	import robotlegs.bender.extensions.utils.ensureContextUninitialized;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
 
@@ -28,6 +29,7 @@ package robotlegs.bender.extensions.commandCenter
 		 */
 		public function extend(context:IContext):void
 		{
+			ensureContextUninitialized(context, this);
 			context.injector.map(ICommandCenter).toSingleton(CommandCenter);
 			// TODO: Investigate SwiftSuspenders circular dependency handling
 			// Place a [PostConstruct] tag above the logger setter

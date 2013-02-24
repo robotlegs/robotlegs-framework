@@ -8,6 +8,8 @@
 package robotlegs.bender.extensions.scopedMessageDispatcher
 {
 	import org.swiftsuspenders.Injector;
+
+	import robotlegs.bender.extensions.utils.ensureContextUninitialized;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
 	import robotlegs.bender.framework.api.IMessageDispatcher;
@@ -54,6 +56,7 @@ package robotlegs.bender.extensions.scopedMessageDispatcher
 		 */
 		public function extend(context:IContext):void
 		{
+			ensureContextUninitialized(context, this);
 			_injector = context.injector;
 			context.whenInitializing(whenInitializing);
 		}

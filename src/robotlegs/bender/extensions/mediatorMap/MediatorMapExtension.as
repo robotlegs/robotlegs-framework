@@ -13,6 +13,7 @@ package robotlegs.bender.extensions.mediatorMap
 	import robotlegs.bender.extensions.mediatorMap.impl.DefaultMediatorManager;
 	import robotlegs.bender.extensions.mediatorMap.impl.MediatorFactory;
 	import robotlegs.bender.extensions.mediatorMap.impl.MediatorMap;
+	import robotlegs.bender.extensions.utils.ensureContextUninitialized;
 	import robotlegs.bender.extensions.viewManager.api.IViewHandler;
 	import robotlegs.bender.extensions.viewManager.api.IViewManager;
 	import robotlegs.bender.framework.api.IContext;
@@ -45,6 +46,7 @@ package robotlegs.bender.extensions.mediatorMap
 		 */
 		public function extend(context:IContext):void
 		{
+			ensureContextUninitialized(context, this);
 			_injector = context.injector;
 			_injector.map(IMediatorFactory).toSingleton(MediatorFactory);
 			_injector.map(IMediatorMap).toSingleton(MediatorMap);

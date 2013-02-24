@@ -9,6 +9,8 @@ package robotlegs.bender.extensions.contextView
 {
 	import org.hamcrest.object.instanceOf;
 	import org.swiftsuspenders.Injector;
+
+	import robotlegs.bender.extensions.utils.ensureContextUninitialized;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
 	import robotlegs.bender.framework.api.ILogger;
@@ -39,6 +41,7 @@ package robotlegs.bender.extensions.contextView
 		 */
 		public function extend(context:IContext):void
 		{
+			ensureContextUninitialized(context, this);
 			_injector = context.injector;
 			_logger = context.getLogger(this);
 			context.addConfigHandler(instanceOf(ContextView), handleContextView);

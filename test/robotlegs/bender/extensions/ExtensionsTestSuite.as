@@ -21,6 +21,7 @@ package robotlegs.bender.extensions
 	import robotlegs.bender.extensions.scopedEventDispatcher.ScopedEventDispatcherExtensionTestSuite;
 	import robotlegs.bender.extensions.scopedMessageDispatcher.ScopedMessageDispatcherExtensionTestSuite;
 	import robotlegs.bender.extensions.stageSync.StageSyncExtensionTestSuite;
+	import robotlegs.bender.extensions.utils.UtilsTestSuite;
 	import robotlegs.bender.extensions.viewManager.ViewManagerExtensionTestSuite;
 	import robotlegs.bender.extensions.viewProcessorMap.ViewProcessorMapExtensionTestSuite;
 	import robotlegs.bender.extensions.vigilance.VigilanceExtensionTestSuite;
@@ -67,5 +68,7 @@ package robotlegs.bender.extensions
 		public var vigilanceExtension:VigilanceExtensionTestSuite;
 
 		public var matching:TypeMatchingTestSuite;
+
+		public var utils:UtilsTestSuite;
 	}
 }

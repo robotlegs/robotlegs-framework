@@ -15,6 +15,7 @@ package robotlegs.bender.extensions.modularity
 	import robotlegs.bender.extensions.modularity.impl.ContextViewBasedExistenceWatcher;
 	import robotlegs.bender.extensions.modularity.impl.ModularContextEvent;
 	import robotlegs.bender.extensions.modularity.impl.ViewManagerBasedExistenceWatcher;
+	import robotlegs.bender.extensions.utils.ensureContextUninitialized;
 	import robotlegs.bender.extensions.viewManager.api.IViewManager;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
@@ -70,6 +71,7 @@ package robotlegs.bender.extensions.modularity
 		 */
 		public function extend(context:IContext):void
 		{
+			ensureContextUninitialized(context, this);
 			_context = context;
 			_injector = context.injector;
 			_logger = context.getLogger(this);

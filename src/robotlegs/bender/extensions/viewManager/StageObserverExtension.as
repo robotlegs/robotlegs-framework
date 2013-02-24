@@ -8,6 +8,8 @@
 package robotlegs.bender.extensions.viewManager
 {
 	import org.swiftsuspenders.Injector;
+
+	import robotlegs.bender.extensions.utils.ensureContextUninitialized;
 	import robotlegs.bender.extensions.viewManager.impl.ContainerRegistry;
 	import robotlegs.bender.extensions.viewManager.impl.StageObserver;
 	import robotlegs.bender.framework.api.IContext;
@@ -46,6 +48,7 @@ package robotlegs.bender.extensions.viewManager
 		 */
 		public function extend(context:IContext):void
 		{
+			ensureContextUninitialized(context, this);
 			_installCount++;
 			_injector = context.injector;
 			_logger = context.getLogger(this);

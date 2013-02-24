@@ -8,6 +8,8 @@
 package robotlegs.bender.extensions.viewManager
 {
 	import org.swiftsuspenders.Injector;
+
+	import robotlegs.bender.extensions.utils.ensureContextUninitialized;
 	import robotlegs.bender.extensions.viewManager.api.IViewManager;
 	import robotlegs.bender.extensions.viewManager.impl.ContainerRegistry;
 	import robotlegs.bender.extensions.viewManager.impl.ViewManager;
@@ -44,6 +46,8 @@ package robotlegs.bender.extensions.viewManager
 		 */
 		public function extend(context:IContext):void
 		{
+			ensureContextUninitialized(context, this);
+
 			_injector = context.injector;
 
 			// Just one Container Registry

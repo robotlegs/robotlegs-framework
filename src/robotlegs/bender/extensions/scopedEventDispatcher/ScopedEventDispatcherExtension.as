@@ -10,6 +10,8 @@ package robotlegs.bender.extensions.scopedEventDispatcher
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
 	import org.swiftsuspenders.Injector;
+
+	import robotlegs.bender.extensions.utils.ensureContextUninitialized;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
 
@@ -54,6 +56,7 @@ package robotlegs.bender.extensions.scopedEventDispatcher
 		 */
 		public function extend(context:IContext):void
 		{
+			ensureContextUninitialized(context, this);
 			_injector = context.injector;
 			context.whenInitializing(whenInitializing);
 		}
