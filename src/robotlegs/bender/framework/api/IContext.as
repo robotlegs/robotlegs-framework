@@ -8,7 +8,6 @@
 package robotlegs.bender.framework.api
 {
 	import flash.events.IEventDispatcher;
-	import org.hamcrest.Matcher;
 	import org.swiftsuspenders.Injector;
 
 	[Event(name="destroy", type="robotlegs.bender.framework.api.LifecycleEvent")]
@@ -114,7 +113,7 @@ package robotlegs.bender.framework.api
 		 * @param handler Handler to process matching configurations
 		 * @return this
 		 */
-		function addConfigHandler(matcher:Matcher, handler:Function):IContext;
+		function addConfigHandler(matcher:IMatcher, handler:Function):IContext;
 
 		/**
 		 * Retrieves a logger for a given source

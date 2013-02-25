@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -7,7 +7,7 @@
 
 package robotlegs.bender.framework.impl
 {
-	import org.hamcrest.Matcher;
+	import robotlegs.bender.framework.api.IMatcher;
 
 	/**
 	 * Robotlegs object processor
@@ -32,13 +32,13 @@ package robotlegs.bender.framework.impl
 		 * @param matcher The matcher
 		 * @param handler The handler function
 		 */
-		public function addObjectHandler(matcher:Matcher, handler:Function):void
+		public function addObjectHandler(matcher:IMatcher, handler:Function):void
 		{
 			_handlers.push(new ObjectHandler(matcher, handler));
 		}
 
 		/**
-		 * Process an object by running it through registered handlers
+		 * Process an object by running it through all registered handlers
 		 * @param object The object instance to process.
 		 */
 		public function processObject(object:Object):void
@@ -51,7 +51,7 @@ package robotlegs.bender.framework.impl
 	}
 }
 
-import org.hamcrest.Matcher;
+import robotlegs.bender.framework.api.IMatcher;
 
 class ObjectHandler
 {
@@ -60,7 +60,7 @@ class ObjectHandler
 	/* Private Properties                                                         */
 	/*============================================================================*/
 
-	private var _matcher:Matcher;
+	private var _matcher:IMatcher;
 
 	private var _handler:Function;
 
@@ -71,7 +71,7 @@ class ObjectHandler
 	/**
 	 * @private
 	 */
-	public function ObjectHandler(matcher:Matcher, handler:Function)
+	public function ObjectHandler(matcher:IMatcher, handler:Function)
 	{
 		_matcher = matcher;
 		_handler = handler;

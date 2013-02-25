@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -7,10 +7,9 @@
 
 package robotlegs.bender.extensions.contextView
 {
-	import org.hamcrest.object.instanceOf;
 	import org.swiftsuspenders.Injector;
-
 	import robotlegs.bender.extensions.utils.ensureContextUninitialized;
+	import robotlegs.bender.extensions.utils.instanceOfType;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
 	import robotlegs.bender.framework.api.ILogger;
@@ -44,7 +43,7 @@ package robotlegs.bender.extensions.contextView
 			ensureContextUninitialized(context, this);
 			_injector = context.injector;
 			_logger = context.getLogger(this);
-			context.addConfigHandler(instanceOf(ContextView), handleContextView);
+			context.addConfigHandler(instanceOfType(ContextView), handleContextView);
 			context.beforeInitializing(beforeInitializing);
 		}
 

@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -13,6 +13,7 @@ package robotlegs.bender.framework.impl
 	import org.hamcrest.object.instanceOf;
 	import org.hamcrest.object.nullValue;
 	import org.swiftsuspenders.Injector;
+	import robotlegs.bender.extensions.utils.instanceOfType;
 
 	public class ConfigManagerTest
 	{
@@ -52,7 +53,7 @@ package robotlegs.bender.framework.impl
 		[Test]
 		public function addHandler():void
 		{
-			configManager.addConfigHandler(instanceOf(String), new Function());
+			configManager.addConfigHandler(instanceOfType(String), new Function());
 		}
 
 		[Test]
@@ -60,7 +61,7 @@ package robotlegs.bender.framework.impl
 		{
 			const expected:String = "config";
 			var actual:Object = null;
-			configManager.addConfigHandler(instanceOf(String), function(config:Object):void {
+			configManager.addConfigHandler(instanceOfType(String), function(config:Object):void {
 				actual = config;
 			});
 			configManager.addConfig(expected);
@@ -161,7 +162,6 @@ package robotlegs.bender.framework.impl
 			context.initialize();
 			assertThat(actual, array(['listener1', 'listener2', 'config']));
 		}
-
 	}
 }
 

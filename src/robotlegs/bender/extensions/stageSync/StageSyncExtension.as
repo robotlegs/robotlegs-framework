@@ -9,8 +9,8 @@ package robotlegs.bender.extensions.stageSync
 {
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
-	import org.hamcrest.object.instanceOf;
 	import robotlegs.bender.extensions.contextView.ContextView;
+	import robotlegs.bender.extensions.utils.instanceOfType;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
 	import robotlegs.bender.framework.api.ILogger;
@@ -46,7 +46,7 @@ package robotlegs.bender.extensions.stageSync
 			_context = context;
 			_logger = context.getLogger(this);
 			_context.addConfigHandler(
-				instanceOf(ContextView),
+				instanceOfType(ContextView),
 				handleContextView);
 		}
 

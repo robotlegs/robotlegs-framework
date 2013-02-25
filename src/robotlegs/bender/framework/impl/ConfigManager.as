@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -7,16 +7,12 @@
 
 package robotlegs.bender.framework.impl
 {
-	import flash.display.DisplayObject;
 	import flash.utils.Dictionary;
-	import org.hamcrest.Matcher;
-	import org.hamcrest.core.allOf;
-	import org.hamcrest.core.not;
-	import org.hamcrest.object.instanceOf;
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.framework.api.IConfig;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.ILogger;
+	import robotlegs.bender.framework.api.IMatcher;
 	import robotlegs.bender.framework.api.LifecycleEvent;
 
 	/**
@@ -29,15 +25,6 @@ package robotlegs.bender.framework.impl
 	 */
 	public class ConfigManager
 	{
-
-		/*============================================================================*/
-		/* Private Static Properties                                                  */
-		/*============================================================================*/
-
-		private static const plainObjectMatcher:Matcher = allOf(
-			instanceOf(Object),
-			not(instanceOf(Class)),
-			not(instanceOf(DisplayObject)));
 
 		/*============================================================================*/
 		/* Private Properties                                                         */
@@ -66,8 +53,8 @@ package robotlegs.bender.framework.impl
 		{
 			_injector = context.injector;
 			_logger = context.getLogger(this);
-			addConfigHandler(instanceOf(Class), handleClass);
-			addConfigHandler(plainObjectMatcher, handleObject);
+			addConfigHandler(new ClassMatcher(), handleClass);
+			addConfigHandler(new ObjectMatcher(), handleObject);
 			// The ConfigManager should process the config queue
 			// at the end of the INITIALIZE phase,
 			// but *before* POST_INITIALIZE, so use low event priority
@@ -97,7 +84,7 @@ package robotlegs.bender.framework.impl
 		 * @param matcher Pattern to match configuration objects
 		 * @param handler Handler to process matching configurations
 		 */
-		public function addConfigHandler(matcher:Matcher, handler:Function):void
+		public function addConfigHandler(matcher:IMatcher, handler:Function):void
 		{
 			_objectProcessor.addObjectHandler(matcher, handler);
 		}
@@ -175,3 +162,32 @@ package robotlegs.bender.framework.impl
 		}
 	}
 }
+
+import robotlegs.bender.framework.api.IMatcher;
+
+class ClassMatcher implements IMatcher
+{
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
+	public function matches(item:Object):Boolean
+	{
+		return item is Class;
+	}
+}
+
+class ObjectMatcher implements IMatcher
+{
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
+	public function matches(item:Object):Boolean
+	{
+		return item is Class == false;
+	}
+}
+

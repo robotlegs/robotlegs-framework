@@ -5,10 +5,20 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.viewManager.support
+package robotlegs.bender.framework.api
 {
 
-	public interface ISupportView
+	/**
+	 * Simple Object Matcher
+	 */
+	public interface IMatcher
 	{
+		/**
+		 * Does this object match the given criteria?
+		 *
+		 * @param item The object to test
+		 * @return Boolean
+		 */
+		function matches(item:Object):Boolean;
 	}
 }

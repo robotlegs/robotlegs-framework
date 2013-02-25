@@ -8,11 +8,11 @@
 package robotlegs.bender.framework.impl
 {
 	import flash.events.EventDispatcher;
-	import org.hamcrest.Matcher;
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.ILogTarget;
 	import robotlegs.bender.framework.api.ILogger;
+	import robotlegs.bender.framework.api.IMatcher;
 	import robotlegs.bender.framework.api.LifecycleEvent;
 
 	[Event(name="destroy", type="robotlegs.bender.framework.api.LifecycleEvent")]
@@ -361,7 +361,7 @@ package robotlegs.bender.framework.impl
 		/**
 		 * @inheritDoc
 		 */
-		public function addConfigHandler(matcher:Matcher, handler:Function):IContext
+		public function addConfigHandler(matcher:IMatcher, handler:Function):IContext
 		{
 			_configManager.addConfigHandler(matcher, handler);
 			return this;

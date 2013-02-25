@@ -11,9 +11,9 @@ package robotlegs.bender.framework.impl
 	import org.hamcrest.collection.array;
 	import org.hamcrest.core.not;
 	import org.hamcrest.object.equalTo;
-	import org.hamcrest.object.instanceOf;
+
+	import robotlegs.bender.extensions.utils.instanceOfType;
 	import robotlegs.bender.framework.impl.safelyCallBackSupport.createHandler;
-	import robotlegs.bender.framework.impl.ObjectProcessor;
 
 	public class ObjectProcessorTest
 	{
@@ -41,7 +41,7 @@ package robotlegs.bender.framework.impl
 		[Test]
 		public function addObjectHandler():void
 		{
-			objectProcessor.addObjectHandler(instanceOf(String), new Function());
+			objectProcessor.addObjectHandler(instanceOfType(String), new Function());
 		}
 
 		[Test]
@@ -55,7 +55,7 @@ package robotlegs.bender.framework.impl
 		{
 			const expected:Object = "string";
 			var actual:Object = null;
-			objectProcessor.addObjectHandler(instanceOf(String), function(object:Object):void {
+			objectProcessor.addObjectHandler(instanceOfType(String), function(object:Object):void {
 				actual = object;
 			});
 			objectProcessor.processObject(expected);
@@ -67,7 +67,7 @@ package robotlegs.bender.framework.impl
 		{
 			const expected:Object = "string";
 			var actual:Object = null;
-			objectProcessor.addObjectHandler(instanceOf(Boolean), function(object:Object):void {
+			objectProcessor.addObjectHandler(instanceOfType(Boolean), function(object:Object):void {
 				actual = object;
 			});
 			objectProcessor.processObject(expected);
@@ -79,9 +79,9 @@ package robotlegs.bender.framework.impl
 		{
 			const expected:Array = ['handler1', 'handler2', 'handler3'];
 			var actual:Array = [];
-			objectProcessor.addObjectHandler(instanceOf(String), createHandler(actual.push, 'handler1'));
-			objectProcessor.addObjectHandler(instanceOf(String), createHandler(actual.push, 'handler2'));
-			objectProcessor.addObjectHandler(instanceOf(String), createHandler(actual.push, 'handler3'));
+			objectProcessor.addObjectHandler(instanceOfType(String), createHandler(actual.push, 'handler1'));
+			objectProcessor.addObjectHandler(instanceOfType(String), createHandler(actual.push, 'handler2'));
+			objectProcessor.addObjectHandler(instanceOfType(String), createHandler(actual.push, 'handler3'));
 			objectProcessor.processObject("string");
 			assertThat(actual, array(expected));
 		}
