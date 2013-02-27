@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -61,6 +61,14 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		/*============================================================================*/
 		/* Tests                                                                      */
 		/*============================================================================*/
+
+		[Test]
+		public function command_without_execute_method_is_still_constructed():void
+		{
+			eventCommandMap.map(SupportEvent.TYPE1).toCommand(CommandWithoutExecute);
+			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
+			assertThat(reportedExecutions, array(CommandWithoutExecute));
+		}
 
 		[Test]
 		public function command_executes_successfully():void
@@ -512,5 +520,26 @@ class CommandB
 	public function execute():void
 	{
 		reportingFunc && reportingFunc(CommandB);
+	}
+}
+
+class CommandWithoutExecute
+{
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
+	[Inject(name="reportingFunction")]
+	public var reportingFunc:Function;
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
+	[PostConstruct]
+	public function init():void
+	{
+		reportingFunc(CommandWithoutExecute);
 	}
 }

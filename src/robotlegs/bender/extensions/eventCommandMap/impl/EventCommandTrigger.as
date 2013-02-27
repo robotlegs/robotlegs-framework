@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -8,7 +8,6 @@
 package robotlegs.bender.extensions.eventCommandMap.impl
 {
 	import flash.events.IEventDispatcher;
-	import flash.utils.describeType;
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandTrigger;
@@ -62,7 +61,6 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		 */
 		public function addMapping(mapping:ICommandMapping):void
 		{
-			verifyCommandClass(mapping);
 			_mappings.head || addListener();
 			_mappings.add(mapping);
 		}
@@ -84,15 +82,6 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
-
-		private function verifyCommandClass(mapping:ICommandMapping):void
-		{
-			// NOTE: we do this here, and not in the CommandCenter extension,
-			// as it is up to each specific Command Map to decide how commands
-			// should be executed. Some might not require an execute() method.
-			if (describeType(mapping.commandClass).factory.method.(@name == "execute").length() == 0)
-				throw new Error("Command Class must expose an execute method");
-		}
 
 		private function addListener():void
 		{

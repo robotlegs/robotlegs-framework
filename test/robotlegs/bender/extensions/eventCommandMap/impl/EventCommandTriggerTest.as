@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -47,14 +47,6 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		/*============================================================================*/
 		/* Tests                                                                      */
 		/*============================================================================*/
-
-		[Test(expects="Error")]
-		public function mapping_nonCommandClass_throws_error():void
-		{
-			// NOTE: we do this here, not in the CommandCenter itself
-			// Some triggers don't require an execute() method
-			trigger.addMapping(new CommandMapping(Object));
-		}
 
 		[Test]
 		public function adding_the_first_mapping_adds_a_listener():void
