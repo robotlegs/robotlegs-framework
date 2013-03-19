@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.localEventMap.impl
@@ -10,7 +10,9 @@ package robotlegs.bender.extensions.localEventMap.impl
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
+
 	import org.flexunit.asserts.*;
+
 	import robotlegs.bender.extensions.localEventMap.api.IEventMap;
 	import robotlegs.bender.extensions.localEventMap.impl.support.CustomEvent;
 
@@ -138,6 +140,14 @@ package robotlegs.bender.extensions.localEventMap.impl
 			eventMap.unmapListener(eventDispatcher, CustomEvent.STARTED, listener, CustomEvent);
 			eventDispatcher.dispatchEvent(new Event(CustomEvent.STARTED));
 			assertTrue(listenerExecuted);
+		}
+
+		[Test]
+		public function listener_mapped_with_std_event_class_and_unmapped_without_doesnt_fire_in_response_to_plain_event() : void{
+			eventMap.mapListener( eventDispatcher, CustomEvent.STARTED, listener, Event );
+			eventMap.unmapListener( eventDispatcher, CustomEvent.STARTED, listener );
+			eventDispatcher.dispatchEvent( new Event( CustomEvent.STARTED ) );
+			assertFalse( listenerExecuted );
 		}
 
 		[Test]
