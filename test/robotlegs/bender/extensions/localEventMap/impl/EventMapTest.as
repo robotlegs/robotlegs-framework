@@ -247,6 +247,13 @@ package robotlegs.bender.extensions.localEventMap.impl
 			assertFalse(listenerExecuted);
 		}
 
+		[Test]
+		public function test_listeners_mapped_with_std_eventClass_not_triggered_by_concrete_eventClass() : void{
+			eventMap.mapListener( eventDispatcher, CustomEvent.STARTED, listener, Event );
+			eventDispatcher.dispatchEvent(new CustomEvent(CustomEvent.STARTED));
+			assertFalse(listenerExecuted);
+		}
+
 		/*============================================================================*/
 		/* Protected Functions                                                        */
 		/*============================================================================*/
