@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.eventCommandMap.impl
@@ -327,6 +327,18 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
 			const expectedOrder:Array = [CommandA];
 			assertThat(reportedExecutions, array(expectedOrder));
+		}
+
+		[Test]
+		public function test_commands_mapped_with_std_eventClass_not_triggered_by_concrete_eventClass() : void{
+			var wasTriggered : Boolean = false;
+			injector.map(Function, 'executeCallback').toValue(function():void
+			{
+				wasTriggered = true;
+			});
+			eventCommandMap.map( SupportEvent.TYPE1, Event ).toCommand( CallbackCommand );
+			dispatcher.dispatchEvent( new SupportEvent( SupportEvent.TYPE1 ) );
+			assertThat( wasTriggered, equalTo( false ) );
 		}
 
 		/*============================================================================*/
