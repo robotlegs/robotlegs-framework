@@ -7,15 +7,12 @@
 
 package robotlegs.bender.extensions.commandCenter.impl
 {
-	import mockolate.received;
+	import mockolate.mock;
 	import mockolate.runner.MockolateRule;
 	import org.hamcrest.assertThat;
-	import org.hamcrest.collection.array;
 	import org.hamcrest.object.instanceOf;
-	import robotlegs.bender.extensions.commandCenter.api.ICommandTrigger;
-	import robotlegs.bender.extensions.commandCenter.support.NullCommand;
-	import robotlegs.bender.extensions.commandCenter.support.NullCommand2;
-	import robotlegs.bender.framework.api.ILogger;
+	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
+	import robotlegs.bender.extensions.commandCenter.api.ICommandMappingList;
 
 	public class CommandMapperTest
 	{
@@ -28,16 +25,13 @@ package robotlegs.bender.extensions.commandCenter.impl
 		public var mocks:MockolateRule = new MockolateRule();
 
 		[Mock]
-		public var trigger:ICommandTrigger;
-
-		[Mock]
-		public var logger:ILogger;
+		public var mappings:ICommandMappingList;
 
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var mapper:CommandMapper;
+		private var subject:DefaultCommandMapper;
 
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
@@ -46,7 +40,8 @@ package robotlegs.bender.extensions.commandCenter.impl
 		[Before]
 		public function before():void
 		{
-			mapper = new CommandMapper(trigger, logger);
+			subject = new DefaultCommandMapper();
+			subject.mappings = mappings;
 		}
 
 		/*============================================================================*/
@@ -54,56 +49,30 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/*============================================================================*/
 
 		[Test]
-		public function toCommand_registers_mappingConfig_with_trigger():void
+		public function toCommand_creates_CommandMapping():void
 		{
-			const config:Object = mapper.toCommand(NullCommand);
-			assertThat(trigger, received().method('addMapping').arg(config).once());
+			assertThat(subject.toCommand(String), instanceOf(CommandMapping))
 		}
 
 		[Test]
-		public function fromCommand_removes_mappingConfig_from_trigger():void
+		public function toCommand_passes_CommandMapping_to_MappingList():void
 		{
-			const oldConfig:Object = mapper.toCommand(NullCommand);
-			mapper.fromCommand(NullCommand);
-			assertThat(trigger, received().method('removeMapping').arg(oldConfig).once());
+			mock(mappings).method("addMapping").args(instanceOf(ICommandMapping)).once();
+			subject.toCommand(String);
 		}
 
 		[Test]
-		public function fromCommand_removes_only_specified_mappingConfig_from_trigger():void
+		public function fromCommand_delegates_to_MappingList():void
 		{
-			const config1:Object = mapper.toCommand(NullCommand);
-			const config2:Object = mapper.toCommand(NullCommand2);
-			mapper.fromCommand(NullCommand);
-			assertThat(trigger, received().method('removeMapping').arg(config1).once());
-			assertThat(trigger, received().method('removeMapping').arg(config2).never());
+			mock(mappings).method("removeMappingFor").once();
+			subject.fromCommand(String);
 		}
 
 		[Test]
-		public function fromAll_removes_all_mappingConfigs_from_trigger():void
+		public function fromAll_delegates_to_MappingList():void
 		{
-			const config1:Object = mapper.toCommand(NullCommand);
-			const config2:Object = mapper.toCommand(NullCommand2);
-			mapper.fromAll();
-			assertThat(trigger, received().method('removeMapping').arg(config1).once());
-			assertThat(trigger, received().method('removeMapping').arg(config2).once());
-		}
-
-		[Test]
-		public function toCommand_unregisters_old_mappingConfig_and_registers_new_one_when_overwritten():void
-		{
-			const oldConfig:Object = mapper.toCommand(NullCommand);
-			const newConfig:Object = mapper.toCommand(NullCommand);
-			assertThat(trigger, received().method('removeMapping').arg(oldConfig).once());
-			assertThat(trigger, received().method('addMapping').arg(newConfig).once());
-		}
-
-		[Test]
-		public function toCommand_warns_when_overwritten():void
-		{
-			const oldConfig:Object = mapper.toCommand(NullCommand);
-			mapper.toCommand(NullCommand);
-			assertThat(logger, received().method('warn')
-				.args(instanceOf(String), array(trigger, oldConfig)).once());
+			mock(mappings).method("removeAllMappings").once();
+			subject.fromAll();
 		}
 	}
 }

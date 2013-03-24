@@ -5,33 +5,40 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.commandCenter.dsl
+package robotlegs.bender.extensions.commandCenter.api
 {
 
 	/**
 	 * Configures a command mapping
 	 */
-	public interface ICommandMappingConfig
+	public interface ICommandConfigurator
 	{
+		/**
+		 * The "execute" method to invoke on the Command instance
+		 * @param name Method name
+		 * @return Self
+		 */
+		function withExecuteMethod(name:String):ICommandConfigurator;
+
 		/**
 		 * Guards to check before allowing a command to execute
 		 * @param guards Guards
 		 * @return Self
 		 */
-		function withGuards(... guards):ICommandMappingConfig;
+		function withGuards(... guards):ICommandConfigurator;
 
 		/**
 		 * Hooks to run before command execution
 		 * @param hooks Hooks
 		 * @return Self
 		 */
-		function withHooks(... hooks):ICommandMappingConfig;
+		function withHooks(... hooks):ICommandConfigurator;
 
 		/**
 		 * Should this command only run once?
 		 * @param value Toggle
 		 * @return Self
 		 */
-		function once(value:Boolean = true):ICommandMappingConfig;
+		function once(value:Boolean = true):ICommandConfigurator;
 	}
 }

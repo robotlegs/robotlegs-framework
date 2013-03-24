@@ -8,8 +8,10 @@
 package robotlegs.bender.extensions.commandCenter.api
 {
 
-	public interface ICommand
+	public interface ICommandExecutor
 	{
-		function execute():void;
+		function set mappings(value:ICommandMappingList):void;
+
+		function execute(... params):void;
 	}
 }

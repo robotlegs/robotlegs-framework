@@ -12,6 +12,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.isFalse;
 	import org.hamcrest.object.isTrue;
+
 	import robotlegs.bender.extensions.commandCenter.support.NullCommand;
 
 	public class CommandMappingTest
@@ -44,6 +45,19 @@ package robotlegs.bender.extensions.commandCenter.impl
 		public function mapping_stores_Command():void
 		{
 			assertThat(mapping.commandClass, equalTo(commandClass));
+		}
+
+		[Test]
+		public function default_ExecuteMethod():void
+		{
+			assertThat(mapping.executeMethod, equalTo("execute"));
+		}
+
+		[Test]
+		public function mapping_stores_ExecuteMethod():void
+		{
+			mapping.withExecuteMethod("run");
+			assertThat(mapping.executeMethod, equalTo("run"));
 		}
 
 		[Test]

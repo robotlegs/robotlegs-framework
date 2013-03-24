@@ -5,19 +5,23 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.commandCenter.dsl
+package robotlegs.bender.extensions.commandCenter.api
 {
 
 	/**
-	 * Maps Commands to triggers
+	 * Unmaps a Command
 	 */
-	public interface ICommandMapper
+	public interface ICommandUnmapper
 	{
 		/**
-		 * Creates a command mapping
-		 * @param commandClass The Command Class to map
-		 * @return Mapping configurator
+		 * Unmaps a Command
+		 * @param commandClass Command to unmap
 		 */
-		function toCommand(commandClass:Class):ICommandMappingConfig;
+		function fromCommand(commandClass:Class):void;
+
+		/**
+		 * Unmaps all commands from this trigger
+		 */
+		function fromAll():void;
 	}
 }

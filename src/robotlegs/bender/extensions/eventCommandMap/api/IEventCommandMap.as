@@ -7,8 +7,8 @@
 
 package robotlegs.bender.extensions.eventCommandMap.api
 {
-	import robotlegs.bender.extensions.commandCenter.dsl.ICommandMapper;
-	import robotlegs.bender.extensions.commandCenter.dsl.ICommandUnmapper;
+	import robotlegs.bender.extensions.commandCenter.api.ICommandClassMapper;
+	import robotlegs.bender.extensions.commandCenter.api.ICommandUnmapper;
 
 	/**
 	 * The Event Command Map allows you to bind Events to Commands
@@ -21,7 +21,7 @@ package robotlegs.bender.extensions.eventCommandMap.api
 		 * @param eventClass The concrete Event class
 		 * @return Command Mapper
 		 */
-		function map(type:String, eventClass:Class = null):ICommandMapper;
+		function map(type:String, eventClass:Class = null):ICommandClassMapper;
 
 		/**
 		 * Unmaps an Event based trigger from a Command

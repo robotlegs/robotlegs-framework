@@ -8,15 +8,17 @@
 package robotlegs.bender.extensions.commandCenter.api
 {
 
-	/**
-	 * Represents a command mapping
-	 */
 	public interface ICommandMapping
 	{
 		/**
 		 * The concrete Command Class for this mapping
 		 */
 		function get commandClass():Class;
+
+		/**
+		 * The "execute" method to invoke on the Command instance
+		 */
+		function get executeMethod():String;
 
 		/**
 		 * A list of Guards to query before execution

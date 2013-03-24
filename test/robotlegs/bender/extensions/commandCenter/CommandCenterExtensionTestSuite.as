@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -8,6 +8,7 @@
 package robotlegs.bender.extensions.commandCenter
 {
 	import robotlegs.bender.extensions.commandCenter.impl.CommandCenterTest;
+	import robotlegs.bender.extensions.commandCenter.impl.CommandExecutorTest;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandMapperTest;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandMappingListTest;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandMappingTest;
@@ -23,13 +24,13 @@ package robotlegs.bender.extensions.commandCenter
 
 		public var commandCenter:CommandCenterTest;
 
-		public var commandMappingTest:CommandMappingTest;
+		public var commandMapper:CommandMapperTest;
 
-		public var commandMappingListTest:CommandMappingListTest;
+		public var commandMapping:CommandMappingTest;
 
-		public var commandMapperTest:CommandMapperTest;
+		public var commandExecutor:CommandExecutorTest;
 
-		public var commandCenterExtension:CommandCenterExtensionTest;
+		public var commandMappingList:CommandMappingListTest;
 
 	}
 }

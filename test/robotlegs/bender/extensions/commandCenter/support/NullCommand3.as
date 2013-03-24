@@ -5,10 +5,18 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.messageCommandMap.support
+package robotlegs.bender.extensions.commandCenter.support
 {
 
-	public class SupportMessage
+	public class NullCommand3
 	{
+
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
+
+		public function execute():void
+		{
+		}
 	}
 }

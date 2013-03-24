@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -9,16 +9,29 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.events.IEventDispatcher;
 	import org.hamcrest.assertThat;
+	import org.hamcrest.collection.array;
 	import org.hamcrest.core.not;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.instanceOf;
 	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.extensions.commandCenter.dsl.ICommandMapper;
-	import robotlegs.bender.extensions.commandCenter.impl.CommandCenter;
+	import robotlegs.bender.extensions.commandCenter.api.ICommandClassMapper;
+	import robotlegs.bender.extensions.commandCenter.support.CallbackCommand;
+	import robotlegs.bender.extensions.commandCenter.support.CallbackCommand2;
 	import robotlegs.bender.extensions.commandCenter.support.NullCommand;
+	import robotlegs.bender.extensions.commandCenter.support.SelfReportingCallbackCommand;
+	import robotlegs.bender.extensions.commandCenter.support.SelfReportingCallbackCommand2;
+	import robotlegs.bender.extensions.commandCenter.support.SelfReportingCallbackHook;
 	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
+	import robotlegs.bender.extensions.eventCommandMap.support.CascadingCommand;
+	import robotlegs.bender.extensions.eventCommandMap.support.EventInjectedCallbackCommand;
+	import robotlegs.bender.extensions.eventCommandMap.support.EventInjectedCallbackGuard;
 	import robotlegs.bender.extensions.eventCommandMap.support.SupportEvent;
+	import robotlegs.bender.framework.api.IContext;
+	import robotlegs.bender.framework.impl.Context;
+	import robotlegs.bender.framework.impl.guardSupport.GrumpyGuard;
+	import robotlegs.bender.framework.impl.guardSupport.HappyGuard;
 
 	public class EventCommandMapTest
 	{
@@ -27,9 +40,15 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var eventCommandMap:IEventCommandMap;
+		private var subject:IEventCommandMap;
 
-		private var mapper:ICommandMapper;
+		private var mapper:ICommandClassMapper;
+
+		private var reportedExecutions:Array;
+
+		private var injector:Injector;
+
+		private var dispatcher:IEventDispatcher;
 
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
@@ -38,7 +57,12 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		[Before]
 		public function before():void
 		{
-			eventCommandMap = new EventCommandMap(new Injector(), new EventDispatcher(), new CommandCenter());
+			reportedExecutions = [];
+			const context:IContext = new Context();
+			injector = context.injector;
+			injector.map(Function, "reportingFunction").toValue(reportingFunction);
+			dispatcher = new EventDispatcher();
+			subject = new EventCommandMap(context, dispatcher);
 		}
 
 		/*============================================================================*/
@@ -48,41 +72,523 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		[Test]
 		public function map_creates_mapper():void
 		{
-			assertThat(eventCommandMap.map(SupportEvent.TYPE1, SupportEvent), instanceOf(ICommandMapper));
+			assertThat(subject.map(SupportEvent.TYPE1, SupportEvent), instanceOf(ICommandClassMapper));
 		}
 
 		[Test]
 		public function map_to_identical_Type_and_Event_returns_same_mapper():void
 		{
-			mapper = eventCommandMap.map(SupportEvent.TYPE1, SupportEvent);
-			assertThat(eventCommandMap.map(SupportEvent.TYPE1, SupportEvent), equalTo(mapper));
+			mapper = subject.map(SupportEvent.TYPE1, SupportEvent);
+			assertThat(subject.map(SupportEvent.TYPE1, SupportEvent), equalTo(mapper));
 		}
 
 		[Test]
 		public function map_to_identical_Type_but_different_Event_returns_different_mapper():void
 		{
-			mapper = eventCommandMap.map(SupportEvent.TYPE1, SupportEvent);
-			assertThat(eventCommandMap.map(SupportEvent.TYPE1, Event), not(equalTo(mapper)));
+			mapper = subject.map(SupportEvent.TYPE1, SupportEvent);
+			assertThat(subject.map(SupportEvent.TYPE1, Event), not(equalTo(mapper)));
 		}
 
 		[Test]
 		public function map_to_different_Type_but_identical_Event_returns_different_mapper():void
 		{
-			mapper = eventCommandMap.map(SupportEvent.TYPE1, SupportEvent);
-			assertThat(eventCommandMap.map(SupportEvent.TYPE2, SupportEvent), not(equalTo(mapper)));
+			mapper = subject.map(SupportEvent.TYPE1, SupportEvent);
+			assertThat(subject.map(SupportEvent.TYPE2, SupportEvent), not(equalTo(mapper)));
 		}
 
 		[Test]
 		public function unmap_returns_mapper():void
 		{
-			mapper = eventCommandMap.map(SupportEvent.TYPE1, SupportEvent);
-			assertThat(eventCommandMap.unmap(SupportEvent.TYPE1, SupportEvent), equalTo(mapper));
+			mapper = subject.map(SupportEvent.TYPE1, SupportEvent);
+			assertThat(subject.unmap(SupportEvent.TYPE1, SupportEvent), equalTo(mapper));
 		}
 
 		[Test]
 		public function robust_to_unmapping_non_existent_mappings():void
 		{
-			eventCommandMap.unmap(SupportEvent.TYPE1).fromCommand(NullCommand);
+			subject.unmap(SupportEvent.TYPE1).fromCommand(NullCommand);
+			// note: no assertion, just testing for the lack of an NPE
 		}
+
+		[Test]
+		public function command_without_execute_method_is_still_constructed():void
+		{
+			subject.map(SupportEvent.TYPE1)
+				.toCommand(CommandWithoutExecute).withExecuteMethod(null);
+			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
+			assertThat(reportedExecutions, array(CommandWithoutExecute));
+		}
+
+		[Test]
+		public function command_executes_successfully():void
+		{
+			assertThat(commandExecutionCount(1), equalTo(1));
+		}
+
+		[Test]
+		public function command_executes_repeatedly():void
+		{
+			assertThat(commandExecutionCount(5), equalTo(5));
+		}
+
+		[Test]
+		public function fireOnce_command_executes_once():void
+		{
+			assertThat(oneshotCommandExecutionCount(5), equalTo(1));
+		}
+
+		[Test]
+		public function event_is_injected_into_command():void
+		{
+			var injectedEvent:Event = null;
+			injector.map(Function, 'executeCallback').toValue(function(command:EventInjectedCallbackCommand):void
+			{
+				injectedEvent = command.event;
+			});
+			subject.map(SupportEvent.TYPE1)
+				.toCommand(EventInjectedCallbackCommand);
+			const event:SupportEvent = new SupportEvent(SupportEvent.TYPE1);
+			dispatcher.dispatchEvent(event);
+			assertThat(injectedEvent, equalTo(event));
+		}
+
+		[Test]
+		public function specified_typed_event_is_injected_into_command():void
+		{
+			var injectedEvent:SupportEvent = null;
+			injector.map(Function, 'executeCallback').toValue(function(command:SupportEventTriggeredSelfReportingCallbackCommand):void
+			{
+				injectedEvent = command.typedEvent;
+			});
+			subject.map(SupportEvent.TYPE1, SupportEvent)
+				.toCommand(SupportEventTriggeredSelfReportingCallbackCommand);
+			const event:SupportEvent = new SupportEvent(SupportEvent.TYPE1);
+			dispatcher.dispatchEvent(event);
+			assertThat(injectedEvent, equalTo(event));
+		}
+
+		[Test]
+		public function unspecified_typed_event_is_injected_into_command():void
+		{
+			var injectedEvent:SupportEvent = null;
+			injector.map(Function, 'executeCallback').toValue(function(command:SupportEventTriggeredSelfReportingCallbackCommand):void
+			{
+				injectedEvent = command.typedEvent;
+			});
+			subject.map(SupportEvent.TYPE1)
+				.toCommand(SupportEventTriggeredSelfReportingCallbackCommand);
+			const event:SupportEvent = new SupportEvent(SupportEvent.TYPE1);
+			dispatcher.dispatchEvent(event);
+			assertThat(injectedEvent, equalTo(event));
+		}
+
+		[Test]
+		public function command_does_not_execute_when_incorrect_eventType_dispatched():void
+		{
+			var executeCount:uint = 0;
+			injector.map(Function, 'executeCallback').toValue(function():void
+			{
+				executeCount++;
+			});
+			subject.map(SupportEvent.TYPE1).toCommand(CallbackCommand);
+			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE2));
+			assertThat(executeCount, equalTo(0));
+		}
+
+		[Test]
+		public function command_does_not_execute_when_incorrect_eventClass_dispatched():void
+		{
+			var executeCount:uint = 0;
+			injector.map(Function, 'executeCallback').toValue(function():void
+			{
+				executeCount++;
+			});
+			subject.map(SupportEvent.TYPE1, SupportEvent).toCommand(CallbackCommand);
+			dispatcher.dispatchEvent(new Event(SupportEvent.TYPE1));
+			assertThat(executeCount, equalTo(0));
+		}
+
+		[Test]
+		public function command_does_not_execute_after_event_unmapped():void
+		{
+			var executeCount:uint = 0;
+			injector.map(Function, 'executeCallback').toValue(function():void
+			{
+				executeCount++;
+			});
+			subject.map(SupportEvent.TYPE1, SupportEvent).toCommand(CallbackCommand);
+			subject.unmap(SupportEvent.TYPE1, SupportEvent).fromCommand(CallbackCommand);
+			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
+			assertThat(executeCount, equalTo(0));
+		}
+
+		[Test]
+		public function oneshot_mappings_should_not_bork_stacked_mappings():void
+		{
+			var executeCount:uint = 0;
+			injector.map(Function, 'executeCallback').toValue(function():void
+			{
+				executeCount++;
+			});
+			subject.map(SupportEvent.TYPE1, SupportEvent).toCommand(CallbackCommand).once();
+			subject.map(SupportEvent.TYPE1, SupportEvent).toCommand(CallbackCommand2).once();
+			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
+			assertThat(executeCount, equalTo(2));
+		}
+
+		[Test]
+		public function one_shot_command_should_not_cause_infinite_loop_when_dispatching_to_self():void
+		{
+			injector.map(Function, 'executeCallback').toValue(function():void
+			{
+				dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
+			});
+			subject.map(SupportEvent.TYPE1, null).toCommand(CallbackCommand).once();
+			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
+			// note: no assertion. we just want to know if an error is thrown
+		}
+
+		[Test]
+		public function commands_should_not_stomp_over_event_mappings():void
+		{
+			injector.map(Function, 'executeCallback').toValue(function():void
+			{
+				dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE2));
+			});
+			subject.map(SupportEvent.TYPE1).toCommand(CallbackCommand);
+			subject.map(SupportEvent.TYPE2, null).toCommand(CallbackCommand).once();
+			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
+			// note: no assertion. we just want to know if an error is thrown
+		}
+
+		[Test]
+		public function commands_are_executed_in_order():void
+		{
+			var commands:Array = [];
+			injector.map(Function, 'executeCallback').toValue(function(command:Object):void
+			{
+				commands.push(command.toString());
+			});
+			subject.map(SupportEvent.TYPE1).toCommand(SelfReportingCallbackCommand);
+			subject.map(SupportEvent.TYPE1).toCommand(SelfReportingCallbackCommand2);
+			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
+			assertThat(commands, array("[object SelfReportingCallbackCommand]", "[object SelfReportingCallbackCommand2]"));
+		}
+
+		[Test]
+		public function hooks_are_called():void
+		{
+			assertThat(hookCallCount(SelfReportingCallbackHook, SelfReportingCallbackHook), equalTo(2));
+		}
+
+		[Test]
+		public function command_is_injected_into_hook():void
+		{
+			var executedCommand:SelfReportingCallbackCommand = null;
+			var injectedCommand:SelfReportingCallbackCommand = null;
+			injector.map(Function, 'executeCallback').toValue(function(command:SelfReportingCallbackCommand):void {
+				executedCommand = command;
+			});
+			injector.map(Function, 'hookCallback').toValue(function(hook:SelfReportingCallbackHook):void {
+				injectedCommand = hook.command;
+			});
+			subject
+				.map(SupportEvent.TYPE1)
+				.toCommand(SelfReportingCallbackCommand)
+				.withHooks(SelfReportingCallbackHook);
+			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
+			assertThat(injectedCommand, equalTo(executedCommand));
+		}
+
+		[Test]
+		public function command_executes_when_the_guard_allows():void
+		{
+			assertThat(commandExecutionCountWithGuards(HappyGuard), equalTo(1));
+		}
+
+		[Test]
+		public function command_executes_when_all_guards_allow():void
+		{
+			assertThat(commandExecutionCountWithGuards(HappyGuard, HappyGuard), equalTo(1));
+		}
+
+		[Test]
+		public function command_does_not_execute_when_the_guard_denies():void
+		{
+			assertThat(commandExecutionCountWithGuards(GrumpyGuard), equalTo(0));
+		}
+
+		[Test]
+		public function command_does_not_execute_when_any_guards_denies():void
+		{
+			assertThat(commandExecutionCountWithGuards(HappyGuard, GrumpyGuard), equalTo(0));
+		}
+
+		[Test]
+		public function command_does_not_execute_when_all_guards_deny():void
+		{
+			assertThat(commandExecutionCountWithGuards(GrumpyGuard, GrumpyGuard), equalTo(0));
+		}
+
+		[Test]
+		public function event_is_injected_into_guard():void
+		{
+			var injectedEvent:Event = null;
+			injector.map(Function, 'approveCallback').toValue(function(guard:EventInjectedCallbackGuard):void
+			{
+				injectedEvent = guard.event;
+			});
+			subject
+				.map(SupportEvent.TYPE1)
+				.toCommand(NullCommand)
+				.withGuards(EventInjectedCallbackGuard);
+			const event:SupportEvent = new SupportEvent(SupportEvent.TYPE1);
+			dispatcher.dispatchEvent(event);
+			assertThat(injectedEvent, equalTo(event));
+		}
+
+		[Test]
+		public function cascading_events_do_not_throw_unmap_errors():void
+		{
+			injector.map(IEventDispatcher).toValue(dispatcher);
+			injector.map(IEventCommandMap).toValue(subject);
+			subject
+				.map(CascadingCommand.EVENT_TYPE)
+				.toCommand(CascadingCommand).once();
+			dispatcher.dispatchEvent(new Event(CascadingCommand.EVENT_TYPE));
+		}
+
+		[Test]
+		public function execution_sequence_is_guard_command_guard_command_for_multiple_mappings_to_same_event():void
+		{
+			subject.map(SupportEvent.TYPE1).toCommand(CommandA).withGuards(GuardA);
+			subject.map(SupportEvent.TYPE1).toCommand(CommandB).withGuards(GuardB);
+			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
+			const expectedOrder:Array = [GuardA, CommandA, GuardB, CommandB];
+			assertThat(reportedExecutions, array(expectedOrder));
+		}
+
+		[Test]
+		public function previously_constructed_command_does_not_slip_through_the_loop():void
+		{
+			subject.map(SupportEvent.TYPE1).toCommand(CommandA).withGuards(HappyGuard);
+			subject.map(SupportEvent.TYPE1).toCommand(CommandB).withGuards(GrumpyGuard);
+			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
+			const expectedOrder:Array = [CommandA];
+			assertThat(reportedExecutions, array(expectedOrder));
+		}
+
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
+
+		private function commandExecutionCount(totalEvents:int = 1, oneshot:Boolean = false):uint
+		{
+			var executeCount:uint = 0;
+			injector.map(Function, 'executeCallback').toValue(function():void
+			{
+				executeCount++;
+			});
+			subject.map(SupportEvent.TYPE1, SupportEvent).toCommand(CallbackCommand).once(oneshot);
+			while (totalEvents--)
+			{
+				dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
+			}
+			return executeCount;
+		}
+
+		private function oneshotCommandExecutionCount(totalEvents:int = 1):uint
+		{
+			return commandExecutionCount(totalEvents, true);
+		}
+
+		private function hookCallCount(... hooks):uint
+		{
+			var hookCallCount:uint = 0;
+			injector.map(Function, 'executeCallback').toValue(function(command:SelfReportingCallbackCommand):void {
+			});
+			injector.map(Function, 'hookCallback').toValue(function(hook:SelfReportingCallbackHook):void {
+				hookCallCount++;
+			});
+			subject
+				.map(SupportEvent.TYPE1)
+				.toCommand(SelfReportingCallbackCommand)
+				.withHooks(hooks);
+			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
+			return hookCallCount;
+		}
+
+		private function commandExecutionCountWithGuards(... guards):uint
+		{
+			var executionCount:uint = 0;
+			injector.map(Function, 'executeCallback').toValue(function():void
+			{
+				executionCount++;
+			});
+			subject
+				.map(SupportEvent.TYPE1)
+				.toCommand(CallbackCommand)
+				.withGuards(guards);
+			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
+			return executionCount;
+		}
+
+		private function reportingFunction(item:Object):void
+		{
+			reportedExecutions.push(item);
+		}
+	}
+}
+
+import flash.events.Event;
+import robotlegs.bender.extensions.eventCommandMap.support.SupportEvent;
+
+class SupportEventTriggeredSelfReportingCallbackCommand
+{
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
+	[Inject]
+	public var event:Event;
+
+	[Inject]
+	public var typedEvent:SupportEvent;
+
+	[Inject(name="executeCallback")]
+	public var callback:Function;
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
+	public function execute():void
+	{
+		callback(this);
+	}
+}
+
+class GuardA
+{
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
+	[Inject(name="reportingFunction")]
+	public var reportingFunc:Function;
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
+	public function approve():Boolean
+	{
+		reportingFunc && reportingFunc(GuardA);
+		return true;
+	}
+}
+
+class GuardB
+{
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
+	[Inject(name="reportingFunction")]
+	public var reportingFunc:Function;
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
+	public function approve():Boolean
+	{
+		reportingFunc && reportingFunc(GuardB);
+		return true;
+	}
+}
+
+class GuardC
+{
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
+	[Inject(name="reportingFunction")]
+	public var reportingFunc:Function;
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
+	public function approve():Boolean
+	{
+		reportingFunc && reportingFunc(GuardC);
+		return true;
+	}
+}
+
+class CommandA
+{
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
+	[Inject(name="reportingFunction")]
+	public var reportingFunc:Function;
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
+	public function execute():void
+	{
+		reportingFunc && reportingFunc(CommandA);
+	}
+}
+
+class CommandB
+{
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
+	[Inject(name="reportingFunction")]
+	public var reportingFunc:Function;
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
+	public function execute():void
+	{
+		reportingFunc && reportingFunc(CommandB);
+	}
+}
+
+class CommandWithoutExecute
+{
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
+	[Inject(name="reportingFunction")]
+	public var reportingFunc:Function;
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
+	[PostConstruct]
+	public function init():void
+	{
+		reportingFunc(CommandWithoutExecute);
 	}
 }
