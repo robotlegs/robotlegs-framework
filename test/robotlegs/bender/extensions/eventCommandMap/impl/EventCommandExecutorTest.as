@@ -10,10 +10,12 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
+
 	import org.hamcrest.assertThat;
 	import org.hamcrest.collection.array;
 	import org.hamcrest.object.equalTo;
 	import org.swiftsuspenders.Injector;
+
 	import robotlegs.bender.extensions.commandCenter.impl.CommandCenter;
 	import robotlegs.bender.extensions.commandCenter.support.CallbackCommand;
 	import robotlegs.bender.extensions.commandCenter.support.CallbackCommand2;
@@ -25,6 +27,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import robotlegs.bender.extensions.eventCommandMap.support.CascadingCommand;
 	import robotlegs.bender.extensions.eventCommandMap.support.EventInjectedCallbackCommand;
 	import robotlegs.bender.extensions.eventCommandMap.support.EventInjectedCallbackGuard;
+	import robotlegs.bender.extensions.eventCommandMap.support.EventInjectedCallbackHook;
 	import robotlegs.bender.extensions.eventCommandMap.support.SupportEvent;
 	import robotlegs.bender.framework.impl.guardSupport.GrumpyGuard;
 	import robotlegs.bender.framework.impl.guardSupport.HappyGuard;
@@ -293,6 +296,22 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 				.map(SupportEvent.TYPE1)
 				.toCommand(NullCommand)
 				.withGuards(EventInjectedCallbackGuard);
+			const event:SupportEvent = new SupportEvent(SupportEvent.TYPE1);
+			dispatcher.dispatchEvent(event);
+			assertThat(injectedEvent, equalTo(event));
+		}
+
+		[Test]
+		public function test_event_is_injected_into_hook() : void{
+			var injectedEvent:Event = null;
+			injector.map(Function, 'hookCallback').toValue(function(hook:EventInjectedCallbackHook):void
+			{
+				injectedEvent = hook.event;
+			});
+			eventCommandMap
+				.map(SupportEvent.TYPE1)
+				.toCommand(NullCommand)
+				.withHooks( EventInjectedCallbackHook );
 			const event:SupportEvent = new SupportEvent(SupportEvent.TYPE1);
 			dispatcher.dispatchEvent(event);
 			assertThat(injectedEvent, equalTo(event));
