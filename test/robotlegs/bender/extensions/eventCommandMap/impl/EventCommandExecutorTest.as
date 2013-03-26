@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.eventCommandMap.impl
@@ -10,10 +10,12 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
+
 	import org.hamcrest.assertThat;
 	import org.hamcrest.collection.array;
 	import org.hamcrest.object.equalTo;
 	import org.swiftsuspenders.Injector;
+
 	import robotlegs.bender.extensions.commandCenter.impl.CommandCenter;
 	import robotlegs.bender.extensions.commandCenter.support.CallbackCommand;
 	import robotlegs.bender.extensions.commandCenter.support.CallbackCommand2;
@@ -310,6 +312,19 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		}
 
 		[Test]
+		public function commands_mapped_to_dispatching_event_are_executed():void
+		{
+			injector.map(Function, 'reportingFunction').toValue(reportingFunction);
+			injector.map(Class, 'nestedCommand').toValue(CommandA);
+			injector.map(IEventCommandMap).toValue(eventCommandMap);
+			eventCommandMap
+				.map(CommandMappingCommand.EVENT_TYPE)
+				.toCommand(CommandMappingCommand).once();
+			dispatcher.dispatchEvent(new Event(CommandMappingCommand.EVENT_TYPE));
+			assertThat( reportedExecutions, array( CommandA ) );
+		}
+
+		[Test]
 		public function execution_sequence_is_guard_command_guard_command_for_multiple_mappings_to_same_event():void
 		{
 			eventCommandMap.map(SupportEvent.TYPE1).toCommand(CommandA).withGuards(GuardA);
@@ -392,6 +407,9 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 }
 
 import flash.events.Event;
+import flash.events.IEventDispatcher;
+
+import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
 import robotlegs.bender.extensions.eventCommandMap.support.SupportEvent;
 
 class SupportEventTriggeredSelfReportingCallbackCommand
@@ -541,5 +559,20 @@ class CommandWithoutExecute
 	public function init():void
 	{
 		reportingFunc(CommandWithoutExecute);
+	}
+}
+class CommandMappingCommand{
+
+	static public const EVENT_TYPE : String = 'EVENT_TYPE';
+
+	[Inject(name="nestedCommand")]
+	public var commandClass : Class;
+
+	[Inject]
+	public var eventCommandMap : IEventCommandMap;
+
+	public function execute() : void{
+		eventCommandMap.map( EVENT_TYPE )
+			.toCommand( commandClass );
 	}
 }
