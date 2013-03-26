@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.eventCommandMap.impl
@@ -329,6 +329,18 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			assertThat(reportedExecutions, array(expectedOrder));
 		}
 
+		[Test]
+		public function test_events_do_not_leak_outside_the_EventCommandMap() : void{
+			var hasLeaked:Boolean;
+			var callback : Function = function() : void{
+				hasLeaked = injector.hasMapping(Event);
+			};
+			injector.map( Function, 'postConstructCallback' ).toValue(callback);
+			eventCommandMap.map(SupportEvent.TYPE1).toCommand(PostConstructCommand);
+			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
+			assertThat( hasLeaked, equalTo( false ) );
+		}
+
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
@@ -541,5 +553,23 @@ class CommandWithoutExecute
 	public function init():void
 	{
 		reportingFunc(CommandWithoutExecute);
+	}
+}
+class PostConstructCommand{
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
+	[Inject(name="postConstructCallback")]
+	public var callback : Function;
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
+	[PostConstruct]
+	public function handleCallback() : void{
+		callback();
 	}
 }
