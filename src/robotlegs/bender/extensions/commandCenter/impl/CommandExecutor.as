@@ -66,8 +66,11 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		public function execute(... params):void
 		{
-			for (var mapping:ICommandMapping = _mappings.head; mapping; mapping = mapping.next)
+			const list:Vector.<ICommandMapping> = _mappings.getList();
+			const length:int = list.length;
+			for (var i:int = 0; i < length; i++)
 			{
+				var mapping:ICommandMapping = list[i];
 				var command:Object = null;
 
 				_mapPayload && _mapPayload.apply(null, params);
@@ -75,6 +78,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 				if (mapping.guards.length == 0 || guardsApprove(mapping.guards, _injector))
 				{
 					const commandClass:Class = mapping.commandClass;
+					mapping.fireOnce && _mappings.removeMapping(mapping);
 
 					command = _injector
 						? _injector.instantiateUnmapped(commandClass)
@@ -92,7 +96,6 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 				if (command)
 				{
-					mapping.fireOnce && _mappings.removeMapping(mapping);
 					mapping.executeMethod && command[mapping.executeMethod]();
 				}
 			}

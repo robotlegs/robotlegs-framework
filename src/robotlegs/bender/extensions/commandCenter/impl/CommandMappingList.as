@@ -20,11 +20,11 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		private var _head:ICommandMapping;
+		private const _mappings:Vector.<ICommandMapping> = new Vector.<ICommandMapping>;
 
-		public function get head():ICommandMapping
+		public function getList():Vector.<ICommandMapping>
 		{
-			return _head;
+			return _mappings.concat();
 		}
 
 		private var _trigger:ICommandTrigger;
@@ -41,8 +41,6 @@ package robotlegs.bender.extensions.commandCenter.impl
 		private const _mappingsByCommand:Dictionary = new Dictionary();
 
 		private var _logger:ILogger;
-
-		private var _tail:ICommandMapping;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -67,15 +65,18 @@ package robotlegs.bender.extensions.commandCenter.impl
 			}
 			else
 			{
-				_head || _trigger.activate();
 				storeMapping(mapping);
+				_mappings.length == 1 && _trigger.activate();
 			}
 		}
 
 		public function removeMapping(mapping:ICommandMapping):void
 		{
-			deleteMapping(mapping);
-			_head || _trigger.deactivate();
+			if (_mappingsByCommand[mapping.commandClass])
+			{
+				deleteMapping(mapping);
+				_mappings.length == 0 && _trigger.deactivate();
+			}
 		}
 
 		public function removeMappingFor(commandClass:Class):void
@@ -86,9 +87,11 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		public function removeAllMappings():void
 		{
-			for (var mapping:ICommandMapping = _head; mapping; mapping = mapping.next)
+			const list:Vector.<ICommandMapping> = getList();
+			var length:int = list.length;
+			while(length--)
 			{
-				deleteMapping(mapping);
+				deleteMapping(list[length]);
 			}
 			_trigger.deactivate();
 		}
@@ -97,51 +100,17 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/* Private Functions                                                          */
 		/*============================================================================*/
 
-		private function addNode(node:ICommandMapping):void
-		{
-			if (_tail)
-			{
-				_tail.next = node;
-				node.previous = _tail;
-				_tail = node;
-			}
-			else
-			{
-				_head = _tail = node;
-			}
-		}
-
-		private function removeNode(node:ICommandMapping):void
-		{
-			if (node == _head)
-			{
-				_head = _head.next;
-			}
-			if (node == _tail)
-			{
-				_tail = _tail.previous;
-			}
-			if (node.previous)
-			{
-				node.previous.next = node.next;
-			}
-			if (node.next)
-			{
-				node.next.previous = node.previous;
-			}
-		}
-
 		private function storeMapping(mapping:ICommandMapping):void
 		{
 			_mappingsByCommand[mapping.commandClass] = mapping;
-			addNode(mapping);
+			_mappings.push(mapping);
 			_logger && _logger.debug('{0} mapped to {1}', [_trigger, mapping]);
 		}
 
 		private function deleteMapping(mapping:ICommandMapping):void
 		{
 			delete _mappingsByCommand[mapping.commandClass];
-			removeNode(mapping);
+			_mappings.splice(_mappings.indexOf(mapping), 1);
 			_logger && _logger.debug('{0} unmapped from {1}', [_trigger, mapping]);
 		}
 

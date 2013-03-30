@@ -34,25 +34,5 @@ package robotlegs.bender.extensions.commandCenter.api
 		 * Unmaps a Command after a successful execution
 		 */
 		function get fireOnce():Boolean;
-
-		/**
-		 * @private
-		 */
-		function get next():ICommandMapping;
-
-		/**
-		 * @private
-		 */
-		function set next(value:ICommandMapping):void;
-
-		/**
-		 * @private
-		 */
-		function get previous():ICommandMapping;
-
-		/**
-		 * @private
-		 */
-		function set previous(value:ICommandMapping):void;
 	}
 }

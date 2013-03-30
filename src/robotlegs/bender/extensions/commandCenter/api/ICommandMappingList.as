@@ -12,7 +12,7 @@ package robotlegs.bender.extensions.commandCenter.api
 	{
 		function set trigger(value:ICommandTrigger):void;
 
-		function get head():ICommandMapping;
+		function getList():Vector.<ICommandMapping>;
 
 		function addMapping(mapping:ICommandMapping):void;
 

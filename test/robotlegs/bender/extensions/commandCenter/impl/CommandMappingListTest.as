@@ -10,6 +10,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 	import mockolate.mock;
 	import mockolate.runner.MockolateRule;
 	import org.hamcrest.assertThat;
+	import org.hamcrest.core.not;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.notNullValue;
 	import org.hamcrest.object.nullValue;
@@ -137,89 +138,57 @@ package robotlegs.bender.extensions.commandCenter.impl
 		}
 
 		[Test]
-		public function empty_list_has_no_Head():void
+		public function list_is_empty():void
 		{
-			assertThat(subject.head, nullValue());
+			assertThat(subject.getList().length, equalTo(0));
 		}
 
 		[Test]
-		public function add_first_node_sets_list_Head():void
-		{
-			subject.addMapping(mapping1);
-			assertThat(subject.head, equalTo(mapping1));
-		}
-
-		[Test]
-		public function head_node_has_no_previous_or_next():void
+		public function list_not_empty_after_mapping_added():void
 		{
 			subject.addMapping(mapping1);
-			assertThat(mapping1.previous, nullValue());
-			assertThat(mapping1.next, nullValue());
+			assertThat(subject.getList().length, equalTo(1));
 		}
 
 		[Test]
-		public function add_another_keeps_old_list_Head():void
+		public function list_has_mapping():void
 		{
 			subject.addMapping(mapping1);
-			subject.addMapping(mapping2);
-			assertThat(subject.head, equalTo(mapping1));
+			assertThat(subject.getList().indexOf(mapping1), equalTo(0));
 		}
 
 		[Test]
-		public function add_node_sets_node_pointers():void
-		{
-			subject.addMapping(mapping1);
-			subject.addMapping(mapping2);
-			subject.addMapping(mapping3);
-			assertThat(subject.head, equalTo(mapping1));
-			assertThat(mapping1.previous, nullValue());
-			assertThat(mapping1.next, equalTo(mapping2));
-			assertThat(mapping2.previous, equalTo(mapping1));
-			assertThat(mapping2.next, equalTo(mapping3));
-			assertThat(mapping3.previous, equalTo(mapping2));
-			assertThat(mapping3.next, nullValue());
-		}
-
-		[Test]
-		public function remove_last_node_removes_Head():void
+		public function list_is_empty_after_mappings_are_removed():void
 		{
 			subject.addMapping(mapping1);
 			subject.addMapping(mapping2);
 			subject.removeMapping(mapping1);
 			subject.removeMapping(mapping2);
-			assertThat(subject.head, nullValue());
+			assertThat(subject.getList().length, equalTo(0));
 		}
 
 		[Test]
-		public function remove_middle_node_preserves_head_and_tail():void
+		public function list_is_empty_after_removeAll():void
 		{
 			subject.addMapping(mapping1);
 			subject.addMapping(mapping2);
 			subject.addMapping(mapping3);
-			subject.removeMapping(mapping2);
-			assertThat(subject.head, equalTo(mapping1));
-			assertThat(subject.head.next, equalTo(mapping3));
+			subject.removeAllMappings();
+			assertThat(subject.getList().length, equalTo(0));
 		}
 
 		[Test]
-		public function remove_head_node_sets_new_Head():void
+		public function getList_returns_unique_list():void
 		{
-			subject.addMapping(mapping1);
-			subject.addMapping(mapping2);
-			subject.removeMapping(mapping1);
-			assertThat(subject.head, equalTo(mapping2));
-			assertThat(mapping2.previous, nullValue());
+			assertThat(subject.getList(), not(equalTo(subject.getList())));
 		}
 
 		[Test]
-		public function remove_middle_node_stitches_siblings_together():void
+		public function getList_returns_similar_list():void
 		{
 			subject.addMapping(mapping1);
-			subject.addMapping(mapping2);
-			subject.addMapping(mapping3);
-			subject.removeMapping(mapping2);
-			assertThat(mapping1.next, equalTo(mapping3));
-			assertThat(mapping3.previous, equalTo(mapping1));
+			assertThat(subject.getList()[0], equalTo(subject.getList()[0]));
 		}
+
 	}
 }

@@ -67,42 +67,6 @@ package robotlegs.bender.extensions.commandCenter.impl
 			return _fireOnce;
 		}
 
-		private var _next:ICommandMapping;
-
-		/**
-		 * @inheritDoc
-		 */
-		public function get next():ICommandMapping
-		{
-			return _next;
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public function set next(value:ICommandMapping):void
-		{
-			_next = value;
-		}
-
-		private var _previous:ICommandMapping;
-
-		/**
-		 * @inheritDoc
-		 */
-		public function get previous():ICommandMapping
-		{
-			return _previous;
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public function set previous(value:ICommandMapping):void
-		{
-			_previous = value;
-		}
-
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
