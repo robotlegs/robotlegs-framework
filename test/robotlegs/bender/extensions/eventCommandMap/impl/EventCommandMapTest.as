@@ -16,7 +16,8 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.instanceOf;
 	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.extensions.commandCenter.api.ICommandClassMapper;
+	import robotlegs.bender.extensions.commandCenter.api.ICommandMapper;
+	import robotlegs.bender.extensions.commandCenter.api.ICommandUnmapper;
 	import robotlegs.bender.extensions.commandCenter.support.CallbackCommand;
 	import robotlegs.bender.extensions.commandCenter.support.CallbackCommand2;
 	import robotlegs.bender.extensions.commandCenter.support.NullCommand;
@@ -42,7 +43,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 
 		private var subject:IEventCommandMap;
 
-		private var mapper:ICommandClassMapper;
+		private var mapper:ICommandMapper;
 
 		private var reportedExecutions:Array;
 
@@ -72,14 +73,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		[Test]
 		public function map_creates_mapper():void
 		{
-			assertThat(subject.map(SupportEvent.TYPE1, SupportEvent), instanceOf(ICommandClassMapper));
-		}
-
-		[Test]
-		public function map_to_identical_Type_and_Event_returns_same_mapper():void
-		{
-			mapper = subject.map(SupportEvent.TYPE1, SupportEvent);
-			assertThat(subject.map(SupportEvent.TYPE1, SupportEvent), equalTo(mapper));
+			assertThat(subject.map(SupportEvent.TYPE1, SupportEvent), instanceOf(ICommandMapper));
 		}
 
 		[Test]
@@ -100,7 +94,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		public function unmap_returns_mapper():void
 		{
 			mapper = subject.map(SupportEvent.TYPE1, SupportEvent);
-			assertThat(subject.unmap(SupportEvent.TYPE1, SupportEvent), equalTo(mapper));
+			assertThat(subject.unmap(SupportEvent.TYPE1, SupportEvent), instanceOf(ICommandUnmapper));
 		}
 
 		[Test]

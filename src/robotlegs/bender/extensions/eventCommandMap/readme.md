@@ -59,17 +59,15 @@ If you intend to change a mapping you should unmap it first.
 
 This extension requires the following extensions:
 
-+ CommandMapExtension
 + EventDispatcherExtension
 
 ## Extension Installation
 
     _context = new Context().install(
-    	CommandCenterExtension,
     	EventDispatcherExtension,
 	    EventCommandMapExtension);
 
-Or, assuming that the EventDispatcher and CommandCenter extensions have already been installed:
+Or, assuming that the EventDispatcherExtension has already been installed:
 
 	_context.install(EventCommandMapExtension);
 

@@ -56,10 +56,8 @@ package robotlegs.bender.extensions.commandCenter.impl
 			reportedExecutions = [];
 			injector = new Injector();
 			injector.map(Function, "reportingFunction").toValue(reportingFunction);
-			subject = new CommandExecutor(injector);
-			mappings = new CommandMappingList();
-			mappings.trigger = trigger;
-			subject.mappings = mappings;
+			mappings = new CommandMappingList(trigger);
+			subject = new CommandExecutor(mappings, injector);
 		}
 
 		/*============================================================================*/
@@ -67,21 +65,23 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/*============================================================================*/
 
 		[Test]
-		public function payloadMapper_is_passed_execution_arguments():void
+		public function payloadMapper_is_passed_mapping():void
 		{
-			mappings.addMapping(new CommandMapping(CommandA));
-			mock(host).method("hook").args("hi", 5).once();
+			const mapping:CommandMapping = new CommandMapping(CommandA);
+			mock(host).method("hook").args(mapping).once();
+			mappings.addMapping(mapping);
 			subject.withPayloadMapper(host.hook);
-			subject.execute("hi", 5);
+			subject.execute();
 		}
 
 		[Test]
-		public function payloadUnmapper_is_passed_execution_arguments():void
+		public function payloadUnmapper_is_passed_mapping():void
 		{
-			mappings.addMapping(new CommandMapping(CommandA));
-			mock(host).method("hook").args("hi", 5).once();
+			const mapping:CommandMapping = new CommandMapping(CommandA);
+			mock(host).method("hook").args(mapping).once();
+			mappings.addMapping(mapping);
 			subject.withPayloadUnmapper(host.hook);
-			subject.execute("hi", 5);
+			subject.execute();
 		}
 
 		[Test]
@@ -92,8 +92,8 @@ package robotlegs.bender.extensions.commandCenter.impl
 			mappings = nice(CommandMappingList);
 			mappings.addMapping(mapping);
 			mock(mappings).method("removeMapping").args(mapping).once();
-			subject.execute("hi", 5);
-			subject.execute("hi", 5);
+			subject.execute();
+			subject.execute();
 		}
 
 		[Test]

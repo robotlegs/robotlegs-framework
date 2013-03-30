@@ -8,11 +8,6 @@
 package robotlegs.bender.extensions.commandCenter.support
 {
 	import mockolate.nice;
-	import mockolate.stub;
-
-	import robotlegs.bender.extensions.commandCenter.api.ICommandExecutor;
-
-	import robotlegs.bender.extensions.commandCenter.api.ICommandMapper;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandTrigger;
 
 	/**
@@ -32,14 +27,7 @@ package robotlegs.bender.extensions.commandCenter.support
 
 		public function triggerFactory(... params):ICommandTrigger
 		{
-			const trigger:ICommandTrigger = nice(ICommandTrigger);
-			stub(trigger).getter("executor").returns(nice(ICommandExecutor));
-			return trigger;
-		}
-
-		public function mapperFactory(... params):ICommandMapper
-		{
-			return nice(ICommandMapper);
+			return nice(ICommandTrigger);
 		}
 
 		public function hook(...params):void

@@ -10,7 +10,7 @@ package robotlegs.bender.extensions.commandCenter.api
 
 	public interface ICommandMappingList
 	{
-		function set trigger(value:ICommandTrigger):void;
+		function withSortFunction(sorter:Function):ICommandMappingList;
 
 		function getList():Vector.<ICommandMapping>;
 

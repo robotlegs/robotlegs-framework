@@ -19,19 +19,10 @@ package robotlegs.bender.extensions.commandCenter.impl
 	{
 
 		/*============================================================================*/
-		/* Public Properties                                                          */
+		/* Private Properties                                                         */
 		/*============================================================================*/
 
 		private var _mappings:ICommandMappingList;
-
-		public function set mappings(value:ICommandMappingList):void
-		{
-			_mappings = value;
-		}
-
-		/*============================================================================*/
-		/* Private Properties                                                         */
-		/*============================================================================*/
 
 		private var _injector:Injector;
 
@@ -39,12 +30,14 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		private var _unmapPayload:Function;
 
+
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function CommandExecutor(injector:Injector)
+		public function CommandExecutor(mappings:ICommandMappingList, injector:Injector)
 		{
+			_mappings = mappings;
 			_injector = injector;
 		}
 
@@ -64,7 +57,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 			return this;
 		}
 
-		public function execute(... params):void
+		public function execute():void
 		{
 			const list:Vector.<ICommandMapping> = _mappings.getList();
 			const length:int = list.length;
@@ -73,7 +66,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 				var mapping:ICommandMapping = list[i];
 				var command:Object = null;
 
-				_mapPayload && _mapPayload.apply(null, params);
+				_mapPayload && _mapPayload(mapping);
 
 				if (mapping.guards.length == 0 || guardsApprove(mapping.guards, _injector))
 				{
@@ -92,7 +85,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 					}
 				}
 
-				_unmapPayload && _unmapPayload.apply(null, params);
+				_unmapPayload && _unmapPayload(mapping);
 
 				if (command)
 				{

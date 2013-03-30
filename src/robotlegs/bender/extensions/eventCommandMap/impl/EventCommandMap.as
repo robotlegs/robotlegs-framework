@@ -9,11 +9,12 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 {
 	import flash.events.IEventDispatcher;
 	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.extensions.commandCenter.api.ICommandClassMapper;
+	import robotlegs.bender.extensions.commandCenter.api.ICommandMapper;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandUnmapper;
-	import robotlegs.bender.extensions.commandCenter.impl.CommandCenter;
+	import robotlegs.bender.extensions.commandCenter.impl.CommandTriggerMap;
 	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
 	import robotlegs.bender.framework.api.IContext;
+	import robotlegs.bender.framework.api.ILogger;
 
 	/**
 	 * @private
@@ -29,7 +30,9 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 
 		private var _dispatcher:IEventDispatcher;
 
-		private var _commandCenter:CommandCenter;
+		private var _triggerMap:CommandTriggerMap;
+
+		private var _logger:ILogger;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -41,9 +44,9 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		public function EventCommandMap(context:IContext, dispatcher:IEventDispatcher)
 		{
 			_injector = context.injector;
+			_logger = context.getLogger(this);
 			_dispatcher = dispatcher;
-			_commandCenter = new CommandCenter(getKey, createTrigger)
-				.withLogger(context.getLogger(this));
+			_triggerMap = new CommandTriggerMap(getKey, createTrigger);
 		}
 
 		/*============================================================================*/
@@ -53,9 +56,9 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		/**
 		 * @inheritDoc
 		 */
-		public function map(type:String, eventClass:Class = null):ICommandClassMapper
+		public function map(type:String, eventClass:Class = null):ICommandMapper
 		{
-			return _commandCenter.getMapper(type, eventClass) as ICommandClassMapper;
+			return getTrigger(type, eventClass).createMapper();
 		}
 
 		/**
@@ -63,7 +66,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		 */
 		public function unmap(type:String, eventClass:Class = null):ICommandUnmapper
 		{
-			return _commandCenter.getUnmapper(type, eventClass);
+			return getTrigger(type, eventClass).createMapper();
 		}
 
 		/*============================================================================*/
@@ -77,7 +80,12 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 
 		private function createTrigger(type:String, eventClass:Class):EventCommandTrigger
 		{
-			return new EventCommandTrigger(_injector, _dispatcher, type, eventClass);
+			return new EventCommandTrigger(_injector, _dispatcher, type, eventClass, _logger);
+		}
+
+		private function getTrigger(type:String, eventClass:Class):EventCommandTrigger
+		{
+			return _triggerMap.getTrigger(type, eventClass) as EventCommandTrigger;
 		}
 	}
 }

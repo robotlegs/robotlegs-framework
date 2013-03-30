@@ -9,12 +9,17 @@ package robotlegs.bender.extensions.commandCenter.impl
 {
 	import mockolate.mock;
 	import mockolate.runner.MockolateRule;
+	import mockolate.stub;
+	import mockolate.verify;
 	import org.hamcrest.assertThat;
-	import org.hamcrest.object.instanceOf;
-	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
+	import org.hamcrest.object.equalTo;
+	import org.hamcrest.object.notNullValue;
+	import robotlegs.bender.extensions.commandCenter.api.ICommandExecutor;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMappingList;
+	import robotlegs.bender.extensions.commandCenter.api.ICommandTrigger;
+	import robotlegs.bender.extensions.commandCenter.support.CommandMapStub;
 
-	public class CommandMapperTest
+	public class CommandTriggerMapTest
 	{
 
 		/*============================================================================*/
@@ -24,6 +29,15 @@ package robotlegs.bender.extensions.commandCenter.impl
 		[Rule]
 		public var mocks:MockolateRule = new MockolateRule();
 
+		[Mock(type="strict")]
+		public var host:CommandMapStub;
+
+		[Mock]
+		public var trigger:ICommandTrigger;
+
+		[Mock]
+		public var executor:ICommandExecutor;
+
 		[Mock]
 		public var mappings:ICommandMappingList;
 
@@ -31,7 +45,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var subject:CommandMapper;
+		private var stubby:CommandMapStub;
 
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
@@ -40,7 +54,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 		[Before]
 		public function before():void
 		{
-			subject = new CommandMapper(mappings);
+			stubby = new CommandMapStub();
 		}
 
 		/*============================================================================*/
@@ -48,30 +62,41 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/*============================================================================*/
 
 		[Test]
-		public function toCommand_creates_CommandMapping():void
+		public function keyFactory_is_called_with_params():void
 		{
-			assertThat(subject.toCommand(String), instanceOf(CommandMapping))
+			mock(host).method("keyFactory").args("hi", 5)
+				.returns("anyKey").once();
+			new CommandTriggerMap(host.keyFactory, stubby.triggerFactory).getTrigger("hi", 5);
 		}
 
 		[Test]
-		public function toCommand_passes_CommandMapping_to_MappingList():void
+		public function triggerFactory_is_called_with_with_params():void
 		{
-			mock(mappings).method("addMapping").args(instanceOf(ICommandMapping)).once();
-			subject.toCommand(String);
+			mock(host).method("triggerFactory").args("hi", 5)
+				.returns(trigger).once();
+			new CommandTriggerMap(stubby.keyFactory, host.triggerFactory).getTrigger("hi", 5);
 		}
 
 		[Test]
-		public function fromCommand_delegates_to_MappingList():void
+		public function trigger_is_cached_by_key():void
 		{
-			mock(mappings).method("removeMappingFor").once();
-			subject.fromCommand(String);
+			const subject:CommandTriggerMap = new CommandTriggerMap(stubby.keyFactory, stubby.triggerFactory);
+			const mapper1:Object = subject.getTrigger("hi", 5);
+			const mapper2:Object = subject.getTrigger("hi", 5);
+			assertThat(mapper1, notNullValue());
+			assertThat(mapper1, equalTo(mapper2));
 		}
 
 		[Test]
-		public function fromAll_delegates_to_MappingList():void
+		public function removeTrigger_deactivates_trigger():void
 		{
-			mock(mappings).method("removeAllMappings").once();
-			subject.fromAll();
+			stub(host).method("triggerFactory").returns(trigger);
+			mock(trigger).method("deactivate").once();
+			const subject:CommandTriggerMap = new CommandTriggerMap(stubby.keyFactory, host.triggerFactory);
+			subject.getTrigger("hi", 5);
+			subject.removeTrigger("hi", 5);
+			verify(trigger);
 		}
+
 	}
 }

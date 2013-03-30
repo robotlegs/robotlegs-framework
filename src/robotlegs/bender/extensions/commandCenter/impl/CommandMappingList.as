@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -17,43 +17,43 @@ package robotlegs.bender.extensions.commandCenter.impl
 	{
 
 		/*============================================================================*/
-		/* Public Properties                                                          */
-		/*============================================================================*/
-
-		private const _mappings:Vector.<ICommandMapping> = new Vector.<ICommandMapping>;
-
-		public function getList():Vector.<ICommandMapping>
-		{
-			return _mappings.concat();
-		}
-
-		private var _trigger:ICommandTrigger;
-
-		public function set trigger(value:ICommandTrigger):void
-		{
-			_trigger = value;
-		}
-
-		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
 		private const _mappingsByCommand:Dictionary = new Dictionary();
 
+		private var _mappings:Vector.<ICommandMapping> = new Vector.<ICommandMapping>;
+
+		private var _trigger:ICommandTrigger;
+
 		private var _logger:ILogger;
+
+		private var _sorter:Function;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function CommandMappingList(logger:ILogger = null)
+		public function CommandMappingList(trigger:ICommandTrigger, logger:ILogger = null)
 		{
+			_trigger = trigger;
 			_logger = logger;
 		}
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
+
+		public function getList():Vector.<ICommandMapping>
+		{
+			return _mappings.concat();
+		}
+
+		public function withSortFunction(sorter:Function):ICommandMappingList
+		{
+			_sorter = sorter;
+			return this;
+		}
 
 		public function addMapping(mapping:ICommandMapping):void
 		{
@@ -62,10 +62,12 @@ package robotlegs.bender.extensions.commandCenter.impl
 			if (oldMapping)
 			{
 				overwriteMapping(oldMapping, mapping);
+				_sorter && sortMappings();
 			}
 			else
 			{
 				storeMapping(mapping);
+				_sorter && sortMappings();
 				_mappings.length == 1 && _trigger.activate();
 			}
 		}
@@ -89,7 +91,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 		{
 			const list:Vector.<ICommandMapping> = getList();
 			var length:int = list.length;
-			while(length--)
+			while (length--)
 			{
 				deleteMapping(list[length]);
 			}
@@ -122,6 +124,20 @@ package robotlegs.bender.extensions.commandCenter.impl
 				[_trigger, oldMapping]);
 			deleteMapping(oldMapping);
 			storeMapping(newMapping);
+		}
+
+		private function sortMappings():void
+		{
+			if (_sorter)
+			{
+				const mappings:Array = [];
+				var length:uint = _mappings.length;
+				for (var i:uint = 0; i < length; i++)
+				{
+					mappings[i] = _mappings[i];
+				}
+				_mappings = Vector.<ICommandMapping>(mappings.sort(_sorter));
+			}
 		}
 	}
 }

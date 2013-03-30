@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -11,26 +11,19 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import flash.events.IEventDispatcher;
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandExecutor;
+	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
+	import robotlegs.bender.extensions.commandCenter.api.ICommandMappingList;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandTrigger;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandExecutor;
+	import robotlegs.bender.extensions.commandCenter.impl.CommandMappingList;
+	import robotlegs.bender.extensions.commandCenter.impl.CommandMapper;
+	import robotlegs.bender.framework.api.ILogger;
 
 	/**
 	 * @private
 	 */
 	public class EventCommandTrigger implements ICommandTrigger
 	{
-
-		/*============================================================================*/
-		/* Public Properties                                                          */
-		/*============================================================================*/
-
-		private var _executor:ICommandExecutor;
-
-		public function get executor():ICommandExecutor
-		{
-			return _executor;
-		}
-
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
@@ -43,6 +36,8 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 
 		private var _injector:Injector;
 
+		private var _mappings:ICommandMappingList;
+
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
@@ -54,20 +49,24 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			injector:Injector,
 			dispatcher:IEventDispatcher,
 			type:String,
-			eventClass:Class = null)
+			eventClass:Class = null,
+			logger:ILogger = null)
 		{
 			_injector = injector.createChildInjector();
 			_dispatcher = dispatcher;
 			_type = type;
 			_eventClass = eventClass;
-			_executor = new CommandExecutor(_injector)
-				.withPayloadMapper(mapPayload)
-				.withPayloadUnmapper(unmapPayload);
+			_mappings = new CommandMappingList(this, logger);
 		}
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
+
+		public function createMapper():CommandMapper
+		{
+			return new CommandMapper(_mappings);
+		}
 
 		public function activate():void
 		{
@@ -95,21 +94,20 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			{
 				return;
 			}
-			_executor.execute(event, eventConstructor);
-		}
-
-		private function mapPayload(event:Event, eventClass:Class):void
-		{
-			_injector.map(Event).toValue(event);
-			if (eventClass != Event)
-				_injector.map(_eventClass || eventClass).toValue(event);
-		}
-
-		private function unmapPayload(event:Event, eventClass:Class):void
-		{
-			_injector.unmap(Event);
-			if (eventClass != Event)
-				_injector.unmap(_eventClass || eventClass);
+			const executor:ICommandExecutor = new CommandExecutor(_mappings, _injector)
+				.withPayloadMapper(function(mapping:ICommandMapping):void
+				{
+					_injector.map(Event).toValue(event);
+					if (eventConstructor != Event)
+						_injector.map(_eventClass || eventConstructor).toValue(event);
+				})
+				.withPayloadUnmapper(function(mapping:ICommandMapping):void
+				{
+					_injector.unmap(Event);
+					if (eventConstructor != Event)
+						_injector.unmap(_eventClass || eventConstructor);
+				});
+			executor.execute();
 		}
 	}
 }

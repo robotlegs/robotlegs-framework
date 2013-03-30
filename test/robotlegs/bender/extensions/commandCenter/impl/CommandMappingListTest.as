@@ -57,8 +57,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 		[Before]
 		public function before():void
 		{
-			subject = new CommandMappingList(logger);
-			subject.trigger = trigger;
+			subject = new CommandMappingList(trigger, logger);
 			mapping1 = new CommandMapping(NullCommand);
 			mapping2 = new CommandMapping(NullCommand2);
 			mapping3 = new CommandMapping(NullCommand3);

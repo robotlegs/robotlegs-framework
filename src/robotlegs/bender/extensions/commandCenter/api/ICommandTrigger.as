@@ -10,8 +10,6 @@ package robotlegs.bender.extensions.commandCenter.api
 
 	public interface ICommandTrigger
 	{
-		function get executor():ICommandExecutor;
-
 		function activate():void;
 
 		function deactivate():void;

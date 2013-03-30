@@ -7,29 +7,23 @@
 
 package robotlegs.bender.extensions.commandCenter.impl
 {
-	import robotlegs.bender.extensions.commandCenter.api.ICommandClassMapper;
-	import robotlegs.bender.extensions.commandCenter.api.ICommandConfigurator;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapper;
+	import robotlegs.bender.extensions.commandCenter.api.ICommandConfigurator;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMappingList;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandUnmapper;
 
-	public class DefaultCommandMapper implements ICommandMapper, ICommandClassMapper, ICommandUnmapper
+	public class CommandMapper implements ICommandMapper, ICommandUnmapper
 	{
-
-		/*============================================================================*/
-		/* Public Properties                                                          */
-		/*============================================================================*/
-
 		private var _mappings:ICommandMappingList;
-
-		public function set mappings(value:ICommandMappingList):void
-		{
-			_mappings = value;
-		}
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
+
+		public function CommandMapper(mappings:ICommandMappingList)
+		{
+			_mappings = mappings;
+		}
 
 		/**
 		 * @inheritDoc
