@@ -13,6 +13,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import robotlegs.bender.extensions.commandCenter.api.ICommandUnmapper;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandTriggerMap;
 	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
+	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMapper;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.ILogger;
 
@@ -56,7 +57,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		/**
 		 * @inheritDoc
 		 */
-		public function map(type:String, eventClass:Class = null):ICommandMapper
+		public function map(type:String, eventClass:Class = null):IEventCommandMapper
 		{
 			return getTrigger(type, eventClass).createMapper();
 		}

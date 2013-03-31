@@ -7,7 +7,6 @@
 
 package robotlegs.bender.extensions.eventCommandMap.api
 {
-	import robotlegs.bender.extensions.commandCenter.api.ICommandMapper;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandUnmapper;
 
 	/**
@@ -21,7 +20,7 @@ package robotlegs.bender.extensions.eventCommandMap.api
 		 * @param eventClass The concrete Event class
 		 * @return Command Mapper
 		 */
-		function map(type:String, eventClass:Class = null):ICommandMapper;
+		function map(type:String, eventClass:Class = null):IEventCommandMapper;
 
 		/**
 		 * Unmaps an Event based trigger from a Command

@@ -28,7 +28,9 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		private var _logger:ILogger;
 
-		private var _sorter:Function;
+		private var _compareFunction:Function;
+
+		private var _sorted:Boolean;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -46,34 +48,35 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		public function getList():Vector.<ICommandMapping>
 		{
+			_sorted || sortMappings();
 			return _mappings.concat();
 		}
 
 		public function withSortFunction(sorter:Function):ICommandMappingList
 		{
-			_sorter = sorter;
+			_sorted = false;
+			_compareFunction = sorter;
 			return this;
 		}
 
 		public function addMapping(mapping:ICommandMapping):void
 		{
-
+			_sorted = false;
 			const oldMapping:ICommandMapping = _mappingsByCommand[mapping.commandClass];
 			if (oldMapping)
 			{
 				overwriteMapping(oldMapping, mapping);
-				_sorter && sortMappings();
 			}
 			else
 			{
 				storeMapping(mapping);
-				_sorter && sortMappings();
 				_mappings.length == 1 && _trigger.activate();
 			}
 		}
 
 		public function removeMapping(mapping:ICommandMapping):void
 		{
+			_sorted = false;
 			if (_mappingsByCommand[mapping.commandClass])
 			{
 				deleteMapping(mapping);
@@ -128,7 +131,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		private function sortMappings():void
 		{
-			if (_sorter)
+			if (_compareFunction != null)
 			{
 				const mappings:Array = [];
 				var length:uint = _mappings.length;
@@ -136,8 +139,9 @@ package robotlegs.bender.extensions.commandCenter.impl
 				{
 					mappings[i] = _mappings[i];
 				}
-				_mappings = Vector.<ICommandMapping>(mappings.sort(_sorter));
+				_mappings = Vector.<ICommandMapping>(mappings.sort(_compareFunction));
 			}
+			_sorted = true;
 		}
 	}
 }
