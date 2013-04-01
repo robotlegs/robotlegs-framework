@@ -7,64 +7,11 @@
 package robotlegs.bender.extensions.eventCommandMap.impl
 {
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
-	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandConfigurator;
+	import robotlegs.bender.extensions.commandCenter.impl.CommandMapping;
+	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMapping;
 
-	public class EventCommandMapping implements ICommandMapping, IEventCommandConfigurator
+	public class EventCommandMapping extends CommandMapping implements IEventCommandMapping
 	{
-		/*============================================================================*/
-		/* Public Properties                                                          */
-		/*============================================================================*/
-
-		private var _commandClass:Class;
-
-		/**
-		 * @inheritDoc
-		 */
-		public function get commandClass():Class
-		{
-			return _commandClass;
-		}
-
-		private var _executeMethod:String = "execute";
-
-		/**
-		 * @inheritDoc
-		 */
-		public function get executeMethod():String
-		{
-			return _executeMethod;
-		}
-
-		private var _guards:Array = [];
-
-		/**
-		 * @inheritDoc
-		 */
-		public function get guards():Array
-		{
-			return _guards;
-		}
-
-		private var _hooks:Array = [];
-
-		/**
-		 * @inheritDoc
-		 */
-		public function get hooks():Array
-		{
-			return _hooks;
-		}
-
-		private var _fireOnce:Boolean;
-
-		/**
-		 * @inheritDoc
-		 */
-		public function get fireOnce():Boolean
-		{
-			return _fireOnce;
-		}
-
 		private var _priority:int;
 
 		/**
@@ -85,61 +32,17 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		 */
 		public function EventCommandMapping(commandClass:Class)
 		{
-			_commandClass = commandClass;
+			super(commandClass);
 		}
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		/**
-		 * @inheritDoc
-		 */
-		public function withExecuteMethod(name:String):IEventCommandConfigurator
+		public function setPriority(priority:int):ICommandMapping
 		{
-			_executeMethod = name;
+			_priority = priority;
 			return this;
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public function withGuards(... guards):IEventCommandConfigurator
-		{
-			_guards = _guards.concat.apply(null, guards);
-			return this;
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public function withHooks(... hooks):IEventCommandConfigurator
-		{
-			_hooks = _hooks.concat.apply(null, hooks);
-			return this;
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public function once(value:Boolean = true):IEventCommandConfigurator
-		{
-			_fireOnce = value;
-			return this;
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public function withPriority(value:int):IEventCommandConfigurator
-		{
-			_priority = value;
-			return this;
-		}
-
-		public function toString():String
-		{
-			return 'Command ' + _commandClass;
 		}
 
 	}

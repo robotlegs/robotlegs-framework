@@ -88,7 +88,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 		public function oneShotMapping_is_removed():void
 		{
 			const mapping:CommandMapping = new CommandMapping(CommandA);
-			mapping.once();
+			mapping.setFireOnce(true);
 			mappings = nice(CommandMappingList);
 			mappings.addMapping(mapping);
 			mock(mappings).method("removeMapping").args(mapping).once();
@@ -100,7 +100,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 		public function command_is_constructed():void
 		{
 			const mapping:CommandMapping = new CommandMapping(CommandWithoutExecute);
-			mapping.withExecuteMethod(null);
+			mapping.setExecuteMethod(null);
 			mappings.addMapping(mapping);
 			subject.execute();
 			assertThat(reportedExecutions, array(CommandWithoutExecute));
@@ -131,7 +131,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 		private function commandExecutionCount(totalEvents:int = 1, oneshot:Boolean = false):uint
 		{
 			const mapping:CommandMapping = new CommandMapping(CommandA);
-			mapping.once(oneshot);
+			mapping.setFireOnce(oneshot);
 			mappings.addMapping(mapping);
 			while (totalEvents--)
 			{

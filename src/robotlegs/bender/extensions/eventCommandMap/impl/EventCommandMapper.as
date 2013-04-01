@@ -10,11 +10,14 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import robotlegs.bender.extensions.commandCenter.api.ICommandUnmapper;
 	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandConfigurator;
 	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMapper;
+	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMapping;
 
-	public class EventCommandMapper implements IEventCommandMapper, ICommandUnmapper
+	public class EventCommandMapper implements IEventCommandMapper, ICommandUnmapper, IEventCommandConfigurator
 	{
 
 		private var _mappings:ICommandMappingList;
+
+		private var _mapping:IEventCommandMapping;
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
@@ -30,9 +33,9 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		 */
 		public function toCommand(commandClass:Class):IEventCommandConfigurator
 		{
-			const mapping:EventCommandMapping = new EventCommandMapping(commandClass);
-			_mappings.addMapping(mapping);
-			return mapping;
+			_mapping = new EventCommandMapping(commandClass);
+			_mappings.addMapping(_mapping);
+			return this;
 		}
 
 		/**
@@ -49,6 +52,51 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		public function fromAll():void
 		{
 			_mappings.removeAllMappings();
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function once(value:Boolean = true):IEventCommandConfigurator
+		{
+			_mapping.setFireOnce(value);
+			return this;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function withGuards(... guards):IEventCommandConfigurator
+		{
+			_mapping.addGuards.apply(null, guards);
+			return this;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function withHooks(... hooks):IEventCommandConfigurator
+		{
+			_mapping.addHooks.apply(null, hooks);
+			return this;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function withExecuteMethod(name:String):IEventCommandConfigurator
+		{
+			_mapping.setExecuteMethod(name);
+			return this;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function withPriority(value:int):IEventCommandConfigurator
+		{
+			_mapping.setPriority(value);
+			return this;
 		}
 	}
 }

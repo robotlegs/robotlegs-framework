@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -7,17 +7,25 @@
 
 package robotlegs.bender.extensions.commandCenter.impl
 {
-	import robotlegs.bender.extensions.commandCenter.api.ICommandMapper;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandConfigurator;
+	import robotlegs.bender.extensions.commandCenter.api.ICommandMapper;
+	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMappingList;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandUnmapper;
 
-	public class CommandMapper implements ICommandMapper, ICommandUnmapper
+	public class CommandMapper implements ICommandMapper, ICommandUnmapper, ICommandConfigurator
 	{
-		private var _mappings:ICommandMappingList;
 
 		/*============================================================================*/
-		/* Public Functions                                                           */
+		/* Private Properties                                                         */
+		/*============================================================================*/
+
+		private var _mappings:ICommandMappingList;
+
+		private var _mapping:ICommandMapping;
+
+		/*============================================================================*/
+		/* Constructor                                                                */
 		/*============================================================================*/
 
 		public function CommandMapper(mappings:ICommandMappingList)
@@ -25,14 +33,18 @@ package robotlegs.bender.extensions.commandCenter.impl
 			_mappings = mappings;
 		}
 
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
+
 		/**
 		 * @inheritDoc
 		 */
 		public function toCommand(commandClass:Class):ICommandConfigurator
 		{
-			const mapping:CommandMapping = new CommandMapping(commandClass);
-			_mappings.addMapping(mapping);
-			return mapping;
+			_mapping = new CommandMapping(commandClass);
+			_mappings.addMapping(_mapping);
+			return this;
 		}
 
 		/**
@@ -49,6 +61,42 @@ package robotlegs.bender.extensions.commandCenter.impl
 		public function fromAll():void
 		{
 			_mappings.removeAllMappings();
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function once(value:Boolean = true):ICommandConfigurator
+		{
+			_mapping.setFireOnce(value);
+			return this;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function withGuards(... guards):ICommandConfigurator
+		{
+			_mapping.addGuards.apply(null, guards);
+			return this;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function withHooks(... hooks):ICommandConfigurator
+		{
+			_mapping.addHooks.apply(null, hooks);
+			return this;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function withExecuteMethod(name:String):ICommandConfigurator
+		{
+			_mapping.setExecuteMethod(name);
+			return this;
 		}
 	}
 }

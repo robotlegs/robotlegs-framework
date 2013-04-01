@@ -11,6 +11,8 @@ package robotlegs.bender.extensions.commandCenter.impl
 	import mockolate.runner.MockolateRule;
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.instanceOf;
+
+	import robotlegs.bender.extensions.commandCenter.api.ICommandConfigurator;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMappingList;
 
@@ -48,9 +50,9 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/*============================================================================*/
 
 		[Test]
-		public function toCommand_creates_CommandMapping():void
+		public function toCommand_creates_ICommandConfigurator():void
 		{
-			assertThat(subject.toCommand(String), instanceOf(CommandMapping))
+			assertThat(subject.toCommand(String), instanceOf(ICommandConfigurator))
 		}
 
 		[Test]

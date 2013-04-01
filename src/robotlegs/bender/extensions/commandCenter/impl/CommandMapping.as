@@ -7,10 +7,9 @@
 
 package robotlegs.bender.extensions.commandCenter.impl
 {
-	import robotlegs.bender.extensions.commandCenter.api.ICommandConfigurator;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 
-	public class CommandMapping implements ICommandMapping, ICommandConfigurator
+	public class CommandMapping implements ICommandMapping
 	{
 
 		/*============================================================================*/
@@ -87,7 +86,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/**
 		 * @inheritDoc
 		 */
-		public function withExecuteMethod(name:String):ICommandConfigurator
+		public function setExecuteMethod(name:String):ICommandMapping
 		{
 			_executeMethod = name;
 			return this;
@@ -96,7 +95,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/**
 		 * @inheritDoc
 		 */
-		public function withGuards(... guards):ICommandConfigurator
+		public function addGuards(... guards):ICommandMapping
 		{
 			_guards = _guards.concat.apply(null, guards);
 			return this;
@@ -105,7 +104,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/**
 		 * @inheritDoc
 		 */
-		public function withHooks(... hooks):ICommandConfigurator
+		public function addHooks(... hooks):ICommandMapping
 		{
 			_hooks = _hooks.concat.apply(null, hooks);
 			return this;
@@ -114,7 +113,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/**
 		 * @inheritDoc
 		 */
-		public function once(value:Boolean = true):ICommandConfigurator
+		public function setFireOnce(value:Boolean):ICommandMapping
 		{
 			_fireOnce = value;
 			return this;
