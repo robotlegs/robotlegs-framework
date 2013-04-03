@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.framework.impl
@@ -69,54 +69,87 @@ package robotlegs.bender.framework.impl
 		}
 
 		[Test]
-		public function plain_config_class_is_instantiated_at_initialization():void
+		public function plain_config_class_added_before_initialization_is_not_immediately_instantiated():void
 		{
 			var actual:Object = null;
-			configManager.addConfig(PlainConfig);
 			injector.map(Function, 'callback').toValue(function(config:PlainConfig):void {
 				actual = config;
 			});
+
+			configManager.addConfig(PlainConfig);
+
 			assertThat(actual, nullValue());
-			context.initialize();
-			assertThat(actual, instanceOf(PlainConfig));
 		}
 
 		[Test]
-		public function plain_config_class_is_instantiated_after_initialization():void
+		public function plain_config_class_added_before_initialization_is_instantiated_at_initialization():void
 		{
 			var actual:Object = null;
 			injector.map(Function, 'callback').toValue(function(config:PlainConfig):void {
 				actual = config;
 			});
-			context.initialize();
+
 			configManager.addConfig(PlainConfig);
+			context.initialize();
+
 			assertThat(actual, instanceOf(PlainConfig));
 		}
 
 		[Test]
-		public function plain_config_object_is_injected_into_at_initialization():void
+		public function plain_config_class_added_after_initialization_is_immediately_instantiated():void
+		{
+			var actual:Object = null;
+			injector.map(Function, 'callback').toValue(function(config:PlainConfig):void {
+				actual = config;
+			});
+
+			context.initialize();
+			configManager.addConfig(PlainConfig);
+
+			assertThat(actual, instanceOf(PlainConfig));
+		}
+
+		[Test]
+		public function plain_config_object_added_before_initializiation_is_not_injected_into():void
 		{
 			const expected:PlainConfig = new PlainConfig();
 			var actual:Object = null;
-			configManager.addConfig(expected);
 			injector.map(Function, 'callback').toValue(function(config:Object):void {
 				actual = config;
 			});
+
+			configManager.addConfig(expected);
+
 			assertThat(actual, nullValue());
+		}
+
+		[Test]
+		public function plain_config_object_added_before_initializiation_is_injected_into_at_initialization():void
+		{
+			const expected:PlainConfig = new PlainConfig();
+			var actual:Object = null;
+			injector.map(Function, 'callback').toValue(function(config:Object):void {
+				actual = config;
+			});
+
+			configManager.addConfig(expected);
 			context.initialize();
+
 			assertThat(actual, equalTo(expected));
 		}
 
 		[Test]
-		public function plain_config_object_is_injected_into_after_initialization():void
+		public function plain_config_object_added_after_initializiation_is_injected_into():void
 		{
 			const expected:PlainConfig = new PlainConfig();
 			var actual:Object = null;
-			context.initialize();
 			injector.map(Function, 'callback').toValue(function(config:Object):void {
 				actual = config;
 			});
+
+			context.initialize();
 			configManager.addConfig(expected);
+
 			assertThat(actual, equalTo(expected));
 		}
 

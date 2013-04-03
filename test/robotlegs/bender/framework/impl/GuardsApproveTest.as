@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.framework.impl
@@ -111,6 +111,34 @@ package robotlegs.bender.framework.impl
 		public function guards_with_a_grumpy_Function_returns_false():void
 		{
 			assertThat(guardsApprove([happyFunction, grumpyFunction]), isFalse());
+		}
+
+		[Test]
+		public function falsey_Function_returns_false():void
+		{
+			var falseyGuard:Function = function():int {
+				return 0;
+			};
+			assertThat(guardsApprove([falseyGuard]), isFalse());
+		}
+
+		[Test]
+		public function falsey_approve_returns_false():void
+		{
+			var falseyGuard:Object = {
+					approve: function():int {
+						return 0;
+					}
+				};
+			assertThat(guardsApprove([falseyGuard]), isFalse());
+		}
+
+		[Test(expects="TypeError")]
+		public function guard_instance_without_approve_throws_error():void
+		{
+			var invalidGuard:Object = {};
+			guardsApprove([invalidGuard]);
+			// note: no assertion. we just want to know if an error is thrown
 		}
 
 		/*============================================================================*/

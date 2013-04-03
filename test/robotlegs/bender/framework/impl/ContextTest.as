@@ -1,13 +1,14 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.framework.impl
 {
-	import org.flexunit.assertThat;
+	import flash.events.Event;
+	import org.hamcrest.assertThat;
 	import org.hamcrest.collection.array;
 	import org.hamcrest.core.isA;
 	import org.hamcrest.core.not;
@@ -22,6 +23,7 @@ package robotlegs.bender.framework.impl
 	import robotlegs.bender.framework.api.IExtension;
 	import robotlegs.bender.framework.api.LifecycleEvent;
 	import robotlegs.bender.framework.api.LogLevel;
+	import robotlegs.bender.framework.api.PinEvent;
 	import robotlegs.bender.framework.impl.contextSupport.CallbackConfig;
 	import robotlegs.bender.framework.impl.contextSupport.CallbackExtension;
 	import robotlegs.bender.framework.impl.loggingSupport.CallbackLogTarget;
@@ -89,15 +91,34 @@ package robotlegs.bender.framework.impl
 		}
 
 		[Test]
-		public function detain_is_pretty_much_untestable():void
+		public function detain_stores_the_instance():void
 		{
-			context.detain({}, {});
+			const expected:Object = {};
+			var actual:Object;
+			var handler:Function = function(event:PinEvent):void {
+				actual = event.instance;
+			};
+			context.addEventListener(PinEvent.DETAIN, handler);
+
+			context.detain(expected);
+
+			assertThat(actual, strictlyEqualTo(expected));
 		}
 
 		[Test]
-		public function release_is_pretty_much_untestable():void
+		public function release_frees_up_the_instance():void
 		{
-			context.release({}, {});
+			const expected:Object = {};
+			var actual:Object;
+			var handler:Function = function(event:PinEvent):void {
+				actual = event.instance;
+			};
+			context.addEventListener(PinEvent.RELEASE, handler);
+			context.detain(expected);
+
+			context.release(expected);
+
+			assertThat(actual, strictlyEqualTo(expected));
 		}
 
 		[Test]
@@ -189,9 +210,9 @@ package robotlegs.bender.framework.impl
 		{
 			var warning:LogParams = null;
 			context.addLogTarget(new CallbackLogTarget(
-					function(log:LogParams):void {
-						(log.level == LogLevel.WARN) && (warning = log);
-					}));
+				function(log:LogParams):void {
+					(log.level == LogLevel.WARN) && (warning = log);
+				}));
 			const child:Context = new Context();
 			context.addChild(child);
 			child.initialize();

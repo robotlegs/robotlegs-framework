@@ -1,17 +1,17 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.framework.impl
 {
-	import org.flexunit.assertThat;
+	import org.hamcrest.assertThat;
 	import org.hamcrest.object.equalTo;
 	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.framework.impl.hookSupport.CallbackHook;
 	import robotlegs.bender.framework.impl.applyHooks;
+	import robotlegs.bender.framework.impl.hookSupport.CallbackHook;
 
 	public class ApplyHooksTest
 	{
@@ -72,6 +72,14 @@ package robotlegs.bender.framework.impl
 			});
 			applyHooks([hook]);
 			assertThat(callCount, equalTo(1));
+		}
+
+		[Test(expects="TypeError")]
+		public function instance_without_hook_throws_error():void
+		{
+			var invalidHook:Object = {};
+			applyHooks([invalidHook]);
+			// note: no assertion. we just want to know if an error is thrown
 		}
 	}
 }

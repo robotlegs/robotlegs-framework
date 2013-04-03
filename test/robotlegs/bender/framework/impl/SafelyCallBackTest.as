@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.framework.impl
@@ -79,7 +79,7 @@ package robotlegs.bender.framework.impl
 		[Test(expects="Error")]
 		public function invalid_callback_probably_explodes():void
 		{
-			const callback:Function = function(error:Object, message:Object, somethingElse:Object):void {
+			const callback:Function = function(error:Object, message:Object, invalidParameter:Object):void {
 			};
 			safelyCallBack(callback, {}, {});
 		}
