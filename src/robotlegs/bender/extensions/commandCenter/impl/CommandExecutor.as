@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -8,7 +8,6 @@
 package robotlegs.bender.extensions.commandCenter.impl
 {
 	import org.swiftsuspenders.Injector;
-
 	import robotlegs.bender.extensions.commandCenter.api.ICommandExecutor;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMappingList;
@@ -29,7 +28,6 @@ package robotlegs.bender.extensions.commandCenter.impl
 		private var _mapPayload:Function;
 
 		private var _unmapPayload:Function;
-
 
 		/*============================================================================*/
 		/* Constructor                                                                */

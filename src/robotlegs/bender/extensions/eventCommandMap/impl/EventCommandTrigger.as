@@ -24,6 +24,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	 */
 	public class EventCommandTrigger implements ICommandTrigger
 	{
+
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
@@ -109,7 +110,6 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 				});
 			executor.execute();
 		}
-
 	}
 }
 
