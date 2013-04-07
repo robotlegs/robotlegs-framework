@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.commandCenter.api
+package robotlegs.bender.extensions.commandCenter.dsl
 {
 
 	/**

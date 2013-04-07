@@ -17,8 +17,8 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import org.hamcrest.object.instanceOf;
 	import org.swiftsuspenders.Injector;
 
-	import robotlegs.bender.extensions.commandCenter.api.ICommandMapper;
-	import robotlegs.bender.extensions.commandCenter.api.ICommandUnmapper;
+	import robotlegs.bender.extensions.commandCenter.dsl.ICommandMapper;
+	import robotlegs.bender.extensions.commandCenter.dsl.ICommandUnmapper;
 	import robotlegs.bender.extensions.commandCenter.support.CallbackCommand;
 	import robotlegs.bender.extensions.commandCenter.support.CallbackCommand2;
 	import robotlegs.bender.extensions.commandCenter.support.NullCommand;

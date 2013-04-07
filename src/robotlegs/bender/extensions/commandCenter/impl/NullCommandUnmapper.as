@@ -7,7 +7,7 @@
 
 package robotlegs.bender.extensions.commandCenter.impl
 {
-	import robotlegs.bender.extensions.commandCenter.api.ICommandUnmapper;
+	import robotlegs.bender.extensions.commandCenter.dsl.ICommandUnmapper;
 
 	/**
 	 * @private

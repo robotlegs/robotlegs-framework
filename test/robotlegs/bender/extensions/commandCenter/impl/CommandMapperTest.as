@@ -12,7 +12,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.instanceOf;
 
-	import robotlegs.bender.extensions.commandCenter.api.ICommandConfigurator;
+	import robotlegs.bender.extensions.commandCenter.dsl.ICommandConfigurator;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMappingList;
 

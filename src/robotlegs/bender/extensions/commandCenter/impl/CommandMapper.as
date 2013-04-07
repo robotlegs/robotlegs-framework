@@ -7,11 +7,11 @@
 
 package robotlegs.bender.extensions.commandCenter.impl
 {
-	import robotlegs.bender.extensions.commandCenter.api.ICommandConfigurator;
-	import robotlegs.bender.extensions.commandCenter.api.ICommandMapper;
+	import robotlegs.bender.extensions.commandCenter.dsl.ICommandConfigurator;
+	import robotlegs.bender.extensions.commandCenter.dsl.ICommandMapper;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMappingList;
-	import robotlegs.bender.extensions.commandCenter.api.ICommandUnmapper;
+	import robotlegs.bender.extensions.commandCenter.dsl.ICommandUnmapper;
 
 	public class CommandMapper implements ICommandMapper, ICommandUnmapper, ICommandConfigurator
 	{
