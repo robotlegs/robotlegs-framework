@@ -9,10 +9,11 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 {
 	import flash.events.IEventDispatcher;
 	import org.swiftsuspenders.Injector;
+
+	import robotlegs.bender.extensions.commandCenter.api.ICommandMapper;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandUnmapper;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandTriggerMap;
 	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
-	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMapper;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.ILogger;
 
@@ -56,7 +57,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		/**
 		 * @inheritDoc
 		 */
-		public function map(type:String, eventClass:Class = null):IEventCommandMapper
+		public function map(type:String, eventClass:Class = null):ICommandMapper
 		{
 			return getTrigger(type, eventClass).createMapper();
 		}

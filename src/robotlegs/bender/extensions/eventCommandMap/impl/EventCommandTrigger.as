@@ -15,6 +15,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMappingList;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandTrigger;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandExecutor;
+	import robotlegs.bender.extensions.commandCenter.impl.CommandMapper;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandMappingList;
 	import robotlegs.bender.framework.api.ILogger;
 
@@ -55,16 +56,16 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			_dispatcher = dispatcher;
 			_type = type;
 			_eventClass = eventClass;
-			_mappings = new CommandMappingList(this, logger).withSortFunction(compareFunction);
+			_mappings = new CommandMappingList(this, logger);
 		}
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function createMapper():EventCommandMapper
+		public function createMapper():CommandMapper
 		{
-			return new EventCommandMapper(_mappings);
+			return new CommandMapper(_mappings);
 		}
 
 		public function activate():void
@@ -109,10 +110,6 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			executor.execute();
 		}
 
-		private function compareFunction(a:EventCommandMapping, b:EventCommandMapping):Number
-		{
-			return b.priority - a.priority;
-		}
 	}
 }
 

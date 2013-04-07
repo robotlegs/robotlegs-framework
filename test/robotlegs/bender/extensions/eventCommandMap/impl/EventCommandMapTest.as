@@ -16,6 +16,8 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.instanceOf;
 	import org.swiftsuspenders.Injector;
+
+	import robotlegs.bender.extensions.commandCenter.api.ICommandMapper;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandUnmapper;
 	import robotlegs.bender.extensions.commandCenter.support.CallbackCommand;
 	import robotlegs.bender.extensions.commandCenter.support.CallbackCommand2;
@@ -24,7 +26,6 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import robotlegs.bender.extensions.commandCenter.support.SelfReportingCallbackCommand2;
 	import robotlegs.bender.extensions.commandCenter.support.SelfReportingCallbackHook;
 	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
-	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMapper;
 	import robotlegs.bender.extensions.eventCommandMap.support.CascadingCommand;
 	import robotlegs.bender.extensions.eventCommandMap.support.EventInjectedCallbackCommand;
 	import robotlegs.bender.extensions.eventCommandMap.support.EventInjectedCallbackGuard;
@@ -43,7 +44,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 
 		private var subject:IEventCommandMap;
 
-		private var mapper:IEventCommandMapper;
+		private var mapper:ICommandMapper;
 
 		private var reportedExecutions:Array;
 
@@ -74,7 +75,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		[Test]
 		public function map_creates_mapper():void
 		{
-			assertThat(subject.map(SupportEvent.TYPE1, SupportEvent), instanceOf(IEventCommandMapper));
+			assertThat(subject.map(SupportEvent.TYPE1, SupportEvent), instanceOf(ICommandMapper));
 		}
 
 		[Test]
@@ -370,17 +371,6 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			subject.map(SupportEvent.TYPE1).toCommand(CommandB).withGuards(GrumpyGuard);
 			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
 			const expectedOrder:Array = [CommandA];
-			assertThat(reportedExecutions, array(expectedOrder));
-		}
-
-
-		[Test]
-		public function sorting_works():void
-		{
-			subject.map(SupportEvent.TYPE1).toCommand(CommandA);
-			subject.map(SupportEvent.TYPE1).toCommand(CommandB).withPriority(1);
-			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
-			const expectedOrder:Array = [CommandB, CommandA];
 			assertThat(reportedExecutions, array(expectedOrder));
 		}
 
