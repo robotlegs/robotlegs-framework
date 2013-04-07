@@ -95,7 +95,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			{
 				return;
 			}
-			const executor:ICommandExecutor = new CommandExecutor(_mappings, _injector)
+			const executor:ICommandExecutor = new CommandExecutor(_injector, _mappings.removeMapping)
 				.withPayloadMapper(function(mapping:ICommandMapping):void
 				{
 					_injector.map(Event).toValue(event);
@@ -108,7 +108,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 					if (eventConstructor != Event)
 						_injector.unmap(_eventClass || eventConstructor);
 				});
-			executor.execute();
+			executor.execute(_mappings.getList());
 		}
 	}
 }

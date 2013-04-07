@@ -14,6 +14,8 @@ package robotlegs.bender.extensions.commandCenter.impl
 	import org.hamcrest.collection.array;
 	import org.hamcrest.object.equalTo;
 	import org.swiftsuspenders.Injector;
+
+	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandTrigger;
 	import robotlegs.bender.extensions.commandCenter.support.CommandMapStub;
 
@@ -57,7 +59,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 			injector = new Injector();
 			injector.map(Function, "reportingFunction").toValue(reportingFunction);
 			mappings = new CommandMappingList(trigger);
-			subject = new CommandExecutor(mappings, injector);
+			subject = new CommandExecutor(injector, mappings.removeMapping);
 		}
 
 		/*============================================================================*/
@@ -71,7 +73,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 			mock(host).method("hook").args(mapping).once();
 			mappings.addMapping(mapping);
 			subject.withPayloadMapper(host.hook);
-			subject.execute();
+			subject.execute(mappings.getList());
 		}
 
 		[Test]
@@ -81,7 +83,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 			mock(host).method("hook").args(mapping).once();
 			mappings.addMapping(mapping);
 			subject.withPayloadUnmapper(host.hook);
-			subject.execute();
+			subject.execute(mappings.getList());
 		}
 
 		[Test]
@@ -90,10 +92,8 @@ package robotlegs.bender.extensions.commandCenter.impl
 			const mapping:CommandMapping = new CommandMapping(CommandA);
 			mapping.setFireOnce(true);
 			mappings = nice(CommandMappingList);
-			mappings.addMapping(mapping);
 			mock(mappings).method("removeMapping").args(mapping).once();
-			subject.execute();
-			subject.execute();
+			subject.execute(Vector.<ICommandMapping>([mapping]));
 		}
 
 		[Test]
@@ -102,7 +102,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 			const mapping:CommandMapping = new CommandMapping(CommandWithoutExecute);
 			mapping.setExecuteMethod(null);
 			mappings.addMapping(mapping);
-			subject.execute();
+			subject.execute(mappings.getList());
 			assertThat(reportedExecutions, array(CommandWithoutExecute));
 		}
 
@@ -135,7 +135,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 			mappings.addMapping(mapping);
 			while (totalEvents--)
 			{
-				subject.execute();
+				subject.execute(mappings.getList());
 			}
 			var interestingExecutionCount:int = 0;
 			for each (var item:Object in reportedExecutions)

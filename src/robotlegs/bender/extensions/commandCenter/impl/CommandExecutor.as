@@ -10,7 +10,6 @@ package robotlegs.bender.extensions.commandCenter.impl
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandExecutor;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
-	import robotlegs.bender.extensions.commandCenter.api.ICommandMappingList;
 	import robotlegs.bender.framework.impl.applyHooks;
 	import robotlegs.bender.framework.impl.guardsApprove;
 
@@ -21,9 +20,9 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var _mappings:ICommandMappingList;
-
 		private var _injector:Injector;
+
+		private var _removeMapping:Function;
 
 		private var _mapPayload:Function;
 
@@ -33,10 +32,10 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function CommandExecutor(mappings:ICommandMappingList, injector:Injector)
+		public function CommandExecutor(injector:Injector, removeMapping:Function)
 		{
-			_mappings = mappings;
 			_injector = injector;
+			_removeMapping = removeMapping;
 		}
 
 		/*============================================================================*/
@@ -55,13 +54,12 @@ package robotlegs.bender.extensions.commandCenter.impl
 			return this;
 		}
 
-		public function execute():void
+		public function execute(mappings:Vector.<ICommandMapping>):void
 		{
-			const list:Vector.<ICommandMapping> = _mappings.getList();
-			const length:int = list.length;
+			const length:int = mappings.length;
 			for (var i:int = 0; i < length; i++)
 			{
-				var mapping:ICommandMapping = list[i];
+				var mapping:ICommandMapping = mappings[i];
 				var command:Object = null;
 
 				_mapPayload && _mapPayload(mapping);
@@ -69,7 +67,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 				if (mapping.guards.length == 0 || guardsApprove(mapping.guards, _injector))
 				{
 					const commandClass:Class = mapping.commandClass;
-					mapping.fireOnce && _mappings.removeMapping(mapping);
+					mapping.fireOnce && _removeMapping(mapping);
 
 					command = _injector
 						? _injector.instantiateUnmapped(commandClass)
