@@ -1,23 +1,20 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.commandCenter.impl
 {
-	import mockolate.mock;
-	import mockolate.nice;
+	import mockolate.received;
 	import mockolate.runner.MockolateRule;
 	import org.hamcrest.assertThat;
 	import org.hamcrest.collection.array;
 	import org.hamcrest.object.equalTo;
 	import org.swiftsuspenders.Injector;
-
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
-	import robotlegs.bender.extensions.commandCenter.api.ICommandTrigger;
-	import robotlegs.bender.extensions.commandCenter.support.CommandMapStub;
+	import robotlegs.bender.extensions.commandCenter.support.UnmapperStub;
 
 	public class CommandExecutorTest
 	{
@@ -29,18 +26,14 @@ package robotlegs.bender.extensions.commandCenter.impl
 		[Rule]
 		public var mocks:MockolateRule = new MockolateRule();
 
-		[Mock(type="strict")]
-		public var host:CommandMapStub;
-
 		[Mock]
-		public var trigger:ICommandTrigger;
-
-		[Mock]
-		public var mappings:CommandMappingList;
+		public var unMapper:UnmapperStub;
 
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
+
+		private var mappings:Vector.<ICommandMapping>;
 
 		private var subject:CommandExecutor;
 
@@ -58,8 +51,8 @@ package robotlegs.bender.extensions.commandCenter.impl
 			reportedExecutions = [];
 			injector = new Injector();
 			injector.map(Function, "reportingFunction").toValue(reportingFunction);
-			mappings = new CommandMappingList(trigger);
-			subject = new CommandExecutor(injector, mappings.removeMapping);
+			mappings = new Vector.<ICommandMapping>();
+			subject = new CommandExecutor(injector, unMapper.unmap);
 		}
 
 		/*============================================================================*/
@@ -67,42 +60,24 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/*============================================================================*/
 
 		[Test]
-		public function payloadMapper_is_passed_mapping():void
-		{
-			const mapping:CommandMapping = new CommandMapping(CommandA);
-			mock(host).method("hook").args(mapping).once();
-			mappings.addMapping(mapping);
-			subject.withPayloadMapper(host.hook);
-			subject.execute(mappings.getList());
-		}
-
-		[Test]
-		public function payloadUnmapper_is_passed_mapping():void
-		{
-			const mapping:CommandMapping = new CommandMapping(CommandA);
-			mock(host).method("hook").args(mapping).once();
-			mappings.addMapping(mapping);
-			subject.withPayloadUnmapper(host.hook);
-			subject.execute(mappings.getList());
-		}
-
-		[Test]
 		public function oneShotMapping_is_removed():void
 		{
-			const mapping:CommandMapping = new CommandMapping(CommandA);
+			const mapping:ICommandMapping = addMapping(CommandA);
 			mapping.setFireOnce(true);
-			mappings = nice(CommandMappingList);
-			mock(mappings).method("removeMapping").args(mapping).once();
-			subject.execute(Vector.<ICommandMapping>([mapping]));
+
+			subject.execute(mappings);
+
+			assertThat(unMapper, received().method('unmap').arg(mapping).once());
 		}
 
 		[Test]
 		public function command_is_constructed():void
 		{
-			const mapping:CommandMapping = new CommandMapping(CommandWithoutExecute);
-			mapping.setExecuteMethod(null);
-			mappings.addMapping(mapping);
-			subject.execute(mappings.getList());
+			addMapping(CommandWithoutExecute)
+				.setExecuteMethod(null);
+
+			subject.execute(mappings);
+
 			assertThat(reportedExecutions, array(CommandWithoutExecute));
 		}
 
@@ -118,24 +93,24 @@ package robotlegs.bender.extensions.commandCenter.impl
 			assertThat(commandExecutionCount(5), equalTo(5));
 		}
 
-		[Test]
-		public function fireOnce_command_executes_once():void
-		{
-			assertThat(commandExecutionCount(5, true), equalTo(1));
-		}
-
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
 
+		private function addMapping(commandClass:Class):ICommandMapping
+		{
+			const mapping:ICommandMapping = new CommandMapping(commandClass);
+			mappings.push(mapping);
+			return mapping;
+		}
+
 		private function commandExecutionCount(totalEvents:int = 1, oneshot:Boolean = false):uint
 		{
-			const mapping:CommandMapping = new CommandMapping(CommandA);
+			const mapping:ICommandMapping = addMapping(CommandA);
 			mapping.setFireOnce(oneshot);
-			mappings.addMapping(mapping);
 			while (totalEvents--)
 			{
-				subject.execute(mappings.getList());
+				subject.execute(mappings);
 			}
 			var interestingExecutionCount:int = 0;
 			for each (var item:Object in reportedExecutions)
@@ -193,3 +168,4 @@ class CommandWithoutExecute
 		reportingFunc(CommandWithoutExecute);
 	}
 }
+

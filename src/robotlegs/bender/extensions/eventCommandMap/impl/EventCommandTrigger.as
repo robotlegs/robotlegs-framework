@@ -1,17 +1,18 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.eventCommandMap.impl
 {
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
+
 	import org.swiftsuspenders.Injector;
+
 	import robotlegs.bender.extensions.commandCenter.api.ICommandExecutor;
-	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMappingList;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandTrigger;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandExecutor;
@@ -39,6 +40,8 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 
 		private var _mappings:ICommandMappingList;
 
+		private var _executor: ICommandExecutor;
+
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
@@ -58,6 +61,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			_type = type;
 			_eventClass = eventClass;
 			_mappings = new CommandMappingList(this, logger);
+			_executor = new CommandExecutor(_injector, _mappings.removeMapping);
 		}
 
 		/*============================================================================*/
@@ -95,20 +99,15 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			{
 				return;
 			}
-			const executor:ICommandExecutor = new CommandExecutor(_injector, _mappings.removeMapping)
-				.withPayloadMapper(function(mapping:ICommandMapping):void
-				{
-					_injector.map(Event).toValue(event);
-					if (eventConstructor != Event)
-						_injector.map(_eventClass || eventConstructor).toValue(event);
-				})
-				.withPayloadUnmapper(function(mapping:ICommandMapping):void
-				{
-					_injector.unmap(Event);
-					if (eventConstructor != Event)
-						_injector.unmap(_eventClass || eventConstructor);
-				});
-			executor.execute(_mappings.getList());
+			const payloadValues:Array = [event];
+			const payloadClasses:Array = [Event];
+			if (eventConstructor != Event)
+			{
+				payloadValues.push(event);
+				payloadClasses.push(_eventClass || eventConstructor);
+			}
+
+			_executor.execute(_mappings.getList(), payloadValues, payloadClasses);
 		}
 	}
 }

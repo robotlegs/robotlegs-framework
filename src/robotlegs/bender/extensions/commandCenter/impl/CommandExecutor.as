@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.commandCenter.impl
@@ -24,10 +24,6 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		private var _removeMapping:Function;
 
-		private var _mapPayload:Function;
-
-		private var _unmapPayload:Function;
-
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
@@ -42,27 +38,16 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function withPayloadMapper(mapPayload:Function):CommandExecutor
-		{
-			_mapPayload = mapPayload;
-			return this;
-		}
-
-		public function withPayloadUnmapper(unmapPayload:Function):CommandExecutor
-		{
-			_unmapPayload = unmapPayload;
-			return this;
-		}
-
-		public function execute(mappings:Vector.<ICommandMapping>):void
+		public function execute(mappings:Vector.<ICommandMapping>, payloadValues:Array = null, payloadClasses:Array = null):void
 		{
 			const length:int = mappings.length;
+			const hasPayload:Boolean = validatePayload(payloadValues, payloadClasses);
 			for (var i:int = 0; i < length; i++)
 			{
 				var mapping:ICommandMapping = mappings[i];
 				var command:Object = null;
 
-				_mapPayload && _mapPayload(mapping);
+				hasPayload && mapPayload(payloadValues, payloadClasses);
 
 				if (mapping.guards.length == 0 || guardsApprove(mapping.guards, _injector))
 				{
@@ -81,12 +66,42 @@ package robotlegs.bender.extensions.commandCenter.impl
 					}
 				}
 
-				_unmapPayload && _unmapPayload(mapping);
+				hasPayload && unmapPayload(payloadValues, payloadClasses);
 
 				if (command)
 				{
 					mapping.executeMethod && command[mapping.executeMethod]();
 				}
+			}
+		}
+
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
+
+		private function validatePayload(payloadValues:Array, payloadClasses:Array):Boolean
+		{
+			return payloadValues
+				&& payloadValues.length > 0
+				&& payloadClasses
+				&& payloadClasses.length == payloadValues.length;
+		}
+
+		private function mapPayload(payloadValues:Array, payloadClasses:Array):void
+		{
+			var i:uint = payloadValues.length;
+			while (i--)
+			{
+				_injector.map(payloadClasses[i]).toValue(payloadValues[i]);
+			}
+		}
+
+		private function unmapPayload(payloadValues:Array, payloadClasses:Array):void
+		{
+			var i:uint = payloadValues.length;
+			while (i--)
+			{
+				_injector.unmap(payloadClasses[i]);
 			}
 		}
 	}

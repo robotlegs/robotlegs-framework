@@ -5,11 +5,18 @@
 //  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.commandCenter.api
+package robotlegs.bender.extensions.commandCenter.support
 {
 
-	public interface ICommandExecutor
+	public class UnmapperStub
 	{
-		function execute(mappings:Vector.<ICommandMapping>, payloadValues:Array = null, payloadClasses:Array = null):void;
+
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
+
+		public function unmap():void
+		{
+		}
 	}
 }
