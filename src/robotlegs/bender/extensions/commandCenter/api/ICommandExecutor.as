@@ -7,10 +7,10 @@
 
 package robotlegs.bender.extensions.commandCenter.api
 {
-	import robotlegs.bender.extensions.commandCenter.impl.CommandPayloadConfig;
+	import robotlegs.bender.extensions.commandCenter.impl.CommandPayload;
 
 	public interface ICommandExecutor
 	{
-		function execute(mappings:Vector.<ICommandMapping>, payload : CommandPayloadConfig = null):void;
+		function execute(mappings:Vector.<ICommandMapping>, payload : CommandPayload = null):void;
 	}
 }

@@ -13,14 +13,14 @@ package robotlegs.bender.extensions.commandCenter.impl
 	import org.hamcrest.object.isTrue;
 	import org.hamcrest.object.nullValue;
 
-	public class CommandPayloadConfigTest
+	public class CommandPayloadTest
 	{
 
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var subject:CommandPayloadConfig;
+		private var subject:CommandPayload;
 
 		/*============================================================================*/
 		/* Tests                                                                      */
@@ -30,14 +30,14 @@ package robotlegs.bender.extensions.commandCenter.impl
 		public function test_values_by_default_null() : void{
 			createConfig();
 
-			assertThat(subject.payloadValues, nullValue());
+			assertThat(subject.values, nullValue());
 		}
 
 		[Test]
 		public function test_classes_by_default_null() : void{
 			createConfig();
 
-			assertThat(subject.payloadClasses, nullValue());
+			assertThat(subject.classes, nullValue());
 		}
 
 		[Test]
@@ -47,7 +47,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 			createConfig(expected);
 
-			assertThat(subject.payloadValues, array(expected));
+			assertThat(subject.values, array(expected));
 		}
 
 		[Test]
@@ -57,7 +57,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 			createConfig(null, expected);
 
-			assertThat(subject.payloadClasses, array(expected));
+			assertThat(subject.classes, array(expected));
 		}
 
 		[Test]
@@ -66,7 +66,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 			subject.addPayload( 'string', String);
 
-			var hasValue : Boolean = subject.payloadValues.indexOf( 'string' ) > -1;
+			var hasValue : Boolean = subject.values.indexOf( 'string' ) > -1;
 			assertThat( hasValue, isTrue() );
 		}
 
@@ -76,7 +76,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 			subject.addPayload( 'string', String);
 
-			var hasClass : Boolean = subject.payloadClasses.indexOf( String ) > -1;
+			var hasClass : Boolean = subject.classes.indexOf( String ) > -1;
 			assertThat( hasClass, isTrue() );
 		}
 
@@ -87,18 +87,25 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 			subject.addPayload( value, Object );
 
-			var valueIndex : int = subject.payloadValues.indexOf( value );
-			var classIndex : int = subject.payloadClasses.indexOf( Object );
+			var valueIndex : int = subject.values.indexOf( value );
+			var classIndex : int = subject.classes.indexOf( Object );
 			assertThat(valueIndex,equalTo(classIndex));
+		}
+		
+		[Test]
+		public function can_ask_for_length_without_classes():void
+		{
+		    createConfig();
+			assertThat(subject.length, equalTo(0));
 		}
 
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
 
-		private function createConfig(values:Array = null, classes:Array = null):CommandPayloadConfig
+		private function createConfig(values:Array = null, classes:Array = null):CommandPayload
 		{
-			return subject = new CommandPayloadConfig(values, classes);
+			return subject = new CommandPayload(values, classes);
 		}
 	}
 }

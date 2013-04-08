@@ -186,12 +186,12 @@ package robotlegs.bender.extensions.commandCenter.impl
 		[Test]
 		public function test_command_with_different_method_than_execute_is_called():void
 		{
-			addMapping(CommandWithReportmethodInsteadOfExecute)
+			addMapping(CommandWithReportMethodInsteadOfExecute)
 				.setExecuteMethod('report');
 
 			executeCommands();
 
-			assertThat(reported, array(CommandWithReportmethodInsteadOfExecute));
+			assertThat(reported, array(CommandWithReportMethodInsteadOfExecute));
 		}
 
 		[Test(expects="Error")]
@@ -208,22 +208,22 @@ package robotlegs.bender.extensions.commandCenter.impl
 		public function test_payload_is_injected_into_command():void
 		{
 			addMapping(CommandWithPayload);
-			const payload:CommandPayloadConfig = new CommandPayloadConfig(['message', 0],[String, int]);
+			const payload:CommandPayload = new CommandPayload(['message', 0],[String, int]);
 
 			executeCommands( payload );
 
-			assertThat(reported, array(payload.payloadValues));
+			assertThat(reported, array(payload.values));
 		}
 
 		[Test]
 		public function test_payload_is_passed_to_execute_method():void
 		{
 			addMapping(CommandWithMethodParameters);
-			const payload:CommandPayloadConfig = new CommandPayloadConfig(['message', 0],[String, int]);
+			const payload:CommandPayload = new CommandPayload(['message', 0],[String, int]);
 
 			executeCommands(payload);
 
-			assertThat(reported, array(payload.payloadValues));
+			assertThat(reported, array(payload.values));
 		}
 
 		/*============================================================================*/
@@ -246,7 +246,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 			}
 		}
 
-		private function executeCommands(payload:CommandPayloadConfig = null):void
+		private function executeCommands(payload:CommandPayload = null):void
 		{
 			subject.execute(mappings, payload);
 		}
@@ -319,7 +319,7 @@ class CommandWithoutExecute
 	}
 }
 
-class CommandWithReportmethodInsteadOfExecute
+class CommandWithReportMethodInsteadOfExecute
 {
 
 	/*============================================================================*/
@@ -335,7 +335,7 @@ class CommandWithReportmethodInsteadOfExecute
 
 	public function report():void
 	{
-		reportingFunc(CommandWithReportmethodInsteadOfExecute);
+		reportingFunc(CommandWithReportMethodInsteadOfExecute);
 	}
 }
 

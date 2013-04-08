@@ -1,14 +1,13 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.commandCenter.impl
 {
 	import org.swiftsuspenders.Injector;
-
 	import robotlegs.bender.extensions.commandCenter.api.ICommandExecutor;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 	import robotlegs.bender.framework.impl.applyHooks;
@@ -39,7 +38,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function execute(mappings:Vector.<ICommandMapping>, payload : CommandPayloadConfig = null):void
+		public function execute(mappings:Vector.<ICommandMapping>, payload:CommandPayload = null):void
 		{
 			const length:int = mappings.length;
 			const hasPayload:Boolean = payload && payload.hasPayload();
@@ -54,16 +53,12 @@ package robotlegs.bender.extensions.commandCenter.impl
 				{
 					const commandClass:Class = mapping.commandClass;
 					mapping.fireOnce && _removeMapping(mapping);
-
-					command = _injector
-						? _injector.instantiateUnmapped(commandClass)
-						: new commandClass();
-
+					command = _injector.instantiateUnmapped(commandClass);
 					if (mapping.hooks.length > 0)
 					{
-						_injector && _injector.map(commandClass).toValue(command);
+						_injector.map(commandClass).toValue(command);
 						applyHooks(mapping.hooks, _injector);
-						_injector && _injector.unmap(commandClass);
+						_injector.unmap(commandClass);
 					}
 				}
 
@@ -73,7 +68,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 				{
 					const executeMethod:Function = command[mapping.executeMethod];
 					(hasPayload && executeMethod.length > 0)
-						? executeMethod.apply(null, payload.payloadValues)
+						? executeMethod.apply(null, payload.values)
 						: executeMethod();
 				}
 			}
@@ -83,22 +78,21 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/* Private Functions                                                          */
 		/*============================================================================*/
 
-
-		private function mapPayload(config : CommandPayloadConfig):void
+		private function mapPayload(payload:CommandPayload):void
 		{
-			var i:uint = config.payloadLength;
+			var i:uint = payload.length;
 			while (i--)
 			{
-				_injector.map(config.payloadClasses[i]).toValue(config.payloadValues[i]);
+				_injector.map(payload.classes[i]).toValue(payload.values[i]);
 			}
 		}
 
-		private function unmapPayload(config : CommandPayloadConfig):void
+		private function unmapPayload(payload:CommandPayload):void
 		{
-			var i:uint = config.payloadLength;
+			var i:uint = payload.length;
 			while (i--)
 			{
-				_injector.unmap(config.payloadClasses[i]);
+				_injector.unmap(payload.classes[i]);
 			}
 		}
 	}

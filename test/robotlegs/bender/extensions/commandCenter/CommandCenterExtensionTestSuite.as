@@ -11,7 +11,7 @@ package robotlegs.bender.extensions.commandCenter
 	import robotlegs.bender.extensions.commandCenter.impl.CommandMapperTest;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandMappingListTest;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandMappingTest;
-	import robotlegs.bender.extensions.commandCenter.impl.CommandPayloadConfigTest;
+	import robotlegs.bender.extensions.commandCenter.impl.CommandPayloadTest;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandTriggerMapTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
@@ -33,7 +33,7 @@ package robotlegs.bender.extensions.commandCenter
 
 		public var commandMappingList:CommandMappingListTest;
 
-		public var commandPayloadConfig : CommandPayloadConfigTest;
+		public var commandPayload : CommandPayloadTest;
 
 	}
 }

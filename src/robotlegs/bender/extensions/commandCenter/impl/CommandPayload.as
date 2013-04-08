@@ -1,47 +1,47 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.commandCenter.impl
 {
 
-	public class CommandPayloadConfig
+	public class CommandPayload
 	{
 
 		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		private var _payloadValues:Array;
+		private var _values:Array;
 
-		public function get payloadValues():Array
+		public function get values():Array
 		{
-			return _payloadValues;
+			return _values;
 		}
 
-		private var _payloadClasses:Array;
+		private var _classes:Array;
 
-		public function get payloadClasses():Array
+		public function get classes():Array
 		{
-			return _payloadClasses;
+			return _classes;
 		}
 
-		public function get payloadLength():uint
+		public function get length():uint
 		{
-			return payloadClasses.length;
+			return _classes ? _classes.length : 0;
 		}
 
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function CommandPayloadConfig(payloadValues:Array = null, payloadClasses:Array = null)
+		public function CommandPayload(values:Array = null, classes:Array = null)
 		{
-			_payloadValues = payloadValues;
-			_payloadClasses = payloadClasses;
+			_values = values;
+			_classes = classes;
 		}
 
 		/*============================================================================*/
@@ -50,18 +50,28 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		public function addPayload(payloadValue:Object, payloadClass:Class):void
 		{
-			_payloadValues ||= [];
-			_payloadValues.push(payloadValue);
-			_payloadClasses ||= [];
-			_payloadClasses.push(payloadClass);
+			if (_values)
+			{
+				_values.push(payloadValue);
+			}
+			else
+			{
+				_values = [payloadValue];
+			}
+			if (_classes)
+			{
+				_classes.push(payloadClass);
+			}
+			else
+			{
+				_classes = [payloadClass];
+			}
 		}
 
 		public function hasPayload():Boolean
 		{
-			return payloadValues
-				&& payloadValues.length > 0
-				&& payloadClasses
-				&& payloadClasses.length == payloadValues.length;
+			return _values && _values.length > 0
+				&& _classes && _classes.length == _values.length;
 		}
 	}
 }
