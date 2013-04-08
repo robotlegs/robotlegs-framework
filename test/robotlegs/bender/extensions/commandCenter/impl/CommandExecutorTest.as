@@ -14,7 +14,10 @@ package robotlegs.bender.extensions.commandCenter.impl
 	import org.hamcrest.object.equalTo;
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
+	import robotlegs.bender.extensions.commandCenter.support.NullCommand;
 	import robotlegs.bender.extensions.commandCenter.support.UnmapperStub;
+	import robotlegs.bender.framework.impl.guardSupport.GrumpyGuard;
+	import robotlegs.bender.framework.impl.guardSupport.HappyGuard;
 
 	public class CommandExecutorTest
 	{
@@ -37,7 +40,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		private var subject:CommandExecutor;
 
-		private var reportedExecutions:Array;
+		private var reported:Array;
 
 		private var injector:Injector;
 
@@ -48,7 +51,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 		[Before]
 		public function before():void
 		{
-			reportedExecutions = [];
+			reported = [];
 			injector = new Injector();
 			injector.map(Function, "reportingFunction").toValue(reportingFunction);
 			mappings = new Vector.<ICommandMapping>();
@@ -78,52 +81,166 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 			subject.execute(mappings);
 
-			assertThat(reportedExecutions, array(CommandWithoutExecute));
+			assertThat(reported, array(CommandWithoutExecute));
 		}
 
 		[Test]
-		public function command_is_executed():void
+		public function test_command_is_executed():void
 		{
-			assertThat(commandExecutionCount(), equalTo(1));
+			addMapping();
+
+			executeCommands();
+
+			assertThat(reported, array(CommandA));
 		}
 
 		[Test]
-		public function command_is_executed_repeatedly():void
+		public function test_command_is_executed_repeatedly():void
 		{
-			assertThat(commandExecutionCount(5), equalTo(5));
+			addMappings(5);
+
+			executeCommands();
+
+			assertThat(reported.length, equalTo(5));
+		}
+
+		[Test]
+		public function test_hooks_are_called():void
+		{
+			addMapping(NullCommand)
+				.addHooks(HookA, HookA, HookA);
+
+			executeCommands();
+
+			assertThat(reported.length, equalTo(3));
+		}
+
+		[Test]
+		public function test_command_executes_when_the_guard_allows():void
+		{
+			addMapping()
+				.addGuards(HappyGuard);
+
+			executeCommands();
+
+			assertThat(reported, array(CommandA));
+		}
+
+		[Test]
+		public function test_command_does_not_execute_when_any_guards_denies():void
+		{
+			addMapping()
+				.addGuards(HappyGuard, GrumpyGuard);
+
+			executeCommands();
+
+			assertThat(reported, array());
+		}
+
+		[Test]
+		public function test_execution_sequence_is_guard_command_guard_command_with_multiple_mappings():void
+		{
+			addMapping(CommandA)
+				.addGuards(GuardA);
+			addMapping(CommandB)
+				.addGuards(GuardB);
+
+			executeCommands();
+
+			assertThat(reported, array(
+				GuardA,
+				CommandA,
+				GuardB,
+				CommandB));
+		}
+
+		[Test]
+		public function test_execution_sequence_is_guard_hook_command():void
+		{
+			addMapping()
+				.addGuards(GuardA)
+				.addHooks(HookA);
+
+			executeCommands();
+
+			assertThat(reported, array(
+				GuardA,
+				HookA,
+				CommandA));
+		}
+
+		[Test]
+		public function test_allowed_commands_get_executed_after_denied_command():void
+		{
+			addMapping(CommandA)
+				.addGuards(GrumpyGuard);
+			addMapping(CommandB);
+
+			executeCommands();
+
+			assertThat(reported, array(CommandB));
+		}
+
+		[Test]
+		public function test_command_with_different_method_than_execute_is_called():void
+		{
+			addMapping(CommandWithReportmethodInsteadOfExecute)
+				.setExecuteMethod('report');
+
+			executeCommands();
+
+			assertThat(reported, array(CommandWithReportmethodInsteadOfExecute));
+		}
+
+		[Test(expects="Error")]
+		public function test_throws_error_when_executeMethod_not_a_function():void
+		{
+			addMapping(CommandWithIncorrectExecute);
+
+			executeCommands();
+
+			// note: no assertion. we just want to know if an error is thrown
+		}
+
+		[Test]
+		public function test_payload_is_injected_into_command():void
+		{
+			addMapping(CommandWithPayload);
+			const payloadValues:Array = ['message', 0];
+
+			executeCommands(payloadValues, [String, int]);
+
+			assertThat(reported, array(payloadValues));
 		}
 
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
 
-		private function addMapping(commandClass:Class):ICommandMapping
+		private function addMapping(commandClass:Class = null):ICommandMapping
 		{
-			const mapping:ICommandMapping = new CommandMapping(commandClass);
+
+			var mapping:ICommandMapping = new CommandMapping(commandClass || CommandA);
 			mappings.push(mapping);
 			return mapping;
 		}
 
-		private function commandExecutionCount(totalEvents:int = 1, oneshot:Boolean = false):uint
+		private function addMappings(totalEvents:uint = 1, commandClass:Class = null):void
 		{
-			const mapping:ICommandMapping = addMapping(CommandA);
-			mapping.setFireOnce(oneshot);
 			while (totalEvents--)
 			{
-				subject.execute(mappings);
+				addMapping(commandClass);
 			}
-			var interestingExecutionCount:int = 0;
-			for each (var item:Object in reportedExecutions)
-			{
-				if (item == CommandA)
-					interestingExecutionCount++;
-			}
-			return interestingExecutionCount;
+		}
+
+		private function executeCommands(payloadValues:Array = null, payloadClasses:Array = null):void
+		{
+			subject.execute(mappings, payloadValues, payloadClasses);
 		}
 
 		private function reportingFunction(item:Object):void
 		{
-			reportedExecutions.push(item);
+			reported.push(item);
 		}
 	}
 }
@@ -148,6 +265,26 @@ class CommandA
 	}
 }
 
+class CommandB
+{
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
+	[Inject(name="reportingFunction")]
+	public var reportingFunc:Function;
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
+	public function execute():void
+	{
+		reportingFunc && reportingFunc(CommandB);
+	}
+}
+
 class CommandWithoutExecute
 {
 
@@ -169,3 +306,121 @@ class CommandWithoutExecute
 	}
 }
 
+class CommandWithReportmethodInsteadOfExecute
+{
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
+	[Inject(name="reportingFunction")]
+	public var reportingFunc:Function;
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
+	public function report():void
+	{
+		reportingFunc(CommandWithReportmethodInsteadOfExecute);
+	}
+}
+
+class CommandWithIncorrectExecute
+{
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
+	public var execute:String = 'execute';
+}
+
+class CommandWithPayload
+{
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
+	[Inject]
+	public var message:String;
+
+	[Inject]
+	public var code:int;
+
+	[Inject(name="reportingFunction")]
+	public var reportingFunc:Function;
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
+	public function execute():void
+	{
+		reportingFunc(message);
+		reportingFunc(code);
+	}
+}
+
+class GuardA
+{
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
+	[Inject(name="reportingFunction")]
+	public var reportingFunc:Function;
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
+	public function approve():Boolean
+	{
+		reportingFunc && reportingFunc(GuardA);
+		return true
+	}
+}
+
+class GuardB
+{
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
+	[Inject(name="reportingFunction")]
+	public var reportingFunc:Function;
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
+	public function approve():Boolean
+	{
+		reportingFunc && reportingFunc(GuardB);
+		return true
+	}
+}
+
+class HookA
+{
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
+	[Inject(name="reportingFunction")]
+	public var reportingFunc:Function;
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
+	public function hook():void
+	{
+		reportingFunc && reportingFunc(HookA);
+	}
+}
