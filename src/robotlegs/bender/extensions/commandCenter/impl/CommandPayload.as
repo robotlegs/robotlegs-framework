@@ -70,6 +70,8 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		public function hasPayload():Boolean
 		{
+			// todo: the final clause will make this fail silently
+			// todo: rethink
 			return _values && _values.length > 0
 				&& _classes && _classes.length == _values.length;
 		}

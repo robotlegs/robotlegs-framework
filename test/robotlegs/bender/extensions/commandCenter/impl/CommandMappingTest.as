@@ -89,6 +89,12 @@ package robotlegs.bender.extensions.commandCenter.impl
 		}
 
 		[Test]
+		public function fireOnce_defaults_to_False():void
+		{
+			assertThat(mapping.fireOnce, isFalse());
+		}
+
+		[Test]
 		public function mapping_stores_FireOnce():void
 		{
 			mapping.setFireOnce(true);
@@ -100,6 +106,19 @@ package robotlegs.bender.extensions.commandCenter.impl
 		{
 			mapping.setFireOnce(false);
 			assertThat(mapping.fireOnce, isFalse());
+		}
+
+		[Test]
+		public function payloadInjectionEnabled_defaults_to_True():void
+		{
+			assertThat(mapping.payloadInjectionEnabled, isTrue());
+		}
+
+		[Test]
+		public function mapping_stores_PayloadInjectionEnabled():void
+		{
+		    mapping.setPayloadInjectionEnabled(false);
+			assertThat(mapping.payloadInjectionEnabled, isFalse());
 		}
 	}
 }

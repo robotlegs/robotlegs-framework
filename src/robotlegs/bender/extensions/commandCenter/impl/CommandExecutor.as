@@ -47,7 +47,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 				var mapping:ICommandMapping = mappings[i];
 				var command:Object = null;
 
-				hasPayload && mapPayload(payload);
+				hasPayload && mapping.payloadInjectionEnabled && mapPayload(payload);
 
 				if (mapping.guards.length == 0 || guardsApprove(mapping.guards, _injector))
 				{
@@ -62,7 +62,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 					}
 				}
 
-				hasPayload && unmapPayload(payload);
+				hasPayload && mapping.payloadInjectionEnabled && unmapPayload(payload);
 
 				if (command && mapping.executeMethod)
 				{

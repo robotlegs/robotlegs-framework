@@ -40,5 +40,12 @@ package robotlegs.bender.extensions.commandCenter.dsl
 		 * @return Self
 		 */
 		function once(value:Boolean = true):ICommandConfigurator;
+
+		/**
+		 * Should the payload values be injected into the command instance?
+		 * @param value Toggle
+		 * @return Self
+		 */
+		function withPayloadInjection(value:Boolean = true):ICommandConfigurator;
 	}
 }

@@ -98,5 +98,14 @@ package robotlegs.bender.extensions.commandCenter.impl
 			_mapping.setExecuteMethod(name);
 			return this;
 		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function withPayloadInjection(value:Boolean = true):ICommandConfigurator
+		{
+			_mapping.setPayloadInjectionEnabled(value);
+			return this;
+		}
 	}
 }

@@ -66,6 +66,16 @@ package robotlegs.bender.extensions.commandCenter.impl
 			return _fireOnce;
 		}
 
+		private var _payloadInjectionEnabled:Boolean = true;
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get payloadInjectionEnabled():Boolean
+		{
+			return _payloadInjectionEnabled;
+		}
+
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
@@ -116,6 +126,15 @@ package robotlegs.bender.extensions.commandCenter.impl
 		public function setFireOnce(value:Boolean):ICommandMapping
 		{
 			_fireOnce = value;
+			return this;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function setPayloadInjectionEnabled(value:Boolean):ICommandMapping
+		{
+			_payloadInjectionEnabled = value;
 			return this;
 		}
 

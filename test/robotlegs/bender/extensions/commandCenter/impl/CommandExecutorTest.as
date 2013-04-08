@@ -78,8 +78,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 		[Test]
 		public function command_is_constructed():void
 		{
-			addMapping(CommandWithoutExecute)
-				.setExecuteMethod(null);
+			addMapping(CommandWithoutExecute).setExecuteMethod(null);
 
 			subject.execute(mappings);
 
@@ -87,104 +86,76 @@ package robotlegs.bender.extensions.commandCenter.impl
 		}
 
 		[Test]
-		public function test_command_is_executed():void
+		public function command_is_executed():void
 		{
 			addMapping();
-
 			executeCommands();
-
 			assertThat(reported, array(CommandA));
 		}
 
 		[Test]
-		public function test_command_is_executed_repeatedly():void
+		public function command_is_executed_repeatedly():void
 		{
 			addMappings(5);
-
 			executeCommands();
-
 			assertThat(reported.length, equalTo(5));
 		}
 
 		[Test]
-		public function test_hooks_are_called():void
+		public function hooks_are_called():void
 		{
-			addMapping(NullCommand)
-				.addHooks(HookA, HookA, HookA);
-
+			addMapping(NullCommand).addHooks(HookA, HookA, HookA);
 			executeCommands();
-
 			assertThat(reported.length, equalTo(3));
 		}
 
 		[Test]
-		public function test_command_executes_when_the_guard_allows():void
+		public function command_executes_when_the_guard_allows():void
 		{
-			addMapping()
-				.addGuards(HappyGuard);
-
+			addMapping().addGuards(HappyGuard);
 			executeCommands();
-
 			assertThat(reported, array(CommandA));
 		}
 
 		[Test]
-		public function test_command_does_not_execute_when_any_guards_denies():void
+		public function command_does_not_execute_when_any_guards_denies():void
 		{
-			addMapping()
-				.addGuards(HappyGuard, GrumpyGuard);
-
+			addMapping().addGuards(HappyGuard, GrumpyGuard);
 			executeCommands();
-
 			assertThat(reported, array());
 		}
 
 		[Test]
-		public function test_execution_sequence_is_guard_command_guard_command_with_multiple_mappings():void
+		public function execution_sequence_is_guard_command_guard_command_with_multiple_mappings():void
 		{
-			addMapping(CommandA)
-				.addGuards(GuardA);
-			addMapping(CommandB)
-				.addGuards(GuardB);
-
+			addMapping(CommandA).addGuards(GuardA);
+			addMapping(CommandB).addGuards(GuardB);
 			executeCommands();
-
 			assertThat(reported, array(
-				GuardA,
-				CommandA,
-				GuardB,
-				CommandB));
+				GuardA, CommandA,
+				GuardB, CommandB));
 		}
 
 		[Test]
-		public function test_execution_sequence_is_guard_hook_command():void
+		public function execution_sequence_is_guard_hook_command():void
 		{
-			addMapping()
-				.addGuards(GuardA)
-				.addHooks(HookA);
-
+			addMapping().addGuards(GuardA).addHooks(HookA);
 			executeCommands();
-
 			assertThat(reported, array(
-				GuardA,
-				HookA,
-				CommandA));
+				GuardA, HookA, CommandA));
 		}
 
 		[Test]
-		public function test_allowed_commands_get_executed_after_denied_command():void
+		public function allowed_commands_get_executed_after_denied_command():void
 		{
-			addMapping(CommandA)
-				.addGuards(GrumpyGuard);
+			addMapping(CommandA).addGuards(GrumpyGuard);
 			addMapping(CommandB);
-
 			executeCommands();
-
 			assertThat(reported, array(CommandB));
 		}
 
 		[Test]
-		public function test_command_with_different_method_than_execute_is_called():void
+		public function command_with_different_method_than_execute_is_called():void
 		{
 			addMapping(CommandWithReportMethodInsteadOfExecute)
 				.setExecuteMethod('report');
@@ -195,35 +166,40 @@ package robotlegs.bender.extensions.commandCenter.impl
 		}
 
 		[Test(expects="Error")]
-		public function test_throws_error_when_executeMethod_not_a_function():void
+		public function throws_error_when_executeMethod_not_a_function():void
 		{
 			addMapping(CommandWithIncorrectExecute);
-
 			executeCommands();
-
 			// note: no assertion. we just want to know if an error is thrown
 		}
 
 		[Test]
-		public function test_payload_is_injected_into_command():void
+		public function payload_is_injected_into_command():void
 		{
-			addMapping(CommandWithPayload);
-			const payload:CommandPayload = new CommandPayload(['message', 0],[String, int]);
-
+			addMapping(CommandWithPayloadInjectionPoints);
+			const payload:CommandPayload = new CommandPayload(['message', 1],[String, int]);
 			executeCommands( payload );
-
 			assertThat(reported, array(payload.values));
 		}
 
 		[Test]
-		public function test_payload_is_passed_to_execute_method():void
+		public function payload_is_passed_to_execute_method():void
 		{
 			addMapping(CommandWithMethodParameters);
-			const payload:CommandPayload = new CommandPayload(['message', 0],[String, int]);
-
+			const payload:CommandPayload = new CommandPayload(['message', 1],[String, int]);
 			executeCommands(payload);
-
 			assertThat(reported, array(payload.values));
+		}
+
+		[Test]
+		public function payloadInjection_is_disabled():void
+		{
+			addMapping(CommandWithOptionalInjectionPoints)
+					.setPayloadInjectionEnabled(false);
+
+			const payload:CommandPayload = new CommandPayload(['message', 1],[String, int]);
+			executeCommands(payload);
+			assertThat(reported, array(null, 0));
 		}
 
 		/*============================================================================*/
@@ -349,7 +325,7 @@ class CommandWithIncorrectExecute
 	public var execute:String = 'execute';
 }
 
-class CommandWithPayload
+class CommandWithPayloadInjectionPoints
 {
 
 	/*============================================================================*/
@@ -391,6 +367,33 @@ class CommandWithMethodParameters
 	/*============================================================================*/
 
 	public function execute(message:String, code:int):void
+	{
+		reportingFunc(message);
+		reportingFunc(code);
+	}
+}
+
+class CommandWithOptionalInjectionPoints
+{
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
+	[Inject(name="reportingFunction")]
+	public var reportingFunc:Function;
+
+	[Inject(optional=true)]
+	public var message:String;
+
+	[Inject(optional=true)]
+	public var code:int;
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
+	public function execute():void
 	{
 		reportingFunc(message);
 		reportingFunc(code);
