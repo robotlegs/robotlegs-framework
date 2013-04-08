@@ -69,9 +69,12 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 				hasPayload && unmapPayload(payload);
 
-				if (command)
+				if (command && mapping.executeMethod)
 				{
-					mapping.executeMethod && command[mapping.executeMethod]();
+					const executeMethod:Function = command[mapping.executeMethod];
+					(hasPayload && executeMethod.length > 0)
+						? executeMethod.apply(null, payload.payloadValues)
+						: executeMethod();
 				}
 			}
 		}

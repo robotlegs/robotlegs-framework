@@ -9,10 +9,12 @@ package robotlegs.bender.extensions.commandCenter.impl
 {
 	import mockolate.received;
 	import mockolate.runner.MockolateRule;
+
 	import org.hamcrest.assertThat;
 	import org.hamcrest.collection.array;
 	import org.hamcrest.object.equalTo;
 	import org.swiftsuspenders.Injector;
+
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 	import robotlegs.bender.extensions.commandCenter.support.NullCommand;
 	import robotlegs.bender.extensions.commandCenter.support.UnmapperStub;
@@ -213,6 +215,17 @@ package robotlegs.bender.extensions.commandCenter.impl
 			assertThat(reported, array(payload.payloadValues));
 		}
 
+		[Test]
+		public function test_payload_is_passed_to_execute_method():void
+		{
+			addMapping(CommandWithMethodParameters);
+			const payload:CommandPayloadConfig = new CommandPayloadConfig(['message', 0],[String, int]);
+
+			executeCommands(payload);
+
+			assertThat(reported, array(payload.payloadValues));
+		}
+
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
@@ -357,6 +370,27 @@ class CommandWithPayload
 	/*============================================================================*/
 
 	public function execute():void
+	{
+		reportingFunc(message);
+		reportingFunc(code);
+	}
+}
+
+class CommandWithMethodParameters
+{
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
+	[Inject(name="reportingFunction")]
+	public var reportingFunc:Function;
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
+	public function execute(message:String, code:int):void
 	{
 		reportingFunc(message);
 		reportingFunc(code);
