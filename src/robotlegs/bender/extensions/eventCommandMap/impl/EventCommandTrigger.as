@@ -18,6 +18,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import robotlegs.bender.extensions.commandCenter.impl.CommandExecutor;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandMapper;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandMappingList;
+	import robotlegs.bender.extensions.commandCenter.impl.CommandPayloadConfig;
 	import robotlegs.bender.framework.api.ILogger;
 
 	/**
@@ -99,15 +100,11 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			{
 				return;
 			}
-			const payloadValues:Array = [event];
-			const payloadClasses:Array = [Event];
+			const payload : CommandPayloadConfig = new CommandPayloadConfig([event], [Event]);
 			if (eventConstructor != Event)
-			{
-				payloadValues.push(event);
-				payloadClasses.push(_eventClass || eventConstructor);
-			}
+				payload.addPayload(event, _eventClass || eventConstructor);
 
-			_executor.execute(_mappings.getList(), payloadValues, payloadClasses);
+			_executor.execute(_mappings.getList(), payload);
 		}
 	}
 }

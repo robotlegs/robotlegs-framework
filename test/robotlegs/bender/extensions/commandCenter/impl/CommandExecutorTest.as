@@ -206,11 +206,11 @@ package robotlegs.bender.extensions.commandCenter.impl
 		public function test_payload_is_injected_into_command():void
 		{
 			addMapping(CommandWithPayload);
-			const payloadValues:Array = ['message', 0];
+			const payload:CommandPayloadConfig = new CommandPayloadConfig(['message', 0],[String, int]);
 
-			executeCommands(payloadValues, [String, int]);
+			executeCommands( payload );
 
-			assertThat(reported, array(payloadValues));
+			assertThat(reported, array(payload.payloadValues));
 		}
 
 		/*============================================================================*/
@@ -233,9 +233,9 @@ package robotlegs.bender.extensions.commandCenter.impl
 			}
 		}
 
-		private function executeCommands(payloadValues:Array = null, payloadClasses:Array = null):void
+		private function executeCommands(payload:CommandPayloadConfig = null):void
 		{
-			subject.execute(mappings, payloadValues, payloadClasses);
+			subject.execute(mappings, payload);
 		}
 
 		private function reportingFunction(item:Object):void

@@ -8,6 +8,7 @@
 package robotlegs.bender.extensions.commandCenter.impl
 {
 	import org.swiftsuspenders.Injector;
+
 	import robotlegs.bender.extensions.commandCenter.api.ICommandExecutor;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 	import robotlegs.bender.framework.impl.applyHooks;
@@ -38,16 +39,16 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function execute(mappings:Vector.<ICommandMapping>, payloadValues:Array = null, payloadClasses:Array = null):void
+		public function execute(mappings:Vector.<ICommandMapping>, payload : CommandPayloadConfig = null):void
 		{
 			const length:int = mappings.length;
-			const hasPayload:Boolean = validatePayload(payloadValues, payloadClasses);
+			const hasPayload:Boolean = payload && payload.hasPayload();
 			for (var i:int = 0; i < length; i++)
 			{
 				var mapping:ICommandMapping = mappings[i];
 				var command:Object = null;
 
-				hasPayload && mapPayload(payloadValues, payloadClasses);
+				hasPayload && mapPayload(payload);
 
 				if (mapping.guards.length == 0 || guardsApprove(mapping.guards, _injector))
 				{
@@ -66,7 +67,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 					}
 				}
 
-				hasPayload && unmapPayload(payloadValues, payloadClasses);
+				hasPayload && unmapPayload(payload);
 
 				if (command)
 				{
@@ -79,29 +80,22 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/* Private Functions                                                          */
 		/*============================================================================*/
 
-		private function validatePayload(payloadValues:Array, payloadClasses:Array):Boolean
-		{
-			return payloadValues
-				&& payloadValues.length > 0
-				&& payloadClasses
-				&& payloadClasses.length == payloadValues.length;
-		}
 
-		private function mapPayload(payloadValues:Array, payloadClasses:Array):void
+		private function mapPayload(config : CommandPayloadConfig):void
 		{
-			var i:uint = payloadValues.length;
+			var i:uint = config.payloadLength;
 			while (i--)
 			{
-				_injector.map(payloadClasses[i]).toValue(payloadValues[i]);
+				_injector.map(config.payloadClasses[i]).toValue(config.payloadValues[i]);
 			}
 		}
 
-		private function unmapPayload(payloadValues:Array, payloadClasses:Array):void
+		private function unmapPayload(config : CommandPayloadConfig):void
 		{
-			var i:uint = payloadValues.length;
+			var i:uint = config.payloadLength;
 			while (i--)
 			{
-				_injector.unmap(payloadClasses[i]);
+				_injector.unmap(config.payloadClasses[i]);
 			}
 		}
 	}
