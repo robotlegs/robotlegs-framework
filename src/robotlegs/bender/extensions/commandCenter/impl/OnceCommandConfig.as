@@ -1,17 +1,13 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.commandCenter.impl
 {
-	/**
-	 * @author creynder
-	 */
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
-	import robotlegs.bender.extensions.commandCenter.dsl.ICommandConfigurator;
 	import robotlegs.bender.extensions.commandCenter.dsl.IOnceCommandConfig;
 
 	public class OnceCommandConfig implements IOnceCommandConfig
@@ -72,11 +68,10 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/**
 		 * @inheritDoc
 		 */
-		public function withPayloadInjection(value:Boolean=true):IOnceCommandConfig
+		public function withPayloadInjection(value:Boolean = true):IOnceCommandConfig
 		{
 			_mapping.setPayloadInjectionEnabled(value);
 			return this;
 		}
-
 	}
 }

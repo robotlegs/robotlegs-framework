@@ -11,8 +11,18 @@ package robotlegs.bender.extensions.commandCenter.api
 
 	public interface ICommandExecutor
 	{
+		/**
+		 * Execute a command for a given mapping
+		 * @param mapping The Command Mapping
+		 * @param payload The Command Payload
+		 */
 		function executeCommand(mapping:ICommandMapping, payload:CommandPayload = null):void;
 
+		/**
+		 * Execute a list of commands for a given list of mappings
+		 * @param mappings The Command Mappings
+		 * @param payload The Command Payload
+		 */
 		function executeCommands(mappings:Vector.<ICommandMapping>, payload:CommandPayload = null):void;
 	}
 }

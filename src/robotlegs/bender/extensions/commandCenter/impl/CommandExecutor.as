@@ -38,6 +38,9 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function executeCommands(mappings:Vector.<ICommandMapping>, payload:CommandPayload = null):void
 		{
 			const length:int = mappings.length;
@@ -47,6 +50,9 @@ package robotlegs.bender.extensions.commandCenter.impl
 			}
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function executeCommand(mapping:ICommandMapping, payload:CommandPayload = null):void
 		{
 			const hasPayload:Boolean = payload && payload.hasPayload();

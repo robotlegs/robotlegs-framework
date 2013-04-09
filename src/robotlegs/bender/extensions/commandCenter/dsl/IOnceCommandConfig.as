@@ -1,11 +1,15 @@
+//------------------------------------------------------------------------------
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
+//------------------------------------------------------------------------------
+
 package robotlegs.bender.extensions.commandCenter.dsl
 {
-	import robotlegs.bender.extensions.commandCenter.impl.CommandPayload;
 
-	/**
-	 * @author creynder
-	 */
-	public interface IOnceCommandConfig{
+	public interface IOnceCommandConfig
+	{
 		/**
 		 * The "execute" method to invoke on the Command instance
 		 * @param name Method name

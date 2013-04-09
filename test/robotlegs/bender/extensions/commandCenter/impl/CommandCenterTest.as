@@ -7,9 +7,6 @@
 
 package robotlegs.bender.extensions.commandCenter.impl
 {
-	import mockolate.received;
-	import mockolate.runner.MockolateRule;
-	import mockolate.stub;
 	import org.hamcrest.assertThat;
 	import org.hamcrest.collection.array;
 	import org.hamcrest.object.equalTo;
@@ -25,9 +22,6 @@ package robotlegs.bender.extensions.commandCenter.impl
 	import robotlegs.bender.framework.api.PinEvent;
 	import robotlegs.bender.framework.impl.Context;
 
-	/**
-	 * @author creynder
-	 */
 	public class CommandCenterTest
 	{
 
@@ -167,7 +161,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 			var wasDetained:Boolean = false;
 			var handler:Function = function(... params):void {
 				wasDetained = true;
-			}
+			};
 			context.addEventListener(PinEvent.DETAIN, handler);
 
 			subject.detain(command);
@@ -182,7 +176,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 			var wasReleased:Boolean = false;
 			var handler:Function = function(... params):void {
 				wasReleased = true;
-			}
+			};
 			context.addEventListener(PinEvent.RELEASE, handler);
 			subject.detain(command);
 
