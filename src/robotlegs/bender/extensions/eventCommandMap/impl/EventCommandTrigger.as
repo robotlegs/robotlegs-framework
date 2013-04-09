@@ -104,7 +104,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			if (eventConstructor != Event)
 				payload.addPayload(event, _eventClass || eventConstructor);
 
-			_executor.execute(_mappings.getList(), payload);
+			_executor.executeCommands(_mappings.getList(), payload);
 		}
 	}
 }

@@ -7,12 +7,9 @@
 
 package robotlegs.bender.extensions.commandCenter.impl
 {
-	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandCenter;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandExecutor;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
-	import robotlegs.bender.extensions.commandCenter.api.ICommandMappingList;
-	import robotlegs.bender.extensions.commandCenter.dsl.ICommandConfigurator;
 	import robotlegs.bender.extensions.commandCenter.dsl.IOnceCommandConfig;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.ILogger;
@@ -70,9 +67,9 @@ package robotlegs.bender.extensions.commandCenter.impl
 			const mapping:ICommandMapping = parseMappingFromClassOrConfig(commandClassOrConfig);
 			const callback:Function = function(mapping:ICommandMapping):void {
 				executed = mapping;
-			}
+			};
 			const executor:ICommandExecutor = new CommandExecutor(_context.injector.createChildInjector(), callback);
-			executor.execute(Vector.<ICommandMapping>([mapping]), payload);
+			executor.executeCommands(Vector.<ICommandMapping>([mapping]), payload);
 			return executed;
 		}
 
@@ -91,9 +88,9 @@ package robotlegs.bender.extensions.commandCenter.impl
 			const executed:Vector.<ICommandMapping> = new Vector.<ICommandMapping>();
 			const callback:Function = function(mapping:ICommandMapping):void {
 				executed.push(mapping);
-			}
+			};
 			const executor:ICommandExecutor = new CommandExecutor(_context.injector.createChildInjector(), callback);
-			executor.execute(list, payload);
+			executor.executeCommands(list, payload);
 			return executed;
 		}
 

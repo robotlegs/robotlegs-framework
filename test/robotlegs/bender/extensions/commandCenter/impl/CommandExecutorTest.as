@@ -70,7 +70,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 			const mapping:ICommandMapping = addMapping(CommandA);
 			mapping.setFireOnce(true);
 
-			subject.execute(mappings);
+			subject.executeCommands(mappings);
 
 			assertThat(unMapper, received().method('unmap').arg(mapping).once());
 		}
@@ -80,7 +80,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 		{
 			addMapping(CommandWithoutExecute).setExecuteMethod(null);
 
-			subject.execute(mappings);
+			subject.executeCommands(mappings);
 
 			assertThat(reported, array(CommandWithoutExecute));
 		}
@@ -224,7 +224,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		private function executeCommands(payload:CommandPayload = null):void
 		{
-			subject.execute(mappings, payload);
+			subject.executeCommands(mappings, payload);
 		}
 
 		private function reportingFunction(item:Object):void

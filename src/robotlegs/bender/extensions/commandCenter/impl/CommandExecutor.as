@@ -38,39 +38,44 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function execute(mappings:Vector.<ICommandMapping>, payload:CommandPayload = null):void
+		public function executeCommands(mappings:Vector.<ICommandMapping>, payload:CommandPayload = null):void
 		{
 			const length:int = mappings.length;
-			const hasPayload:Boolean = payload && payload.hasPayload();
 			for (var i:int = 0; i < length; i++)
 			{
-				var mapping:ICommandMapping = mappings[i];
-				var command:Object = null;
+				executeCommand(mappings[i], payload);
+			}
+		}
 
-				hasPayload && mapping.payloadInjectionEnabled && mapPayload(payload);
+		public function executeCommand(mapping:ICommandMapping, payload:CommandPayload = null):void
+		{
+			const hasPayload:Boolean = payload && payload.hasPayload();
+			const injectionEnabled:Boolean = hasPayload && mapping.payloadInjectionEnabled;
+			var command:Object = null;
 
-				if (mapping.guards.length == 0 || guardsApprove(mapping.guards, _injector))
+			injectionEnabled && mapPayload(payload);
+
+			if (mapping.guards.length == 0 || guardsApprove(mapping.guards, _injector))
+			{
+				const commandClass:Class = mapping.commandClass;
+				mapping.fireOnce && _removeMapping(mapping);
+				command = _injector.instantiateUnmapped(commandClass);
+				if (mapping.hooks.length > 0)
 				{
-					const commandClass:Class = mapping.commandClass;
-					mapping.fireOnce && _removeMapping(mapping);
-					command = _injector.instantiateUnmapped(commandClass);
-					if (mapping.hooks.length > 0)
-					{
-						_injector.map(commandClass).toValue(command);
-						applyHooks(mapping.hooks, _injector);
-						_injector.unmap(commandClass);
-					}
+					_injector.map(commandClass).toValue(command);
+					applyHooks(mapping.hooks, _injector);
+					_injector.unmap(commandClass);
 				}
+			}
 
-				hasPayload && mapping.payloadInjectionEnabled && unmapPayload(payload);
+			injectionEnabled && unmapPayload(payload);
 
-				if (command && mapping.executeMethod)
-				{
-					const executeMethod:Function = command[mapping.executeMethod];
-					(hasPayload && executeMethod.length > 0)
+			if (command && mapping.executeMethod)
+			{
+				const executeMethod:Function = command[mapping.executeMethod];
+				(hasPayload && executeMethod.length > 0)
 						? executeMethod.apply(null, payload.values)
 						: executeMethod();
-				}
 			}
 		}
 
