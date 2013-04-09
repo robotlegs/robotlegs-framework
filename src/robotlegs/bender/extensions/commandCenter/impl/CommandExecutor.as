@@ -28,7 +28,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function CommandExecutor(injector:Injector, removeMapping:Function)
+		public function CommandExecutor(injector:Injector, removeMapping:Function = null)
 		{
 			_injector = injector;
 			_removeMapping = removeMapping;
@@ -64,7 +64,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 			if (mapping.guards.length == 0 || guardsApprove(mapping.guards, _injector))
 			{
 				const commandClass:Class = mapping.commandClass;
-				mapping.fireOnce && _removeMapping(mapping);
+				mapping.fireOnce && _removeMapping && _removeMapping(mapping);
 				command = _injector.instantiateUnmapped(commandClass);
 				if (mapping.hooks.length > 0)
 				{
