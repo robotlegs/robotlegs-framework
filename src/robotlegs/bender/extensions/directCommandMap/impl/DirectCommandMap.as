@@ -9,15 +9,11 @@ package robotlegs.bender.extensions.directCommandMap.impl
 {
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandExecutor;
-	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandExecutor;
-	import robotlegs.bender.extensions.commandCenter.impl.CommandMapping;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandMappingList;
-	import robotlegs.bender.extensions.commandCenter.impl.CommandPayload;
 	import robotlegs.bender.extensions.directCommandMap.api.IDirectCommandMap;
 	import robotlegs.bender.extensions.directCommandMap.dsl.IDirectCommandConfigurator;
 	import robotlegs.bender.framework.api.IContext;
-	import robotlegs.bender.framework.api.ILogger;
 
 	public class DirectCommandMap implements IDirectCommandMap
 	{

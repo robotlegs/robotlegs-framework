@@ -7,8 +7,6 @@
 
 package robotlegs.bender.extensions.directCommandMap.api
 {
-	import robotlegs.bender.extensions.commandCenter.impl.CommandPayload;
-	import robotlegs.bender.extensions.directCommandMap.dsl.IDirectCommandConfigurator;
 	import robotlegs.bender.extensions.directCommandMap.dsl.IDirectCommandMapper;
 
 	public interface IDirectCommandMap extends IDirectCommandMapper
