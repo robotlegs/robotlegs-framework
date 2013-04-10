@@ -156,6 +156,20 @@ package robotlegs.bender.extensions.directCommandMap.impl
 
 			assertThat(wasReleased, isTrue());
 		}
+
+		[Test]
+		public function executes_command():void
+		{
+			var executionCount:int = 0;
+			injector.map(Function, 'executeCallback').toValue(function():void {
+				executionCount++;
+			});
+
+			subject.map(CallbackCommand);
+			subject.execute();
+
+			assertThat(executionCount, equalTo(1));
+		}
 	}
 }
 

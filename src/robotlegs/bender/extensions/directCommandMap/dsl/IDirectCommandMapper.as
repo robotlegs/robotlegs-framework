@@ -7,6 +7,7 @@
 
 package robotlegs.bender.extensions.directCommandMap.dsl
 {
+	import robotlegs.bender.extensions.commandCenter.impl.CommandPayload;
 
 	public interface IDirectCommandMapper
 	{
@@ -17,5 +18,11 @@ package robotlegs.bender.extensions.directCommandMap.dsl
 		 * @return Mapping configurator
 		 */
 		function map(commandClass:Class):IDirectCommandConfigurator;
+
+		/**
+		 * Execute the configured command(s)
+		 * @param payload The Command Payload
+		 */
+		function execute(payload:CommandPayload = null):void;
 	}
 }

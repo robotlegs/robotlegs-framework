@@ -8,9 +8,11 @@
 package robotlegs.bender.extensions.directCommandMap.impl
 {
 	import org.swiftsuspenders.Injector;
+
 	import robotlegs.bender.extensions.commandCenter.api.ICommandExecutor;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandExecutor;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandMappingList;
+	import robotlegs.bender.extensions.commandCenter.impl.CommandPayload;
 	import robotlegs.bender.extensions.directCommandMap.api.IDirectCommandMap;
 	import robotlegs.bender.extensions.directCommandMap.dsl.IDirectCommandConfigurator;
 	import robotlegs.bender.framework.api.IContext;
@@ -71,5 +73,14 @@ package robotlegs.bender.extensions.directCommandMap.impl
 		{
 			_context.release(command);
 		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function execute(payload:CommandPayload=null):void
+		{
+			_executor.executeCommands(_mappings.getList(),payload);
+		}
+
 	}
 }
