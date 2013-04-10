@@ -13,6 +13,8 @@ package robotlegs.bender.extensions.commandCenter.impl
 	import org.hamcrest.assertThat;
 	import org.hamcrest.collection.array;
 	import org.hamcrest.object.equalTo;
+	import org.hamcrest.object.hasProperties;
+	import org.hamcrest.object.instanceOf;
 	import org.swiftsuspenders.Injector;
 
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
@@ -202,6 +204,19 @@ package robotlegs.bender.extensions.commandCenter.impl
 			assertThat(reported, array(null, 0));
 		}
 
+		[Test]
+		public function result_is_handled():void
+		{
+			const mapping:ICommandMapping = new CommandMapping(MessageReturningCommand);
+			subject = new CommandExecutor(injector, null, resultReporter);
+			injector.map(String).toValue('message');
+			subject.executeCommand(mapping);
+			assertThat(reported, array(hasProperties({
+				result:'message',
+				command: instanceOf(MessageReturningCommand),
+				mapping: mapping})))
+		}
+
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
@@ -230,6 +245,11 @@ package robotlegs.bender.extensions.commandCenter.impl
 		private function reportingFunction(item:Object):void
 		{
 			reported.push(item);
+		}
+
+		private function resultReporter(result:*, command:Object, mapping:ICommandMapping):void
+		{
+			reported.push({result:result, command:command, mapping:mapping});
 		}
 	}
 }
@@ -397,6 +417,17 @@ class CommandWithOptionalInjectionPoints
 	{
 		reportingFunc(message);
 		reportingFunc(code);
+	}
+}
+
+class MessageReturningCommand
+{
+	[Inject]
+	public var message:String;
+
+	public function execute():String
+	{
+		return message;
 	}
 }
 

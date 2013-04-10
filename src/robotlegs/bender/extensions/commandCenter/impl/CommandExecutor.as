@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -24,14 +24,20 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		private var _removeMapping:Function;
 
+		private var _handleResult:Function;
+
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function CommandExecutor(injector:Injector, removeMapping:Function = null)
+		public function CommandExecutor(
+			injector:Injector,
+			removeMapping:Function = null,
+			handleResult:Function = null)
 		{
 			_injector = injector;
 			_removeMapping = removeMapping;
+			_handleResult = handleResult;
 		}
 
 		/*============================================================================*/
@@ -79,9 +85,10 @@ package robotlegs.bender.extensions.commandCenter.impl
 			if (command && mapping.executeMethod)
 			{
 				const executeMethod:Function = command[mapping.executeMethod];
-				(hasPayload && executeMethod.length > 0)
-						? executeMethod.apply(null, payload.values)
-						: executeMethod();
+				const result:* = (hasPayload && executeMethod.length > 0)
+					? executeMethod.apply(null, payload.values)
+					: executeMethod();
+				_handleResult && _handleResult(result, command, mapping);
 			}
 		}
 
