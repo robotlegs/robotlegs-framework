@@ -7,13 +7,14 @@
 
 package robotlegs.bender.extensions.commandCenter
 {
-	import robotlegs.bender.extensions.commandCenter.impl.CommandCenterTest;
+	import robotlegs.bender.extensions.directCommandMap.impl.DirectCommandMapTest;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandExecutorTest;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandMapperTest;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandMappingListTest;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandMappingTest;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandPayloadTest;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandTriggerMapTest;
+	import robotlegs.bender.extensions.directCommandMap.DirectCommandMapExtensionTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
@@ -23,8 +24,6 @@ package robotlegs.bender.extensions.commandCenter
 		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
-
-		public var commandCenterExtension:CommandCenterExtensionTest;
 
 		public var commandTriggerMap:CommandTriggerMapTest;
 
@@ -38,7 +37,7 @@ package robotlegs.bender.extensions.commandCenter
 
 		public var commandPayload : CommandPayloadTest;
 
-		public var commandCenter : CommandCenterTest;
+		public var commandCenter : DirectCommandMapTest;
 
 	}
 }

@@ -5,15 +5,15 @@
 //  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.commandCenter
+package robotlegs.bender.extensions.directCommandMap
 {
 	import org.flexunit.assertThat;
 	import org.hamcrest.object.instanceOf;
-	import robotlegs.bender.extensions.commandCenter.api.ICommandCenter;
+	import robotlegs.bender.extensions.directCommandMap.api.IDirectCommandMap;
 	import robotlegs.bender.extensions.eventDispatcher.EventDispatcherExtension;
 	import robotlegs.bender.framework.impl.Context;
 
-	public class CommandCenterExtensionTest
+	public class DirectCommandMapExtensionTest
 	{
 
 		/*============================================================================*/
@@ -30,7 +30,7 @@ package robotlegs.bender.extensions.commandCenter
 		public function before():void
 		{
 			context = new Context();
-			context.install(EventDispatcherExtension, CommandCenterExtension);
+			context.install(DirectCommandMapExtension);
 		}
 
 		/*============================================================================*/
@@ -38,14 +38,14 @@ package robotlegs.bender.extensions.commandCenter
 		/*============================================================================*/
 
 		[Test]
-		public function commandCenter_is_mapped_into_injector():void
+		public function directCommandMap_is_mapped_into_injector():void
 		{
 			var actual:Object = null;
 			context.whenInitializing( function():void {
-				actual = context.injector.getInstance(ICommandCenter);
+				actual = context.injector.getInstance(IDirectCommandMap);
 			});
 			context.initialize();
-			assertThat(actual, instanceOf(ICommandCenter));
+			assertThat(actual, instanceOf(IDirectCommandMap));
 		}
 	}
 }

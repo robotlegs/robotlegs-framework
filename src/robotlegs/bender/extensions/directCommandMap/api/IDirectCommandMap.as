@@ -5,21 +5,25 @@
 //  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.commandCenter.api
+package robotlegs.bender.extensions.directCommandMap.api
 {
-	import robotlegs.bender.extensions.commandCenter.dsl.IOnceCommandConfig;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandPayload;
+	import robotlegs.bender.extensions.directCommandMap.dsl.IDirectCommandConfigurator;
+	import robotlegs.bender.extensions.directCommandMap.dsl.IDirectCommandMapper;
 
-	public interface ICommandCenter
+	public interface IDirectCommandMap extends IDirectCommandMapper
 	{
-		function configureCommand(commandClass:Class):IOnceCommandConfig;
 
-		function executeCommand(commandClassOrConfig:*, payload:CommandPayload = null):ICommandMapping;
-
-		function executeCommands(commandClassesOrConfigs:Array, payload:CommandPayload = null):Vector.<ICommandMapping>;
-
+		/**
+		 * Pins a command in memory
+		 * @param command the command instance to pin
+		 */
 		function detain(command:Object):void;
 
+		/**
+		 * Unpins a command instance from memory
+		 * @param command the command instance to unpin
+		 */
 		function release(command:Object):void;
 	}
 }

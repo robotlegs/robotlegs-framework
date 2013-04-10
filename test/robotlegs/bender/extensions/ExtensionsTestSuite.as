@@ -1,18 +1,19 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions
 {
 	import robotlegs.bender.extensions.commandCenter.CommandCenterExtensionTestSuite;
 	import robotlegs.bender.extensions.contextView.ContextViewExtensionTestSuite;
+	import robotlegs.bender.extensions.directCommandMap.DirectCommandMapExtensionTestSuite;
+	import robotlegs.bender.extensions.enhancedLogging.EnhancedLoggingExtensionTestSuite;
 	import robotlegs.bender.extensions.eventCommandMap.EventCommandMapExtensionTestSuite;
 	import robotlegs.bender.extensions.eventDispatcher.EventDispatcherExtensionTestSuite;
 	import robotlegs.bender.extensions.localEventMap.LocalEventMapExtensionTestSuite;
-	import robotlegs.bender.extensions.enhancedLogging.EnhancedLoggingExtensionTestSuite;
 	import robotlegs.bender.extensions.matching.TypeMatchingTestSuite;
 	import robotlegs.bender.extensions.mediatorMap.MediatorMapExtensionTestSuite;
 	import robotlegs.bender.extensions.messageDispatcher.MessageDispatcherExtensionTestSuite;
@@ -35,6 +36,8 @@ package robotlegs.bender.extensions
 		/*============================================================================*/
 
 		public var commandMapExtension:CommandCenterExtensionTestSuite;
+
+		public var directCommandMapExtension : DirectCommandMapExtensionTestSuite;
 
 		public var contextViewExtension:ContextViewExtensionTestSuite;
 
@@ -59,7 +62,7 @@ package robotlegs.bender.extensions
 		public var stageSyncExtension:StageSyncExtensionTestSuite;
 
 		public var viewManagerExtension:ViewManagerExtensionTestSuite;
-			
+
 		public var viewProcessorMapExtension:ViewProcessorMapExtensionTestSuite;
 
 		public var vigilanceExtension:VigilanceExtensionTestSuite;
