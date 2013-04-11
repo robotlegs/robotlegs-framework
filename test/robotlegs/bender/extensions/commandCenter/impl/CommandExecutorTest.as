@@ -244,6 +244,17 @@ package robotlegs.bender.extensions.commandCenter.impl
 		}
 
 		[Test]
+		public function payload_doesnt_leak_into_class_instantiated_by_command():void
+		{
+			injector.map(Injector).toValue(injector);
+			addMapping(OptionalInjectionPointsCommandInstantiatingCommand);
+
+			const payload:CommandPayload = new CommandPayload(['message', 1], [String, int]);
+			executeCommands(payload);
+			assertThat(reported, array(null, 0));
+		}
+
+		[Test]
 		public function result_is_handled():void
 		{
 			const mapping:ICommandMapping = new CommandMapping(MessageReturningCommand);
@@ -292,6 +303,8 @@ package robotlegs.bender.extensions.commandCenter.impl
 		}
 	}
 }
+
+import org.swiftsuspenders.Injector;
 
 class ExecutelessCommand
 {
@@ -534,5 +547,26 @@ class PayloadInjectionPointsGuard
 		reportingFunc(message);
 		reportingFunc(code);
 		return true;
+	}
+}
+
+class OptionalInjectionPointsCommandInstantiatingCommand
+{
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
+	[Inject]
+	public var injector:Injector;
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
+	public function execute():void
+	{
+		var command:OptionalInjectionPointsCommand = injector.instantiateUnmapped(OptionalInjectionPointsCommand);
+		command.execute();
 	}
 }

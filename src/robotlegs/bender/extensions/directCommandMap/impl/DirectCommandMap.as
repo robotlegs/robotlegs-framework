@@ -16,6 +16,7 @@ package robotlegs.bender.extensions.directCommandMap.impl
 	import robotlegs.bender.extensions.directCommandMap.api.IDirectCommandMap;
 	import robotlegs.bender.extensions.directCommandMap.dsl.IDirectCommandConfigurator;
 	import robotlegs.bender.framework.api.IContext;
+	import robotlegs.bender.extensions.commandCenter.impl.NullCommandTrigger;
 
 	public class DirectCommandMap implements IDirectCommandMap
 	{
@@ -40,10 +41,10 @@ package robotlegs.bender.extensions.directCommandMap.impl
 		public function DirectCommandMap(context:IContext)
 		{
 			_context = context;
-			var injector:Injector = context.injector.createChildInjector();
-			injector.map(IDirectCommandMap).toValue(this);
+			var sandboxedInjector:Injector = context.injector.createChildInjector();
+			sandboxedInjector.map(IDirectCommandMap).toValue(this);
 			_mappings = new CommandMappingList(new NullCommandTrigger(), context.getLogger(this));
-			_executor = new CommandExecutor(injector.createChildInjector(), _mappings.removeMapping);
+			_executor = new CommandExecutor(sandboxedInjector.createChildInjector(), _mappings.removeMapping);
 		}
 
 		/*============================================================================*/
