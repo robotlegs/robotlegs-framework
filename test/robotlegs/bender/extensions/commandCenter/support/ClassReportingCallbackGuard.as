@@ -1,33 +1,32 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.commandCenter.support
 {
 
-	public class SelfReportingCallbackHook
+	public class ClassReportingCallbackGuard
 	{
 
 		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		[Inject]
-		public var command:SelfReportingCallbackCommand;
-
-		[Inject(name="hookCallback")]
-		public var callback:Function;
+		[Inject(name="reportingFunction")]
+		public var reportingFunc:Function;
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		public function hook():void
+		public function approve():Boolean
 		{
-			callback(this);
+			reportingFunc && reportingFunc(ClassReportingCallbackGuard);
+			return true
 		}
 	}
+
 }

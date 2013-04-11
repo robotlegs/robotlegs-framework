@@ -8,14 +8,12 @@
 package robotlegs.bender.extensions.directCommandMap.impl
 {
 	import org.hamcrest.assertThat;
-	import org.hamcrest.collection.array;
 	import org.hamcrest.core.not;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.instanceOf;
 	import org.hamcrest.object.isTrue;
 	import org.hamcrest.object.strictlyEqualTo;
 	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.extensions.commandCenter.impl.CommandPayload;
 	import robotlegs.bender.extensions.commandCenter.support.CallbackCommand;
 	import robotlegs.bender.extensions.commandCenter.support.CallbackCommand2;
 	import robotlegs.bender.extensions.commandCenter.support.NullCommand;
@@ -112,21 +110,6 @@ package robotlegs.bender.extensions.directCommandMap.impl
 		}
 
 		[Test]
-		public function injects_payload_into_command():void
-		{
-			const actual:Array = [];
-			const expected:Array = ['string', 5];
-			var payload:CommandPayload = new CommandPayload(expected, [String, int]);
-			injector.map(Function, 'reportingFunction').toValue(function(passed:Object):void {
-				actual.push(passed);
-			});
-
-			subject.map(PayloadReportingCommand).execute(payload);
-
-			assertThat(actual, array(expected));
-		}
-
-		[Test]
 		public function detains_command():void
 		{
 			const command:Object = {};
@@ -174,33 +157,6 @@ package robotlegs.bender.extensions.directCommandMap.impl
 }
 
 import robotlegs.bender.extensions.directCommandMap.api.IDirectCommandMap;
-
-internal class PayloadReportingCommand
-{
-
-	/*============================================================================*/
-	/* Public Properties                                                          */
-	/*============================================================================*/
-
-	[Inject]
-	public var message:String;
-
-	[Inject]
-	public var code:int;
-
-	[Inject(name="reportingFunction")]
-	public var reportingFunc:Function;
-
-	/*============================================================================*/
-	/* Public Functions                                                           */
-	/*============================================================================*/
-
-	public function execute():void
-	{
-		reportingFunc(message);
-		reportingFunc(code);
-	}
-}
 
 internal class DirectCommandMapReportingCommand
 {

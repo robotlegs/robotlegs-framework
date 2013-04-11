@@ -9,15 +9,18 @@ package robotlegs.bender.extensions.commandCenter.impl
 {
 	import mockolate.received;
 	import mockolate.runner.MockolateRule;
-
 	import org.hamcrest.assertThat;
 	import org.hamcrest.collection.array;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.hasProperties;
 	import org.hamcrest.object.instanceOf;
 	import org.swiftsuspenders.Injector;
-
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
+	import robotlegs.bender.extensions.commandCenter.support.ClassReportingCallbackCommand;
+	import robotlegs.bender.extensions.commandCenter.support.ClassReportingCallbackCommand2;
+	import robotlegs.bender.extensions.commandCenter.support.ClassReportingCallbackGuard;
+	import robotlegs.bender.extensions.commandCenter.support.ClassReportingCallbackGuard2;
+	import robotlegs.bender.extensions.commandCenter.support.ClassReportingCallbackHook;
 	import robotlegs.bender.extensions.commandCenter.support.NullCommand;
 	import robotlegs.bender.extensions.commandCenter.support.UnmapperStub;
 	import robotlegs.bender.framework.impl.guardSupport.GrumpyGuard;
@@ -59,7 +62,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 			injector = new Injector();
 			injector.map(Function, "reportingFunction").toValue(reportingFunction);
 			mappings = new Vector.<ICommandMapping>();
-			subject = new CommandExecutor(injector, unMapper.unmap);
+			subject = new CommandExecutor(injector);
 		}
 
 		/*============================================================================*/
@@ -69,7 +72,8 @@ package robotlegs.bender.extensions.commandCenter.impl
 		[Test]
 		public function oneShotMapping_is_removed():void
 		{
-			const mapping:ICommandMapping = addMapping(CommandA);
+			subject = new CommandExecutor(injector, unMapper.unmap);
+			const mapping:ICommandMapping = addMapping(ClassReportingCallbackCommand);
 			mapping.setFireOnce(true);
 
 			subject.executeCommands(mappings);
@@ -78,13 +82,13 @@ package robotlegs.bender.extensions.commandCenter.impl
 		}
 
 		[Test]
-		public function command_is_constructed():void
+		public function command_without_execute_method_is_still_constructed():void
 		{
-			addMapping(CommandWithoutExecute).setExecuteMethod(null);
+			addMapping(ExecutelessCommand).setExecuteMethod(null);
 
 			subject.executeCommands(mappings);
 
-			assertThat(reported, array(CommandWithoutExecute));
+			assertThat(reported, array(ExecutelessCommand));
 		}
 
 		[Test]
@@ -92,7 +96,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 		{
 			addMapping();
 			executeCommands();
-			assertThat(reported, array(CommandA));
+			assertThat(reported, array(ClassReportingCallbackCommand));
 		}
 
 		[Test]
@@ -106,9 +110,26 @@ package robotlegs.bender.extensions.commandCenter.impl
 		[Test]
 		public function hooks_are_called():void
 		{
-			addMapping(NullCommand).addHooks(HookA, HookA, HookA);
+			addMapping(NullCommand).addHooks(
+				ClassReportingCallbackHook, ClassReportingCallbackHook, ClassReportingCallbackHook);
 			executeCommands();
 			assertThat(reported.length, equalTo(3));
+		}
+
+		[Test]
+		public function command_is_injected_into_hook():void
+		{
+			var executedCommand:SelfReportingCallbackCommand = null;
+			var injectedCommand:SelfReportingCallbackCommand = null;
+			injector.map(Function, 'executeCallback').toValue(function(command:SelfReportingCallbackCommand):void {
+				executedCommand = command;
+			});
+			injector.map(Function, 'hookCallback').toValue(function(hook:SelfReportingCallbackHook):void {
+				injectedCommand = hook.command;
+			});
+			addMapping(SelfReportingCallbackCommand).addHooks(SelfReportingCallbackHook);
+			executeCommands();
+			assertThat(injectedCommand, equalTo(executedCommand));
 		}
 
 		[Test]
@@ -116,7 +137,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 		{
 			addMapping().addGuards(HappyGuard);
 			executeCommands();
-			assertThat(reported, array(CommandA));
+			assertThat(reported, array(ClassReportingCallbackCommand));
 		}
 
 		[Test]
@@ -130,47 +151,47 @@ package robotlegs.bender.extensions.commandCenter.impl
 		[Test]
 		public function execution_sequence_is_guard_command_guard_command_with_multiple_mappings():void
 		{
-			addMapping(CommandA).addGuards(GuardA);
-			addMapping(CommandB).addGuards(GuardB);
+			addMapping(ClassReportingCallbackCommand).addGuards(ClassReportingCallbackGuard);
+			addMapping(ClassReportingCallbackCommand2).addGuards(ClassReportingCallbackGuard2);
 			executeCommands();
 			assertThat(reported, array(
-				GuardA, CommandA,
-				GuardB, CommandB));
+				ClassReportingCallbackGuard, ClassReportingCallbackCommand,
+				ClassReportingCallbackGuard2, ClassReportingCallbackCommand2));
 		}
 
 		[Test]
 		public function execution_sequence_is_guard_hook_command():void
 		{
-			addMapping().addGuards(GuardA).addHooks(HookA);
+			addMapping().addGuards(ClassReportingCallbackGuard).addHooks(ClassReportingCallbackHook);
 			executeCommands();
 			assertThat(reported, array(
-				GuardA, HookA, CommandA));
+				ClassReportingCallbackGuard, ClassReportingCallbackHook, ClassReportingCallbackCommand));
 		}
 
 		[Test]
 		public function allowed_commands_get_executed_after_denied_command():void
 		{
-			addMapping(CommandA).addGuards(GrumpyGuard);
-			addMapping(CommandB);
+			addMapping(ClassReportingCallbackCommand).addGuards(GrumpyGuard);
+			addMapping(ClassReportingCallbackCommand2);
 			executeCommands();
-			assertThat(reported, array(CommandB));
+			assertThat(reported, array(ClassReportingCallbackCommand2));
 		}
 
 		[Test]
 		public function command_with_different_method_than_execute_is_called():void
 		{
-			addMapping(CommandWithReportMethodInsteadOfExecute)
+			addMapping(ReportMethodCommand)
 				.setExecuteMethod('report');
 
 			executeCommands();
 
-			assertThat(reported, array(CommandWithReportMethodInsteadOfExecute));
+			assertThat(reported, array(ReportMethodCommand));
 		}
 
 		[Test(expects="Error")]
 		public function throws_error_when_executeMethod_not_a_function():void
 		{
-			addMapping(CommandWithIncorrectExecute);
+			addMapping(IncorrectExecuteCommand);
 			executeCommands();
 			// note: no assertion. we just want to know if an error is thrown
 		}
@@ -178,17 +199,35 @@ package robotlegs.bender.extensions.commandCenter.impl
 		[Test]
 		public function payload_is_injected_into_command():void
 		{
-			addMapping(CommandWithPayloadInjectionPoints);
-			const payload:CommandPayload = new CommandPayload(['message', 1],[String, int]);
-			executeCommands( payload );
+			addMapping(PayloadInjectionPointsCommand);
+			const payload:CommandPayload = new CommandPayload(['message', 1], [String, int]);
+			executeCommands(payload);
+			assertThat(reported, array(payload.values));
+		}
+
+		[Test]
+		public function payload_is_injected_into_hook():void
+		{
+			addMapping(NullCommand).addHooks(PayloadInjectionPointsHook);
+			const payload:CommandPayload = new CommandPayload(['message', 1], [String, int]);
+			executeCommands(payload);
+			assertThat(reported, array(payload.values));
+		}
+
+		[Test]
+		public function payload_is_injected_into_guard():void
+		{
+			addMapping(NullCommand).addGuards(PayloadInjectionPointsGuard);
+			const payload:CommandPayload = new CommandPayload(['message', 1], [String, int]);
+			executeCommands(payload);
 			assertThat(reported, array(payload.values));
 		}
 
 		[Test]
 		public function payload_is_passed_to_execute_method():void
 		{
-			addMapping(CommandWithMethodParameters);
-			const payload:CommandPayload = new CommandPayload(['message', 1],[String, int]);
+			addMapping(MethodParametersCommand);
+			const payload:CommandPayload = new CommandPayload(['message', 1], [String, int]);
 			executeCommands(payload);
 			assertThat(reported, array(payload.values));
 		}
@@ -196,10 +235,10 @@ package robotlegs.bender.extensions.commandCenter.impl
 		[Test]
 		public function payloadInjection_is_disabled():void
 		{
-			addMapping(CommandWithOptionalInjectionPoints)
-					.setPayloadInjectionEnabled(false);
+			addMapping(OptionalInjectionPointsCommand)
+				.setPayloadInjectionEnabled(false);
 
-			const payload:CommandPayload = new CommandPayload(['message', 1],[String, int]);
+			const payload:CommandPayload = new CommandPayload(['message', 1], [String, int]);
 			executeCommands(payload);
 			assertThat(reported, array(null, 0));
 		}
@@ -212,9 +251,9 @@ package robotlegs.bender.extensions.commandCenter.impl
 			injector.map(String).toValue('message');
 			subject.executeCommand(mapping);
 			assertThat(reported, array(hasProperties({
-				result:'message',
-				command: instanceOf(MessageReturningCommand),
-				mapping: mapping})))
+					result: 'message',
+					command: instanceOf(MessageReturningCommand),
+					mapping: mapping})))
 		}
 
 		/*============================================================================*/
@@ -224,7 +263,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 		private function addMapping(commandClass:Class = null):ICommandMapping
 		{
 
-			var mapping:ICommandMapping = new CommandMapping(commandClass || CommandA);
+			var mapping:ICommandMapping = new CommandMapping(commandClass || ClassReportingCallbackCommand);
 			mappings.push(mapping);
 			return mapping;
 		}
@@ -249,52 +288,12 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		private function resultReporter(result:*, command:Object, mapping:ICommandMapping):void
 		{
-			reported.push({result:result, command:command, mapping:mapping});
+			reported.push({result: result, command: command, mapping: mapping});
 		}
 	}
 }
 
-class CommandA
-{
-
-	/*============================================================================*/
-	/* Public Properties                                                          */
-	/*============================================================================*/
-
-	[Inject(name="reportingFunction")]
-	public var reportingFunc:Function;
-
-	/*============================================================================*/
-	/* Public Functions                                                           */
-	/*============================================================================*/
-
-	public function execute():void
-	{
-		reportingFunc && reportingFunc(CommandA);
-	}
-}
-
-class CommandB
-{
-
-	/*============================================================================*/
-	/* Public Properties                                                          */
-	/*============================================================================*/
-
-	[Inject(name="reportingFunction")]
-	public var reportingFunc:Function;
-
-	/*============================================================================*/
-	/* Public Functions                                                           */
-	/*============================================================================*/
-
-	public function execute():void
-	{
-		reportingFunc && reportingFunc(CommandB);
-	}
-}
-
-class CommandWithoutExecute
+class ExecutelessCommand
 {
 
 	/*============================================================================*/
@@ -311,11 +310,11 @@ class CommandWithoutExecute
 	[PostConstruct]
 	public function init():void
 	{
-		reportingFunc(CommandWithoutExecute);
+		reportingFunc(ExecutelessCommand);
 	}
 }
 
-class CommandWithReportMethodInsteadOfExecute
+class ReportMethodCommand
 {
 
 	/*============================================================================*/
@@ -331,11 +330,11 @@ class CommandWithReportMethodInsteadOfExecute
 
 	public function report():void
 	{
-		reportingFunc(CommandWithReportMethodInsteadOfExecute);
+		reportingFunc(ReportMethodCommand);
 	}
 }
 
-class CommandWithIncorrectExecute
+class IncorrectExecuteCommand
 {
 
 	/*============================================================================*/
@@ -345,7 +344,7 @@ class CommandWithIncorrectExecute
 	public var execute:String = 'execute';
 }
 
-class CommandWithPayloadInjectionPoints
+class PayloadInjectionPointsCommand
 {
 
 	/*============================================================================*/
@@ -372,7 +371,7 @@ class CommandWithPayloadInjectionPoints
 	}
 }
 
-class CommandWithMethodParameters
+class MethodParametersCommand
 {
 
 	/*============================================================================*/
@@ -393,7 +392,7 @@ class CommandWithMethodParameters
 	}
 }
 
-class CommandWithOptionalInjectionPoints
+class OptionalInjectionPointsCommand
 {
 
 	/*============================================================================*/
@@ -422,8 +421,17 @@ class CommandWithOptionalInjectionPoints
 
 class MessageReturningCommand
 {
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
 	[Inject]
 	public var message:String;
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
 
 	public function execute():String
 	{
@@ -431,54 +439,61 @@ class MessageReturningCommand
 	}
 }
 
-class GuardA
+class SelfReportingCallbackCommand
 {
 
 	/*============================================================================*/
 	/* Public Properties                                                          */
 	/*============================================================================*/
 
-	[Inject(name="reportingFunction")]
-	public var reportingFunc:Function;
+	[Inject(name="executeCallback")]
+	public var callback:Function;
 
 	/*============================================================================*/
 	/* Public Functions                                                           */
 	/*============================================================================*/
 
-	public function approve():Boolean
+	public function execute():void
 	{
-		reportingFunc && reportingFunc(GuardA);
-		return true
+		callback(this);
 	}
 }
 
-class GuardB
+class SelfReportingCallbackHook
 {
 
 	/*============================================================================*/
 	/* Public Properties                                                          */
 	/*============================================================================*/
 
-	[Inject(name="reportingFunction")]
-	public var reportingFunc:Function;
+	[Inject]
+	public var command:SelfReportingCallbackCommand;
+
+	[Inject(name="hookCallback")]
+	public var callback:Function;
 
 	/*============================================================================*/
 	/* Public Functions                                                           */
 	/*============================================================================*/
 
-	public function approve():Boolean
+	public function hook():void
 	{
-		reportingFunc && reportingFunc(GuardB);
-		return true
+		callback(this);
 	}
 }
 
-class HookA
+class PayloadInjectionPointsHook
 {
 
 	/*============================================================================*/
 	/* Public Properties                                                          */
 	/*============================================================================*/
+
+	[Inject]
+	public var message:String;
+
+	[Inject]
+	public var code:int;
 
 	[Inject(name="reportingFunction")]
 	public var reportingFunc:Function;
@@ -489,6 +504,35 @@ class HookA
 
 	public function hook():void
 	{
-		reportingFunc && reportingFunc(HookA);
+		reportingFunc(message);
+		reportingFunc(code);
+	}
+}
+
+class PayloadInjectionPointsGuard
+{
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
+	[Inject]
+	public var message:String;
+
+	[Inject]
+	public var code:int;
+
+	[Inject(name="reportingFunction")]
+	public var reportingFunc:Function;
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
+	public function approve():Boolean
+	{
+		reportingFunc(message);
+		reportingFunc(code);
+		return true;
 	}
 }

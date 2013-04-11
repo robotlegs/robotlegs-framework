@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.eventCommandMap.impl
@@ -16,15 +16,16 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.instanceOf;
 	import org.swiftsuspenders.Injector;
-
 	import robotlegs.bender.extensions.commandCenter.dsl.ICommandMapper;
 	import robotlegs.bender.extensions.commandCenter.dsl.ICommandUnmapper;
 	import robotlegs.bender.extensions.commandCenter.support.CallbackCommand;
 	import robotlegs.bender.extensions.commandCenter.support.CallbackCommand2;
+	import robotlegs.bender.extensions.commandCenter.support.ClassReportingCallbackCommand;
+	import robotlegs.bender.extensions.commandCenter.support.ClassReportingCallbackCommand2;
+	import robotlegs.bender.extensions.commandCenter.support.ClassReportingCallbackGuard;
+	import robotlegs.bender.extensions.commandCenter.support.ClassReportingCallbackGuard2;
+	import robotlegs.bender.extensions.commandCenter.support.ClassReportingCallbackHook;
 	import robotlegs.bender.extensions.commandCenter.support.NullCommand;
-	import robotlegs.bender.extensions.commandCenter.support.SelfReportingCallbackCommand;
-	import robotlegs.bender.extensions.commandCenter.support.SelfReportingCallbackCommand2;
-	import robotlegs.bender.extensions.commandCenter.support.SelfReportingCallbackHook;
 	import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
 	import robotlegs.bender.extensions.eventCommandMap.support.CascadingCommand;
 	import robotlegs.bender.extensions.eventCommandMap.support.EventInjectedCallbackCommand;
@@ -71,7 +72,6 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		/* Tests                                                                      */
 		/*============================================================================*/
 
-
 		[Test]
 		public function map_creates_mapper():void
 		{
@@ -107,15 +107,6 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		}
 
 		[Test]
-		public function command_without_execute_method_is_still_constructed():void
-		{
-			subject.map(SupportEvent.TYPE1)
-				.toCommand(CommandWithoutExecute).withExecuteMethod(null);
-			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
-			assertThat(reportedExecutions, array(CommandWithoutExecute));
-		}
-
-		[Test]
 		public function command_executes_successfully():void
 		{
 			assertThat(commandExecutionCount(1), equalTo(1));
@@ -146,6 +137,23 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			const event:SupportEvent = new SupportEvent(SupportEvent.TYPE1);
 			dispatcher.dispatchEvent(event);
 			assertThat(injectedEvent, equalTo(event));
+		}
+
+		[Test]
+		public function event_is_passed_to_execute_method():void
+		{
+			var actualEvent:Event;
+			var actualTypedEvent:SupportEvent;
+			injector.map(Function, 'executeCallback').toValue(function(event:Event, typedEvent:SupportEvent):void
+			{
+				actualEvent = event;
+				actualTypedEvent = typedEvent;
+			});
+			subject.map(SupportEvent.TYPE1, SupportEvent)
+				.toCommand(EventParametersCommand);
+			const event:SupportEvent = new SupportEvent(SupportEvent.TYPE1);
+			dispatcher.dispatchEvent(event);
+			assertThat([actualEvent, actualTypedEvent], array(event, event));
 		}
 
 		[Test]
@@ -260,40 +268,16 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		[Test]
 		public function commands_are_executed_in_order():void
 		{
-			var commands:Array = [];
-			injector.map(Function, 'executeCallback').toValue(function(command:Object):void
-			{
-				commands.push(command.toString());
-			});
-			subject.map(SupportEvent.TYPE1).toCommand(SelfReportingCallbackCommand);
-			subject.map(SupportEvent.TYPE1).toCommand(SelfReportingCallbackCommand2);
+			subject.map(SupportEvent.TYPE1).toCommand(ClassReportingCallbackCommand);
+			subject.map(SupportEvent.TYPE1).toCommand(ClassReportingCallbackCommand2);
 			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
-			assertThat(commands, array("[object SelfReportingCallbackCommand]", "[object SelfReportingCallbackCommand2]"));
+			assertThat(reportedExecutions, array(ClassReportingCallbackCommand, ClassReportingCallbackCommand2));
 		}
 
 		[Test]
 		public function hooks_are_called():void
 		{
-			assertThat(hookCallCount(SelfReportingCallbackHook, SelfReportingCallbackHook), equalTo(2));
-		}
-
-		[Test]
-		public function command_is_injected_into_hook():void
-		{
-			var executedCommand:SelfReportingCallbackCommand = null;
-			var injectedCommand:SelfReportingCallbackCommand = null;
-			injector.map(Function, 'executeCallback').toValue(function(command:SelfReportingCallbackCommand):void {
-				executedCommand = command;
-			});
-			injector.map(Function, 'hookCallback').toValue(function(hook:SelfReportingCallbackHook):void {
-				injectedCommand = hook.command;
-			});
-			subject
-				.map(SupportEvent.TYPE1)
-				.toCommand(SelfReportingCallbackCommand)
-				.withHooks(SelfReportingCallbackHook);
-			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
-			assertThat(injectedCommand, equalTo(executedCommand));
+			assertThat(hookCallCount(ClassReportingCallbackHook, ClassReportingCallbackHook), equalTo(2));
 		}
 
 		[Test]
@@ -357,20 +341,20 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		[Test]
 		public function execution_sequence_is_guard_command_guard_command_for_multiple_mappings_to_same_event():void
 		{
-			subject.map(SupportEvent.TYPE1).toCommand(CommandA).withGuards(GuardA);
-			subject.map(SupportEvent.TYPE1).toCommand(CommandB).withGuards(GuardB);
+			subject.map(SupportEvent.TYPE1).toCommand(ClassReportingCallbackCommand).withGuards(ClassReportingCallbackGuard);
+			subject.map(SupportEvent.TYPE1).toCommand(ClassReportingCallbackCommand2).withGuards(ClassReportingCallbackGuard2);
 			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
-			const expectedOrder:Array = [GuardA, CommandA, GuardB, CommandB];
+			const expectedOrder:Array = [ClassReportingCallbackGuard, ClassReportingCallbackCommand, ClassReportingCallbackGuard2, ClassReportingCallbackCommand2];
 			assertThat(reportedExecutions, array(expectedOrder));
 		}
 
 		[Test]
 		public function previously_constructed_command_does_not_slip_through_the_loop():void
 		{
-			subject.map(SupportEvent.TYPE1).toCommand(CommandA).withGuards(HappyGuard);
-			subject.map(SupportEvent.TYPE1).toCommand(CommandB).withGuards(GrumpyGuard);
+			subject.map(SupportEvent.TYPE1).toCommand(ClassReportingCallbackCommand).withGuards(HappyGuard);
+			subject.map(SupportEvent.TYPE1).toCommand(ClassReportingCallbackCommand2).withGuards(GrumpyGuard);
 			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
-			const expectedOrder:Array = [CommandA];
+			const expectedOrder:Array = [ClassReportingCallbackCommand];
 			assertThat(reportedExecutions, array(expectedOrder));
 		}
 
@@ -401,14 +385,12 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		private function hookCallCount(... hooks):uint
 		{
 			var hookCallCount:uint = 0;
-			injector.map(Function, 'executeCallback').toValue(function(command:SelfReportingCallbackCommand):void {
-			});
-			injector.map(Function, 'hookCallback').toValue(function(hook:SelfReportingCallbackHook):void {
+			injector.map(Function, 'reportingFunction').toValue(function(hookClas:Class):void {
 				hookCallCount++;
 			});
 			subject
 				.map(SupportEvent.TYPE1)
-				.toCommand(SelfReportingCallbackCommand)
+				.toCommand(NullCommand)
 				.withHooks(hooks);
 			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
 			return hookCallCount;
@@ -437,6 +419,9 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 }
 
 import flash.events.Event;
+import robotlegs.bender.extensions.commandCenter.support.ClassReportingCallbackHook;
+import robotlegs.bender.extensions.commandCenter.support.NullCommand;
+import robotlegs.bender.extensions.eventCommandMap.api.IEventCommandMap;
 import robotlegs.bender.extensions.eventCommandMap.support.SupportEvent;
 
 class SupportEventTriggeredSelfReportingCallbackCommand
@@ -465,126 +450,22 @@ class SupportEventTriggeredSelfReportingCallbackCommand
 	}
 }
 
-class GuardA
+class EventParametersCommand
 {
 
 	/*============================================================================*/
 	/* Public Properties                                                          */
 	/*============================================================================*/
 
-	[Inject(name="reportingFunction")]
-	public var reportingFunc:Function;
+	[Inject(name="executeCallback")]
+	public var callback:Function;
 
 	/*============================================================================*/
 	/* Public Functions                                                           */
 	/*============================================================================*/
 
-	public function approve():Boolean
+	public function execute(event:Event, typedEvent:SupportEvent):void
 	{
-		reportingFunc && reportingFunc(GuardA);
-		return true;
-	}
-}
-
-class GuardB
-{
-
-	/*============================================================================*/
-	/* Public Properties                                                          */
-	/*============================================================================*/
-
-	[Inject(name="reportingFunction")]
-	public var reportingFunc:Function;
-
-	/*============================================================================*/
-	/* Public Functions                                                           */
-	/*============================================================================*/
-
-	public function approve():Boolean
-	{
-		reportingFunc && reportingFunc(GuardB);
-		return true;
-	}
-}
-
-class GuardC
-{
-
-	/*============================================================================*/
-	/* Public Properties                                                          */
-	/*============================================================================*/
-
-	[Inject(name="reportingFunction")]
-	public var reportingFunc:Function;
-
-	/*============================================================================*/
-	/* Public Functions                                                           */
-	/*============================================================================*/
-
-	public function approve():Boolean
-	{
-		reportingFunc && reportingFunc(GuardC);
-		return true;
-	}
-}
-
-class CommandA
-{
-
-	/*============================================================================*/
-	/* Public Properties                                                          */
-	/*============================================================================*/
-
-	[Inject(name="reportingFunction")]
-	public var reportingFunc:Function;
-
-	/*============================================================================*/
-	/* Public Functions                                                           */
-	/*============================================================================*/
-
-	public function execute():void
-	{
-		reportingFunc && reportingFunc(CommandA);
-	}
-}
-
-class CommandB
-{
-
-	/*============================================================================*/
-	/* Public Properties                                                          */
-	/*============================================================================*/
-
-	[Inject(name="reportingFunction")]
-	public var reportingFunc:Function;
-
-	/*============================================================================*/
-	/* Public Functions                                                           */
-	/*============================================================================*/
-
-	public function execute():void
-	{
-		reportingFunc && reportingFunc(CommandB);
-	}
-}
-
-class CommandWithoutExecute
-{
-
-	/*============================================================================*/
-	/* Public Properties                                                          */
-	/*============================================================================*/
-
-	[Inject(name="reportingFunction")]
-	public var reportingFunc:Function;
-
-	/*============================================================================*/
-	/* Public Functions                                                           */
-	/*============================================================================*/
-
-	[PostConstruct]
-	public function init():void
-	{
-		reportingFunc(CommandWithoutExecute);
+		callback(event, typedEvent);
 	}
 }

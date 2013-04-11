@@ -10,7 +10,6 @@ package robotlegs.bender.extensions.directCommandMap.impl
 	import mockolate.capture;
 	import mockolate.ingredients.Capture;
 	import mockolate.mock;
-	import mockolate.received;
 	import mockolate.runner.MockolateRule;
 	import mockolate.stub;
 	import org.hamcrest.assertThat;
@@ -24,13 +23,10 @@ package robotlegs.bender.extensions.directCommandMap.impl
 	import robotlegs.bender.extensions.commandCenter.api.ICommandExecutor;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMappingList;
-	import robotlegs.bender.extensions.commandCenter.dsl.ICommandConfigurator;
-	import robotlegs.bender.extensions.commandCenter.impl.CommandPayload;
+	import robotlegs.bender.extensions.commandCenter.support.ClassReportingCallbackHook;
 	import robotlegs.bender.extensions.commandCenter.support.NullCommand;
 	import robotlegs.bender.extensions.commandCenter.support.NullCommand2;
-	import robotlegs.bender.extensions.commandCenter.support.SelfReportingCallbackHook;
 	import robotlegs.bender.extensions.directCommandMap.dsl.IDirectCommandConfigurator;
-	import robotlegs.bender.extensions.directCommandMap.dsl.IDirectCommandMapper;
 	import robotlegs.bender.framework.impl.guardSupport.GrumpyGuard;
 	import robotlegs.bender.framework.impl.guardSupport.HappyGuard;
 
@@ -114,7 +110,7 @@ package robotlegs.bender.extensions.directCommandMap.impl
 		[Test]
 		public function withHooks_sets_hooks_of_mapping():void
 		{
-			var expected:Array = [SelfReportingCallbackHook, SelfReportingCallbackHook];
+			var expected:Array = [ClassReportingCallbackHook, ClassReportingCallbackHook];
 
 			createMapper(NullCommand).withHooks.apply(null, expected);
 
