@@ -76,7 +76,6 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		public function removeMapping(mapping:ICommandMapping):void
 		{
-			_sorted = false;
 			if (_mappingsByCommand[mapping.commandClass])
 			{
 				deleteMapping(mapping);
@@ -92,13 +91,16 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		public function removeAllMappings():void
 		{
-			const list:Vector.<ICommandMapping> = getList();
-			var length:int = list.length;
-			while (length--)
+			if (_mappings.length > 0)
 			{
-				deleteMapping(list[length]);
+				const list:Vector.<ICommandMapping> = _mappings.concat();
+				var length:int = list.length;
+				while (length--)
+				{
+					deleteMapping(list[length]);
+				}
+				_trigger.deactivate();
 			}
-			_trigger.deactivate();
 		}
 
 		/*============================================================================*/
@@ -133,13 +135,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 		{
 			if (_compareFunction != null)
 			{
-				const mappings:Array = [];
-				var length:uint = _mappings.length;
-				for (var i:uint = 0; i < length; i++)
-				{
-					mappings[i] = _mappings[i];
-				}
-				_mappings = Vector.<ICommandMapping>(mappings.sort(_compareFunction));
+				_mappings = _mappings.sort(_compareFunction);
 			}
 			_sorted = true;
 		}

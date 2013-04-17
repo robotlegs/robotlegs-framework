@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -10,10 +10,12 @@ package robotlegs.bender.extensions.commandCenter.impl
 	import mockolate.mock;
 	import mockolate.runner.MockolateRule;
 	import org.hamcrest.assertThat;
+	import org.hamcrest.collection.array;
 	import org.hamcrest.core.not;
 	import org.hamcrest.object.equalTo;
+	import org.hamcrest.object.isFalse;
+	import org.hamcrest.object.isTrue;
 	import org.hamcrest.object.notNullValue;
-	import org.hamcrest.object.nullValue;
 	import org.hamcrest.text.containsString;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandTrigger;
@@ -119,6 +121,13 @@ package robotlegs.bender.extensions.commandCenter.impl
 		}
 
 		[Test]
+		public function trigger_is_not_deactivated_when_list_is_already_empty():void
+		{
+			mock(trigger).method("deactivate").never();
+			subject.removeAllMappings();
+		}
+
+		[Test]
 		public function trigger_is_not_deactivated_when_second_last_mapping_is_removed():void
 		{
 			mock(trigger).method("deactivate").never();
@@ -186,8 +195,113 @@ package robotlegs.bender.extensions.commandCenter.impl
 		public function getList_returns_similar_list():void
 		{
 			subject.addMapping(mapping1);
-			assertThat(subject.getList()[0], equalTo(subject.getList()[0]));
+			subject.addMapping(mapping2);
+			subject.addMapping(mapping3);
+			const list1:Array = mappingsToArray(subject.getList());
+			const list2:Array = mappingsToArray(subject.getList());
+			assertThat(list1, array(list2));
 		}
 
+		[Test]
+		public function sortFunction_is_used():void
+		{
+			subject.withSortFunction(function(a:PriorityMapping, b:PriorityMapping):int {
+				if (a.priority == b.priority)
+					return 0;
+				return a.priority > b.priority ? 1 : -1;
+			});
+			const mapping1:PriorityMapping = new PriorityMapping(NullCommand, 1);
+			const mapping2:PriorityMapping = new PriorityMapping(NullCommand2, 2);
+			const mapping3:PriorityMapping = new PriorityMapping(NullCommand3, 3);
+			subject.addMapping(mapping3);
+			subject.addMapping(mapping1);
+			subject.addMapping(mapping2);
+			assertThat(mappingsToArray(subject.getList()), array(mapping1, mapping2, mapping3));
+		}
+
+		[Test]
+		public function sortFunction_is_called_after_mappings_are_added():void
+		{
+			var called:Boolean = false;
+			subject.withSortFunction(function(a:PriorityMapping, b:PriorityMapping):int {
+				called = true;
+				return 0;
+			});
+			addPriorityMappings();
+			subject.getList();
+			assertThat(called, isTrue());
+		}
+
+		[Test]
+		public function sortFunction_is_only_called_once_after_mappings_are_added():void
+		{
+			var called:Boolean = false;
+			subject.withSortFunction(function(a:PriorityMapping, b:PriorityMapping):int {
+				called = true;
+				return 0;
+			});
+			addPriorityMappings();
+			subject.getList();
+			called = false;
+			subject.getList();
+			assertThat(called, isFalse());
+		}
+
+		[Test]
+		public function sortFunction_is_not_called_after_a_mapping_is_removed():void
+		{
+			var called:Boolean = false;
+			subject.withSortFunction(function(a:PriorityMapping, b:PriorityMapping):int {
+				called = true;
+				return 0;
+			});
+			addPriorityMappings();
+			subject.getList();
+			called = false;
+			subject.removeMappingFor(NullCommand);
+			subject.getList();
+			assertThat(called, isFalse());
+		}
+
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
+
+		private function mappingsToArray(mappings:Vector.<ICommandMapping>):Array
+		{
+			const a:Array = [];
+			for each (var mapping:ICommandMapping in mappings)
+				a.push(mapping);
+			return a;
+		}
+
+		private function addPriorityMappings():void
+		{
+			subject.addMapping(new PriorityMapping(NullCommand, 1));
+			subject.addMapping(new PriorityMapping(NullCommand2, 2));
+			subject.addMapping(new PriorityMapping(NullCommand3, 3));
+		}
+	}
+}
+
+import robotlegs.bender.extensions.commandCenter.impl.CommandMapping;
+
+class PriorityMapping extends CommandMapping
+{
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
+	public var priority:int;
+
+	/*============================================================================*/
+	/* Constructor                                                                */
+	/*============================================================================*/
+
+	function PriorityMapping(command:Class, priority:int)
+	{
+		super(command);
+		this.priority = priority;
 	}
 }
