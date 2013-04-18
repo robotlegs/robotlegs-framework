@@ -9,9 +9,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 {
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
-
 	import org.swiftsuspenders.Injector;
-
 	import robotlegs.bender.extensions.commandCenter.api.ICommandExecutor;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMappingList;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandTrigger;
@@ -41,7 +39,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 
 		private var _mappings:ICommandMappingList;
 
-		private var _executor: ICommandExecutor;
+		private var _executor:ICommandExecutor;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -96,15 +94,21 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		private function eventHandler(event:Event):void
 		{
 			const eventConstructor:Class = event["constructor"] as Class;
-			if (_eventClass && eventConstructor != _eventClass)
+			var payloadEventClass:Class;
+			//not pretty, but optimized to avoid duplicate checks and shortest paths
+			if (eventConstructor == _eventClass || (!_eventClass))
+			{
+				payloadEventClass = eventConstructor;
+			}
+			else if (_eventClass == Event)
+			{
+				payloadEventClass = _eventClass;
+			}
+			else
 			{
 				return;
 			}
-			const payload : CommandPayload = new CommandPayload([event], [Event]);
-			if (eventConstructor != Event)
-				payload.addPayload(event, _eventClass || eventConstructor);
-
-			_executor.executeCommands(_mappings.getList(), payload);
+			_executor.executeCommands(_mappings.getList(), new CommandPayload([event], [payloadEventClass]));
 		}
 	}
 }

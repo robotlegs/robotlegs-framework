@@ -10,12 +10,14 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
+
 	import org.hamcrest.assertThat;
 	import org.hamcrest.collection.array;
 	import org.hamcrest.core.not;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.instanceOf;
 	import org.swiftsuspenders.Injector;
+
 	import robotlegs.bender.extensions.commandCenter.dsl.ICommandMapper;
 	import robotlegs.bender.extensions.commandCenter.dsl.ICommandUnmapper;
 	import robotlegs.bender.extensions.commandCenter.support.CallbackCommand;
@@ -132,7 +134,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			{
 				injectedEvent = command.event;
 			});
-			subject.map(SupportEvent.TYPE1)
+			subject.map(SupportEvent.TYPE1, Event)
 				.toCommand(EventInjectedCallbackCommand);
 			const event:SupportEvent = new SupportEvent(SupportEvent.TYPE1);
 			dispatcher.dispatchEvent(event);
@@ -142,22 +144,20 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		[Test]
 		public function event_is_passed_to_execute_method():void
 		{
-			var actualEvent:Event;
-			var actualTypedEvent:SupportEvent;
-			injector.map(Function, 'executeCallback').toValue(function(event:Event, typedEvent:SupportEvent):void
+			var actualEvent:SupportEvent;
+			injector.map(Function, 'executeCallback').toValue(function(event:SupportEvent):void
 			{
 				actualEvent = event;
-				actualTypedEvent = typedEvent;
 			});
 			subject.map(SupportEvent.TYPE1, SupportEvent)
 				.toCommand(EventParametersCommand);
 			const event:SupportEvent = new SupportEvent(SupportEvent.TYPE1);
 			dispatcher.dispatchEvent(event);
-			assertThat([actualEvent, actualTypedEvent], array(event, event));
+			assertThat(actualEvent, equalTo(event));
 		}
 
 		[Test]
-		public function specified_typed_event_is_injected_into_command():void
+		public function concretely_specified_typed_event_is_injected_into_command_as_typed_event():void
 		{
 			var injectedEvent:SupportEvent = null;
 			injector.map(Function, 'executeCallback').toValue(function(command:SupportEventTriggeredSelfReportingCallbackCommand):void
@@ -172,7 +172,22 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		}
 
 		[Test]
-		public function unspecified_typed_event_is_injected_into_command():void
+		public function abstractly_specified_typed_event_is_injected_into_command_as_untyped_event():void
+		{
+			var injectedEvent:Event = null;
+			injector.map(Function, 'executeCallback').toValue(function(command:SupportEventTriggeredSelfReportingCallbackCommand):void
+			{
+				injectedEvent = command.untypedEvent;
+			});
+			subject.map(SupportEvent.TYPE1, Event)
+				.toCommand(SupportEventTriggeredSelfReportingCallbackCommand);
+			const event:SupportEvent = new SupportEvent(SupportEvent.TYPE1);
+			dispatcher.dispatchEvent(event);
+			assertThat(injectedEvent, equalTo(event));
+		}
+
+		[Test]
+		public function unspecified_typed_event_is_injected_into_command_as_typed_event():void
 		{
 			var injectedEvent:SupportEvent = null;
 			injector.map(Function, 'executeCallback').toValue(function(command:SupportEventTriggeredSelfReportingCallbackCommand):void
@@ -182,6 +197,38 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			subject.map(SupportEvent.TYPE1)
 				.toCommand(SupportEventTriggeredSelfReportingCallbackCommand);
 			const event:SupportEvent = new SupportEvent(SupportEvent.TYPE1);
+			dispatcher.dispatchEvent(event);
+			assertThat(injectedEvent, equalTo(event));
+		}
+
+		[Test]
+		public function unspecified_untyped_event_is_injected_into_command_as_untyped_event():void
+		{
+			const eventType : String = 'eventType';
+			var injectedEvent:Event = null;
+			injector.map(Function, 'executeCallback').toValue(function(command:SupportEventTriggeredSelfReportingCallbackCommand):void
+			{
+				injectedEvent = command.untypedEvent;
+			});
+			subject.map(eventType)
+				.toCommand(SupportEventTriggeredSelfReportingCallbackCommand);
+			const event:Event = new Event(eventType);
+			dispatcher.dispatchEvent(event);
+			assertThat(injectedEvent, equalTo(event));
+		}
+
+		[Test]
+		public function specified_untyped_event_is_injected_into_command_as_untyped_event():void
+		{
+			const eventType : String = 'eventType';
+			var injectedEvent:Event = null;
+			injector.map(Function, 'executeCallback').toValue(function(command:SupportEventTriggeredSelfReportingCallbackCommand):void
+			{
+				injectedEvent = command.untypedEvent;
+			});
+			subject.map(eventType, Event)
+				.toCommand(SupportEventTriggeredSelfReportingCallbackCommand);
+			const event:Event = new Event(eventType);
 			dispatcher.dispatchEvent(event);
 			assertThat(injectedEvent, equalTo(event));
 		}
@@ -319,7 +366,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 				injectedEvent = guard.event;
 			});
 			subject
-				.map(SupportEvent.TYPE1)
+				.map(SupportEvent.TYPE1, Event)
 				.toCommand(NullCommand)
 				.withGuards(EventInjectedCallbackGuard);
 			const event:SupportEvent = new SupportEvent(SupportEvent.TYPE1);
@@ -431,10 +478,10 @@ class SupportEventTriggeredSelfReportingCallbackCommand
 	/* Public Properties                                                          */
 	/*============================================================================*/
 
-	[Inject]
-	public var event:Event;
+	[Inject(optional=true)]
+	public var untypedEvent:Event;
 
-	[Inject]
+	[Inject(optional=true)]
 	public var typedEvent:SupportEvent;
 
 	[Inject(name="executeCallback")]
@@ -464,8 +511,8 @@ class EventParametersCommand
 	/* Public Functions                                                           */
 	/*============================================================================*/
 
-	public function execute(event:Event, typedEvent:SupportEvent):void
+	public function execute(event:SupportEvent):void
 	{
-		callback(event, typedEvent);
+		callback(event);
 	}
 }
