@@ -35,8 +35,6 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 
 		private var _eventClass:Class;
 
-		private var _injector:Injector;
-
 		private var _mappings:ICommandMappingList;
 
 		private var _executor:ICommandExecutor;
@@ -55,12 +53,11 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			eventClass:Class = null,
 			logger:ILogger = null)
 		{
-			_injector = injector.createChildInjector();
 			_dispatcher = dispatcher;
 			_type = type;
 			_eventClass = eventClass;
 			_mappings = new CommandMappingList(this, logger);
-			_executor = new CommandExecutor(_injector, _mappings.removeMapping);
+			_executor = new CommandExecutor(injector, _mappings.removeMapping);
 		}
 
 		/*============================================================================*/

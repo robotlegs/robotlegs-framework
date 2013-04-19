@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.commandCenter.impl
@@ -35,7 +35,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 			removeMapping:Function = null,
 			handleResult:Function = null)
 		{
-			_injector = injector;
+			_injector = injector.createChildInjector();
 			_removeMapping = removeMapping;
 			_handleResult = handleResult;
 		}
@@ -71,7 +71,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 			{
 				const commandClass:Class = mapping.commandClass;
 				mapping.fireOnce && _removeMapping && _removeMapping(mapping);
-				command = _injector.instantiateUnmapped(commandClass);
+				command = _injector.getOrCreateNewInstance(commandClass);
 				if (mapping.hooks.length > 0)
 				{
 					_injector.map(commandClass).toValue(command);

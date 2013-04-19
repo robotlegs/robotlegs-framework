@@ -8,15 +8,14 @@
 package robotlegs.bender.extensions.directCommandMap.impl
 {
 	import org.swiftsuspenders.Injector;
-
 	import robotlegs.bender.extensions.commandCenter.api.ICommandExecutor;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandExecutor;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandMappingList;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandPayload;
+	import robotlegs.bender.extensions.commandCenter.impl.NullCommandTrigger;
 	import robotlegs.bender.extensions.directCommandMap.api.IDirectCommandMap;
 	import robotlegs.bender.extensions.directCommandMap.dsl.IDirectCommandConfigurator;
 	import robotlegs.bender.framework.api.IContext;
-	import robotlegs.bender.extensions.commandCenter.impl.NullCommandTrigger;
 
 	public class DirectCommandMap implements IDirectCommandMap
 	{
@@ -42,9 +41,10 @@ package robotlegs.bender.extensions.directCommandMap.impl
 		{
 			_context = context;
 			var sandboxedInjector:Injector = context.injector.createChildInjector();
+			//allow access to this specific instance in the commands
 			sandboxedInjector.map(IDirectCommandMap).toValue(this);
 			_mappings = new CommandMappingList(new NullCommandTrigger(), context.getLogger(this));
-			_executor = new CommandExecutor(sandboxedInjector.createChildInjector(), _mappings.removeMapping);
+			_executor = new CommandExecutor(sandboxedInjector, _mappings.removeMapping);
 		}
 
 		/*============================================================================*/
@@ -78,10 +78,9 @@ package robotlegs.bender.extensions.directCommandMap.impl
 		/**
 		 * @inheritDoc
 		 */
-		public function execute(payload:CommandPayload=null):void
+		public function execute(payload:CommandPayload = null):void
 		{
-			_executor.executeCommands(_mappings.getList(),payload);
+			_executor.executeCommands(_mappings.getList(), payload);
 		}
-
 	}
 }

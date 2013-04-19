@@ -15,6 +15,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 	import org.hamcrest.object.hasProperties;
 	import org.hamcrest.object.instanceOf;
 	import org.swiftsuspenders.Injector;
+	import robotlegs.bender.extensions.commandCenter.api.ICommand;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 	import robotlegs.bender.extensions.commandCenter.support.ClassReportingCallbackCommand;
 	import robotlegs.bender.extensions.commandCenter.support.ClassReportingCallbackCommand2;
@@ -267,6 +268,25 @@ package robotlegs.bender.extensions.commandCenter.impl
 					mapping: mapping})))
 		}
 
+		[Test]
+		public function uses_injector_mapped_command_instance():void
+		{
+			injector.map(Function, 'executeCallback').toValue(reportingFunction);
+			injector.map(SelfReportingCallbackCommand).asSingleton();
+			var expected:Object = injector.getInstance(SelfReportingCallbackCommand);
+			var mapping:ICommandMapping = addMapping(SelfReportingCallbackCommand)
+			subject.executeCommand(mapping);
+			assertThat(reported, array(expected));
+		}
+
+		[Test]
+		public function command_mapped_to_interface_is_executed():void
+		{
+			injector.map(ICommand).toType(AbstractInterfaceImplementingCommand);
+			subject.executeCommand(addMapping(ICommand));
+			assertThat(reported, array(AbstractInterfaceImplementingCommand));
+		}
+
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
@@ -305,6 +325,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 }
 
 import org.swiftsuspenders.Injector;
+import robotlegs.bender.extensions.commandCenter.api.ICommand;
 
 class ExecutelessCommand
 {
@@ -568,5 +589,25 @@ class OptionalInjectionPointsCommandInstantiatingCommand
 	{
 		var command:OptionalInjectionPointsCommand = injector.instantiateUnmapped(OptionalInjectionPointsCommand);
 		command.execute();
+	}
+}
+
+class AbstractInterfaceImplementingCommand implements ICommand
+{
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
+	[Inject(name="reportingFunction")]
+	public var reportingFunc:Function;
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
+	public function execute():void
+	{
+		reportingFunc(AbstractInterfaceImplementingCommand);
 	}
 }
