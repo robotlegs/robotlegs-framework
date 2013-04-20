@@ -10,14 +10,12 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
-
 	import org.hamcrest.assertThat;
 	import org.hamcrest.collection.array;
 	import org.hamcrest.core.not;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.instanceOf;
 	import org.swiftsuspenders.Injector;
-
 	import robotlegs.bender.extensions.commandCenter.dsl.ICommandMapper;
 	import robotlegs.bender.extensions.commandCenter.dsl.ICommandUnmapper;
 	import robotlegs.bender.extensions.commandCenter.support.CallbackCommand;
@@ -204,7 +202,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		[Test]
 		public function unspecified_untyped_event_is_injected_into_command_as_untyped_event():void
 		{
-			const eventType : String = 'eventType';
+			const eventType:String = 'eventType';
 			var injectedEvent:Event = null;
 			injector.map(Function, 'executeCallback').toValue(function(command:SupportEventTriggeredSelfReportingCallbackCommand):void
 			{
@@ -220,7 +218,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		[Test]
 		public function specified_untyped_event_is_injected_into_command_as_untyped_event():void
 		{
-			const eventType : String = 'eventType';
+			const eventType:String = 'eventType';
 			var injectedEvent:Event = null;
 			injector.map(Function, 'executeCallback').toValue(function(command:SupportEventTriggeredSelfReportingCallbackCommand):void
 			{
@@ -405,6 +403,30 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			assertThat(reportedExecutions, array(expectedOrder));
 		}
 
+		[Test]
+		public function commands_mapped_during_execution_are_not_executed():void
+		{
+			injector.map(IEventCommandMap).toValue(subject);
+			injector.map(Class, 'nestedCommand').toValue(ClassReportingCallbackCommand);
+			subject.map(SupportEvent.TYPE1, Event)
+				.toCommand(CommandMappingCommand).once();
+			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
+			assertThat(reportedExecutions, array());
+		}
+
+		[Test]
+		public function commands_unmapped_during_execution_are_still_executed():void
+		{
+			injector.map(IEventCommandMap).toValue(subject);
+			injector.map(Class, 'nestedCommand').toValue(ClassReportingCallbackCommand);
+			subject.map(SupportEvent.TYPE1, Event)
+				.toCommand(CommandUnmappingCommand).once();
+			subject.map(SupportEvent.TYPE1, Event)
+				.toCommand(ClassReportingCallbackCommand).once();
+			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
+			assertThat(reportedExecutions, array(ClassReportingCallbackCommand));
+		}
+
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
@@ -514,5 +536,57 @@ class EventParametersCommand
 	public function execute(event:SupportEvent):void
 	{
 		callback(event);
+	}
+}
+
+class CommandMappingCommand
+{
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
+	[Inject]
+	public var event:Event;
+
+	[Inject(name="nestedCommand")]
+	public var commandClass:Class;
+
+	[Inject]
+	public var eventCommandMap:IEventCommandMap;
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
+	public function execute():void
+	{
+		eventCommandMap.map(event.type, Event).toCommand(commandClass);
+	}
+}
+
+class CommandUnmappingCommand
+{
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
+	[Inject]
+	public var event:Event;
+
+	[Inject(name="nestedCommand")]
+	public var commandClass:Class;
+
+	[Inject]
+	public var eventCommandMap:IEventCommandMap;
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
+
+	public function execute():void
+	{
+		eventCommandMap.unmap(event.type, Event).fromCommand(commandClass);
 	}
 }
