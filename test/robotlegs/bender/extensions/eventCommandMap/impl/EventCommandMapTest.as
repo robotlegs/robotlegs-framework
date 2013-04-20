@@ -454,6 +454,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		private function hookCallCount(... hooks):uint
 		{
 			var hookCallCount:uint = 0;
+			injector.unmap(Function, 'reportingFunction');
 			injector.map(Function, 'reportingFunction').toValue(function(hookClas:Class):void {
 				hookCallCount++;
 			});
