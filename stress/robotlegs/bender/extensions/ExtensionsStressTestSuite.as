@@ -5,22 +5,20 @@
 //  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
-package suites
+package robotlegs.bender.extensions
 {
-	import robotlegs.bender.extensions.ExtensionsStressTestSuite;
-	import robotlegs.bender.framework.FrameworkStressTestSuite;
+	import robotlegs.bender.extensions.commandCenter.impl.CommandExecutorStressTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
-	public class EntireStressTestSuite
+	public class ExtensionsStressTestSuite
 	{
 
 		/*============================================================================*/
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		public var extensions:ExtensionsStressTestSuite;
+		public var commandExecutor:CommandExecutorStressTest;
 
-		public var framework:FrameworkStressTestSuite;
 	}
 }
