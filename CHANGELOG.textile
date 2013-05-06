@@ -1,5 +1,12 @@
 h2. Robotlegs Framework Changelog:
 
+h3. v2.0.0b6
+
+Ensures that certain extensions can only be installed before context initialization.
+Removes Hamcrest dependency from framework. Replaced with custom IMatcher.
+Complete Command Center revamp.
+Introduces DirectCommandMap (experimental).
+
 h3. v2.0.0b5
 
 Fixes #109 (mediator autoRemove)
