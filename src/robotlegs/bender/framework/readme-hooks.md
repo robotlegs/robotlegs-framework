@@ -1,6 +1,6 @@
 # Hooks
 
-Hooks run before or after certain extension actions.
+Hooks run before or after certain extension actions. They are typically used by extensions to run custom actions based on environmental conditions.
 
 ## Hook Forms
 
@@ -20,7 +20,7 @@ A function hook is simply invoked when the time is right:
 
 ### Object Hooks
 
-An object hook is expected to expose a "hook" method:
+An object hook must expose a "hook" method:
 
 	public class SomeHook
 	{
@@ -30,9 +30,11 @@ An object hook is expected to expose a "hook" method:
 		}
 	}
 
+The "hook" method will be called each time the hook runs. The object will not be injected into.
+
 ### Class Hooks
 
-Instantiating a Class hook should result in an object that exposes a "hook" method:
+A class reference can be used as a hook:
 
 	public class SomeOtherHook
 	{
@@ -44,3 +46,4 @@ Instantiating a Class hook should result in an object that exposes a "hook" meth
 		}
 	}
 
+A new object will be constructed each time the hook is run. The object will be injected into.
