@@ -46,6 +46,19 @@ Flex:
 
 Note: In Flex we don't need to manually provide a "contextView" as the builder can determine this automatically.
 
+## Context Initialization
+
+When a ContextView is provided the Context is automatically initialized when the provided view lands on stage. Be sure to install the ContextView last, as it may trigger initialization.
+
+If a ContextView is not supplied then the Context must be manually initialized.
+
+    _context = new Context()
+        .install(MyCompanyBundle)
+        .configure(MyAppConfig, SomeOtherConfig)
+        .initialize();
+
+Note: This does not apply to Flex MXML configuration as the ContextView is automatically determined and initialization will be automatic.
+
 ## Application & Module Configuration
 
 A simple application configuration file might look something like this:
