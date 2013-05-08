@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.framework
@@ -11,6 +11,7 @@ package robotlegs.bender.framework
 	import robotlegs.bender.framework.impl.ConfigManagerTest;
 	import robotlegs.bender.framework.impl.ContextTest;
 	import robotlegs.bender.framework.impl.ExtensionInstallerTest;
+	import robotlegs.bender.framework.impl.GetRootInjectorTest;
 	import robotlegs.bender.framework.impl.GuardsApproveTest;
 	import robotlegs.bender.framework.impl.LifecycleTest;
 	import robotlegs.bender.framework.impl.LifecycleTransitionTest;
@@ -55,5 +56,7 @@ package robotlegs.bender.framework
 		public var safelyCallBack:SafelyCallBackTest;
 
 		public var pin:PinTest;
+
+		public var getRootInjector:GetRootInjectorTest;
 	}
 }

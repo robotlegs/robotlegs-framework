@@ -9,10 +9,14 @@ package robotlegs.bender.extensions.modularity
 {
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
+
 	import org.swiftsuspenders.Injector;
+
 	import robotlegs.bender.extensions.contextView.ContextView;
+	import robotlegs.bender.extensions.modularity.api.IModuleConnector;
 	import robotlegs.bender.extensions.modularity.impl.ContextViewBasedExistenceWatcher;
 	import robotlegs.bender.extensions.modularity.impl.ModularContextEvent;
+	import robotlegs.bender.extensions.modularity.impl.ModuleConnector;
 	import robotlegs.bender.extensions.modularity.impl.ViewManagerBasedExistenceWatcher;
 	import robotlegs.bender.extensions.utils.ensureContextUninitialized;
 	import robotlegs.bender.extensions.matching.instanceOfType;
@@ -77,6 +81,7 @@ package robotlegs.bender.extensions.modularity
 			_logger = context.getLogger(this);
 			_context.addConfigHandler(instanceOfType(ContextView), handleContextView);
 			_context.beforeInitializing(beforeInitializing);
+			_injector.map(IModuleConnector).toSingleton(ModuleConnector);
 		}
 
 		/*============================================================================*/

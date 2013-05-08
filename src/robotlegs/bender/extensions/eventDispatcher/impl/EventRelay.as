@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.eventDispatcher.impl
@@ -73,15 +73,44 @@ package robotlegs.bender.extensions.eventDispatcher.impl
 			return this;
 		}
 
+		public function addType(eventType:String):void
+		{
+			_types.push(eventType);
+			if (_active)
+			{
+				addListener(eventType);
+			}
+		}
+
+		public function removeType(eventType:String):void
+		{
+			const index:int = _types.indexOf(eventType);
+			if (index > -1)
+			{
+				_types.splice(index, 1);
+				removeListener(eventType);
+			}
+		}
+
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
+
+		private function removeListener(type:String):void
+		{
+			_source.removeEventListener(type, _destination.dispatchEvent);
+		}
+
+		private function addListener(type:String):void
+		{
+			_source.addEventListener(type, _destination.dispatchEvent);
+		}
 
 		private function addListeners():void
 		{
 			for each (var type:String in _types)
 			{
-				_source.addEventListener(type, _destination.dispatchEvent);
+				addListener(type);
 			}
 		}
 
@@ -89,7 +118,7 @@ package robotlegs.bender.extensions.eventDispatcher.impl
 		{
 			for each (var type:String in _types)
 			{
-				_source.removeEventListener(type, _destination.dispatchEvent);
+				removeListener(type);
 			}
 		}
 	}

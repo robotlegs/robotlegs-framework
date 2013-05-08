@@ -1,21 +1,25 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.modularity
 {
 	import mx.core.UIComponent;
+
 	import org.flexunit.assertThat;
 	import org.fluint.uiImpersonation.UIImpersonator;
 	import org.hamcrest.core.not;
 	import org.hamcrest.object.equalTo;
+	import org.hamcrest.object.instanceOf;
 	import org.hamcrest.object.isTrue;
 
 	import robotlegs.bender.extensions.contextView.ContextView;
 	import robotlegs.bender.extensions.contextView.ContextViewExtension;
+	import robotlegs.bender.extensions.eventDispatcher.EventDispatcherExtension;
+	import robotlegs.bender.extensions.modularity.api.IModuleConnector;
 	import robotlegs.bender.extensions.contextView.StageSyncExtension;
 	import robotlegs.bender.extensions.viewManager.ViewManagerExtension;
 	import robotlegs.bender.extensions.viewManager.api.IViewManager;
@@ -146,6 +150,21 @@ package robotlegs.bender.extensions.modularity
 
 			assertThat(childContext.injector.parentInjector,
 				equalTo(parentContext.injector));
+		}
+
+		[Test]
+		public function moduleConnector_mapped_to_injector():void
+		{
+			var actual:Object = null;
+			const context : IContext = new Context();
+			context.install(
+				EventDispatcherExtension,
+				ModularityExtension);
+			context.whenInitializing( function():void {
+				actual = context.injector.getInstance(IModuleConnector);
+			});
+			context.initialize();
+			assertThat(actual, instanceOf(IModuleConnector));
 		}
 
 		/*============================================================================*/
