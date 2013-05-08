@@ -5,38 +5,42 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.eventDispatcher
+package robotlegs.bender.extensions.eventDispatcher.impl
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
 	import org.hamcrest.assertThat;
 	import org.hamcrest.collection.array;
-	import org.hamcrest.object.equalTo;
-	import org.hamcrest.object.instanceOf;
-	import robotlegs.bender.framework.api.IContext;
+	import org.hamcrest.collection.emptyArray;
+	import org.hamcrest.collection.hasItem;
 	import robotlegs.bender.framework.api.LifecycleEvent;
 	import robotlegs.bender.framework.impl.Context;
 
-	public class EventDispatcherExtensionTest
+	public class LifecycleEventRelayTest
 	{
 
 		/*============================================================================*/
 		/* Private Static Properties                                                  */
 		/*============================================================================*/
 
-		// NOTE: We can't catch POST_DESTROY as the Relay is destroyed at that point
 		private static const LIFECYCLE_TYPES:Array = [
 			LifecycleEvent.PRE_INITIALIZE, LifecycleEvent.INITIALIZE, LifecycleEvent.POST_INITIALIZE,
 			LifecycleEvent.PRE_SUSPEND, LifecycleEvent.SUSPEND, LifecycleEvent.POST_SUSPEND,
 			LifecycleEvent.PRE_RESUME, LifecycleEvent.RESUME, LifecycleEvent.POST_RESUME,
-			LifecycleEvent.PRE_DESTROY, LifecycleEvent.DESTROY];
+			LifecycleEvent.PRE_DESTROY, LifecycleEvent.DESTROY, LifecycleEvent.POST_DESTROY];
 
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var context:IContext;
+		private var context:Context;
+
+		private var dispatcher:IEventDispatcher;
+
+		private var subject:LifecycleEventRelay;
+
+		private var reportedTypes:Array;
 
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
@@ -46,6 +50,9 @@ package robotlegs.bender.extensions.eventDispatcher
 		public function before():void
 		{
 			context = new Context();
+			dispatcher = new EventDispatcher();
+			subject = new LifecycleEventRelay(context, dispatcher);
+			reportedTypes = [];
 		}
 
 		/*============================================================================*/
@@ -53,47 +60,51 @@ package robotlegs.bender.extensions.eventDispatcher
 		/*============================================================================*/
 
 		[Test]
-		public function an_EventDispatcher_is_mapped_into_injector():void
+		public function state_change_is_relayed():void
 		{
-			var actual:Object = null;
-			context.install(EventDispatcherExtension);
-			context.whenInitializing(function():void {
-				actual = context.injector.getInstance(IEventDispatcher);
-			});
+			listenFor([LifecycleEvent.STATE_CHANGE]);
 			context.initialize();
-			assertThat(actual, instanceOf(IEventDispatcher));
+			assertThat(reportedTypes, hasItem(LifecycleEvent.STATE_CHANGE));
 		}
 
 		[Test]
-		public function provided_EventDispatcher_is_mapped_into_injector():void
+		public function lifecycle_events_are_relayed():void
 		{
-			const expected:IEventDispatcher = new EventDispatcher();
-			var actual:Object = null;
-			context.install(new EventDispatcherExtension(expected));
-			context.whenInitializing(function():void {
-				actual = context.injector.getInstance(IEventDispatcher);
-			});
-			context.initialize();
-			assertThat(actual, equalTo(expected));
-		}
-
-		[Test]
-		public function lifecycleEvents_are_relayed_to_dispatcher():void
-		{
-			const dispatcher:IEventDispatcher = new EventDispatcher();
-			const reportedTypes:Array = [];
-			for each (var type:String in LIFECYCLE_TYPES)
-			{
-				dispatcher.addEventListener(type, function(event:Event):void {
-					reportedTypes.push(event.type);
-				});
-			}
-			context.install(new EventDispatcherExtension(dispatcher));
+			listenFor(LIFECYCLE_TYPES);
 			context.initialize();
 			context.suspend();
 			context.resume();
 			context.destroy();
 			assertThat(reportedTypes, array(LIFECYCLE_TYPES));
+		}
+
+		[Test]
+		public function lifecycle_events_are_NOT_relayed_after_destroy():void
+		{
+			listenFor(LIFECYCLE_TYPES);
+			subject.destroy();
+			context.initialize();
+			context.suspend();
+			context.resume();
+			context.destroy();
+			assertThat(reportedTypes, emptyArray());
+		}
+
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
+
+		private function listenFor(types:Array):void
+		{
+			for each (var type:String in types)
+			{
+				dispatcher.addEventListener(type, catchEvent);
+			}
+		}
+
+		private function catchEvent(event:Event):void
+		{
+			reportedTypes.push(event.type);
 		}
 	}
 }

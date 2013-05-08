@@ -5,41 +5,40 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.eventDispatcher
+package robotlegs.bender.extensions.utils
 {
-	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
-	import robotlegs.bender.extensions.eventDispatcher.impl.LifecycleEventRelay;
-	import robotlegs.bender.framework.api.IContext;
-	import robotlegs.bender.framework.api.IExtension;
 
-	/**
-	 * This extension maps an IEventDispatcher into a context's injector.
-	 */
-	public class EventDispatcherExtension implements IExtension
+	public class EventRelay
 	{
 
 		/*============================================================================*/
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var _context:IContext;
+		private var _source:IEventDispatcher;
 
-		private var _eventDispatcher:IEventDispatcher;
+		private var _destination:IEventDispatcher;
 
-		private var _lifecycleRelay:LifecycleEventRelay;
+		private var _types:Array;
+
+		private var _active:Boolean;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
 
 		/**
-		 * Creates an Event Dispatcher Extension
-		 * @param eventDispatcher Optional IEventDispatcher instance to share
+		 * Relays events from the source to the destination
+		 * @param source Event Dispatcher
+		 * @param destination Event Dispatcher
+		 * @param types The list of event types to relay
 		 */
-		public function EventDispatcherExtension(eventDispatcher:IEventDispatcher = null)
+		public function EventRelay(source:IEventDispatcher, destination:IEventDispatcher, types:Array)
 		{
-			_eventDispatcher = eventDispatcher || new EventDispatcher();
+			_source = source;
+			_destination = destination;
+			_types = types;
 		}
 
 		/*============================================================================*/
@@ -47,28 +46,51 @@ package robotlegs.bender.extensions.eventDispatcher
 		/*============================================================================*/
 
 		/**
-		 * @inheritDoc
+		 * Start relaying events
+		 * @return Self
 		 */
-		public function extend(context:IContext):void
+		public function start():EventRelay
 		{
-			_context = context;
-			_context.injector.map(IEventDispatcher).toValue(_eventDispatcher);
-			_context.beforeInitializing(configureLifecycleEventRelay);
-			_context.afterDestroying(destroyLifecycleEventRelay);
+			if (!_active)
+			{
+				_active = true;
+				addListeners();
+			}
+			return this;
+		}
+
+		/**
+		 * Stop relaying events
+		 * @return Self
+		 */
+		public function stop():EventRelay
+		{
+			if (_active)
+			{
+				_active = false;
+				removeListeners();
+			}
+			return this;
 		}
 
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
 
-		private function configureLifecycleEventRelay():void
+		private function addListeners():void
 		{
-			_lifecycleRelay = new LifecycleEventRelay(_context, _eventDispatcher);
+			for each (var type:String in _types)
+			{
+				_source.addEventListener(type, _destination.dispatchEvent);
+			}
 		}
 
-		private function destroyLifecycleEventRelay():void
+		private function removeListeners():void
 		{
-			_lifecycleRelay.destroy();
+			for each (var type:String in _types)
+			{
+				_source.removeEventListener(type, _destination.dispatchEvent);
+			}
 		}
 	}
 }

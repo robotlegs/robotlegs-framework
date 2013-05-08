@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -7,6 +7,7 @@
 
 package robotlegs.bender.extensions.eventDispatcher
 {
+	import robotlegs.bender.extensions.eventDispatcher.impl.LifecycleEventRelayTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
 	[Suite]
@@ -18,5 +19,7 @@ package robotlegs.bender.extensions.eventDispatcher
 		/*============================================================================*/
 
 		public var eventDispatcherExtension:EventDispatcherExtensionTest;
+
+		public var lifecycleEventRedispatcher:LifecycleEventRelayTest;
 	}
 }
