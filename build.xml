@@ -113,10 +113,10 @@
       <format property="docgen.time" pattern="MM/dd/yyyy hh:mm aa" unit="hour"/>
     </tstamp>
     <java jar="${FLEX_HOME}/lib/asdoc.jar" dir="${FLEX_HOME}/frameworks" fork="true" failonerror="true">
-      <arg line="-external-library-path+=${lib.loc}"/>
-      <arg line="-doc-sources+=${main.src.loc}"/>
-      <arg line="-source-path+=${main.src.loc}"/>
-      <arg line="-output ${doc.loc}"/>
+      <arg line="-external-library-path+='${lib.loc}'"/>
+      <arg line="-doc-sources+='${main.src.loc}'"/>
+      <arg line="-source-path+='${main.src.loc}'"/>
+      <arg line="-output '${doc.loc}'"/>
       <arg value="-keep-xml=true"/>
       <arg value="-lenient=true"/>
       <arg line="-window-title 'Robotlegs ${robotlegs.ver.num}'"/>
