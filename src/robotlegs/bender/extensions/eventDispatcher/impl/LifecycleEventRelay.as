@@ -28,10 +28,6 @@ package robotlegs.bender.extensions.eventDispatcher.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var _source:IEventDispatcher;
-
-		private var _destination:IEventDispatcher;
-
 		private var _relay:EventRelay;
 
 		/*============================================================================*/
@@ -40,8 +36,6 @@ package robotlegs.bender.extensions.eventDispatcher.impl
 
 		public function LifecycleEventRelay(source:IEventDispatcher, destination:IEventDispatcher)
 		{
-			_source = source;
-			_destination = destination;
 			_relay = new EventRelay(source, destination, TYPES).start();
 		}
 
