@@ -29,7 +29,7 @@
 <!-- Clean Build and Report files -->
   <target name="clean">
 <!-- Remove all directories created during the build process -->
-    <echo>[clean] Removing Build and Report directories</echo>
+    <echo>[clean] Removing Build, Report and Doc directories</echo>
     <delete includeemptydirs="true" failonerror="false">
       <fileset dir="${report.loc}" defaultexcludes="false">
         <include name="**/*"/>
@@ -37,15 +37,19 @@
       <fileset dir="${dist.loc}" defaultexcludes="false">
         <include name="**/*"/>
       </fileset>
+      <fileset dir="${doc.loc}" defaultexcludes="false">
+        <include name="**/*"/>
+      </fileset>
     </delete>
-    <echo>[clean] Build and Report directories removed</echo>
+    <echo>[clean] Build, Report and Doc directories removed</echo>
   </target>
 <!-- Create directories needed for the build process -->
   <target name="init" depends="clean">
-    <echo>[init] Creating Bin and Report directories</echo>
+    <echo>[init] Creating Bin, Report and Doc directories</echo>
     <mkdir dir="${bin.loc}"/>
     <mkdir dir="${report.loc}"/>
-    <echo>[init] Bin and Report directories created</echo>
+    <mkdir dir="${doc.loc}"/>
+    <echo>[init] Bin, Report and Doc directories created</echo>
   </target>
 <!-- Compile Release SWC -->
   <target name="compile" depends="init">
