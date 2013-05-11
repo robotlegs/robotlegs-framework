@@ -20,7 +20,5 @@ package robotlegs.bender.extensions.utils
 		public var ensureContextUninitializedTest:EnsureContextUninitializedTest;
 
 		public var instanceOfTypeTest:InstanceOfTypeTest;
-
-		public var eventRelay:EventRelayTest;
 	}
 }

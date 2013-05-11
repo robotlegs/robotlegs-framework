@@ -7,6 +7,7 @@
 
 package robotlegs.bender.extensions.eventDispatcher
 {
+	import robotlegs.bender.extensions.eventDispatcher.impl.EventRelayTest;
 	import robotlegs.bender.extensions.eventDispatcher.impl.LifecycleEventRelayTest;
 
 	[RunWith("org.flexunit.runners.Suite")]
@@ -19,6 +20,8 @@ package robotlegs.bender.extensions.eventDispatcher
 		/*============================================================================*/
 
 		public var eventDispatcherExtension:EventDispatcherExtensionTest;
+
+		public var eventRelay:EventRelayTest;
 
 		public var lifecycleEventRedispatcher:LifecycleEventRelayTest;
 	}

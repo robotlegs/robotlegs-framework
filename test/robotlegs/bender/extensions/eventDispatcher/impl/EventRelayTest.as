@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.utils
+package robotlegs.bender.extensions.eventDispatcher.impl
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -13,6 +13,8 @@ package robotlegs.bender.extensions.utils
 	import org.hamcrest.assertThat;
 	import org.hamcrest.collection.array;
 	import org.hamcrest.collection.emptyArray;
+
+	import robotlegs.bender.extensions.eventDispatcher.impl.EventRelay;
 
 	public class EventRelayTest
 	{
