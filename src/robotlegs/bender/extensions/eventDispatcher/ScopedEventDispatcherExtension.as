@@ -1,25 +1,24 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.scopedMessageDispatcher
+package robotlegs.bender.extensions.eventDispatcher
 {
+	import flash.events.EventDispatcher;
+	import flash.events.IEventDispatcher;
 	import org.swiftsuspenders.Injector;
-
 	import robotlegs.bender.extensions.utils.ensureContextUninitialized;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
-	import robotlegs.bender.framework.api.IMessageDispatcher;
-	import robotlegs.bender.framework.impl.MessageDispatcher;
 
 	/**
-	 * This extensions maps a series of named IMessageDispatcher instances
+	 * This extensions maps a series of named IEventDispatcher instances
 	 * provided those names have not been mapped by a parent context.
 	 */
-	public class ScopedMessageDispatcherExtension implements IExtension
+	public class ScopedEventDispatcherExtension implements IExtension
 	{
 
 		/*============================================================================*/
@@ -35,14 +34,14 @@ package robotlegs.bender.extensions.scopedMessageDispatcher
 		/*============================================================================*/
 
 		/**
-		 * Creates a Scoped Message Dispatcher Extension
+		 * Creates a Scoped Event Dispatcher Extension
 		 *
 		 * <p>Note: Names that have already been registered with a parent context
 		 * will not be mapped into this context Injector and will instead be inherited.</p>
 		 *
-		 * @param names A list of IMessageDispatcher names to map into the Injector
+		 * @param names A list of IEventDispatcher names to map into the Injector
 		 */
-		public function ScopedMessageDispatcherExtension(... names)
+		public function ScopedEventDispatcherExtension(... names)
 		{
 			_names = (names.length > 0) ? names : ["global"];
 		}
@@ -69,11 +68,11 @@ package robotlegs.bender.extensions.scopedMessageDispatcher
 		{
 			for each (var name:String in _names)
 			{
-				if (!_injector.hasMapping(IMessageDispatcher, name))
+				if (!_injector.satisfies(IEventDispatcher, name))
 				{
 					_injector
-						.map(IMessageDispatcher, name)
-						.toValue(new MessageDispatcher());
+						.map(IEventDispatcher, name)
+						.toValue(new EventDispatcher());
 				}
 			}
 		}

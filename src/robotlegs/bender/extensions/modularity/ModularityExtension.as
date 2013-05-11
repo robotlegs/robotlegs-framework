@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -15,7 +15,7 @@ package robotlegs.bender.extensions.modularity
 	import robotlegs.bender.extensions.modularity.impl.ModularContextEvent;
 	import robotlegs.bender.extensions.modularity.impl.ViewManagerBasedExistenceWatcher;
 	import robotlegs.bender.extensions.utils.ensureContextUninitialized;
-	import robotlegs.bender.extensions.utils.instanceOfType;
+	import robotlegs.bender.extensions.matching.instanceOfType;
 	import robotlegs.bender.extensions.viewManager.api.IViewManager;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;

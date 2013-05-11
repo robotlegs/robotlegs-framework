@@ -11,6 +11,8 @@ package robotlegs.bender.extensions.utils
 	import org.hamcrest.object.isFalse;
 	import org.hamcrest.object.isTrue;
 
+	import robotlegs.bender.extensions.matching.instanceOfType;
+
 	public class InstanceOfTypeTest
 	{
 

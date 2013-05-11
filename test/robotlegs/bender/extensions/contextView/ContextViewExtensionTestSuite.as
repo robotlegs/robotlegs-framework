@@ -18,5 +18,7 @@ package robotlegs.bender.extensions.contextView
 		/*============================================================================*/
 
 		public var contextViewExtension:ContextViewExtensionTest;
+
+		public var stageSyncExtension:StageSyncExtensionTest;
 	}
 }

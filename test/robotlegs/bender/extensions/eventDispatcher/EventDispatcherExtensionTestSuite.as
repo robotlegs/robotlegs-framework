@@ -21,6 +21,8 @@ package robotlegs.bender.extensions.eventDispatcher
 
 		public var eventDispatcherExtension:EventDispatcherExtensionTest;
 
+		public var scopedEventDispatcherExtension:ScopedEventDispatcherExtensionTest;
+
 		public var eventRelay:EventRelayTest;
 
 		public var lifecycleEventRedispatcher:LifecycleEventRelayTest;

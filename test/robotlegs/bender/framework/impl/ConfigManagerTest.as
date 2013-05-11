@@ -13,7 +13,7 @@ package robotlegs.bender.framework.impl
 	import org.hamcrest.object.instanceOf;
 	import org.hamcrest.object.nullValue;
 	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.extensions.utils.instanceOfType;
+	import robotlegs.bender.extensions.matching.instanceOfType;
 
 	public class ConfigManagerTest
 	{

@@ -1,11 +1,11 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.scopedEventDispatcher
+package robotlegs.bender.extensions.eventDispatcher
 {
 	import flash.events.IEventDispatcher;
 	import mx.core.UIComponent;
@@ -14,12 +14,12 @@ package robotlegs.bender.extensions.scopedEventDispatcher
 	import org.hamcrest.collection.array;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.instanceOf;
+	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.contextView.ContextViewExtension;
+	import robotlegs.bender.extensions.contextView.StageSyncExtension;
 	import robotlegs.bender.extensions.modularity.ModularityExtension;
-	import robotlegs.bender.extensions.stageSync.StageSyncExtension;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.impl.Context;
-	import org.swiftsuspenders.Injector;
 
 	public class ScopedEventDispatcherExtensionTest
 	{
@@ -35,7 +35,7 @@ package robotlegs.bender.extensions.scopedEventDispatcher
 			const context:IContext = new Context();
 			var actual:Object = null;
 			context.install(new ScopedEventDispatcherExtension(name));
-			context.whenInitializing( function():void {
+			context.whenInitializing(function():void {
 				actual = context.injector.getInstance(IEventDispatcher, name);
 			});
 			context.initialize();
@@ -49,7 +49,7 @@ package robotlegs.bender.extensions.scopedEventDispatcher
 			const dispatchers:Array = [];
 			const context:IContext = new Context();
 			context.install(new ScopedEventDispatcherExtension('global', 'other', 'name'));
-			context.whenInitializing( function():void {
+			context.whenInitializing(function():void {
 				for each (var name:String in names)
 				{
 					dispatchers.push(context.injector.getInstance(IEventDispatcher, name));
@@ -98,10 +98,14 @@ package robotlegs.bender.extensions.scopedEventDispatcher
 			assertThat(childDispatchers, array(parentDispatchers));
 			UIImpersonator.removeChild(container);
 		}
-		
+
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
+
 		public function getFromInjector(injector:Injector, type:Class, name:String = ""):IEventDispatcher
 		{
-			if(injector.hasMapping(type, name))
+			if (injector.hasMapping(type, name))
 			{
 				return injector.getInstance(type, name);
 			}

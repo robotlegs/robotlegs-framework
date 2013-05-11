@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -11,6 +11,7 @@ package robotlegs.bender.framework.api
 	import org.swiftsuspenders.Injector;
 
 	[Event(name="destroy", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="detain", type="robotlegs.bender.framework.api.PinEvent")]
 	[Event(name="initialize", type="robotlegs.bender.framework.api.LifecycleEvent")]
 	[Event(name="postDestroy", type="robotlegs.bender.framework.api.LifecycleEvent")]
 	[Event(name="postInitialize", type="robotlegs.bender.framework.api.LifecycleEvent")]
@@ -20,11 +21,10 @@ package robotlegs.bender.framework.api
 	[Event(name="preInitialize", type="robotlegs.bender.framework.api.LifecycleEvent")]
 	[Event(name="preResume", type="robotlegs.bender.framework.api.LifecycleEvent")]
 	[Event(name="preSuspend", type="robotlegs.bender.framework.api.LifecycleEvent")]
+	[Event(name="release", type="robotlegs.bender.framework.api.PinEvent")]
 	[Event(name="resume", type="robotlegs.bender.framework.api.LifecycleEvent")]
 	[Event(name="stateChange", type="robotlegs.bender.framework.api.LifecycleEvent")]
 	[Event(name="suspend", type="robotlegs.bender.framework.api.LifecycleEvent")]
-	[Event(name="detain", type="robotlegs.bender.framework.api.PinEvent")]
-	[Event(name="release", type="robotlegs.bender.framework.api.PinEvent")]
 	/**
 	 * The Robotlegs context contract
 	 */

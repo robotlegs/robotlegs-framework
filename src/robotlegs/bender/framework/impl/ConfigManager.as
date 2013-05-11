@@ -172,7 +172,7 @@ class ClassMatcher implements IMatcher
 	/* Public Functions                                                           */
 	/*============================================================================*/
 
-	public function matches(item:Object):Boolean
+	public function matches(item:*):Boolean
 	{
 		return item is Class;
 	}
@@ -185,7 +185,7 @@ class ObjectMatcher implements IMatcher
 	/* Public Functions                                                           */
 	/*============================================================================*/
 
-	public function matches(item:Object):Boolean
+	public function matches(item:*):Boolean
 	{
 		return item is Class == false;
 	}

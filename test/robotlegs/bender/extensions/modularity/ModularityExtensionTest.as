@@ -16,7 +16,7 @@ package robotlegs.bender.extensions.modularity
 
 	import robotlegs.bender.extensions.contextView.ContextView;
 	import robotlegs.bender.extensions.contextView.ContextViewExtension;
-	import robotlegs.bender.extensions.stageSync.StageSyncExtension;
+	import robotlegs.bender.extensions.contextView.StageSyncExtension;
 	import robotlegs.bender.extensions.viewManager.ViewManagerExtension;
 	import robotlegs.bender.extensions.viewManager.api.IViewManager;
 	import robotlegs.bender.framework.api.IContext;

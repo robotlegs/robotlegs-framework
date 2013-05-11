@@ -19,6 +19,6 @@ package robotlegs.bender.framework.api
 		 * @param item The object to test
 		 * @return Boolean
 		 */
-		function matches(item:Object):Boolean;
+		function matches(item:*):Boolean;
 	}
 }

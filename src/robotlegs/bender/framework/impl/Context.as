@@ -468,12 +468,11 @@ package robotlegs.bender.framework.impl
 
 		private function removeChildren():void
 		{
-			for each(var child:IContext in _children.concat())
+			for each (var child:IContext in _children.concat())
 			{
 				removeChild(child);
 			}
 			_children.splice(0);
 		}
-
 	}
 }

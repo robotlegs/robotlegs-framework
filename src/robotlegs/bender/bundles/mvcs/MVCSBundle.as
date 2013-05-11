@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -9,6 +9,7 @@ package robotlegs.bender.bundles.mvcs
 {
 	import robotlegs.bender.extensions.contextView.ContextViewExtension;
 	import robotlegs.bender.extensions.contextView.ContextViewListenerConfig;
+	import robotlegs.bender.extensions.contextView.StageSyncExtension;
 	import robotlegs.bender.extensions.enhancedLogging.InjectableLoggerExtension;
 	import robotlegs.bender.extensions.enhancedLogging.TraceLoggingExtension;
 	import robotlegs.bender.extensions.eventCommandMap.EventCommandMapExtension;
@@ -16,8 +17,6 @@ package robotlegs.bender.bundles.mvcs
 	import robotlegs.bender.extensions.localEventMap.LocalEventMapExtension;
 	import robotlegs.bender.extensions.mediatorMap.MediatorMapExtension;
 	import robotlegs.bender.extensions.modularity.ModularityExtension;
-	import robotlegs.bender.extensions.stageSync.StageSyncExtension;
-	import robotlegs.bender.extensions.viewManager.ManualStageObserverExtension;
 	import robotlegs.bender.extensions.viewManager.StageCrawlerExtension;
 	import robotlegs.bender.extensions.viewManager.StageObserverExtension;
 	import robotlegs.bender.extensions.viewManager.ViewManagerExtension;
@@ -58,7 +57,6 @@ package robotlegs.bender.bundles.mvcs
 				LocalEventMapExtension,
 				ViewManagerExtension,
 				StageObserverExtension,
-				ManualStageObserverExtension,
 				MediatorMapExtension,
 				ViewProcessorMapExtension,
 				StageCrawlerExtension,

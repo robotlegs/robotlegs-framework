@@ -12,7 +12,7 @@ package robotlegs.bender.framework.impl
 	import org.hamcrest.core.not;
 	import org.hamcrest.object.equalTo;
 
-	import robotlegs.bender.extensions.utils.instanceOfType;
+	import robotlegs.bender.extensions.matching.instanceOfType;
 	import robotlegs.bender.framework.impl.safelyCallBackSupport.createHandler;
 
 	public class ObjectProcessorTest

@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.utils
+package robotlegs.bender.extensions.matching
 {
 	import robotlegs.bender.framework.api.IMatcher;
 
@@ -43,7 +43,7 @@ class InstanceOfMatcher implements IMatcher
 	/* Public Functions                                                           */
 	/*============================================================================*/
 
-	public function matches(item:Object):Boolean
+	public function matches(item:*):Boolean
 	{
 		return item is _type;
 	}
