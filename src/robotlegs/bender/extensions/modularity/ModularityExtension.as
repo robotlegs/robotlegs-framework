@@ -9,9 +9,7 @@ package robotlegs.bender.extensions.modularity
 {
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
-
 	import org.swiftsuspenders.Injector;
-
 	import robotlegs.bender.extensions.contextView.ContextView;
 	import robotlegs.bender.extensions.modularity.api.IModuleConnector;
 	import robotlegs.bender.extensions.modularity.impl.ContextViewBasedExistenceWatcher;

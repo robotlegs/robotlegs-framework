@@ -47,6 +47,7 @@ package robotlegs.bender.extensions.modularity.impl
 			const parentContext:IContext = new Context().install(EventDispatcherExtension);
 			const childAContext:IContext = new Context().install(EventDispatcherExtension);
 			const childBContext:IContext = new Context().install(EventDispatcherExtension);
+			
 			parentContext.addChild(childAContext);
 			parentContext.addChild(childBContext);
 

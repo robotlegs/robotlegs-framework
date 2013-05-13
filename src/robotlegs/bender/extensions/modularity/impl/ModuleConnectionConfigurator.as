@@ -18,9 +18,9 @@ package robotlegs.bender.extensions.modularity.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var _channelToLocalRelayer:EventRelay;
+		private var _channelToLocalRelay:EventRelay;
 
-		private var _localToChannelRelayer:EventRelay;
+		private var _localToChannelRelay:EventRelay;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -30,8 +30,8 @@ package robotlegs.bender.extensions.modularity.impl
 			localDispatcher:IEventDispatcher,
 			channelDispatcher:IEventDispatcher)
 		{
-			_localToChannelRelayer = new EventRelay(localDispatcher, channelDispatcher, []).start();
-			_channelToLocalRelayer = new EventRelay(channelDispatcher, localDispatcher, []).start();
+			_localToChannelRelay = new EventRelay(localDispatcher, channelDispatcher).start();
+			_channelToLocalRelay = new EventRelay(channelDispatcher, localDispatcher).start();
 		}
 
 		/*============================================================================*/
@@ -40,34 +40,34 @@ package robotlegs.bender.extensions.modularity.impl
 
 		public function relayEvent(eventType:String):IModuleConnectionAction
 		{
-			_localToChannelRelayer.addType(eventType);
+			_localToChannelRelay.addType(eventType);
 			return this;
 		}
 
 		public function receiveEvent(eventType:String):IModuleConnectionAction
 		{
-			_channelToLocalRelayer.addType(eventType);
+			_channelToLocalRelay.addType(eventType);
 			return this;
 		}
 
 		public function suspend():void
 		{
-			_channelToLocalRelayer.stop();
-			_localToChannelRelayer.stop();
+			_channelToLocalRelay.stop();
+			_localToChannelRelay.stop();
 		}
 
 		public function resume():void
 		{
-			_channelToLocalRelayer.start();
-			_localToChannelRelayer.start();
+			_channelToLocalRelay.start();
+			_localToChannelRelay.start();
 		}
 
 		public function destroy():void
 		{
-			_localToChannelRelayer.stop();
-			_localToChannelRelayer = null;
-			_channelToLocalRelayer.stop();
-			_channelToLocalRelayer = null;
+			_localToChannelRelay.stop();
+			_localToChannelRelay = null;
+			_channelToLocalRelay.stop();
+			_channelToLocalRelay = null;
 		}
 	}
 }

@@ -7,8 +7,6 @@
 
 package robotlegs.bender.extensions.modularity.dsl
 {
-	import robotlegs.bender.extensions.modularity.api.IModuleConnector;
-
 	public interface IModuleConnectionAction
 	{
 		function relayEvent(eventType:String):IModuleConnectionAction;

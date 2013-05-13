@@ -34,11 +34,11 @@ package robotlegs.bender.extensions.eventDispatcher.impl
 		 * @param destination Event Dispatcher
 		 * @param types The list of event types to relay
 		 */
-		public function EventRelay(source:IEventDispatcher, destination:IEventDispatcher, types:Array)
+		public function EventRelay(source:IEventDispatcher, destination:IEventDispatcher, types:Array = null)
 		{
 			_source = source;
 			_destination = destination;
-			_types = types;
+			_types = types || [];
 		}
 
 		/*============================================================================*/
@@ -76,10 +76,7 @@ package robotlegs.bender.extensions.eventDispatcher.impl
 		public function addType(eventType:String):void
 		{
 			_types.push(eventType);
-			if (_active)
-			{
-				addListener(eventType);
-			}
+			_active && addListener(eventType);
 		}
 
 		public function removeType(eventType:String):void
