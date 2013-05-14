@@ -11,17 +11,17 @@ package robotlegs.bender.extensions.modularity
 	import flash.events.Event;
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.contextView.ContextView;
+	import robotlegs.bender.extensions.matching.instanceOfType;
 	import robotlegs.bender.extensions.modularity.api.IModuleConnector;
 	import robotlegs.bender.extensions.modularity.impl.ContextViewBasedExistenceWatcher;
 	import robotlegs.bender.extensions.modularity.impl.ModularContextEvent;
 	import robotlegs.bender.extensions.modularity.impl.ModuleConnector;
 	import robotlegs.bender.extensions.modularity.impl.ViewManagerBasedExistenceWatcher;
-	import robotlegs.bender.extensions.utils.ensureContextUninitialized;
-	import robotlegs.bender.extensions.matching.instanceOfType;
 	import robotlegs.bender.extensions.viewManager.api.IViewManager;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
 	import robotlegs.bender.framework.api.ILogger;
+	import robotlegs.bender.framework.impl.ensureContextUninitialized;
 
 	/**
 	 * This extension allows a context to inherit dependencies from a parent context,

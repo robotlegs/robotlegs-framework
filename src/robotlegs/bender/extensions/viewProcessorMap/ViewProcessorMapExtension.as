@@ -8,7 +8,6 @@
 package robotlegs.bender.extensions.viewProcessorMap
 {
 	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.extensions.utils.ensureContextUninitialized;
 	import robotlegs.bender.extensions.viewManager.api.IViewHandler;
 	import robotlegs.bender.extensions.viewManager.api.IViewManager;
 	import robotlegs.bender.extensions.viewProcessorMap.api.IViewProcessorMap;
@@ -17,6 +16,7 @@ package robotlegs.bender.extensions.viewProcessorMap
 	import robotlegs.bender.extensions.viewProcessorMap.impl.ViewProcessorMap;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
+	import robotlegs.bender.framework.impl.ensureContextUninitialized;
 
 	/**
 	 * This extension install a View Processor Map into a context

@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.utils
+package robotlegs.bender.framework.impl
 {
 	import mockolate.received;
 	import mockolate.runner.MockolateRule;
@@ -15,7 +15,6 @@ package robotlegs.bender.extensions.utils
 	import org.hamcrest.object.nullValue;
 	import robotlegs.bender.framework.api.ILogTarget;
 	import robotlegs.bender.framework.api.LogLevel;
-	import robotlegs.bender.framework.impl.Context;
 
 	public class EnsureContextUninitializedTest
 	{
@@ -52,7 +51,7 @@ package robotlegs.bender.extensions.utils
 	}
 }
 
-import robotlegs.bender.extensions.utils.ensureContextUninitialized;
+import robotlegs.bender.framework.impl.ensureContextUninitialized;
 import robotlegs.bender.framework.api.IContext;
 import robotlegs.bender.framework.api.IExtension;
 

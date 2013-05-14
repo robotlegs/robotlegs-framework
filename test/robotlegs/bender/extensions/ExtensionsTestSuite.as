@@ -17,7 +17,6 @@ package robotlegs.bender.extensions
 	import robotlegs.bender.extensions.matching.TypeMatchingTestSuite;
 	import robotlegs.bender.extensions.mediatorMap.MediatorMapExtensionTestSuite;
 	import robotlegs.bender.extensions.modularity.ModularityExtensionTestSuite;
-	import robotlegs.bender.extensions.utils.UtilsTestSuite;
 	import robotlegs.bender.extensions.viewManager.ViewManagerExtensionTestSuite;
 	import robotlegs.bender.extensions.viewProcessorMap.ViewProcessorMapExtensionTestSuite;
 	import robotlegs.bender.extensions.vigilance.VigilanceExtensionTestSuite;
@@ -56,7 +55,5 @@ package robotlegs.bender.extensions
 		public var vigilanceExtension:VigilanceExtensionTestSuite;
 
 		public var matching:TypeMatchingTestSuite;
-
-		public var utils:UtilsTestSuite;
 	}
 }

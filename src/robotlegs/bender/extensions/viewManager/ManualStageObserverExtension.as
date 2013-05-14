@@ -8,12 +8,12 @@
 package robotlegs.bender.extensions.viewManager
 {
 	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.extensions.utils.ensureContextUninitialized;
 	import robotlegs.bender.extensions.viewManager.impl.ContainerRegistry;
 	import robotlegs.bender.extensions.viewManager.impl.ManualStageObserver;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
 	import robotlegs.bender.framework.api.ILogger;
+	import robotlegs.bender.framework.impl.ensureContextUninitialized;
 
 	/**
 	 * This extension install a manual Stage Observer

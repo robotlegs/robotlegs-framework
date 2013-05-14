@@ -9,9 +9,9 @@ package robotlegs.bender.extensions.directCommandMap
 {
 	import robotlegs.bender.extensions.directCommandMap.api.IDirectCommandMap;
 	import robotlegs.bender.extensions.directCommandMap.impl.DirectCommandMap;
-	import robotlegs.bender.extensions.utils.ensureContextUninitialized;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
+	import robotlegs.bender.framework.impl.ensureContextUninitialized;
 
 	/**
 	 * TODO: document

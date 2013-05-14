@@ -5,7 +5,7 @@
 //  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
-package robotlegs.bender.extensions.utils
+package robotlegs.bender.framework.impl
 {
 	import robotlegs.bender.framework.api.IContext;
 
@@ -13,8 +13,12 @@ package robotlegs.bender.extensions.utils
 	/* Public Functions                                                           */
 	/*============================================================================*/
 
+	/**
+	 * @private
+	 */
 	public function ensureContextUninitialized(context:IContext, logSource:Object):void
 	{
+		// TODO: Better solution needed
 		if (!context.uninitialized)
 		{
 			context.getLogger(logSource).warn("This extension must be installed into an uninitialized context");

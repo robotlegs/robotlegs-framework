@@ -8,11 +8,11 @@
 package robotlegs.bender.extensions.contextView
 {
 	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.extensions.utils.ensureContextUninitialized;
 	import robotlegs.bender.extensions.matching.instanceOfType;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
 	import robotlegs.bender.framework.api.ILogger;
+	import robotlegs.bender.framework.impl.ensureContextUninitialized;
 
 	/**
 	 * <p>This Extension waits for a ContextView to be added as a configuration
