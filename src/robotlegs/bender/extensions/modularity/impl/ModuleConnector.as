@@ -13,7 +13,6 @@ package robotlegs.bender.extensions.modularity.impl
 	import robotlegs.bender.extensions.modularity.api.IModuleConnector;
 	import robotlegs.bender.extensions.modularity.dsl.IModuleConnectionAction;
 	import robotlegs.bender.framework.api.IContext;
-	import robotlegs.bender.framework.impl.getRootInjector;
 
 	public class ModuleConnector implements IModuleConnector
 	{
@@ -85,6 +84,15 @@ package robotlegs.bender.extensions.modularity.impl
 					.toValue(new EventDispatcher());
 			}
 			return new ModuleConnectionConfigurator(_localDispatcher, _rootInjector.getInstance(IEventDispatcher, channelId));
+		}
+
+		private function getRootInjector(injector:Injector):Injector
+		{
+			while (injector.parentInjector)
+			{
+				injector = injector.parentInjector;
+			}
+			return injector;
 		}
 	}
 }
