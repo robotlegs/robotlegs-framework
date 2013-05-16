@@ -9,6 +9,9 @@ package robotlegs.bender.extensions.viewProcessorMap.utils
 {
 	import flash.utils.Dictionary;
 	import org.swiftsuspenders.Injector;
+	import robotlegs.bender.framework.impl.rl2_internal;
+
+	use namespace rl2_internal;
 
 	/**
 	 * Simple Mediator creation processor
@@ -83,7 +86,11 @@ package robotlegs.bender.extensions.viewProcessorMap.utils
 		private function destroyMediator(mediator:Object):void
 		{
 			if (mediator.hasOwnProperty('destroy'))
+			{
 				mediator.destroy();
+				if(!mediator.destroyed)
+					mediator.finallyDestroy();
+			}
 		}
 	}
 }
