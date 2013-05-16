@@ -12,6 +12,9 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import flash.utils.getDefinitionByName;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
 	import robotlegs.bender.extensions.mediatorMap.api.MediatorFactoryEvent;
+	import robotlegs.bender.framework.impl.rl2_internal;
+
+	use namespace rl2_internal;
 
 	/**
 	 * @private
@@ -133,7 +136,11 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		private function destroyMediator(mediator:Object):void
 		{
 			if (mediator.hasOwnProperty('destroy'))
+			{
 				mediator.destroy();
+				if(!mediator.destroyed)
+					mediator.finallyDestroy();
+			}
 		}
 	}
 }

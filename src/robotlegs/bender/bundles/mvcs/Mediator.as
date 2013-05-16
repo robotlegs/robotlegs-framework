@@ -11,6 +11,9 @@ package robotlegs.bender.bundles.mvcs
 	import flash.events.IEventDispatcher;
 	import robotlegs.bender.extensions.localEventMap.api.IEventMap;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediator;
+	import robotlegs.bender.framework.impl.rl2_internal;
+
+	use namespace rl2_internal;
 
 	/**
 	 * Classic Robotlegs mediator implementation
@@ -31,6 +34,8 @@ package robotlegs.bender.bundles.mvcs
 		public var eventDispatcher:IEventDispatcher;
 
 		private var _viewComponent:Object;
+
+		rl2_internal var destroyed:Boolean = false;
 
 		/**
 		 * @private
@@ -56,6 +61,19 @@ package robotlegs.bender.bundles.mvcs
 		 */
 		public function destroy():void
 		{
+			finallyDestroy();
+		}
+
+		/*============================================================================*/
+		/* Internal Functions                                                         */
+		/*============================================================================*/
+
+		/**
+		 * @private
+		 */
+		rl2_internal function finallyDestroy():void
+		{
+			destroyed = true;
 			eventMap.unmapListeners();
 		}
 
