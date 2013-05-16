@@ -59,6 +59,27 @@ package robotlegs.bender.bundles.mvcs
 			eventMap.unmapListeners();
 		}
 
+		/**
+		 * List the <code>Event</code> names this
+		 * <code>Mediator</code> is interested in being dispatched of.
+		 *
+		 * @return Array the list of <code>Event</code> names 
+		 */
+		public function listEventInterests():Array 
+		{
+			return [];
+		}
+
+		/**
+		 * Handle <code>Event</code>s.
+		 *
+		 * <P>
+		 * Typically this will be handled in a switch statement,
+		 * with one 'case' entry per <code>Event</code>
+		 * the <code>Mediator</code> is interested in.
+		 */
+		public function handleEvent(event:Event):void {}
+
 		/*============================================================================*/
 		/* Protected Functions                                                        */
 		/*============================================================================*/
