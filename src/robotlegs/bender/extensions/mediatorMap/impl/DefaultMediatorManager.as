@@ -75,6 +75,15 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			const mediator:Object = event.mediator;
 			const displayObject:DisplayObject = event.mediatedItem as DisplayObject;
 
+			var interests:Array = mediator.listEventInterests();
+
+			if(interests && interests.length > 0)
+			{
+				for each(var eventType:String in interests)
+					mediator.eventMap.mapListener(
+						mediator.eventDispatcher, eventType, mediator.handleEvent);
+			}
+
 			if (!displayObject)
 			{
 				// Non-display-object was added, initialize and exit
