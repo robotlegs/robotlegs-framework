@@ -10,6 +10,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.utils.getDefinitionByName;
+
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
 	import robotlegs.bender.extensions.mediatorMap.api.MediatorFactoryEvent;
 
@@ -78,7 +79,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			if (!displayObject)
 			{
 				// Non-display-object was added, initialize and exit
-				initializeMediator(event.mediatedItem, mediator);
+				initializeMediator(mediator, event.mediatedItem);
 				return;
 			}
 
@@ -96,12 +97,12 @@ package robotlegs.bender.extensions.mediatorMap.impl
 					displayObject.removeEventListener(CREATION_COMPLETE, arguments.callee);
 					// ensure that we haven't been removed in the meantime
 					if (_factory.getMediator(displayObject, event.mapping))
-						initializeMediator(displayObject, mediator);
+						initializeMediator(mediator, displayObject);
 				});
 			}
 			else
 			{
-				initializeMediator(displayObject, mediator);
+				initializeMediator(mediator, displayObject);
 			}
 		}
 
@@ -121,19 +122,34 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			_factory.removeMediators(event.target);
 		}
 
-		private function initializeMediator(mediatedItem:Object, mediator:Object):void
+		private function initializeMediator(mediator:Object, mediatedItem:Object):void
 		{
-			if (mediator.hasOwnProperty('viewComponent'))
+			if ('preInitialize' in mediator)
+				mediator.preInitialize();
+
+			if ('viewComponent' in mediator)
 				mediator.viewComponent = mediatedItem;
 
-			if (mediator.hasOwnProperty('initialize'))
+			if ('initialize' in mediator)
 				mediator.initialize();
+
+			if ('postInitialize' in mediator)
+				mediator.postInitialize();
 		}
 
 		private function destroyMediator(mediator:Object):void
 		{
-			if (mediator.hasOwnProperty('destroy'))
+			if ('preDestroy' in mediator)
+				mediator.preDestroy();
+
+			if ('destroy' in mediator)
 				mediator.destroy();
+
+			if ('viewComponent' in mediator)
+				mediator.viewComponent = null;
+
+			if ('postDestroy' in mediator)
+				mediator.postDestroy();
 		}
 	}
 }

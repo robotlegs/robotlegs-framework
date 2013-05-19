@@ -92,11 +92,14 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		[Test]
 		public function mediator_is_initialized():void
 		{
-			const expected:Array = ['initialize'];
+			const expected:Array = ['preInitialize', 'initialize', 'postInitialize'];
 			const actual:Array = [];
-			injector.map(Function, 'initializeCallback').toValue(function(phase:String):void {
-				actual.push(phase);
-			});
+			for each(var phase:String in expected)
+			{
+				injector.map(Function, phase + 'Callback').toValue(function(ph:String):void{
+					actual.push(ph);
+				});
+			}
 			const mapping:IMediatorMapping = new MediatorMapping(createTypeFilter([Sprite]), SomeMediator);
 			factory.createMediators(new Sprite(), Sprite, [mapping]);
 			assertThat(actual, array(expected));
@@ -114,12 +117,15 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		[Test]
 		public function mediator_is_destroyed():void
 		{
-			const expected:Array = ['destroy'];
+			const expected:Array = ['preDestroy','destroy', 'postDestroy'];
 			const actual:Array = [];
 			const view:Sprite = new Sprite();
-			injector.map(Function, 'destroyCallback').toValue(function(phase:String):void {
-				actual.push(phase);
-			});
+			for each(var phase:String in expected)
+			{
+				injector.map(Function, phase + 'Callback').toValue(function(ph:String):void{
+					actual.push(ph);
+				});
+			}
 			const mapping:IMediatorMapping = new MediatorMapping(createTypeFilter([Sprite]), SomeMediator);
 			factory.createMediators(view, Sprite, [mapping]);
 			factory.removeMediators(view);
@@ -183,11 +189,23 @@ class SomeMediator
 	/* Public Properties                                                          */
 	/*============================================================================*/
 
+	[Inject(name="preInitializeCallback", optional="true")]
+	public var preInitializeCallback:Function;
+
 	[Inject(name="initializeCallback", optional="true")]
 	public var initializeCallback:Function;
 
+	[Inject(name="postInitializeCallback", optional="true")]
+	public var postInitializeCallback:Function;
+
+	[Inject(name="preDestroyCallback", optional="true")]
+	public var preDestroyCallback:Function;
+
 	[Inject(name="destroyCallback", optional="true")]
 	public var destroyCallback:Function;
+
+	[Inject(name="postDestroyCallback", optional="true")]
+	public var postDestroyCallback:Function;
 
 	public var initialized:Boolean;
 
@@ -204,15 +222,35 @@ class SomeMediator
 	/* Public Functions                                                           */
 	/*============================================================================*/
 
+	public function preInitialize():void
+	{
+		preInitializeCallback && preInitializeCallback('preInitialize');
+	}
+
 	public function initialize():void
 	{
 		initialized = true;
 		initializeCallback && initializeCallback('initialize');
 	}
 
+	public function postInitialize():void
+	{
+		postInitializeCallback && postInitializeCallback('postInitialize');
+	}
+
+	public function preDestroy():void
+	{
+		preDestroyCallback && preDestroyCallback('preDestroy');
+	}
+
 	public function destroy():void
 	{
 		destroyed = true;
 		destroyCallback && destroyCallback('destroy');
+	}
+
+	public function postDestroy():void
+	{
+		postDestroyCallback && postDestroyCallback('postDestroy');
 	}
 }

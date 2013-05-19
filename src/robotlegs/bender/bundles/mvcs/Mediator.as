@@ -56,6 +56,10 @@ package robotlegs.bender.bundles.mvcs
 		 */
 		public function destroy():void
 		{
+		}
+
+		public function postDestroy():void
+		{
 			eventMap.unmapListeners();
 		}
 
