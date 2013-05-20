@@ -8,12 +8,11 @@
 package robotlegs.bender.framework.impl
 {
 	import flash.utils.Dictionary;
-	import robotlegs.bender.framework.api.IMessageDispatcher;
 
 	/**
 	 * Message Dispatcher implementation.
 	 */
-	public final class MessageDispatcher implements IMessageDispatcher
+	public final class MessageDispatcher
 	{
 
 		/*============================================================================*/
@@ -27,7 +26,9 @@ package robotlegs.bender.framework.impl
 		/*============================================================================*/
 
 		/**
-		 * @inheritDoc
+		 * Registers a message handler with a MessageDispatcher.
+		 * @param message The interesting message
+		 * @param handler The handler function
 		 */
 		public function addMessageHandler(message:Object, handler:Function):void
 		{
@@ -44,7 +45,9 @@ package robotlegs.bender.framework.impl
 		}
 
 		/**
-		 * @inheritDoc
+		 * Checks whether the MessageDispatcher has any handlers registered for a specific message.
+		 * @param message The interesting message
+		 * @return A value of true if a handler of the specified message is registered; false otherwise.
 		 */
 		public function hasMessageHandler(message:Object):Boolean
 		{
@@ -52,7 +55,9 @@ package robotlegs.bender.framework.impl
 		}
 
 		/**
-		 * @inheritDoc
+		 * Removes a message handler from a MessageDispatcher
+		 * @param message The interesting message
+		 * @param handler The handler function
 		 */
 		public function removeMessageHandler(message:Object, handler:Function):void
 		{
@@ -67,7 +72,10 @@ package robotlegs.bender.framework.impl
 		}
 
 		/**
-		 * @inheritDoc
+		 * Dispatches a message into the message flow.
+		 * @param message The interesting message
+		 * @param callback The completion callback function
+		 * @param reverse Should handlers be called in reverse order
 		 */
 		public function dispatchMessage(message:Object, callback:Function = null, reverse:Boolean = false):void
 		{
