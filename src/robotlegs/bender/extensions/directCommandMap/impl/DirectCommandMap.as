@@ -40,7 +40,7 @@ package robotlegs.bender.extensions.directCommandMap.impl
 		public function DirectCommandMap(context:IContext)
 		{
 			_context = context;
-			var sandboxedInjector:Injector = context.injector.createChildInjector();
+			const sandboxedInjector:Injector = context.injector.createChildInjector();
 			// allow access to this specific instance in the commands
 			sandboxedInjector.map(IDirectCommandMap).toValue(this);
 			_mappings = new CommandMappingList(new NullCommandTrigger(), context.getLogger(this));

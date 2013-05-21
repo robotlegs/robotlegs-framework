@@ -38,6 +38,13 @@ package robotlegs.bender.extensions.viewProcessorMap
 		/* Tests                                                                      */
 		/*============================================================================*/
 
+		[Test(expects="robotlegs.bender.framework.api.LifecycleError")]
+		public function installing_after_initialization_throws_error():void
+		{
+			context.initialize();
+			context.install(ViewProcessorMapExtension);
+		}
+
 		[Test]
 		public function viewProcessorMap_is_mapped_into_injector_on_initialize():void
 		{

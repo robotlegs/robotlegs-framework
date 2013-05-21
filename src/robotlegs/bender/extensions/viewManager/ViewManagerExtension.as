@@ -13,7 +13,6 @@ package robotlegs.bender.extensions.viewManager
 	import robotlegs.bender.extensions.viewManager.impl.ViewManager;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
-	import robotlegs.bender.framework.impl.ensureContextUninitialized;
 
 	/**
 	 * This extension install a View Manager into the context
@@ -45,7 +44,8 @@ package robotlegs.bender.extensions.viewManager
 		 */
 		public function extend(context:IContext):void
 		{
-			ensureContextUninitialized(context, this);
+			context.whenInitializing(whenInitializing);
+			context.whenDestroying(whenDestroying);
 
 			_injector = context.injector;
 
@@ -55,9 +55,6 @@ package robotlegs.bender.extensions.viewManager
 
 			// But you get your own View Manager
 			_injector.map(IViewManager).toSingleton(ViewManager);
-
-			context.whenInitializing(whenInitializing);
-			context.whenDestroying(whenDestroying);
 		}
 
 		/*============================================================================*/

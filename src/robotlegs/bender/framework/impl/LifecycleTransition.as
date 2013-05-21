@@ -235,7 +235,7 @@ package robotlegs.bender.framework.impl
 			else
 			{
 				// explode!
-				throw(error);
+				throw error;
 			}
 		}
 	}

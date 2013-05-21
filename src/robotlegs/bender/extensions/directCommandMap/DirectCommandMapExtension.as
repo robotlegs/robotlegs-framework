@@ -11,7 +11,6 @@ package robotlegs.bender.extensions.directCommandMap
 	import robotlegs.bender.extensions.directCommandMap.impl.DirectCommandMap;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
-	import robotlegs.bender.framework.impl.ensureContextUninitialized;
 
 	/**
 	 * TODO: document
@@ -28,7 +27,6 @@ package robotlegs.bender.extensions.directCommandMap
 		 */
 		public function extend(context:IContext):void
 		{
-			ensureContextUninitialized(context, this);
 			context.injector.map(IDirectCommandMap).toType(DirectCommandMap);
 		}
 	}

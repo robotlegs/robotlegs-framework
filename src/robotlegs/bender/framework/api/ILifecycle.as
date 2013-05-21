@@ -44,22 +44,22 @@ package robotlegs.bender.framework.api
 		function get uninitialized():Boolean;
 
 		/**
-		 * Is this object initialized?
+		 * Has this object been fully initialized?
 		 */
 		function get initialized():Boolean;
 
 		/**
-		 * Is this object active?
+		 * Is this object currently active?
 		 */
 		function get active():Boolean;
 
 		/**
-		 * Is this object suspended?
+		 * Has this object been fully suspended?
 		 */
 		function get suspended():Boolean;
 
 		/**
-		 * Has this object been destroyed?
+		 * Has this object been fully destroyed?
 		 */
 		function get destroyed():Boolean;
 

@@ -21,7 +21,6 @@ package robotlegs.bender.extensions.modularity
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
 	import robotlegs.bender.framework.api.ILogger;
-	import robotlegs.bender.framework.impl.ensureContextUninitialized;
 
 	/**
 	 * This extension allows a context to inherit dependencies from a parent context,
@@ -73,12 +72,11 @@ package robotlegs.bender.extensions.modularity
 		 */
 		public function extend(context:IContext):void
 		{
-			ensureContextUninitialized(context, this);
+			context.beforeInitializing(beforeInitializing);
 			_context = context;
 			_injector = context.injector;
 			_logger = context.getLogger(this);
 			_context.addConfigHandler(instanceOfType(ContextView), handleContextView);
-			_context.beforeInitializing(beforeInitializing);
 			_injector.map(IModuleConnector).toSingleton(ModuleConnector);
 		}
 

@@ -35,6 +35,13 @@ package robotlegs.bender.extensions.viewManager
 		/* Tests                                                                      */
 		/*============================================================================*/
 
+		[Test(expects="robotlegs.bender.framework.api.LifecycleError")]
+		public function installing_after_initialization_throws_error():void
+		{
+			context.initialize();
+			context.install(ViewManagerExtension);
+		}
+
 		[Test]
 		public function viewManager_is_mapped_into_injector():void
 		{

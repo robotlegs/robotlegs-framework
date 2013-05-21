@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -42,6 +42,13 @@ package robotlegs.bender.extensions.contextView
 		/*============================================================================*/
 		/* Tests                                                                      */
 		/*============================================================================*/
+
+		[Test(expects="robotlegs.bender.framework.api.LifecycleError")]
+		public function installing_after_initialization_throws_error():void
+		{
+			context.initialize();
+			context.install(ContextViewExtension);
+		}
 
 		[Test]
 		public function contextView_is_mapped():void

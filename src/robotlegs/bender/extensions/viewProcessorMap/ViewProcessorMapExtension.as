@@ -16,7 +16,6 @@ package robotlegs.bender.extensions.viewProcessorMap
 	import robotlegs.bender.extensions.viewProcessorMap.impl.ViewProcessorMap;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
-	import robotlegs.bender.framework.impl.ensureContextUninitialized;
 
 	/**
 	 * This extension install a View Processor Map into a context
@@ -45,13 +44,12 @@ package robotlegs.bender.extensions.viewProcessorMap
 		 */
 		public function extend(context:IContext):void
 		{
-			ensureContextUninitialized(context, this);
-			_injector = context.injector;
-			_injector.map(IViewProcessorFactory).toValue(new ViewProcessorFactory(_injector.createChildInjector()));
-			_injector.map(IViewProcessorMap).toSingleton(ViewProcessorMap);
 			context.beforeInitializing(beforeInitializing);
 			context.beforeDestroying(beforeDestroying);
 			context.whenDestroying(whenDestroying);
+			_injector = context.injector;
+			_injector.map(IViewProcessorFactory).toValue(new ViewProcessorFactory(_injector.createChildInjector()));
+			_injector.map(IViewProcessorMap).toSingleton(ViewProcessorMap);
 		}
 
 		/*============================================================================*/

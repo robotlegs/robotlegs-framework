@@ -12,7 +12,6 @@ package robotlegs.bender.extensions.contextView
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
 	import robotlegs.bender.framework.api.ILogger;
-	import robotlegs.bender.framework.impl.ensureContextUninitialized;
 
 	/**
 	 * <p>This Extension waits for a ContextView to be added as a configuration
@@ -40,11 +39,10 @@ package robotlegs.bender.extensions.contextView
 		 */
 		public function extend(context:IContext):void
 		{
-			ensureContextUninitialized(context, this);
 			_injector = context.injector;
 			_logger = context.getLogger(this);
-			context.addConfigHandler(instanceOfType(ContextView), handleContextView);
 			context.beforeInitializing(beforeInitializing);
+			context.addConfigHandler(instanceOfType(ContextView), handleContextView);
 		}
 
 		/*============================================================================*/

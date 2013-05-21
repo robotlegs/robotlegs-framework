@@ -13,7 +13,6 @@ package robotlegs.bender.extensions.viewManager
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
 	import robotlegs.bender.framework.api.ILogger;
-	import robotlegs.bender.framework.impl.ensureContextUninitialized;
 
 	/**
 	 * This extension install a manual Stage Observer
@@ -47,12 +46,11 @@ package robotlegs.bender.extensions.viewManager
 		 */
 		public function extend(context:IContext):void
 		{
-			ensureContextUninitialized(context, this);
+			context.whenInitializing(whenInitializing);
+			context.whenDestroying(whenDestroying);
 			_installCount++;
 			_injector = context.injector;
 			_logger = context.getLogger(this);
-			context.whenInitializing(whenInitializing);
-			context.whenDestroying(whenDestroying);
 		}
 
 		/*============================================================================*/

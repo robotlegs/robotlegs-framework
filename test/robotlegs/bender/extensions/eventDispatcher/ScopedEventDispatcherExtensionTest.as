@@ -28,6 +28,14 @@ package robotlegs.bender.extensions.eventDispatcher
 		/* Tests                                                                      */
 		/*============================================================================*/
 
+		[Test(expects="robotlegs.bender.framework.api.LifecycleError")]
+		public function installing_after_initialization_throws_error():void
+		{
+			const context:IContext = new Context();
+			context.initialize();
+			context.install(ScopedEventDispatcherExtension);
+		}
+
 		[Test]
 		public function named_EventDispatcher_is_mapped_into_injector():void
 		{

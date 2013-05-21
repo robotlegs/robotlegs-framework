@@ -12,7 +12,6 @@ package robotlegs.bender.extensions.eventDispatcher
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
-	import robotlegs.bender.framework.impl.ensureContextUninitialized;
 
 	/**
 	 * This extensions maps a series of named IEventDispatcher instances
@@ -55,7 +54,6 @@ package robotlegs.bender.extensions.eventDispatcher
 		 */
 		public function extend(context:IContext):void
 		{
-			ensureContextUninitialized(context, this);
 			_injector = context.injector;
 			context.whenInitializing(whenInitializing);
 		}

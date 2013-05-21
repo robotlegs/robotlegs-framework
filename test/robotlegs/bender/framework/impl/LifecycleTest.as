@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -165,14 +165,14 @@ package robotlegs.bender.framework.impl
 
 		// ----- Shorthand transition handlers
 
-		[Test(expects="Error")]
+		[Test(expects="robotlegs.bender.framework.api.LifecycleError")]
 		public function whenHandler_with_more_than_1_argument_throws():void
 		{
 			lifecycle.whenInitializing(function(phase:String, callback:Function):void {
 			});
 		}
 
-		[Test(expects="Error")]
+		[Test(expects="robotlegs.bender.framework.api.LifecycleError")]
 		public function afterHandler_with_more_than_1_argument_throws():void
 		{
 			lifecycle.afterInitializing(function(phase:String, callback:Function):void {
@@ -353,6 +353,56 @@ package robotlegs.bender.framework.impl
 			assertThat(event.type, equalTo(LifecycleEvent.STATE_CHANGE));
 		}
 
+		// ----- Adding handlers that will never be called
+
+		[Test(expects="robotlegs.bender.framework.api.LifecycleError")]
+		public function adding_beforeInitializing_handler_after_initialization_throws_error():void
+		{
+			lifecycle.initialize();
+			lifecycle.beforeInitializing(nop);
+		}
+
+		[Test(expects="robotlegs.bender.framework.api.LifecycleError")]
+		public function adding_whenInitializing_handler_after_initialization_throws_error():void
+		{
+			lifecycle.initialize();
+			lifecycle.whenInitializing(nop);
+		}
+
+		[Test(async, timeout='200')]
+		public function adding_whenInitializing_handler_during_initialization_does_NOT_throw_error():void
+		{
+			var callCount:int = 0;
+			lifecycle.beforeInitializing(function(message:Object, callback:Function):void {
+				setTimeout(callback, 100);
+			});
+			lifecycle.initialize();
+			lifecycle.whenInitializing(function():void {
+				callCount++;
+				assertThat(callCount, equalTo(1));
+			});
+		}
+
+		[Test(expects="robotlegs.bender.framework.api.LifecycleError")]
+		public function adding_afterInitializing_handler_after_initialization_throws_error():void
+		{
+			lifecycle.initialize();
+			lifecycle.afterInitializing(nop);
+		}
+
+		[Test]
+		public function adding_afterInitializing_handler_during_initialization_does_NOT_throw_error():void
+		{
+			var callCount:int = 0;
+			lifecycle.whenInitializing(function():void {
+				lifecycle.afterInitializing(function():void {
+					callCount++;
+				});
+			});
+			lifecycle.initialize();
+			assertThat(callCount, equalTo(1));
+		}
+
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
@@ -386,6 +436,10 @@ package robotlegs.bender.framework.impl
 			return function(message:Object):void {
 				array.push(message);
 			};
+		}
+
+		private function nop():void
+		{
 		}
 	}
 }

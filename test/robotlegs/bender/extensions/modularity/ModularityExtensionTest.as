@@ -73,6 +73,13 @@ package robotlegs.bender.extensions.modularity
 		/* Tests                                                                      */
 		/*============================================================================*/
 
+		[Test(expects="robotlegs.bender.framework.api.LifecycleError")]
+		public function installing_after_initialization_throws_error():void
+		{
+			parentContext.initialize();
+			parentContext.install(ModularityExtension);
+		}
+
 		[Test(async, ui)]
 		public function context_inherits_parent_injector():void
 		{

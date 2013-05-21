@@ -10,7 +10,6 @@ package robotlegs.bender.framework
 	import robotlegs.bender.framework.impl.ApplyHooksTest;
 	import robotlegs.bender.framework.impl.ConfigManagerTest;
 	import robotlegs.bender.framework.impl.ContextTest;
-	import robotlegs.bender.framework.impl.EnsureContextUninitializedTest;
 	import robotlegs.bender.framework.impl.ExtensionInstallerTest;
 	import robotlegs.bender.framework.impl.GuardsApproveTest;
 	import robotlegs.bender.framework.impl.LifecycleTest;
@@ -56,7 +55,5 @@ package robotlegs.bender.framework
 		public var safelyCallBack:SafelyCallBackTest;
 
 		public var pin:PinTest;
-
-		public var ensureContextUninitializedTest:EnsureContextUninitializedTest;
 	}
 }
