@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -18,7 +18,6 @@ package robotlegs.bender.framework.impl
 	import robotlegs.bender.framework.impl.safelyCallBackSupport.createCallbackHandlerThatErrors;
 	import robotlegs.bender.framework.impl.safelyCallBackSupport.createHandler;
 
-	// TODO: extract MessageRunner tests
 	public class MessageDispatcherTest
 	{
 
@@ -331,108 +330,125 @@ package robotlegs.bender.framework.impl
 		[Test]
 		public function sync_handlers_should_run_in_order():void
 		{
-			for each (var reverse:Boolean in[false, true])
-			{
-				const actual:Array = [];
-				const expected:Array = ['handler 1', 'handler 2', 'handler 3', 'handler 4'];
-				reverse && expected.reverse();
-				dispatcher = new MessageDispatcher();
-				dispatcher.addMessageHandler(message, createHandler(actual.push, 'handler 1'));
-				dispatcher.addMessageHandler(message, createHandler(actual.push, 'handler 2'));
-				dispatcher.addMessageHandler(message, createHandler(actual.push, 'handler 3'));
-				dispatcher.addMessageHandler(message, createHandler(actual.push, 'handler 4'));
-				dispatcher.dispatchMessage(message, null, reverse);
-				assertThat("reverse=" + reverse, actual, array(expected));
-			}
+			const results:Array = [];
+			for each (var id:String in['A', 'B', 'C', 'D'])
+				dispatcher.addMessageHandler(message, createHandler(results.push, id));
+			dispatcher.dispatchMessage(message);
+			assertThat(results, array(['A', 'B', 'C', 'D']));
+		}
+
+		[Test]
+		public function sync_handlers_should_run_in_reverse_order():void
+		{
+			const results:Array = [];
+			for each (var id:String in['A', 'B', 'C', 'D'])
+				dispatcher.addMessageHandler(message, createHandler(results.push, id));
+			dispatcher.dispatchMessage(message, null, true);
+			assertThat(results, array(['D', 'C', 'B', 'A']));
 		}
 
 		[Test(async)]
 		public function async_handlers_should_run_in_order():void
 		{
-			for each (var reverse:Boolean in[false, true])
-			{
-				const actual:Array = [];
-				const expected:Array = ['handler 1', 'handler 2', 'handler 3', 'handler 4'];
-				reverse && expected.reverse();
-				dispatcher = new MessageDispatcher();
-				dispatcher.addMessageHandler(message, createAsyncHandler(actual.push, 'handler 1'));
-				dispatcher.addMessageHandler(message, createAsyncHandler(actual.push, 'handler 2'));
-				dispatcher.addMessageHandler(message, createAsyncHandler(actual.push, 'handler 3'));
-				dispatcher.addMessageHandler(message, createAsyncHandler(actual.push, 'handler 4'));
-				dispatcher.dispatchMessage(message, null, reverse);
-				// gotta close over these otherwise we're just testing the latest twice :)
-				(function(reverse:Boolean, actual:Array, expected:Array):void {
-					delayAssertion(function():void {
-						assertThat("reverse=" + reverse, actual, array(expected));
-					}, 200);
-				})(reverse, actual, expected);
-			}
+			const results:Array = [];
+			for each (var id:String in['A', 'B', 'C', 'D'])
+				dispatcher.addMessageHandler(message, createAsyncHandler(results.push, id));
+			dispatcher.dispatchMessage(message);
+			delayAssertion(function():void {
+				assertThat(results, array(['A', 'B', 'C', 'D']));
+			}, 200);
+		}
+
+		[Test(async)]
+		public function async_handlers_should_run_in_reverse_order_when_reversed():void
+		{
+			const results:Array = [];
+			for each (var id:String in['A', 'B', 'C', 'D'])
+				dispatcher.addMessageHandler(message, createAsyncHandler(results.push, id));
+			dispatcher.dispatchMessage(message, null, true);
+			delayAssertion(function():void {
+				assertThat(results, array(['D', 'C', 'B', 'A']));
+			}, 200);
 		}
 
 		[Test(async)]
 		public function async_and_sync_handlers_should_run_in_order():void
 		{
-			for each (var reverse:Boolean in[false, true])
-			{
-				const actual:Array = [];
-				const expected:Array = ['handler 1', 'handler 2', 'handler 3', 'handler 4'];
-				reverse && expected.reverse();
-				dispatcher = new MessageDispatcher();
-				dispatcher.addMessageHandler(message, createAsyncHandler(actual.push, 'handler 1'));
-				dispatcher.addMessageHandler(message, createHandler(actual.push, 'handler 2'));
-				dispatcher.addMessageHandler(message, createAsyncHandler(actual.push, 'handler 3'));
-				dispatcher.addMessageHandler(message, createHandler(actual.push, 'handler 4'));
-				dispatcher.dispatchMessage(message, null, reverse);
-				// gotta close over these otherwise we're just testing the latest twice :)
-				(function(reverse:Boolean, actual:Array, expected:Array):void {
-					delayAssertion(function():void {
-						assertThat("reverse=" + reverse, actual, array(expected));
-					}, 200);
-				})(reverse, actual, expected);
-			}
+			const results:Array = [];
+			dispatcher.addMessageHandler(message, createAsyncHandler(results.push, 'A'));
+			dispatcher.addMessageHandler(message, createHandler(results.push, 'B'));
+			dispatcher.addMessageHandler(message, createAsyncHandler(results.push, 'C'));
+			dispatcher.addMessageHandler(message, createHandler(results.push, 'D'));
+			dispatcher.dispatchMessage(message);
+			delayAssertion(function():void {
+				assertThat(results, array(['A', 'B', 'C', 'D']));
+			}, 200);
+		}
+
+		[Test(async)]
+		public function async_and_sync_handlers_should_run_in_order_when_reversed():void
+		{
+			const results:Array = [];
+			dispatcher.addMessageHandler(message, createAsyncHandler(results.push, 'A'));
+			dispatcher.addMessageHandler(message, createHandler(results.push, 'B'));
+			dispatcher.addMessageHandler(message, createAsyncHandler(results.push, 'C'));
+			dispatcher.addMessageHandler(message, createHandler(results.push, 'D'));
+			dispatcher.dispatchMessage(message, null, true);
+			delayAssertion(function():void {
+				assertThat(results, array(['D', 'C', 'B', 'A']));
+			}, 200);
 		}
 
 		[Test]
 		public function terminated_message_should_not_reach_further_handlers():void
 		{
-			for each (var reverse:Boolean in[false, true])
-			{
-				const actual:Array = [];
-				const expected:Array = reverse
-					? ['handler 4', 'handler 3 (with error)']
-					: ['handler 1', 'handler 2', 'handler 3 (with error)'];
-				dispatcher = new MessageDispatcher();
-				dispatcher.addMessageHandler(message, createHandler(actual.push, 'handler 1'));
-				dispatcher.addMessageHandler(message, createHandler(actual.push, 'handler 2'));
-				dispatcher.addMessageHandler(message, createCallbackHandlerThatErrors(actual.push, 'handler 3 (with error)'));
-				dispatcher.addMessageHandler(message, createHandler(actual.push, 'handler 4'));
-				dispatcher.dispatchMessage(message, null, reverse);
-				assertThat("reverse=" + reverse, actual, array(expected));
-			}
+			const results:Array = [];
+			dispatcher.addMessageHandler(message, createHandler(results.push, 'A'));
+			dispatcher.addMessageHandler(message, createHandler(results.push, 'B'));
+			dispatcher.addMessageHandler(message, createCallbackHandlerThatErrors(results.push, 'C (with error)'));
+			dispatcher.addMessageHandler(message, createHandler(results.push, 'D'));
+			dispatcher.dispatchMessage(message);
+			assertThat(results, array(['A', 'B', 'C (with error)']));
+		}
+
+		[Test]
+		public function terminated_message_should_not_reach_further_handlers_when_reversed():void
+		{
+			const results:Array = [];
+			dispatcher.addMessageHandler(message, createHandler(results.push, 'A'));
+			dispatcher.addMessageHandler(message, createHandler(results.push, 'B'));
+			dispatcher.addMessageHandler(message, createCallbackHandlerThatErrors(results.push, 'C (with error)'));
+			dispatcher.addMessageHandler(message, createHandler(results.push, 'D'));
+			dispatcher.dispatchMessage(message, null, true);
+			assertThat(results, array(['D', 'C (with error)']));
 		}
 
 		[Test(async)]
 		public function terminated_async_message_should_not_reach_further_handlers():void
 		{
-			for each (var reverse:Boolean in[false, true])
-			{
-				const actual:Array = [];
-				const expected:Array = reverse
-					? ['handler 4', 'handler 3 (with error)']
-					: ['handler 1', 'handler 2', 'handler 3 (with error)'];
-				dispatcher = new MessageDispatcher();
-				dispatcher.addMessageHandler(message, createAsyncHandler(actual.push, 'handler 1'));
-				dispatcher.addMessageHandler(message, createAsyncHandler(actual.push, 'handler 2'));
-				dispatcher.addMessageHandler(message, createCallbackHandlerThatErrors(actual.push, 'handler 3 (with error)'));
-				dispatcher.addMessageHandler(message, createAsyncHandler(actual.push, 'handler 4'));
-				dispatcher.dispatchMessage(message, null, reverse);
-				// gotta close over these otherwise we're just testing the latest twice :)
-				(function(reverse:Boolean, actual:Array, expected:Array):void {
-					delayAssertion(function():void {
-						assertThat("reverse=" + reverse, actual, array(expected));
-					}, 200);
-				})(reverse, actual, expected);
-			}
+			const results:Array = [];
+			dispatcher.addMessageHandler(message, createAsyncHandler(results.push, 'A'));
+			dispatcher.addMessageHandler(message, createAsyncHandler(results.push, 'B'));
+			dispatcher.addMessageHandler(message, createCallbackHandlerThatErrors(results.push, 'C (with error)'));
+			dispatcher.addMessageHandler(message, createAsyncHandler(results.push, 'D'));
+			dispatcher.dispatchMessage(message);
+			delayAssertion(function():void {
+				assertThat(results, array(['A', 'B', 'C (with error)']));
+			}, 200);
+		}
+
+		[Test(async)]
+		public function terminated_async_message_should_not_reach_further_handlers_when_reversed():void
+		{
+			const results:Array = [];
+			dispatcher.addMessageHandler(message, createAsyncHandler(results.push, 'A'));
+			dispatcher.addMessageHandler(message, createAsyncHandler(results.push, 'B'));
+			dispatcher.addMessageHandler(message, createCallbackHandlerThatErrors(results.push, 'C (with error)'));
+			dispatcher.addMessageHandler(message, createAsyncHandler(results.push, 'D'));
+			dispatcher.dispatchMessage(message, null, true);
+			delayAssertion(function():void {
+				assertThat(results, array(['D', 'C (with error)']));
+			}, 200);
 		}
 
 		[Test]
