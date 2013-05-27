@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.directCommandMap.impl
@@ -14,6 +14,7 @@ package robotlegs.bender.extensions.directCommandMap.impl
 	import org.hamcrest.object.isTrue;
 	import org.hamcrest.object.strictlyEqualTo;
 	import org.swiftsuspenders.Injector;
+	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 	import robotlegs.bender.extensions.commandCenter.support.CallbackCommand;
 	import robotlegs.bender.extensions.commandCenter.support.CallbackCommand2;
 	import robotlegs.bender.extensions.commandCenter.support.NullCommand;
@@ -152,6 +153,17 @@ package robotlegs.bender.extensions.directCommandMap.impl
 			subject.execute();
 
 			assertThat(executionCount, equalTo(1));
+		}
+
+		[Test]
+		public function mapping_processor_is_called():void
+		{
+			var callCount:int = 0;
+			subject.addMappingProcessor(function(mapping:ICommandMapping):void {
+				callCount++;
+			});
+			subject.map(NullCommand);
+			assertThat(callCount, equalTo(1));
 		}
 	}
 }

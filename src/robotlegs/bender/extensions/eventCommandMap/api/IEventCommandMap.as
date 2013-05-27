@@ -30,5 +30,12 @@ package robotlegs.bender.extensions.eventCommandMap.api
 		 * @return Command Unmapper
 		 */
 		function unmap(type:String, eventClass:Class = null):ICommandUnmapper;
+
+		/**
+		 * Adds a handler to process mappings
+		 * @param handler Function that accepts a mapping
+		 * @return Self
+		 */
+		function addMappingProcessor(handler:Function):IEventCommandMap;
 	}
 }

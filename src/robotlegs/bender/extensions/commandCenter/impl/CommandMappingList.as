@@ -26,6 +26,8 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		private var _trigger:ICommandTrigger;
 
+		private var _processors:Array;
+
 		private var _logger:ILogger;
 
 		private var _compareFunction:Function;
@@ -36,9 +38,10 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
-		public function CommandMappingList(trigger:ICommandTrigger, logger:ILogger = null)
+		public function CommandMappingList(trigger:ICommandTrigger, processors:Array, logger:ILogger = null)
 		{
 			_trigger = trigger;
+			_processors = processors;
 			_logger = logger;
 		}
 
@@ -62,6 +65,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 		public function addMapping(mapping:ICommandMapping):void
 		{
 			_sorted = false;
+			applyProcessors(mapping);
 			const oldMapping:ICommandMapping = _mappingsByCommand[mapping.commandClass];
 			if (oldMapping)
 			{
@@ -138,6 +142,14 @@ package robotlegs.bender.extensions.commandCenter.impl
 				_mappings = _mappings.sort(_compareFunction);
 			}
 			_sorted = true;
+		}
+
+		private function applyProcessors(mapping:ICommandMapping):void
+		{
+			for each (var processor:Function in _processors)
+			{
+				processor(mapping);
+			}
 		}
 	}
 }

@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.eventCommandMap.impl
@@ -16,6 +16,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.instanceOf;
 	import org.swiftsuspenders.Injector;
+	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 	import robotlegs.bender.extensions.commandCenter.dsl.ICommandMapper;
 	import robotlegs.bender.extensions.commandCenter.dsl.ICommandUnmapper;
 	import robotlegs.bender.extensions.commandCenter.support.CallbackCommand;
@@ -425,6 +426,17 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 				.toCommand(ClassReportingCallbackCommand).once();
 			dispatcher.dispatchEvent(new SupportEvent(SupportEvent.TYPE1));
 			assertThat(reportedExecutions, array(ClassReportingCallbackCommand));
+		}
+
+		[Test]
+		public function mapping_processor_is_called():void
+		{
+			var callCount:int = 0;
+			subject.addMappingProcessor(function(mapping:ICommandMapping):void {
+				callCount++;
+			});
+			subject.map("type").toCommand(NullCommand);
+			assertThat(callCount, equalTo(1));
 		}
 
 		/*============================================================================*/

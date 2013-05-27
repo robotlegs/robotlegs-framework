@@ -51,12 +51,13 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			dispatcher:IEventDispatcher,
 			type:String,
 			eventClass:Class = null,
+			processors:Array = null,
 			logger:ILogger = null)
 		{
 			_dispatcher = dispatcher;
 			_type = type;
 			_eventClass = eventClass;
-			_mappings = new CommandMappingList(this, logger);
+			_mappings = new CommandMappingList(this, processors, logger);
 			_executor = new CommandExecutor(injector, _mappings.removeMapping);
 		}
 

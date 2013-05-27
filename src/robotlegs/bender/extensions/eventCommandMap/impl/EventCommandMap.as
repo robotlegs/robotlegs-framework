@@ -26,6 +26,8 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
+		private const _mappingProcessors:Array = [];
+
 		private var _injector:Injector;
 
 		private var _dispatcher:IEventDispatcher;
@@ -69,6 +71,16 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			return getTrigger(type, eventClass).createMapper();
 		}
 
+		/**
+		 * @inheritDoc
+		 */
+		public function addMappingProcessor(handler:Function):IEventCommandMap
+		{
+			if (_mappingProcessors.indexOf(handler) == -1)
+				_mappingProcessors.push(handler);
+			return this;
+		}
+
 		/*============================================================================*/
 		/* Private Functions                                                          */
 		/*============================================================================*/
@@ -78,14 +90,14 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 			return type + eventClass;
 		}
 
-		private function createTrigger(type:String, eventClass:Class):EventCommandTrigger
-		{
-			return new EventCommandTrigger(_injector, _dispatcher, type, eventClass, _logger);
-		}
-
 		private function getTrigger(type:String, eventClass:Class):EventCommandTrigger
 		{
 			return _triggerMap.getTrigger(type, eventClass) as EventCommandTrigger;
+		}
+
+		private function createTrigger(type:String, eventClass:Class):EventCommandTrigger
+		{
+			return new EventCommandTrigger(_injector, _dispatcher, type, eventClass, _mappingProcessors, _logger);
 		}
 	}
 }

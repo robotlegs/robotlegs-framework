@@ -22,5 +22,12 @@ package robotlegs.bender.extensions.directCommandMap.api
 		 * @param command the command instance to unpin
 		 */
 		function release(command:Object):void;
+
+		/**
+		 * Adds a handler to process mappings
+		 * @param handler Function that accepts a mapping
+		 * @return Self
+		 */
+		function addMappingProcessor(handler:Function):IDirectCommandMap;
 	}
 }

@@ -52,6 +52,8 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		private var mapping3:ICommandMapping;
 
+		private var processors:Array;
+
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
 		/*============================================================================*/
@@ -59,7 +61,8 @@ package robotlegs.bender.extensions.commandCenter.impl
 		[Before]
 		public function before():void
 		{
-			subject = new CommandMappingList(trigger, logger);
+			processors = [];
+			subject = new CommandMappingList(trigger, processors, logger);
 			mapping1 = new CommandMapping(NullCommand);
 			mapping2 = new CommandMapping(NullCommand2);
 			mapping3 = new CommandMapping(NullCommand3);
@@ -261,6 +264,30 @@ package robotlegs.bender.extensions.commandCenter.impl
 			subject.removeMappingFor(NullCommand);
 			subject.getList();
 			assertThat(called, isFalse());
+		}
+
+		[Test]
+		public function mapping_processor_is_called():void
+		{
+			var callCount:int = 0;
+			processors.push(function(mapping:CommandMapping):void {
+				callCount++;
+			});
+			subject.addMapping(mapping1);
+			assertThat(callCount, equalTo(1));
+		}
+
+		[Test]
+		public function mapping_processor_is_given_mappings():void
+		{
+			const mappings:Array = [];
+			processors.push(function(mapping:CommandMapping):void {
+				mappings.push(mapping);
+			});
+			subject.addMapping(mapping1);
+			subject.addMapping(mapping2);
+			subject.addMapping(mapping3);
+			assertThat(mappings, array(mapping1, mapping2, mapping3));
 		}
 
 		/*============================================================================*/

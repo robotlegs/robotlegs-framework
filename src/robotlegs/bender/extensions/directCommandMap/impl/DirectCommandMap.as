@@ -24,6 +24,8 @@ package robotlegs.bender.extensions.directCommandMap.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
+		private const _mappingProcessors:Array = [];
+
 		private var _context:IContext;
 
 		private var _executor:ICommandExecutor;
@@ -43,7 +45,8 @@ package robotlegs.bender.extensions.directCommandMap.impl
 			const sandboxedInjector:Injector = context.injector.createChildInjector();
 			// allow access to this specific instance in the commands
 			sandboxedInjector.map(IDirectCommandMap).toValue(this);
-			_mappings = new CommandMappingList(new NullCommandTrigger(), context.getLogger(this));
+			_mappings = new CommandMappingList(
+				new NullCommandTrigger(), _mappingProcessors, context.getLogger(this));
 			_executor = new CommandExecutor(sandboxedInjector, _mappings.removeMapping);
 		}
 
@@ -81,6 +84,16 @@ package robotlegs.bender.extensions.directCommandMap.impl
 		public function execute(payload:CommandPayload = null):void
 		{
 			_executor.executeCommands(_mappings.getList(), payload);
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function addMappingProcessor(handler:Function):IDirectCommandMap
+		{
+			if (_mappingProcessors.indexOf(handler) == -1)
+				_mappingProcessors.push(handler);
+			return this;
 		}
 	}
 }
