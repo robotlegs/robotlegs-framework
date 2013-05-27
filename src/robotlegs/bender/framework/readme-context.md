@@ -26,7 +26,11 @@ Most extensions and bundles can be installed as classes:
 
 Some extensions offer some extra configuration by way of constructor arguments:
 
-    _context.install(new ScopedEventDispatcherExtension("shared", "local"));
+    _context.install(new EventDispatcherExtension(myExistingEventDispatcher));
+
+Usually these extensions provide sensible default constructor arguments and can be installed as classes:
+
+    _context.install(EventDispatcherExtension);
 
 # Configuration
 
