@@ -67,9 +67,9 @@ package robotlegs.bender.extensions.modularity.impl
 		[Test]
 		public function allows_communication_from_parent_to_child():void
 		{
-			parentConnector.globally()
+			parentConnector.onDefaultChannel()
 				.relayEvent(SupportEvent.TYPE1);
-			childAConnector.globally()
+			childAConnector.onDefaultChannel()
 				.receiveEvent(SupportEvent.TYPE1);
 
 			var wasCalled:Boolean = false;
@@ -85,9 +85,9 @@ package robotlegs.bender.extensions.modularity.impl
 		[Test]
 		public function allows_communication_from_child_to_parent():void
 		{
-			parentConnector.globally()
+			parentConnector.onDefaultChannel()
 				.receiveEvent(SupportEvent.TYPE1);
-			childAConnector.globally()
+			childAConnector.onDefaultChannel()
 				.relayEvent(SupportEvent.TYPE1);
 
 			var wasCalled:Boolean = false;
@@ -103,9 +103,9 @@ package robotlegs.bender.extensions.modularity.impl
 		[Test]
 		public function allows_communication_amongst_children():void
 		{
-			childAConnector.globally()
+			childAConnector.onDefaultChannel()
 				.relayEvent(SupportEvent.TYPE1);
-			childBConnector.globally()
+			childBConnector.onDefaultChannel()
 				.receiveEvent(SupportEvent.TYPE1);
 
 			var wasCalled:Boolean = false;
@@ -121,7 +121,7 @@ package robotlegs.bender.extensions.modularity.impl
 		[Test]
 		public function channels_are_isolated():void
 		{
-			parentConnector.globally()
+			parentConnector.onDefaultChannel()
 				.relayEvent(SupportEvent.TYPE1);
 			childAConnector.onChannel('other-channel')
 				.receiveEvent(SupportEvent.TYPE1);

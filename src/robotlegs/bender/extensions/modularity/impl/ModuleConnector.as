@@ -48,7 +48,7 @@ package robotlegs.bender.extensions.modularity.impl
 			return getOrCreateConfigurator(channelId);
 		}
 
-		public function globally():IModuleConnectionAction
+		public function onDefaultChannel():IModuleConnectionAction
 		{
 			return getOrCreateConfigurator('global');
 		}

@@ -13,6 +13,6 @@ package robotlegs.bender.extensions.modularity.api
 	{
 		function onChannel(channelId:String):IModuleConnectionAction;
 
-		function globally():IModuleConnectionAction;
+		function onDefaultChannel():IModuleConnectionAction;
 	}
 }
