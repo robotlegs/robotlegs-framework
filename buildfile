@@ -13,7 +13,7 @@ layout = Layout::Default.new
 layout[:source, :main, :as3] = "src"
 layout[:source, :test, :as3] = "test"
 
-THIS_VERSION = "2.0.0b6-SNAPSHOT"
+THIS_VERSION = "2.0.0b7-SNAPSHOT"
 
 define "robotlegs-framework", :layout => layout do
 

@@ -1,5 +1,13 @@
 h2. Robotlegs Framework Changelog:
 
+h3. v2.0.0b7
+
+Adds ViewProcessorMap to MVCS bundle
+Adds context Lifecycle Event relaying to the EventDispatcher Extension
+Adds Module Connector - for easy event relaying between modules
+Removes ScopedEventDispatcherExtension - replaced by Module Connector
+Removes MessageDispatcher related extensions
+
 h3. v2.0.0b6
 
 Ensures that certain extensions can only be installed before context initialization.
