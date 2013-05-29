@@ -73,17 +73,32 @@ package robotlegs.bender.extensions.viewProcessorMap.utils
 
 		private function initializeMediator(view:Object, mediator:Object):void
 		{
-			if (mediator.hasOwnProperty('viewComponent'))
+			if ('preInitialize' in mediator)
+				mediator.preInitialize();
+
+			if ('viewComponent' in mediator)
 				mediator.viewComponent = view;
 
-			if (mediator.hasOwnProperty('initialize'))
+			if ('initialize' in mediator)
 				mediator.initialize();
+
+			if ('postInitialize' in mediator)
+				mediator.postInitialize();
 		}
 
 		private function destroyMediator(mediator:Object):void
 		{
-			if (mediator.hasOwnProperty('destroy'))
+			if ('preDestroy' in mediator)
+				mediator.preDestroy();
+
+			if ('destroy' in mediator)
 				mediator.destroy();
+
+			if ('viewComponent' in mediator)
+				mediator.viewComponent = null;
+
+			if ('postDestroy' in mediator)
+				mediator.postDestroy();
 		}
 	}
 }
