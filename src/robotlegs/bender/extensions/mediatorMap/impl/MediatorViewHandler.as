@@ -9,14 +9,13 @@ package robotlegs.bender.extensions.mediatorMap.impl
 {
 	import flash.display.DisplayObject;
 	import flash.utils.Dictionary;
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorViewHandler;
+	import robotlegs.bender.extensions.viewManager.api.IViewHandler;
 
 	/**
 	 * @private
 	 */
-	public class MediatorViewHandler implements IMediatorViewHandler
+	public class MediatorViewHandler implements IViewHandler
 	{
 
 		/*============================================================================*/
@@ -27,7 +26,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		private var _knownMappings:Dictionary = new Dictionary(true);
 
-		private var _factory:IMediatorFactory;
+		private var _factory:MediatorFactory;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -36,7 +35,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		/**
 		 * @private
 		 */
-		public function MediatorViewHandler(factory:IMediatorFactory):void
+		public function MediatorViewHandler(factory:MediatorFactory):void
 		{
 			_factory = factory;
 		}
@@ -46,7 +45,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		/*============================================================================*/
 
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
 		public function addMapping(mapping:IMediatorMapping):void
 		{
@@ -58,7 +57,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		}
 
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
 		public function removeMapping(mapping:IMediatorMapping):void
 		{
@@ -70,7 +69,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		}
 
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
 		public function handleView(view:DisplayObject, type:Class):void
 		{
@@ -80,7 +79,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		}
 
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
 		public function handleItem(item:Object, type:Class):void
 		{

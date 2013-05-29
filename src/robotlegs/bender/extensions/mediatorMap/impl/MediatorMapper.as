@@ -10,9 +10,8 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import flash.utils.Dictionary;
 	import robotlegs.bender.extensions.matching.ITypeFilter;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorViewHandler;
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMapper;
-	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMappingConfig;
+	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorConfigurator;
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorUnmapper;
 	import robotlegs.bender.framework.api.ILogger;
 
@@ -30,7 +29,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		private var _typeFilter:ITypeFilter;
 
-		private var _handler:IMediatorViewHandler;
+		private var _handler:MediatorViewHandler;
 
 		private var _logger:ILogger;
 
@@ -41,7 +40,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		/**
 		 * @private
 		 */
-		public function MediatorMapper(typeFilter:ITypeFilter, handler:IMediatorViewHandler, logger:ILogger = null)
+		public function MediatorMapper(typeFilter:ITypeFilter, handler:MediatorViewHandler, logger:ILogger = null)
 		{
 			_typeFilter = typeFilter;
 			_handler = handler;
@@ -55,7 +54,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		/**
 		 * @inheritDoc
 		 */
-		public function toMediator(mediatorClass:Class):IMediatorMappingConfig
+		public function toMediator(mediatorClass:Class):IMediatorConfigurator
 		{
 			const mapping:IMediatorMapping = _mappings[mediatorClass];
 			return mapping
@@ -103,7 +102,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			_logger && _logger.debug('{0} unmapped from {1}', [_typeFilter, mapping]);
 		}
 
-		private function overwriteMapping(mapping:IMediatorMapping):IMediatorMappingConfig
+		private function overwriteMapping(mapping:IMediatorMapping):IMediatorConfigurator
 		{
 			_logger && _logger.warn('{0} already mapped to {1}\n' +
 				'If you have overridden this mapping intentionally you can use "unmap()" ' +

@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -9,25 +9,35 @@ package robotlegs.bender.extensions.mediatorMap.impl
 {
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
+	import mockolate.received;
+	import mockolate.runner.MockolateRule;
 	import org.flexunit.assertThat;
-	import org.hamcrest.collection.array;
+	import org.flexunit.asserts.assertEqualsVectorsIgnoringOrder;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.instanceOf;
 	import org.hamcrest.object.notNullValue;
 	import org.hamcrest.object.nullValue;
 	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
-	import robotlegs.bender.extensions.mediatorMap.api.MediatorFactoryEvent;
-	import robotlegs.bender.extensions.mediatorMap.support.CallbackMediator;
-	import robotlegs.bender.extensions.matching.TypeMatcher;
-	import org.flexunit.asserts.assertEqualsVectorsIgnoringOrder;
 	import robotlegs.bender.extensions.matching.ITypeFilter;
+	import robotlegs.bender.extensions.matching.TypeMatcher;
+	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
+	import robotlegs.bender.extensions.mediatorMap.support.CallbackMediator;
 	import robotlegs.bender.framework.impl.guardSupport.GrumpyGuard;
 	import robotlegs.bender.framework.impl.guardSupport.HappyGuard;
 	import robotlegs.bender.framework.impl.hookSupport.CallbackHook;
 
 	public class MediatorFactoryTest
 	{
+
+		/*============================================================================*/
+		/* Public Properties                                                          */
+		/*============================================================================*/
+
+		[Rule]
+		public var mocks:MockolateRule = new MockolateRule();
+
+		[Mock]
+		public var manager:MediatorManager;
 
 		/*============================================================================*/
 		/* Private Properties                                                         */
@@ -89,7 +99,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 			const mediator:ViewInjectedAsRequestedMediator =
 				factory.createMediators(expected, Sprite, [mapping])[0];
-			
+
 			assertThat(mediator.mediatedItem, equalTo(expected));
 		}
 
@@ -162,7 +172,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			const mediators2:Array = factory.createMediators(mediatedItem, Sprite, [mapping1, mapping2]);
 			assertEqualsVectorsIgnoringOrder(mediators1, mediators2);
 		}
-		
+
 		[Test]
 		public function expected_number_of_mediators_are_returned_for_mappings_and_mediatedItem():void
 		{
@@ -176,20 +186,6 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		}
 
 		[Test]
-		public function creating_mediator_fires_event_once():void
-		{
-			var callCount:int = 0;
-			factory.addEventListener(MediatorFactoryEvent.MEDIATOR_CREATE, function(event:MediatorFactoryEvent):void {
-				callCount++;
-			});
-			const mediatedItem:Sprite = new Sprite();
-			const mapping:IMediatorMapping = new MediatorMapping(createTypeFilter([Sprite]), CallbackMediator);
-			factory.createMediators(mediatedItem, Sprite, [mapping]);
-			factory.createMediators(mediatedItem, Sprite, [mapping]);
-			assertThat(callCount, equalTo(1));
-		}
-
-		[Test]
 		public function getMediator():void
 		{
 			const mediatedItem:Sprite = new Sprite();
@@ -199,7 +195,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		}
 
 		[Test]
-		public function removeMediators():void
+		public function removeMediator():void
 		{
 			const mediatedItem:Sprite = new Sprite();
 			const mapping:IMediatorMapping = new MediatorMapping(createTypeFilter([Sprite]), CallbackMediator);
@@ -207,42 +203,56 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			factory.removeMediators(mediatedItem);
 			assertThat(factory.getMediator(mediatedItem, mapping), nullValue());
 		}
-		
+
 		[Test]
-		public function removeAllMediators_removes_mediators_for_all_mediatedItems():void
+		public function creating_mediator_gives_mediator_to_mediator_manager():void
+		{
+			const mediatedItem:Sprite = new Sprite();
+			const mapping:IMediatorMapping = new MediatorMapping(createTypeFilter([Sprite]), CallbackMediator);
+			factory = new MediatorFactory(injector, manager);
+			factory.createMediators(mediatedItem, Sprite, [mapping]);
+			factory.createMediators(mediatedItem, Sprite, [mapping]);
+			assertThat(manager, received().method('addMediator')
+				.args(instanceOf(CallbackMediator), mediatedItem, mapping).once());
+		}
+
+		[Test]
+		public function removeMediator_removes_mediator_from_manager():void
+		{
+			const mediatedItem:Sprite = new Sprite();
+			const mapping:IMediatorMapping = new MediatorMapping(createTypeFilter([Sprite]), CallbackMediator);
+			factory = new MediatorFactory(injector, manager);
+			factory.createMediators(mediatedItem, Sprite, [mapping]);
+			factory.removeMediators(mediatedItem);
+			factory.removeMediators(mediatedItem);
+			assertThat(manager, received().method('removeMediator')
+				.args(instanceOf(CallbackMediator), mediatedItem, mapping).once());
+		}
+
+		[Test]
+		public function removeAllMediators_removes_all_mediators_from_manager():void
 		{
 			const mediatedItem1:Sprite = new Sprite();
 			const mediatedItem2:Sprite = new Sprite();
 			const mapping1:IMediatorMapping = new MediatorMapping(createTypeFilter([Sprite]), CallbackMediator);
 			const mapping2:IMediatorMapping = new MediatorMapping(createTypeFilter([DisplayObject]), ViewInjectedAsRequestedMediator);
-			
+
+			factory = new MediatorFactory(injector, manager);
 			factory.createMediators(mediatedItem1, Sprite, [mapping1, mapping2]);
 			factory.createMediators(mediatedItem2, Sprite, [mapping1, mapping2]);
-			
-			const mediatorsRemovedForView:Array = [];
-			
-			factory.addEventListener(MediatorFactoryEvent.MEDIATOR_REMOVE, function(event:MediatorFactoryEvent):void {
-				mediatorsRemovedForView.push(event.mediatedItem);
-			});
-
 			factory.removeAllMediators();
-			
-			assertThat(mediatorsRemovedForView.length, equalTo(4));
-		}
 
-		[Test]
-		public function removeMediator_fires_event_once():void
-		{
-			var callCount:int = 0;
-			factory.addEventListener(MediatorFactoryEvent.MEDIATOR_REMOVE, function(event:MediatorFactoryEvent):void {
-				callCount++;
-			});
-			const mediatedItem:Sprite = new Sprite();
-			const mapping:IMediatorMapping = new MediatorMapping(createTypeFilter([Sprite]), CallbackMediator);
-			factory.createMediators(mediatedItem, Sprite, [mapping]);
-			factory.removeMediators(mediatedItem);
-			factory.removeMediators(mediatedItem);
-			assertThat(callCount, equalTo(1));
+			assertThat(manager, received().method('removeMediator')
+				.args(instanceOf(CallbackMediator), mediatedItem1, mapping1).once());
+
+			assertThat(manager, received().method('removeMediator')
+				.args(instanceOf(ViewInjectedAsRequestedMediator), mediatedItem1, mapping2).once());
+
+			assertThat(manager, received().method('removeMediator')
+				.args(instanceOf(CallbackMediator), mediatedItem2, mapping1).once());
+
+			assertThat(manager, received().method('removeMediator')
+				.args(instanceOf(ViewInjectedAsRequestedMediator), mediatedItem2, mapping2).once());
 		}
 
 		/*============================================================================*/
@@ -268,17 +278,17 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			const mediators:Array = factory.createMediators(new Sprite(), Sprite, [mapping]);
 			return mediators.length;
 		}
-		
+
 		private function createTypeFilter(allOf:Array, anyOf:Array = null, noneOf:Array = null):ITypeFilter
 		{
 			const matcher:TypeMatcher = new TypeMatcher();
-			if(allOf)
+			if (allOf)
 				matcher.allOf(allOf);
-			if(anyOf)
+			if (anyOf)
 				matcher.anyOf(anyOf);
-			if(noneOf)
+			if (noneOf)
 				matcher.noneOf(noneOf);
-				
+
 			return matcher.createTypeFilter();
 		}
 	}

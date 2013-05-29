@@ -7,10 +7,9 @@
 
 package robotlegs.bender.extensions.mediatorMap
 {
-	import org.flexunit.assertThat;
-	import org.flexunit.asserts.*;
-	import org.hamcrest.object.equalTo;
+	import org.hamcrest.assertThat;
 	import org.hamcrest.object.instanceOf;
+	import org.hamcrest.object.isFalse;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMap;
 	import robotlegs.bender.extensions.viewManager.ViewManagerExtension;
 	import robotlegs.bender.framework.impl.Context;
@@ -62,7 +61,7 @@ package robotlegs.bender.extensions.mediatorMap
 		{
 			context.install(ViewManagerExtension, MediatorMapExtension);
 			context.afterDestroying( function():void {
-				assertFalse(context.injector.hasMapping(IMediatorMap));
+				assertThat(context.injector.hasMapping(IMediatorMap), isFalse());
 			});
 			context.initialize();
 			context.destroy();

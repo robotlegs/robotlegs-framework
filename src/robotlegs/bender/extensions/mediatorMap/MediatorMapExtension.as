@@ -8,12 +8,8 @@
 package robotlegs.bender.extensions.mediatorMap
 {
 	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMap;
-	import robotlegs.bender.extensions.mediatorMap.impl.DefaultMediatorManager;
-	import robotlegs.bender.extensions.mediatorMap.impl.MediatorFactory;
 	import robotlegs.bender.extensions.mediatorMap.impl.MediatorMap;
-	import robotlegs.bender.extensions.viewManager.api.IViewHandler;
 	import robotlegs.bender.extensions.viewManager.api.IViewManager;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
@@ -30,11 +26,9 @@ package robotlegs.bender.extensions.mediatorMap
 
 		private var _injector:Injector;
 
-		private var _mediatorMap:IMediatorMap;
+		private var _mediatorMap:MediatorMap;
 
 		private var _viewManager:IViewManager;
-
-		private var _mediatorManager:DefaultMediatorManager;
 
 		/*============================================================================*/
 		/* Public Functions                                                           */
@@ -47,10 +41,8 @@ package robotlegs.bender.extensions.mediatorMap
 		{
 			context.beforeInitializing(beforeInitializing)
 				.beforeDestroying(beforeDestroying)
-				.whenDestroying(whenDestroying)
-				.afterDestroying(afterDestroying);
+				.whenDestroying(whenDestroying);
 			_injector = context.injector;
-			_injector.map(IMediatorFactory).toSingleton(MediatorFactory);
 			_injector.map(IMediatorMap).toSingleton(MediatorMap);
 		}
 
@@ -61,23 +53,20 @@ package robotlegs.bender.extensions.mediatorMap
 		private function beforeInitializing():void
 		{
 			_mediatorMap = _injector.getInstance(IMediatorMap);
-			_mediatorManager = _injector.instantiateUnmapped(DefaultMediatorManager);
 			if (_injector.satisfiesDirectly(IViewManager))
 			{
 				_viewManager = _injector.getInstance(IViewManager);
-				_viewManager.addViewHandler(_mediatorMap as IViewHandler);
+				_viewManager.addViewHandler(_mediatorMap);
 			}
 		}
 
 		private function beforeDestroying():void
 		{
-			var mediatorFactory:IMediatorFactory = _injector.getInstance(IMediatorFactory);
-			mediatorFactory.removeAllMediators();
-
+			_mediatorMap.unmediateAll();
 			if (_injector.satisfiesDirectly(IViewManager))
 			{
 				_viewManager = _injector.getInstance(IViewManager);
-				_viewManager.removeViewHandler(_mediatorMap as IViewHandler);
+				_viewManager.removeViewHandler(_mediatorMap);
 			}
 		}
 
@@ -87,18 +76,6 @@ package robotlegs.bender.extensions.mediatorMap
 			{
 				_injector.unmap(IMediatorMap);
 			}
-			if (_injector.satisfiesDirectly(IMediatorFactory))
-			{
-				_injector.unmap(IMediatorFactory);
-			}
-		}
-
-		private function afterDestroying():void
-		{
-			_injector = null;
-			_mediatorMap = null;
-			_viewManager = null;
-			_mediatorManager = null;
 		}
 	}
 }

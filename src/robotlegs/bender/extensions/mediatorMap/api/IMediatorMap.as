@@ -58,5 +58,10 @@ package robotlegs.bender.extensions.mediatorMap.api
 		 * @param item The item to remove mediators for.
 		 */
 		function unmediate(item:Object):void;
+
+		/**
+		 * Removes all mediators
+		 */
+		function unmediateAll():void
 	}
 }

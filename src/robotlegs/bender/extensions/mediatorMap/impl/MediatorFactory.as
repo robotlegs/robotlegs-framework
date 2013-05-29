@@ -7,22 +7,17 @@
 
 package robotlegs.bender.extensions.mediatorMap.impl
 {
-	import flash.events.EventDispatcher;
 	import flash.utils.Dictionary;
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.matching.ITypeFilter;
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
-	import robotlegs.bender.extensions.mediatorMap.api.MediatorFactoryEvent;
 	import robotlegs.bender.framework.impl.applyHooks;
 	import robotlegs.bender.framework.impl.guardsApprove;
 
-	[Event(name="mediatorCreate", type="robotlegs.bender.extensions.mediatorMap.api.MediatorFactoryEvent")]
-	[Event(name="mediatorRemove", type="robotlegs.bender.extensions.mediatorMap.api.MediatorFactoryEvent")]
 	/**
 	 * @private
 	 */
-	public class MediatorFactory extends EventDispatcher implements IMediatorFactory
+	public class MediatorFactory
 	{
 
 		/*============================================================================*/
@@ -33,6 +28,9 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		private var _injector:Injector;
 
+		private var _manager:MediatorManager;
+
+
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
@@ -40,9 +38,10 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		/**
 		 * @private
 		 */
-		public function MediatorFactory(injector:Injector)
+		public function MediatorFactory(injector:Injector, manager:MediatorManager = null)
 		{
 			_injector = injector;
+			_manager = manager || new MediatorManager(this);
 		}
 
 		/*============================================================================*/
@@ -50,7 +49,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		/*============================================================================*/
 
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
 		public function getMediator(item:Object, mapping:IMediatorMapping):Object
 		{
@@ -58,12 +57,11 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		}
 
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
 		public function createMediators(item:Object, type:Class, mappings:Array):Array
 		{
 			const createdMediators:Array = [];
-			var filter:ITypeFilter;
 			var mediator:Object;
 			for each (var mapping:IMediatorMapping in mappings)
 			{
@@ -71,10 +69,9 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 				if (!mediator)
 				{
-					filter = mapping.matcher;
-					mapTypeForFilterBinding(filter, type, item);
+					mapTypeForFilterBinding(mapping.matcher, type, item);
 					mediator = createMediator(item, mapping);
-					unmapTypeForFilterBinding(filter, type, item)
+					unmapTypeForFilterBinding(mapping.matcher, type, item)
 				}
 
 				if (mediator)
@@ -84,7 +81,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		}
 
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
 		public function removeMediators(item:Object):void
 		{
@@ -92,21 +89,16 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			if (!mediators)
 				return;
 
-			if (hasEventListener(MediatorFactoryEvent.MEDIATOR_REMOVE))
+			for (var mapping:Object in mediators)
 			{
-				for (var mapping:Object in mediators)
-				{
-					dispatchEvent(new MediatorFactoryEvent(
-						MediatorFactoryEvent.MEDIATOR_REMOVE,
-						mediators[mapping], item, mapping as IMediatorMapping, this));
-				}
+				_manager.removeMediator(mediators[mapping], item, mapping as IMediatorMapping);
 			}
 
 			delete _mediators[item];
 		}
 
 		/**
-		 * @inheritDoc
+		 * @private
 		 */
 		public function removeAllMediators():void
 		{
@@ -146,18 +138,12 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		{
 			_mediators[item] ||= new Dictionary();
 			_mediators[item][mapping] = mediator;
-			if (hasEventListener(MediatorFactoryEvent.MEDIATOR_CREATE))
-				dispatchEvent(new MediatorFactoryEvent(
-					MediatorFactoryEvent.MEDIATOR_CREATE,
-					mediator, item, mapping, this));
+			_manager.addMediator(mediator, item, mapping);
 		}
 
 		private function mapTypeForFilterBinding(filter:ITypeFilter, type:Class, item:Object):void
 		{
-			var requiredType:Class;
-			const requiredTypes:Vector.<Class> = requiredTypesFor(filter, type);
-
-			for each (requiredType in requiredTypes)
+			for each (var requiredType:Class in requiredTypesFor(filter, type))
 			{
 				_injector.map(requiredType).toValue(item);
 			}
@@ -165,10 +151,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		private function unmapTypeForFilterBinding(filter:ITypeFilter, type:Class, item:Object):void
 		{
-			var requiredType:Class;
-			const requiredTypes:Vector.<Class> = requiredTypesFor(filter, type);
-
-			for each (requiredType in requiredTypes)
+			for each (var requiredType:Class in requiredTypesFor(filter, type))
 			{
 				if (_injector.satisfiesDirectly(requiredType))
 					_injector.unmap(requiredType);

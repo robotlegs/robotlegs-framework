@@ -10,14 +10,12 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.utils.getDefinitionByName;
-
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
-	import robotlegs.bender.extensions.mediatorMap.api.MediatorFactoryEvent;
+	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
 
 	/**
-	 * @private
-	 */
-	public class DefaultMediatorManager
+	* @private
+	*/
+	public class MediatorManager
 	{
 
 		/*============================================================================*/
@@ -34,7 +32,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var _factory:IMediatorFactory;
+		private var _factory:MediatorFactory;
 
 		/*============================================================================*/
 		/* Constructor                                                                */
@@ -43,11 +41,9 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		/**
 		 * @private
 		 */
-		public function DefaultMediatorManager(factory:IMediatorFactory)
+		public function MediatorManager(factory:MediatorFactory)
 		{
 			_factory = factory;
-			_factory.addEventListener(MediatorFactoryEvent.MEDIATOR_CREATE, onMediatorCreate);
-			_factory.addEventListener(MediatorFactoryEvent.MEDIATOR_REMOVE, onMediatorRemove);
 		}
 
 		/*============================================================================*/
@@ -68,22 +64,24 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		}
 
 		/*============================================================================*/
-		/* Private Functions                                                          */
+		/* Public Functions                                                           */
 		/*============================================================================*/
 
-		private function onMediatorCreate(event:MediatorFactoryEvent):void
+		/**
+		 * @private
+		 */
+		public function addMediator(mediator:Object, item:Object, mapping:IMediatorMapping):void
 		{
-			const mediator:Object = event.mediator;
-			const displayObject:DisplayObject = event.mediatedItem as DisplayObject;
+			const displayObject:DisplayObject = item as DisplayObject;
 
 			if (!displayObject)
 			{
 				// Non-display-object was added, initialize and exit
-				initializeMediator(mediator, event.mediatedItem);
+				initializeMediator(mediator, item);
 				return;
 			}
 
-			if (event.mapping.autoRemoveEnabled)
+			if (mapping.autoRemoveEnabled)
 			{
 				// Watch this view for removal
 				displayObject.addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
@@ -96,7 +94,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 				{
 					displayObject.removeEventListener(CREATION_COMPLETE, arguments.callee);
 					// ensure that we haven't been removed in the meantime
-					if (_factory.getMediator(displayObject, event.mapping))
+					if (_factory.getMediator(displayObject, mapping))
 						initializeMediator(mediator, displayObject);
 				});
 			}
@@ -106,16 +104,23 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			}
 		}
 
-		private function onMediatorRemove(event:MediatorFactoryEvent):void
+		/**
+		 * @private
+		 */
+		public function removeMediator(mediator:Object, item:Object, mapping:IMediatorMapping):void
 		{
-			const displayObject:DisplayObject = event.mediatedItem as DisplayObject;
+			const displayObject:DisplayObject = item as DisplayObject;
 
 			if (displayObject)
 				displayObject.removeEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
 
-			if (event.mediator)
-				destroyMediator(event.mediator);
+			if (mediator)
+				destroyMediator(mediator);
 		}
+
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
 
 		private function onRemovedFromStage(event:Event):void
 		{

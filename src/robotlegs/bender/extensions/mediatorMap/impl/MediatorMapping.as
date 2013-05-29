@@ -9,12 +9,12 @@ package robotlegs.bender.extensions.mediatorMap.impl
 {
 	import robotlegs.bender.extensions.matching.ITypeFilter;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
-	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMappingConfig;
+	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorConfigurator;
 
 	/**
 	 * @private
 	 */
-	public class MediatorMapping implements IMediatorMapping, IMediatorMappingConfig
+	public class MediatorMapping implements IMediatorMapping, IMediatorConfigurator
 	{
 
 		/*============================================================================*/
@@ -91,7 +91,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		/**
 		 * @inheritDoc
 		 */
-		public function withGuards(... guards):IMediatorMappingConfig
+		public function withGuards(... guards):IMediatorConfigurator
 		{
 			_guards = _guards.concat.apply(null, guards);
 			return this;
@@ -100,7 +100,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		/**
 		 * @inheritDoc
 		 */
-		public function withHooks(... hooks):IMediatorMappingConfig
+		public function withHooks(... hooks):IMediatorConfigurator
 		{
 			_hooks = _hooks.concat.apply(null, hooks);
 			return this;
@@ -109,7 +109,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		/**
 		 * @inheritDoc
 		 */
-		public function autoRemove(value:Boolean = true):IMediatorMappingConfig
+		public function autoRemove(value:Boolean = true):IMediatorConfigurator
 		{
 			_autoRemoveEnabled = value;
 			return this;

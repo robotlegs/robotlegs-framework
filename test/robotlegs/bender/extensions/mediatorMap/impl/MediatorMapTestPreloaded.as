@@ -19,10 +19,9 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import org.hamcrest.object.isTrue;
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.matching.TypeMatcher;
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorViewHandler;
 	import robotlegs.bender.extensions.mediatorMap.impl.support.MediatorWatcher;
 	import robotlegs.bender.extensions.viewManager.api.IViewHandler;
+	import robotlegs.bender.framework.impl.Context;
 	import robotlegs.bender.framework.impl.guardSupport.HappyGuard;
 
 	public class MediatorMapTestPreloaded
@@ -38,8 +37,6 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		private var mediatorWatcher:MediatorWatcher;
 
-		private var mediatorManager:DefaultMediatorManager;
-
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
 		/*============================================================================*/
@@ -47,21 +44,11 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		[Before]
 		public function setUp():void
 		{
-			injector = new Injector();
-			const factory:IMediatorFactory = new MediatorFactory(injector);
-			const handler:IMediatorViewHandler = new MediatorViewHandler(factory);
-			mediatorMap = new MediatorMap(factory, handler);
-			mediatorManager = new DefaultMediatorManager(factory);
-
+			const context:Context = new Context();
+			injector = context.injector;
+			mediatorMap = new MediatorMap(context);
 			mediatorWatcher = new MediatorWatcher();
 			injector.map(MediatorWatcher).toValue(mediatorWatcher);
-		}
-
-		[After]
-		public function tearDown():void
-		{
-			mediatorMap = null;
-			mediatorManager = null;
 		}
 
 		/*============================================================================*/

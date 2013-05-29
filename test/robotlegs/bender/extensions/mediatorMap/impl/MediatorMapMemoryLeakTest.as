@@ -8,16 +8,13 @@
 package robotlegs.bender.extensions.mediatorMap.impl
 {
 	import flash.display.Sprite;
-	import flash.events.Event;
 	import flash.system.System;
 	import flash.utils.Dictionary;
-	import org.flexunit.Assert;
-	import org.flexunit.asserts.*;
+	import org.flexunit.asserts.assertEquals;
 	import org.flexunit.async.Async;
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorViewHandler;
-	import robotlegs.bender.extensions.mediatorMap.impl.support.MediatorWatcher;
 	import robotlegs.bender.extensions.mediatorMap.impl.support.MediatorWeakMapTracker;
 
 	public class MediatorMapMemoryLeakTest
@@ -31,7 +28,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		private var mediatorTracker:MediatorWeakMapTracker;
 
-		private var mediatorManager:DefaultMediatorManager;
+		private var mediatorManager:MediatorManager;
 
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
@@ -44,7 +41,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			const factory:IMediatorFactory = new MediatorFactory(injector);
 			const handler:IMediatorViewHandler = new MediatorViewHandler(factory);
 			mediatorMap = new MediatorMap(factory, handler);
-			mediatorManager = new DefaultMediatorManager(factory);
+			mediatorManager = new MediatorManager(factory);
 
 			mediatorTracker = new MediatorWeakMapTracker();
 			injector.map(MediatorWeakMapTracker).toValue(mediatorTracker);

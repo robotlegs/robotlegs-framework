@@ -15,7 +15,6 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import org.hamcrest.object.instanceOf;
 	import robotlegs.bender.extensions.matching.ITypeFilter;
 	import robotlegs.bender.extensions.matching.TypeMatcher;
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorViewHandler;
 	import robotlegs.bender.extensions.mediatorMap.support.NullMediator;
 	import robotlegs.bender.extensions.mediatorMap.support.NullMediator2;
 	import robotlegs.bender.framework.api.ILogger;
@@ -31,7 +30,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		public var mocks:MockolateRule = new MockolateRule();
 
 		[Mock]
-		public var handler:IMediatorViewHandler;
+		public var handler:MediatorViewHandler;
 
 		[Mock]
 		public var logger:ILogger;

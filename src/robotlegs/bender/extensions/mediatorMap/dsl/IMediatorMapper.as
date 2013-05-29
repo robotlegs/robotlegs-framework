@@ -18,6 +18,6 @@ package robotlegs.bender.extensions.mediatorMap.dsl
 		 * @param mediatorClass The concrete mediator class
 		 * @return Mapping configurator
 		 */
-		function toMediator(mediatorClass:Class):IMediatorMappingConfig;
+		function toMediator(mediatorClass:Class):IMediatorConfigurator;
 	}
 }

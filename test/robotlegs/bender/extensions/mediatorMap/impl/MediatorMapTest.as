@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
 // 
 //  NOTICE: You are permitted to use, modify, and distribute this file 
 //  in accordance with the terms of the license agreement accompanying it. 
@@ -9,32 +9,16 @@ package robotlegs.bender.extensions.mediatorMap.impl
 {
 	import flash.display.Sprite;
 	import flash.media.Sound;
-	import mockolate.received;
-	import mockolate.runner.MockolateRule;
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.not;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.instanceOf;
 	import robotlegs.bender.extensions.matching.TypeMatcher;
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorFactory;
-	import robotlegs.bender.extensions.mediatorMap.api.IMediatorViewHandler;
 	import robotlegs.bender.extensions.mediatorMap.dsl.IMediatorMapper;
+	import robotlegs.bender.framework.impl.Context;
 
 	public class MediatorMapTest
 	{
-
-		/*============================================================================*/
-		/* Public Properties                                                          */
-		/*============================================================================*/
-
-		[Rule]
-		public var mocks:MockolateRule = new MockolateRule();
-
-		[Mock]
-		public var handler:IMediatorViewHandler;
-
-		[Mock]
-		public var factory:IMediatorFactory;
 
 		/*============================================================================*/
 		/* Private Properties                                                         */
@@ -49,7 +33,8 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		[Before]
 		public function setUp():void
 		{
-			mediatorMap = new MediatorMap(factory, handler);
+			const context:Context = new Context();
+			mediatorMap = new MediatorMap(context);
 		}
 
 		/*============================================================================*/
@@ -94,32 +79,6 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		public function robust_to_unmapping_non_existent_mappings():void
 		{
 			mediatorMap.unmapMatcher(new TypeMatcher().allOf(Sprite)).fromAll();
-		}
-
-		[Test]
-		public function handleView_delegates_to_handler():void
-		{
-			const view:Sprite = new Sprite();
-			const type:Class = Sprite;
-			mediatorMap.handleView(view, type);
-			assertThat(handler, received().method('handleView').args(view, type).once());
-		}
-
-		[Test]
-		public function mediate_delegates_to_handler():void
-		{
-			const view:Sprite = new Sprite();
-			const type:Class = Sprite;
-			mediatorMap.mediate(view);
-			assertThat(handler, received().method('handleItem').args(view, type).once());
-		}
-
-		[Test]
-		public function unmediate_delegates_to_factory():void
-		{
-			const view:Sprite = new Sprite();
-			mediatorMap.unmediate(view);
-			assertThat(factory, received().method('removeMediators').args(view).once());
 		}
 	}
 }
