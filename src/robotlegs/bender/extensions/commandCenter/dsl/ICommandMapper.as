@@ -9,7 +9,7 @@ package robotlegs.bender.extensions.commandCenter.dsl
 {
 
 	/**
-	 * Maps Commands to triggers
+	 * @private
 	 */
 	public interface ICommandMapper
 	{

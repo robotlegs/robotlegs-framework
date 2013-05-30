@@ -53,6 +53,9 @@ package robotlegs.bender.framework.api
 
 		private var _error:Error;
 
+		/**
+		 * Associated lifecycle error
+		 */
 		public function get error():Error
 		{
 			return _error;

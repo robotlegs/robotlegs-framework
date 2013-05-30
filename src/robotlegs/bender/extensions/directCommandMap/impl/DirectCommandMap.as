@@ -17,6 +17,9 @@ package robotlegs.bender.extensions.directCommandMap.impl
 	import robotlegs.bender.extensions.directCommandMap.dsl.IDirectCommandConfigurator;
 	import robotlegs.bender.framework.api.IContext;
 
+	/**
+	 * Maps commands for direct (manual) execution
+	 */
 	public class DirectCommandMap implements IDirectCommandMap
 	{
 
@@ -37,7 +40,8 @@ package robotlegs.bender.extensions.directCommandMap.impl
 		/*============================================================================*/
 
 		/**
-		 * @private
+		 * Creates a Direct Command Map
+		 * @param context The context that owns this map
 		 */
 		public function DirectCommandMap(context:IContext)
 		{

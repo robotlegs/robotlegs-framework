@@ -9,10 +9,22 @@ package robotlegs.bender.extensions.modularity.api
 {
 	import robotlegs.bender.extensions.modularity.dsl.IModuleConnectionAction;
 
+	/**
+	 * Creates event relays between modules
+	 */
 	public interface IModuleConnector
 	{
+		/**
+		 * Connects to a specified channel
+		 * @param channelId The channel Id
+		 * @return Configurator
+		 */
 		function onChannel(channelId:String):IModuleConnectionAction;
 
+		/**
+		 * Connects to the default channel
+		 * @return Configurator
+		 */
 		function onDefaultChannel():IModuleConnectionAction;
 	}
 }

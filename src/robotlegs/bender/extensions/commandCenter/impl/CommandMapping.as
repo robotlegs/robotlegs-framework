@@ -9,6 +9,9 @@ package robotlegs.bender.extensions.commandCenter.impl
 {
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 
+	/**
+	 * @private
+	 */
 	public class CommandMapping implements ICommandMapping
 	{
 

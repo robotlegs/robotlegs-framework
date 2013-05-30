@@ -31,6 +31,9 @@ package robotlegs.bender.framework.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * @private
+		 */
 		public function Pin(dispatcher:IEventDispatcher)
 		{
 			_dispatcher = dispatcher;

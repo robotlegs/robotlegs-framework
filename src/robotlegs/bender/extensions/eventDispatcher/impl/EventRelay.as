@@ -9,6 +9,9 @@ package robotlegs.bender.extensions.eventDispatcher.impl
 {
 	import flash.events.IEventDispatcher;
 
+	/**
+	 * Relays events from a source to a destination
+	 */
 	public class EventRelay
 	{
 
@@ -73,12 +76,20 @@ package robotlegs.bender.extensions.eventDispatcher.impl
 			return this;
 		}
 
+		/**
+		 * Add a new event type to relay
+		 * @param eventType
+		 */
 		public function addType(eventType:String):void
 		{
 			_types.push(eventType);
 			_active && addListener(eventType);
 		}
 
+		/**
+		 * Remove a relay event type
+		 * @param eventType
+		 */
 		public function removeType(eventType:String):void
 		{
 			const index:int = _types.indexOf(eventType);

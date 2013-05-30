@@ -13,6 +13,9 @@ package robotlegs.bender.extensions.commandCenter.impl
 	import robotlegs.bender.extensions.commandCenter.dsl.ICommandMapper;
 	import robotlegs.bender.extensions.commandCenter.dsl.ICommandUnmapper;
 
+	/**
+	 * @private
+	 */
 	public class CommandMapper implements ICommandMapper, ICommandUnmapper, ICommandConfigurator
 	{
 
@@ -28,6 +31,10 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * Creates a Command Mapper
+		 * @param mappings The command mapping list to add mappings to
+		 */
 		public function CommandMapper(mappings:ICommandMappingList)
 		{
 			_mappings = mappings;

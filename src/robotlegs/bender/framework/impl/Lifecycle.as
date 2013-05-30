@@ -203,7 +203,6 @@ package robotlegs.bender.framework.impl
 			return this;
 		}
 
-
 		/**
 		 * @inheritDoc
 		 */

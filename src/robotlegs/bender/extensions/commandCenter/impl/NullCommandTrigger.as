@@ -19,14 +19,18 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @private
+		 */
 		public function activate():void
 		{
-
 		}
 
+		/**
+		 * @private
+		 */
 		public function deactivate():void
 		{
-
 		}
 	}
 }

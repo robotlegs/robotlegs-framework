@@ -8,6 +8,9 @@
 package robotlegs.bender.extensions.directCommandMap.api
 {
 
+	/**
+	 * Maps commands for direct (manual) execution
+	 */
 	public interface IDirectCommandMap extends IDirectCommandMapper
 	{
 

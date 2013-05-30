@@ -9,6 +9,9 @@ package robotlegs.bender.framework.api
 {
 	import flash.events.Event;
 
+	/**
+	 * Detain/release pin Event
+	 */
 	public class PinEvent extends Event
 	{
 
@@ -26,6 +29,9 @@ package robotlegs.bender.framework.api
 
 		private var _instance:Object;
 
+		/**
+		 * The instance being detained or released
+		 */
 		public function get instance():Object
 		{
 			return _instance;
@@ -35,6 +41,11 @@ package robotlegs.bender.framework.api
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * Create a Pin Event
+		 * @param type The event type
+		 * @param instance The associated instance
+		 */
 		public function PinEvent(type:String, instance:Object)
 		{
 			super(type);
@@ -45,6 +56,9 @@ package robotlegs.bender.framework.api
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		override public function clone():Event
 		{
 			return new PinEvent(type, _instance);

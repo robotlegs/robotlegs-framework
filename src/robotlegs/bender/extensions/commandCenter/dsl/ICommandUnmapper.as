@@ -9,7 +9,7 @@ package robotlegs.bender.extensions.commandCenter.dsl
 {
 
 	/**
-	 * Unmaps a Command
+	 * @private
 	 */
 	public interface ICommandUnmapper
 	{

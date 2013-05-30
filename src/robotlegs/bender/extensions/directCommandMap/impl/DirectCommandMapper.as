@@ -14,6 +14,9 @@ package robotlegs.bender.extensions.directCommandMap.impl
 	import robotlegs.bender.extensions.commandCenter.impl.CommandPayload;
 	import robotlegs.bender.extensions.directCommandMap.dsl.IDirectCommandConfigurator;
 
+	/**
+	 * @private
+	 */
 	public class DirectCommandMapper implements IDirectCommandConfigurator
 	{
 

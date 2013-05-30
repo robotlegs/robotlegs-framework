@@ -33,6 +33,9 @@ package robotlegs.bender.extensions.contextView
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function configure():void
 		{
 			// Adds the Context View to the View Manager at startup

@@ -13,6 +13,9 @@ package robotlegs.bender.extensions.commandCenter.impl
 	import robotlegs.bender.extensions.commandCenter.api.ICommandTrigger;
 	import robotlegs.bender.framework.api.ILogger;
 
+	/**
+	 * @private
+	 */
 	public class CommandMappingList implements ICommandMappingList
 	{
 
@@ -38,6 +41,12 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * Create a command mapping list
+		 * @param trigger The trigger that owns this list
+		 * @param processors A reference to the mapping processors for this command map
+		 * @param logger Optional logger
+		 */
 		public function CommandMappingList(trigger:ICommandTrigger, processors:Array, logger:ILogger = null)
 		{
 			_trigger = trigger;
@@ -49,12 +58,18 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function getList():Vector.<ICommandMapping>
 		{
 			_sorted || sortMappings();
 			return _mappings.concat();
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function withSortFunction(sorter:Function):ICommandMappingList
 		{
 			_sorted = false;
@@ -62,6 +77,9 @@ package robotlegs.bender.extensions.commandCenter.impl
 			return this;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function addMapping(mapping:ICommandMapping):void
 		{
 			_sorted = false;
@@ -78,6 +96,9 @@ package robotlegs.bender.extensions.commandCenter.impl
 			}
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function removeMapping(mapping:ICommandMapping):void
 		{
 			if (_mappingsByCommand[mapping.commandClass])
@@ -87,12 +108,18 @@ package robotlegs.bender.extensions.commandCenter.impl
 			}
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function removeMappingFor(commandClass:Class):void
 		{
 			const mapping:ICommandMapping = _mappingsByCommand[commandClass];
 			mapping && removeMapping(mapping);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function removeAllMappings():void
 		{
 			if (_mappings.length > 0)

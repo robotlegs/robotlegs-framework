@@ -65,16 +65,25 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @private
+		 */
 		public function createMapper():CommandMapper
 		{
 			return new CommandMapper(_mappings);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function activate():void
 		{
 			_dispatcher.addEventListener(_type, eventHandler);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function deactivate():void
 		{
 			_dispatcher.removeEventListener(_type, eventHandler);

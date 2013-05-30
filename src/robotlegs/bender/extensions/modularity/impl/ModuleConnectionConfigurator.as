@@ -11,6 +11,9 @@ package robotlegs.bender.extensions.modularity.impl
 	import robotlegs.bender.extensions.eventDispatcher.impl.EventRelay;
 	import robotlegs.bender.extensions.modularity.dsl.IModuleConnectionAction;
 
+	/**
+	 * @private
+	 */
 	public class ModuleConnectionConfigurator implements IModuleConnectionAction
 	{
 
@@ -26,6 +29,9 @@ package robotlegs.bender.extensions.modularity.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * @private
+		 */
 		public function ModuleConnectionConfigurator(
 			localDispatcher:IEventDispatcher,
 			channelDispatcher:IEventDispatcher)
@@ -38,30 +44,45 @@ package robotlegs.bender.extensions.modularity.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function relayEvent(eventType:String):IModuleConnectionAction
 		{
 			_localToChannelRelay.addType(eventType);
 			return this;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function receiveEvent(eventType:String):IModuleConnectionAction
 		{
 			_channelToLocalRelay.addType(eventType);
 			return this;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function suspend():void
 		{
 			_channelToLocalRelay.stop();
 			_localToChannelRelay.stop();
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function resume():void
 		{
 			_channelToLocalRelay.start();
 			_localToChannelRelay.start();
 		}
 
+		/**
+		 * @private
+		 */
 		public function destroy():void
 		{
 			_localToChannelRelay.stop();

@@ -165,6 +165,9 @@ package robotlegs.bender.framework.impl
 
 import robotlegs.bender.framework.api.IMatcher;
 
+/**
+ * @private
+ */
 class ClassMatcher implements IMatcher
 {
 
@@ -172,12 +175,18 @@ class ClassMatcher implements IMatcher
 	/* Public Functions                                                           */
 	/*============================================================================*/
 
+	/**
+	 * @private
+	 */
 	public function matches(item:*):Boolean
 	{
 		return item is Class;
 	}
 }
 
+/**
+ * @private
+ */
 class ObjectMatcher implements IMatcher
 {
 
@@ -185,9 +194,11 @@ class ObjectMatcher implements IMatcher
 	/* Public Functions                                                           */
 	/*============================================================================*/
 
+	/**
+	 * @private
+	 */
 	public function matches(item:*):Boolean
 	{
 		return item is Class == false;
 	}
 }
-

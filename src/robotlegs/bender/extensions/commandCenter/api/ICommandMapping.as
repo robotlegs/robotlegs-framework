@@ -8,6 +8,9 @@
 package robotlegs.bender.extensions.commandCenter.api
 {
 
+	/**
+	 * @private
+	 */
 	public interface ICommandMapping
 	{
 		/**

@@ -13,6 +13,9 @@ package robotlegs.bender.extensions.commandCenter.impl
 	import robotlegs.bender.framework.impl.applyHooks;
 	import robotlegs.bender.framework.impl.guardsApprove;
 
+	/**
+	 * @private
+	 */
 	public class CommandExecutor implements ICommandExecutor
 	{
 
@@ -30,6 +33,12 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * Creates a Command Executor
+		 * @param injector The Injector to use. A child injector will be created from it.
+		 * @param removeMapping Remove mapping handler (optional)
+		 * @param handleResult Result handler (optional)
+		 */
 		public function CommandExecutor(
 			injector:Injector,
 			removeMapping:Function = null,

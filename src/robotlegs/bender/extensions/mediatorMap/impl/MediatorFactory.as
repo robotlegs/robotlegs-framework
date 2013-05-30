@@ -30,7 +30,6 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		private var _manager:MediatorManager;
 
-
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/

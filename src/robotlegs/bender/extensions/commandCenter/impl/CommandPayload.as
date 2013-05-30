@@ -8,6 +8,9 @@
 package robotlegs.bender.extensions.commandCenter.impl
 {
 
+	/**
+	 * @private
+	 */
 	public class CommandPayload
 	{
 
@@ -17,6 +20,9 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		private var _values:Array;
 
+		/**
+		 * Ordered list of values
+		 */
 		public function get values():Array
 		{
 			return _values;
@@ -24,11 +30,17 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		private var _classes:Array;
 
+		/**
+		 * Ordered list of value classes
+		 */
 		public function get classes():Array
 		{
 			return _classes;
 		}
 
+		/**
+		 * The number of payload items
+		 */
 		public function get length():uint
 		{
 			return _classes ? _classes.length : 0;
@@ -38,6 +50,11 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * Creates a command payload
+		 * @param values Optional values
+		 * @param classes Optional classes
+		 */
 		public function CommandPayload(values:Array = null, classes:Array = null)
 		{
 			_values = values;
@@ -48,6 +65,12 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * Adds an item to this payload
+		 * @param payloadValue The value
+		 * @param payloadClass The class of the value
+		 * @return Self
+		 */
 		public function addPayload(payloadValue:Object, payloadClass:Class):CommandPayload
 		{
 			if (_values)
@@ -70,6 +93,10 @@ package robotlegs.bender.extensions.commandCenter.impl
 			return this;
 		}
 
+		/**
+		 * Does this payload have any items?
+		 * @return Boolean
+		 */
 		public function hasPayload():Boolean
 		{
 			// todo: the final clause will make this fail silently

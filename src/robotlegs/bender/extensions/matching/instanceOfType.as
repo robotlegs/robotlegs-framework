@@ -13,6 +13,11 @@ package robotlegs.bender.extensions.matching
 	/* Public Functions                                                           */
 	/*============================================================================*/
 
+	/**
+	 * Creates a matcher that matches objects of the given type
+	 * @param type The type to match
+	 * @return A matcher
+	 */
 	public function instanceOfType(type:Class):IMatcher
 	{
 		return new InstanceOfMatcher(type);
@@ -21,6 +26,9 @@ package robotlegs.bender.extensions.matching
 
 import robotlegs.bender.framework.api.IMatcher;
 
+/**
+ * @private
+ */
 class InstanceOfMatcher implements IMatcher
 {
 
@@ -34,6 +42,9 @@ class InstanceOfMatcher implements IMatcher
 	/* Constructor                                                                */
 	/*============================================================================*/
 
+	/**
+	 * @private
+	 */
 	public function InstanceOfMatcher(type:Class)
 	{
 		_type = type;
@@ -43,6 +54,9 @@ class InstanceOfMatcher implements IMatcher
 	/* Public Functions                                                           */
 	/*============================================================================*/
 
+	/**
+	 * @inheritDoc
+	 */
 	public function matches(item:*):Boolean
 	{
 		return item is _type;

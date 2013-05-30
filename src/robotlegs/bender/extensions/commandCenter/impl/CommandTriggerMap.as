@@ -10,6 +10,9 @@ package robotlegs.bender.extensions.commandCenter.impl
 	import flash.utils.Dictionary;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandTrigger;
 
+	/**
+	 * @private
+	 */
 	public class CommandTriggerMap
 	{
 
@@ -27,6 +30,11 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * Creates a command trigger map
+		 * @param keyFactory Factory function to creates keys
+		 * @param triggerFactory Factory function to create triggers
+		 */
 		public function CommandTriggerMap(keyFactory:Function, triggerFactory:Function)
 		{
 			_keyFactory = keyFactory;
@@ -37,12 +45,18 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @private
+		 */
 		public function getTrigger(... params):ICommandTrigger
 		{
 			const key:Object = getKey(params);
 			return _triggers[key] ||= createTrigger(params);
 		}
 
+		/**
+		 * @private
+		 */
 		public function removeTrigger(... params):ICommandTrigger
 		{
 			return destroyTrigger(getKey(params));

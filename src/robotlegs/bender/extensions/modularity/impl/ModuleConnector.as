@@ -14,6 +14,9 @@ package robotlegs.bender.extensions.modularity.impl
 	import robotlegs.bender.extensions.modularity.dsl.IModuleConnectionAction;
 	import robotlegs.bender.framework.api.IContext;
 
+	/**
+	 * @private
+	 */
 	public class ModuleConnector implements IModuleConnector
 	{
 
@@ -31,6 +34,9 @@ package robotlegs.bender.extensions.modularity.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * @private
+		 */
 		public function ModuleConnector(context:IContext)
 		{
 			const injector:Injector = context.injector;
@@ -43,11 +49,17 @@ package robotlegs.bender.extensions.modularity.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function onChannel(channelId:String):IModuleConnectionAction
 		{
 			return getOrCreateConfigurator(channelId);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function onDefaultChannel():IModuleConnectionAction
 		{
 			return getOrCreateConfigurator('global');

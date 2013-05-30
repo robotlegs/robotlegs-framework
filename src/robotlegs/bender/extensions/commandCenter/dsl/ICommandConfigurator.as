@@ -9,7 +9,7 @@ package robotlegs.bender.extensions.commandCenter.dsl
 {
 
 	/**
-	 * Configures a command mapping
+	 * @private
 	 */
 	public interface ICommandConfigurator
 	{

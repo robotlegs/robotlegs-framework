@@ -58,6 +58,10 @@ package robotlegs.bender.bundles.mvcs
 		{
 		}
 
+		/**
+		 * Runs after the mediator has been destroyed.
+		 * Cleans up listeners mapped through the local EventMap.
+		 */
 		public function postDestroy():void
 		{
 			eventMap.unmapListeners();

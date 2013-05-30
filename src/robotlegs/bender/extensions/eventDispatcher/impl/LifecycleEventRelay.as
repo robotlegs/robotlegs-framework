@@ -10,6 +10,9 @@ package robotlegs.bender.extensions.eventDispatcher.impl
 	import flash.events.IEventDispatcher;
 	import robotlegs.bender.framework.api.LifecycleEvent;
 
+	/**
+	 * @private
+	 */
 	public class LifecycleEventRelay
 	{
 
@@ -34,6 +37,9 @@ package robotlegs.bender.extensions.eventDispatcher.impl
 		/* Constructor                                                                */
 		/*============================================================================*/
 
+		/**
+		 * @private
+		 */
 		public function LifecycleEventRelay(source:IEventDispatcher, destination:IEventDispatcher)
 		{
 			_relay = new EventRelay(source, destination, TYPES).start();
@@ -43,6 +49,9 @@ package robotlegs.bender.extensions.eventDispatcher.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		 * @private
+		 */
 		public function destroy():void
 		{
 			_relay.stop();
