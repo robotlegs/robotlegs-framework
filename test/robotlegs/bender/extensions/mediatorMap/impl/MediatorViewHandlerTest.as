@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.mediatorMap.impl
@@ -12,10 +12,11 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import org.flexunit.assertThat;
 	import org.hamcrest.object.notNullValue;
 	import org.hamcrest.object.nullValue;
-	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.matching.ITypeFilter;
 	import robotlegs.bender.extensions.matching.TypeMatcher;
 	import robotlegs.bender.extensions.mediatorMap.support.CallbackMediator;
+	import robotlegs.bender.framework.api.IInjector;
+	import robotlegs.bender.framework.impl.SwiftSuspendersInjector;
 
 	public class MediatorViewHandlerTest
 	{
@@ -26,7 +27,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		private var handler:MediatorViewHandler;
 
-		private var injector:Injector;
+		private var injector:IInjector;
 
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
@@ -35,7 +36,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		[Before]
 		public function before():void
 		{
-			injector = new Injector();
+			injector = new SwiftSuspendersInjector();
 			handler = new MediatorViewHandler(new MediatorFactory(injector));
 		}
 

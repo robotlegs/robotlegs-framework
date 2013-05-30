@@ -1,16 +1,16 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.mediatorMap.impl
 {
 	import flash.utils.Dictionary;
-	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.matching.ITypeFilter;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
+	import robotlegs.bender.framework.api.IInjector;
 	import robotlegs.bender.framework.impl.applyHooks;
 	import robotlegs.bender.framework.impl.guardsApprove;
 
@@ -26,7 +26,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 
 		private const _mediators:Dictionary = new Dictionary();
 
-		private var _injector:Injector;
+		private var _injector:IInjector;
 
 		private var _manager:MediatorManager;
 
@@ -37,7 +37,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		/**
 		 * @private
 		 */
-		public function MediatorFactory(injector:Injector, manager:MediatorManager = null)
+		public function MediatorFactory(injector:IInjector, manager:MediatorManager = null)
 		{
 			_injector = injector;
 			_manager = manager || new MediatorManager(this);

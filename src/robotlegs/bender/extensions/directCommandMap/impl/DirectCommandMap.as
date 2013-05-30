@@ -1,13 +1,12 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.directCommandMap.impl
 {
-	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandExecutor;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandExecutor;
 	import robotlegs.bender.extensions.commandCenter.impl.CommandMappingList;
@@ -16,6 +15,7 @@ package robotlegs.bender.extensions.directCommandMap.impl
 	import robotlegs.bender.extensions.directCommandMap.api.IDirectCommandMap;
 	import robotlegs.bender.extensions.directCommandMap.dsl.IDirectCommandConfigurator;
 	import robotlegs.bender.framework.api.IContext;
+	import robotlegs.bender.framework.api.IInjector;
 
 	/**
 	 * Maps commands for direct (manual) execution
@@ -46,7 +46,7 @@ package robotlegs.bender.extensions.directCommandMap.impl
 		public function DirectCommandMap(context:IContext)
 		{
 			_context = context;
-			const sandboxedInjector:Injector = context.injector.createChildInjector();
+			const sandboxedInjector:IInjector = context.injector.createChild();
 			// allow access to this specific instance in the commands
 			sandboxedInjector.map(IDirectCommandMap).toValue(this);
 			_mappings = new CommandMappingList(

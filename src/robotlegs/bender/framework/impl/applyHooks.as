@@ -1,13 +1,13 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.framework.impl
 {
-	import org.swiftsuspenders.Injector;
+	import robotlegs.bender.framework.api.IInjector;
 
 	/*============================================================================*/
 	/* Public Functions                                                           */
@@ -25,7 +25,7 @@ package robotlegs.bender.framework.impl
 	 * @param hooks An array of hooks
 	 * @param injector An optional Injector
 	 */
-	public function applyHooks(hooks:Array, injector:Injector = null):void
+	public function applyHooks(hooks:Array, injector:IInjector = null):void
 	{
 		for each (var hook:Object in hooks)
 		{

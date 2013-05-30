@@ -14,7 +14,6 @@ package robotlegs.bender.extensions.commandCenter.impl
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.hasProperties;
 	import org.hamcrest.object.instanceOf;
-	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.commandCenter.api.ICommand;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 	import robotlegs.bender.extensions.commandCenter.support.ClassReportingCallbackCommand;
@@ -24,6 +23,8 @@ package robotlegs.bender.extensions.commandCenter.impl
 	import robotlegs.bender.extensions.commandCenter.support.ClassReportingCallbackHook;
 	import robotlegs.bender.extensions.commandCenter.support.NullCommand;
 	import robotlegs.bender.extensions.commandCenter.support.UnmapperStub;
+	import robotlegs.bender.framework.api.IInjector;
+	import robotlegs.bender.framework.impl.SwiftSuspendersInjector;
 	import robotlegs.bender.framework.impl.guardSupport.GrumpyGuard;
 	import robotlegs.bender.framework.impl.guardSupport.HappyGuard;
 
@@ -50,7 +51,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 
 		private var reported:Array;
 
-		private var injector:Injector;
+		private var injector:IInjector;
 
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
@@ -60,7 +61,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 		public function before():void
 		{
 			reported = [];
-			injector = new Injector();
+			injector = new SwiftSuspendersInjector();
 			injector.map(Function, "reportingFunction").toValue(reportingFunction);
 			mappings = new Vector.<ICommandMapping>();
 			subject = new CommandExecutor(injector);
@@ -247,7 +248,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 		[Test]
 		public function payload_doesnt_leak_into_class_instantiated_by_command():void
 		{
-			injector.map(Injector).toValue(injector);
+			injector.map(IInjector).toValue(injector);
 			addMapping(OptionalInjectionPointsCommandInstantiatingCommand);
 
 			const payload:CommandPayload = new CommandPayload(['message', 1], [String, int]);
@@ -324,8 +325,8 @@ package robotlegs.bender.extensions.commandCenter.impl
 	}
 }
 
-import org.swiftsuspenders.Injector;
 import robotlegs.bender.extensions.commandCenter.api.ICommand;
+import robotlegs.bender.framework.api.IInjector;
 
 class ExecutelessCommand
 {
@@ -579,7 +580,7 @@ class OptionalInjectionPointsCommandInstantiatingCommand
 	/*============================================================================*/
 
 	[Inject]
-	public var injector:Injector;
+	public var injector:IInjector;
 
 	/*============================================================================*/
 	/* Public Functions                                                           */

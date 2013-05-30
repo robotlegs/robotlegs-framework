@@ -12,8 +12,8 @@ package robotlegs.bender.framework.impl
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.instanceOf;
 	import org.hamcrest.object.nullValue;
-	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.matching.instanceOfType;
+	import robotlegs.bender.framework.api.IInjector;
 
 	public class ConfigManagerTest
 	{
@@ -24,7 +24,7 @@ package robotlegs.bender.framework.impl
 
 		private var context:Context;
 
-		private var injector:Injector;
+		private var injector:IInjector;
 
 		private var configManager:ConfigManager;
 

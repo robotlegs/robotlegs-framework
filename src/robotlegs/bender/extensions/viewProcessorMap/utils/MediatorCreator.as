@@ -1,14 +1,14 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.viewProcessorMap.utils
 {
 	import flash.utils.Dictionary;
-	import org.swiftsuspenders.Injector;
+	import robotlegs.bender.framework.api.IInjector;
 
 	/**
 	 * Simple Mediator creation processor
@@ -44,7 +44,7 @@ package robotlegs.bender.extensions.viewProcessorMap.utils
 		/**
 		 * @private
 		 */
-		public function process(view:Object, type:Class, injector:Injector):void
+		public function process(view:Object, type:Class, injector:IInjector):void
 		{
 			if (_createdMediatorsByView[view])
 			{
@@ -58,7 +58,7 @@ package robotlegs.bender.extensions.viewProcessorMap.utils
 		/**
 		 * @private
 		 */
-		public function unprocess(view:Object, type:Class, injector:Injector):void
+		public function unprocess(view:Object, type:Class, injector:IInjector):void
 		{
 			if (_createdMediatorsByView[view])
 			{

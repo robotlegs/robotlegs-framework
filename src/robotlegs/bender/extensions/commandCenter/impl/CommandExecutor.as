@@ -1,15 +1,15 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.commandCenter.impl
 {
-	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandExecutor;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
+	import robotlegs.bender.framework.api.IInjector;
 	import robotlegs.bender.framework.impl.applyHooks;
 	import robotlegs.bender.framework.impl.guardsApprove;
 
@@ -23,7 +23,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var _injector:Injector;
+		private var _injector:IInjector;
 
 		private var _removeMapping:Function;
 
@@ -40,11 +40,11 @@ package robotlegs.bender.extensions.commandCenter.impl
 		 * @param handleResult Result handler (optional)
 		 */
 		public function CommandExecutor(
-			injector:Injector,
+			injector:IInjector,
 			removeMapping:Function = null,
 			handleResult:Function = null)
 		{
-			_injector = injector.createChildInjector();
+			_injector = injector.createChild();
 			_removeMapping = removeMapping;
 			_handleResult = handleResult;
 		}

@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2011 the original author or authors. All Rights Reserved.
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
 //
 //  NOTICE: You are permitted to use, modify, and distribute this file
 //  in accordance with the terms of the license agreement accompanying it.
@@ -11,35 +11,45 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import mx.core.UIComponent;
-	import org.flexunit.async.Async;
 	import org.flexunit.asserts.assertEqualsVectorsIgnoringOrder;
+	import org.flexunit.async.Async;
 	import org.fluint.uiImpersonation.UIImpersonator;
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.isFalse;
 	import org.hamcrest.object.isTrue;
 	import robotlegs.bender.extensions.matching.TypeMatcher;
 	import robotlegs.bender.extensions.mediatorMap.impl.support.MediatorWatcher;
-	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.viewProcessorMap.utils.MediatorCreator;
+	import robotlegs.bender.framework.api.IInjector;
+	import robotlegs.bender.framework.impl.SwiftSuspendersInjector;
 
 	public class ViewProcessorMediatorsTest
 	{
-		private var injector:Injector;
+
+		/*============================================================================*/
+		/* Private Properties                                                         */
+		/*============================================================================*/
+
+		private var injector:IInjector;
 
 		private var instance:ViewProcessorMap;
-		
+
 		private var mediatorWatcher:MediatorWatcher;
-		
+
 		private var matchingView:Sprite;
 
 		private var container:UIComponent;
-		
+
+		/*============================================================================*/
+		/* Test Setup and Teardown                                                    */
+		/*============================================================================*/
+
 		[Before(async, ui)]
 		public function setUp():void
 		{
 			container = new UIComponent();
 
-			injector = new Injector();
+			injector = new SwiftSuspendersInjector();
 			instance = new ViewProcessorMap(new ViewProcessorFactory(injector));
 
 			mediatorWatcher = new MediatorWatcher();
@@ -56,7 +66,11 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			injector = null;
 			mediatorWatcher = null;
 		}
-		
+
+		/*============================================================================*/
+		/* Tests                                                                      */
+		/*============================================================================*/
+
 		[Test]
 		public function test_failure_seen():void
 		{
@@ -108,18 +122,22 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 			const expectedNotifications:Vector.<String> = new <String>['ExampleMediator', 'ExampleMediator destroy'];
 			assertEqualsVectorsIgnoringOrder(expectedNotifications, mediatorWatcher.notifications);
 		}
-		
+
 		[Test(async)]
 		public function automatically_unprocesses_when_view_leaves_stage():void
 		{
 			instance.map(Sprite).toProcess(new MediatorCreator(ExampleMediator));
 			container.addChild(matchingView);
 			instance.process(matchingView);
-			var asyncHandler:Function = Async.asyncHandler( this, checkMediatorsDestroyed, 500 );
+			var asyncHandler:Function = Async.asyncHandler(this, checkMediatorsDestroyed, 500);
 			matchingView.addEventListener(Event.REMOVED_FROM_STAGE, asyncHandler);
 			container.removeChild(matchingView);
 		}
-		
+
+		/*============================================================================*/
+		/* Private Functions                                                          */
+		/*============================================================================*/
+
 		private function checkMediatorsDestroyed(e:Event, params:Object):void
 		{
 			const expectedNotifications:Vector.<String> = new <String>['ExampleMediator', 'ExampleMediator destroy'];
@@ -133,11 +151,20 @@ import robotlegs.bender.extensions.mediatorMap.impl.support.MediatorWatcher;
 
 class ExampleMediator
 {
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
 	[Inject]
 	public var mediatorWatcher:MediatorWatcher;
 
 	[Inject]
 	public var view:Sprite;
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
 
 	public function initialize():void
 	{
@@ -152,11 +179,20 @@ class ExampleMediator
 
 class ExampleMediator2
 {
+
+	/*============================================================================*/
+	/* Public Properties                                                          */
+	/*============================================================================*/
+
 	[Inject]
 	public var mediatorWatcher:MediatorWatcher;
 
 	[Inject]
 	public var view:Sprite;
+
+	/*============================================================================*/
+	/* Public Functions                                                           */
+	/*============================================================================*/
 
 	public function initialize():void
 	{

@@ -1,13 +1,13 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.framework.impl
 {
-	import org.swiftsuspenders.Injector;
+	import robotlegs.bender.framework.api.IInjector;
 
 	/*============================================================================*/
 	/* Public Functions                                                           */
@@ -30,7 +30,7 @@ package robotlegs.bender.framework.impl
 	 *
 	 * @return A Boolean value of false if any guard returns false
 	 */
-	public function guardsApprove(guards:Array, injector:Injector = null):Boolean
+	public function guardsApprove(guards:Array, injector:IInjector = null):Boolean
 	{
 		for each (var guard:Object in guards)
 		{

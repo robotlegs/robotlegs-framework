@@ -1,13 +1,12 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.viewProcessorMap
 {
-	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.viewManager.api.IViewHandler;
 	import robotlegs.bender.extensions.viewManager.api.IViewManager;
 	import robotlegs.bender.extensions.viewProcessorMap.api.IViewProcessorMap;
@@ -16,6 +15,7 @@ package robotlegs.bender.extensions.viewProcessorMap
 	import robotlegs.bender.extensions.viewProcessorMap.impl.ViewProcessorMap;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
+	import robotlegs.bender.framework.api.IInjector;
 
 	/**
 	 * This extension install a View Processor Map into a context
@@ -27,7 +27,7 @@ package robotlegs.bender.extensions.viewProcessorMap
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var _injector:Injector;
+		private var _injector:IInjector;
 
 		private var _viewProcessorMap:IViewProcessorMap;
 
@@ -48,7 +48,7 @@ package robotlegs.bender.extensions.viewProcessorMap
 			context.beforeDestroying(beforeDestroying);
 			context.whenDestroying(whenDestroying);
 			_injector = context.injector;
-			_injector.map(IViewProcessorFactory).toValue(new ViewProcessorFactory(_injector.createChildInjector()));
+			_injector.map(IViewProcessorFactory).toValue(new ViewProcessorFactory(_injector.createChild()));
 			_injector.map(IViewProcessorMap).toSingleton(ViewProcessorMap);
 		}
 

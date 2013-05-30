@@ -1,18 +1,18 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.viewManager
 {
-	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.viewManager.api.IViewManager;
 	import robotlegs.bender.extensions.viewManager.impl.ContainerRegistry;
 	import robotlegs.bender.extensions.viewManager.impl.ViewManager;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
+	import robotlegs.bender.framework.api.IInjector;
 
 	/**
 	 * This extension install a View Manager into the context
@@ -31,7 +31,7 @@ package robotlegs.bender.extensions.viewManager
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var _injector:Injector;
+		private var _injector:IInjector;
 
 		private var _viewManager:IViewManager;
 

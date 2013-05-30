@@ -1,14 +1,14 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2012 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.vigilance
 {
-	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.framework.api.IContext;
+	import robotlegs.bender.framework.api.IInjector;
 	import robotlegs.bender.framework.api.ILogger;
 	import robotlegs.bender.framework.impl.Context;
 
@@ -21,7 +21,7 @@ package robotlegs.bender.extensions.vigilance
 
 		private var logger:ILogger;
 
-		private var injector:Injector;
+		private var injector:IInjector;
 
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
@@ -68,6 +68,10 @@ package robotlegs.bender.extensions.vigilance
 		{
 			logger.fatal("");
 		}
+
+		/*============================================================================*/
+		/* Public Functions                                                           */
+		/*============================================================================*/
 
 		// [Test(expects="org.swiftsuspenders.errors.InjectorError")]
 		public function extension_throws_for_injector_MAPPING_override():void

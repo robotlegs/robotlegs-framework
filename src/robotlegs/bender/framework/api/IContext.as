@@ -1,14 +1,13 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.framework.api
 {
 	import flash.events.IEventDispatcher;
-	import org.swiftsuspenders.Injector;
 
 	[Event(name="destroy", type="robotlegs.bender.framework.api.LifecycleEvent")]
 	[Event(name="detain", type="robotlegs.bender.framework.api.PinEvent")]
@@ -33,7 +32,7 @@ package robotlegs.bender.framework.api
 		/**
 		 * The context dependency injector
 		 */
-		function get injector():Injector;
+		function get injector():IInjector;
 
 		/**
 		 * The current log level

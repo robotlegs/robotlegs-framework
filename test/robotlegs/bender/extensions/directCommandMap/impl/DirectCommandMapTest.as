@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.directCommandMap.impl
@@ -13,7 +13,6 @@ package robotlegs.bender.extensions.directCommandMap.impl
 	import org.hamcrest.object.instanceOf;
 	import org.hamcrest.object.isTrue;
 	import org.hamcrest.object.strictlyEqualTo;
-	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.commandCenter.api.ICommandMapping;
 	import robotlegs.bender.extensions.commandCenter.support.CallbackCommand;
 	import robotlegs.bender.extensions.commandCenter.support.CallbackCommand2;
@@ -21,6 +20,7 @@ package robotlegs.bender.extensions.directCommandMap.impl
 	import robotlegs.bender.extensions.directCommandMap.api.IDirectCommandMap;
 	import robotlegs.bender.extensions.directCommandMap.dsl.IDirectCommandConfigurator;
 	import robotlegs.bender.framework.api.IContext;
+	import robotlegs.bender.framework.api.IInjector;
 	import robotlegs.bender.framework.api.PinEvent;
 	import robotlegs.bender.framework.impl.Context;
 
@@ -35,7 +35,7 @@ package robotlegs.bender.extensions.directCommandMap.impl
 
 		private var subject:DirectCommandMap;
 
-		private var injector:Injector;
+		private var injector:IInjector;
 
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */

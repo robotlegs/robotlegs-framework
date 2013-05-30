@@ -1,15 +1,15 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.enhancedLogging.impl
 {
 	import org.swiftsuspenders.InjectionEvent;
-	import org.swiftsuspenders.Injector;
 	import org.swiftsuspenders.mapping.MappingEvent;
+	import robotlegs.bender.framework.api.IInjector;
 	import robotlegs.bender.framework.api.ILogger;
 
 	/**
@@ -39,7 +39,7 @@ package robotlegs.bender.extensions.enhancedLogging.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var _injector:Injector;
+		private var _injector:IInjector;
 
 		private var _logger:ILogger;
 
@@ -52,7 +52,7 @@ package robotlegs.bender.extensions.enhancedLogging.impl
 		 * @param injector Injector
 		 * @param logger Logger
 		 */
-		public function InjectorListener(injector:Injector, logger:ILogger)
+		public function InjectorListener(injector:IInjector, logger:ILogger)
 		{
 			_injector = injector;
 			_logger = logger;

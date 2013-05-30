@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.viewProcessorMap.impl
@@ -19,12 +19,13 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.instanceOf;
 	import org.hamcrest.object.isFalse;
-	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.matching.TypeMatcher;
 	import robotlegs.bender.extensions.viewManager.api.IViewHandler;
 	import robotlegs.bender.extensions.viewProcessorMap.support.Processor;
 	import robotlegs.bender.extensions.viewProcessorMap.support.TrackingProcessor;
 	import robotlegs.bender.extensions.viewProcessorMap.support.TrackingProcessor2;
+	import robotlegs.bender.framework.api.IInjector;
+	import robotlegs.bender.framework.impl.SwiftSuspendersInjector;
 
 	public class ViewProcessorMapTest
 	{
@@ -44,7 +45,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 
 		private var trackingProcessor2:TrackingProcessor;
 
-		private var injector:Injector;
+		private var injector:IInjector;
 
 		private var matchingView:Sprite;
 
@@ -60,8 +61,8 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		public function before():void
 		{
 			container = new UIComponent();
-			injector = new Injector();
-			injector.map(Injector).toValue(injector);
+			injector = new SwiftSuspendersInjector();
+			injector.map(SwiftSuspendersInjector).toValue(injector);
 			viewProcessorMap = new ViewProcessorMap(new ViewProcessorFactory(injector));
 			trackingProcessor = new TrackingProcessor();
 			trackingProcessor2 = new TrackingProcessor();

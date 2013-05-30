@@ -1,18 +1,18 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.modularity.impl
 {
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
-	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.modularity.api.IModuleConnector;
 	import robotlegs.bender.extensions.modularity.dsl.IModuleConnectionAction;
 	import robotlegs.bender.framework.api.IContext;
+	import robotlegs.bender.framework.api.IInjector;
 
 	/**
 	 * @private
@@ -24,7 +24,7 @@ package robotlegs.bender.extensions.modularity.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var _rootInjector:Injector;
+		private var _rootInjector:IInjector;
 
 		private var _localDispatcher:IEventDispatcher;
 
@@ -39,7 +39,7 @@ package robotlegs.bender.extensions.modularity.impl
 		 */
 		public function ModuleConnector(context:IContext)
 		{
-			const injector:Injector = context.injector;
+			const injector:IInjector = context.injector;
 			_rootInjector = getRootInjector(injector);
 			_localDispatcher = injector.getInstance(IEventDispatcher);
 			context.whenDestroying(destroy);
@@ -98,11 +98,11 @@ package robotlegs.bender.extensions.modularity.impl
 			return new ModuleConnectionConfigurator(_localDispatcher, _rootInjector.getInstance(IEventDispatcher, channelId));
 		}
 
-		private function getRootInjector(injector:Injector):Injector
+		private function getRootInjector(injector:IInjector):IInjector
 		{
-			while (injector.parentInjector)
+			while (injector.parent)
 			{
-				injector = injector.parentInjector;
+				injector = injector.parent;
 			}
 			return injector;
 		}

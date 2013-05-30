@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.mediatorMap.impl
@@ -19,12 +19,13 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.isFalse;
 	import org.hamcrest.object.isTrue;
-	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.matching.ITypeFilter;
 	import robotlegs.bender.extensions.matching.TypeMatcher;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
 	import robotlegs.bender.extensions.mediatorMap.impl.support.LifecycleReportingMediator;
 	import robotlegs.bender.extensions.mediatorMap.support.CallbackMediator;
+	import robotlegs.bender.framework.api.IInjector;
+	import robotlegs.bender.framework.impl.SwiftSuspendersInjector;
 	import utils.checkFlex;
 	import utils.traceAndSkipTest;
 
@@ -45,7 +46,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var injector:Injector;
+		private var injector:IInjector;
 
 		private var manager:MediatorManager;
 
@@ -58,7 +59,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		[Before(ui)]
 		public function before():void
 		{
-			injector = new Injector();
+			injector = new SwiftSuspendersInjector();
 			manager = new MediatorManager(factory);
 			container = new UIComponent();
 			UIImpersonator.addChild(container);

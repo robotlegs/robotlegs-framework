@@ -1,15 +1,15 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.framework.impl
 {
 	import flash.events.EventDispatcher;
-	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.framework.api.IContext;
+	import robotlegs.bender.framework.api.IInjector;
 	import robotlegs.bender.framework.api.ILogTarget;
 	import robotlegs.bender.framework.api.ILogger;
 	import robotlegs.bender.framework.api.IMatcher;
@@ -40,12 +40,12 @@ package robotlegs.bender.framework.impl
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		private const _injector:Injector = new Injector();
+		private const _injector:IInjector = new SwiftSuspendersInjector();
 
 		/**
 		 * @inheritDoc
 		 */
-		public function get injector():Injector
+		public function get injector():IInjector
 		{
 			return _injector;
 		}
@@ -327,12 +327,12 @@ package robotlegs.bender.framework.impl
 				{
 					_logger.warn("Child context {0} must be uninitialized", [child]);
 				}
-				if (child.injector.parentInjector)
+				if (child.injector.parent)
 				{
 					_logger.warn("Child context {0} must not have a parent Injector", [child]);
 				}
 				_children.push(child);
-				child.injector.parentInjector = injector;
+				child.injector.parent = injector;
 				child.addEventListener(LifecycleEvent.POST_DESTROY, onChildDestroy);
 			}
 			return this;
@@ -348,7 +348,7 @@ package robotlegs.bender.framework.impl
 			{
 				_logger.info("Removing child context {0}", [child]);
 				_children.splice(childIndex, 1);
-				child.injector.parentInjector = null;
+				child.injector.parent = null;
 				child.removeEventListener(LifecycleEvent.POST_DESTROY, onChildDestroy);
 			}
 			else
@@ -425,7 +425,7 @@ package robotlegs.bender.framework.impl
 		 */
 		private function setup():void
 		{
-			_injector.map(Injector).toValue(_injector);
+			_injector.map(IInjector).toValue(_injector);
 			_injector.map(IContext).toValue(this);
 			_logger = _logManager.getLogger(this);
 			_pin = new Pin(this);

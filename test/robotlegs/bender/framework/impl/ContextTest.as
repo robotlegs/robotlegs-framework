@@ -7,20 +7,20 @@
 
 package robotlegs.bender.framework.impl
 {
-	import flash.events.Event;
 	import org.hamcrest.assertThat;
 	import org.hamcrest.collection.array;
 	import org.hamcrest.core.isA;
-	import org.hamcrest.core.not;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.isTrue;
 	import org.hamcrest.object.nullValue;
 	import org.hamcrest.object.strictlyEqualTo;
 	import org.hamcrest.text.containsString;
 	import org.swiftsuspenders.Injector;
+
 	import robotlegs.bender.framework.api.IConfig;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IExtension;
+	import robotlegs.bender.framework.api.IInjector;
 	import robotlegs.bender.framework.api.LifecycleEvent;
 	import robotlegs.bender.framework.api.LogLevel;
 	import robotlegs.bender.framework.api.PinEvent;
@@ -86,7 +86,7 @@ package robotlegs.bender.framework.impl
 		[Test]
 		public function injector_is_mapped_into_itself():void
 		{
-			const injector:Injector = context.injector.getInstance(Injector);
+			const injector:IInjector = context.injector.getInstance(IInjector);
 			assertThat(injector, strictlyEqualTo(context.injector));
 		}
 
@@ -126,7 +126,7 @@ package robotlegs.bender.framework.impl
 		{
 			const child:Context = new Context();
 			context.addChild(child);
-			assertThat(child.injector.parentInjector, equalTo(context.injector));
+			assertThat(child.injector.parent, equalTo(context.injector));
 		}
 
 		[Test]
@@ -153,7 +153,7 @@ package robotlegs.bender.framework.impl
 					(log.level == LogLevel.WARN) && (warning = log);
 				}));
 			const child:Context = new Context();
-			child.injector.parentInjector = new Injector();
+			child.injector.parent = new SwiftSuspendersInjector();
 			context.addChild(child);
 			assertThat(warning.message, containsString("must not have a parent Injector"));
 			assertThat(warning.params, array(child));
@@ -179,7 +179,7 @@ package robotlegs.bender.framework.impl
 			const child:Context = new Context();
 			context.addChild(child);
 			context.removeChild(child);
-			assertThat(child.injector.parentInjector, nullValue());
+			assertThat(child.injector.parent, nullValue());
 		}
 
 		[Test]
@@ -189,7 +189,7 @@ package robotlegs.bender.framework.impl
 			context.addChild(child);
 			child.initialize();
 			child.destroy();
-			assertThat(child.injector.parentInjector, nullValue());
+			assertThat(child.injector.parent, nullValue());
 		}
 
 		[Test]
@@ -201,8 +201,8 @@ package robotlegs.bender.framework.impl
 			context.addChild(child2);
 			context.initialize();
 			context.destroy();
-			assertThat(child1.injector.parentInjector, nullValue());
-			assertThat(child2.injector.parentInjector, nullValue());
+			assertThat(child1.injector.parent, nullValue());
+			assertThat(child2.injector.parent, nullValue());
 		}
 
 		[Test]

@@ -10,7 +10,7 @@ package robotlegs.bender.framework.impl
 	import org.flexunit.assertThat;
 	import org.hamcrest.object.isFalse;
 	import org.hamcrest.object.isTrue;
-	import org.swiftsuspenders.Injector;
+	import robotlegs.bender.framework.api.IInjector;
 	import robotlegs.bender.framework.impl.guardSupport.BossGuard;
 	import robotlegs.bender.framework.impl.guardSupport.GrumpyGuard;
 	import robotlegs.bender.framework.impl.guardSupport.HappyGuard;
@@ -23,7 +23,7 @@ package robotlegs.bender.framework.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var injector:Injector;
+		private var injector:IInjector;
 
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
@@ -32,7 +32,7 @@ package robotlegs.bender.framework.impl
 		[Before]
 		public function before():void
 		{
-			injector = new Injector();
+			injector = new SwiftSuspendersInjector();
 		}
 
 		[After]

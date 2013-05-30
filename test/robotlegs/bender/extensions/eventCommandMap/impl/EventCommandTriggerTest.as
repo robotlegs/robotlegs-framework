@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.eventCommandMap.impl
@@ -11,7 +11,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import mockolate.received;
 	import mockolate.runner.MockolateRule;
 	import org.hamcrest.assertThat;
-	import org.swiftsuspenders.Injector;
+	import robotlegs.bender.framework.impl.SwiftSuspendersInjector;
 
 	public class EventCommandTriggerTest
 	{
@@ -39,7 +39,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		[Before]
 		public function before():void
 		{
-			subject = new EventCommandTrigger(new Injector(), dispatcher, null, null);
+			subject = new EventCommandTrigger(new SwiftSuspendersInjector(), dispatcher, null, null);
 		}
 
 		/*============================================================================*/

@@ -8,14 +8,10 @@
 package robotlegs.bender.extensions.modularity.impl
 {
 	import flash.events.IEventDispatcher;
-
 	import mockolate.received;
 	import mockolate.runner.MockolateRule;
-
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.instanceOf;
-	import org.swiftsuspenders.Injector;
-
 	import robotlegs.bender.extensions.eventCommandMap.support.SupportEvent;
 
 	public class ModuleConnectionConfiguratorTest
@@ -44,7 +40,7 @@ package robotlegs.bender.extensions.modularity.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var subject : ModuleConnectionConfigurator;
+		private var subject:ModuleConnectionConfigurator;
 
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
@@ -77,7 +73,8 @@ package robotlegs.bender.extensions.modularity.impl
 		}
 
 		[Test]
-		public function suspends_relaying() : void{
+		public function suspends_relaying():void
+		{
 			subject.relayEvent(SupportEvent.TYPE1);
 			subject.suspend();
 			assertThat(localDispatcher, received().method('removeEventListener').args(
@@ -85,7 +82,8 @@ package robotlegs.bender.extensions.modularity.impl
 		}
 
 		[Test]
-		public function resumes_relaying() : void{
+		public function resumes_relaying():void
+		{
 			subject.relayEvent(SupportEvent.TYPE1);
 			subject.suspend();
 			subject.resume();
@@ -94,7 +92,8 @@ package robotlegs.bender.extensions.modularity.impl
 		}
 
 		[Test]
-		public function suspends_receiving() : void{
+		public function suspends_receiving():void
+		{
 			subject.receiveEvent(SupportEvent.TYPE1);
 			subject.suspend();
 			assertThat(channelDispatcher, received().method('removeEventListener').args(
@@ -102,7 +101,8 @@ package robotlegs.bender.extensions.modularity.impl
 		}
 
 		[Test]
-		public function resumes_receiving() : void{
+		public function resumes_receiving():void
+		{
 			subject.receiveEvent(SupportEvent.TYPE1);
 			subject.suspend();
 			subject.resume();
@@ -111,7 +111,8 @@ package robotlegs.bender.extensions.modularity.impl
 		}
 
 		[Test]
-		public function removes_listeners_after_destruction() : void{
+		public function removes_listeners_after_destruction():void
+		{
 			subject.relayEvent(SupportEvent.TYPE1);
 			subject.receiveEvent(SupportEvent.TYPE2);
 			subject.destroy();

@@ -10,7 +10,7 @@ package robotlegs.bender.framework.impl
 	import org.hamcrest.assertThat;
 	import org.hamcrest.object.equalTo;
 	import org.swiftsuspenders.Injector;
-	import robotlegs.bender.framework.impl.applyHooks;
+	import robotlegs.bender.framework.api.IInjector;
 	import robotlegs.bender.framework.impl.hookSupport.CallbackHook;
 
 	public class ApplyHooksTest
@@ -20,7 +20,7 @@ package robotlegs.bender.framework.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var injector:Injector;
+		private var injector:IInjector;
 
 		/*============================================================================*/
 		/* Test Setup and Teardown                                                    */
@@ -29,7 +29,7 @@ package robotlegs.bender.framework.impl
 		[Before]
 		public function before():void
 		{
-			injector = new Injector();
+			injector = new SwiftSuspendersInjector();
 		}
 
 		[After]

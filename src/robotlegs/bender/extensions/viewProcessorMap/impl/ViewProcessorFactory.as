@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.viewProcessorMap.impl
@@ -10,11 +10,11 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.utils.Dictionary;
-	import org.swiftsuspenders.Injector;
 	import org.swiftsuspenders.errors.InjectorInterfaceConstructionError;
 	import robotlegs.bender.extensions.matching.ITypeFilter;
 	import robotlegs.bender.extensions.viewProcessorMap.api.ViewProcessorMapError;
 	import robotlegs.bender.extensions.viewProcessorMap.dsl.IViewProcessorMapping;
+	import robotlegs.bender.framework.api.IInjector;
 	import robotlegs.bender.framework.impl.applyHooks;
 	import robotlegs.bender.framework.impl.guardsApprove;
 
@@ -28,7 +28,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var _injector:Injector;
+		private var _injector:IInjector;
 
 		private var _listenersByView:Dictionary = new Dictionary(true);
 
@@ -39,7 +39,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		/**
 		 * @private
 		 */
-		public function ViewProcessorFactory(injector:Injector)
+		public function ViewProcessorFactory(injector:IInjector)
 		{
 			_injector = injector;
 		}

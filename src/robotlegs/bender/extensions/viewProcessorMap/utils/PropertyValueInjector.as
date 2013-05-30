@@ -1,13 +1,13 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.viewProcessorMap.utils
 {
-	import org.swiftsuspenders.Injector;
+	import robotlegs.bender.framework.api.IInjector;
 
 	/**
 	 * Avoids view reflection by using a provided map
@@ -50,7 +50,7 @@ package robotlegs.bender.extensions.viewProcessorMap.utils
 		/**
 		 * @private
 		 */
-		public function process(view:Object, type:Class, injector:Injector):void
+		public function process(view:Object, type:Class, injector:IInjector):void
 		{
 			for (var propName:String in _valuesByPropertyName)
 			{
@@ -61,7 +61,7 @@ package robotlegs.bender.extensions.viewProcessorMap.utils
 		/**
 		 * @private
 		 */
-		public function unprocess(view:Object, type:Class, injector:Injector):void
+		public function unprocess(view:Object, type:Class, injector:IInjector):void
 		{
 		}
 	}

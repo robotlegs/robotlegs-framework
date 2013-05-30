@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
-// 
-//  NOTICE: You are permitted to use, modify, and distribute this file 
-//  in accordance with the terms of the license agreement accompanying it. 
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
+//
+//  NOTICE: You are permitted to use, modify, and distribute this file
+//  in accordance with the terms of the license agreement accompanying it.
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.extensions.mediatorMap.impl
@@ -17,11 +17,12 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import org.hamcrest.object.instanceOf;
 	import org.hamcrest.object.notNullValue;
 	import org.hamcrest.object.nullValue;
-	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.extensions.matching.ITypeFilter;
 	import robotlegs.bender.extensions.matching.TypeMatcher;
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
 	import robotlegs.bender.extensions.mediatorMap.support.CallbackMediator;
+	import robotlegs.bender.framework.api.IInjector;
+	import robotlegs.bender.framework.impl.SwiftSuspendersInjector;
 	import robotlegs.bender.framework.impl.guardSupport.GrumpyGuard;
 	import robotlegs.bender.framework.impl.guardSupport.HappyGuard;
 	import robotlegs.bender.framework.impl.hookSupport.CallbackHook;
@@ -43,7 +44,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		/* Private Properties                                                         */
 		/*============================================================================*/
 
-		private var injector:Injector;
+		private var injector:IInjector;
 
 		private var factory:MediatorFactory;
 
@@ -54,7 +55,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		[Before]
 		public function before():void
 		{
-			injector = new Injector();
+			injector = new SwiftSuspendersInjector();
 			factory = new MediatorFactory(injector);
 		}
 

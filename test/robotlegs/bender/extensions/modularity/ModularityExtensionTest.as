@@ -88,7 +88,7 @@ package robotlegs.bender.extensions.modularity
 			childContext.install(ModularityExtension).configure(new ContextView(childView));
 			root.addChild(parentView);
 			parentView.addChild(childView);
-			assertThat(childContext.injector.parentInjector, equalTo(parentContext.injector));
+			assertThat(childContext.injector.parent, equalTo(parentContext.injector));
 		}
 
 		[Test(async, ui)]
@@ -99,7 +99,7 @@ package robotlegs.bender.extensions.modularity
 			childContext.install(new ModularityExtension(false)).configure(new ContextView(childView));
 			root.addChild(parentView);
 			parentView.addChild(childView);
-			assertThat(childContext.injector.parentInjector, not(parentContext.injector));
+			assertThat(childContext.injector.parent, not(parentContext.injector));
 		}
 
 		[Test(async, ui)]
@@ -110,7 +110,7 @@ package robotlegs.bender.extensions.modularity
 			childContext.install(ModularityExtension).configure(new ContextView(childView));
 			root.addChild(parentView);
 			parentView.addChild(childView);
-			assertThat(childContext.injector.parentInjector, not(parentContext.injector));
+			assertThat(childContext.injector.parent, not(parentContext.injector));
 		}
 
 		[Test]
@@ -155,7 +155,7 @@ package robotlegs.bender.extensions.modularity
 			root.addChild(parentView);
 			root.addChild(childView);
 
-			assertThat(childContext.injector.parentInjector,
+			assertThat(childContext.injector.parent,
 				equalTo(parentContext.injector));
 		}
 
