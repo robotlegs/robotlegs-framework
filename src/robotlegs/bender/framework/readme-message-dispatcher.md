@@ -18,23 +18,25 @@ Event Dispatchers dispatch "events" to "listeners". The dispatch is synchronous 
 
 Message Dispatchers route "messages" through "handlers". The dispatch may be synchronous or asynchronous depending on the handlers.
 
-    const user:User = new User("Sally");
-    
-    const asyncHandler:Function = function(user:User, callback:Function):void {
-      trace('Just gonna chill for, like, 1000 milliseconds or something...');
-      setTimeout(callback, 1000);
-    };
-    
-    const syncHandler:Function = function(user:User):void {
-      trace('Golly, I synchronously observed: ' + user);
-    };
-    
-    messageDispatcher.addMessageHandler(user, asyncHandler);
-    messageDispatcher.addMessageHandler(user, syncHandler);
-    
-    messageDispatcher.dispatchMessage(user, function():void {
-      trace('Dispatch eventually completed');
-    });
+```as3
+const user:User = new User("Sally");
+
+const asyncHandler:Function = function(user:User, callback:Function):void {
+  trace('Just gonna chill for, like, 1000 milliseconds or something...');
+  setTimeout(callback, 1000);
+};
+
+const syncHandler:Function = function(user:User):void {
+  trace('Golly, I synchronously observed: ' + user);
+};
+
+messageDispatcher.addMessageHandler(user, asyncHandler);
+messageDispatcher.addMessageHandler(user, syncHandler);
+
+messageDispatcher.dispatchMessage(user, function():void {
+  trace('Dispatch eventually completed');
+});
+```
 
 ## Events & Messages
 

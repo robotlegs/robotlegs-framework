@@ -26,17 +26,19 @@ If you can't sum up what the extension is and how it can be used in a readme fil
 
 An extension implements the IExtension interface. When included into a context, that context is immediately passed through to the extend() method:
 
-    package robotlegs.extensions.superDuper
+```as3
+package robotlegs.extensions.superDuper
+{
+  public class SuperDuperExtension implements IExtension
+  {
+    public function extend(context:IContext):void
     {
-      public class SuperDuperExtension implements IExtension
-      {
-        public function extend(context:IContext):void
-        {
-          trace(this, " is being installed into ", context);
-          // BEWARE: the context may not be fully initialized.
-        }
-      }
+      trace(this, " is being installed into ", context);
+      // BEWARE: the context may not be fully initialized.
     }
+  }
+}
+```
 
 NOTE: The context instance provided to configureContext() may not be fully initialized.
 
@@ -44,37 +46,41 @@ NOTE: The context instance provided to configureContext() may not be fully initi
 
 An extension might simply map a singleton:
 
-    public function extend(context:IContext):void
-    {
-      context.injector.map(ISuperDuper).toSingleton(SuperDuper);
-    }
+```as3
+public function extend(context:IContext):void
+{
+  context.injector.map(ISuperDuper).toSingleton(SuperDuper);
+}
+```
 
 ### Synchronizing With The Context
 
 An extension can hook into various context lifecycle phases by adding state handlers to that context when the extension is installed:
 
-    public function extend(context:IContext):void
-    {
-      if (context.initialized)
-        throw new Error("This extension must be installed prior to context initialization");
-      
-      context.beforeInitializing(beforeInitializing);
-      context.afterInitializing(afterInitializing);
-    }
+```as3
+public function extend(context:IContext):void
+{
+  if (context.initialized)
+    throw new Error("This extension must be installed prior to context initialization");
 
-    private function beforeInitializing(phase:String, callback:Function):void
-    {
-      // `before` handlers can accept a callback as the second argument
-      // note: you *must* eventually call the callback or you will stall initialization
-      trace("Doing some things before the context self initializes...");
-      setTimeout(callback, 1000);
-    }
+  context.beforeInitializing(beforeInitializing);
+  context.afterInitializing(afterInitializing);
+}
 
-    private function afterInitializing():void
-    {
-      // `after` handlers are synchronous and are not provided with callbacks
-      trace("Doing some things now that the context is initialized...");
-    }
+private function beforeInitializing(phase:String, callback:Function):void
+{
+  // `before` handlers can accept a callback as the second argument
+  // note: you *must* eventually call the callback or you will stall initialization
+  trace("Doing some things before the context self initializes...");
+  setTimeout(callback, 1000);
+}
+
+private function afterInitializing():void
+{
+  // `after` handlers are synchronous and are not provided with callbacks
+  trace("Doing some things now that the context is initialized...");
+}
+```
 
 For more information on message handling and managed objects see:
 

@@ -6,11 +6,13 @@ A context is a scope. It is core to any application or module built using Robotl
 
 To create a context simply instantiate a new Context and provide some configuration:
 
-	_context = new Context()
-        .install(MVCSBundle)
-        .configure(
-            MyModuleConfig,
-            new ContextView(view));
+```as3
+_context = new Context()
+    .install(MVCSBundle)
+    .configure(
+        MyModuleConfig,
+        new ContextView(view));
+```
 
 Note: you must hold on to that context reference. Failing to do so will result in the context instance being garbage collected.
 
@@ -44,47 +46,52 @@ If the context is not yet initialized the class will be queued. When the context
 
 Such a config might look like this:
 
-    class MyModuleConfig
-    {
-        [Inject]
-        public var mediatorMap:IMediatorMap;
+```as3
+class MyModuleConfig
+{
+    [Inject]
+    public var mediatorMap:IMediatorMap;
 
-        [PostConstruct]
-        public function init():void
-        {
-            mediatorMap.map(SomeView)
-                .toMediator(SomeMediator);
-        }
+    [PostConstruct]
+    public function init():void
+    {
+        mediatorMap.map(SomeView)
+            .toMediator(SomeMediator);
     }
+}
+```
 
 Or, if you dislike metadata:
 
-    class MyModuleConfig
+```as3
+class MyModuleConfig
+{
+    public function MyModuleConfig(mediatorMap:IMediatorMap)
     {
-        public function MyModuleConfig(mediatorMap:IMediatorMap)
-        {
-            mediatorMap.map(SomeView)
-                .toMediator(SomeMediator);
-        }
+        mediatorMap.map(SomeView)
+            .toMediator(SomeMediator);
     }
+}
+```
 
 Note: you will not be able to use the above config as a Flex tag due to the required constructor arguments.
 Note: the two forms above can cause problems if you have any circular dependencies.
 
 Preferably, you can implement the IConfig interface. If a config implements this interface `configure()` will be invoked after construction/injection:
 
-    class MyModuleConfig implements IConfig
+```as3
+class MyModuleConfig implements IConfig
+{
+    [Inject]
+    public var mediatorMap:IMediatorMap;
+
+    public function configure():void
     {
-        [Inject]
-        public var mediatorMap:IMediatorMap;
-
-        public function configure():void
-        {
-            mediatorMap.map(SomeView)
-                .toMediator(SomeMediator);
-        }
+        mediatorMap.map(SomeView)
+            .toMediator(SomeMediator);
     }
-
+}
+```
 
 ## Object Configs
 

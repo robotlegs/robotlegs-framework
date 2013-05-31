@@ -4,8 +4,10 @@ A lifecycle provides `initialize`, `suspend`, `resume` and `destroy` methods.
 
 A lifecycle usually refers to a specific instance. You can provide this instance when creating your lifecycle and refer to it via the read-only `target` property:
 
-	const lifecycle:Lifecycle = new Lifecycle(someManagedObject);
-	lifecycle.target // returns someManagedObject;
+```as3
+const lifecycle:Lifecycle = new Lifecycle(someManagedObject);
+lifecycle.target // returns someManagedObject;
+```
 
 For most developers, the only lifecycle you are interested in will be the context's lifecycle, which is created by the context itself.
 
@@ -160,33 +162,35 @@ When attempting a transition into a given state, a user callback may be supplied
 
 A lifecycle manages the validity of transitions - so both `initialize` and `destroy` are, via the lifecycle's internal state machine, one-time-only transitions. The only repeatable transitions are `suspend` and `resume`. If you need to 'unhook' from these transitions, we recommend you decouple your handlers and use a flag to exit-early from your handlers if the object they would deal with has been cleaned up.
 
-	private var _managedExtension:SomeExtension;
+```as3
+private var _managedExtension:SomeExtension;
 
-	public function set managedExtension(value:SomeExtension):void
-	{
-		_managedExtension = value;
-	}
+public function set managedExtension(value:SomeExtension):void
+{
+	_managedExtension = value;
+}
 
-	private function deactivateExtension():void
-	{
-		if (!_managedExtension) return;
+private function deactivateExtension():void
+{
+	if (!_managedExtension) return;
 
-		// code that actually does stuff here
-	}
+	// code that actually does stuff here
+}
 
-	private function activateExtension():void
-	{
-		if (!_managedExtension) return;
+private function activateExtension():void
+{
+	if (!_managedExtension) return;
 
-		// code that actually does stuff here
-	}
+	// code that actually does stuff here
+}
 
-	private function addContextLifecycleHooks():void
-	{
-		context
-			.beforeSuspending(deactivateExtension)
-			.beforeResuming(activateExtension)
-	}
+private function addContextLifecycleHooks():void
+{
+	context
+		.beforeSuspending(deactivateExtension)
+		.beforeResuming(activateExtension)
+}
+```
 
 If the whole Lifecycle is no longer required, just null it out, and any handlers will be released for garbage collection.
 
@@ -226,27 +230,31 @@ An extension framework - for example an entity system - might have its own lifec
 
 An example usage, for an imaginary extension which provides a developer console to the application.
 
-    _context.beforeInitializing( checkEventDispatcherInstalled )
-			.beforeInitializing( checkEmbeddedFonts )
-			.whenInitializing( setLocalDateTime )
-			.whenInitializing( setLocalPaths )
-			.whenSuspending( grabPauseTime )
-			.afterSuspending( deactivateConsole )
-			.whenResuming( calculatePauseInterval )
-			.afterResuming( reactivateConsole )
-			.beforeDestroying( offerConsoleDump )
-			.afterDestroying( destroyConsole );
+```as3
+_context.beforeInitializing( checkEventDispatcherInstalled )
+		.beforeInitializing( checkEmbeddedFonts )
+		.whenInitializing( setLocalDateTime )
+		.whenInitializing( setLocalPaths )
+		.whenSuspending( grabPauseTime )
+		.afterSuspending( deactivateConsole )
+		.whenResuming( calculatePauseInterval )
+		.afterResuming( reactivateConsole )
+		.beforeDestroying( offerConsoleDump )
+		.afterDestroying( destroyConsole );
+```
 
 ### For managing your own object's lifecycle
 
-	const awesomeExtension:AwesomeExtension = new AwesomeExtension();
-	const awesomeLifecycle:Lifecycle = new Lifecycle(awesomeExtension);
+```as3
+const awesomeExtension:AwesomeExtension = new AwesomeExtension();
+const awesomeLifecycle:Lifecycle = new Lifecycle(awesomeExtension);
 
-	// you would now need to provide an opportunity for any interested parties to add their hooks
+// you would now need to provide an opportunity for any interested parties to add their hooks
 
-	const callback:Function = function(errors:Object):void
-	{
-		// log the errors
-	}
+const callback:Function = function(errors:Object):void
+{
+	// log the errors
+}
 
-	awesomeLifecycle.initialize(callback);
+awesomeLifecycle.initialize(callback);
+```

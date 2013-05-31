@@ -14,21 +14,25 @@ A hook can exist in one of three forms:
 
 A function hook is simply invoked when the time is right:
 
-	function randomHook():void {
-		trace("hooked!");
-	}
+```as3
+function randomHook():void {
+	trace("hooked!");
+}
+```
 
 ### Object Hooks
 
 An object hook must expose a "hook" method:
 
-	public class SomeHook
+```as3
+public class SomeHook
+{
+	public function hook():void
 	{
-		public function hook():void
-		{
-			trace("hooked!");
-		}
+		trace("hooked!");
 	}
+}
+```
 
 The "hook" method will be called each time the hook runs. The object will not be injected into.
 
@@ -36,14 +40,16 @@ The "hook" method will be called each time the hook runs. The object will not be
 
 A class reference can be used as a hook:
 
-	public class SomeOtherHook
-	{
-		[Inject] public var someModel:SomeModel;
+```as3
+public class SomeOtherHook
+{
+	[Inject] public var someModel:SomeModel;
 
-		public function hook():void
-		{
-			someModel.enabled = false;
-		}
+	public function hook():void
+	{
+		someModel.enabled = false;
 	}
+}
+```
 
 A new object will be constructed each time the hook is run. The object will be injected into.

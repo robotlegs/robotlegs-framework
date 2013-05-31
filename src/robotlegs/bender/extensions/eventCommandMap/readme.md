@@ -6,11 +6,13 @@ An Event Command Map executes commands in response to events on a given Event Di
 
 ## Basic Usage
 
-    eventCommandMap
-        .map(SignOutEvent.SIGN_OUT, SignOutEvent)
-        .toCommand(SignOutCommand);
-    
-    eventDispatcher.dispatchEvent(new SignOutEvent(SignOutEvent.SIGN_OUT));
+```as3
+eventCommandMap
+    .map(SignOutEvent.SIGN_OUT, SignOutEvent)
+    .toCommand(SignOutCommand);
+
+eventDispatcher.dispatchEvent(new SignOutEvent(SignOutEvent.SIGN_OUT));
+```
 
 Note: for a less verbose and more performant command mechanism see the MessageCommandMap extension.
 
@@ -18,21 +20,25 @@ Note: for a less verbose and more performant command mechanism see the MessageCo
 
 If you know that you only want your command to fire once, and then be automatically unmapped:
 
-	eventCommandMap
-        .map(SignOutEvent.SIGN_OUT, SignOutEvent)
-        .toCommand(SignOutCommand)
-		.once();
+```as3
+eventCommandMap
+    .map(SignOutEvent.SIGN_OUT, SignOutEvent)
+    .toCommand(SignOutCommand)
+	.once();
+```
 
 ## Mapping guards and hooks
 
 You can optionally add guards and hooks:
 
-	eventCommandMap
-        .map(SignOutEvent.SIGN_OUT, SignOutEvent)
-        .toCommand(SignOutCommand)
-		.withGuards(NotOnTuesdays)
-		.withHooks(UpdateLog);
-	
+```as3
+eventCommandMap
+    .map(SignOutEvent.SIGN_OUT, SignOutEvent)
+    .toCommand(SignOutCommand)
+	.withGuards(NotOnTuesdays)
+	.withHooks(UpdateLog);
+```
+
 Guards and hooks can be passed as lists of classes, objects or function references.
 
 Guards will be injected with the event that fired, and hooks can be injected with both the event and the command (these injections are then cleaned up so that events and commands are not generally available for injection).
@@ -48,8 +54,10 @@ You can only make one mapping per event-command pair. You should do your complet
 
 So - the following will issue a warning:
 
-	eventCommandMap.map(SomeEvent.STARTED).toCommand(SomeCommand);
-	eventCommandMap.map(SomeEvent.STARTED).toCommand(SomeCommand); // warning
+```as3
+eventCommandMap.map(SomeEvent.STARTED).toCommand(SomeCommand);
+eventCommandMap.map(SomeEvent.STARTED).toCommand(SomeCommand); // warning
+```
 
 If you intend to change a mapping you should unmap it first.
 
@@ -63,18 +71,23 @@ This extension requires the following extensions:
 
 ## Extension Installation
 
-    _context = new Context().install(
-    	EventDispatcherExtension,
-	    EventCommandMapExtension);
+```as3
+_context = new Context().install(
+    EventDispatcherExtension,
+    EventCommandMapExtension);
+```
 
 Or, assuming that the EventDispatcherExtension has already been installed:
 
-	_context.install(EventCommandMapExtension);
+```as3
+_context.install(EventCommandMapExtension);
+```
 
 ## Extension Usage
 
 An instance of IEventCommandMap is mapped into the context during extension installation. This instance can be injected into clients and used as below.
 
-	[Inject]
-	public var eventCommandMap:IEventCommandMap;
-
+```as3
+[Inject]
+public var eventCommandMap:IEventCommandMap;
+```

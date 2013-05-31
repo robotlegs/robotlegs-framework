@@ -6,9 +6,11 @@ The Context View Extension adds a configuration processor to the context that co
 
 ### During Context Construction
 
-    _context = new Context()
-        .install(ContextViewExtension)
-        .configure(new ContextView(this));
+```as3
+_context = new Context()
+    .install(ContextViewExtension)
+    .configure(new ContextView(this));
+```
 
 Note: The ContextViewExtension must be installed before the ContextView is provided or it will not be processed.
 
@@ -18,9 +20,11 @@ In the example above we provide the instance "this" to use as the view. We assum
 
 The Stage Sync Extension waits for a ContextView to be added as a configuration, and initializes and destroys the context based on the contextView's stage presence.
 
-    _context = new Context()
-        .install(ContextViewExtension, StageSyncExtension)
-        .configure(new ContextView(this));
+```as3
+_context = new Context()
+    .install(ContextViewExtension, StageSyncExtension)
+    .configure(new ContextView(this));
+```
 
 Due to the StageSyncExtension the context above will automatically initialize when the Context View lands on the stage.
 
@@ -28,7 +32,9 @@ Due to the StageSyncExtension the context above will automatically initialize wh
 
 If you do not install the StageSync Extension or do not provide a Context View you must initialize the context manually:
 
-    _context = new Context()
-        .install(MyCompanyBundle)
-        .configure(MyAppConfig, SomeOtherConfig)
-        .initialize();
+```as3
+_context = new Context()
+    .install(MyCompanyBundle)
+    .configure(MyAppConfig, SomeOtherConfig)
+    .initialize();
+```

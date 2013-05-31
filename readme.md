@@ -24,10 +24,12 @@ To create a Robotlegs application or module you need to instantiate a Context. A
 
 Plain ActionScript:
 
-    _context = new Context()
-        .install(MVCSBundle)
-        .configure(MyAppConfig, SomeOtherConfig)
-        .configure(new ContextView(this));
+```as3
+_context = new Context()
+    .install(MVCSBundle)
+    .configure(MyAppConfig, SomeOtherConfig)
+    .configure(new ContextView(this));
+```
 
 We install the MVCSBundle, which in turn installs a number of commonly used Extensions. We then add some custom application configurations.
 
@@ -37,12 +39,14 @@ Note: You must hold on to the context instance or it will be garbage collected.
 
 Flex:
 
-    <fx:Declarations>
-        <rl2:ContextBuilder>
-            <mvcs:MVCSBundle/>
-            <config:MyAppConfig/>
-        </rl2:ContextBuilder>
-    </fx:Declarations>
+```xml
+<fx:Declarations>
+    <rl2:ContextBuilder>
+        <mvcs:MVCSBundle/>
+        <config:MyAppConfig/>
+    </rl2:ContextBuilder>
+</fx:Declarations>
+```
 
 Note: In Flex we don't need to manually provide a "contextView" as the builder can determine this automatically.
 
@@ -52,10 +56,12 @@ When a ContextView is provided the Context is automatically initialized when the
 
 If a ContextView is not supplied then the Context must be manually initialized.
 
-    _context = new Context()
-        .install(MyCompanyBundle)
-        .configure(MyAppConfig, SomeOtherConfig)
-        .initialize();
+```as3
+_context = new Context()
+    .install(MyCompanyBundle)
+    .configure(MyAppConfig, SomeOtherConfig)
+    .initialize();
+```
 
 Note: This does not apply to Flex MXML configuration as the ContextView is automatically determined and initialization will be automatic.
 
@@ -63,34 +69,36 @@ Note: This does not apply to Flex MXML configuration as the ContextView is autom
 
 A simple application configuration file might look something like this:
 
-    public class MyAppConfig implements IConfig
+```as3
+public class MyAppConfig implements IConfig
+{
+    [Inject]
+    public var injector:Injector;
+
+    [Inject]
+    public var mediatorMap:IMediatorMap;
+
+    [Inject]
+    public var commandMap:IEventCommandMap;
+
+    [Inject]
+    public var contextView:ContextView;
+
+    public function configure():void
     {
-        [Inject]
-        public var injector:Injector;
+        injector.map(UserModel).asSingleton();
 
-        [Inject]
-        public var mediatorMap:IMediatorMap;
+        mediatorMap.map(UserProfileView).toMediator(UserProfileMediator);
 
-        [Inject]
-        public var commandMap:IEventCommandMap;
+        commandMap.map(UserEvent.SIGN_IN).toCommand(UserSignInCommand);
 
-        [Inject]
-        public var contextView:ContextView;
-
-        public function configure():void
-        {
-            injector.map(UserModel).asSingleton();
-
-            mediatorMap.map(UserProfileView).toMediator(UserProfileMediator);
-
-            commandMap.map(UserEvent.SIGN_IN).toCommand(UserSignInCommand);
-
-            // The "view" property is a DisplayObjectContainer reference.
-            // If this was a Flex application we would need to cast it
-            // as an IVisualElementContainer and call addElement().
-            contextView.view.addChild(new MainView());
-        }
+        // The "view" property is a DisplayObjectContainer reference.
+        // If this was a Flex application we would need to cast it
+        // as an IVisualElementContainer and call addElement().
+        contextView.view.addChild(new MainView());
     }
+}
+```
 
 The configuration file above implements IConfig. An instance of this class will be created automatically when the context initializes.
 
@@ -102,17 +110,19 @@ For more info see: robotlegs.bender.framework.readme-context
 
 The mediator we mapped above might look like this:
 
-    public class UserProfileMediator extends Mediator
-    {
-        [Inject]
-        public var view:UserProfileView;
+```as3
+public class UserProfileMediator extends Mediator
+{
+    [Inject]
+    public var view:UserProfileView;
 
-        override public function initialize():void
-        {
-            // Redispatch the event to the framework
-            addViewListener(UserEvent.SIGN_IN, dispatch);
-        }
+    override public function initialize():void
+    {
+        // Redispatch the event to the framework
+        addViewListener(UserEvent.SIGN_IN, dispatch);
     }
+}
+```
 
 The view that caused this mediator to be created is available for Injection.
 
@@ -122,20 +132,22 @@ For more info see: robotlegs.bender.extensions.mediatorMap.readme
 
 The command we mapped above might look like this:
 
-    public class UserSignInCommand extends Command
+```as3
+public class UserSignInCommand extends Command
+{
+    [Inject]
+    public var event:UserEvent;
+
+    [Inject]
+    public var model:UserModel;
+
+    override public function execute():void
     {
-        [Inject]
-        public var event:UserEvent;
-
-        [Inject]
-        public var model:UserModel;
-
-        override public function execute():void
-        {
-            if (event.username == "bob")
-                model.signedIn = true;
-        }
+        if (event.username == "bob")
+            model.signedIn = true;
     }
+}
+```
 
 The event that triggered this command is available for Injection.
 

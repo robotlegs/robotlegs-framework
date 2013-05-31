@@ -14,33 +14,38 @@ A guard can exist in one of three forms:
 
 A function guard is expected to return a Boolean value:
 
-	function randomGuard():Boolean {
-		return Math.random() < 0.5;
-	}
+```as3
+function randomGuard():Boolean {
+	return Math.random() < 0.5;
+}
+```
 
 ### Object Guards
 
 An object guard is expected to expose an "approve" method that returns a Boolean value:
 
-	public class HappyGuard
+```as3
+public class HappyGuard
+{
+	public function approve():Boolean
 	{
-		public function approve():Boolean
-		{
-			return true;
-		}
+		return true;
 	}
+}
+```
 
 ### Class Guards
 
 Instantiating a Class guard should result in an object that exposes an "approve" method which returns a Boolean value:
 
-	public class SomeGuard
+```as3
+public class SomeGuard
+{
+	[Inject] public var someModel:SomeModel;
+
+	public function approve():Boolean
 	{
-		[Inject] public var someModel:SomeModel;
-
-		public function approve():Boolean
-		{
-			return someModel.enabled;
-		}
+		return someModel.enabled;
 	}
-
+}
+```

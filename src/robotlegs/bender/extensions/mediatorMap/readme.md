@@ -6,12 +6,18 @@ The mediator map provides automagic mediator creation for mapped views landing o
 
 ## Extension Installation
 
-	context.install(MediatorMapExtension);
-	
+This extension is already installed in the MVCS bundle, but if you're not using that:
+
+```as3
+context.install(MediatorMapExtension);
+```
+
 ### Default access to the map is by injecting against the `IMediatorMap` interface
 
-	[Inject]
-	public var mediatorMap:IMediatorMap;
+```as3
+[Inject]
+public var mediatorMap:IMediatorMap;
+```
 
 ## MediatorMap Usage
 
@@ -21,9 +27,11 @@ The Robotlegs 2 mediatorMap is designed to support _co-variant_ mediation. This 
 
 You map either a specific type or a TypeMatcher to the mediator class you want to be created.
 
-	mediatorMap.map(SomeType).toMediator(SomeMediator);
-	
-	mediatorMap.mapMatcher(new TypeMatcher().anyOf(ISpaceShip, IRocket)).toMediator(SpaceCraftMediator);
+```as3
+mediatorMap.map(SomeType).toMediator(SomeMediator);
+
+mediatorMap.mapMatcher(new TypeMatcher().anyOf(ISpaceShip, IRocket)).toMediator(SpaceCraftMediator);
+```
 
 We provide a TypeMatcher and PackageMatcher. TypeMatcher has `allOf`, `noneOf`, `anyOf`. For more complex logic (equivalent of 'or') you can simply make multiple mappings. For more details on type and package matching, see:
 
@@ -31,8 +39,12 @@ We provide a TypeMatcher and PackageMatcher. TypeMatcher has `allOf`, `noneOf`, 
 
 You can optionally add guards and hooks:
 
-	map(SomeClass).toMediator(SomeMediator).withGuards(NotOnTuesdays).withHooks(ApplySkin, UpdateLog);
-	
+```as3
+map(SomeClass).toMediator(SomeMediator)
+	.withGuards(NotOnTuesdays)
+	.withHooks(ApplySkin, UpdateLog);
+```
+
 Guards and hooks can be passed as arrays or just a list of classes.	
 
 Guards will be injected with the view to be mediated, and hooks can be injected with both the view and the mediator (these injections are then cleaned up so that mediators are not generally available for injection).
@@ -44,11 +56,13 @@ For more information on guards and hooks check out:
 
 ### Removing mappings
 
-	mediatorMap.unmap(SomeClass).fromMediator(SomeMediator);
-	
-	mediatorMap.unmapMatcher(someTypeMatcher).fromMediator(SomeMediator);
-	
-	mediatorMap.unmap(SomeClass).fromMediators();
+```as3
+mediatorMap.unmap(SomeClass).fromMediator(SomeMediator);
+
+mediatorMap.unmapMatcher(someTypeMatcher).fromMediator(SomeMediator);
+
+mediatorMap.unmap(SomeClass).fromMediators();
+```
 
 ### Mediating views automatically
 
@@ -60,9 +74,11 @@ Assuming you're listening to your contextView, any view that lands on the contex
 
 The mediatorMap is able to mediate non-view objects. However, you'll need to implement your own strategy for deciding when these objects should be mediated and unmediated. Map your rules as normal, and then use:
 
-	mediatorMap.mediate(item);
-	
-	mediatorMap.unmediate(item);
+```as3
+mediatorMap.mediate(item);
+
+mediatorMap.unmediate(item);
+```
 
 ### Packages excluded from automatic mediation
 
@@ -109,38 +125,42 @@ Mediators should observe one of the following forms:
 
 A mediator that extends the MVCS Mediator might look like this:
 
-    public class UserProfileMediator extends Mediator
-    {
-        [Inject]
-        public var view:UserProfileView;
+```as3
+public class UserProfileMediator extends Mediator
+{
+    [Inject]
+    public var view:UserProfileView;
 
-        override public function initialize():void
-        {
-            // Redispatch the event to the framework
-            addViewListener(UserEvent.SIGN_IN, dispatch);
-        }
+    override public function initialize():void
+    {
+        // Redispatch the event to the framework
+        addViewListener(UserEvent.SIGN_IN, dispatch);
     }
+}
+```
 
 You do not have to extend the MVCS mediator:
 
-    public class UserProfileMediator
+```as3
+public class UserProfileMediator
+{
+    [Inject]
+    public var view:UserProfileView;
+
+    [Inject]
+    public var dispatcher:IEventDispatcher;
+
+    public function initialize():void
     {
-        [Inject]
-        public var view:UserProfileView;
-
-        [Inject]
-        public var dispatcher:IEventDispatcher;
-
-        public function initialize():void
-        {
-            view.addEventListener(UserEvent.SIGN_IN, dispatcher.dispatch);
-        }
-
-        public function destroy():void
-        {
-            view.removeEventListener(UserEvent.SIGN_IN, dispatcher.dispatch);
-        }
+        view.addEventListener(UserEvent.SIGN_IN, dispatcher.dispatch);
     }
+
+    public function destroy():void
+    {
+        view.removeEventListener(UserEvent.SIGN_IN, dispatcher.dispatch);
+    }
+}
+```
 
 Notice that we could not use the handy "addViewListener" sugar. Also, we now need to manually clean up any listeners we have attached.
 
@@ -148,16 +168,18 @@ Notice that we could not use the handy "addViewListener" sugar. Also, we now nee
 
 Mediator base class provides the following internal API, used for managing listeners and dispatching events.
 
-	addViewListener(eventString:String, listener:Function, eventClass:Class = null):void
-    
-	addContextListener(eventString:String, listener:Function, eventClass:Class = null):void
-    
-	removeViewListener(eventString:String, listener:Function, eventClass:Class = null):void
-    
-	removeContextListener(eventString:String, listener:Function, eventClass:Class = null):void
-    
-	dispatch(event:Event):void
-	
+```as3
+addViewListener(eventString:String, listener:Function, eventClass:Class = null):void
+
+addContextListener(eventString:String, listener:Function, eventClass:Class = null):void
+
+removeViewListener(eventString:String, listener:Function, eventClass:Class = null):void
+
+removeContextListener(eventString:String, listener:Function, eventClass:Class = null):void
+
+dispatch(event:Event):void
+```
+
 You can also access the injected `eventMap` directly, for example to listen to a subcomponent.
 
 For more details on the local eventMap see:

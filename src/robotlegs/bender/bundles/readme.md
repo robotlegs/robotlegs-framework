@@ -12,19 +12,21 @@ A bundle bundles up a selection of extensions and configurations into a single d
 
 A bundle implements the IBundle interface. When included into a context, that context is immediately passed through to the extend() method.
 
-    package robotlegs.bender.bundles.superDuper
+```as3
+package com.organisation.project.bundles
+{
+  public class SuperDuperBundle implements IBundle
+  {
+    public function extend(context:IContext):void
     {
-      public class SuperDuperBundle implements IBundle
-      {
-        public function extend(context:IContext):void
-        {
-          context.install(
-            SuperDuperExtensionA,
-            SuperDuperExtensionB,
-            SuperDuperExtensionC);
-        }
-      }
+      context.install(
+        SuperDuperExtensionA,
+        SuperDuperExtensionB,
+        SuperDuperExtensionC);
     }
+  }
+}
+```
 
 NOTE: The context instance passed to extend() may not be fully initialized.
 

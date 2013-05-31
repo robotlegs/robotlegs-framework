@@ -6,12 +6,16 @@ The view processor map provides automagic processing of mapped views landing on 
 
 ## Extension Installation
 
-	context.install( ViewProcessorMapExtension );
-	
+```as3
+context.install( ViewProcessorMapExtension );
+```
+
 ### Default access to the map is by injecting against the `IViewProcessorMap` interface
 
-	[Inject]
-	public var viewProcessorMap:IViewProcessorMap;
+```as3
+[Inject]
+public var viewProcessorMap:IViewProcessorMap;
+```
 
 ## ViewMap Usage
 
@@ -23,18 +27,22 @@ You can create your own processor, for example to do property injection without 
 
 You map either a specific type or a TypeMatcher to the class or instance of processor you want to be used.
 
-	viewProcessorMap.map(SomeType).toProcessor(FastInjector);
-	
-	viewProcessorMap.mapMatcher(new TypeMatcher().anyOf(ISpaceShip, IRocket)).toProcessor(SpacecraftSkinner);
-	
-	// you can also use an instance as the processor, in this case, to avoid inspection when doing property injection
-	
-	viewProcessorMap.map(SomeType).toProcessor( new FastPropertyInjector( { userID:UserID, animationSettings:AnimationSettings } ) );
-	
+```as3
+viewProcessorMap.map(SomeType).toProcessor(FastInjector);
+
+viewProcessorMap.mapMatcher(new TypeMatcher().anyOf(ISpaceShip, IRocket)).toProcessor(SpacecraftSkinner);
+
+// you can also use an instance as the processor, in this case, to avoid inspection when doing property injection
+
+viewProcessorMap.map(SomeType).toProcessor( new FastPropertyInjector( { userID:UserID, animationSettings:AnimationSettings } ) );
+```
+
 #### Shortcut method for the most common case: injection by inspection
 
-	viewProcessorMap.map(SomeType).toInjection();
-	
+```as3
+viewProcessorMap.map(SomeType).toInjection();
+```
+
 #### Type / Package Matching
 
 We provide a TypeMatcher and PackageMatcher. TypeMatcher has `allOf`, `noneOf`, `anyOf`. For more complex logic (equivalent of 'or') you can simply make multiple mappings. For more details on type and package matching, see:
@@ -45,12 +53,14 @@ We provide a TypeMatcher and PackageMatcher. TypeMatcher has `allOf`, `noneOf`, 
 
 You can optionally add guards and hooks:
 
-	map(SomeClass).toProcess(LocaliseText).withGuards(NotOnTuesdays).withHooks(UpdateLog);
+```as3
+map(SomeClass).toProcess(LocaliseText).withGuards(NotOnTuesdays).withHooks(UpdateLog);
 
-	// in the situation where you just want guards and hooks, and no processing needs to be done
+// in the situation where you just want guards and hooks, and no processing needs to be done
 
-	map(SomeClass).toNoProcess().withGuards(NotOnTuesdays).withHooks(ApplySkin, UpdateLog);
-	
+map(SomeClass).toNoProcess().withGuards(NotOnTuesdays).withHooks(ApplySkin, UpdateLog);
+```
+
 Guards and hooks can be passed as arrays or just a list of classes.	
 
 Guards and hooks will be injected with the view (these injections are then cleaned up so that views are not generally available for injection).
@@ -70,27 +80,35 @@ For more information on guards and hooks check out:
 
 Injects view by passing it to the injector, where it will be inspected and then injected. You can access this via either of the following:
 
-	map(SomeType).toInjection();
-	map(SomeType).toProcess(ViewInjectionProcessor);
+```as3
+map(SomeType).toInjection();
+map(SomeType).toProcess(ViewInjectionProcessor);
+```
 
 ## FastPropertyInjector
 
 Allows injection of properties (by the injector), without describing the object type. You provide names and types of injection points in the configuration object passed to the constructor.
 
-	map(ViewThatIsTooExpensiveToInspect).toProcess(new FastPropertyInjector({gravity:Gravity, bounce:Bounce}));
+```as3
+map(ViewThatIsTooExpensiveToInspect).toProcess(new FastPropertyInjector({gravity:Gravity, bounce:Bounce}));
+```
 
 ## PropertyValueInjector
 
 Allows injection of values directly, using only property names, so that the injector is never consulted.
 
-	map(ViewNeedingQuickParams).toProcess(new PropertyValueInjector({gravity:9.8, bounce:4}));
-	
+```as3
+map(ViewNeedingQuickParams).toProcess(new PropertyValueInjector({gravity:9.8, bounce:4}));
+```
+
 ## MediatorCreator
 
 Allows you to use mediators via the viewProcessorMap - for example in the case where you want to minimise the size of the framework within your application.
 
-	map(ViewNeedingMediator).toProcess(new MediatorCreator(SomeMediator));
-	
+```as3
+map(ViewNeedingMediator).toProcess(new MediatorCreator(SomeMediator));
+```
+
 The mediator class passed should implement `set viewComponent`, `initialize` and `destroy` methods as required (only those provided will be called).
 
 A difference between the mediatorMap and the viewProcessorMap: in the mediatorMap, mediators can be injected into hooks. In the viewProcessorMap they aren't mapped for injection at all.
@@ -99,9 +117,11 @@ A difference between the mediatorMap and the viewProcessorMap: in the mediatorMa
 
 Processors need to implement two methods:
 
-	process(view:ISkinnable, class:Class, injector:Injector):void;
-	unprocess(view:ISkinnable, class:Class, injector:Injector):void;
-	
+```as3
+process(view:ISkinnable, class:Class, injector:Injector):void;
+unprocess(view:ISkinnable, class:Class, injector:Injector):void;
+```
+
 These methods are checked by duck typing, rather than forcing you to implement an interface, so that you can use stricter typing on the view argument passed. The class is passed to avoid you having to re-inspect the object (in most cases the viewProcessorMap will already have obtained this information).
 	
 In many cases, `unprocess` will simply be an empty function, but some processes may need to 'clean up' - for example removing listeners and so on.
@@ -116,11 +136,13 @@ You may wish to use a childInjector for local mappings within the process.
 
 ### Removing mappings
 
-	viewProcessorMap.unmap(SomeClass).fromProcess(FastInject);
-	
-	viewProcessorMap.unmapMatcher(someTypeMatcher).fromProcess(processorInstance);
-	
-	viewProcessorMap.unmap(SomeClass).fromProcesses();
+```as3
+viewProcessorMap.unmap(SomeClass).fromProcess(FastInject);
+
+viewProcessorMap.unmapMatcher(someTypeMatcher).fromProcess(processorInstance);
+
+viewProcessorMap.unmap(SomeClass).fromProcesses();
+```
 
 ### Processing views automatically
 
@@ -132,9 +154,11 @@ Assuming you're listening to your contextView, any view that lands on the contex
 
 If you don't want the overhead of listening for views landing on the stage, you'll need to implement your own strategy for deciding when views should be processed and unprocessed. Map your rules as normal, and then use:
 
-	viewProcessorMap.process(item);
-	
-	viewProcessorMap.unprocess(item);
+```as3
+viewProcessorMap.process(item);
+
+viewProcessorMap.unprocess(item);
+```
 
 ### Packages excluded from automatic processing
 
