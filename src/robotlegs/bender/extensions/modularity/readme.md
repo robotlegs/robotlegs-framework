@@ -11,37 +11,37 @@ Communication between modules is facilitated by the Module Connector.
 Setup to allow sending events from one module to the other:
 
 ```as3
-	//ModuleAConfig.as
+//ModuleAConfig.as
 
-	[Inject]
-	public var moduleConnector: IModuleConnector;
+[Inject]
+public var moduleConnector: IModuleConnector;
 
-	moduleConnector.onDefaultChannel()
-		.relayEvent(WarnModuleBEvent.WARN);
+moduleConnector.onDefaultChannel()
+	.relayEvent(WarnModuleBEvent.WARN);
 ```
 
 Setup to allow reception of events from another module:
 
 ```as3
-	//ModuleBConfig.as
-	[Inject]
-	public var moduleConnector:IModuleConnector;
+//ModuleBConfig.as
+[Inject]
+public var moduleConnector:IModuleConnector;
 
-	moduleConnector.onDefaultChannel()
-		.receiveEvent(WarnModuleBEvent.WARN);
+moduleConnector.onDefaultChannel()
+	.receiveEvent(WarnModuleBEvent.WARN);
 ```
 
 Now ModuleB can map commands to the event, or allow mediators to attach listeners to it:
 
 ```as3
-	eventCommandMap.map(WarnModuleBEvent.WARN)
-		.toCommand(HandleWarningFromModuleACommand);
+eventCommandMap.map(WarnModuleBEvent.WARN)
+	.toCommand(HandleWarningFromModuleACommand);
 ```
 
 All ModuleA needs to do is dispatch the event:
 
 ```as3
-	eventDispatcher.dispatchEvent(new WarnModuleBEvent(WarnModuleBEvent.WARN);
+eventDispatcher.dispatchEvent(new WarnModuleBEvent(WarnModuleBEvent.WARN);
 ```
 
 ## Named channels
@@ -49,15 +49,15 @@ All ModuleA needs to do is dispatch the event:
 If you want to sandbox the communication between two modules, you can use named channels:
 
 ```as3
-	//ModuleAConfig.as
-	moduleConnector.onChannel('A-and-B')
-		.relayEvent(WarnModuleBEvent.WARN);
+//ModuleAConfig.as
+moduleConnector.onChannel('A-and-B')
+	.relayEvent(WarnModuleBEvent.WARN);
 ```
 
 ```as3
-	//ModuleBConfig.as
-	moduleConnector.onChannel('A-and-B')
-		.receiveEvent(WarnModuleBEvent.WARN);
+//ModuleBConfig.as
+moduleConnector.onChannel('A-and-B')
+	.receiveEvent(WarnModuleBEvent.WARN);
 ```
 
 
