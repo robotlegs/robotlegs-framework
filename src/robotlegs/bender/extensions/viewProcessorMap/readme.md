@@ -118,8 +118,8 @@ A difference between the mediatorMap and the viewProcessorMap: in the mediatorMa
 Processors need to implement two methods:
 
 ```as3
-process(view:ISkinnable, class:Class, injector:Injector):void;
-unprocess(view:ISkinnable, class:Class, injector:Injector):void;
+process(view:ISkinnable, class:Class, injector:IInjector):void;
+unprocess(view:ISkinnable, class:Class, injector:IInjector):void;
 ```
 
 These methods are checked by duck typing, rather than forcing you to implement an interface, so that you can use stricter typing on the view argument passed. The class is passed to avoid you having to re-inspect the object (in most cases the viewProcessorMap will already have obtained this information).

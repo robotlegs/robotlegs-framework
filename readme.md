@@ -73,7 +73,7 @@ A simple application configuration file might look something like this:
 public class MyAppConfig implements IConfig
 {
     [Inject]
-    public var injector:Injector;
+    public var injector:IInjector;
 
     [Inject]
     public var mediatorMap:IMediatorMap;
