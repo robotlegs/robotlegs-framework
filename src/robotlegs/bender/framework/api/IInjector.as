@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
-//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved.
-//
-//  NOTICE: You are permitted to use, modify, and distribute this file
-//  in accordance with the terms of the license agreement accompanying it.
+//  Copyright (c) 2009-2013 the original author or authors. All Rights Reserved. 
+// 
+//  NOTICE: You are permitted to use, modify, and distribute this file 
+//  in accordance with the terms of the license agreement accompanying it. 
 //------------------------------------------------------------------------------
 
 package robotlegs.bender.framework.api
@@ -13,6 +13,15 @@ package robotlegs.bender.framework.api
 	import org.swiftsuspenders.mapping.InjectionMapping;
 	import org.swiftsuspenders.typedescriptions.TypeDescription;
 
+	[Event(name='mappingOverride', type='org.swiftsuspenders.mapping.MappingEvent')]
+	[Event(name='postConstruct', type='org.swiftsuspenders.InjectionEvent')]
+	[Event(name='postInstantiate', type='org.swiftsuspenders.InjectionEvent')]
+	[Event(name='postMappingChange', type='org.swiftsuspenders.mapping.MappingEvent')]
+	[Event(name='postMappingCreate', type='org.swiftsuspenders.mapping.MappingEvent')]
+	[Event(name='postMappingRemove', type='org.swiftsuspenders.mapping.MappingEvent')]
+	[Event(name='preConstruct', type='org.swiftsuspenders.InjectionEvent')]
+	[Event(name='preMappingChange', type='org.swiftsuspenders.mapping.MappingEvent')]
+	[Event(name='preMappingCreate', type='org.swiftsuspenders.mapping.MappingEvent')]
 	public interface IInjector extends IEventDispatcher
 	{
 		function set parent(parentInjector:IInjector):void;

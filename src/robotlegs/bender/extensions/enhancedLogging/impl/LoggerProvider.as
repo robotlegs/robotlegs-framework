@@ -8,12 +8,9 @@
 package robotlegs.bender.extensions.enhancedLogging.impl
 {
 	import flash.utils.Dictionary;
-
 	import org.swiftsuspenders.Injector;
 	import org.swiftsuspenders.dependencyproviders.DependencyProvider;
-
 	import robotlegs.bender.framework.api.IContext;
-	import robotlegs.bender.framework.api.IInjector;
 
 	/**
 	 * @private

@@ -11,7 +11,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 	import org.flexunit.assertThat;
 	import org.hamcrest.object.equalTo;
 	import robotlegs.bender.framework.api.IInjector;
-	import robotlegs.bender.framework.impl.SwiftSuspendersInjector;
+	import robotlegs.bender.framework.impl.RobotlegsInjector;
 
 	public class ViewInjectionProcessorTest
 	{
@@ -35,7 +35,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		[Before]
 		public function before():void
 		{
-			injector = new SwiftSuspendersInjector();
+			injector = new RobotlegsInjector();
 			viewInjector = new ViewInjectionProcessor();
 			injectionValue = mapSpriteForInjection();
 			view = new ViewWithInjection();

@@ -11,7 +11,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 	import mockolate.received;
 	import mockolate.runner.MockolateRule;
 	import org.hamcrest.assertThat;
-	import robotlegs.bender.framework.impl.SwiftSuspendersInjector;
+	import robotlegs.bender.framework.impl.RobotlegsInjector;
 
 	public class EventCommandTriggerTest
 	{
@@ -39,7 +39,7 @@ package robotlegs.bender.extensions.eventCommandMap.impl
 		[Before]
 		public function before():void
 		{
-			subject = new EventCommandTrigger(new SwiftSuspendersInjector(), dispatcher, null, null);
+			subject = new EventCommandTrigger(new RobotlegsInjector(), dispatcher, null, null);
 		}
 
 		/*============================================================================*/

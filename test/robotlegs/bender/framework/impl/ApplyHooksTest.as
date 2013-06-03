@@ -29,7 +29,7 @@ package robotlegs.bender.framework.impl
 		[Before]
 		public function before():void
 		{
-			injector = new SwiftSuspendersInjector();
+			injector = new RobotlegsInjector();
 		}
 
 		[After]

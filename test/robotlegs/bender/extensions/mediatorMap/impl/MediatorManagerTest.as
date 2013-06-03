@@ -25,7 +25,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import robotlegs.bender.extensions.mediatorMap.impl.support.LifecycleReportingMediator;
 	import robotlegs.bender.extensions.mediatorMap.support.CallbackMediator;
 	import robotlegs.bender.framework.api.IInjector;
-	import robotlegs.bender.framework.impl.SwiftSuspendersInjector;
+	import robotlegs.bender.framework.impl.RobotlegsInjector;
 	import utils.checkFlex;
 	import utils.traceAndSkipTest;
 
@@ -59,7 +59,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		[Before(ui)]
 		public function before():void
 		{
-			injector = new SwiftSuspendersInjector();
+			injector = new RobotlegsInjector();
 			manager = new MediatorManager(factory);
 			container = new UIComponent();
 			UIImpersonator.addChild(container);

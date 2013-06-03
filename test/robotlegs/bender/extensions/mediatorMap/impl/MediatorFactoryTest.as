@@ -22,7 +22,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMapping;
 	import robotlegs.bender.extensions.mediatorMap.support.CallbackMediator;
 	import robotlegs.bender.framework.api.IInjector;
-	import robotlegs.bender.framework.impl.SwiftSuspendersInjector;
+	import robotlegs.bender.framework.impl.RobotlegsInjector;
 	import robotlegs.bender.framework.impl.guardSupport.GrumpyGuard;
 	import robotlegs.bender.framework.impl.guardSupport.HappyGuard;
 	import robotlegs.bender.framework.impl.hookSupport.CallbackHook;
@@ -55,7 +55,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		[Before]
 		public function before():void
 		{
-			injector = new SwiftSuspendersInjector();
+			injector = new RobotlegsInjector();
 			factory = new MediatorFactory(injector);
 		}
 

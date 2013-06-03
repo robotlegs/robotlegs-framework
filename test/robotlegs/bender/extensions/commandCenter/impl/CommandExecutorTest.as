@@ -24,7 +24,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 	import robotlegs.bender.extensions.commandCenter.support.NullCommand;
 	import robotlegs.bender.extensions.commandCenter.support.UnmapperStub;
 	import robotlegs.bender.framework.api.IInjector;
-	import robotlegs.bender.framework.impl.SwiftSuspendersInjector;
+	import robotlegs.bender.framework.impl.RobotlegsInjector;
 	import robotlegs.bender.framework.impl.guardSupport.GrumpyGuard;
 	import robotlegs.bender.framework.impl.guardSupport.HappyGuard;
 
@@ -61,7 +61,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 		public function before():void
 		{
 			reported = [];
-			injector = new SwiftSuspendersInjector();
+			injector = new RobotlegsInjector();
 			injector.map(Function, "reportingFunction").toValue(reportingFunction);
 			mappings = new Vector.<ICommandMapping>();
 			subject = new CommandExecutor(injector);

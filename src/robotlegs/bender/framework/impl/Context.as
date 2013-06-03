@@ -40,7 +40,7 @@ package robotlegs.bender.framework.impl
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
-		private const _injector:IInjector = new SwiftSuspendersInjector();
+		private const _injector:IInjector = new RobotlegsInjector();
 
 		/**
 		 * @inheritDoc

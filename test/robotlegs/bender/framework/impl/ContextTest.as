@@ -153,7 +153,7 @@ package robotlegs.bender.framework.impl
 					(log.level == LogLevel.WARN) && (warning = log);
 				}));
 			const child:Context = new Context();
-			child.injector.parent = new SwiftSuspendersInjector();
+			child.injector.parent = new RobotlegsInjector();
 			context.addChild(child);
 			assertThat(warning.message, containsString("must not have a parent Injector"));
 			assertThat(warning.params, array(child));

@@ -25,7 +25,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 	import robotlegs.bender.extensions.viewProcessorMap.support.TrackingProcessor;
 	import robotlegs.bender.extensions.viewProcessorMap.support.TrackingProcessor2;
 	import robotlegs.bender.framework.api.IInjector;
-	import robotlegs.bender.framework.impl.SwiftSuspendersInjector;
+	import robotlegs.bender.framework.impl.RobotlegsInjector;
 
 	public class ViewProcessorMapTest
 	{
@@ -61,8 +61,8 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		public function before():void
 		{
 			container = new UIComponent();
-			injector = new SwiftSuspendersInjector();
-			injector.map(SwiftSuspendersInjector).toValue(injector);
+			injector = new RobotlegsInjector();
+			injector.map(RobotlegsInjector).toValue(injector);
 			viewProcessorMap = new ViewProcessorMap(new ViewProcessorFactory(injector));
 			trackingProcessor = new TrackingProcessor();
 			trackingProcessor2 = new TrackingProcessor();

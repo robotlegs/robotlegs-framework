@@ -21,7 +21,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 	import robotlegs.bender.extensions.mediatorMap.impl.support.MediatorWatcher;
 	import robotlegs.bender.extensions.viewProcessorMap.utils.MediatorCreator;
 	import robotlegs.bender.framework.api.IInjector;
-	import robotlegs.bender.framework.impl.SwiftSuspendersInjector;
+	import robotlegs.bender.framework.impl.RobotlegsInjector;
 
 	public class ViewProcessorMediatorsTest
 	{
@@ -49,7 +49,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		{
 			container = new UIComponent();
 
-			injector = new SwiftSuspendersInjector();
+			injector = new RobotlegsInjector();
 			instance = new ViewProcessorMap(new ViewProcessorFactory(injector));
 
 			mediatorWatcher = new MediatorWatcher();

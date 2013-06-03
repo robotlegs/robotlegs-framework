@@ -16,7 +16,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import robotlegs.bender.extensions.matching.TypeMatcher;
 	import robotlegs.bender.extensions.mediatorMap.support.CallbackMediator;
 	import robotlegs.bender.framework.api.IInjector;
-	import robotlegs.bender.framework.impl.SwiftSuspendersInjector;
+	import robotlegs.bender.framework.impl.RobotlegsInjector;
 
 	public class MediatorViewHandlerTest
 	{
@@ -36,7 +36,7 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		[Before]
 		public function before():void
 		{
-			injector = new SwiftSuspendersInjector();
+			injector = new RobotlegsInjector();
 			handler = new MediatorViewHandler(new MediatorFactory(injector));
 		}
 

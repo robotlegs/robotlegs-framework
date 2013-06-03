@@ -11,7 +11,7 @@ package robotlegs.bender.extensions.viewProcessorMap.utils
 	import org.flexunit.asserts.*;
 	import org.hamcrest.object.equalTo;
 	import robotlegs.bender.framework.api.IInjector;
-	import robotlegs.bender.framework.impl.SwiftSuspendersInjector;
+	import robotlegs.bender.framework.impl.RobotlegsInjector;
 
 	public class FastPropertyInjectorTest
 	{
@@ -37,7 +37,7 @@ package robotlegs.bender.extensions.viewProcessorMap.utils
 		{
 			const config:Object = {number: Number, string: String};
 			instance = new FastPropertyInjector(config);
-			injector = new SwiftSuspendersInjector();
+			injector = new RobotlegsInjector();
 		}
 
 		[After]
