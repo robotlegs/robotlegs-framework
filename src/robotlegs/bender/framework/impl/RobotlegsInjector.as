@@ -11,6 +11,9 @@ package robotlegs.bender.framework.impl
 	import org.swiftsuspenders.Injector;
 	import robotlegs.bender.framework.api.IInjector;
 
+	/**
+	 * Robotlegs IInjector Adapter
+	 */
 	public class RobotlegsInjector extends Injector implements IInjector
 	{
 
@@ -18,11 +21,17 @@ package robotlegs.bender.framework.impl
 		/* Public Properties                                                          */
 		/*============================================================================*/
 
+		/**
+		 * @inheritDoc
+		 */
 		public function set parent(parentInjector:IInjector):void
 		{
 			this.parentInjector = parentInjector as RobotlegsInjector;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get parent():IInjector
 		{
 			return this.parentInjector as RobotlegsInjector;
@@ -32,6 +41,9 @@ package robotlegs.bender.framework.impl
 		/* Public Functions                                                           */
 		/*============================================================================*/
 
+		/**
+		* @inheritDoc
+		*/
 		public function createChild(applicationDomain:ApplicationDomain = null):IInjector
 		{
 			const childInjector:IInjector = new RobotlegsInjector();
