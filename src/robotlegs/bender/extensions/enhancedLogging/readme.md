@@ -24,7 +24,7 @@ public class MyClass
 
     public function explode(size:String):void
     {
-        logger.info("The was a {0} explosion!", [size]);
+        logger.info("This was a {0} explosion!", [size]);
     }
 }
 ```

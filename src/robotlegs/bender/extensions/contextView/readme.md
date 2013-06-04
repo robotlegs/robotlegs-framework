@@ -16,7 +16,7 @@ Note: The ContextViewExtension must be installed before the ContextView is provi
 
 In the example above we provide the instance "this" to use as the view. We assume that "this" is a valid DisplayObjectContainer.
 
-## StageSync Extension (Bundled with MVCS)
+# StageSync Extension (Bundled with MVCS)
 
 The Stage Sync Extension waits for a ContextView to be added as a configuration, and initializes and destroys the context based on the contextView's stage presence.
 

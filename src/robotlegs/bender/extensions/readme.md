@@ -117,8 +117,8 @@ The unit tests for an extension should be packaged thusly:
           superDuper
             SuperDuperExtensionTest
             SuperDuperExtensionTestSuite
-			api
-			  SuperDuperErrorTest
+      			api
+      			  SuperDuperErrorTest
             impl
               SuperDuperTest
             support

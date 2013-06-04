@@ -14,7 +14,47 @@ eventCommandMap
 eventDispatcher.dispatchEvent(new SignOutEvent(SignOutEvent.SIGN_OUT));
 ```
 
-Note: for a less verbose and more performant command mechanism see the MessageCommandMap extension.
+## Event instance access inside commands
+
+Commands are automatically injected with the event instance that triggered them, resolved to the type used for the mapping.
+
+### Concrete event types
+
+```as3
+eventCommandMap
+    .map(SignOutEvent.SIGN_OUT, SignOutEvent) //the second parameter defines the type of event instance injection
+    .toCommand(SignOutCommand);
+```
+```as3
+//SignOutCommand
+[Inject]
+public var event: SignOutEvent; //as mapped
+
+public function execute():void{
+    //do something useful with event
+}
+```
+
+### Abstract event types
+
+```as3
+eventCommandMap
+    .map(SignOutEvent.SIGN_OUT, Event) //the second parameter defines the type of event instance injection
+    .toCommand(SignOutCommand);
+```
+```as3
+//SignOutCommand
+[Inject]
+public var event: Event; //as mapped
+
+public function execute():void{
+    //do something useful with event
+}
+```
+
+### Note: this deviates from Robotlegs v1 functionality
+
+In Robotlegs v1 an event instance was automatically mapped both to the concrete event type and the abstract `Event` type.
 
 ## Mapping 'once' commands
 
