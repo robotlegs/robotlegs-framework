@@ -1,5 +1,12 @@
 h2. Robotlegs Framework Changelog:
 
+
+h3. v2.0.0b8
+
+Breaking change: Introduces IInjector
+
+Fix: Change your injector references from Injector to IInjector
+
 h3. v2.0.0b7
 
 Adds ViewProcessorMap to MVCS bundle
