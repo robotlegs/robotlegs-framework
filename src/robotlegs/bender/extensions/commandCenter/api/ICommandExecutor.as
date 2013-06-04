@@ -7,7 +7,6 @@
 
 package robotlegs.bender.extensions.commandCenter.api
 {
-	import robotlegs.bender.extensions.commandCenter.impl.CommandPayload;
 
 	/**
 	 * @private

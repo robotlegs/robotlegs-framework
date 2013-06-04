@@ -12,6 +12,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.isTrue;
 	import org.hamcrest.object.nullValue;
+	import robotlegs.bender.extensions.commandCenter.api.CommandPayload;
 
 	public class CommandPayloadTest
 	{

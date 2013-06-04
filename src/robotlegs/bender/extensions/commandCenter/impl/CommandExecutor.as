@@ -12,6 +12,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 	import robotlegs.bender.framework.api.IInjector;
 	import robotlegs.bender.framework.impl.applyHooks;
 	import robotlegs.bender.framework.impl.guardsApprove;
+	import robotlegs.bender.extensions.commandCenter.api.CommandPayload;
 
 	/**
 	 * @private
