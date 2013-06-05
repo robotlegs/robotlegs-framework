@@ -10,6 +10,7 @@ This bundle installs a number of extensions and configurations for developers wh
 * ContextViewExtension - consumes a display object container as the contextView
 * EventDispatcherExtension - makes a shared event dispatcher available
 * ModularityExtension - allows the context to expose and/or inherit dependencies
+* DirectCommandMapExtension - allows you to execute commands directly and detain and release command instances
 * EventCommandMapExtension - an event driven command map
 * LocalEventMapExtension - automatically cleans up listeners for its clients
 * ViewManagerExtension - allows you to add multiple containers as "view roots"
