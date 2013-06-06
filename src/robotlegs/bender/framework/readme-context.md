@@ -18,9 +18,13 @@ Note: you must hold on to that context reference. Failing to do so will result i
 
 In the example above we are installing a bundle, a configuration and a reference to a Display Object Container. The Display Object Container will be used as the "contextView".
 
-The "contextView" should be provided as the final configuration as it may trigger context initialization.
+The "contextView" should always be provided as the final configuration as it may trigger context initialization.
 
 # Bundles and Extensions
+
+An extension integrates 3rd party code into a context.
+
+A bundle groups a selection of extensions together into a single drop-in package.
 
 Most extensions and bundles can be installed as classes:
 
@@ -34,9 +38,15 @@ Usually these extensions provide sensible default constructor arguments and can 
 
     _context.install(EventDispatcherExtension);
 
+[Extensions](https://github.com/robotlegs/robotlegs-framework/tree/master/src/robotlegs/bender/extensions)
+
 # Configuration
 
+Configurations can be provided as class references or object instances.
+
 ## Class Configs
+
+Configs are normally supplied as class references:
 
     _context.configure(MyModuleConfig);
 
@@ -45,39 +55,6 @@ If the context has already been initialized an instance of the supplied class wi
 If the context is not yet initialized the class will be queued. When the context is initialized an instance of the class will be instantiated.
 
 Such a config might look like this:
-
-```as3
-class MyModuleConfig
-{
-    [Inject]
-    public var mediatorMap:IMediatorMap;
-
-    [PostConstruct]
-    public function init():void
-    {
-        mediatorMap.map(SomeView)
-            .toMediator(SomeMediator);
-    }
-}
-```
-
-Or, if you dislike metadata:
-
-```as3
-class MyModuleConfig
-{
-    public function MyModuleConfig(mediatorMap:IMediatorMap)
-    {
-        mediatorMap.map(SomeView)
-            .toMediator(SomeMediator);
-    }
-}
-```
-
-Note: you will not be able to use the above config as a Flex tag due to the required constructor arguments.
-Note: the two forms above can cause problems if you have any circular dependencies.
-
-Preferably, you can implement the IConfig interface. If a config implements this interface `configure()` will be invoked after construction/injection:
 
 ```as3
 class MyModuleConfig implements IConfig
@@ -92,6 +69,8 @@ class MyModuleConfig implements IConfig
     }
 }
 ```
+
+If a config implements the IConfig interface `configure()` will be invoked after construction/injection.
 
 ## Object Configs
 

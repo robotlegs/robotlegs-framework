@@ -179,7 +179,7 @@
 <!-- Copy LICENSE  -->
     <copy file="LICENSE" tofile="${dist.loc}/license.txt" overwrite="true"/>
 <!-- Copy CHANGELOG  -->
-    <copy file="CHANGELOG.textile" tofile="${dist.loc}/changelog.txt" overwrite="true"/>
+    <copy file="changelog.md" tofile="${dist.loc}/changelog.txt" overwrite="true"/>
 <!-- Zip It  -->
     <zip destfile="${dist.loc}/${project.name.versioned}.zip">
       <fileset dir="${dist.loc}"/>

@@ -79,7 +79,7 @@ task :archive => "robotlegs-framework:doc" do
     rl_zip.include(rl._(:src))
     rl_zip.include(rl._(:LICENSE))
     rl_zip.include(rl._(:target,:README))
-    rl_zip.include(rl._("CHANGELOG.textile"), :as => "CHANGELOG")
+    rl_zip.include(rl._("changelog.md"), :as => "changelog.txt")
     rl_zip.path('bin').include( rl_swc )
     rl_zip.path('docs').include( rl._(:target,:doc), :as => "docs" ).exclude( rl._(:target,:doc,:tempdita) )
     rl_zip.include( rl._(:lib) )
