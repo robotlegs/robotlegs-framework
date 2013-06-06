@@ -12,11 +12,13 @@ Robotlegs is an ActionScript application framework for Flash and Flex. It offers
 
 http://www.robotlegs.org/
 
-# Documentation
+## Documentation & Support
 
 The framework documentation exists as README files in the repository. The best way to read them is through GitHub:
 
 [Documentation](https://github.com/robotlegs/robotlegs-framework/tree/master/src/robotlegs/bender)
+
+[Support](http://knowledge.robotlegs.org/)
 
 ## Robotlegs 2 (What's New?)
 
