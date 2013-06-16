@@ -2,6 +2,10 @@
 
 ## Robotlegs 2
 
+### v2.0.0
+
+A brand new day.
+
 ### v2.0.0b8
 
 Breaking change: Introduces IInjector
