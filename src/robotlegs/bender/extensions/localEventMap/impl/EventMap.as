@@ -45,46 +45,37 @@ package robotlegs.bender.extensions.localEventMap.impl
 		{
 			eventClass ||= Event;
 
-			const currentListeners:Vector.<EventMapConfig> = _suspended ? _suspendedListeners : _listeners;
+			const currentListeners:Vector.<EventMapConfig> = _suspended
+					? _suspendedListeners
+					: _listeners;
 
-			var eventConfig:EventMapConfig;
+			var config:EventMapConfig;
 
 			var i:int = currentListeners.length;
 			while (i--)
 			{
-				eventConfig = currentListeners[i];
-				if (eventConfig.dispatcher == dispatcher
-					&& eventConfig.eventString == eventString
-					&& eventConfig.listener == listener
-					&& eventConfig.useCapture == useCapture
-					&& eventConfig.eventClass == eventClass)
+				config = currentListeners[i];
+				if (config.equalTo(dispatcher, eventString, listener, eventClass, useCapture))
 				{
 					return;
 				}
 			}
 
-			var callback:Function;
-
-			if (eventClass != Event)
-			{
-				callback = function(event:Event):void
+			const callback:Function = eventClass == Event
+				? listener
+				: function(event:Event):void
 				{
 					routeEventToListener(event, listener, eventClass);
 				};
-			}
-			else
-			{
-				callback = listener;
-			}
 
-			eventConfig = new EventMapConfig(dispatcher,
+			config = new EventMapConfig(dispatcher,
 				eventString,
 				listener,
 				eventClass,
 				callback,
 				useCapture);
 
-			currentListeners.push(eventConfig);
+			currentListeners.push(config);
 
 			if (!_suspended)
 			{
@@ -103,24 +94,20 @@ package robotlegs.bender.extensions.localEventMap.impl
 			useCapture:Boolean = false):void
 		{
 			eventClass ||= Event;
-			var eventConfig:EventMapConfig;
 
-			const currentListeners:Vector.<EventMapConfig> = _suspended ? _suspendedListeners : _listeners;
+			const currentListeners:Vector.<EventMapConfig> = _suspended
+				? _suspendedListeners
+				: _listeners;
 
 			var i:int = currentListeners.length;
 			while (i--)
 			{
-				eventConfig = currentListeners[i];
-				// todo: move test to EventMapConfig
-				if (eventConfig.dispatcher == dispatcher
-					&& eventConfig.eventString == eventString
-					&& eventConfig.listener == listener
-					&& eventConfig.useCapture == useCapture
-					&& eventConfig.eventClass == eventClass)
+				var config:EventMapConfig = currentListeners[i];
+				if (config.equalTo(dispatcher, eventString, listener, eventClass, useCapture))
 				{
 					if (!_suspended)
 					{
-						dispatcher.removeEventListener(eventString, eventConfig.callback, useCapture);
+						dispatcher.removeEventListener(eventString, config.callback, useCapture);
 					}
 					currentListeners.splice(i, 1);
 					return;
@@ -188,7 +175,7 @@ package robotlegs.bender.extensions.localEventMap.impl
 		}
 
 		/*============================================================================*/
-		/* Private Functions                                                          */
+		/* Protected Functions                                                        */
 		/*============================================================================*/
 
 		/**
@@ -198,7 +185,7 @@ package robotlegs.bender.extensions.localEventMap.impl
 		 * @param listener
 		 * @param originalEventClass
 		 */
-		private function routeEventToListener(event:Event, listener:Function, originalEventClass:Class):void
+		protected function routeEventToListener(event:Event, listener:Function, originalEventClass:Class):void
 		{
 			if (event is originalEventClass)
 			{

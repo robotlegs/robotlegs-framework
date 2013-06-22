@@ -86,7 +86,8 @@ package robotlegs.bender.extensions.localEventMap.impl
 		/**
 		 * @private
 		 */
-		public function EventMapConfig(dispatcher:IEventDispatcher,
+		public function EventMapConfig(
+			dispatcher:IEventDispatcher,
 			eventString:String,
 			listener:Function,
 			eventClass:Class,
@@ -99,6 +100,20 @@ package robotlegs.bender.extensions.localEventMap.impl
 			_eventClass = eventClass;
 			_callback = callback;
 			_useCapture = useCapture;
+		}
+
+		public function equalTo(
+			dispatcher:IEventDispatcher,
+			eventString:String,
+			listener:Function,
+			eventClass:Class,
+			useCapture:Boolean):Boolean
+		{
+			return _eventString == eventString
+				&& _eventClass == eventClass
+				&& _dispatcher == dispatcher
+				&& _listener == listener
+				&& _useCapture == useCapture;
 		}
 	}
 }
