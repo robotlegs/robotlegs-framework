@@ -8,10 +8,23 @@ An Event Command Map executes commands in response to events on a given Event Di
 
 ```as3
 eventCommandMap
-    .map(SignOutEvent.SIGN_OUT, SignOutEvent)
+    .map(SignOutEvent.SIGN_OUT)
     .toCommand(SignOutCommand);
 
 eventDispatcher.dispatchEvent(new SignOutEvent(SignOutEvent.SIGN_OUT));
+```
+
+## Strong typing events
+
+Optionally you can map commands to a concrete event class. This ensures that the command will only be executed if the event instance is of a specific event class.
+
+```as3
+eventCommandMap
+    .map(FooEvent.FOO, FooEvent) //mapping the command to the concrete FooEvent class
+    .toCommand(FooCommand);
+
+//the command will NOT be executed, since the event instance is of type Event
+eventDispatcher.dispatchEvent(new Event(FooEvent.FOO)); 
 ```
 
 ## Event instance access inside commands
