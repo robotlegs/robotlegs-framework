@@ -47,7 +47,7 @@ package robotlegs.bender.framework.impl
 		public function createChild(applicationDomain:ApplicationDomain = null):IInjector
 		{
 			const childInjector:IInjector = new RobotlegsInjector();
-			childInjector.applicationDomain = applicationDomain;
+			childInjector.applicationDomain = applicationDomain || this.applicationDomain;
 			childInjector.parent = this;
 			return childInjector;
 		}
