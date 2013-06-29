@@ -2,6 +2,11 @@
 
 ## Robotlegs 2
 
+### v2.1.0
+
+EventMap - opens up routeEventToListener
+Fixes RobotlegsInjector.createChild() bug
+
 ### v2.0.0
 
 A brand new day.

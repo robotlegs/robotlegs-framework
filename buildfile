@@ -13,7 +13,7 @@ layout = Layout::Default.new
 layout[:source, :main, :as3] = "src"
 layout[:source, :test, :as3] = "test"
 
-THIS_VERSION = "2.0.0-SNAPSHOT"
+THIS_VERSION = "2.1.0-SNAPSHOT"
 
 define "robotlegs-framework", :layout => layout do
 
@@ -26,7 +26,7 @@ define "robotlegs-framework", :layout => layout do
   ]
 
   compile.using( :compc, :flexsdk => flexsdk, :args => args ).
-    with( _(:lib,"Swiftsuspenders-v2.0.0rc2.swc"),
+    with( _(:lib,"Swiftsuspenders-v2.0.0rc3.swc"),
           _(:lib,"hamcrest-as3-flex-1.1.3.swc") )
 
   testrunner = _(:source, :test, :as3, "RobotlegsTest.mxml")
