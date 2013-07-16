@@ -7,6 +7,9 @@
 
 package robotlegs.bender.extensions.vigilance
 {
+	import org.hamcrest.assertThat;
+	import org.hamcrest.text.containsString;
+
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.IInjector;
 	import robotlegs.bender.framework.api.ILogger;
@@ -67,6 +70,24 @@ package robotlegs.bender.extensions.vigilance
 		public function extension_throws_for_FATAL():void
 		{
 			logger.fatal("");
+		}
+
+		[Test]
+		public function extension_throws_when_METADATA_is_missing():void
+		{
+			const context:IContext = new Context();
+			// We can't actually test for missing metadata, so we simulate it.
+			context.injector.unmap(IContext);
+			var error:VigilantError;
+			try
+			{
+				context.install(VigilanceExtension);
+			}
+			catch(e:VigilantError)
+			{
+				error = e;
+			}
+			assertThat(error.message, containsString("metadata"));
 		}
 
 		/*============================================================================*/

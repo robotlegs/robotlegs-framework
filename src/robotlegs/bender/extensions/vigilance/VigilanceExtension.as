@@ -36,6 +36,7 @@ package robotlegs.bender.extensions.vigilance
 		 */
 		public function extend(context:IContext):void
 		{
+			context.injector.instantiateUnmapped(MetadataChecker).check();
 			context.addLogTarget(this);
 			context.injector.addEventListener(MappingEvent.MAPPING_OVERRIDE, mappingOverrideHandler)
 		}
@@ -59,6 +60,27 @@ package robotlegs.bender.extensions.vigilance
 		{
 			throw new InjectorError("Injector mapping override for type " +
 				event.mappedType + " with name " + event.mappedName);
+		}
+	}
+}
+
+import robotlegs.bender.extensions.vigilance.VigilantError;
+import robotlegs.bender.framework.api.IContext;
+
+class MetadataChecker
+{
+	[Inject(optional=true)]
+	public var context:IContext;
+
+	public function check():void
+	{
+		if (context == null)
+		{
+			throw new VigilantError(
+				"It looks like custom metadata is being ignored by your compiler. " +
+				"If you're compiling with the Flash IDE you need to open your " +
+				'"Publish Settings" and select "Publish SWC". ' +
+				"See: https://github.com/robotlegs/robotlegs-framework/wiki/Common-Problems");
 		}
 	}
 }
