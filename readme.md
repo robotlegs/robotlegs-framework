@@ -20,7 +20,9 @@ The framework documentation exists as README files in the repository. The best w
 
 [Support](http://knowledge.robotlegs.org/)
 
-<a href="http://www.jetbrains.com/idea/features/html_css_editor.html" style="display:block; background:#fff url(http://www.jetbrains.com/idea/opensource/img/all/banners/idea468x60_white.gif) no-repeat 0 7px; border:solid 1px #0d3a9e; margin:0;padding:0;text-decoration:none;text-indent:0;letter-spacing:-0.001em; width:466px; height:58px" alt="Intelligent XHTML editor with refactoring and CSS support" title="Intelligent XHTML editor with refactoring and CSS support"><span style="margin: 5px 0 0 61px;padding: 0;float: left;font-size: 12px;cursor:pointer;  background-image:none;border:0;color: #0d3a9e; font-family: trebuchet ms,arial,sans-serif;font-weight: normal;text-align:left;">Proud to use</span><span style="margin:0 0 0 205px;padding:18px 0 2px 0; line-height:13px;font-size:13px;cursor:pointer;  background-image:none;border:0;display:block; width:255px; color:#0d3a9e; font-family: trebuchet ms,arial,sans-serif;font-weight: normal;text-align:left;">Intelligent XHTML editor with <br/>refactoring and CSS support</span></a>
+### Developed with pleasure using IntelliJ IDEA
+
+<a href="http://www.jetbrains.com/idea/features/flex_ide.html"><img src="http://www.jetbrains.com/idea/opensource/img/all/banners/idea468x60_white.gif"></a>
 
 ## Robotlegs 2 (What's New?)
 
