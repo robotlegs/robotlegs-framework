@@ -46,6 +46,10 @@ package robotlegs.bender.framework.impl
 					? injector.instantiateUnmapped(guard as Class)
 					: new (guard as Class);
 			}
+			else
+			{
+				injector.injectInto(guard);
+			}
 			if (guard.approve() == false)
 				return false;
 		}
