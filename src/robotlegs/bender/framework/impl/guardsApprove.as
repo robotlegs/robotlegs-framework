@@ -40,7 +40,7 @@ package robotlegs.bender.framework.impl
 					continue;
 				return false;
 			}
-			if (guard is Class)
+			else if (guard is Class)
 			{
 				guard = injector
 					? injector.instantiateUnmapped(guard as Class)
