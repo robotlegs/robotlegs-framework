@@ -85,7 +85,7 @@
 		
 		<!-- The Flex SDK to compile against -->
 		<flex.sdk.version>4.5.1.21328</flex.sdk.version>
-		<swiftsuspenders.version>2.0.0-rc3</swiftsuspenders.version>
+		<swiftsuspenders.version>2.0.0</swiftsuspenders.version>
 		
 		<!-- Unit testing frameworks and dependencies -->
 		<flexunit.version>4.1.0-8</flexunit.version>
