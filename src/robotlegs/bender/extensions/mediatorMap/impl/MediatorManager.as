@@ -74,33 +74,24 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		{
 			const displayObject:DisplayObject = item as DisplayObject;
 
-			if (!displayObject)
-			{
-				// Non-display-object was added, initialize and exit
-				initializeMediator(mediator, item);
-				return;
-			}
-
-			if (mapping.autoRemoveEnabled)
-			{
-				// Watch this view for removal
+			// Watch Display Object for removal
+			if (displayObject && mapping.autoRemoveEnabled)
 				displayObject.addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
-			}
 
-			// Is this a UIComponent that needs to be initialized?
-			if (flexAvailable && (displayObject is UIComponentClass) && !displayObject['initialized'])
+			// Synchronize with item life-cycle
+			if (itemInitialized(item))
+			{
+				initializeMediator(mediator, item);
+			}
+			else
 			{
 				displayObject.addEventListener(CREATION_COMPLETE, function(e:Event):void
 				{
 					displayObject.removeEventListener(CREATION_COMPLETE, arguments.callee);
-					// ensure that we haven't been removed in the meantime
-					if (_factory.getMediator(displayObject, mapping))
-						initializeMediator(mediator, displayObject);
+					// Ensure that we haven't been removed in the meantime
+					if (_factory.getMediator(item, mapping) == mediator)
+						initializeMediator(mediator, item);
 				});
-			}
-			else
-			{
-				initializeMediator(mediator, displayObject);
 			}
 		}
 
@@ -109,12 +100,10 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		 */
 		public function removeMediator(mediator:Object, item:Object, mapping:IMediatorMapping):void
 		{
-			const displayObject:DisplayObject = item as DisplayObject;
+			if (item is DisplayObject)
+				DisplayObject(item).removeEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
 
-			if (displayObject)
-				displayObject.removeEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
-
-			if (mediator)
+			if (itemInitialized(item))
 				destroyMediator(mediator);
 		}
 
@@ -125,6 +114,13 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		private function onRemovedFromStage(event:Event):void
 		{
 			_factory.removeMediators(event.target);
+		}
+
+		private function itemInitialized(item:Object):Boolean
+		{
+			if (flexAvailable && (item is UIComponentClass) && !item['initialized'])
+				return false;
+			return true;
 		}
 
 		private function initializeMediator(mediator:Object, mediatedItem:Object):void

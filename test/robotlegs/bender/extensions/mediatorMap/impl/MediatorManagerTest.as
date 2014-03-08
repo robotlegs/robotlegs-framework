@@ -26,8 +26,6 @@ package robotlegs.bender.extensions.mediatorMap.impl
 	import robotlegs.bender.extensions.mediatorMap.support.CallbackMediator;
 	import robotlegs.bender.framework.api.IInjector;
 	import robotlegs.bender.framework.impl.RobotlegsInjector;
-	import utils.checkFlex;
-	import utils.traceAndSkipTest;
 
 	public class MediatorManagerTest
 	{
@@ -134,10 +132,6 @@ package robotlegs.bender.extensions.mediatorMap.impl
 		[Test(async, ui)]
 		public function mediator_for_UIComponent_is_only_initialized_after_creationComplete():void
 		{
-			// early exit for as3 only test environments
-			if (!checkFlex())
-				return traceAndSkipTest('mediator_for_UIComponent_is_only_initialized_after_creationComplete - flex not available');
-
 			const view:UIComponent = new UIComponent();
 			const mapping:IMediatorMapping = new MediatorMapping(createTypeFilter([UIComponent]), LifecycleReportingMediator);
 			const mediator:LifecycleReportingMediator = injector.instantiateUnmapped(LifecycleReportingMediator);
@@ -145,13 +139,48 @@ package robotlegs.bender.extensions.mediatorMap.impl
 			// we have to stub this out otherwise the manager assumes
 			// that the mediator has been removed in the background
 			stub(factory).method('getMediator').anyArgs().returns(mediator);
-
 			manager.addMediator(mediator, view, mapping);
+			container.addChild(view);
+
 			assertThat("mediator starts off uninitialized", mediator.initialized, isFalse());
+			delayAssertion(function():void {
+				assertThat("mediator is eventually initialized", mediator.initialized, isTrue());
+			}, 100);
+		}
+
+		[Test(async, ui)]
+		public function old_mediator_for_reparented_UIComponent_is_not_initialized_after_creationComplete():void
+		{
+			const view:UIComponent = new UIComponent();
+			const mapping:IMediatorMapping = new MediatorMapping(createTypeFilter([UIComponent]), LifecycleReportingMediator);
+			const oldMediator:LifecycleReportingMediator = injector.instantiateUnmapped(LifecycleReportingMediator);
+			const newMediator:LifecycleReportingMediator = injector.instantiateUnmapped(LifecycleReportingMediator);
+
+			manager.addMediator(oldMediator, view, mapping);
+			manager.removeMediator(oldMediator, view, mapping);
+
+			stub(factory).method('getMediator').anyArgs().returns(newMediator);
+			manager.addMediator(newMediator, view, mapping);
 			container.addChild(view);
 
 			delayAssertion(function():void {
-				assertThat("mediator is eventually initialized", mediator.initialized, isTrue());
+				assertThat("old mediator does not initialize", oldMediator.initialized, isFalse());
+			}, 100);
+		}
+
+		[Test(async, ui)]
+		public function mediator_for_UIComponent_is_not_destroyed_when_removed_before_initialization():void
+		{
+			const view:UIComponent = new UIComponent();
+			const mapping:IMediatorMapping = new MediatorMapping(createTypeFilter([UIComponent]), LifecycleReportingMediator);
+			const mediator:LifecycleReportingMediator = injector.instantiateUnmapped(LifecycleReportingMediator);
+
+			manager.addMediator(mediator, view, mapping);
+			manager.removeMediator(mediator, view, mapping);
+			container.addChild(view);
+
+			delayAssertion(function():void {
+				assertThat("mediator is not destroyed", mediator.destroyed, isFalse());
 			}, 100);
 		}
 
