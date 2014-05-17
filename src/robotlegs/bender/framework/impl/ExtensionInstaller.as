@@ -8,8 +8,6 @@
 package robotlegs.bender.framework.impl
 {
 	import flash.utils.Dictionary;
-	import org.swiftsuspenders.reflection.DescribeTypeReflector;
-	import org.swiftsuspenders.reflection.Reflector;
 	import robotlegs.bender.framework.api.IContext;
 	import robotlegs.bender.framework.api.ILogger;
 
@@ -26,8 +24,6 @@ package robotlegs.bender.framework.impl
 		/*============================================================================*/
 
 		private const _classes:Dictionary = new Dictionary(true);
-
-		private const _reflector:Reflector = new DescribeTypeReflector();
 
 		private var _context:IContext;
 
@@ -62,7 +58,7 @@ package robotlegs.bender.framework.impl
 			}
 			else
 			{
-				const extensionClass:Class = _reflector.getClass(extension);
+				const extensionClass:Class = extension.constructor as Class;
 				if (_classes[extensionClass])
 					return;
 				_logger.debug("Installing extension {0}", [extension]);
