@@ -455,10 +455,13 @@ package robotlegs.bender.framework.impl
 
 		private function afterDestroyingCallback():void
 		{
+			_extensionInstaller.destroy();
+			_configManager.destroy();
 			_pin.releaseAll();
 			_injector.teardown();
 			removeChildren();
 			_logger.info("Destroy complete");
+			_logManager.removeAllTargets();
 		}
 
 		private function onChildDestroy(event:LifecycleEvent):void
@@ -472,7 +475,7 @@ package robotlegs.bender.framework.impl
 			{
 				removeChild(child);
 			}
-			_children.splice(0);
+			_children.length = 0;
 		}
 	}
 }

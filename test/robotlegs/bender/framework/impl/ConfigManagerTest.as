@@ -8,6 +8,7 @@
 package robotlegs.bender.framework.impl
 {
 	import org.flexunit.assertThat;
+	import org.flexunit.asserts.fail;
 	import org.hamcrest.collection.array;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.instanceOf;
@@ -194,6 +195,16 @@ package robotlegs.bender.framework.impl
 			});
 			context.initialize();
 			assertThat(actual, array(['listener1', 'listener2', 'config']));
+		}
+
+		[Test]
+		public function destroy():void
+		{
+			configManager.addConfigHandler(instanceOfType(String), function(config:Object):void {
+				fail("Handler should not fire after call to destroy");
+			});
+			configManager.destroy();
+			configManager.addConfig("string");
 		}
 	}
 }

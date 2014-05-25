@@ -89,5 +89,10 @@ package robotlegs.bender.framework.impl
 				target.log(source, level, timestamp, message, params);
 			}
 		}
+
+		public function removeAllTargets():void
+		{
+			_targets.length = 0;
+		}
 	}
 }

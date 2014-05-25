@@ -66,5 +66,16 @@ package robotlegs.bender.framework.impl
 				extension.extend(_context);
 			}
 		}
+
+		/**
+		 * Destroy
+		 */
+		public function destroy():void
+		{
+			for (var extensionClass:Object in _classes)
+			{
+				delete _classes[extensionClass];
+			}
+		}
 	}
 }

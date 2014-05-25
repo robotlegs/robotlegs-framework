@@ -42,6 +42,8 @@ package robotlegs.bender.framework.impl
 
 		private var _initialized:Boolean;
 
+		private var _context:IContext;
+
 		/*============================================================================*/
 		/* Constructor                                                                */
 		/*============================================================================*/
@@ -51,6 +53,7 @@ package robotlegs.bender.framework.impl
 		 */
 		public function ConfigManager(context:IContext)
 		{
+			_context = context;
 			_injector = context.injector;
 			_logger = context.getLogger(this);
 			addConfigHandler(new ClassMatcher(), handleClass);
@@ -87,6 +90,20 @@ package robotlegs.bender.framework.impl
 		public function addConfigHandler(matcher:IMatcher, handler:Function):void
 		{
 			_objectProcessor.addObjectHandler(matcher, handler);
+		}
+
+		/**
+		 * Destroy
+		 */
+		public function destroy():void
+		{
+			_context.removeEventListener(LifecycleEvent.INITIALIZE, initialize);
+			_objectProcessor.removeAllHandlers();
+			_queue.length = 0;
+			for (var config:Object in _configs)
+			{
+				delete _configs[config];
+			}
 		}
 
 		/*============================================================================*/

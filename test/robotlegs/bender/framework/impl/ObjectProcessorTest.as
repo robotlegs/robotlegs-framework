@@ -8,6 +8,7 @@
 package robotlegs.bender.framework.impl
 {
 	import org.flexunit.assertThat;
+	import org.flexunit.asserts.fail;
 	import org.hamcrest.collection.array;
 	import org.hamcrest.core.not;
 	import org.hamcrest.object.equalTo;
@@ -84,6 +85,16 @@ package robotlegs.bender.framework.impl
 			objectProcessor.addObjectHandler(instanceOfType(String), createHandler(actual.push, 'handler3'));
 			objectProcessor.processObject("string");
 			assertThat(actual, array(expected));
+		}
+
+		[Test]
+		public function removeAllHandlers():void
+		{
+			objectProcessor.addObjectHandler(instanceOfType(String), function(object:Object):void {
+				fail("Handler should not fire after call to removeAllHandlers");
+			});
+			objectProcessor.removeAllHandlers();
+			objectProcessor.processObject("string");
 		}
 	}
 }

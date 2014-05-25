@@ -48,6 +48,14 @@ package robotlegs.bender.framework.impl
 				handler.handle(object);
 			}
 		}
+
+		/**
+		 * Removes all handlers
+		 */
+		public function removeAllHandlers():void
+		{
+			_handlers.length = 0;
+		}
 	}
 }
 
