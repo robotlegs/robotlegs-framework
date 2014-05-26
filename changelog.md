@@ -2,6 +2,10 @@
 
 ## Robotlegs 2
 
+### v2.2.1
+
+Updates Swiftsuspenders to v2.1.0
+
 ### v2.2.0
 
 Updates Swiftsuspenders to v2.0.0 release
