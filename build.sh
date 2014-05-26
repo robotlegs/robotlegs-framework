@@ -1,5 +1,5 @@
 #!/bin/bash
-mxmlc -debug -default-background-color=#FFFFFF -default-frame-rate=24 -default-size 900 550 -library-path+=lib/hamcrest-as3-flex-1.1.3.swc -library-path+=lib/Swiftsuspenders-v2.0.0.swc -library-path+=lib/mockolate-0.12.4-flex.swc -library-path+=lib/flexunit-4.1.0-8-flex_4.1.0.16076.swc -library-path+=lib/flexunit-cilistener-4.1.0-8-4.1.0.16076.swc -library-path+=lib/fluint-extensions-4.1.0-8-4.1.0.16076.swc -output=bin/Robotlegs2Runner.swf -source-path+=src -source-path+=test -verbose-stacktraces=true -warnings=true test/RobotlegsTest.mxml
+mxmlc -debug -default-background-color=#FFFFFF -default-frame-rate=24 -default-size 900 550 -library-path+=lib/hamcrest-as3-flex-1.1.3.swc -library-path+=lib/Swiftsuspenders-v2.1.0.swc -library-path+=lib/mockolate-0.12.4-flex.swc -library-path+=lib/flexunit-4.1.0-8-flex_4.1.0.16076.swc -library-path+=lib/flexunit-cilistener-4.1.0-8-4.1.0.16076.swc -library-path+=lib/fluint-extensions-4.1.0-8-4.1.0.16076.swc -output=bin/Robotlegs2Runner.swf -source-path+=src -source-path+=test -verbose-stacktraces=true -warnings=true test/RobotlegsTest.mxml
 
 ERRORLEVEL=$?
 if [ $ERRORLEVEL -eq 0 ]
