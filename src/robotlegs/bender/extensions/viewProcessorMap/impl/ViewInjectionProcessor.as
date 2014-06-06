@@ -51,7 +51,7 @@ package robotlegs.bender.extensions.viewProcessorMap.impl
 		private function injectAndRemember(view:Object, injector:IInjector):void
 		{
 			injector.injectInto(view);
-			_injectedObjects[view] = view;
+			_injectedObjects[view] = true;
 		}
 	}
 }
