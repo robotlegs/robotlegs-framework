@@ -1,6 +1,6 @@
 # Hooks
 
-Hooks run before or after certain extension actions. They are typically used by extensions to run custom actions based on environmental conditions.
+Hooks run before certain extension actions. They are typically used by extensions to run custom actions based on environmental conditions.
 
 ## Hook Forms
 
