@@ -6,6 +6,7 @@
 /bin/*
 docs/*
 obj/*
+target/*
 
 .actionScriptProperties
 .flexProperties

@@ -1,0 +1,12 @@
+language: objective-c
+
+before_script:
+  # set the JAVA_HOME which is not set by default for OSX Travis-CI workers
+  - export "JAVA_HOME=`/usr/libexec/java_home`"
+  # Download and install a specific Flash Player from the Adobe Archives:
+  # http://helpx.adobe.com/flash-player/kb/archived-flash-player-versions.html
+  - sh getFpFromArchive.sh 'http://download.macromedia.com/pub/flashplayer/installers/archive/fp_11.7.700.225_archive.zip'
+  # Install Local Modules Script:
+  - sh maven-runonce.sh
+
+script: mvn clean install -s settings.xml -DflashPlayer.command=Flash\ Player\ Debugger.app/Contents/MacOS/Flash\ Player\ Debugger

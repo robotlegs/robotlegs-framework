@@ -1,4 +1,5 @@
 h2. Robotlegs: A pure AS3 micro-architecture for Flash and Flex
+!https://travis-ci.org/haysclark/robotlegs-framework.svg?branch=version1!:https://github.com/haysclark/robotlegs-framework/tree/version1
 
 Robotlegs is a lightweight AS3 MVCS micro-architecture. Robotlegs was created to provide a small, loosely coupled application framework that is easy to test.
 
