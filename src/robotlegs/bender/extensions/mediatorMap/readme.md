@@ -116,7 +116,7 @@ Unmapping removes the rule. It will not destroy existing mediators related to th
 Mediators should observe one of the following forms:
 
 1. Extend the base mediator class and override `initialize` and, if needed, `destroy`.
-	- If you override `destroy`, don't forget to call `super.destroy()` as this is where event listening cleanup is triggered.
+	- If you override `postDestroy`, don't forget to call `super.postDestroy()` as this is where event listening cleanup is triggered.
 2. Don't extend the base mediator class, and provide functions `initialize()` and, if needed, also `destroy()`.
 3. Don't follow this convention, and use the `[PostConstruct]` metadata tag to ensure your initialization function is run
 	- note that this approach is not tailored for views extending Flex UIComponent, where initialization should be deferred until after creationComplete, so you will need to either provide for this in your implementation or use one of the methods above.	
