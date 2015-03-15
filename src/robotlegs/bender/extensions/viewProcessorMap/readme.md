@@ -2,7 +2,7 @@
 
 ## Overview
 
-The view processor map provides automagic processing of mapped views landing on the stage and manual processing where preferred.
+The view processor map provides automatic processing of mapped views landing on the stage and manual processing where preferred.
 
 ## Extension Installation
 
@@ -28,13 +28,13 @@ You can create your own processor, for example to do property injection without 
 You map either a specific type or a TypeMatcher to the class or instance of processor you want to be used.
 
 ```as3
-viewProcessorMap.map(SomeType).toProcessor(FastInjector);
+viewProcessorMap.map(SomeType).toProcess(FastInjector);
 
-viewProcessorMap.mapMatcher(new TypeMatcher().anyOf(ISpaceShip, IRocket)).toProcessor(SpacecraftSkinner);
+viewProcessorMap.mapMatcher(new TypeMatcher().anyOf(ISpaceShip, IRocket)).toProcess(SpacecraftSkinner);
 
 // you can also use an instance as the processor, in this case, to avoid inspection when doing property injection
 
-viewProcessorMap.map(SomeType).toProcessor( new FastPropertyInjector( { userID:UserID, animationSettings:AnimationSettings } ) );
+viewProcessorMap.map(SomeType).toProcess( new FastPropertyInjector( { userID:UserID, animationSettings:AnimationSettings } ) );
 ```
 
 #### Shortcut method for the most common case: injection by inspection

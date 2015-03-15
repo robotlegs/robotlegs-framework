@@ -5,7 +5,7 @@
 The Stage Crawler Extension scans and handles all views in the containers or contextview after context initialization.
 This enables us to handle the views that might already be on the stage before initialization which would otherwise not be processed (or mediated).
 
-It is reliant on either a IViewManager or a ContextView upon initializtion.
+It is reliant on either a IViewManager or a ContextView upon initialization.
 
 ## How to Install
 
