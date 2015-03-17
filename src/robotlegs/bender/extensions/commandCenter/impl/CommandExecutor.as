@@ -111,7 +111,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 			var i:uint = payload.length;
 			while (i--)
 			{
-				_injector.map(payload.classes[i]).toValue(payload.values[i]);
+				_injector.map(payload.classes[i], payload.names[i]).toValue(payload.values[i]);
 			}
 		}
 
@@ -120,7 +120,7 @@ package robotlegs.bender.extensions.commandCenter.impl
 			var i:uint = payload.length;
 			while (i--)
 			{
-				_injector.unmap(payload.classes[i]);
+				_injector.unmap(payload.classes[i], payload.names[i]);
 			}
 		}
 	}

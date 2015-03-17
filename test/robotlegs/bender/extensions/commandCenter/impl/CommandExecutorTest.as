@@ -203,7 +203,9 @@ package robotlegs.bender.extensions.commandCenter.impl
 		public function payload_is_injected_into_command():void
 		{
 			addMapping(PayloadInjectionPointsCommand);
-			const payload:CommandPayload = new CommandPayload(['message', 1], [String, int]);
+			const payload:CommandPayload = new CommandPayload(['message', 1, 'messageNamed', 2], 
+																[String, int, String, int], 
+																['', '', 'named', 'named']);
 			executeCommands(payload);
 			assertThat(reported, array(payload.values));
 		}
@@ -392,6 +394,12 @@ class PayloadInjectionPointsCommand
 
 	[Inject]
 	public var code:int;
+	
+	[Inject(name="named")]
+	public var messageNamed:String;
+	
+	[Inject(name="named")]
+	public var codeNamed:int;
 
 	[Inject(name="reportingFunction")]
 	public var reportingFunc:Function;
@@ -404,6 +412,8 @@ class PayloadInjectionPointsCommand
 	{
 		reportingFunc(message);
 		reportingFunc(code);
+		reportingFunc(messageNamed);
+		reportingFunc(codeNamed);
 	}
 }
 
