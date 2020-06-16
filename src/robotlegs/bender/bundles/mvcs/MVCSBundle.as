@@ -31,11 +31,21 @@ package robotlegs.bender.bundles.mvcs
 	 * For that Classic Robotlegs flavour
 	 *
 	 * <p>This bundle installs a number of extensions commonly used
-	 * in typical Robotlegs applications and modules.</p>
+	 * in typical Robotlegs applications and modules. It will also set the logLevel for the context 
+	 * to its onw logLevel property (LogLevel.DEBUG by default)</p>
 	 */
 	public class MVCSBundle implements IBundle
 	{
 
+		/*============================================================================*/
+		/* Public Properties                                                          */
+		/*============================================================================*/
+
+		/**
+		 * The logLevel the bundle will set for the context (LogLevel.DEBUG by default)
+		 */
+		public var logLevel:int = LogLevel.DEBUG;
+		
 		/*============================================================================*/
 		/* Public Functions                                                           */
 		/*============================================================================*/
@@ -45,7 +55,7 @@ package robotlegs.bender.bundles.mvcs
 		 */
 		public function extend(context:IContext):void
 		{
-			context.logLevel = LogLevel.DEBUG;
+			context.logLevel = logLevel;
 
 			context.install(
 				TraceLoggingExtension,
